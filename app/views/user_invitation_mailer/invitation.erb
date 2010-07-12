@@ -1,0 +1,17 @@
+Hello, <br/><br/>
+
+This is an invitation to create a user on our site.<br/><br/>
+
+It was sent to you from 
+<%= "#{@invitation.sender.username}(#{@invitation.sender.email})" %>.<br/><br/>
+
+<% unless @invitation.message.blank? %>
+<%= @invitation.message %><br/><br/>
+<% end %>
+
+<%= link_to "Click on this link to begin creating your user",
+	user_invitation_url(@invitation.token) %><br/><br/>
+
+Thank you,<br/>
+
+CCLS Investigation Team<br/>

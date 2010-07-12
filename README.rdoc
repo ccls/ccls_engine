@@ -1,0 +1,17 @@
+= UcbCclsAuthPlugin
+
+Introduction goes here.
+
+
+== Example
+
+Example goes here.
+
+
+
+== Notes
+
+In order for plugin routes to load, there must be an app dir.
+
+
+Copyright (c) 2010 [Jake Wendt], released under the MIT license

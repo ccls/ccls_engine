@@ -1,0 +1,14 @@
+<% form_for @user_invitation do |f| %>
+	<%= f.error_messages %>
+	<div>
+		<%= f.label :email, "Email" %>
+		<%= f.text_field :email %>
+	</div>
+	<div>
+		<%= f.label :message, "Message" %>
+		<%= f.text_area :message %>
+	</div>
+	<p>
+		<%= f.submit "Submit" %>
+	</p>
+<% end %>

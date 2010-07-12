@@ -1,0 +1,21 @@
+<% stylesheets('users') %>
+
+<div id='users'>
+<% @users.each do |user| %>
+<div class='<%=user.role_names.join(' ')-%> user row'>
+<div class='gravatar'>
+<%= link_to( image_tag(user.gravatar_url), "http://gravatar.com",
+	:target => 'new' )%>
+</div>
+<div class='username'>
+<%= link_to user.displayname, user_path(user) -%>
+</div>
+<div class='role_name'>
+<% user.role_names.each do |role_name| %>
+<%= link_to role_name, users_path( :role_name => role_name ) -%>
+<% end %>
+</div>
+</div>
+<% end %>
+
+</div><!-- id='users' -->
