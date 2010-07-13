@@ -1,12 +1,9 @@
-require 'ucb_ccls_auth_plugin'
+require 'ucb_ccls_engine'
 #require 'auth_by_authlogic'
 require 'auth_by_ucb_cas'
 
-require 'ucb_ccls_auth_helper'
-require 'ucb_ccls_auth_controller'
-
-require 'ucb_ccls_cms_plugin'
-require 'ucb_ccls_cms_helper'
+require 'ucb_ccls_engine_helper'
+require 'ucb_ccls_engine_controller'
 
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
@@ -33,8 +30,6 @@ config.gem 'gravatar'
 #   change singleton_class back to metaclass
 # config.gem 'authlogic', :version => '>= 2.1.5'
 
-
-ActionView::Base.send(:include, UcbCclsCmsHelper)
 
 config.load_paths << File.join(File.dirname(__FILE__),'..','/app/sweepers')
 

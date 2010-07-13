@@ -1,4 +1,4 @@
-module UcbCclsAuthPlugin	
+module UcbCclsEngine
 
 	def self.included(base)
 		base.extend(PrepMethod)
@@ -44,8 +44,8 @@ module UcbCclsAuthPlugin
 			#			'letter, one number and one special character',
 			#		:if => :password_changed?
 
-			include UcbCclsAuthPlugin::InstanceMethods
-			extend  UcbCclsAuthPlugin::ClassMethods
+			include UcbCclsEngine::InstanceMethods
+			extend  UcbCclsEngine::ClassMethods
 
 			validates_presence_of   :uid
 			validates_uniqueness_of :uid
@@ -118,4 +118,4 @@ module UcbCclsAuthPlugin
 	end
 
 end
-ActiveRecord::Base.send( :include, UcbCclsAuthPlugin )
+ActiveRecord::Base.send( :include, UcbCclsEngine )
