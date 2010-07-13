@@ -1,0 +1,25 @@
+table#pages {
+	width: 100%;
+}
+.page img.handle {
+}
+.page .position {
+	font-weight:bold;
+	text-align:center;
+}
+.page .path {
+	width: 150px;
+}
+.page .menu {
+	width: 150px;
+}
+.page .title {
+	width: 150px;
+}
+.page .manage {
+	text-align:right;
+}
+
+.page.row.ui-sortable-helper {
+	border: 1px dashed #E7C254;
+}

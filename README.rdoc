@@ -1,4 +1,4 @@
-= UcbCclsAuthPlugin
+= UCB CCLS Engine
 
 Introduction goes here.
 

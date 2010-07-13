@@ -1,0 +1,9 @@
+<%= error_messages_for :page %>
+
+<% form_for(@page) do |f| %>
+  <%= render 'form', :f => f %>
+  <p>
+    <%= f.submit "Create", :id => nil %>&nbsp;
+		<%= button_link_to "Cancel", pages_path %>
+  </p>
+<% end %>

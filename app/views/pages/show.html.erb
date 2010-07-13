@@ -1,0 +1,5 @@
+<div id='main'>
+<% if @page %>
+<%= sanitize(textilize(@page.body(session[:locale]))) %>
+<% end %>
+</div>
