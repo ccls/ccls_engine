@@ -44,9 +44,8 @@ module UcbCclsAuthPlugin
 			#			'letter, one number and one special character',
 			#		:if => :password_changed?
 
-include UcbCclsAuthPlugin::InstanceMethods
-extend  UcbCclsAuthPlugin::ClassMethods
-
+			include UcbCclsAuthPlugin::InstanceMethods
+			extend  UcbCclsAuthPlugin::ClassMethods
 
 			validates_presence_of   :uid
 			validates_uniqueness_of :uid

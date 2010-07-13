@@ -23,3 +23,4 @@ module UcbCclsAuthHelper
 	end
 
 end
+ActionView::Base.send(:include, UcbCclsAuthHelper)

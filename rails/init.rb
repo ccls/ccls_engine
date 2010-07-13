@@ -2,8 +2,8 @@ require 'ucb_ccls_auth_plugin'
 #require 'auth_by_authlogic'
 require 'auth_by_ucb_cas'
 require 'ucb_ccls_auth_helper'
+require 'ucb_ccls_auth_controller'
 
-ActionView::Base.send(:include, UcbCclsAuthHelper)
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
