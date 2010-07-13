@@ -1,6 +1,7 @@
 require 'ucb_ccls_auth_plugin'
 #require 'auth_by_authlogic'
 require 'auth_by_ucb_cas'
+
 require 'ucb_ccls_auth_helper'
 require 'ucb_ccls_auth_controller'
 
