@@ -1,0 +1,37 @@
+div#users {
+/*
+	padding-top:20px;
+*/
+	line-height: 30px;
+}
+div.gravatar {
+	float:left;
+	width: 40px;
+}
+div.gravatar img {
+	border: 0;
+	height: 30px;
+	width: 30px;
+}
+div.username {
+	float:left;
+	width: 300px;
+}
+div.role_name {
+	text-align:right;
+}
+
+div.row:nth-child(2n).administrator   { background-color: #EE8; }
+div.row:nth-child(2n+1).administrator { background-color: #DD8; }
+div.row:nth-child(2n).moderator       { background-color: #ECE; }
+div.row:nth-child(2n+1).moderator     { background-color: #DCD; }
+div.row:nth-child(2n).editor          { background-color: #CEE; }
+div.row:nth-child(2n+1).editor        { background-color: #CDD; }
+div.row:nth-child(2n).employee        { background-color: #FDD; }
+div.row:nth-child(2n+1).employee      { background-color: #EDD; }
+/*
+div.row:nth-child(2n).administrator   { background-color: #EEE; }
+div.row:nth-child(2n+1).administrator { background-color: #DDD; }
+div.row:nth-child(2n).administrator   { background-color: #EEE; }
+div.row:nth-child(2n+1).administrator { background-color: #DDD; }
+*/

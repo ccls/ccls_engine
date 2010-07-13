@@ -1,0 +1,35 @@
+div.person {
+	float:left;
+	width: 60%;
+}
+div#roles {
+	margin-left: 60%;
+}
+div#roles a img {
+	margin-left: 50px;
+}
+div#roles ul {
+	list-style-position: outside;
+	list-style-type: none;
+	padding: 0;
+}
+
+form.edit_user {
+	width: 490px;
+	margin: 50px auto;
+}
+form.edit_user label {
+	float: left;
+	width: 100px;
+}
+form.edit_user input,
+form.edit_user label,
+form.edit_user div,
+form.edit_user p {
+	text-align: center;
+	margin: 5px;
+	font-size: 12pt;
+}
+form.edit_user p {
+	clear:left;
+}
