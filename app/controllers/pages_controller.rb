@@ -6,8 +6,8 @@ class PagesController < ApplicationController
 	before_filter :id_required, :only => [ :edit, :update, :destroy ]
 
 #	caches partials from layout as well, which is too much
-#	caches_action :show, :layout => false
-#	cache_sweeper :page_sweeper, :only => [:create, :update, :order, :destroy]
+	caches_action :show, :layout => false
+	cache_sweeper :page_sweeper, :only => [:create, :update, :order, :destroy]
 
 	ssl_allowed :show
 
