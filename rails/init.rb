@@ -1,7 +1,5 @@
 #puts "In Rails/Init"
 
-config.gem 'paperclip'
-
 config.gem 'ssl_requirement'
 
 config.gem 'ryanb-acts-as-list', 
@@ -18,6 +16,13 @@ config.gem "ucb_ldap", :source => "http://gemcutter.org"
 config.gem 'gravatar'
 
 config.gem "RedCloth"
+
+config.gem 'paperclip'
+
+#/Library/Ruby/Gems/1.8/gems/activerecord-2.3.8/lib/active_record/base.rb:1994:in `method_missing_without_paginate': undefined method `has_attached_file' for #<Class:0x1070676d0> (NoMethodError)
+#	Why must I do this? Paperclip won't work without it when using a gem.
+require 'paperclip'
+ActiveRecord::Base.send(:include, ::Paperclip)
 
 # http://railscasts.com/episodes/160-authlogic
 # http://asciicasts.com/episodes/160-authlogic
