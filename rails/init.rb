@@ -1,5 +1,7 @@
 #puts "In Rails/Init"
 
+config.gem 'paperclip'
+
 config.gem 'ssl_requirement'
 
 config.gem 'ryanb-acts-as-list', 
