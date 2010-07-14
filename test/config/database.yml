@@ -1,4 +1,4 @@
-development:
+test:
   adapter: sqlite3
   database: test.sqlite3
 

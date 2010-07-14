@@ -1,16 +1,10 @@
-require 'ucb_ccls_engine'
-#require 'auth_by_authlogic'
-require 'auth_by_ucb_cas'
+#puts "In Rails/Init"
 
-require 'ucb_ccls_engine_helper'
-require 'ucb_ccls_engine_controller'
+config.gem 'ssl_requirement'
 
-
-if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
-	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
-#	require 'authlogic_test_helper'
-	require 'ucb_cas_test_helper'
-end
+config.gem 'ryanb-acts-as-list', 
+	:lib => 'acts_as_list', 
+	:source => 'http://gems.github.com'
 
 # For CAS / CalNet Authentication
 config.gem "rubycas-client"
@@ -44,7 +38,21 @@ HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
 
 config.reload_plugins = true if RAILS_ENV == 'development'
 
+#	Load the gems before the files that need them!
 
+require 'ucb_ccls_engine'
+#require 'auth_by_authlogic'
+require 'auth_by_ucb_cas'
+
+require 'ucb_ccls_engine_helper'
+require 'ucb_ccls_engine_controller'
+
+
+if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
+	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
+#	require 'authlogic_test_helper'
+	require 'ucb_cas_test_helper'
+end
 
 
 
