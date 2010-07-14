@@ -15,6 +15,8 @@ config.gem "ucb_ldap", :source => "http://gemcutter.org"
 
 config.gem 'gravatar'
 
+config.gem "RedCloth"
+
 # http://railscasts.com/episodes/160-authlogic
 # http://asciicasts.com/episodes/160-authlogic
 # version 2.1.4 includes patches for Rails 3 that
@@ -24,10 +26,9 @@ config.gem 'gravatar'
 #   change singleton_class back to metaclass
 # config.gem 'authlogic', :version => '>= 2.1.5'
 
+config.load_paths << File.expand_path(
+	File.join(File.dirname(__FILE__),'..','/app/sweepers'))
 
-config.load_paths << File.join(File.dirname(__FILE__),'..','/app/sweepers')
-
-config.gem "RedCloth"
 
 #	This works in the app's config/environment.rb ...
 #config.action_view.sanitized_allowed_attributes = 'id', 'class', 'style'
