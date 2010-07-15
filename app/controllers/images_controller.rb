@@ -1,11 +1,7 @@
 class ImagesController < ApplicationController
 
-	skip_before_filter :login_required, :only => :show
-
-	before_filter :may_maintain_pages_required, :except => :show
+	before_filter :may_maintain_pages_required
 	before_filter :id_required, :only => [ :show, :edit, :update, :destroy ]
-
-	ssl_allowed :show
 
 	def index
 		@images = Image.all

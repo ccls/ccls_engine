@@ -4,7 +4,7 @@ class ImagesControllerTest < ActionController::TestCase
 
 	ASSERT_ACCESS_OPTIONS = {
 		:model => 'Image',
-		:actions => [:new,:create,:edit,:update,:destroy,:index],
+		:actions => [:new,:create,:edit,:update,:destroy,:show,:index],
 		:method_for_create => :factory_create,
 		:attributes_for_create => :factory_attributes
 	}
@@ -16,13 +16,8 @@ class ImagesControllerTest < ActionController::TestCase
 		Factory.attributes_for(:image)
 	end
 
-	assert_access_with_http :show, { :actions => nil }
-	assert_access_with_login(:show,{
-		:logins => [:moderator,:employee,:active_user], :actions => nil})
-	assert_access_without_login( :show, { :actions => nil })
-
-	assert_access_with_https :show
-	assert_access_with_login(:show,{
+	assert_access_with_https
+	assert_access_with_login({
 		:logins => [:admin,:editor]})
 
 	assert_no_access_with_http 
