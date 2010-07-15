@@ -12,19 +12,20 @@ class ImagesController < ApplicationController
 	end
 
 	def create
-		@image = Image.create!(params[:image])
+		@image = Image.new(params[:image])
+		@image.save!
 		redirect_to @image
-#	rescue
-#		flash.now[:error] = "Error"
-#		render :action => 'new'
+	rescue ActiveRecord::RecordInvalid
+		flash.now[:error] = "Error"
+		render :action => 'new'
 	end
 
 	def update
 		@image.update_attributes!(params[:image])
 		redirect_to @image
-#	rescue
-#		flash.now[:error] = "Error"
-#		render :action => 'edit'
+	rescue ActiveRecord::RecordInvalid
+		flash.now[:error] = "Error"
+		render :action => 'edit'
 	end
 
 	def destroy

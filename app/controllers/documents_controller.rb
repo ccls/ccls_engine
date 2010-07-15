@@ -21,19 +21,20 @@ class DocumentsController < ApplicationController
 	end
 
 	def create
-		@document = Document.create!(params[:document])
+		@document = Document.new(params[:document])
+		@document.save!
 		redirect_to @document
-#	rescue
-#		flash.now[:error] = "Error"
-#		render :action => 'new'
+	rescue ActiveRecord::RecordInvalid
+		flash.now[:error] = "Error"
+		render :action => 'new'
 	end
 
 	def update
 		@document.update_attributes!(params[:document])
 		redirect_to @document
-#	rescue
-#		flash.now[:error] = "Error"
-#		render :action => 'edit'
+	rescue ActiveRecord::RecordInvalid
+		flash.now[:error] = "Error"
+		render :action => 'edit'
 	end
 
 	def destroy

@@ -58,6 +58,25 @@ class DocumentsControllerTest < ActionController::TestCase
 		pending
 	end
 
+	test "should NOT create invalid document with #{cu} login" do
+		login_as send(cu)
+		assert_no_difference('Document.count') do
+			post :create, :document => {}
+		end
+		assert_not_nil flash[:error]
+		assert_template 'new'
+		assert_response :success
+	end
+
+	test "should NOT update invalid document with #{cu} login" do
+		login_as send(cu)
+		put :update, :id => Factory(:document).id, 
+			:document => { :title => "a" }
+		assert_not_nil flash[:error]
+		assert_template 'edit'
+		assert_response :success
+	end
+
 end
 
 %w( moderator employee active_user ).each do |cu|

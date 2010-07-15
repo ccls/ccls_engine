@@ -2,6 +2,9 @@
 <div class='title'>
 <%= link_to document.title, document %>
 </div>
+<div class='path'>
+<%= document.document.path %>
+</div>
 <div class='manage'>
 <%= link_to 'Edit', edit_document_path(document) %>&nbsp;
 <%= link_to 'Destroy', document, 

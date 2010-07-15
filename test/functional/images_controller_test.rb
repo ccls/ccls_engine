@@ -37,4 +37,27 @@ class ImagesControllerTest < ActionController::TestCase
 		:destroy => { :id => 0 }
 	)
 
+%w( admin editor ).each do |cu|
+
+	test "should NOT create invalid image with #{cu} login" do
+		login_as send(cu)
+		assert_no_difference('Image.count') do
+			post :create, :image => {}
+		end
+		assert_not_nil flash[:error]
+		assert_template 'new'
+		assert_response :success
+	end
+
+	test "should NOT update invalid image with #{cu} login" do
+		login_as send(cu)
+		put :update, :id => Factory(:image).id, 
+			:image => { :title => "a" }
+		assert_not_nil flash[:error]
+		assert_template 'edit'
+		assert_response :success
+	end
+
+end
+
 end
