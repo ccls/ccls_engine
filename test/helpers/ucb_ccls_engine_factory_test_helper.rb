@@ -1,4 +1,4 @@
-module FactoryTestHelper
+module UcbCclsEngineFactoryTestHelper
 
 	def active_user(options={})
 		u = Factory(:user, options)
@@ -36,4 +36,4 @@ module FactoryTestHelper
 	end
 
 end
-ActiveSupport::TestCase.send(:include,FactoryTestHelper)
+ActiveSupport::TestCase.send(:include,UcbCclsEngineFactoryTestHelper)

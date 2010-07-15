@@ -15,8 +15,7 @@ require 'action_mailer'
 require File.dirname(__FILE__) + '/config/environment'
 require 'test_help'
 
-require 'factories'
-require 'factory_test_helper'
+require 'ucb_ccls_engine_factories'
 
 def setup_db
 	ActiveRecord::Migrator.migrate("db/migrate/",nil)

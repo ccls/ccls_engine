@@ -61,7 +61,15 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test/helpers')
 #	require 'authlogic_test_helper'
 	require 'ucb_cas_test_helper'
-#	require 'factories'
+
+	config.gem "thoughtbot-factory_girl",
+		:lib    => "factory_girl",
+		:source => "http://gems.github.com"
+
+	require 'factory_girl'
+	require 'ucb_ccls_engine_factories'
+	require 'ucb_ccls_engine_factory_test_helper'
+#	require 'ucb_ccls_engine_assertions'
 end
 
 
