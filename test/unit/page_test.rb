@@ -2,8 +2,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class PageTest < ActiveSupport::TestCase
 
-#	assert_should_require(:path,:menu_en,:title_en,:body_en)
-#	assert_should_require_unique(:path,:menu_en)
+	assert_should_require(:path,:menu_en,:title_en,:body_en)
+	assert_should_require_unique(:path,:menu_en)
 
 	test "should create page" do
 		assert_difference 'Page.count' do

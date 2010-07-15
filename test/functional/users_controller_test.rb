@@ -1,82 +1,82 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UsersControllerTest < ActionController::TestCase
-#
-#	ASSERT_ACCESS_OPTIONS = {
-#		:model => 'User',
-#		:actions => [:index,:show],
-#		:attributes_for_create => :factory_attributes,
-#		:method_for_create => :factory_create
-#	}
-#
-#	def factory_attributes
-#		Factory.attributes_for(:user)
-#	end
-#	def factory_create
-#		Factory(:user)
-#	end
-#
-#	assert_access_with_login({ 
-#		:login => :admin })
-#	assert_no_access_with_login({ 
-#		:logins => [:moderator,:editor,:employee,:active_user] })
-#	assert_no_access_without_login
-#
-#	assert_access_with_https
-#	assert_no_access_with_http
-#
-#
-#%w( admin ).each do |cu|
-#
-#	test "should filter users index by role with #{cu} login" do
-#		some_other_user = admin	#	active_user
-#		login_as send(cu)
-#		get :index, :role_name => 'administrator'
-#		assert assigns(:users).length >= 2
-#		assigns(:users).each do |u|
-#			assert u.role_names.include?('administrator')
-#		end
-#		assert_nil flash[:error]
-#		assert_response :success
-#	end
-#
-#	test "should ignore empty role_name with #{cu} login" do
-#		some_other_user = admin	#	active_user
-#		login_as send(cu)
-#		get :index, :role_name => ''
-#		assert assigns(:users).length >= 2
-#		assert_nil flash[:error]
-#		assert_response :success
-#	end
-#
-#	test "should ignore invalid role with #{cu} login" do
-#		login_as send(cu)
-#		get :index, :role_name => 'suffocator'
-##		assert_not_nil flash[:error]
-#		assert_response :success
-#	end
-#
-#end
-#
-#%w( admin moderator employee editor active_user ).each do |cu|
-#
-#	test "should NOT get user info with invalid id with #{cu} login" do
-#		login_as send(cu)
-#		get :show, :id => 0
+
+	ASSERT_ACCESS_OPTIONS = {
+		:model => 'User',
+		:actions => [:index,:show],
+		:attributes_for_create => :factory_attributes,
+		:method_for_create => :factory_create
+	}
+
+	def factory_attributes
+		Factory.attributes_for(:user)
+	end
+	def factory_create
+		Factory(:user)
+	end
+
+	assert_access_with_login({ 
+		:login => :admin })
+	assert_no_access_with_login({ 
+		:logins => [:moderator,:editor,:employee,:active_user] })
+	assert_no_access_without_login
+
+	assert_access_with_https
+	assert_no_access_with_http
+
+
+%w( admin ).each do |cu|
+
+	test "should filter users index by role with #{cu} login" do
+		some_other_user = admin	#	active_user
+		login_as send(cu)
+		get :index, :role_name => 'administrator'
+		assert assigns(:users).length >= 2
+		assigns(:users).each do |u|
+			assert u.role_names.include?('administrator')
+		end
+		assert_nil flash[:error]
+		assert_response :success
+	end
+
+	test "should ignore empty role_name with #{cu} login" do
+		some_other_user = admin	#	active_user
+		login_as send(cu)
+		get :index, :role_name => ''
+		assert assigns(:users).length >= 2
+		assert_nil flash[:error]
+		assert_response :success
+	end
+
+	test "should ignore invalid role with #{cu} login" do
+		login_as send(cu)
+		get :index, :role_name => 'suffocator'
 #		assert_not_nil flash[:error]
-#		assert_redirected_to users_path
-#	end
-#
-#	test "should get #{cu} info with self login" do
-#		u = send(cu)
-#		login_as u
-#		get :show, :id => u.id
-#		assert_response :success
-#		assert_not_nil assigns(:user)
-#		assert_equal u, assigns(:user)
-#	end
-#
-#end
+		assert_response :success
+	end
+
+end
+
+%w( admin moderator employee editor active_user ).each do |cu|
+
+	test "should NOT get user info with invalid id with #{cu} login" do
+		login_as send(cu)
+		get :show, :id => 0
+		assert_not_nil flash[:error]
+		assert_redirected_to users_path
+	end
+
+	test "should get #{cu} info with self login" do
+		u = send(cu)
+		login_as u
+		get :show, :id => u.id
+		assert_response :success
+		assert_not_nil assigns(:user)
+		assert_equal u, assigns(:user)
+	end
+
+end
 
 
 

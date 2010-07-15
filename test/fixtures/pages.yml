@@ -1,0 +1,228 @@
+--- 
+pages_15: 
+  position: 1
+  menu_en: Findings
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 15
+  path: /findings
+  parent_id: 14
+  hide_menu: false
+  body_en: Findings Page Body
+  title_en: Findings
+pages_1: 
+  position: 1
+  menu_en: CCLS
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 1
+  path: /
+  parent_id: 
+  hide_menu: false
+  body_en: |
+    <div class='equal_height_column_wrapper'>
+    <div style='width:33%;float:left;text-align:center;'>
+    Column 1
+    </div>
+    <div style='width:33%;float:left;text-align:center;'>
+    Column 2
+    </div>
+    <div style='width:33%;float:left;text-align:center;'>
+    Column 3
+    </div>
+    </div>
+  title_en: CCLS
+pages_2: 
+  position: 2
+  menu_en: About
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 2
+  path: /about
+  parent_id: 
+  hide_menu: false
+  body_en: About Page Body
+  title_en: About
+pages_16: 
+  position: 2
+  menu_en: Awards
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 16
+  path: /awards
+  parent_id: 14
+  hide_menu: false
+  body_en: Awards Page Body
+  title_en: Awards
+pages_3: 
+  position: 1
+  menu_en: Goals
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 3
+  path: /goals
+  parent_id: 2
+  hide_menu: false
+  body_en: Goals Page Body
+  title_en: Goals
+pages_17: 
+  position: 6
+  menu_en: Privacy
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 17
+  path: /privacy
+  parent_id: 
+  hide_menu: true
+  body_en: Privacy Page Body
+  title_en: Privacy
+pages_4: 
+  position: 2
+  menu_en: Staff Bios
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 4
+  path: /staffbios
+  parent_id: 2
+  hide_menu: false
+  body_en: Staff Bios Page Body
+  title_en: Staff Bios
+pages_18: 
+  position: 7
+  menu_en: Terms
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 18
+  path: /terms
+  parent_id: 
+  hide_menu: true
+  body_en: Terms Page Body
+  title_en: Terms
+pages_5: 
+  position: 3
+  menu_en: Partners
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 5
+  path: /partners
+  parent_id: 2
+  hide_menu: false
+  body_en: Partners Page Body
+  title_en: Partners
+pages_6: 
+  position: 4
+  menu_en: Funding
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 6
+  path: /funding
+  parent_id: 2
+  hide_menu: false
+  body_en: Funding Page Body
+  title_en: Funding
+pages_7: 
+  position: 5
+  menu_en: Contact
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 7
+  path: /contactus
+  parent_id: 2
+  hide_menu: false
+  body_en: Contact Page Body
+  title_en: Contact
+pages_10: 
+  position: 2
+  menu_en: Links
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 10
+  path: /links
+  parent_id: 8
+  hide_menu: false
+  body_en: Links Page Body
+  title_en: Links
+pages_11: 
+  position: 4
+  menu_en: Research
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 11
+  path: /research
+  parent_id: 
+  hide_menu: false
+  body_en: Research Page Body
+  title_en: Research
+pages_8: 
+  position: 3
+  menu_en: Families
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 8
+  path: /families
+  parent_id: 
+  hide_menu: false
+  body_en: Families Page Body
+  title_en: Families
+pages_12: 
+  position: 1
+  menu_en: Projects
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 12
+  path: /cclsprojects
+  parent_id: 11
+  hide_menu: false
+  body_en: Projects Page Body
+  title_en: Projects
+pages_9: 
+  position: 1
+  menu_en: Factsheet
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 9
+  path: /factsheet
+  parent_id: 8
+  hide_menu: false
+  body_en: Factsheet Page Body
+  title_en: Factsheet
+pages_13: 
+  position: 2
+  menu_en: Publications
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 13
+  path: /publications
+  parent_id: 11
+  hide_menu: false
+  body_en: Publications Page Body
+  title_en: Publications
+pages_14: 
+  position: 5
+  menu_en: News
+  body_es: 
+  title_es: 
+  menu_es: 
+  id: 14
+  path: /news
+  parent_id: 
+  hide_menu: false
+  body_en: News Page Body
+  title_en: News

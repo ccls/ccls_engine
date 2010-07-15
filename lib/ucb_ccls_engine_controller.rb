@@ -20,10 +20,20 @@ protected
 		true
 	end
 
+
 	def redirect_to_referer_or_default(default)
 		redirect_to( session[:refer_to] || 
 			request.env["HTTP_REFERER"] || default )
 		session[:refer_to] = nil
+	end
+
+	#	Flash error message and redirect
+	def access_denied( 
+			message="You don't have permission to complete that action.", 
+			default=root_path )
+		session[:return_to] = request.request_uri
+		flash[:error] = message
+		redirect_to default
 	end
 
 end
