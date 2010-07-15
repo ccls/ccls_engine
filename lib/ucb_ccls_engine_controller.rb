@@ -20,6 +20,12 @@ protected
 		true
 	end
 
+	def redirect_to_referer_or_default(default)
+		redirect_to( session[:refer_to] || 
+			request.env["HTTP_REFERER"] || default )
+		session[:refer_to] = nil
+	end
+
 end
 
 require 'ssl_requirement'

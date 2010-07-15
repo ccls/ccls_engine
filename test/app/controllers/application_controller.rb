@@ -1,6 +1,6 @@
-require 'ssl_requirement'
+#require 'ssl_requirement'
 class ApplicationController < ActionController::Base
 
-		include SslRequirement
+#	include SslRequirement
 
 end
