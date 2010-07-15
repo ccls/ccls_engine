@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id: 1
+  position: 1
+  name: administrator
+
+two:
+  id: 2
+  position: 2
+  name: moderator
+
+three:
+  id: 3
+  position: 3
+  name: editor
+
+four:
+  id: 4
+  position: 4
+  name: employee
+

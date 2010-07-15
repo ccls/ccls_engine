@@ -58,8 +58,10 @@ require 'ucb_ccls_engine_controller'
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
+	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test/helpers')
 #	require 'authlogic_test_helper'
 	require 'ucb_cas_test_helper'
+#	require 'factories'
 end
 
 

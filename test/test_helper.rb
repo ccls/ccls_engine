@@ -16,7 +16,7 @@ require File.dirname(__FILE__) + '/config/environment'
 require 'test_help'
 
 require 'factories'
-
+require 'factory_test_helper'
 
 def setup_db
 	ActiveRecord::Migrator.migrate("db/migrate/",nil)
@@ -25,6 +25,12 @@ end
 def teardown_db
 	ActiveRecord::Migrator.migrate("db/migrate/",0)
 end
+
+class ActiveSupport::TestCase
+	self.fixture_path = File.dirname(__FILE__) + "/fixtures/"
+	fixtures :all
+end
+
 
 class ActionController::TestCase
 
