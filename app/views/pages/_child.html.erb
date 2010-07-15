@@ -14,7 +14,9 @@
 <%= link_to "Destroy", page_path(child), :confirm => "Delete '#{child.title(session[:locale])}'?\nAre you sure?", :method => :delete -%>
 </td>
 
+<!--
 <td class='children'>
-<%= render :partial => 'child', :collection => child.children %>
+<%#= render :partial => 'child', :collection => child.children %>
 </td>
+-->
 <% end %><!-- class='child' -->

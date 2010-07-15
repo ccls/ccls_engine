@@ -2,6 +2,9 @@
 <td><%= hidden_field_tag( 'pages[]', page.id, :id => nil ) %>
 <%= image_tag 'drag.gif', :class => 'handle' %></td>
 <td class='position'><%= page.position -%></td>
+
+
+<td><table><tbody><tr>
 <td class='path'>
 <%= link_to page.path, page.path -%>
 </td>
@@ -18,14 +21,12 @@
 <%= link_to "Edit", edit_page_path(page) -%>&nbsp;
 <%= link_to "Destroy", page_path(page), :confirm => "Delete '#{page.title(session[:locale])}'?\nAre you sure?", :method => :delete -%>
 </td>
-
-<% end %><!-- class='page' -->
-<% if page.children.length > 0 %>
-<tr><td>&nbsp;</td><td>&nbsp;</td>
-<td class='children' colspan='4'>
-<table><tbody>
-<%= render :partial => 'child', :collection => page.children %>
-</tbody></table>
-</td>
 </tr>
+
+
+<% if page.children.length > 0 %>
+<%= render :partial => 'child', :collection => page.children %>
 <% end %>
+
+</tbody></table></td>
+<% end %><!-- class='page' -->
