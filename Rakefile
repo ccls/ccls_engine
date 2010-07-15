@@ -25,3 +25,9 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 	rdoc.rdoc_files.include('README')
 	rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+#	It would be nice to have the full set of rails rake tasks,
+#	but this will probably require some work.
+#
+RAILS_ROOT = File.dirname(__FILE__) unless defined?(RAILS_ROOT)
+require 'tasks/rails'

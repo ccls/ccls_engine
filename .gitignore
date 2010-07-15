@@ -1,3 +1,4 @@
 versions
+log
 test/log
 *sqlite3
