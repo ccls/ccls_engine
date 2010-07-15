@@ -1,0 +1,10 @@
+<% content_tag_for( :div, document, :class => 'row' ) do %>
+<div class='title'>
+<%= link_to document.title, document %>
+</div>
+<div class='manage'>
+<%= link_to 'Edit', edit_document_path(document) %>&nbsp;
+<%= link_to 'Destroy', document, 
+	:confirm => 'Are you sure?', :method => :delete %>
+</div>
+<% end %><!-- class='document row' -->

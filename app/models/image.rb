@@ -1,7 +1,7 @@
 class Image < ActiveRecord::Base
 
-#	validates_presence_of :title
-#	validates_length_of :title, :minimum => 4
+	validates_presence_of :title
+	validates_length_of :title, :minimum => 4
 
 #	path = if Rails.env == 'production'
 #		':rails_root.uploads/system/:attachment/:id/:style/:filename'
@@ -22,6 +22,5 @@ class Image < ActiveRecord::Base
 		:medium => "600",
 		:small  => "150x50>"
 	}	#, :url => url, :path => path
-
 
 end

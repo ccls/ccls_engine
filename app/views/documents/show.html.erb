@@ -1,0 +1,14 @@
+<%# stylesheets('document') %>
+
+<p>
+  <b>Title:</b>
+  <%=h @document.title %>
+</p>
+
+<p>
+  <b>Abstract:</b>
+  <%=h @document.abstract %>
+</p>
+
+<%= link_to 'Edit', edit_document_path(@document) %> |
+<%= link_to 'Back', documents_path %>

@@ -1,7 +1,9 @@
 Factory.define :document do |f|
+	f.sequence(:title) { |n| "Title#{n}" }
 end
 
 Factory.define :image do |f|
+	f.sequence(:title) { |n| "Title#{n}" }
 end
 
 Factory.define :page do |f|

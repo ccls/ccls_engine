@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class ImageTest < ActiveSupport::TestCase
 
+	assert_should_require(:title)
+
 	test "should create image" do
 		assert_difference 'Image.count' do
 			object = create_object

@@ -1,0 +1,26 @@
+<%# stylesheets('image') %>
+
+<% form_for(@image,:html => { :multipart => true }) do |f| %>
+	<%= f.error_messages %>
+
+	<div>
+		<%= f.label :title %><br />
+		<%= f.text_field :title %>
+	</div>
+	<div>
+		<div class='image'>
+		<%= f.label :image %><br />
+		<%= f.file_field :image %>
+		</div>
+	</div>
+	<div class='image_preview'>
+		<%= image_tag(@image.image.url(:full))%>
+	</div>
+	<div class='caption'>
+		<%= f.label :caption %><br />
+		<%= f.text_area :caption %>
+	</div>
+	<p>
+		<%= f.submit( (@image.new_record?)? "Create" : "Update" )%>
+	</p>
+<% end %>

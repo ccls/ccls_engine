@@ -1,0 +1,9 @@
+<%# stylesheets('images') %>
+
+<div id='images'>
+<%= render :partial => 'image', :collection => @images %>
+</div><!-- id='images' -->
+
+<p>
+<%= button_link_to 'Create New Image', new_image_path %>
+</p>

@@ -49,5 +49,8 @@ Rails.backtrace_cleaner.add_silencer {|line|
 #	in rvm/jruby the error is passing through
 #	test/declarative.rb:21:in `_test_should_NOT_create_new_user_if_invitation_update_fails_with_verbosity']:
 
+#     /Users/jakewendt/github_repo/jakewendt/ucb_ccls_clic/vendor/plugins/ucb_ccls_engine/rails/../test/helpers/declarative.rb:21:in `_test_AWiHTTP_should_get_show_with_admin_login_with_verbosity'
+
+#	This doesn't seem to work at all in the plugin engine.
 	line =~ /test.*\/declarative\.rb:/
 } 

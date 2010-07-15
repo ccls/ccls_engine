@@ -2,7 +2,7 @@ class CreateDocuments < ActiveRecord::Migration
 	def self.up
 		create_table :documents do |t|
 			t.references :owner
-			t.string :title
+			t.string :title, :null => false
 			t.text   :abstract
 			t.timestamps
 		end

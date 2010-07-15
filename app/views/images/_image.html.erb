@@ -1,0 +1,13 @@
+<% content_tag_for( :div, image, :class => 'row' ) do %>
+<div class='thumb'>
+<%= image_tag(image.image.url(:small)) %>
+</div>
+<div class='title'>
+<%= link_to image.title, image %>
+</div>
+<div class='manage'>
+<%= link_to 'Edit', edit_image_path(image) %>&nbsp;
+<%= link_to 'Destroy', image, 
+	:confirm => 'Are you sure?', :method => :delete %>
+</div>
+<% end %><!-- class='image row' -->
