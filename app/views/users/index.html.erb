@@ -10,7 +10,7 @@
 <div class='username'>
 <%= link_to user.displayname, user_path(user) -%>
 </div>
-<div class='role_name'>
+<div class='role_name'>&nbsp;
 <% user.role_names.each do |role_name| %>
 <%= link_to role_name, users_path( :role_name => role_name ) -%>
 <% end %>
