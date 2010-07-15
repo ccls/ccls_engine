@@ -100,7 +100,32 @@ module ShouldAssociate
 		alias_method :assert_should_have_many_associations, 
 			:assert_should_have_many_
 
-	end
+		def assert_should_habtm(*associations)
+			user_options = associations.extract_options!
+			model = user_options[:model] || self.name.sub(/Test$/,'')
+			
+			associations.each do |assoc|
+				assoc = assoc.to_s
 
+				test "SA should habtm #{assoc}" do
+					object = create_object
+					assert_equal 0, object.send(assoc).length
+					object.send(assoc) << Factory(assoc.singularize)
+					assert_equal 1, object.reload.send(assoc).length
+					if object.respond_to?("#{assoc}_count")
+						assert_equal 1, object.reload.send("#{assoc}_count")
+					end
+					object.send(assoc) << Factory(assoc.singularize)
+					assert_equal 2, object.reload.send(assoc).length
+					if object.respond_to?("#{assoc}_count")
+						assert_equal 2, object.reload.send("#{assoc}_count")
+					end
+				end
+
+			end
+
+		end
+
+	end
 end
 ActiveSupport::TestCase.send(:include,ShouldAssociate)
