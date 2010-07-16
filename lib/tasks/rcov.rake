@@ -10,7 +10,7 @@ namespace :test do
 		
 		unless PLATFORM['i386-mswin32']
 			rcov = "rcov --sort coverage --rails --aggregate coverage.data " <<
-							"--text-summary -Ilib -T -x gems/*"
+							"--text-summary -Ilib -T -x gems/*,db/migrate/*"
 		else
 			rcov = "rcov.cmd --sort coverage --rails --aggregate " <<
 							"coverage.data --text-summary -Ilib -T"
