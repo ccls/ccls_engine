@@ -1,0 +1,11 @@
+<% stylesheets('photos') %>
+
+<% if @photos.length > 0 %>
+<table id='photos'><tbody>
+<%= render :partial => 'photo', :collection => @photos %>
+</tbody></table><!-- id='photos' -->
+<% end %>
+
+<p>
+<%= button_link_to 'Create New Photo', new_photo_path %>
+</p>

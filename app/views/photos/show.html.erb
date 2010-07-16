@@ -1,0 +1,24 @@
+<%# stylesheets('photo') %>
+
+<p>
+  <b>Title:</b>
+  <%=h @photo.title %>
+</p>
+
+<p>
+  <b>Image:</b>
+</p>
+<% @photo.image.styles.keys.each do |key| %>
+<div class='image_preview'>
+<p><%= @photo.image.url(key) %></p>
+<%= image_tag @photo.image.url(key) %>
+</div>
+<% end %>
+
+<p>
+  <b>Caption:</b>
+  <%=h @photo.caption %>
+</p>
+
+<%= link_to 'Edit', edit_photo_path(@photo) %> |
+<%= link_to 'Back', photos_path %>

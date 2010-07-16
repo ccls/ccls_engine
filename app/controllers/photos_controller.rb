@@ -1,45 +1,45 @@
-class ImagesController < ApplicationController
+class PhotosController < ApplicationController
 
 	before_filter :may_maintain_pages_required
 	before_filter :id_required, :only => [ :show, :edit, :update, :destroy ]
 
 	def index
-		@images = Image.all
+		@photos = Photo.all
 	end
 
 	def new
-		@image = Image.new
+		@photo = Photo.new
 	end
 
 	def create
-		@image = Image.new(params[:image])
-		@image.save!
-		redirect_to @image
+		@photo = Photo.new(params[:photo])
+		@photo.save!
+		redirect_to @photo
 	rescue ActiveRecord::RecordInvalid
 		flash.now[:error] = "Error"
 		render :action => 'new'
 	end
 
 	def update
-		@image.update_attributes!(params[:image])
-		redirect_to @image
+		@photo.update_attributes!(params[:photo])
+		redirect_to @photo
 	rescue ActiveRecord::RecordInvalid
 		flash.now[:error] = "Error"
 		render :action => 'edit'
 	end
 
 	def destroy
-		@image.destroy
-		redirect_to images_path
+		@photo.destroy
+		redirect_to photos_path
 	end
 
 protected
 
 	def id_required
-		if !params[:id].blank? and Image.exists?(params[:id])
-			@image = Image.find(params[:id])
+		if !params[:id].blank? and Photo.exists?(params[:id])
+			@photo = Photo.find(params[:id])
 		else
-			access_denied("Valid image id required!", images_path)
+			access_denied("Valid photo id required!", photos_path)
 		end
 	end
 

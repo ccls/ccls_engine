@@ -1,19 +1,19 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ImagesControllerTest < ActionController::TestCase
+class PhotosControllerTest < ActionController::TestCase
 
 	ASSERT_ACCESS_OPTIONS = {
-		:model => 'Image',
+		:model => 'Photo',
 		:actions => [:new,:create,:edit,:update,:destroy,:show,:index],
 		:method_for_create => :factory_create,
 		:attributes_for_create => :factory_attributes
 	}
 
 	def factory_create
-		Factory(:image)
+		Factory(:photo)
 	end
 	def factory_attributes
-		Factory.attributes_for(:image)
+		Factory.attributes_for(:photo)
 	end
 
 	assert_access_with_https
@@ -31,7 +31,7 @@ class ImagesControllerTest < ActionController::TestCase
 		:actions => nil,
 		:suffix => " and invalid id",
 		:login => :admin,
-		:redirect => :images_path,
+		:redirect => :photos_path,
 		:edit => { :id => 0 },
 		:update => { :id => 0 },
 		:destroy => { :id => 0 }
@@ -39,20 +39,20 @@ class ImagesControllerTest < ActionController::TestCase
 
 %w( admin editor ).each do |cu|
 
-	test "should NOT create invalid image with #{cu} login" do
+	test "should NOT create invalid photo with #{cu} login" do
 		login_as send(cu)
-		assert_no_difference('Image.count') do
-			post :create, :image => {}
+		assert_no_difference('Photo.count') do
+			post :create, :photo => {}
 		end
 		assert_not_nil flash[:error]
 		assert_template 'new'
 		assert_response :success
 	end
 
-	test "should NOT update invalid image with #{cu} login" do
+	test "should NOT update invalid photo with #{cu} login" do
 		login_as send(cu)
-		put :update, :id => Factory(:image).id, 
-			:image => { :title => "a" }
+		put :update, :id => Factory(:photo).id, 
+			:photo => { :title => "a" }
 		assert_not_nil flash[:error]
 		assert_template 'edit'
 		assert_response :success
