@@ -4,6 +4,10 @@ class Document < ActiveRecord::Base
 	validates_presence_of :title
 	validates_length_of :title, :minimum => 4
 
+	validates_uniqueness_of :document_file_name, :allow_nil => true
+
+	before_validation :nullify_blank_document_file_name
+
 #	path = if Rails.env == 'production'
 #		':rails_root.uploads/system/:attachment/:id/:style/:filename'
 #	else
@@ -22,4 +26,8 @@ class Document < ActiveRecord::Base
 #	url  = ':rails_root/:attachment/:id/:filename'
 
 	has_attached_file :document, :path => path
+
+	def nullify_blank_document_file_name
+		self.document_file_name = nil if document_file_name.blank?
+	end
 end

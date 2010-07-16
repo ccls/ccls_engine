@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class DocumentTest < ActiveSupport::TestCase
 
 	assert_should_require(:title)
+	assert_should_require_unique(:document_file_name)
 
 	test "should create document" do
 		assert_difference 'Document.count' do

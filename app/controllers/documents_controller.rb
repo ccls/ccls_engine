@@ -7,9 +7,17 @@ class DocumentsController < ApplicationController
 		if @document.document.path.blank?
 			flash[:error] = "Does not contain a document"
 			redirect_to @document
+		elsif !File.exists?(@document.document.path)
+			flash[:error] = "Document does not exist"
+			redirect_to @document
 		else
 			send_file @document.document.path
 		end
+	end
+
+	def show
+		#	otherwise looks for template for pdf, jpg or whatever
+		params[:format] = 'html'
 	end
 
 	def index
@@ -47,6 +55,16 @@ protected
 	def id_required
 		if !params[:id].blank? and Document.exists?(params[:id])
 			@document = Document.find(params[:id])
+		elsif !params[:id].blank? and Document.exists?(
+			:document_file_name => "#{params[:id]}.#{params[:format]}")
+			documents = Document.find(:all, :conditions => {
+			:document_file_name => "#{params[:id]}.#{params[:format]}"})
+			if documents.length > 1
+				access_denied("More than one document matches #{params[:id]}!", 
+					documents_path)
+			else
+				@document=documents[0]
+			end
 		else
 			access_denied("Valid document id required!", documents_path)
 		end

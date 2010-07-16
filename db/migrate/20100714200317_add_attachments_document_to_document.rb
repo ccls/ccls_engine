@@ -4,9 +4,13 @@ class AddAttachmentsDocumentToDocument < ActiveRecord::Migration
 		add_column :documents, :document_content_type, :string
 		add_column :documents, :document_file_size, :integer
 		add_column :documents, :document_updated_at, :datetime
+
+		add_index :documents, :document_file_name, :unique => true
 	end
 
 	def self.down
+		remove_index :documents, :document_file_name
+
 		remove_column :documents, :document_file_name
 		remove_column :documents, :document_content_type
 		remove_column :documents, :document_file_size
