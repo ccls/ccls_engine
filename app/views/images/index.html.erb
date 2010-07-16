@@ -1,8 +1,10 @@
-<%# stylesheets('images') %>
+<% stylesheets('images') %>
 
-<div id='images'>
+<% if @images.length > 0 %>
+<table id='images'><tbody>
 <%= render :partial => 'image', :collection => @images %>
-</div><!-- id='images' -->
+</tbody></table><!-- id='images' -->
+<% end %>
 
 <p>
 <%= button_link_to 'Create New Image', new_image_path %>
