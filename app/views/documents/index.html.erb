@@ -1,8 +1,8 @@
 <%# stylesheets('documents') %>
 
-<div id='documents'>
+<table id='documents'><tbody>
 <%= render :partial => 'document', :collection => @documents %>
-</div><!-- id='documents' -->
+</tbody></table><!-- id='documents' -->
 
 <p>
 <%= button_link_to 'Create New Document', new_document_path %>
