@@ -50,7 +50,8 @@ module UcbCclsEngine
 			validates_presence_of   :uid
 			validates_uniqueness_of :uid
 
-			has_and_belongs_to_many :roles, :uniq => true
+			has_and_belongs_to_many :roles,  :uniq => true
+			has_and_belongs_to_many :groups, :uniq => true
 
 			#	gravatar can't deal with a nil email
 			gravatar :mail, :rating => 'PG'
@@ -161,6 +162,22 @@ module UcbCclsEngine
 			!user.nil? && self == user
 		end
 		alias_method :may_be_user?, :is_user?
+
+		def may_share_document(document=nil)
+			document && ( 
+				self.is_administrator? ||
+				( document.owner && self == document.owner ) 
+			)
+		end
+
+		def may_view_document(document=nil)
+			document
+
+
+
+
+
+		end
 
 	protected
 
