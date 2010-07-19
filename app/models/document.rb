@@ -1,5 +1,7 @@
 class Document < ActiveRecord::Base
 	belongs_to :owner, :class_name => 'User'
+#	has_and_belongs_to_many :users
+#	has_and_belongs_to_many :groups
 
 	validates_presence_of :title
 	validates_length_of :title, :minimum => 4
