@@ -20,6 +20,7 @@ namespace :test do
 		system("#{rcov} --no-html test/functional/*_test.rb")
 		#	namespaced routes
 		system("#{rcov} --no-html test/functional/*/*_test.rb")
+		system("#{rcov} --no-html test/functional/*/*/*_test.rb")
 		system("#{rcov} --html test/integration/*_test.rb")
 		
 		unless PLATFORM['i386-mswin32']
