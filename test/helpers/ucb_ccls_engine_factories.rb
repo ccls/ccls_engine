@@ -32,6 +32,9 @@ end	#	parent must be defined first
 Factory.define :sender, :parent => :user do |f|
 #	This is really just an alias of convenience for UserInvitation
 end	#	parent must be defined first
+Factory.define :owner, :parent => :user do |f|
+#	This is really just an alias of convenience for Document
+end	#	parent must be defined first
 
 Factory.define :user_invitation do |f|
 	f.association :sender, :factory => :user
