@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
 #    On line #6 of app/views/layouts/application.html.erb
 #	map.resources :images
 	map.resources :photos
-	map.resources :documents, :member => { :download => :get }
+	map.resources :documents, :member => { :preview => :get }
 	map.resources :locales, :only => :show
 
 	map.logout 'logout', :controller => 'sessions', :action => 'destroy'

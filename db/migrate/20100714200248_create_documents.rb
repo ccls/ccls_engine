@@ -4,6 +4,10 @@ class CreateDocuments < ActiveRecord::Migration
 			t.references :owner
 			t.string :title, :null => false
 			t.text   :abstract
+			t.boolean :shared_with_all, 
+				:default => false, :null => false
+			t.boolean :shared_with_select, 
+				:default => false, :null => false
 			t.timestamps
 		end
 		add_index :documents, :owner_id

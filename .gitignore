@@ -4,3 +4,4 @@ test/log
 *sqlite3
 coverage
 coverage.data
+test/documents/

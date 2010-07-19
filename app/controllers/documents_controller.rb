@@ -1,9 +1,10 @@
 class DocumentsController < ApplicationController
 
 	before_filter :may_maintain_pages_required
-	before_filter :id_required, :only => [ :show, :edit, :update, :destroy, :download ]
+	before_filter :id_required, 
+		:only => [ :show, :edit, :update, :destroy, :preview ]
 
-	def download
+	def show
 		if @document.document.path.blank?
 			flash[:error] = "Does not contain a document"
 			redirect_to @document
@@ -15,9 +16,9 @@ class DocumentsController < ApplicationController
 		end
 	end
 
-	def show
-		#	otherwise looks for template for pdf, jpg or whatever
-		params[:format] = 'html'
+	def preview
+#		#	otherwise looks for template for pdf, jpg or whatever
+#		params[:format] = 'html'
 	end
 
 	def index

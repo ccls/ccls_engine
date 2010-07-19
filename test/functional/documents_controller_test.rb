@@ -4,7 +4,7 @@ class DocumentsControllerTest < ActionController::TestCase
 
 	ASSERT_ACCESS_OPTIONS = {
 		:model => 'Document',
-		:actions => [:new,:create,:edit,:update,:destroy,:show,:index],
+		:actions => [:new,:create,:edit,:update,:destroy,:index],
 		:method_for_create => :factory_create,
 		:attributes_for_create => :factory_attributes
 	}
@@ -42,20 +42,27 @@ class DocumentsControllerTest < ActionController::TestCase
 	test "should NOT download document with no document and #{cu} login" do
 		document = Factory(:document)
 		login_as send(cu)
-		get :download, :id => document.id
+		get :show, :id => document.id
 		assert_redirected_to document
 		assert_not_nil flash[:error]
 #		assert_not_nil @response.headers['Content-disposition'].match(/attachment;.*pdf/)
 	end
 
-	test "should download document with document and #{cu} login" do
-		document = Factory(:document, :document => 'README.rdoc')
+	test "should preview document with document and #{cu} login" do
+		document = Factory(:document)
 		login_as send(cu)
-		get :download, :id => document.id
-#		assert_redirected_to document
-#		assert_not_nil flash[:error]
-#		assert_not_nil @response.headers['Content-disposition'].match(/attachment;.*pdf/)
-		pending
+		get :preview, :id => document.id
+		assert_response :success
+		assert_nil flash[:error]
+	end
+
+	test "should download document with document and #{cu} login" do
+		document = Document.create(Factory.attributes_for(:document, 
+			:document => File.open(File.dirname(__FILE__) + '/../assets/edit_save_wireframe.pdf')))
+		login_as send(cu)
+		get :show, :id => document.id
+		assert_nil flash[:error]
+		assert_not_nil @response.headers['Content-disposition'].match(/attachment;.*pdf/)
 	end
 
 	test "should NOT create invalid document with #{cu} login" do
@@ -81,20 +88,33 @@ end
 
 %w( moderator employee active_user ).each do |cu|
 
+	test "should NOT preview document with #{cu} login" do
+		document = Factory(:document)
+		login_as send(cu)
+		get :preview, :id => document.id
+		assert_redirected_to root_path
+		assert_not_nil flash[:error]
+	end
+
 	test "should NOT download document with #{cu} login" do
 		document = Factory(:document)
 		login_as send(cu)
-		get :download, :id => document.id
+		get :show, :id => document.id
 		assert_redirected_to root_path
 		assert_not_nil flash[:error]
-#		assert_not_nil @response.headers['Content-disposition'].match(/attachment;.*pdf/)
 	end
 
 end
 
+	test "should NOT preview document without login" do
+		document = Factory(:document)
+		get :preview, :id => document.id
+		assert_redirected_to_login
+	end
+
 	test "should NOT download document without login" do
 		document = Factory(:document)
-		get :download, :id => document.id
+		get :show, :id => document.id
 		assert_redirected_to_login
 	end
 
