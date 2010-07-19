@@ -10,13 +10,13 @@ table#pages {
 	text-align:center;
 }
 .page .path {
-	width: 150px;
+	width: 140px;
 }
 .page .menu {
-	width: 150px;
+	width: 140px;
 }
 .page .title {
-	width: 150px;
+	width: 140px;
 }
 .page .manage {
 	text-align:right;
