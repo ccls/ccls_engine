@@ -45,7 +45,6 @@ class DocumentsControllerTest < ActionController::TestCase
 		get :show, :id => document.id
 		assert_redirected_to document
 		assert_not_nil flash[:error]
-#		assert_not_nil @response.headers['Content-disposition'].match(/attachment;.*pdf/)
 	end
 
 	test "should preview document with document and #{cu} login" do
@@ -56,13 +55,28 @@ class DocumentsControllerTest < ActionController::TestCase
 		assert_nil flash[:error]
 	end
 
-	test "should download document with document and #{cu} login" do
+	test "should download document by id with document and #{cu} login" do
 		document = Document.create(Factory.attributes_for(:document, 
-			:document => File.open(File.dirname(__FILE__) + '/../assets/edit_save_wireframe.pdf')))
+			:document => File.open(File.dirname(__FILE__) + 
+				'/../assets/edit_save_wireframe.pdf')))
 		login_as send(cu)
 		get :show, :id => document.id
 		assert_nil flash[:error]
-		assert_not_nil @response.headers['Content-disposition'].match(/attachment;.*pdf/)
+		assert_not_nil @response.headers['Content-disposition'].match(
+			/attachment;.*pdf/)
+		document.destroy
+	end
+
+	test "should download document by name with document and #{cu} login" do
+		document = Document.create(Factory.attributes_for(:document, 
+			:document => File.open(File.dirname(__FILE__) + 
+				'/../assets/edit_save_wireframe.pdf')))
+		login_as send(cu)
+		get :show, :id => 'edit_save_wireframe',
+			:format => 'pdf'
+		assert_nil flash[:error]
+		assert_not_nil @response.headers['Content-disposition'].match(
+			/attachment;.*pdf/)
 		document.destroy
 	end
 
