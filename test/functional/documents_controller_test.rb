@@ -63,6 +63,7 @@ class DocumentsControllerTest < ActionController::TestCase
 		get :show, :id => document.id
 		assert_nil flash[:error]
 		assert_not_nil @response.headers['Content-disposition'].match(/attachment;.*pdf/)
+		document.destroy
 	end
 
 	test "should NOT create invalid document with #{cu} login" do
