@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class UserInvitationTest < ActiveSupport::TestCase
 
 	assert_requires_valid_associations(:sender)
-	assert_should_initially_belong_to(:sender)
+	assert_should_initially_belong_to(:sender,:class_name => 'User')
 	assert_should_require(:email)
 
 	test "should create invitation" do
@@ -28,12 +28,6 @@ class UserInvitationTest < ActiveSupport::TestCase
 			object = create_object(:token => i.token)
 			assert object.errors.on(:token)
 		end
-	end
-
-	test "should belong to a sender" do
-		object = create_object
-		assert_not_nil object.sender
-		assert object.sender.is_a?(User)
 	end
 
 	test "should be findable by token" do

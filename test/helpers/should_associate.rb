@@ -12,15 +12,23 @@ module ShouldAssociate
 			model = user_options[:model] || self.name.sub(/Test$/,'')
 			
 			associations.each do |assoc|
-				assoc = assoc.to_s
+				class_name = ( assoc = assoc.to_s ).camelize
 
-				test "SA should initially belong to #{assoc}" do
+				title = "SA should initially belong to #{assoc}"
+				if !user_options[:class_name].blank?
+					title << " ( #{user_options[:class_name]} )"
+					class_name = user_options[:class_name].to_s
+				end
+				test title do
 					object = create_object
 					assert_not_nil object.send(assoc)
 					if object.send(assoc).respond_to?(
 						"#{model.underscore.pluralize}_count")
 						assert_equal 1, object.reload.send(assoc).send(
 							"#{model.underscore.pluralize}_count")
+					end
+					if !user_options[:class_name].blank?
+						assert object.send(assoc).is_a?(class_name.constantize)
 					end
 				end
 
@@ -33,13 +41,22 @@ module ShouldAssociate
 			model = user_options[:model] || self.name.sub(/Test$/,'')
 			
 			associations.each do |assoc|
-				assoc = assoc.to_s
-
-				test "SA should belong to #{assoc}" do
+				class_name = ( assoc = assoc.to_s ).camelize
+				title = "SA should belong to #{assoc}" 
+#				if !user_options[:as].blank?
+#					title << " as #{user_options[:as]}"
+#					as = user_options[:as]
+#				end
+				if !user_options[:class_name].blank?
+					title << " ( #{user_options[:class_name]} )"
+					class_name = user_options[:class_name].to_s
+				end
+				test title do
 					object = create_object
 					assert_nil object.send(assoc)
-					object.send("#{assoc}=",Factory(assoc))
+					object.send("#{assoc}=",Factory(class_name.underscore))
 					assert_not_nil object.send(assoc)
+					assert object.send(assoc).is_a?(class_name.constantize)
 				end
 
 			end
@@ -69,23 +86,34 @@ module ShouldAssociate
 		def assert_should_have_many_(*associations)
 			user_options = associations.extract_options!
 			model = user_options[:model] || self.name.sub(/Test$/,'')
-			
-			associations.each do |assoc|
-				assoc = assoc.to_s
 
-				test "SA should have many #{assoc}" do
+			foreign_key = if !user_options[:foreign_key].blank?
+				user_options[:foreign_key].to_sym
+			else
+				"#{model.underscore}_id".to_sym
+			end
+
+			associations.each do |assoc|
+				class_name = ( assoc = assoc.to_s ).camelize
+
+				title = "SA should have many #{assoc}"
+				if !user_options[:class_name].blank?
+					title << " ( #{user_options[:class_name]} )"
+					class_name = user_options[:class_name].to_s
+				end
+				test title do
 					object = create_object
 					assert_equal 0, object.send(assoc).length
-					Factory(assoc.singularize, 
-						"#{model.underscore}_id".to_sym => object.id)
+					Factory(class_name.singularize.underscore, 
+						foreign_key => object.id)
 #	doesn't work for all
 #object.send(assoc) << Factory(assoc.singularize)
 					assert_equal 1, object.reload.send(assoc).length
 					if object.respond_to?("#{assoc}_count")
 						assert_equal 1, object.reload.send("#{assoc}_count")
 					end
-					Factory(assoc.singularize, 
-						"#{model.underscore}_id".to_sym => object.id)
+					Factory(class_name.singularize.underscore, 
+						foreign_key => object.id)
 					assert_equal 2, object.reload.send(assoc).length
 					if object.respond_to?("#{assoc}_count")
 						assert_equal 2, object.reload.send("#{assoc}_count")

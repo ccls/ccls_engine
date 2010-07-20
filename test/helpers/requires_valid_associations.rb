@@ -12,27 +12,30 @@ module RequiresValidAssociations
 			model = user_options[:model] || self.name.sub(/Test$/,'')
 
 			associations.each do |assoc|
-				assoc = assoc.to_s
+				as = assoc = assoc.to_s
+				as = user_options[:as] if !user_options[:as].blank?
 
-				test "RVA should require #{assoc}_id" do
+				test "RVA should require #{as}_id" do
 					assert_difference("#{model}.count",0) do
-						object = create_object("#{assoc}_id".to_sym => nil)
-						assert object.errors.on(assoc.to_sym)
+						object = create_object("#{as}_id".to_sym => nil)
+						assert object.errors.on(as.to_sym)
 					end
 				end
 
-				test "RVA should require valid #{assoc}_id" do
+				test "RVA should require valid #{as}_id" do
 					assert_difference("#{model}.count",0) do
-						object = create_object("#{assoc}_id".to_sym => 0)
-						assert object.errors.on(assoc.to_sym)
+						object = create_object("#{as}_id".to_sym => 0)
+						assert object.errors.on(as.to_sym)
 					end
 				end
 
-			  test "RVA should require valid #{assoc}" do
+			  title = "RVA should require valid #{assoc}"
+				title << " as #{user_options[:as]}" if !user_options[:as].blank?
+			  test title do
 			    assert_difference("#{model}.count",0) { 
 			      object = create_object(
-							assoc.to_sym => Factory.build(assoc.to_sym))
-			      assert object.errors.on("#{assoc}_id".to_sym)
+							as.to_sym => Factory.build(assoc.to_sym))
+			      assert object.errors.on("#{as}_id".to_sym)
 			    }    
 			  end 
 

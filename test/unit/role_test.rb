@@ -15,11 +15,6 @@ class RoleTest < ActiveSupport::TestCase
 		end 
 	end
 
-	test "should respond to users" do
-		object = create_object
-		assert object.respond_to?(:users)
-	end
-
 protected
 
 	def create_object(options = {})
