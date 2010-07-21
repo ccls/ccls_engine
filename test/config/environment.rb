@@ -20,8 +20,8 @@ Rails::Initializer.run do |config|
 	config.plugins = [:ucb_ccls_engine]
 
 	config.routes_configuration_file = File.expand_path(
-		File.join(File.dirname(__FILE__),'../..','config/routes.rb'))
-#		File.join(File.dirname(__FILE__),'routes.rb'))
+		File.join(File.dirname(__FILE__),'routes.rb'))
+#		File.join(File.dirname(__FILE__),'../..','config/routes.rb'))
 	
 	config.load_paths += [
 		File.expand_path(
