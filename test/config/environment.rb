@@ -21,6 +21,7 @@ Rails::Initializer.run do |config|
 
 	config.routes_configuration_file = File.expand_path(
 		File.join(File.dirname(__FILE__),'../..','config/routes.rb'))
+#		File.join(File.dirname(__FILE__),'routes.rb'))
 	
 	config.load_paths += [
 		File.expand_path(
