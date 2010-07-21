@@ -16,6 +16,7 @@ ActionController::Routing::Routes.draw do |map|
 	map.resources :documents, :member => { :preview => :get }
 	map.resources :locales, :only => :show
 
+#	map.login  'login',  :controller => 'sessions', :action => 'create'
 	map.logout 'logout', :controller => 'sessions', :action => 'destroy'
 
 #	map.login  'login',  :controller => 'user_sessions', :action => 'new'  

@@ -9,8 +9,8 @@ class PagesController < ApplicationController
 #	caching still buggy
 #	if do cache layout, contains user links
 #	if don't cache layout, submenu goes missing
-#	caches_action :show	#, :layout => false
-#	cache_sweeper :page_sweeper, :only => [:create, :update, :order, :destroy]
+	caches_action :show	#, :layout => false
+	cache_sweeper :page_sweeper, :only => [:create, :update, :order, :destroy]
 
 	ssl_allowed :show
 
