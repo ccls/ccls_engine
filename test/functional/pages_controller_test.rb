@@ -190,41 +190,38 @@ end
 		assert_response :success
 	end
 
-#	CAN'T TEST PAGES BY PATH UNTIL FIND A WAY TO ENSURE THAT 
-#	THE SPECIAL CATCH-ALL ROUTE IS ABSOLUTELY LAST!
-#	test "should NOT show page without matching path" do
-#		get :show, :path => "/i/do/not/exist".split('/').delete_if{|x|x.blank?}
-#		assert_not_nil flash[:error]
-#		assert_template 'show'
-#		assert_response :success
-#	end
-#
-#	test "should show page by path" do
-#		page = Factory(:page)
-#		get :show, :path => page.path.split('/').delete_if{|x|x.blank?}
-#		assert_equal assigns(:page), page
-#		assert_template 'show'
-#		assert_response :success
-#		assert_select 'title', page.title
-#	end
-#
-#	test "should show page by path with slashes" do
-#		page = Factory(:page, :path => "/help/blogs")
-#		get :show, :path => page.path.split('/').delete_if{|x|x.blank?}
-#		assert_equal assigns(:page), page
-#		assert_template 'show'
-#		assert_response :success
-#		assert_select 'title', page.title
-#	end
+	test "should NOT show page without matching path" do
+		get :show, :path => "/i/do/not/exist".split('/').delete_if{|x|x.blank?}
+		assert_not_nil flash[:error]
+		assert_template 'show'
+		assert_response :success
+	end
 
-#	THERE ARE NO LAYOUTS
+	test "should show page by path" do
+		page = Factory(:page)
+		get :show, :path => page.path.split('/').delete_if{|x|x.blank?}
+		assert_equal assigns(:page), page
+		assert_template 'show'
+		assert_response :success
+		assert_select 'title', page.title
+	end
+
+	test "should show page by path with slashes" do
+		page = Factory(:page, :path => "/help/blogs")
+		get :show, :path => page.path.split('/').delete_if{|x|x.blank?}
+		assert_equal assigns(:page), page
+		assert_template 'show'
+		assert_response :success
+		assert_select 'title', page.title
+	end
+
 	test "should show HOME page without HPP" do
 		page = Page.by_path('/')
 		get :show, :id => page.id
 		assert_nil assigns(:hpp)
 		assert_template 'show'
 		assert_response :success
-#		assert_select 'title', page.title
+		assert_select 'title', page.title
 	end
 
 	#	Test all page fixtures for menus

@@ -39,8 +39,18 @@ class DocumentsControllerTest < ActionController::TestCase
 
 %w( admin editor ).each do |cu|
 
+	test "should NOT download document with nil document and #{cu} login" do
+		document = Factory(:document,:document_file_name => nil)
+		assert document.document.path.blank?
+		login_as send(cu)
+		get :show, :id => document.id
+		assert_redirected_to document
+		assert_not_nil flash[:error]
+	end
+
 	test "should NOT download document with no document and #{cu} login" do
 		document = Factory(:document)
+		assert !File.exists?(document.document.path)
 		login_as send(cu)
 		get :show, :id => document.id
 		assert_redirected_to document

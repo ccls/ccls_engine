@@ -19,9 +19,11 @@ require 'ucb_ccls_engine_factories'
 
 def setup_db
 	ActiveRecord::Migrator.migrate("db/migrate/",nil)
+	ActiveRecord::Migrator.migrate("test/db/migrate/",nil)
 end
 
 def teardown_db
+	ActiveRecord::Migrator.migrate("test/db/migrate/",0)
 	ActiveRecord::Migrator.migrate("db/migrate/",0)
 end
 

@@ -163,14 +163,14 @@ module UcbCclsEngine
 		end
 		alias_method :may_be_user?, :is_user?
 
-		def may_share_document(document=nil)
+		def may_share_document?(document=nil)
 			document && ( 
 				self.is_administrator? ||
 				( document.owner && self == document.owner ) 
 			)
 		end
 
-		def may_view_document(document=nil)
+		def may_view_document?(document=nil)
 			document
 
 

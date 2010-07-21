@@ -60,12 +60,13 @@ protected
 			:document_file_name => "#{params[:id]}.#{params[:format]}")
 			documents = Document.find(:all, :conditions => {
 			:document_file_name => "#{params[:id]}.#{params[:format]}"})
-			if documents.length > 1
-				access_denied("More than one document matches #{params[:id]}!", 
-					documents_path)
-			else
+#	Due to the unique index, there can be only one!
+#			if documents.length > 1
+#				access_denied("More than one document matches #{params[:id]}!", 
+#					documents_path)
+#			else
 				@document=documents[0]
-			end
+#			end
 		else
 			access_denied("Valid document id required!", documents_path)
 		end

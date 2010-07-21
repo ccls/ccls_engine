@@ -23,12 +23,13 @@ class Document < ActiveRecord::Base
 #		'/system/:attachment/:id/:style/:filename'
 #	end
 
-	#	documents/2/list_wireframe.pdf 
-	path = if Rails.env == 'test'
-		':rails_root/test/:attachment/:id/:filename'
-	else
-		':rails_root/:attachment/:id/:filename'
-	end
+#	#	documents/2/list_wireframe.pdf 
+#	path = if Rails.env == 'test'
+#		':rails_root/test/:attachment/:id/:filename'
+#	else
+#		':rails_root/:attachment/:id/:filename'
+#	end
+	path = ":rails_root/#{Rails.env}/:attachment/:id/:filename"
 #	url  = ':rails_root/:attachment/:id/:filename'
 
 	has_attached_file :document, :path => path
