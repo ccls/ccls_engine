@@ -1,0 +1,18 @@
+jQuery(function(){
+
+locale_links = '<%= if( session[:locale] && session[:locale] == 'es' )
+link_to( 'English', locale_path('en'), :id => 'session_locale' )
+else
+link_to( 'Espa&ntilde;ol', locale_path('es'), :id => 'session_locale' )
+end %>'
+
+jQuery('#session_locale').replaceWith(locale_links);
+
+<% if logged_in? %>
+user_links = [ '',
+'<%=link_to( "My Account", user_path(current_user) ) %>',
+'<%= link_to( "Logout", logout_path ) %>']
+jQuery('#user_links').replaceWith(user_links.join('&nbsp;|&nbsp;'));
+<% end %>
+
+});
