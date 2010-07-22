@@ -13,6 +13,12 @@ user_links = [ '',
 '<%=link_to( "My Account", user_path(current_user) ) %>',
 '<%= link_to( "Logout", logout_path ) %>']
 jQuery('#user_links').replaceWith(user_links.join('&nbsp;|&nbsp;'));
-<% end %>
+<% end -%>
+
+<% if params[:caller] == '/' -%>
+<% if hpp = HomePagePic.random_active() -%>
+jQuery('#home_page_pic').html('<%=image_tag( hpp.image.url(:full) )%>')
+<% end -%>
+<% end -%>
 
 });
