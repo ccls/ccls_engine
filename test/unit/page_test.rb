@@ -75,6 +75,14 @@ class PageTest < ActiveSupport::TestCase
 		assert_equal parent, page.reload.root
 	end
 
+	test "should nullify parent_id of children when parent destroyed" do
+		parent = create_page
+		child  = create_page( :parent_id => parent.id )
+		assert_equal child.reload.parent_id, parent.id
+		parent.destroy
+		assert_nil child.reload.parent_id
+	end
+
 	test "should return false if page is not home" do
 		page = create_page
 		assert !page.is_home?
