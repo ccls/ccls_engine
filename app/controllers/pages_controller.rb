@@ -31,7 +31,7 @@ class PagesController < ApplicationController
 			@page = Page.find(params[:id])
 		end
 		@page_title = @page.title(session[:locale])
-		if @page.is_home? && class_exists?(HomePagePic)
+		if @page.is_home? && class_exists?('HomePagePic')
 			@hpp = HomePagePic.random_active()
 		end
 	rescue ActiveRecord::RecordNotFound
