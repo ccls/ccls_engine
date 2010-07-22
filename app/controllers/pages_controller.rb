@@ -31,7 +31,7 @@ class PagesController < ApplicationController
 			@page = Page.find(params[:id])
 		end
 		@page_title = @page.title(session[:locale])
-		if @page.is_home? && defined?(HomePagePic)
+		if @page.is_home? && class_exists?(HomePagePic)
 			@hpp = HomePagePic.random_active()
 		end
 	rescue ActiveRecord::RecordNotFound
@@ -87,6 +87,13 @@ protected
 		else
 			access_denied("Valid page id required!", pages_path)
 		end
+	end
+
+	def class_exists?(class_name)
+		klass = Module.const_get(class_name.to_s)
+		return klass.is_a?(Class)
+	rescue NameError
+		return false
 	end
 
 end
