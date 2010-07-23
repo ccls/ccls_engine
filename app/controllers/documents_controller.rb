@@ -32,7 +32,7 @@ class DocumentsController < ApplicationController
 	def create
 		@document = Document.new(params[:document])
 		@document.save!
-		redirect_to @document
+		redirect_to preview_document_path(@document)
 	rescue ActiveRecord::RecordInvalid
 		flash.now[:error] = "Error"
 		render :action => 'new'
