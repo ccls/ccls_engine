@@ -69,6 +69,9 @@ Rails::Initializer.run do |config|
 	# ActionMailer::Base.deliveries array.
 	config.action_mailer.delivery_method = :test
 
+	#	Needed due to being in a subdir.
+	config.action_controller.relative_url_root = ''
+
 	config.gem "rcov"
 
 	#	Without the :lib => false, the 'rake test' actually fails?

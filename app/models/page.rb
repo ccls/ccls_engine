@@ -27,7 +27,8 @@ class Page < ActiveRecord::Base
 	validates_uniqueness_of :path
 
 	belongs_to :parent, :class_name => 'Page'
-	has_many :children, :class_name => 'Page', :foreign_key => 'parent_id'
+	has_many :children, :class_name => 'Page', :foreign_key => 'parent_id',
+		:dependent => :nullify
 	
 	named_scope :roots, :conditions => { 
 		:parent_id => nil, :hide_menu => false }
