@@ -44,7 +44,7 @@ class DocumentsControllerTest < ActionController::TestCase
 		assert document.document.path.blank?
 		login_as send(cu)
 		get :show, :id => document.id
-		assert_redirected_to document
+		assert_redirected_to preview_document_path(document)
 		assert_not_nil flash[:error]
 	end
 
@@ -53,7 +53,7 @@ class DocumentsControllerTest < ActionController::TestCase
 		assert !File.exists?(document.document.path)
 		login_as send(cu)
 		get :show, :id => document.id
-		assert_redirected_to document
+		assert_redirected_to preview_document_path(document)
 		assert_not_nil flash[:error]
 	end
 
