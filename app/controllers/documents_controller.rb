@@ -1,16 +1,18 @@
 class DocumentsController < ApplicationController
 
 	before_filter :may_maintain_pages_required
+	before_filter :document_required, :only => :show
 	before_filter :id_required, 
-		:only => [ :show, :edit, :update, :destroy, :preview ]
+		:only => [ :edit, :update, :destroy, :preview ]
 
 	def show
 		if @document.document.path.blank?
 			flash[:error] = "Does not contain a document"
-			redirect_to @document
+			redirect_to preview_document_path(@document)
 		elsif !File.exists?(@document.document.path)
-			flash[:error] = "Document does not exist"
-			redirect_to @document
+#			flash[:error] = "Document does not exist at #{@document.document.path}"
+			flash[:error] = "Document does not exist at the expected location."
+			redirect_to preview_document_path(@document)
 		else
 			send_file @document.document.path
 		end
@@ -54,6 +56,14 @@ class DocumentsController < ApplicationController
 protected
 
 	def id_required
+		if !params[:id].blank? and Document.exists?(params[:id])
+			@document = Document.find(params[:id])
+		else
+			access_denied("Valid document id required!", documents_path)
+		end
+	end
+
+	def document_required
 		if !params[:id].blank? and Document.exists?(params[:id])
 			@document = Document.find(params[:id])
 		elsif !params[:id].blank? and Document.exists?(
