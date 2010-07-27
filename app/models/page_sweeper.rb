@@ -64,6 +64,11 @@ class PageSweeper < ActionController::Caching::Sweeper
 #		expire_fragment "#{request.host_with_port}#{page_path}"
 		expire_fragment "#{request.try(:host_with_port)}#{page_path}"
 
+		#	In production, the page caches weren't expiring
+		#	Adding the relative_url_root should fix it.
+		page_path = ActionController::Base.relative_url_root + page_path
+		expire_fragment "#{request.try(:host_with_port)}#{page_path}"
+
 	end
 
 end
