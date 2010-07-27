@@ -10,12 +10,23 @@ class Document < ActiveRecord::Base
 
 	before_validation :nullify_blank_document_file_name
 
-#	path = if Rails.env == 'production'
-#		':rails_root.uploads/system/:attachment/:id/:style/:filename'
-#	else
+#>> Rails.root.to_s.split('/')
+#=> ["", "var", "lib", "tomcat5", "webapps", "clic", "WEB-INF"]
+
+#>> Rails.root.to_s.split('/')
+#=> ["", "Users", "jakewendt", "github_repo", "jakewendt", "ucb_ccls_clic"]
+
+	path = if Rails.env == 'production'
+		app_name = ( Rails.respond_to?(:app_name) && Rails.app_name ) || 
+			Rails.root.to_s.split('/').reject{|x|x ==  "WEB-INF"}.last
+		"/home/tomcat/" << app_name <<
+			"/:attachment/:id/:filename"
+#	":rails_root/#{Rails.env}/:attachment/:id/:filename"
+	else
+		":rails_root/#{Rails.env}/:attachment/:id/:filename"
 #		':rails_root/public/system/:attachment/:id/:style/:filename'
-#	end
-#
+	end
+
 #	url = if Rails.env == 'production'
 ##		'http://ccls.berkeley.edu/ucb_sph_ccls.uploads/:attachment/:id/:style/:filename'
 #		'/../ucb_sph_ccls.uploads/system/:attachment/:id/:style/:filename'
@@ -29,7 +40,7 @@ class Document < ActiveRecord::Base
 #	else
 #		':rails_root/:attachment/:id/:filename'
 #	end
-	path = ":rails_root/#{Rails.env}/:attachment/:id/:filename"
+#	path = ":rails_root/#{Rails.env}/:attachment/:id/:filename"
 #	url  = ':rails_root/:attachment/:id/:filename'
 
 	has_attached_file :document, :path => path
