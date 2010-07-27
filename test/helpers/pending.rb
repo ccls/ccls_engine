@@ -29,11 +29,21 @@ module ActiveSupport
 					end
 
 					caller[0] =~ (/(.*):(.*):in `(.*)'/)
+#puts caller.inspect
+
+# looks like we lose the name of the 'method' in 1.9.1
+#"/Users/jakewendt/github_repo/jakewendt/ucb_ccls_homex/test/unit/subject_test.rb:145:in `block in <class:SubjectTest>'", 
+
 #					@@pending_cases << "#{$3} at #{$1}, line #{$2}"
 					#	Gotta remember these as the next Regex will overwrite them.
 					filename   = $1
 					linenumber = $2
+#	ruby 1.8.7
+#	Hx/Addresses Controller should NOT create new address with employee login and invalid address:
+#	ruby 1.9.1
+#Hx/Addresses Controller block (2 levels) in <class:AddressesControllerTest>:
 					testmethod = $3
+
 					model  = self.class.to_s.gsub(/Test$/,'').titleize
 					method = testmethod.gsub(/_/,' ').gsub(/^test /,'')
 					@@pending_cases << "#{model} #{method}:\n.\t#{filename} line #{linenumber}"
