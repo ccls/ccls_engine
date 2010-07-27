@@ -40,7 +40,7 @@ class DocumentsControllerTest < ActionController::TestCase
 %w( admin editor ).each do |cu|
 
 	test "should NOT download document with nil document and #{cu} login" do
-		document = Factory(:document,:document_file_name => nil)
+		document = Factory(:document)
 		assert document.document.path.blank?
 		login_as send(cu)
 		get :show, :id => document.id
@@ -49,8 +49,8 @@ class DocumentsControllerTest < ActionController::TestCase
 	end
 
 	test "should NOT download document with no document and #{cu} login" do
-		document = Factory(:document)
-		assert !File.exists?(document.document.path)
+		document = Factory(:document, :document_file_name => 'bogus_file_name')
+		assert_nil document.document.path
 		login_as send(cu)
 		get :show, :id => document.id
 		assert_redirected_to preview_document_path(document)
@@ -66,11 +66,11 @@ class DocumentsControllerTest < ActionController::TestCase
 	end
 
 	test "should download document by id with document and #{cu} login" do
-		document = Document.create(Factory.attributes_for(:document, 
+		document = Document.create!(Factory.attributes_for(:document, 
 			:document => File.open(File.dirname(__FILE__) + 
 				'/../assets/edit_save_wireframe.pdf')))
 		login_as send(cu)
-		get :show, :id => document.id
+		get :show, :id => document.reload.id
 		assert_nil flash[:error]
 		assert_not_nil @response.headers['Content-disposition'].match(
 			/attachment;.*pdf/)
@@ -78,7 +78,7 @@ class DocumentsControllerTest < ActionController::TestCase
 	end
 
 	test "should download document by name with document and #{cu} login" do
-		document = Document.create(Factory.attributes_for(:document, 
+		document = Document.create!(Factory.attributes_for(:document, 
 			:document => File.open(File.dirname(__FILE__) + 
 				'/../assets/edit_save_wireframe.pdf')))
 		login_as send(cu)
