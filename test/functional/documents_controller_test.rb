@@ -50,7 +50,7 @@ class DocumentsControllerTest < ActionController::TestCase
 
 	test "should NOT download document with no document and #{cu} login" do
 		document = Factory(:document, :document_file_name => 'bogus_file_name')
-		assert_nil document.document.path
+		assert !File.exists?(document.document.path)
 		login_as send(cu)
 		get :show, :id => document.id
 		assert_redirected_to preview_document_path(document)
