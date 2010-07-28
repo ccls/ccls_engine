@@ -17,10 +17,11 @@ class Document < ActiveRecord::Base
 #=> ["", "Users", "jakewendt", "github_repo", "jakewendt", "ucb_ccls_clic"]
 
 	path = if Rails.env == 'production'
-		app_name = ( Rails.respond_to?(:app_name) && Rails.app_name ) || 
+#		app_name = ( Rails.respond_to?(:app_name) && Rails.app_name ) || 
+#			$rails_app_name ||
+		app_name = ( defined?(RAILS_APP_NAME) && RAILS_APP_NAME ) ||
 			Rails.root.to_s.split('/').reject{|x|x ==  "WEB-INF"}.last
-		"/home/tomcat/" << app_name <<
-			"/:attachment/:id/:filename"
+		"/home/tomcat/" << app_name << "/:attachment/:id/:filename"
 #	":rails_root/#{Rails.env}/:attachment/:id/:filename"
 	else
 		":rails_root/#{Rails.env}/:attachment/:id/:filename"
