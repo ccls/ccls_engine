@@ -18,11 +18,18 @@ config.gem 'gravatar'
 config.gem "RedCloth"
 
 config.gem 'paperclip'
-
-#/Library/Ruby/Gems/1.8/gems/activerecord-2.3.8/lib/active_record/base.rb:1994:in `method_missing_without_paginate': undefined method `has_attached_file' for #<Class:0x1070676d0> (NoMethodError)
-#	Why must I do this? Paperclip won't work without it when using a gem.
-require 'paperclip'
-ActiveRecord::Base.send(:include, ::Paperclip)
+#
+#	after_initialize blocks won't be executed if
+#	any of the config.gem gems are missing
+#	so we don't need the Gem.searcher.find
+#	which I do use in the rake file.
+#
+config.after_initialize do
+	#/Library/Ruby/Gems/1.8/gems/activerecord-2.3.8/lib/active_record/base.rb:1994:in `method_missing_without_paginate': undefined method `has_attached_file' for #<Class:0x1070676d0> (NoMethodError)
+	#	Why must I do this? Paperclip won't work without it when using a gem.
+	require 'paperclip'
+	ActiveRecord::Base.send(:include, ::Paperclip)
+end
 
 # http://railscasts.com/episodes/160-authlogic
 # http://asciicasts.com/episodes/160-authlogic
@@ -48,66 +55,74 @@ config.reload_plugins = true if RAILS_ENV == 'development'
 
 #	Load the gems before the files that need them!
 
-#require 'route_set'
-require 'ucb_ccls_engine'
-#require 'auth_by_authlogic'
-require 'auth_by_ucb_cas'
-require 'authorization'
-
-require 'ucb_ccls_engine_helper'
-require 'ucb_ccls_engine_controller'
-
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
-	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
-	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test/helpers')
-#	require 'authlogic_test_helper'
-	require 'ucb_cas_test_helper'
 
 	config.gem "thoughtbot-factory_girl",
 		:lib    => "factory_girl",
 		:source => "http://gems.github.com"
 
-	require 'factory_girl'
-	require 'ucb_ccls_engine_factories'
-	require 'ucb_ccls_engine_factory_test_helper'
-	require 'pending'
-	require 'declarative'
-	require 'no_access_without_login'
-	require 'no_access_with_login'
-	require 'access_without_login'
-	require 'access_with_login'
-	require 'access_with_https'
-	require 'access_with_http'
-	require 'no_access_with_http'
-	require 'requires_valid_associations'
-	require 'should_act_as_list'
-	require 'should_associate'
-	require 'should_require'
-#	require 'ucb_ccls_engine_assertions'
 end
 
-if RUBY_PLATFORM =~ /java/i
-#	Needed for Paperclip gem 2.3.3
-#	http://jira.codehaus.org/browse/JRUBY-3381
-#	http://github.com/thoughtbot/paperclip/issues/issue/193
-#	Errno::EACCES: Permission denied - /var/folders/kV/kV5XVPtqE9uZBCjn3z6vmk+++TM/-Tmp-/stream,19661,34729.pdf or /Users/jakewendt/github_repo/jakewendt/ucb_ccls_buffler/development/documents/2/edit_save_wireframe.pdf
-FileUtils.module_eval do
-  class << self
-    alias_method :built_in_mv, :mv
 
-    def mv(src, dest, options = {})
-      begin
-        built_in_mv(src, dest, options)
-      rescue Errno::EACCES
-        cp(src, dest)
-        rm(src)
-      end
-    end
-  end
-end
-end
 
+config.after_initialize do
+	#require 'route_set'
+	require 'ucb_ccls_engine'
+	#require 'auth_by_authlogic'
+	require 'auth_by_ucb_cas'
+	require 'authorization'
+
+	require 'ucb_ccls_engine_helper'
+	require 'ucb_ccls_engine_controller'
+
+	if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
+		$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
+		$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test/helpers')
+	#	require 'authlogic_test_helper'
+		require 'ucb_cas_test_helper'
+
+		require 'factory_girl'
+		require 'ucb_ccls_engine_factories'
+		require 'ucb_ccls_engine_factory_test_helper'
+		require 'pending'
+		require 'declarative'
+		require 'no_access_without_login'
+		require 'no_access_with_login'
+		require 'access_without_login'
+		require 'access_with_login'
+		require 'access_with_https'
+		require 'access_with_http'
+		require 'no_access_with_http'
+		require 'requires_valid_associations'
+		require 'should_act_as_list'
+		require 'should_associate'
+		require 'should_require'
+	#	require 'ucb_ccls_engine_assertions'
+	end
+
+	if RUBY_PLATFORM =~ /java/i
+		#	Needed for Paperclip gem 2.3.3
+		#	http://jira.codehaus.org/browse/JRUBY-3381
+		#	http://github.com/thoughtbot/paperclip/issues/issue/193
+		#	Errno::EACCES: Permission denied - /var/folders/kV/kV5XVPtqE9uZBCjn3z6vmk+++TM/-Tmp-/stream,19661,34729.pdf or /Users/jakewendt/github_repo/jakewendt/ucb_ccls_buffler/development/documents/2/edit_save_wireframe.pdf
+		FileUtils.module_eval do
+		  class << self
+		    alias_method :built_in_mv, :mv
+
+		    def mv(src, dest, options = {})
+		      begin
+		        built_in_mv(src, dest, options)
+		      rescue Errno::EACCES
+		        cp(src, dest)
+		        rm(src)
+		      end
+		    end
+		  end
+		end
+	end
+
+end	#	config.after_initialize
 
 
 
