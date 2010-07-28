@@ -16,12 +16,12 @@ namespace :test do
 							"coverage.data --text-summary -Ilib -T"
 		end
 		
-		system("#{rcov} --no-html test/unit/*_test.rb")
-		system("#{rcov} --no-html test/functional/*_test.rb")
-		#	namespaced routes
-		system("#{rcov} --no-html test/functional/*/*_test.rb")
-		system("#{rcov} --no-html test/functional/*/*/*_test.rb")
-		system("#{rcov} --html test/integration/*_test.rb")
+		dirs = Dir.glob("test/**/*_test.rb").collect{|f|File.dirname(f)}.uniq
+		lastdir = dirs.pop
+		dirs.each do |dir|
+			system("#{rcov} --no-html #{dir}/*_test.rb")
+		end
+		system("#{rcov} --html #{lastdir}/*_test.rb") unless lastdir.nil?
 		
 		unless PLATFORM['i386-mswin32']
 			system("open coverage/index.html") if PLATFORM['darwin']
