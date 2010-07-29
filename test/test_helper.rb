@@ -1,5 +1,9 @@
 ENV["RAILS_ENV"] = "test"
-require 'test/unit'			#	NEED THIS OR THE TESTS DON'T ACTUALLY EXECUTE
+
+#	NEED THIS OR THE TESTS DON'T ACTUALLY EXECUTE
+#	I don't understand why it isn't here by default.
+require 'test/unit'			
+
 require 'rubygems'
 require 'active_support'
 require 'active_support/test_case'
@@ -7,31 +11,13 @@ require 'active_record'
 require 'action_controller'
 require 'action_mailer'
 
-#require File.dirname(__FILE__) + '/../rails/init.rb' 
-
-#	http://guides.rubyonrails.org/plugins.html
-
-#require File.dirname(__FILE__) + '/config/boot'
 require File.dirname(__FILE__) + '/config/environment'
 require 'test_help'
-
-require 'ucb_ccls_engine_factories'
-
-def setup_db
-	ActiveRecord::Migrator.migrate("db/migrate/",nil)
-	ActiveRecord::Migrator.migrate("test/db/migrate/",nil)
-end
-
-def teardown_db
-	ActiveRecord::Migrator.migrate("test/db/migrate/",0)
-	ActiveRecord::Migrator.migrate("db/migrate/",0)
-end
 
 class ActiveSupport::TestCase
 	self.fixture_path = File.dirname(__FILE__) + "/fixtures/"
 	fixtures :all
 end
-
 
 class ActionController::TestCase
 
@@ -39,7 +25,6 @@ class ActionController::TestCase
 
 	def turn_https_on
 		@request.env['HTTPS'] = 'on'
-#		@request.env['HTTP_X_FORWARDED_PROTO'] == 'https'
 	end
 
 	def turn_https_off
@@ -54,4 +39,5 @@ class ActionController::TestCase
 end
 
 
-setup_db()
+ActiveRecord::Migrator.migrate("db/migrate/",nil)
+ActiveRecord::Migrator.migrate("test/db/migrate/",nil)
