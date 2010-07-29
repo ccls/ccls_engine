@@ -20,7 +20,6 @@ protected
 		true
 	end
 
-
 	def redirect_to_referer_or_default(default)
 		redirect_to( session[:refer_to] || 
 			request.env["HTTP_REFERER"] || default )
@@ -34,14 +33,6 @@ protected
 		session[:return_to] = request.request_uri
 		flash[:error] = message
 		redirect_to default
-	end
-
-	#	I think that this really belong someplace more non-specific
-	def class_exists?(class_name)
-		klass = Module.const_get(class_name.to_s)
-		return klass.is_a?(Class)
-	rescue NameError
-		return false
 	end
 
 end

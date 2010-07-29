@@ -72,6 +72,8 @@ end
 
 
 config.after_initialize do
+	require 'core_extension'
+
 	#require 'route_set'
 	require 'ucb_ccls_engine'
 	#require 'auth_by_authlogic'
