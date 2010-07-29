@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class RedClothTest < ActiveSupport::TestCase
 
+	teardown :destroy_relative_url_root
+
 	test "should NOT add relative url root to link when blank" do
 		html = textilize('"Link Text":/link/path')
 		#=> "<p><a href=\"/link/path\">Link Text</a></p>"
@@ -43,6 +45,20 @@ class RedClothTest < ActiveSupport::TestCase
 		#=> "<p><a href=\"/link/path\">
 		#	<img src=\"/path/to/image.jpg\" alt=\"\" /></a></p>"
 		assert_match(/img src="\/prefix\/path\/to\/image\.jpg"/,html)
+	end
+
+
+#	Add tests for when 
+#		relative_url_root is nil
+#		paths are absolute
+#		paths are relative to current location ('../......')
+#		there is no path, just the file
+
+
+protected
+
+	def destroy_relative_url_root
+		ActionController::Base.relative_url_root = ''
 	end
 
 end
