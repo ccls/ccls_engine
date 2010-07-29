@@ -1,5 +1,15 @@
 module UcbCclsEngineHelper
 
+	def aws_image_tag(image,options={})
+		#	in console @controller is nil
+		protocol = @controller.try(:request).try(:protocol) || 'http://'
+		host = 's3.amazonaws.com/'
+		bucket = RAILS_APP_NAME || 'ccls'
+		src = "#{protocol}#{host}#{bucket}/images/#{image}"
+		alt = options.delete(:alt) || options.delete('alt') || image
+		tag('img',options.merge({:src => src, :alt => alt}))
+	end
+
 	#	This creates a button that looks like a submit button
 	#	but is just a javascript controlled link.
 	#	I don't like it.
