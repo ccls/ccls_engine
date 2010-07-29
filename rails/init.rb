@@ -1,5 +1,7 @@
 #puts "In Rails/Init"
 
+config.gem "aws-s3", :lib => "aws/s3"
+
 config.gem 'ssl_requirement'
 
 config.gem 'ryanb-acts-as-list', 
