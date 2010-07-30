@@ -3,7 +3,7 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 #RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 
-ENV['RAILS_ENV'] = 'test'
+#ENV['RAILS_ENV'] = 'test'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -77,26 +77,25 @@ Rails::Initializer.run do |config|
 	#	Without the :lib => false, the 'rake test' actually fails?
 	config.gem "mocha", :lib => false
 
-
 	if RUBY_PLATFORM =~ /java/
+		#	I'm surprised that I don't need this in my apps.
+		config.gem 'activerecord-jdbcsqlite3-adapter',
+			:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter'
 		config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
+		config.gem 'jruby-openssl', :lib => 'openssl'
 	else
 		config.gem "sqlite3-ruby", :lib => "sqlite3"
-		config.gem "autotest-rails", :lib => 'autotest/rails'
-	# testing fails in rvm/jruby with ...
-	# /Users/jakewendt/.rvm/gems/jruby-1.4.0/gems/ZenTest-4.3.1/lib/zentest.rb
-	# :3:in `each_object': ObjectSpace is disabled; each_object will only work
-	# with Class, pass -X+O to enable (RuntimeError)
-	#	if ZenTest is added
-		config.gem "ZenTest"
 	end
 
-#	config.gem "thoughtbot-factory_girl",
-#		:lib    => "factory_girl",
-#		:source => "http://gems.github.com"
+	config.gem "autotest-rails", :lib => 'autotest/rails'
+
+	config.gem "ZenTest"
+
+	config.gem "thoughtbot-factory_girl",
+		:lib    => "factory_girl",
+		:source => "http://gems.github.com"
 
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }
 
-#	puts config.inspect
 end

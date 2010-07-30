@@ -38,6 +38,7 @@ class ActionController::TestCase
 
 end
 
-
+#ENV['VERBOSE'] = 'false'	#	doesn't seem to work
+ActiveRecord::Migration.verbose = false
 ActiveRecord::Migrator.migrate("db/migrate/",nil)
 ActiveRecord::Migrator.migrate("test/db/migrate/",nil)
