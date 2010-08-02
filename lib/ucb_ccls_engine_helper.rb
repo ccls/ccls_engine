@@ -1,5 +1,24 @@
 module UcbCclsEngineHelper
 
+	def form_link_to( title, url, options={} )
+		extra_tags = extra_tags_for_form(options)
+		s =  "\n" <<
+			"<form " <<
+			"class='#{options.delete(:class)||'form_link_to'}' " <<
+			"action='#{url}' " <<
+			"method='#{options.delete('method')}'>\n" <<
+			extra_tags << "\n" <<
+			submit_tag(title, :name => nil ) << "\n" <<
+			"</form>\n"
+	end
+
+	def destroy_link_to( title, url, options={} )
+		form_link_to( title, url, options.merge(
+			'method' => 'delete',
+			:class => 'destroy_link_to'
+		) )
+	end
+
 	def aws_image_tag(image,options={})
 		#	in console @controller is nil
 		protocol = @controller.try(:request).try(:protocol) || 'http://'

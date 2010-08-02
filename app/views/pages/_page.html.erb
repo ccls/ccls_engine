@@ -20,6 +20,7 @@
 <% end %>
 <%= link_to "Edit", edit_page_path(page) -%>&nbsp;
 <%= link_to "Destroy", page_path(page), :confirm => "Delete '#{page.title(session[:locale])}'?\nAre you sure?", :method => :delete -%>
+<%#= destroy_link_to "Destroy", page_path(page) -%>
 </td>
 </tr>
 
