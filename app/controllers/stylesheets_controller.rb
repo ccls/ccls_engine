@@ -1,7 +1,10 @@
 class StylesheetsController < ApplicationController
 
 	skip_before_filter :login_required
-	ssl_allowed
+
+	def ssl_allowed?
+		true	#	for any and all dynamic stylesheets
+	end
 
 	#	this controller is made to generate stylesheets that
 	#	include erb, necessary to deal with different path lengths
