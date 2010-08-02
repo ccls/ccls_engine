@@ -1,5 +1,7 @@
 jQuery(function(){
 
+var locale = '<%=session[:locale] || 'en'%>'
+
 locale_links = '<%= if( session[:locale] && session[:locale] == 'es' )
 link_to( 'English', locale_path('en'), :id => 'session_locale' )
 else
@@ -16,9 +18,13 @@ jQuery('#user_links').replaceWith(user_links.join('&nbsp;|&nbsp;'));
 <% end -%>
 
 <% if params[:caller] == '/' -%>
-<% if hpp = HomePagePic.random_active() -%>
+<% if class_exists?('HomePagePic') && hpp = HomePagePic.random_active() -%>
 jQuery('#home_page_pic').html('<%=image_tag( hpp.image.url(:full) )%>')
 <% end -%>
 <% end -%>
+
+jQuery.each(translatables, function(index,value){
+	jQuery('#'+value.tag_id).html(decodeURI(value.locales[locale]));
+})
 
 });
