@@ -3,6 +3,7 @@ module UcbCclsEngineController
 	def self.included(base)
 
 		base.before_filter :login_required
+		base.before_filter :build_menu_js
 		base.helper_method :current_user, :logged_in?
 
 #		base.helper :ucb_ccls_engine_helper
@@ -33,6 +34,27 @@ protected
 		session[:return_to] = request.request_uri
 		flash[:error] = message
 		redirect_to default
+	end
+
+	def build_menu_js
+		js = "" <<
+			"if ( typeof(translatables) == 'undefined' ){\n" <<
+			"	var translatables = [];\n" <<
+			"}\n"
+		Page.roots.each do |page|
+			js << "" <<
+				"tmp = {\n" <<
+				"	tag: '#menu_#{dom_id(page)}',\n" <<
+				"	locales: {}\n" <<
+				"};\n"
+			%w( en es ).each do |locale|
+				js << "tmp.locales['#{locale}']='#{page.menu(locale)}'\n"
+			end
+			js << "translatables.push(tmp);\n"
+		end
+		@template.content_for :head do
+			@template.javascript_tag js
+		end
 	end
 
 end

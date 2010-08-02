@@ -1,18 +1,38 @@
+<% if @page -%>
 <% content_for :head do -%>
 <% javascript_tag do -%>
 if ( typeof(translatables) == 'undefined' ){
 	var translatables = [];
 }
 tmp = {
-	tag_id: 'page',
+	tag: '#page',
 	locales: {}
 };
 <% %w( en es ).each do |locale| -%>
 tmp.locales["<%=locale%>"]="<%=URI.encode(sanitize(textilize(@page.body(locale))))-%>"
 <% end -%>
 translatables.push(tmp);
+
+
+tmp = {
+	tag: 'title',
+	locales: {}
+};
+<% %w( en es ).each do |locale| -%>
+tmp.locales["<%=locale%>"]="<%=URI.encode(@page.title(locale))-%>"
 <% end -%>
+translatables.push(tmp);
+
+
+tmp = {
+	tag: '#current_root',
+	locales: {}
+};
+<% %w( en es ).each do |locale| -%>
+tmp.locales["<%=locale%>"]="<%=URI.encode(@page.menu(locale))-%>"
 <% end -%>
+translatables.push(tmp);
+<% end ; end ; end -%>
 
 <div id='page'>
 <%# if @page %>

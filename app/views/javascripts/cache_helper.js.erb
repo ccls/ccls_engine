@@ -23,8 +23,11 @@ jQuery('#home_page_pic').html('<%=image_tag( hpp.image.url(:full) )%>')
 <% end -%>
 <% end -%>
 
+if( typeof(translatables) != 'undefined' ){
 jQuery.each(translatables, function(index,value){
-	jQuery('#'+value.tag_id).html(decodeURI(value.locales[locale]));
+	jQuery(value.tag).html(decodeURI(value.locales[locale]));
+	jQuery(value.tag).fadeIn('slow');	/* pointless */
 })
+}
 
 });

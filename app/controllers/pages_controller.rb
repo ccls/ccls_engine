@@ -4,6 +4,8 @@ class PagesController < ApplicationController
 
 	before_filter :may_maintain_pages_required, :except => :show
 	before_filter :id_required, :only => [ :edit, :update, :destroy ]
+	before_filter :page_required, :only => :show
+	before_filter :build_submenu_js, :except => [:index, :order]
 
 #	caches partials from layout as well, which is too much
 #	caching still buggy
@@ -24,20 +26,6 @@ class PagesController < ApplicationController
 	end
 
 	def show
-		if params[:path]
- 			@page = Page.by_path("/#{params[:path].join('/')}")
-			raise ActiveRecord::RecordNotFound if @page.nil?
-		else
-			@page = Page.find(params[:id])
-		end
-		@page_title = @page.title(session[:locale])
-		if @page.is_home? && class_exists?('HomePagePic')
-			@hpp = HomePagePic.random_active()
-		end
-	rescue ActiveRecord::RecordNotFound
-		flash_message = "Page not found with "
-		flash_message << (( params[:id].blank? ) ? "path '/#{params[:path].join('/')}'" : "ID #{params[:id]}")
-		flash.now[:error] = flash_message
 	end
 
 	def index
@@ -86,6 +74,58 @@ protected
 			@page = Page.find(params[:id])
 		else
 			access_denied("Valid page id required!", pages_path)
+		end
+	end
+
+	#	Put this in a separate before_filter so that
+	#	another before_filter can access @page
+	def page_required
+		if params[:path]
+ 			@page = Page.by_path("/#{params[:path].join('/')}")
+			raise ActiveRecord::RecordNotFound if @page.nil?
+		else
+			@page = Page.find(params[:id])
+		end
+		@page_title = @page.title(session[:locale])
+		if @page.is_home? && class_exists?('HomePagePic')
+			@hpp = HomePagePic.random_active()
+		end
+	rescue ActiveRecord::RecordNotFound
+		flash_message = "Page not found with "
+		flash_message << (( params[:id].blank? ) ? "path '/#{params[:path].join('/')}'" : "ID #{params[:id]}")
+		flash.now[:error] = flash_message
+	end
+
+	def build_submenu_js
+		if @page && !@page.root.children.empty?
+			js = "" <<
+				"if ( typeof(translatables) == 'undefined' ){\n" <<
+				"	var translatables = [];\n" <<
+				"}\n"
+
+			js << "" <<
+				"tmp = {\n" <<
+				"	tag: '#current_root',\n" <<
+				"	locales: {}\n" <<
+				"};\n"
+			%w( en es ).each do |locale|
+				js << "tmp.locales['#{locale}']='#{@page.root.menu(locale)}'\n"
+			end
+			js << "translatables.push(tmp);\n"
+			@page.root.children.each do |child|
+				js << "" <<
+					"tmp = {\n" <<
+					"	tag: '#menu_#{dom_id(child)}',\n" <<
+					"	locales: {}\n" <<
+					"};\n"
+				%w( en es ).each do |locale|
+					js << "tmp.locales['#{locale}']='#{child.menu(locale)}'\n"
+				end
+				js << "translatables.push(tmp);\n"
+			end
+			@template.content_for :head do
+				@template.javascript_tag js
+			end
 		end
 	end
 
