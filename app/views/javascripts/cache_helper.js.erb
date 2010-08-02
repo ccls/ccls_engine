@@ -1,14 +1,29 @@
 jQuery(function(){
 
-var locale = '<%=session[:locale] || 'en'%>'
+locale = '<%=session[:locale] || 'en'%>'
 
-locale_links = '<%= if( session[:locale] && session[:locale] == 'es' )
-link_to( 'English', locale_path('en'), :id => 'session_locale' )
-else
-link_to( 'Espa&ntilde;ol', locale_path('es'), :id => 'session_locale' )
-end %>'
+set_locale_link = function(l){
+	if( l == 'es' ){
+		locale_link = '<%=link_to( 'English', 
+			locale_path('en'), 
+			:id => 'session_locale' )-%>'
+	}else{
+		locale_link = '<%=link_to( 'Espa&ntilde;ol', 
+			locale_path('es'), 
+			:id => 'session_locale' )-%>'
+	}
 
-jQuery('#session_locale').replaceWith(locale_links);
+	jQuery('#session_locale').replaceWith(locale_link);
+
+	jQuery('#session_locale').click(function(){
+		jQuery.getScript(this.href, function(){
+			translate(locale);
+			set_locale_link(locale);
+		});
+		return false;
+	});
+}
+set_locale_link(locale);
 
 <% if logged_in? %>
 user_links = [ '',
@@ -23,11 +38,14 @@ jQuery('#home_page_pic').html('<%=image_tag( hpp.image.url(:full) )%>')
 <% end -%>
 <% end -%>
 
-if( typeof(translatables) != 'undefined' ){
-jQuery.each(translatables, function(index,value){
-	jQuery(value.tag).html(decodeURI(value.locales[locale]));
-	jQuery(value.tag).fadeIn('slow');	/* pointless */
-})
-}
+translate = function(l){
+	if( typeof(translatables) != 'undefined' ){
+		jQuery.each(translatables, function(index,value){
+			jQuery(value.tag).html(decodeURI(value.locales[l]));
+			jQuery(value.tag).fadeIn('slow');	/* pointless */
+		})
+	}
+};
+translate(locale);
 
 });
