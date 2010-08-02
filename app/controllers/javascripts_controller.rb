@@ -1,6 +1,7 @@
 class JavascriptsController < ApplicationController
 
 	skip_before_filter :login_required
+	skip_before_filter :build_menu_js
 
 	def ssl_allowed?
 		true	#	for any and all dynamic javascripts
