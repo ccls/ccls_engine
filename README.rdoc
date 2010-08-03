@@ -2,6 +2,10 @@
 
 This is both a plugin engine and a basic rails app.
 
+== Expectations
+
+* ../../aaronchi/jrails plugin
+
 == Testing
 
  rake db:migrate
