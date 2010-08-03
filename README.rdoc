@@ -4,12 +4,12 @@ This is both a plugin engine and a basic rails app.
 
 == Expectations
 
-* ../../aaronchi/jrails plugin
+* ../../aaronchi/jrails or ../jrails plugin
 
 == Testing
 
  rake db:migrate
- rake db:load:fixtures
+ rake db:fixtures:load
  rake test
  script/server
 
