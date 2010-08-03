@@ -15,6 +15,9 @@
 <%= link_to role_name, users_path( :role_name => role_name ) -%>
 <% end %>
 </td>
+<td class='manage'>
+<%= destroy_link_to( 'Destroy', user_path(user) ) %>
+</td>
 </tr>
 <% end %>
 </tbody></table><!-- id='users' -->
