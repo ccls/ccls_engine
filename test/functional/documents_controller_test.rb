@@ -57,6 +57,14 @@ class DocumentsControllerTest < ActionController::TestCase
 		assert_not_nil flash[:error]
 	end
 
+	test "should NOT download nonexistant document with #{cu} login" do
+		assert !File.exists?('some_fake_file_name.doc')
+		login_as send(cu)
+		get :show, :id => 'some_fake_file_name',:format => 'doc'
+		assert_redirected_to documents_path
+		assert_not_nil flash[:error]
+	end
+
 	test "should preview document with document and #{cu} login" do
 		document = Factory(:document)
 		login_as send(cu)
