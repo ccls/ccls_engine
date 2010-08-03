@@ -58,17 +58,17 @@ Rails::Initializer.run do |config|
 #	
 #		#	Without the :lib => false, the 'rake test' actually fails?
 #		config.gem "mocha", :lib => false
-#	
-#		if RUBY_PLATFORM =~ /java/
-#			#	I'm surprised that I don't need this in my apps.
-#			config.gem 'activerecord-jdbcsqlite3-adapter',
-#				:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter'
-#			config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
-#			config.gem 'jruby-openssl', :lib => 'openssl'
-#		else
-#			config.gem "sqlite3-ruby", :lib => "sqlite3"
-#		end
-#	
+	
+		if RUBY_PLATFORM =~ /java/
+			#	I'm surprised that I don't need this in my apps.
+			config.gem 'activerecord-jdbcsqlite3-adapter',
+				:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter'
+			config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
+			config.gem 'jruby-openssl', :lib => 'openssl'
+		else
+			config.gem "sqlite3-ruby", :lib => "sqlite3"
+		end
+	
 #		config.gem "autotest-rails", :lib => 'autotest/rails'
 #	
 #		config.gem "ZenTest"
