@@ -46,4 +46,6 @@ module ShouldRequire
 	end
 
 end
+require 'active_support'
+require 'active_support/test_case'
 ActiveSupport::TestCase.send(:include,ShouldRequire)

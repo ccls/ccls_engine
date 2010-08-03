@@ -1,6 +1,8 @@
+require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+
 # Use the updated rdoc gem rather than version
 # included with ruby.
-require 'rdoc'
+#require 'rdoc'
 
 require 'rake'
 require 'rake/testtask'
@@ -29,5 +31,5 @@ end
 #	It would be nice to have the full set of rails rake tasks,
 #	but this will probably require some work.
 #
-RAILS_ROOT = File.dirname(__FILE__) unless defined?(RAILS_ROOT)
+#RAILS_ROOT = File.dirname(__FILE__) unless defined?(RAILS_ROOT)
 require 'tasks/rails'

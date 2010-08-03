@@ -5,3 +5,7 @@ test/log
 coverage
 coverage.data
 test/documents/
+db/seeds.rb
+db/schema.rb
+db/*.sqlite3
+db/*.sqlite3-journal

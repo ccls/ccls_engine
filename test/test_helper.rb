@@ -1,21 +1,12 @@
 ENV["RAILS_ENV"] = "test"
-
-#	NEED THIS OR THE TESTS DON'T ACTUALLY EXECUTE
-#	I don't understand why it isn't here by default.
-require 'test/unit'			
-
-require 'rubygems'
-require 'active_support'
-require 'active_support/test_case'
-require 'active_record'
-require 'action_controller'
-require 'action_mailer'
-
-require File.dirname(__FILE__) + '/config/environment'
+require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
+$LOAD_PATH.unshift File.dirname(__FILE__) # NEEDED for rake test:coverage
+
 class ActiveSupport::TestCase
-	self.fixture_path = File.dirname(__FILE__) + "/fixtures/"
+	self.use_transactional_fixtures = true
+	self.use_instantiated_fixtures  = false
 	fixtures :all
 end
 
@@ -37,8 +28,3 @@ class ActionController::TestCase
 	end
 
 end
-
-#ENV['VERBOSE'] = 'false'	#	doesn't seem to work
-ActiveRecord::Migration.verbose = false
-ActiveRecord::Migrator.migrate("db/migrate/",nil)
-ActiveRecord::Migrator.migrate("test/db/migrate/",nil)

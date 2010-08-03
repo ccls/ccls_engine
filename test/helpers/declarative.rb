@@ -36,6 +36,8 @@ module My
 
 	end
 end
+require 'active_support'
+require 'active_support/test_case'
 ActiveSupport::TestCase.send(:include,My::Declarative)
 
 Rails.backtrace_cleaner.add_silencer {|line|

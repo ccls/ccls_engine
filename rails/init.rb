@@ -35,7 +35,7 @@ config.after_initialize do
 	require 'paperclip'
 	ActiveRecord::Base.send(:include, ::Paperclip)
 end
-
+		
 # http://railscasts.com/episodes/160-authlogic
 # http://asciicasts.com/episodes/160-authlogic
 # version 2.1.4 includes patches for Rails 3 that

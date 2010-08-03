@@ -92,4 +92,6 @@ module AccessWithoutLogin
 		end
 	end
 end
+require 'action_controller'
+require 'action_controller/test_case'
 ActionController::TestCase.send(:include, AccessWithoutLogin)

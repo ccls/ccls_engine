@@ -1,3 +1,7 @@
+require 'action_controller'
+require 'action_controller/test_case'
+require 'active_support'
+require 'active_support/test_case'
 require 'authlogic/test_case'
 class ActionController::TestCase
 	setup :activate_authlogic

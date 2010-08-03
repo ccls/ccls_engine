@@ -5,15 +5,30 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <title><%= @page_title || "UCB CCLS Engine" -%></title>
 <%= javascript_include_tag :defaults %>
-<%= stylesheet_link_tag :defaults %>
+<%#= stylesheet_link_tag :defaults %>
 <%= yield :head %>
+<script type="text/javascript">
+jQuery(function(){
+/*
+	var root = (location.host == 'ccls.berkeley.edu')?'/buffler':''
+	jQuery.getScript(root + 
+*/
+	jQuery.getScript(
+		'/javascripts/cache_helper.js?caller=' +
+		location.pathname );
+/*
+		location.pathname.replace(new RegExp('^' + root),'') );
+*/
+
+});
+</script>
 </head>
 <body>
 <div id='container'>
 <div id='content'>
 <%= flasher() %>
-<%= aws_image_tag('three_bears.jpg') %>
 <%= yield %>
+<%= aws_image_tag('three_bears.jpg',:style => "width:100%;") %>
 </div><!-- content -->
 </div><!-- container -->
 </body>
