@@ -6,7 +6,11 @@ This is both a plugin engine and a basic rails app.
 
 * ../../aaronchi/jrails or ../jrails plugin
 
-== Testing
+== Installation (as a plugin/engine)
+
+ rake ccls:sync   # can and will overwrite contents in /db/ and /public/
+
+== Testing (as an app)
 
  rake db:migrate
  rake db:fixtures:load
