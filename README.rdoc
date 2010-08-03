@@ -5,8 +5,8 @@ This is both a plugin engine and a basic rails app.
 == Testing
 
  rake db:migrate
+ rake db:load:fixtures
  rake test
-
-
+ script/server
 
 Copyright (c) 2010 [Jake Wendt], released under the MIT license
