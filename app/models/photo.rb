@@ -25,7 +25,8 @@ class Photo < ActiveRecord::Base
 
 	has_attached_file :image,
 		YAML::load(ERB.new(IO.read(File.expand_path(
-			File.join(Rails.root,'config/photo.yml')
+#			File.join(Rails.root,'config/photo.yml')
+			File.join(File.dirname(__FILE__),'../..','config/photo.yml')
 		))).result)[::RAILS_ENV]
 
 end

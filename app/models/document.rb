@@ -47,7 +47,8 @@ class Document < ActiveRecord::Base
 #	has_attached_file :document, :path => path
 	has_attached_file :document,
 		YAML::load(ERB.new(IO.read(File.expand_path(
-			File.join(Rails.root,'config/photo.yml')
+#			File.join(Rails.root,'config/photo.yml')
+			File.join(File.dirname(__FILE__),'../..','config/document.yml')
 		))).result)[::RAILS_ENV]
 
 	def nullify_blank_document_file_name
