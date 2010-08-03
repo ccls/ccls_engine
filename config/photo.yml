@@ -1,0 +1,34 @@
+DEFAULTS: &DEFAULTS
+  :styles:
+    :full: '900'
+    :large: '800'
+    :medium: '600'
+    :small: '150x50'
+
+#<% url = "/#{Rails.env}/system/:attachment/:id/:style/:filename" %>
+
+development:
+#  :url: <%= url %>
+#  :path: <%= "#{Rails.root}/public" << url %>
+  <<: *DEFAULTS
+
+test:
+#  :url: <%= url %>
+#  :path: <%= "#{Rails.root}/public" << url %>
+  <<: *DEFAULTS
+
+production:
+#  #	Set the storage class to RRS which is cheaper than 
+#  #	the default of STANDARD
+#  :s3_headers:
+#    x-amz-storage-class: REDUCED_REDUNDANCY
+#  # public_read or private
+#  :s3_permissions: :public_read
+#  :storage: :s3
+#  :s3_protocol: https
+#  :s3_credentials: <%="#{Rails.root}/config/s3.yml" %>
+#  :bucket: <%#=RAILS_APP_NAME %>
+#  :path: 'home_page_pics/:attachment/:id/:style/:filename'
+#  # S3 must have a defined path or will generate
+#  # "Stack level too deep" errors
+  <<: *DEFAULTS

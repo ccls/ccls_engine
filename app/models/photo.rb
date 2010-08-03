@@ -16,11 +16,16 @@ class Photo < ActiveRecord::Base
 #		'/system/:attachment/:id/:style/:filename'
 #	end
 
-	has_attached_file :image, :styles => {
-		:full   => "900",
-		:large  => "800",
-		:medium => "600",
-		:small  => "150x50>"
-	}	#, :url => url, :path => path
+#	has_attached_file :image, :styles => {
+#		:full   => "900",
+#		:large  => "800",
+#		:medium => "600",
+#		:small  => "150x50>"
+#	}	#, :url => url, :path => path
+
+	has_attached_file :image,
+		YAML::load(ERB.new(IO.read(File.expand_path(
+			File.join(Rails.root,'config/photo.yml')
+		))).result)[::RAILS_ENV]
 
 end
