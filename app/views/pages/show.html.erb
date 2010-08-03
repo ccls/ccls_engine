@@ -4,38 +4,26 @@
 if ( typeof(translatables) == 'undefined' ){
 	var translatables = [];
 }
-tmp = {
-	tag: '#page',
-	locales: {}
-};
+tmp = { tag: '#page', locales: {} };
 <% %w( en es ).each do |locale| -%>
 tmp.locales["<%=locale%>"]="<%=URI.encode(sanitize(textilize(@page.body(locale))))-%>"
 <% end -%>
 translatables.push(tmp);
 
-
-tmp = {
-	tag: 'title',
-	locales: {}
-};
+tmp = { tag: 'title', locales: {} };
 <% %w( en es ).each do |locale| -%>
 tmp.locales["<%=locale%>"]="<%=URI.encode(@page.title(locale))-%>"
 <% end -%>
 translatables.push(tmp);
 
-
-tmp = {
-	tag: '#current_root',
-	locales: {}
-};
+tmp = { tag: '#current_root', locales: {} };
 <% %w( en es ).each do |locale| -%>
 tmp.locales["<%=locale%>"]="<%=URI.encode(@page.menu(locale))-%>"
 <% end -%>
 translatables.push(tmp);
 <% end ; end ; end -%>
-
 <div id='page'>
-<%# if @page %>
-<%#= sanitize(textilize(@page.body(session[:locale]))) %>
-<%# end %>
+<%# if @page -%>
+<%#= sanitize(textilize(@page.body(session[:locale]))) -%>
+<%# end -%>
 </div>

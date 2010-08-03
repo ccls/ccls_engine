@@ -36,6 +36,9 @@ protected
 		redirect_to default
 	end
 
+	#	The menu is on every page and this seems as the
+	#	only way for me to force it into the application
+	#	layout.
 	def build_menu_js
 		js = "" <<
 			"if ( typeof(translatables) == 'undefined' ){\n" <<
@@ -43,10 +46,7 @@ protected
 			"}\n"
 		Page.roots.each do |page|
 			js << "" <<
-				"tmp = {\n" <<
-				"	tag: '#menu_#{dom_id(page)}',\n" <<
-				"	locales: {}\n" <<
-				"};\n"
+				"tmp={tag:'#menu_#{dom_id(page)}',locales:{}};\n"
 			%w( en es ).each do |locale|
 				js << "tmp.locales['#{locale}']='#{page.menu(locale)}'\n"
 			end
