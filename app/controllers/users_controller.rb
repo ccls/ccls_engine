@@ -11,8 +11,8 @@ class UsersController < ApplicationController
 
 #	before_filter :no_current_user_required, :only => [:new, :create]
 #	before_filter :valid_invitation_required, :only => [:new,:create]
-	before_filter :id_required, :only => [:edit, :show, :update ]
-	before_filter :may_view_user_required, :only => [:edit,:update,:show]
+	before_filter :id_required, :only => [:edit, :show, :update, :destroy]
+	before_filter :may_view_user_required, :except => [:index]
 	before_filter :may_view_users_required, :only => :index
 
 #	We are using UCB CAS for authentication so this is unused.
@@ -55,6 +55,11 @@ class UsersController < ApplicationController
 	def index
 		@users = User.search(params)
 #		flash[:error] = @errors if @errors
+	end
+
+	def destroy
+		@user.destroy
+		redirect_to users_path
 	end
 
 protected

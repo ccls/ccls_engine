@@ -51,7 +51,10 @@ module UcbCclsEngine
 			validates_uniqueness_of :uid
 
 			has_and_belongs_to_many :roles,  :uniq => true
-			has_and_belongs_to_many :groups, :uniq => true
+#
+#	Don't do this until Group is defined!!!
+#
+#			has_and_belongs_to_many :groups, :uniq => true
 
 			#	gravatar can't deal with a nil email
 			gravatar :mail, :rating => 'PG'

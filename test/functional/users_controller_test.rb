@@ -4,7 +4,7 @@ class UsersControllerTest < ActionController::TestCase
 
 	ASSERT_ACCESS_OPTIONS = {
 		:model => 'User',
-		:actions => [:index,:show],
+		:actions => [:destroy,:index,:show],
 		:attributes_for_create => :factory_attributes,
 		:method_for_create => :factory_create
 	}
