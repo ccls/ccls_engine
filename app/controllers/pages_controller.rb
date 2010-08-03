@@ -11,7 +11,13 @@ class PagesController < ApplicationController
 #	caching still buggy
 #	if do cache layout, contains user links
 #	if don't cache layout, submenu goes missing
+
+#	caches_action saves to memory
+#	caches_page generates an actual file in public/
+#	it would probably require modifications to the
+#	page_sweeper's expire calls
 	caches_action :show	#, :layout => false
+#	caches_page :show	#, :layout => false
 	cache_sweeper :page_sweeper, :only => [:create, :update, :order, :destroy]
 
 	ssl_allowed :show
@@ -102,22 +108,13 @@ protected
 				"if ( typeof(translatables) == 'undefined' ){\n" <<
 				"	var translatables = [];\n" <<
 				"}\n"
-
-			js << "" <<
-				"tmp = {\n" <<
-				"	tag: '#current_root',\n" <<
-				"	locales: {}\n" <<
-				"};\n"
+			js << "tmp={tag:'#current_root',locales:{}};\n"
 			%w( en es ).each do |locale|
 				js << "tmp.locales['#{locale}']='#{@page.root.menu(locale)}'\n"
 			end
 			js << "translatables.push(tmp);\n"
 			@page.root.children.each do |child|
-				js << "" <<
-					"tmp = {\n" <<
-					"	tag: '#menu_#{dom_id(child)}',\n" <<
-					"	locales: {}\n" <<
-					"};\n"
+				js << "tmp={tag:'#menu_#{dom_id(child)}',locales:{}};\n"
 				%w( en es ).each do |locale|
 					js << "tmp.locales['#{locale}']='#{child.menu(locale)}'\n"
 				end
