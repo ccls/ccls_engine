@@ -5,6 +5,12 @@
 #    :medium: '600'
 #    :small: '150x50'
 
+#>> Rails.root.to_s.split('/')
+#=> ["", "var", "lib", "tomcat5", "webapps", "clic", "WEB-INF"]
+
+#>> Rails.root.to_s.split('/')
+#=> ["", "Users", "jakewendt", "github_repo", "jakewendt", "ucb_ccls_clic"]
+
 development:
   :path: <%= "#{Rails.root}/development/:attachment/:id/:filename" %>
 #  :path: <%= "#{Rails.root}/#{Rails.env}/:attachment/:id/:filename" %>
