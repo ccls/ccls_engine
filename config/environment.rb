@@ -23,9 +23,13 @@ Rails::Initializer.run do |config|
 
 	config.plugin_paths = [
 		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
+		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
 		File.expand_path(File.join(File.dirname(__FILE__),'../../..','aaronchi'))
 	]
-	config.plugins = [:ucb_ccls_engine,:jrails]
+	config.plugins = [:ucb_ccls_engine,
+		:jrails,
+		:html_test,
+		:html_test_extension]
 
 	config.frameworks -= [:active_resource]
 
