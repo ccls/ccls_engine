@@ -13,6 +13,10 @@ class DocumentsController < ApplicationController
 #			flash[:error] = "Document does not exist at #{@document.document.path}"
 			flash[:error] = "Document does not exist at the expected location."
 			redirect_to preview_document_path(@document)
+#
+#	File.exists? and send_file do not work when file is on S3
+#	Gonna need to figure this one out.
+#
 		else
 			send_file @document.document.path
 		end
