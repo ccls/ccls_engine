@@ -8,9 +8,9 @@
 <p>
   <b>Image:</b>
 </p>
-<% @photo.image.styles.keys.each do |key| %>
+<% @photo.image.styles.keys.unshift(:original).each do |key| %>
 <div class='image_preview'>
-<p><%= @photo.image.url(key) %></p>
+<p><%= link_to( @photo.image.url(key), @photo.image.url(key) ) %></p>
 <%= image_tag @photo.image.url(key) %>
 </div>
 <% end %>
