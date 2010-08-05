@@ -1,11 +1,14 @@
 class PagesController < ApplicationController
 
-	skip_before_filter :login_required, :only => :show
+	skip_before_filter :login_required, 
+		:only => [:show, :translate]
+	skip_before_filter :build_menu_js, 
+		:only => [:translate]
 
-	before_filter :may_maintain_pages_required, :except => :show
+	before_filter :may_maintain_pages_required, :except => [:show, :translate]
 	before_filter :id_required, :only => [ :edit, :update, :destroy ]
 	before_filter :page_required, :only => :show
-	before_filter :build_submenu_js, :except => [:index, :order]
+	before_filter :build_submenu_js, :except => [:index, :order, :translate]
 
 #	caches partials from layout as well, which is too much
 #	caching still buggy
@@ -31,6 +34,12 @@ class PagesController < ApplicationController
 		redirect_to pages_path(:parent_id=>params[:parent_id])
 	end
 
+	def translate
+		respond_to do |format|
+			format.js {}
+		end
+	end
+		
 	def show
 	end
 

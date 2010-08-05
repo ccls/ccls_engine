@@ -136,6 +136,7 @@ module UcbCclsEngine
 		def editor?
 			(self.role_names & ['administrator','editor']).length > 0
 		end
+		alias_method :is_editor?,               :editor?
 		alias_method :may_maintain_pages?,      :editor?
 		alias_method :may_view_home_page_pics?, :editor?
 

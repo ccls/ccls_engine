@@ -6,13 +6,14 @@ class UsersController < ApplicationController
 
 	unloadable
 
-#	skip_before_filter :login_required, 
+	skip_before_filter :login_required, :only => :menu
+	skip_before_filter :build_menu_js,  :only => :menu
 #		:only => [:new, :create]
 
 #	before_filter :no_current_user_required, :only => [:new, :create]
 #	before_filter :valid_invitation_required, :only => [:new,:create]
 	before_filter :id_required, :only => [:edit, :show, :update, :destroy]
-	before_filter :may_view_user_required, :except => [:index]
+	before_filter :may_view_user_required, :except => [:index,:menu]
 	before_filter :may_view_users_required, :only => :index
 
 #	We are using UCB CAS for authentication so this is unused.
@@ -47,6 +48,12 @@ class UsersController < ApplicationController
 #		flash.now[:error] = "Update failed"
 #		render :action => 'edit'	
 #	end 
+
+	def menu
+		respond_to do |format|
+			format.js {}
+		end
+	end
 
 	def show
 		@roles = Role.all
