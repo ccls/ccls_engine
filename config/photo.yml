@@ -1,34 +1,48 @@
 DEFAULTS: &DEFAULTS
   :styles:
-    :full: '900'
-    :large: '800'
-    :medium: '600'
-    :small: '150x50'
+    :full: '900>'
+    :large: '800>'
+    :medium: '600>'
+    :small: '150x50>'
 
-#<% url = "/#{Rails.env}/system/:attachment/:id/:style/:filename" %>
+#	> means DO NOT enlarge, only shrink
+
+<% common = "/system/:attachment/:id/:style/:filename" %>
+#>> Rails.root.to_s.split('/')
+#=> ["", "var", "lib", "tomcat5", "webapps", "clic", "WEB-INF"]
+
+#>> Rails.root.to_s.split('/')
+#=> ["", "Users", "jakewendt", "github_repo", "jakewendt", "ucb_ccls_clic"]
+
+<% 
+app_name = ( defined?(RAILS_APP_NAME) ) ? 
+	RAILS_APP_NAME :
+	Rails.root.to_s.split('/').reject{|x|x ==  "WEB-INF"}.last 
+%>
+
 
 development:
-#  :url: <%= url %>
-#  :path: <%= "#{Rails.root}/public" << url %>
+  :url: <%= "/development#{common}" %>
+  :path: <%= "#{Rails.root}/public" << "/development#{common}" %>
   <<: *DEFAULTS
 
 test:
-#  :url: <%= url %>
-#  :path: <%= "#{Rails.root}/public" << url %>
+  :url: <%= "/test#{common}" %>
+  :path: <%= "#{Rails.root}/public" << "/test#{common}" %>
   <<: *DEFAULTS
 
 production:
-#  #	Set the storage class to RRS which is cheaper than 
-#  #	the default of STANDARD
-#  :s3_headers:
-#    x-amz-storage-class: REDUCED_REDUNDANCY
-#  # public_read or private
-#  :s3_permissions: :public_read
-#  :storage: :s3
-#  :s3_protocol: https
-#  :s3_credentials: <%="#{Rails.root}/config/s3.yml" %>
-#  :bucket: <%#=RAILS_APP_NAME %>
-#  :path: 'home_page_pics/:attachment/:id/:style/:filename'
-#  # S3 must have a defined path or will generate
-#  # "Stack level too deep" errors
+  #	Set the storage class to RRS which is cheaper than 
+  #	the default of STANDARD
+  :s3_headers:
+    x-amz-storage-class: REDUCED_REDUNDANCY
+  # public_read or private
+  :s3_permissions: :public_read
+  :storage: :s3
+  :s3_protocol: https
+  :s3_credentials: <%="#{Rails.root}/config/s3.yml" %>
+  :bucket: <%= app_name %>
+  :path: 'photos/:attachment/:id/:style/:filename'
+  # S3 must have a defined path or will generate
+  # "Stack level too deep" errors
   <<: *DEFAULTS
