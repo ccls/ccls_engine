@@ -96,7 +96,7 @@ class DocumentTest < ActiveSupport::TestCase
 		object = create_object(:document_file_name => "BogusFileName")
 		assert_not_nil object.s3_url
 		assert_equal "https://s3.amazonaws.com" +
-			"/system/documents/1/original/BogusFileName.?" +
+			"/system/documents/#{object.id}/original/BogusFileName.?" +
 			"AWSAccessKeyId=test_access_key_id&" +
 			"Signature=sZveTMHwpLQk0tA7amx2JNqN7NY%3D&Expires=1281066749",
 			object.s3_url
