@@ -68,7 +68,7 @@ puts "Document s3_url: " + @document.s3_url
 
 	def update
 		@document.update_attributes!(params[:document])
-		redirect_to @document
+		redirect_to preview_document_path(@document)
 	rescue ActiveRecord::RecordInvalid
 		flash.now[:error] = "Error"
 		render :action => 'edit'
