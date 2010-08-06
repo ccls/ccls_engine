@@ -56,6 +56,14 @@ class UsersControllerTest < ActionController::TestCase
 		assert_response :success
 	end
 
+	test "should get private users menu via js with #{cu} login" do
+		login_as send(cu)
+		@request.accept = "text/javascript"
+		get :menu
+		assert_response :success
+		assert_match /jQuery/, @response.body
+	end
+
 end
 
 %w( admin moderator employee editor active_user ).each do |cu|
@@ -78,7 +86,12 @@ end
 
 end
 
-
+	test "should get empty private users menu via js without login" do
+		@request.accept = "text/javascript"
+		get :menu
+		assert_response :success
+		assert_match /\A\s*\z/, @response.body
+	end
 
 
 

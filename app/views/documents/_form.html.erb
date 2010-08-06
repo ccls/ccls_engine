@@ -9,7 +9,10 @@
 	</div>
 	<div>
 	<div class='document'>
-		<%= f.label :document %><br />
+		<%= f.label :document -%>
+		<% unless @document.new_record? -%>
+			(<%= @document.document.url -%>)
+		<% end -%><br />
 		<%= f.file_field :document %>
 	</div>
 	</div>

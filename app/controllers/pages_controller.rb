@@ -23,7 +23,7 @@ class PagesController < ApplicationController
 #	caches_page :show	#, :layout => false
 	cache_sweeper :page_sweeper, :only => [:create, :update, :order, :destroy]
 
-	ssl_allowed :show
+	ssl_allowed :show, :translate
 
 	def order
 #		params[:pages].reverse.each { |id| Page.find(id).move_to_top }
