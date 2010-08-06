@@ -234,6 +234,13 @@ end
 			/src="https?:\/\/s3.amazonaws.com\/ccls\/images\/three_bears.jpg/)
 	end
 
+	test "should get translate via js without login" do
+		@request.accept = "text/javascript"
+		get :translate
+		assert_response :success
+		assert_match /jQuery/, @response.body
+	end
+
 	#	Test all page fixtures for menus
 	Page.all.each do |page|
 		test "should get show for page id #{page.id}" do
