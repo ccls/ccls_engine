@@ -8,6 +8,9 @@ This is both a plugin engine and a basic rails app.
 
 == Installation (as a plugin/engine)
 
+ cp config/s3.yml.example config/s3.yml
+ # Add your own s3 access keys.  Leave 'test' as it is.
+
  rake ccls:sync   # can and will overwrite contents in /db/ and /public/
 
 == Testing (as an app)

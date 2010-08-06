@@ -20,6 +20,15 @@ class Document < ActiveRecord::Base
 		self.document_file_name = nil if document_file_name.blank?
 	end
 
+	#	document.document.url will include the full url
+	#	document.document.path will not include the bucket
+	def url_path
+#		@url_path ||= self.document.url.gsub(
+#			/^https?:\/\/[^\/]*/,'').gsub(
+#			/\?\d+$/,'')
+		@url_path ||= URI.parse(self.document.url).path
+	end
+
 #	#	Chronic.parse('tomorrow') is always tomorrow at noon
 #	#	so the time between hashing and requesting won't cause
 #	#	a problem unless the request is made at exactly the time
@@ -63,7 +72,7 @@ class Document < ActiveRecord::Base
 			"\n" +
 			s3_expires_on + "\n" +
 			"" +
-			document.url
+			self.url_path
 #			"/clic/documents/10/bethematch.gif"
 	end
 
@@ -83,13 +92,25 @@ class Document < ActiveRecord::Base
 			s3_secret_access_key,s3_string_to_sign)))
 	end
 	
-	def s3_url
-#		@s3_url ||= "https://s3.amazonaws.com/clic/documents/10/bethematch.gif?" +
-		@s3_url ||= "https://s3.amazonaws.com" +
-			document.url + "?" +
+	def self.s3_protocol
+		@@s3_protocol ||= "https://"
+	end
+
+	def self.s3_host
+		@@s3_host ||= "s3.amazonaws.com"
+	end
+
+	def s3_path
+		@s3_path ||= self.url_path + "?" +
 			"AWSAccessKeyId=#{s3_access_key_id}&" +
 			"Signature=#{s3_signature}&" +
 			"Expires=#{s3_expires_on}"
+	end
+
+	def s3_url
+#		@s3_url ||= "https://s3.amazonaws.com/clic/documents/10/bethematch.gif?" +
+		@s3_url ||= self.class.s3_protocol +
+			self.class.s3_host + s3_path
 	end
 
 end

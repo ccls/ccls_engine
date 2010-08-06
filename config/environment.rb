@@ -6,6 +6,11 @@ RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+#       This constant is used in the ucb_ccls_engine#Document
+#       and other places like Amazon buckets
+#       for controlling the path to documents.
+RAILS_APP_NAME = 'ccls'
+
 Rails::Initializer.run do |config|
 
 	config.plugin_paths = [

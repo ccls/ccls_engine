@@ -9,16 +9,28 @@ class DocumentsController < ApplicationController
 		if @document.document.path.blank?
 			flash[:error] = "Does not contain a document"
 			redirect_to preview_document_path(@document)
-		elsif !File.exists?(@document.document.path)
-#			flash[:error] = "Document does not exist at #{@document.document.path}"
-			flash[:error] = "Document does not exist at the expected location."
-			redirect_to preview_document_path(@document)
-#
-#	File.exists? and send_file do not work when file is on S3
-#	Gonna need to figure this one out.
-#
 		else
-			send_file @document.document.path
+			if File.exists?(@document.document.path)
+				#	basically development or non-s3 setup
+				send_file @document.document.path
+			elsif( Net::HTTP.get_response(Document.s3_host,
+				@document.url_path).code.to_s == '200' )
+				#	basically a public s3 file
+				redirect_to @document.document.url
+			elsif( Net::HTTP.get_response(Document.s3_host,
+				@document.s3_path).code.to_s == '200' )
+
+
+#	Privacy filters are still not active
+				#	basically a private s3 file
+				redirect_to @document.s3_url
+
+
+			else
+#				flash[:error] = "Document does not exist at #{@document.document.path}"
+				flash[:error] = "Document does not exist at the expected location."
+				redirect_to preview_document_path(@document)
+			end
 		end
 	end
 

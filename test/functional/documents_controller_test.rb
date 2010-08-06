@@ -39,6 +39,8 @@ class DocumentsControllerTest < ActionController::TestCase
 
 %w( admin editor ).each do |cu|
 
+#	test "should 
+
 	test "should NOT download document with nil document and #{cu} login" do
 		document = Factory(:document)
 		assert document.document.path.blank?
