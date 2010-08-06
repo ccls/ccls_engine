@@ -57,7 +57,7 @@ class DocumentTest < ActiveSupport::TestCase
 	test "should return s3_string_to_sign" do
 		object = create_object(:document_file_name => "BogusFileName")
 		assert_equal object.document.url, 
-			"/system/documents/1/original/BogusFileName."
+			"/system/documents/#{object.id}/original/BogusFileName."
 		assert_match /\AGET\n\n\n\d+\n\/system\/documents\/\d+\/original\/BogusFileName.\z/, 
 			object.s3_string_to_sign
 		#puts object.document.url
@@ -82,7 +82,7 @@ class DocumentTest < ActiveSupport::TestCase
 			"GET\n\n\n1281066749\n/system/documents/1/original/BogusFileName.")
 		object = create_object(:document_file_name => "BogusFileName")
 		assert_not_nil object.s3_path
-		assert_equal "/system/documents/1/original/BogusFileName.?" +
+		assert_equal "/system/documents/#{object.id}/original/BogusFileName.?" +
 			"AWSAccessKeyId=test_access_key_id&" +
 			"Signature=sZveTMHwpLQk0tA7amx2JNqN7NY%3D&Expires=1281066749",
 			object.s3_path
