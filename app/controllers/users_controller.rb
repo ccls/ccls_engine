@@ -49,6 +49,8 @@ class UsersController < ApplicationController
 #		render :action => 'edit'	
 #	end 
 
+	ssl_allowed :menu
+
 	def menu
 		respond_to do |format|
 			format.js {}
