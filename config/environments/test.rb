@@ -26,30 +26,3 @@ config.action_mailer.delivery_method = :test
 # This is necessary if your schema can't be completely dumped by the schema dumper,
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
-
-
-
-
-#			if RUBY_PLATFORM =~ /java/
-#				config.gem 'activerecord-jdbcsqlite3-adapter',
-#					:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter'
-#				config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
-#			else
-#				config.gem "sqlite3-ruby", :lib => "sqlite3"
-#			end
-#			
-#			config.gem "rcov"
-#			
-#			#	Without the :lib => false, the 'rake test' actually fails?
-#			config.gem "mocha", :lib => false
-#			
-#			config.gem "autotest-rails", :lib => 'autotest/rails'
-#			
-#			config.gem "ZenTest"
-#			
-#			config.gem "thoughtbot-factory_girl",
-#				:lib    => "factory_girl",
-#				:source => "http://gems.github.com"
-#			
-#			config.action_mailer.default_url_options = { 
-#				:host => "dev.sph.berkeley.edu:3000" }
