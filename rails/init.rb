@@ -1,5 +1,9 @@
 #puts "In Rails/Init"
 
+config.gem "chronic"
+
+config.gem "ruby-hmac", :lib => "ruby_hmac"
+
 config.gem "aws-s3", :lib => "aws/s3"
 
 config.gem 'ssl_requirement'

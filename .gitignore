@@ -9,3 +9,4 @@ db/seeds.rb
 db/schema.rb
 db/*.sqlite3
 db/*.sqlite3-journal
+s3.yml

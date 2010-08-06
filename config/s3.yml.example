@@ -1,0 +1,3 @@
+#https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key#access_credentials
+access_key_id: some_short_string
+secret_access_key: some_longer_string
