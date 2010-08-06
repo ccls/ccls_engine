@@ -13,12 +13,14 @@ class DocumentsController < ApplicationController
 			if File.exists?(@document.document.path)
 				#	basically development or non-s3 setup
 				send_file @document.document.path
-			elsif( Net::HTTP.get_response(Document.s3_host,
-				@document.url_path).code.to_s == '200' )
+#			elsif( Net::HTTP.get_response(Document.s3_host,
+#				@document.url_path).code.to_s == '200' )
+			elsif @document.s3_public?
 				#	basically a public s3 file
 				redirect_to @document.document.url
-			elsif( Net::HTTP.get_response(Document.s3_host,
-				@document.s3_path).code.to_s == '200' )
+#			elsif( Net::HTTP.get_response(Document.s3_host,
+#				@document.s3_path).code.to_s == '200' )
+			elsif @document.s3_private?
 
 
 #	Privacy filters are still not active

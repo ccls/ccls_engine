@@ -39,7 +39,32 @@ class DocumentsControllerTest < ActionController::TestCase
 
 %w( admin editor ).each do |cu|
 
-#	test "should 
+
+#	still only privacy filter is based on "may_maintain_pages"
+#	which isn't really gonna work
+	test "should get redirect to public s3 document with #{cu} login" do
+		Document.any_instance.stubs(:s3_public?).returns(true)
+		document = Factory(:document, :document_file_name => 'bogus_file_name')
+		assert !File.exists?(document.document.path)
+		login_as send(cu)
+		get :show, :id => document.id
+		assert_redirected_to document.document.url
+	end
+
+	test "should get redirect to private s3 document with #{cu} login" do
+		Document.any_instance.stubs(:s3_private?).returns(true)
+		document = Factory(:document, :document_file_name => 'bogus_file_name')
+		assert !File.exists?(document.document.path)
+		login_as send(cu)
+		get :show, :id => document.id
+		assert_redirected_to document.s3_url
+	end
+
+
+
+
+
+
 
 	test "should NOT download document with nil document and #{cu} login" do
 		document = Factory(:document)

@@ -113,4 +113,14 @@ class Document < ActiveRecord::Base
 			self.class.s3_host + s3_path
 	end
 
+	def s3_public?
+		Net::HTTP.get_response(
+			Document.s3_host, self.url_path).code.to_s == '200'
+	end
+
+	def s3_private?
+		Net::HTTP.get_response(
+			Document.s3_host, self.s3_path).code.to_s == '200'
+	end
+
 end
