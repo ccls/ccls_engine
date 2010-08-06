@@ -29,14 +29,14 @@ class DocumentsController < ApplicationController
 			else
 #				flash[:error] = "Document does not exist at #{@document.document.path}"
 
-puts "Tried and failed ..."
-puts "Document path: " + @document.document.path
-puts "S3 Host: " + Document.s3_host
-puts "Document url_path: " +@document.url_path
-puts "Public Response: " + Net::HTTP.get_response(Document.s3_host, @document.url_path).code.to_s 
-puts "Document s3_path: " + @document.s3_path
-puts "Private Response: " + Net::HTTP.get_response(Document.s3_host, @document.s3_path).code.to_s 
-puts "Document s3_url: " + @document.s3_url
+#puts "Tried and failed ..."
+#puts "Document path: " + @document.document.path
+#puts "S3 Host: " + Document.s3_host
+#puts "Document url_path: " +@document.url_path
+#puts "Public Response: " + Net::HTTP.get_response(Document.s3_host, @document.url_path).code.to_s 
+#puts "Document s3_path: " + @document.s3_path
+#puts "Private Response: " + Net::HTTP.get_response(Document.s3_host, @document.s3_path).code.to_s 
+#puts "Document s3_url: " + @document.s3_url
 
 				flash[:error] = "Document does not exist at the expected location."
 				redirect_to preview_document_path(@document)
