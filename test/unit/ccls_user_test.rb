@@ -1,10 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class UserTest < ActiveSupport::TestCase
 
-	assert_should_require(:uid)
-	assert_should_require_unique(:uid)
-	assert_should_habtm(:roles)
+	assert_should_require(:uid,
+		:model => 'User')
+	assert_should_require_unique(:uid,
+		:model => 'User')
+	assert_should_habtm(:roles,
+		:model => 'User')
 
 	test "should create user" do
 		assert_difference 'User.count' do
@@ -295,4 +299,5 @@ protected
 	end
 	alias_method :create_object, :create_user
 	
+end
 end

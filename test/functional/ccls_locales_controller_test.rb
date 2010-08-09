@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class LocalesControllerTest < ActionController::TestCase
+	tests LocalesController
 
 	test "should set locale to en" do
 		assert_nil session[:locale]
@@ -55,4 +57,5 @@ class LocalesControllerTest < ActionController::TestCase
 		assert_response :success
 	end
 
+end
 end

@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class DocumentsControllerTest < ActionController::TestCase
+	tests DocumentsController
 
 	ASSERT_ACCESS_OPTIONS = {
 		:model => 'Document',
@@ -178,4 +180,5 @@ end
 		assert_redirected_to_login
 	end
 
+end
 end

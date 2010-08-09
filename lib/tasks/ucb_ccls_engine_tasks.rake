@@ -12,19 +12,19 @@ namespace :ccls do
 
 		rsync_command = <<-EOF.gsub(/\s+/,' ').squish!
 			rsync -ruv 
-			--dry-run
 			--exclude='app'
 			--exclude='assets'
 			--exclude='config'
 			--exclude='db'
 			--exclude='extensions'
+			--exclude='fixtures'
 			--exclude='helpers'
 			--exclude='log'
 			--exclude='versions'
 			--exclude='test_helper.rb'
+			--exclude='engine_\*_test.rb'
 			vendor/plugins/ucb_ccls_engine/test .
 		EOF
-		puts rsync_command.class
 		system rsync_command
 	end
 end

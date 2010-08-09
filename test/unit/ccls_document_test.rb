@@ -1,9 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class DocumentTest < ActiveSupport::TestCase
 
-	assert_should_require(:title)
-	assert_should_belong_to(:owner,:class_name => 'User')
+	assert_should_require(:title,
+		:model => 'Document')
+	assert_should_belong_to(:owner,:class_name => 'User',
+		:model => 'Document')
 
 	test "should create document" do
 		assert_difference 'Document.count' do
@@ -110,4 +113,5 @@ protected
 		record
 	end
 
+end
 end

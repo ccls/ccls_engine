@@ -1,11 +1,15 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class RoleTest < ActiveSupport::TestCase
 
-	assert_should_act_as_list
-	assert_should_require(:name)
-	assert_should_require_unique(:name)
-	assert_should_habtm(:users)
+	assert_should_act_as_list(:model => 'Role')
+	assert_should_require(:name,
+		:model => 'Role')
+	assert_should_require_unique(:name,
+		:model => 'Role')
+	assert_should_habtm(:users,
+		:model => 'Role')
 
 	test "should create role" do
 		assert_difference('Role.count',1) do
@@ -23,4 +27,5 @@ protected
 		record
 	end
 
+end
 end

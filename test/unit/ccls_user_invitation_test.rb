@@ -1,10 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class UserInvitationTest < ActiveSupport::TestCase
 
-	assert_requires_valid_associations(:sender)
-	assert_should_initially_belong_to(:sender,:class_name => 'User')
-	assert_should_require(:email)
+	assert_requires_valid_associations(:sender,
+		:model => 'UserInvitation')
+	assert_should_initially_belong_to(:sender,:class_name => 'User',
+		:model => 'UserInvitation')
+	assert_should_require(:email,
+		:model => 'UserInvitation')
 
 	test "should create invitation" do
 		assert_difference 'UserInvitation.count' do
@@ -77,4 +81,5 @@ protected
 		record
 	end
 
+end
 end

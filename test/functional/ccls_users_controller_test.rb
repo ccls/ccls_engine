@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class UsersControllerTest < ActionController::TestCase
+	tests UsersController
 
 	ASSERT_ACCESS_OPTIONS = {
 		:model => 'User',
@@ -544,4 +546,5 @@ end
 #	Destroy  
 
 
+end
 end

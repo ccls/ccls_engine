@@ -1,8 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class PhotoTest < ActiveSupport::TestCase
 
-	assert_should_require(:title)
+	assert_should_require(:title,
+		:model => 'Photo')
 
 	test "should create photo" do
 		assert_difference 'Photo.count' do
@@ -20,4 +22,5 @@ protected
 		record
 	end
 
+end
 end

@@ -1,9 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+module Ccls
 class PageTest < ActiveSupport::TestCase
 
-	assert_should_require(:path,:menu_en,:title_en,:body_en)
-	assert_should_require_unique(:path,:menu_en)
+	assert_should_require(:path,:menu_en,:title_en,:body_en,
+		:model => 'Page')
+	assert_should_require_unique(:path,:menu_en,
+		:model => 'Page')
 
 	test "should create page" do
 		assert_difference 'Page.count' do
@@ -180,4 +183,5 @@ protected
 	end
 	alias_method :create_object, :create_page
 
+end
 end
