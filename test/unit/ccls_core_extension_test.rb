@@ -7,7 +7,7 @@ class Ccls::CoreExtensionTest < ActiveSupport::TestCase
 	end
 
 	test "non class exists but is not a class" do
-		assert !class_exists?('UcbCclsEngineHelper')
+		assert !class_exists?('Ccls::UcbCclsEngineHelper')
 	end
 
 	test "bogus class does not exist" do
