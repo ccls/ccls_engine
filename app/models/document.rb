@@ -114,13 +114,19 @@ class Document < ActiveRecord::Base
 	end
 
 	def s3_public?
-		Net::HTTP.get_response(
-			Document.s3_host, self.url_path).code.to_s == '200'
+#		Net::HTTP.get_response(
+#			Document.s3_host, self.url_path).code.to_s == '200'
+		Net::HTTP.start(Document.s3_host) do |http|
+			http.head(self.s3_url_path)
+		end.code.to_s == '200'
 	end
 
 	def s3_private?
-		Net::HTTP.get_response(
-			Document.s3_host, self.s3_path).code.to_s == '200'
+#		Net::HTTP.get_response(
+#			Document.s3_host, self.s3_path).code.to_s == '200'
+		Net::HTTP.start(Document.s3_host) do |http|
+			http.head(self.s3_path)
+		end.code.to_s == '200'
 	end
 
 end
