@@ -11,11 +11,11 @@ class PhotosControllerTest < ActionController::TestCase
 		:attributes_for_create => :factory_attributes
 	}
 
-	def factory_create
-		Factory(:photo)
+	def factory_create(options={})
+		Factory(:photo,options)
 	end
-	def factory_attributes
-		Factory.attributes_for(:photo)
+	def factory_attributes(options={})
+		Factory.attributes_for(:photo,options)
 	end
 
 	assert_access_with_https
@@ -53,7 +53,7 @@ class PhotosControllerTest < ActionController::TestCase
 
 	test "should NOT update invalid photo with #{cu} login" do
 		login_as send(cu)
-		put :update, :id => Factory(:photo).id, 
+		put :update, :id => factory_create.id, 
 			:photo => { :title => "a" }
 		assert_not_nil flash[:error]
 		assert_template 'edit'
