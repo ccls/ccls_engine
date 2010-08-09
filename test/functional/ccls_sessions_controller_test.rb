@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class SessionsControllerTest < ActionController::TestCase
+class Ccls::SessionsControllerTest < ActionController::TestCase
 	tests SessionsController
 
 	test "should logout if authenticated" do
@@ -15,5 +14,4 @@ class SessionsControllerTest < ActionController::TestCase
 		assert_redirected_to_login
 	end
 
-end
 end

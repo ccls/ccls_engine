@@ -1,3 +1,4 @@
+module Ccls
 module UcbCclsEngineController
 
 	def self.included(base)
@@ -58,6 +59,7 @@ protected
 	end
 
 end
+end
 
 require 'ssl_requirement'
 require 'application_controller'
@@ -65,4 +67,4 @@ require 'application_controller'
 ApplicationController.send(:include,SslRequirement)
 
 #	My ssl_required? overrides SslRequirement so MUST come AFTER!
-ApplicationController.send(:include,UcbCclsEngineController)
+ApplicationController.send(:include,Ccls::UcbCclsEngineController)

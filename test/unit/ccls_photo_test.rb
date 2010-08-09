@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class PhotoTest < ActiveSupport::TestCase
+class Ccls::PhotoTest < ActiveSupport::TestCase
 
 	assert_should_require(:title,
 		:model => 'Photo')
@@ -22,5 +21,4 @@ protected
 		record
 	end
 
-end
 end

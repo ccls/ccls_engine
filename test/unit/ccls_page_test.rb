@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class PageTest < ActiveSupport::TestCase
+class Ccls::PageTest < ActiveSupport::TestCase
 
 	assert_should_require(:path,:menu_en,:title_en,:body_en,
 		:model => 'Page')
@@ -183,5 +182,4 @@ protected
 	end
 	alias_method :create_object, :create_page
 
-end
 end

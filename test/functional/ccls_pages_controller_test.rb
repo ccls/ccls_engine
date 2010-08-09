@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class PagesControllerTest < ActionController::TestCase
+class Ccls::PagesControllerTest < ActionController::TestCase
 	tests PagesController
 
 	ASSERT_ACCESS_OPTIONS = {
@@ -250,5 +249,4 @@ end
 		end
 	end
 
-end
 end

@@ -1,3 +1,4 @@
+module Ccls
 module UcbCclsEngine
 
 	def self.included(base)
@@ -188,4 +189,5 @@ module UcbCclsEngine
 	end
 
 end
-ActiveRecord::Base.send( :include, UcbCclsEngine )
+end
+ActiveRecord::Base.send( :include, Ccls::UcbCclsEngine )

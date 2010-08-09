@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class RedClothExtensionTest < ActiveSupport::TestCase
+class Ccls::RedClothExtensionTest < ActiveSupport::TestCase
 
 	teardown :destroy_relative_url_root
 
@@ -62,5 +61,4 @@ protected
 		ActionController::Base.relative_url_root = ''
 	end
 
-end
 end

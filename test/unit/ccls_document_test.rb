@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class DocumentTest < ActiveSupport::TestCase
+class Ccls::DocumentTest < ActiveSupport::TestCase
 
 	assert_should_require(:title,
 		:model => 'Document')
@@ -113,5 +112,4 @@ protected
 		record
 	end
 
-end
 end

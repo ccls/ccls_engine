@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class UserInvitationMailerTest < ActionMailer::TestCase
+class Ccls::UserInvitationMailerTest < ActionMailer::TestCase
 
 #	This probably requires something like
 #		tests UserInvitationMailer
@@ -40,5 +39,4 @@ class UserInvitationMailerTest < ActionMailer::TestCase
 #		assert_nil @invitation.sent_at
 #	end
 
-end
 end

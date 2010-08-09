@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class JavascriptsControllerTest < ActionController::TestCase
+class Ccls::JavascriptsControllerTest < ActionController::TestCase
 	tests JavascriptsController
 
 	test "should get cache_helper" do
@@ -10,5 +9,4 @@ class JavascriptsControllerTest < ActionController::TestCase
 		assert_not_nil @response.body.match(/jQuery/)
 	end
 
-end
 end

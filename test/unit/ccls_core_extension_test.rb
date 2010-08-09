@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class CoreExtensionTest < ActiveSupport::TestCase
+class Ccls::CoreExtensionTest < ActiveSupport::TestCase
 
 	test "this class exists" do
 		assert class_exists?('Ccls::CoreExtensionTest')
@@ -15,5 +14,4 @@ class CoreExtensionTest < ActiveSupport::TestCase
 		assert !class_exists?('SomeBogusClass')
 	end
 
-end
 end

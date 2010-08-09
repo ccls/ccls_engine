@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class DocumentsControllerTest < ActionController::TestCase
+class Ccls::DocumentsControllerTest < ActionController::TestCase
 	tests DocumentsController
 
 	ASSERT_ACCESS_OPTIONS = {
@@ -180,5 +179,4 @@ end
 		assert_redirected_to_login
 	end
 
-end
 end

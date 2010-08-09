@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class UserInvitationsControllerTest < ActionController::TestCase
+class Ccls::UserInvitationsControllerTest < ActionController::TestCase
 	tests UserInvitationsController
 
 #	We are using UCB CAS for authentication so this is unused.
@@ -107,5 +106,4 @@ class UserInvitationsControllerTest < ActionController::TestCase
 #		assert_redirected_to new_user_path(:token => ui.token)
 #	end
 
-end
 end

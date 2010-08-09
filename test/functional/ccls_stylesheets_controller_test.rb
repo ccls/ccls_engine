@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class StylesheetsControllerTest < ActionController::TestCase
+class Ccls::StylesheetsControllerTest < ActionController::TestCase
 	tests StylesheetsController
 
 	test "should get dynamic" do
@@ -10,5 +9,4 @@ class StylesheetsControllerTest < ActionController::TestCase
 		assert_not_nil @response.body.match(/some_unlikely_dynamic_tag/)
 	end
 
-end
 end

@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class UserSessionsControllerTest < ActionController::TestCase
+class Ccls::UserSessionsControllerTest < ActionController::TestCase
 	tests UserSessionsController
 
 #	We are using UCB CAS for authentication so this is unused.
@@ -172,5 +171,4 @@ class UserSessionsControllerTest < ActionController::TestCase
 #		assert_redirected_to root_path
 #	end
 
-end
 end

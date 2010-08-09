@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class PhotosControllerTest < ActionController::TestCase
+class Ccls::PhotosControllerTest < ActionController::TestCase
 	tests PhotosController
 
 	ASSERT_ACCESS_OPTIONS = {
@@ -62,5 +61,4 @@ class PhotosControllerTest < ActionController::TestCase
 
 end
 
-end
 end

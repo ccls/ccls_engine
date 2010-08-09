@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class UserTest < ActiveSupport::TestCase
+class Ccls::UserTest < ActiveSupport::TestCase
 
 	assert_should_require(:uid,
 		:model => 'User')
@@ -299,5 +298,4 @@ protected
 	end
 	alias_method :create_object, :create_user
 	
-end
 end

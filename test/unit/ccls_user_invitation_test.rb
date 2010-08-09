@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class UserInvitationTest < ActiveSupport::TestCase
+class Ccls::UserInvitationTest < ActiveSupport::TestCase
 
 	assert_requires_valid_associations(:sender,
 		:model => 'UserInvitation')
@@ -81,5 +80,4 @@ protected
 		record
 	end
 
-end
 end

@@ -1,3 +1,4 @@
+module Ccls
 module UcbCclsEngineHelper
 
 	def form_link_to( title, url, options={} )
@@ -108,6 +109,7 @@ module UcbCclsEngineHelper
 	end
 
 end
-ActionView::Base.send(:include, UcbCclsEngineHelper)
+end
+ActionView::Base.send(:include, Ccls::UcbCclsEngineHelper)
 #require 'action_controller/helpers'
 #helper UcbCclsEngineHelper

@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class RoleTest < ActiveSupport::TestCase
+class Ccls::RoleTest < ActiveSupport::TestCase
 
 	assert_should_act_as_list(:model => 'Role')
 	assert_should_require(:name,
@@ -27,5 +26,4 @@ protected
 		record
 	end
 
-end
 end

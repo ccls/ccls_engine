@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-module Ccls
-class RolesControllerTest < ActionController::TestCase
+class Ccls::RolesControllerTest < ActionController::TestCase
 	tests RolesController
 
 %w( admin ).each do |cu|
@@ -150,5 +149,4 @@ end
 		assert_redirected_to_login
 	end
 
-end
 end
