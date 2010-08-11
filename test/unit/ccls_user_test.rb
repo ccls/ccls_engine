@@ -43,13 +43,11 @@ class Ccls::UserTest < ActiveSupport::TestCase
 		assert_difference 'User.count' do
 			user = create_user
 			user.roles << Role.find_by_name('administrator')
-			assert user.administrator?
 			assert user.may_administrate?
 			assert user.may_view_permissions?
 			assert user.may_create_user_invitations?
 			assert user.may_view_users?
 			assert user.may_assign_roles?
-			assert user.administrator?
 			assert user.is_administrator?
 #			assert user.may_edit_subjects?
 #			assert user.may_moderate?
