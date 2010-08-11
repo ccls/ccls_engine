@@ -232,15 +232,11 @@ end
 		assert_match /jQuery/, @response.body
 	end
 
-	#	Test all page fixtures for menus
-	Page.all.each do |page|
-		test "should get show for page id #{page.id}" do
-			get :show, :id => page.id
-			assert_response :success
-			assert_template 'show'
-		end
-		%w( en es ).each do |locale|
-			test "should get show for page id #{page.id} with locale #{locale}" do
+	test "should get each page in fixtures in each locale" do
+		puts
+		Page.all.each do |page|
+			[ nil,'en','es' ].each do |locale|
+				puts "- Showing page id #{page.id} with locale #{locale}"
 				session[:locale] = locale
 				get :show, :id => page.id
 				assert_response :success
