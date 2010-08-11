@@ -18,31 +18,31 @@ class Ccls::UsersControllerTest < ActionController::TestCase
 	end
 
 	assert_access_with_login({ 
-		:login => :admin })
+		:logins => [:super_user,:admin] })
 	assert_no_access_with_login({ 
-		:logins => [:moderator,:editor,:employee,:active_user] })
+		:logins => [:editor,:reader,:active_user] })
 	assert_no_access_without_login
 
 	assert_access_with_https
 	assert_no_access_with_http
 
-
-%w( admin ).each do |cu|
+#	use full role names as used in one test method
+%w( superuser administrator ).each do |cu|
 
 	test "should filter users index by role with #{cu} login" do
-		some_other_user = admin	#	active_user
+		some_other_user = send(cu)
 		login_as send(cu)
-		get :index, :role_name => 'administrator'
+		get :index, :role_name => cu
 		assert assigns(:users).length >= 2
 		assigns(:users).each do |u|
-			assert u.role_names.include?('administrator')
+			assert u.role_names.include?(cu)
 		end
 		assert_nil flash[:error]
 		assert_response :success
 	end
 
 	test "should ignore empty role_name with #{cu} login" do
-		some_other_user = admin	#	active_user
+		some_other_user = admin
 		login_as send(cu)
 		get :index, :role_name => ''
 		assert assigns(:users).length >= 2
@@ -67,7 +67,7 @@ class Ccls::UsersControllerTest < ActionController::TestCase
 
 end
 
-%w( admin moderator employee editor active_user ).each do |cu|
+%w( super_user admin reader editor active_user ).each do |cu|
 
 	test "should NOT get user info with invalid id with #{cu} login" do
 		login_as send(cu)

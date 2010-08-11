@@ -13,19 +13,17 @@ class Ccls::UserTest < ActiveSupport::TestCase
 		assert_difference 'User.count' do
 			user = create_user
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
-			assert !user.may_moderate?     #	aegis check
-			assert !user.may_administrate? #	aegis check
+			assert !user.may_administrate?
 		end
 	end
 
-	test "should create employee" do
+	test "should create reader" do
 		assert_difference 'User.count' do
 			user = create_user
-			user.roles << Role.find_by_name('employee')
-			assert  user.employee?
-			assert !user.administrator?
-			assert !user.may_moderate?      #	aegis check
-			assert !user.may_administrate? #	aegis check
+			user.roles << Role.find_by_name('reader')
+			assert  user.is_reader?
+			assert !user.is_administrator?
+			assert !user.may_administrate?
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
 		end
 	end
@@ -34,21 +32,9 @@ class Ccls::UserTest < ActiveSupport::TestCase
 		assert_difference 'User.count' do
 			user = create_user
 			user.roles << Role.find_by_name('editor')
-			assert  user.editor?
-			assert !user.administrator?
-			assert !user.may_moderate?      #	aegis check
-			assert !user.may_administrate? #	aegis check
-			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
-		end
-	end
-
-	test "should create moderator" do
-		assert_difference 'User.count' do
-			user = create_user
-			user.roles << Role.find_by_name('moderator')
-			assert !user.administrator?
-			assert user.may_moderate?      #	aegis check
-			assert !user.may_administrate? #	aegis check
+			assert  user.is_editor?
+			assert !user.is_administrator?
+			assert !user.may_administrate?
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
 		end
 	end
@@ -58,38 +44,48 @@ class Ccls::UserTest < ActiveSupport::TestCase
 			user = create_user
 			user.roles << Role.find_by_name('administrator')
 			assert user.administrator?
-			assert user.may_moderate?     #	aegis check
-			assert user.may_administrate? #	aegis check
+			assert user.may_administrate?
 			assert user.may_view_permissions?
 			assert user.may_create_user_invitations?
 			assert user.may_view_users?
 			assert user.may_assign_roles?
 			assert user.administrator?
 			assert user.is_administrator?
-			assert user.may_edit_subjects?
-			assert user.may_moderate?
-			assert user.moderator?
-			assert user.editor?
+#			assert user.may_edit_subjects?
+#			assert user.may_moderate?
+#			assert user.moderator?
+#			assert user.editor?
 			assert user.may_maintain_pages?
-			assert user.may_view_home_page_pics?
-			assert user.may_view_calendar?
-			assert user.may_view_packages?
-			assert user.may_view_subjects?
-			assert user.may_view_dust_kits?
-			assert user.may_view_home_exposures?
-			assert user.may_edit_addresses?
-			assert user.may_edit_enrollments?
-			assert user.employee?
-			assert user.may_view_responses?
-			assert user.may_take_surveys?
-			assert user.may_view_study_events?
-			assert user.may_create_survey_invitations?
+#			assert user.may_view_home_page_pics?
+#			assert user.may_view_calendar?
+#			assert user.may_view_packages?
+#			assert user.may_view_subjects?
+#			assert user.may_view_dust_kits?
+#			assert user.may_view_home_exposures?
+#			assert user.may_edit_addresses?
+#			assert user.may_edit_enrollments?
+#			assert user.employee?
+#			assert user.may_view_responses?
+#			assert user.may_take_surveys?
+#			assert user.may_view_study_events?
+#			assert user.may_create_survey_invitations?
 			assert user.may_view_user?
 			assert user.is_user?(user)
 			assert user.may_be_user?(user)
 			assert user.may_share_document?('document')
 			assert user.may_view_document?('document')
 
+			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
+		end
+	end
+
+	test "should create superuser" do
+		assert_difference 'User.count' do
+			user = create_user
+			user.roles << Role.find_by_name('superuser')
+			assert  user.is_superuser?
+			assert  user.is_super_user?
+			assert  user.may_administrate?
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
 		end
 	end

@@ -9,29 +9,31 @@ module UcbCclsEngineFactoryTestHelper
 	end
 	alias_method :user, :active_user
 
+	def superuser(options={})
+		u = active_user(options)
+		u.roles << Role.find_or_create_by_name('superuser')
+		u
+	end
+	alias_method :super_user, :superuser
+
 	def admin_user(options={})
 		u = active_user(options)
 		u.roles << Role.find_or_create_by_name('administrator')
 		u
 	end
 	alias_method :admin, :admin_user
+	alias_method :administrator, :admin_user
 
-	def employee_user(options={})
+	def reader(options={})
 		u = active_user(options)
-		u.roles << Role.find_or_create_by_name('employee')
+		u.roles << Role.find_or_create_by_name('reader')
 		u
 	end
-	alias_method :employee, :employee_user
+	alias_method :employee, :reader
 
 	def editor(options={})
 		u = active_user(options)
 		u.roles << Role.find_or_create_by_name('editor')
-		u
-	end
-
-	def moderator(options={})
-		u = active_user(options)
-		u.roles << Role.find_or_create_by_name('moderator')
 		u
 	end
 

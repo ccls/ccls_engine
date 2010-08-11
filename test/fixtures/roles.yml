@@ -3,12 +3,12 @@
 one:
   id: 1
   position: 1
-  name: administrator
+  name: superuser
 
 two:
   id: 2
   position: 2
-  name: moderator
+  name: administrator
 
 three:
   id: 3
@@ -18,5 +18,5 @@ three:
 four:
   id: 4
   position: 4
-  name: employee
+  name: reader
 

@@ -22,12 +22,12 @@ class Ccls::PagesControllerTest < ActionController::TestCase
 	assert_no_access_with_http 
 
 	assert_access_with_login(:show,{
-		:logins => [:admin,:editor]})
+		:logins => [:super_user,:admin,:editor]})
 	assert_access_with_login(:show,{
-		:logins => [:moderator,:employee,:active_user], :actions => nil})
+		:logins => [:reader,:active_user], :actions => nil})
 	assert_access_without_login( :show, { :actions => nil })
 	assert_no_access_with_login({ 
-		:logins => [:moderator,:employee,:active_user] })
+		:logins => [:reader,:active_user] })
 	assert_no_access_without_login
 
 	assert_no_access_with_login(
@@ -35,7 +35,7 @@ class Ccls::PagesControllerTest < ActionController::TestCase
 		:method_for_create => nil,
 		:actions => nil,
 		:suffix => " and invalid id",
-		:login => :admin,
+		:login => :super_user,
 		:redirect => :pages_path,
 		:edit => { :id => 0 },
 		:update => { :id => 0 },
@@ -43,7 +43,7 @@ class Ccls::PagesControllerTest < ActionController::TestCase
 	)
 
 
-%w( admin editor ).each do |cu|
+%w( super_user admin editor ).each do |cu|
 #
 #		index/new/create/edit/update/destroy 
 #			should only be visible to admins for editing
@@ -154,7 +154,7 @@ class Ccls::PagesControllerTest < ActionController::TestCase
 
 end
 
-%w( employee moderator active_user ).each do |cu|
+%w( reader active_user ).each do |cu|
 
 	test "should NOT order pages with #{cu} login" do
 		login_as send(cu)

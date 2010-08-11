@@ -3,16 +3,16 @@ require File.dirname(__FILE__) + '/../test_helper'
 class Ccls::RolesControllerTest < ActionController::TestCase
 	tests RolesController
 
-%w( admin ).each do |cu|
+%w( super_user admin ).each do |cu|
 
 	test "should update with #{cu} login" do
 		login_as send(cu)
 		u = active_user
-		assert !u.reload.role_names.include?('employee')
+		assert !u.reload.role_names.include?('reader')
 		assert_difference("User.find(#{u.id}).roles.length",1){
-			put :update, :user_id => u.id, :id => 'employee'
+			put :update, :user_id => u.id, :id => 'reader'
 		}
-		assert  u.reload.role_names.include?('employee')
+		assert  u.reload.role_names.include?('reader')
 		assert_not_nil flash[:notice]
 		assert_redirected_to user_path(assigns(:user))
 	end
@@ -20,26 +20,26 @@ class Ccls::RolesControllerTest < ActionController::TestCase
 	test "should destroy with #{cu} login" do
 		login_as send(cu)
 		u = active_user
-		u.roles << Role.find_or_create_by_name('employee')
-		assert  u.reload.role_names.include?('employee')
+		u.roles << Role.find_or_create_by_name('reader')
+		assert  u.reload.role_names.include?('reader')
 		assert_difference("User.find(#{u.id}).roles.length",-1){
-			delete :destroy, :user_id => u.id, :id => 'employee'
+			delete :destroy, :user_id => u.id, :id => 'reader'
 		}
-		assert !u.reload.role_names.include?('employee')
+		assert !u.reload.role_names.include?('reader')
 		assert_not_nil flash[:notice]
 		assert_redirected_to user_path(assigns(:user))
 	end
 
 	test "should NOT update without valid user_id with #{cu} login" do
 		login_as send(cu)
-		put :update, :user_id => 0, :id => 'employee'
+		put :update, :user_id => 0, :id => 'reader'
 		assert_not_nil flash[:error]
 		assert_redirected_to users_path
 	end
 
 	test "should NOT destroy without valid user_id with #{cu} login" do
 		login_as send(cu)
-		delete :destroy, :user_id => 0, :id => 'employee'
+		delete :destroy, :user_id => 0, :id => 'reader'
 		assert_not_nil flash[:error]
 		assert_redirected_to users_path
 	end
@@ -47,14 +47,14 @@ class Ccls::RolesControllerTest < ActionController::TestCase
 	test "should NOT update without user_id with #{cu} login" do
 		login_as send(cu)
 		assert_raise(ActionController::RoutingError){
-			put :update, :id => 'employee'
+			put :update, :id => 'reader'
 		}
 	end
 
 	test "should NOT destroy without user_id with #{cu} login" do
 		login_as send(cu)
 		assert_raise(ActionController::RoutingError){
-			delete :destroy, :id => 'employee'
+			delete :destroy, :id => 'reader'
 		}
 	end
 
@@ -62,7 +62,7 @@ class Ccls::RolesControllerTest < ActionController::TestCase
 		u = send(cu)
 		login_as u
 		assert_difference("User.find(#{u.id}).roles.length",0){
-			put :update, :user_id => u.id, :id => 'employee'
+			put :update, :user_id => u.id, :id => 'reader'
 		}
 		assert_not_nil flash[:error]
 		assert_equal u, assigns(:user)
@@ -74,7 +74,7 @@ class Ccls::RolesControllerTest < ActionController::TestCase
 		u = send(cu)
 		login_as u
 		assert_difference("User.find(#{u.id}).roles.length",0){
-			delete :destroy, :user_id => u.id, :id => 'employee'
+			delete :destroy, :user_id => u.id, :id => 'reader'
 		}
 		assert_not_nil flash[:error]
 		assert_equal u, assigns(:user)
@@ -104,7 +104,7 @@ class Ccls::RolesControllerTest < ActionController::TestCase
 
 end
 
-%w( moderator employee editor active_user ).each do |cu|
+%w( reader editor active_user ).each do |cu|
 
 	test "should NOT update with #{cu} login" do
 		login_as send(cu)
