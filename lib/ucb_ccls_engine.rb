@@ -151,11 +151,9 @@ module UcbCclsEngine
 			(self.role_names & ['superuser','administrator','editor']).length > 0
 		end
 		alias_method :may_maintain_pages?, :may_edit?
-# move to buffler#user
-#		alias_method :may_view_home_page_pics?, :editor?
 
 		def may_read?
-			(self.role_names & ['superuser','administrator','reader']).length > 0
+			(self.role_names & ['superuser','administrator','editor','reader']).length > 0
 		end
 
 		def may_view_user?(user=nil)

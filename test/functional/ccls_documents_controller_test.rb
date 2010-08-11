@@ -31,7 +31,7 @@ class Ccls::DocumentsControllerTest < ActionController::TestCase
 		:method_for_create => nil,
 		:actions => nil,
 		:suffix => " and invalid id",
-		:login => :admin,
+		:login => :superuser,
 		:redirect => :documents_path,
 		:edit => { :id => 0 },
 		:update => { :id => 0 },
