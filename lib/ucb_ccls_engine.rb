@@ -151,17 +151,21 @@ module UcbCclsEngine
 		alias_method :may_assign_roles?,            :may_administrate?
 
 		def may_edit?(*args)
-			(self.role_names & ['superuser','administrator','editor']).length > 0
+			(self.role_names & 
+				['superuser','administrator','editor']
+			).length > 0
 		end
 		alias_method :may_maintain_pages?, :may_edit?
 
 		def may_read?(*args)
-			(self.role_names & ['superuser','administrator','editor','reader']).length > 0
+			(self.role_names & 
+				['superuser','administrator','editor','reader']
+			).length > 0
 		end
 		alias_method :may_view?, :may_read?
 
 		def may_view_user?(user=nil)
-			self.is_user?(user) || self.is_administrator?
+			self.is_user?(user) || self.may_administrate?
 		end
 
 
