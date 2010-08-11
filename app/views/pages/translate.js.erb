@@ -28,7 +28,11 @@ set_locale_link(locale);
 translate = function(l){
 	if( typeof(translatables) != 'undefined' ){
 		jQuery.each(translatables, function(index,value){
+/*
 			jQuery(value.tag).html(decodeURI(value.locales[l]));
+	decodeURI mucked up decoding Entities
+*/
+			jQuery(value.tag).html(decodeURIComponent(value.locales[l]));
 			jQuery(value.tag).fadeIn('slow');	/* pointless */
 		})
 	}
