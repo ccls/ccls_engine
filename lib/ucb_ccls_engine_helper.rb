@@ -54,7 +54,7 @@ module UcbCclsEngineHelper
 
 	def user_roles
 		s = ''
-		if current_user.administrator?
+		if current_user.may_administrate?
 			s << "<ul>"
 			@roles.each do |role|
 				s << "<li>"
