@@ -33,7 +33,7 @@ namespace :app do
 		user = User.find(:first, :conditions => { :uid => ENV['uid'] })
 		puts "Found user #{user.displayname}.  Deputizing..."
 		user.deputize
-		puts "User deputized: #{user.administrator?}"
+		puts "User deputized: #{user.is_administrator?}"
 		puts
 	end
 
