@@ -114,19 +114,44 @@ class Document < ActiveRecord::Base
 	end
 
 	def s3_public?
-#		Net::HTTP.get_response(
-#			Document.s3_host, self.url_path).code.to_s == '200'
+		#
+		#		get_response will download the whole file to confirm
+		#
+		#	Net::HTTP.get_response(
+		#		Document.s3_host, self.url_path).code.to_s == '200'
+
+		#
+		#		exists? will confirm the the object exists, but not
+		#		if it is public or private
+		#
+		#	self.document.exists?
+
+		#
+		#	head works ONLY on public files
+		#
 		Net::HTTP.start(Document.s3_host) do |http|
 			http.head(self.url_path)
 		end.code.to_s == '200'
 	end
 
 	def s3_private?
-#		Net::HTTP.get_response(
-#			Document.s3_host, self.s3_path).code.to_s == '200'
-		Net::HTTP.start(Document.s3_host) do |http|
-			http.head(self.s3_path)
-		end.code.to_s == '200'
+		#
+		#		get_response will download the whole file to confirm
+		#
+		#	Net::HTTP.get_response(
+		#		Document.s3_host, self.s3_path).code.to_s == '200'
+
+		#
+		#		getting just the head is apparently forbidden for signed urls
+		#
+		#	Net::HTTP.start(Document.s3_host) do |http|
+		#		http.head(self.s3_path)
+		#	end.code.to_s == '200'
+
+		#		I we check private first, this may be the way to go.
+		#		It still doesn't check the validity of my url signing.
+		#
+		self.document.exists?
 	end
 
 end
