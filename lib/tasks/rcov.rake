@@ -27,7 +27,10 @@ namespace :test do
 		system("#{rcov} --html #{lastdir}/*_test.rb") unless lastdir.nil?
 		
 		unless PLATFORM['i386-mswin32']
-			system("open coverage/index.html") if PLATFORM['darwin']
+#	jruby-1.5.0.RC1 > PLATFORM 
+#	 => "java" 
+#			system("open coverage/index.html") if PLATFORM['darwin']
+			system("open coverage/index.html")
 		else
 			system("\"C:/Program Files/Mozilla Firefox/firefox.exe\" " +
 						 "coverage/index.html")
