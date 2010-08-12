@@ -9,40 +9,26 @@ class DocumentsController < ApplicationController
 		if @document.document.path.blank?
 			flash[:error] = "Does not contain a document"
 			redirect_to preview_document_path(@document)
-		else
+		elsif @document.document.exists?
 			if File.exists?(@document.document.path)
 				#	basically development or non-s3 setup
 				send_file @document.document.path
-#			elsif( Net::HTTP.get_response(Document.s3_host,
-#				@document.url_path).code.to_s == '200' )
-			elsif @document.s3_public?
-				#	basically a public s3 file
-				redirect_to @document.document.url
-#			elsif( Net::HTTP.get_response(Document.s3_host,
-#				@document.s3_path).code.to_s == '200' )
-			elsif @document.s3_private?
+#			elsif @document.s3_public?
+#				#	basically a public s3 file
+#				redirect_to @document.document.url
+#			elsif @document.s3_private?
 
+			else
 
 #	Privacy filters are still not active
 				#	basically a private s3 file
-				redirect_to @document.s3_url
+#				redirect_to @document.s3_url
+				redirect_to @document.document.expiring_url
 
-
-			else
-#				flash[:error] = "Document does not exist at #{@document.document.path}"
-
-#puts "Tried and failed ..."
-#puts "Document path: " + @document.document.path
-#puts "S3 Host: " + Document.s3_host
-#puts "Document url_path: " +@document.url_path
-#puts "Public Response: " + Net::HTTP.get_response(Document.s3_host, @document.url_path).code.to_s 
-#puts "Document s3_path: " + @document.s3_path
-#puts "Private Response: " + Net::HTTP.get_response(Document.s3_host, @document.s3_path).code.to_s 
-#puts "Document s3_url: " + @document.s3_url
-
-				flash[:error] = "Document does not exist at the expected location."
-				redirect_to preview_document_path(@document)
 			end
+		else
+			flash[:error] = "Document does not exist at the expected location."
+			redirect_to preview_document_path(@document)
 		end
 	end
 
