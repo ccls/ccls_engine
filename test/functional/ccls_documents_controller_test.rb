@@ -61,6 +61,40 @@ class Ccls::DocumentsControllerTest < ActionController::TestCase
 #		assert_redirected_to document.s3_url
 #	end
 
+#	Add may_download_document
+
+#	test "should get redirect to public s3 document with #{cu} login" do
+#		Document.any_instance.stubs(:s3_public?).returns(true)
+#		document = Factory(:document, :document_file_name => 'bogus_file_name')
+#		assert !File.exists?(document.document.path)
+#		login_as send(cu)
+#		get :show, :id => document.id
+#		assert_redirected_to document.document.url
+#	end
+
+	test "should get redirect to private s3 document with #{cu} login" do
+		Document.has_attached_file :document, {
+			:s3_headers => {
+				'x-amz-storage-class' => 'REDUCED_REDUNDANCY' },
+			:s3_permissions => :private,
+			:storage => :s3,
+			:s3_protocol => 'https',
+			:s3_credentials => "#{Rails.root}/config/s3.yml",
+			:bucket => 'ccls',
+			:path => "documents/:id/:filename"
+		}
+
+		document = Factory(:document, :document_file_name => 'bogus_file_name')
+		assert !document.document.exists?(document.document.path)
+		assert !File.exists?(document.document.path)
+
+		AWS::S3::S3Object.stubs(:exists?).returns(true)
+
+		login_as send(cu)
+		get :show, :id => document.id
+		assert_response :redirect
+		assert_match %r{\Ahttp(s)?://s3.amazonaws.com/ccls/documents/\d+/bogus_file_name\.\?AWSAccessKeyId=\w+&Expires=\d+&Signature=.+\z}, @response.redirected_to
+	end
 
 
 

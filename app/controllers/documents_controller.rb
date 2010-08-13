@@ -10,15 +10,13 @@ class DocumentsController < ApplicationController
 			flash[:error] = "Does not contain a document"
 			redirect_to preview_document_path(@document)
 		elsif @document.document.exists?
-			if File.exists?(@document.document.path)
+			#puts "Document exists!"
+			if @document.document.options[:storage] == :filesystem #	&&
+#				File.exists?(@document.document.path)
 				#	basically development or non-s3 setup
 				send_file @document.document.path
-#			elsif @document.s3_public?
-#				#	basically a public s3 file
-#				redirect_to @document.document.url
-#			elsif @document.s3_private?
-
 			else
+				#puts "Storage is S3?"
 
 #	Privacy filters are still not active
 				#	basically a private s3 file
