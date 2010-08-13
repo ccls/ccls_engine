@@ -85,7 +85,7 @@ class Ccls::DocumentsControllerTest < ActionController::TestCase
 		}
 
 		document = Factory(:document, :document_file_name => 'bogus_file_name')
-		assert !document.document.exists?(document.document.path)
+		assert !document.document.exists?	#(document.document.path)
 		assert !File.exists?(document.document.path)
 
 		AWS::S3::S3Object.stubs(:exists?).returns(true)
