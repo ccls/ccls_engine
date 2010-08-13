@@ -23,7 +23,7 @@ class Ccls::PhotosControllerTest < ActionController::TestCase
 
 	assert_no_access_with_http 
 	assert_no_access_with_login({ 
-		:logins => [:reader,:active_user] })
+		:logins => [:interviewer,:reader,:active_user] })
 	assert_no_access_without_login
 
 	assert_no_access_with_login(

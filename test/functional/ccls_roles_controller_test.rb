@@ -104,7 +104,7 @@ class Ccls::RolesControllerTest < ActionController::TestCase
 
 end
 
-%w( reader editor active_user ).each do |cu|
+%w( interviewer reader editor active_user ).each do |cu|
 
 	test "should NOT update with #{cu} login" do
 		login_as send(cu)

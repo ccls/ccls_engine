@@ -132,6 +132,10 @@ module UcbCclsEngine
 			self.role_names.include?('editor')
 		end
 
+		def is_interviewer?(*args)
+			self.role_names.include?('interviewer')
+		end
+
 		def is_reader?(*args)
 			self.role_names.include?('reader')
 		end
@@ -157,12 +161,23 @@ module UcbCclsEngine
 		end
 		alias_method :may_maintain_pages?, :may_edit?
 
+
+#	Add tests for may_interview and may_read
+		def may_interview?(*args)
+			(self.role_names & 
+				['superuser','administrator','editor','interviewer']
+			).length > 0
+		end
+
+#	This is pretty lame as all current roles can read
 		def may_read?(*args)
 			(self.role_names & 
-				['superuser','administrator','editor','reader']
+				['superuser','administrator','editor','interviewer','reader']
 			).length > 0
 		end
 		alias_method :may_view?, :may_read?
+
+
 
 		def may_view_user?(user=nil)
 			self.is_user?(user) || self.may_administrate?

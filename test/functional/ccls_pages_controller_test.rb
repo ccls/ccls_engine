@@ -24,10 +24,10 @@ class Ccls::PagesControllerTest < ActionController::TestCase
 	assert_access_with_login(:show,{
 		:logins => [:super_user,:admin,:editor]})
 	assert_access_with_login(:show,{
-		:logins => [:reader,:active_user], :actions => nil})
+		:logins => [:interviewer,:reader,:active_user], :actions => nil})
 	assert_access_without_login( :show, { :actions => nil })
 	assert_no_access_with_login({ 
-		:logins => [:reader,:active_user] })
+		:logins => [:interviewer,:reader,:active_user] })
 	assert_no_access_without_login
 
 	assert_no_access_with_login(
@@ -154,7 +154,7 @@ class Ccls::PagesControllerTest < ActionController::TestCase
 
 end
 
-%w( reader active_user ).each do |cu|
+%w( interviewer reader active_user ).each do |cu|
 
 	test "should NOT order pages with #{cu} login" do
 		login_as send(cu)

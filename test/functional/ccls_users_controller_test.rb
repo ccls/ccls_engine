@@ -20,7 +20,7 @@ class Ccls::UsersControllerTest < ActionController::TestCase
 	assert_access_with_login({ 
 		:logins => [:super_user,:admin] })
 	assert_no_access_with_login({ 
-		:logins => [:editor,:reader,:active_user] })
+		:logins => [:interviewer,:editor,:reader,:active_user] })
 	assert_no_access_without_login
 
 	assert_access_with_https
@@ -67,7 +67,7 @@ class Ccls::UsersControllerTest < ActionController::TestCase
 
 end
 
-%w( super_user admin reader editor active_user ).each do |cu|
+%w( super_user admin editor interviewer reader active_user ).each do |cu|
 
 	test "should NOT get user info with invalid id with #{cu} login" do
 		login_as send(cu)
