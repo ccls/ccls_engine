@@ -84,8 +84,11 @@ class Ccls::DocumentsControllerTest < ActionController::TestCase
 			:path => "documents/:id/:filename"
 		}
 
+		#	Since the REAL S3 credentials are only in production
+		#	Bad credentials make exists? return true????
+		Rails.stubs(:env).returns('production')
 		document = Factory(:document, :document_file_name => 'bogus_file_name')
-		assert !document.document.exists?	#(document.document.path)
+		assert !document.document.exists?
 		assert !File.exists?(document.document.path)
 
 		AWS::S3::S3Object.stubs(:exists?).returns(true)
