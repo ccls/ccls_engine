@@ -6,6 +6,11 @@ This is both a plugin engine and a basic rails app.
 
 * ../../aaronchi/jrails or ../jrails plugin
 
+== Required Gems
+
+* {assert_this_and_that}[http://github.com/jakewendt/assert_this_and_that]
+* {ruby_extension}[http://github.com/jakewendt/ruby_extension] - modifications, updates and patches for ruby.
+
 == Installation (as a plugin/engine)
 
  cp config/s3.yml.example config/s3.yml

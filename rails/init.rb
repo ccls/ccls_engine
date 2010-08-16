@@ -1,5 +1,9 @@
 #puts "In Rails/Init"
 
+config.gem 'jakewendt-ruby_extension',
+	:lib    => 'ruby_extension', 
+	:source => 'http://rubygems.com'
+
 config.gem "chronic"
 
 config.gem "ruby-hmac", :lib => "ruby_hmac"
