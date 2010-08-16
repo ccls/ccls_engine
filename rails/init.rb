@@ -2,7 +2,7 @@
 
 config.gem 'jakewendt-ruby_extension',
 	:lib    => 'ruby_extension', 
-	:source => 'http://rubygems.com'
+	:source => 'http://rubygems.org'
 
 config.gem "chronic"
 
