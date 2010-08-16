@@ -72,7 +72,8 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 		:source => "http://gems.github.com"
 
 	config.gem 'jakewendt-assert_this_and_that',
-		:lib => 'assert_this_and_that'
+		:lib => 'assert_this_and_that',
+		:source => 'http://rubygems.org'
 
 end
 
@@ -101,18 +102,6 @@ config.after_initialize do
 		require 'ucb_ccls_engine_factory_test_helper'
 		require 'pending'
 		require 'declarative'
-#		require 'no_access_without_login'
-#		require 'no_access_with_login'
-#		require 'access_without_login'
-#		require 'access_with_login'
-#		require 'access_with_https'
-#		require 'access_with_http'
-#		require 'no_access_with_http'
-#		require 'requires_valid_associations'
-#		require 'should_act_as_list'
-#		require 'should_associate'
-#		require 'should_require'
-	#	require 'ucb_ccls_engine_assertions'
 	end
 
 	if RUBY_PLATFORM =~ /java/i
