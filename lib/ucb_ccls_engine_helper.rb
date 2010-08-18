@@ -91,9 +91,9 @@ module UcbCclsEngineHelper
 	def stylesheets(*args)
 		@stylesheets ||= []
 		args.each do |stylesheet|
-			unless @stylesheets.include?(stylesheet)
-				@stylesheets.push(stylesheet)
-				content_for(:head,stylesheet_link_tag(stylesheet))
+			unless @stylesheets.include?(stylesheet.to_s)
+				@stylesheets.push(stylesheet.to_s)
+				content_for(:head,stylesheet_link_tag(stylesheet.to_s))
 			end
 		end
 	end
@@ -101,9 +101,9 @@ module UcbCclsEngineHelper
 	def javascripts(*args)
 		@javascripts ||= []
 		args.each do |javascript|
-			unless @javascripts.include?(javascript)
-				@javascripts.push(javascript)
-				content_for(:head,javascript_include_tag(javascript))
+			unless @javascripts.include?(javascript.to_s)
+				@javascripts.push(javascript.to_s)
+				content_for(:head,javascript_include_tag(javascript).to_s)
 			end
 		end
 	end
