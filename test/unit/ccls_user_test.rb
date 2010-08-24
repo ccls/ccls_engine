@@ -22,6 +22,20 @@ class Ccls::UserTest < ActiveSupport::TestCase
 			user = create_user
 			user.roles << Role.find_by_name('reader')
 			assert  user.is_reader?
+			assert  user.may_read?
+			assert !user.is_administrator?
+			assert !user.may_administrate?
+			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
+		end
+	end
+
+	test "should create interviewer" do
+		assert_difference 'User.count' do
+			user = create_user
+			user.roles << Role.find_by_name('interviewer')
+			assert  user.is_interviewer?
+			assert  user.may_interview?
+			assert  user.may_read?
 			assert !user.is_administrator?
 			assert !user.may_administrate?
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
@@ -33,6 +47,9 @@ class Ccls::UserTest < ActiveSupport::TestCase
 			user = create_user
 			user.roles << Role.find_by_name('editor')
 			assert  user.is_editor?
+			assert  user.may_edit?
+			assert  user.may_interview?
+			assert  user.may_read?
 			assert !user.is_administrator?
 			assert !user.may_administrate?
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
@@ -43,12 +60,16 @@ class Ccls::UserTest < ActiveSupport::TestCase
 		assert_difference 'User.count' do
 			user = create_user
 			user.roles << Role.find_by_name('administrator')
-			assert user.may_administrate?
+			assert  user.is_administrator?
+			assert  user.may_edit?
+			assert  user.may_interview?
+			assert  user.may_read?
+			assert  user.may_administrate?
+
 			assert user.may_view_permissions?
 			assert user.may_create_user_invitations?
 			assert user.may_view_users?
 			assert user.may_assign_roles?
-			assert user.is_administrator?
 #			assert user.may_edit_subjects?
 #			assert user.may_moderate?
 #			assert user.moderator?
@@ -83,6 +104,10 @@ class Ccls::UserTest < ActiveSupport::TestCase
 			user.roles << Role.find_by_name('superuser')
 			assert  user.is_superuser?
 			assert  user.is_super_user?
+			assert  user.may_administrate?
+			assert  user.may_edit?
+			assert  user.may_interview?
+			assert  user.may_read?
 			assert  user.may_administrate?
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
 		end
