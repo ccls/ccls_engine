@@ -13,13 +13,21 @@ RAILS_APP_NAME = 'ccls'
 
 Rails::Initializer.run do |config|
 
+	#	rails 3 requires i18n gem which will load
+	#	a version incompatible with 2.3.8.
+	#	It will generate several of ...
+	#	The {{key}} interpolation syntax in I18n 
+	#	messages is deprecated. Please use %{key} instead.
+	#	This must be called early, or someone else will load a newer version.
+	config.gem "i18n", :version => '=0.3.7'
+
 	config.plugin_paths = [
 		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
-		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
-		File.expand_path(File.join(File.dirname(__FILE__),'../../..','aaronchi'))
+		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter'))
+#		File.expand_path(File.join(File.dirname(__FILE__),'../../..','aaronchi'))
 	]
 	config.plugins = [:ucb_ccls_engine,
-		:jrails,
+#		:jrails,
 		:html_test,
 		:html_test_extension]
 
@@ -58,6 +66,7 @@ Rails::Initializer.run do |config|
 	else
 		config.gem "sqlite3-ruby", :lib => "sqlite3"
 	end
+	config.gem "jrails"
 	
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }

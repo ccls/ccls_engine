@@ -1,5 +1,10 @@
 #puts "In Rails/Init"
 
+#	This won't actually load, but it will cause
+#	an error if a newer version is loaded.
+#	Newer versions are incompatible with rails 2.3.8
+config.gem 'i18n', :version => '=0.3.7'
+
 config.gem 'jakewendt-ruby_extension',
 	:lib    => 'ruby_extension', 
 	:source => 'http://rubygems.org'
