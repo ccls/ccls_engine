@@ -5,6 +5,8 @@
 #	Newer versions are incompatible with rails 2.3.8
 config.gem 'i18n', :version => '=0.3.7'
 
+config.gem 'jrails'
+
 config.gem 'jakewendt-rails_helpers',
 	:lib    => 'rails_helpers', 
 	:source => 'http://rubygems.org'
