@@ -23,7 +23,8 @@
 #					File.join(File.dirname(__FILE__),'routes.rb'))
 #			#		File.join(File.dirname(__FILE__),'../..','config/routes.rb'))
 #				
-#				config.load_paths += [
+##				config.load_paths += [
+#				config.autoload_paths += [
 #					File.expand_path(
 #						File.join(File.dirname(__FILE__),'../..','app/models')),
 #					File.expand_path(

@@ -62,7 +62,8 @@ end
 #   change singleton_class back to metaclass
 # config.gem 'authlogic', :version => '>= 2.1.5'
 
-config.load_paths << File.expand_path(
+#config.load_paths << File.expand_path(
+config.autoload_paths << File.expand_path(
 	File.join(File.dirname(__FILE__),'..','/app/sweepers'))
 
 
