@@ -12,6 +12,8 @@ namespace :test do
 			rcov = "rcov --sort coverage --rails --aggregate coverage.data " <<
 							"--text-summary -Ilib -T " <<
 							"-x gems/*,db/migrate/*,jrails/*/*" <<
+							',\(eval\),\(recognize_optimized\),\(erb\)' <<    # needed in jruby
+							",yaml,yaml/*,lib/tmail/parser.y,jruby.jar!/*" << # needed in jruby
 							",html_test/*/*" <<
 							",html_test_extension/*/*"
 		else
