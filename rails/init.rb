@@ -117,7 +117,7 @@ config.after_initialize do
 		require 'ucb_ccls_engine_factories'
 		require 'ucb_ccls_engine_factory_test_helper'
 		require 'pending'
-		require 'declarative'
+#		require 'declarative'
 	end
 
 	if RUBY_PLATFORM =~ /java/i
