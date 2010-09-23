@@ -58,7 +58,7 @@ class Ccls::RedClothExtensionTest < ActiveSupport::TestCase
 protected
 
 	def destroy_relative_url_root
-		ActionController::Base.relative_url_root = ''
+		ActionController::Base.relative_url_root = nil	#''
 	end
 
 end

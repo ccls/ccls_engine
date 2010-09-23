@@ -6,7 +6,7 @@ module RedCloth::Formatters::HTML
 		end
 		link_without_prefix(opts)
 	end
-	alias_method_chain :link, :prefix
+	alias_method_chain :link, :prefix unless self.instance_methods.include?('link_without_prefix')
 
 	def image_with_prefix(opts)
 		if opts[:href] && opts[:href] =~ /^\//
@@ -17,6 +17,6 @@ module RedCloth::Formatters::HTML
 		end
 		image_without_prefix(opts)
 	end
-	alias_method_chain :image, :prefix
+	alias_method_chain :image, :prefix unless self.instance_methods.include?('image_without_prefix')
 
 end
