@@ -64,7 +64,6 @@ end
 #   change singleton_class back to metaclass
 # config.gem 'authlogic', :version => '>= 2.1.5'
 
-#config.load_paths << File.expand_path(
 config.autoload_paths << File.expand_path(
 	File.join(File.dirname(__FILE__),'..','/app/sweepers'))
 
@@ -93,12 +92,9 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 
 end
 
-
-
 config.after_initialize do
 	require 'core_extension'
 
-	#require 'route_set'
 	require 'ucb_ccls_engine'
 	#require 'auth_by_authlogic'
 	require 'auth_by_ucb_cas'
@@ -117,7 +113,6 @@ config.after_initialize do
 		require 'ucb_ccls_engine_factories'
 		require 'ucb_ccls_engine_factory_test_helper'
 		require 'pending'
-#		require 'declarative'
 	end
 
 	if RUBY_PLATFORM =~ /java/i

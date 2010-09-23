@@ -7,8 +7,6 @@ module UcbCclsEngineController
 		base.before_filter :build_menu_js
 		base.helper_method :current_user, :logged_in?
 
-#		base.helper :ucb_ccls_engine_helper
-
 	end
 
 protected

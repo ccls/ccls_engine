@@ -49,7 +49,6 @@ module Authorization
 						#	if message is nil, negate will be true
 						message ||= "Access denied.  May #{(negate)?'not ':''}" <<
 							"#{permission_name.gsub(/_/,' ')}."
-#						access_denied(message)
 						ar = auth_redirections(full_permission_name)
 						access_denied(
 							(ar[:message]||message),

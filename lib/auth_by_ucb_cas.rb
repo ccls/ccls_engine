@@ -34,14 +34,11 @@ protected
 	alias_method :login_required, :current_user_required
 
 	def current_user
-#		@current_user ||= 
-#			User.find_create_and_update_by_uid(session[:calnetuid])
 		@current_user ||= if( session[:calnetuid] )
 				User.find_create_and_update_by_uid(session[:calnetuid])
 			else
 				nil
 			end
-#		@current_user ||= User.find_or_create_by_uid(session[:calnetuid])
 	end
 
 	# This will allow the user to view the page without authentication
