@@ -6,7 +6,8 @@
 
 <td><table><tbody><tr>
 <td class='path'>
-<%= link_to page.path, ActionController::Base.relative_url_root + page.path -%>
+<%= link_to page.path, 
+	ActionController::Base.relative_url_root.to_s + page.path -%>
 </td>
 <td class='menu'>
 <%= link_to page.menu(session[:locale]), page -%>

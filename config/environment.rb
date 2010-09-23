@@ -34,7 +34,7 @@ Rails::Initializer.run do |config|
 
 	config.frameworks -= [:active_resource]
 
-	config.action_controller.relative_url_root = ''
+#	config.action_controller.relative_url_root = ''
 
 	config.routes_configuration_file = File.expand_path(
 		File.join(File.dirname(__FILE__),'..','test/config/routes.rb'))
