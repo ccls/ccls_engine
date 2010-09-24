@@ -3,6 +3,10 @@ require File.dirname(__FILE__) + '/../test_helper'
 class Ccls::RolesControllerTest < ActionController::TestCase
 	tests RolesController
 
+	#	no user_id
+	assert_no_route(:put, :update, :id => 'reader')
+	assert_no_route(:delete, :destroy, :id => 'reader')
+
 %w( super_user admin ).each do |cu|
 
 	test "should update with #{cu} login" do
@@ -42,20 +46,6 @@ class Ccls::RolesControllerTest < ActionController::TestCase
 		delete :destroy, :user_id => 0, :id => 'reader'
 		assert_not_nil flash[:error]
 		assert_redirected_to users_path
-	end
-
-	test "should NOT update without user_id with #{cu} login" do
-		login_as send(cu)
-		assert_raise(ActionController::RoutingError){
-			put :update, :id => 'reader'
-		}
-	end
-
-	test "should NOT destroy without user_id with #{cu} login" do
-		login_as send(cu)
-		assert_raise(ActionController::RoutingError){
-			delete :destroy, :id => 'reader'
-		}
 	end
 
 	test "should NOT update self with #{cu} login" do
