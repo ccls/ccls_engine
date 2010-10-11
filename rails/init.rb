@@ -96,12 +96,16 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 
 end
 
+config.gem 'jakewendt-calnet_authenticated',
+	:lib    => 'calnet_authenticated',
+	:source => 'http://rubygems.org'
+
 config.after_initialize do
 	require 'core_extension'
 
 	require 'ucb_ccls_engine'
-	#require 'auth_by_authlogic'
-	require 'auth_by_ucb_cas'
+#	#require 'auth_by_authlogic'
+#	require 'auth_by_ucb_cas'
 	require 'authorization'
 
 	require 'ucb_ccls_engine_helper'
