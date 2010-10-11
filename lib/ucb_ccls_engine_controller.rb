@@ -3,17 +3,11 @@ module UcbCclsEngineController
 
 	def self.included(base)
 
-#		base.before_filter :login_required
 		base.before_filter :build_menu_js
-#		base.helper_method :current_user, :logged_in?
 
 	end
 
 protected
-
-#	def logged_in?
-#		!current_user.nil?
-#	end
 
 	def ssl_required?
 		# Force https everywhere (that doesn't have ssl_allowed set)

@@ -49,9 +49,6 @@ module UcbCclsEngine
 			include UcbCclsEngine::InstanceMethods
 			extend  UcbCclsEngine::ClassMethods
 
-#			validates_presence_of   :uid
-#			validates_uniqueness_of :uid
-
 			has_and_belongs_to_many :roles,  :uniq => true
 #
 #	Don't do this until Group is defined!!!
@@ -65,23 +62,6 @@ module UcbCclsEngine
 	end
 
 	module ClassMethods
-
-#		#	Find or Create a user from a given uid, and then 
-#		#	proceed to update the user's information from the 
-#		#	UCB::LDAP::Person.find_by_uid(uid) response.
-#		#	
-#		#	Returns: user
-#		def find_create_and_update_by_uid(uid)
-#			user = self.find_or_create_by_uid(uid)
-#			person = UCB::LDAP::Person.find_by_uid(uid) 
-#			user.update_attributes!({
-#				:displayname     => person.displayname,
-#				:sn              => person.sn.first,
-#				:mail            => person.mail.first || '',
-#				:telephonenumber => person.telephonenumber.first
-#			})
-#			user
-#		end
 
 		def search(options={})
 			conditions = {}

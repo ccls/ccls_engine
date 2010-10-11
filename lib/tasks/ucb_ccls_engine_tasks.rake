@@ -5,7 +5,6 @@ namespace :ccls do
 #	How to make this work ONLY for apps and not self/plugin/engine.
 
 		FileUtils.mkdir_p('db/migrate') unless File.directory?('db/migrate')
-#		system "rsync -ruv vendor/plugins/ucb_ccls_engine/db/migrate db"
 		rsync_command = <<-EOF.gsub(/\s+/,' ').squish!
 			rsync -ruv 
 			--exclude='versions'
@@ -14,8 +13,6 @@ namespace :ccls do
 		system rsync_command
 
 		FileUtils.mkdir_p('public') unless File.directory?('public')
-#		system "rsync -ruv vendor/plugins/ucb_ccls_engine/public/ public/"
-#		system "rsync -ruv vendor/plugins/ucb_ccls_engine/public ."
 		rsync_command = <<-EOF.gsub(/\s+/,' ').squish!
 			rsync -ruv 
 			--exclude='versions'
