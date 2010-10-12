@@ -116,6 +116,12 @@ config.after_initialize do
 		require 'file_utils_extension'
 	end
 
+	silence_warnings {
+		#	This will complain that the constant is already defined.
+		ActionView::Helpers::AssetTagHelper::JAVASCRIPT_DEFAULT_SOURCES = [
+			'jquery','jquery-ui','jrails']
+	}
+	ActionView::Helpers::AssetTagHelper::reset_javascript_include_default
 	ActionView::Helpers::AssetTagHelper.register_javascript_include_default(
 		'ucb_ccls_engine.js')
 	ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
