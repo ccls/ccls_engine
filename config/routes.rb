@@ -23,12 +23,6 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.resources :locales, :only => :show
 
-#	map.login  'login',  :controller => 'sessions', :action => 'create'
-
-#	map.logout 'logout', :controller => 'sessions', :action => 'destroy'
-
-#	map.resources :sessions, :only => [ :destroy ]
-
 	map.resources :users, :only => [:destroy,:show,:index],
 		:collection => {
 			:menu => :get
