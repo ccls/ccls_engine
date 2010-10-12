@@ -27,13 +27,6 @@ config.gem 'ryanb-acts-as-list',
 	:lib => 'acts_as_list', 
 	:source => 'http://gems.github.com'
 
-# For CAS / CalNet Authentication
-config.gem "rubycas-client"
-
-# probably will come from http://gemcutter.org/gems/ucb_ldap
-# version 1.3.2 as of Jan 25, 2010
-config.gem "ucb_ldap", :source => "http://gemcutter.org"
-
 config.gem 'gravatar'
 
 config.gem "RedCloth"
@@ -104,8 +97,6 @@ config.after_initialize do
 	require 'core_extension'
 
 	require 'ucb_ccls_engine'
-#	#require 'auth_by_authlogic'
-#	require 'auth_by_ucb_cas'
 	require 'authorization'
 
 	require 'ucb_ccls_engine_helper'
@@ -114,8 +105,6 @@ config.after_initialize do
 	if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 		$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
 		$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test/helpers')
-	#	require 'authlogic_test_helper'
-#		require 'ucb_cas_test_helper'
 
 		require 'factory_girl'
 		require 'ucb_ccls_engine_factories'
