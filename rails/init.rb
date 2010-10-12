@@ -115,7 +115,7 @@ config.after_initialize do
 		$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
 		$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test/helpers')
 	#	require 'authlogic_test_helper'
-		require 'ucb_cas_test_helper'
+#		require 'ucb_cas_test_helper'
 
 		require 'factory_girl'
 		require 'ucb_ccls_engine_factories'
