@@ -16,6 +16,8 @@ module UcbCclsEngineController
 
 	module ClassMethods
 
+	private
+
 		def inherited_with_ccls_before_filters(base)
 			identifier = 'ccls_ensure_proper_protocol'
 			unless filter_chain.select(&:before?).map(&:identifier
@@ -35,6 +37,7 @@ module UcbCclsEngineController
 	end	#	ClassMethods
 
 	module InstanceMethods
+
 	protected
 
 		def ssl_required?
