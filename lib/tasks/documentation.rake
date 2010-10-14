@@ -41,6 +41,7 @@ namespace :doc do	|doc|
 				rdoc.options << '--charset' << 'utf-8'
 				rdoc.options << '--format'  << ENV['format']
 				rdoc.rdoc_files.include("#{plugin_base}/lib/**/*.rb")
+				rdoc.rdoc_files.include("#{plugin_base}/app/**/*.rb")
 
 				%w( README README.rdoc ).each do |readme|
 					if File.exist?("#{plugin_base}/#{readme}")
