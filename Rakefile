@@ -53,7 +53,7 @@ begin
 		gem.files += FileList['app/**/*.rb']
 		gem.files += FileList['app/**/*.erb']
 		gem.files += FileList['lib/**/*.rb']
-#		gem.files += FileList['generators/**/*']	#	this may need tightened!
+		gem.files += FileList['generators/**/*']	#	this may need tightened!
 		gem.test_files = []
 		gem.add_dependency('rails', '~> 2')
 		gem.add_dependency('i18n', '=0.3.7')
