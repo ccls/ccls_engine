@@ -1,6 +1,6 @@
 require 'ssl_requirement'
-module Ccls
-module UcbCclsEngineController
+module CclsEngine
+module Controller
 
 	def self.included(base)
 		base.extend(ClassMethods)
@@ -82,6 +82,6 @@ module UcbCclsEngineController
 		end
 
 	end	#	InstanceMethods
-end	#	UcbCclsEngineController
-end	#	Ccls
-ActionController::Base.send(:include,Ccls::UcbCclsEngineController)
+end	#	Controller
+end	#	CclsEngine
+ActionController::Base.send(:include,CclsEngine::Controller)

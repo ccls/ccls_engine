@@ -94,13 +94,13 @@ config.gem 'jakewendt-calnet_authenticated',
 	:source => 'http://rubygems.org'
 
 config.after_initialize do
-	require 'core_extension'
+#	require 'core_extension'
 
-	require 'ucb_ccls_engine'
-	require 'authorization'
+	require 'ccls_engine'
+#	require 'authorization'
 
-	require 'ucb_ccls_engine_helper'
-	require 'ucb_ccls_engine_controller'
+#	require 'ucb_ccls_engine_helper'
+#	require 'ucb_ccls_engine_controller'
 
 	if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 		$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
@@ -128,4 +128,4 @@ config.after_initialize do
 		:defaults => ['scaffold','application'] )
 end	#	config.after_initialize
 
-require 'date_and_time_formats'
+#require 'date_and_time_formats'

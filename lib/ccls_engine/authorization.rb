@@ -1,3 +1,4 @@
+module CclsEngine
 module Authorization
 
 	module Controller
@@ -64,4 +65,5 @@ module Authorization
 	end
 
 end
-ActionController::Base.send(:include,Authorization::Controller)
+end	#	CclsEngine
+ActionController::Base.send(:include,CclsEngine::Authorization::Controller)

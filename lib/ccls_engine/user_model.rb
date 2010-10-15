@@ -1,5 +1,5 @@
-module Ccls
-module UcbCclsEngine
+module CclsEngine
+module UserModel
 
 	def self.included(base)
 		base.extend(PrepMethod)
@@ -46,8 +46,8 @@ module UcbCclsEngine
 			#			'letter, one number and one special character',
 			#		:if => :password_changed?
 
-			include UcbCclsEngine::InstanceMethods
-			extend  UcbCclsEngine::ClassMethods
+			include CclsEngine::UserModel::InstanceMethods
+			extend  CclsEngine::UserModel::ClassMethods
 
 			has_and_belongs_to_many :roles,  :uniq => true
 #
@@ -189,4 +189,4 @@ module UcbCclsEngine
 
 end
 end
-ActiveRecord::Base.send( :include, Ccls::UcbCclsEngine )
+ActiveRecord::Base.send( :include, CclsEngine::UserModel )

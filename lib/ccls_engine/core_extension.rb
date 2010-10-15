@@ -1,3 +1,4 @@
+module CclsEngine
 module CoreExtension
 
 	def class_exists?(full_class_name)
@@ -10,5 +11,6 @@ module CoreExtension
 		return false
 	end
 
-end
-include CoreExtension
+end	#	CoreExtension
+end	#	CclsEngine
+include CclsEngine::CoreExtension
