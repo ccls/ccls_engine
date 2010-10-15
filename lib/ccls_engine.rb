@@ -1,5 +1,9 @@
 
-#config.gem 'i18n', :version => '=0.3.7'
+#
+#	None of this seems necessary as I think that this
+#	gems loads them automagically due to the specs.
+#
+##config.gem 'i18n', :version => '=0.3.7'
 #
 #config.gem 'jrails'
 #
@@ -21,9 +25,26 @@
 #
 #config.gem 'paperclip'
 #
+#config.gem 'ryanb-acts-as-list', 
+# :lib => 'acts_as_list', 
+# :source => 'http://gems.github.com'
 
+require 'ruby_extension'
 require 'rails_helpers'
 require 'gravatar'
+require 'calnet_authenticated'
+require 'acts_as_list'
+
+#	This doesn't seem necessary
+#%w{models controllers}.each do |dir|
+#	path = File.expand_path(File.join(File.dirname(__FILE__), '../app', dir))
+#	ActiveSupport::Dependencies.autoload_paths << path
+#end
+
+HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
+	id class style
+))
+
 require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/user_model'
@@ -32,12 +53,7 @@ require 'ccls_engine/helper'
 require 'ccls_engine/controller'
 require 'ccls_engine/redcloth/formatters/html'
 
-
-
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
-	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test')
-	$LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../test/helpers')
-
 	require 'factory_girl'
 	require 'assert_this_and_that'
 	require 'ccls_engine/factories'

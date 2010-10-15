@@ -1,1 +1,1 @@
-require 'rails/init'
+require 'lib/ccls_engine'

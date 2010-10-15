@@ -21,9 +21,9 @@
 #
 #config.gem 'ssl_requirement'
 
-config.gem 'ryanb-acts-as-list', 
-	:lib => 'acts_as_list', 
-	:source => 'http://gems.github.com'
+#config.gem 'ryanb-acts-as-list', 
+#	:lib => 'acts_as_list', 
+#	:source => 'http://gems.github.com'
 
 #config.gem 'gravatar'
 #
@@ -31,41 +31,43 @@ config.gem 'ryanb-acts-as-list',
 #
 #config.gem 'paperclip'
 #
-config.autoload_paths << File.expand_path(
-	File.join(File.dirname(__FILE__),'..','/app/sweepers'))
+#	I don't have a sweepers dir any more
+#
+#config.autoload_paths << File.expand_path(
+#	File.join(File.dirname(__FILE__),'..','/app/sweepers'))
 
 
 #	This works in the app's config/environment.rb ...
 #config.action_view.sanitized_allowed_attributes = 'id', 'class', 'style'
 #	but apparently not here, so ...
-HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
-	id class style
-))
+# HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
+#	id class style
+#))
 
-config.reload_plugins = true if RAILS_ENV == 'development'
+#config.reload_plugins = true if RAILS_ENV == 'development'
 
 #	Load the gems before the files that need them!
 
 
-if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
-
-	config.gem "thoughtbot-factory_girl",
-		:lib    => "factory_girl",
-		:source => "http://gems.github.com"
-
-	config.gem 'jakewendt-assert_this_and_that',
-		:lib => 'assert_this_and_that',
-		:source => 'http://rubygems.org'
-
-end
-
-config.gem 'jakewendt-calnet_authenticated',
-	:lib    => 'calnet_authenticated',
-	:source => 'http://rubygems.org'
-
-
+#if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
+#
+#	config.gem "thoughtbot-factory_girl",
+#		:lib    => "factory_girl",
+#		:source => "http://gems.github.com"
+#
+#	config.gem 'jakewendt-assert_this_and_that',
+#		:lib => 'assert_this_and_that',
+#		:source => 'http://rubygems.org'
+#
+#end
+#
+#config.gem 'jakewendt-calnet_authenticated',
+#	:lib    => 'calnet_authenticated',
+#	:source => 'http://rubygems.org'
 
 
-config.after_initialize do
+
+
+#config.after_initialize do
 	require 'ccls_engine'
-end	#	config.after_initialize
+#end	#	config.after_initialize
