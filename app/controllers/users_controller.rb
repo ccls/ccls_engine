@@ -3,8 +3,12 @@ class UsersController < ApplicationController
 #ActionView::TemplateError (A copy of ApplicationHelper has been removed from the module tree but is still active!) on line #2 of app/views/layouts/_header.html.erb:
 #	Adding 'unloadable' fixes the above, but I don't know what it
 #	is actually doing.  I'll probably have to do this to the others.
+#	'unloadable' means that its loaded only when needed
+#	Referencing an unloaded model sometimes causes the above
+#	so I just add "require" statements where needed.
+#	I don't think that this is needed anymore.
 
-	unloadable
+#	unloadable
 
 	skip_before_filter :login_required, :only => :menu
 	skip_before_filter :build_menu_js,  :only => :menu
