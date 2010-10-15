@@ -54,6 +54,8 @@ require 'ccls_engine/controller'
 require 'ccls_engine/redcloth/formatters/html'
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
+	require 'active_support'
+	require 'active_support/test_case'
 	require 'factory_girl'
 	require 'assert_this_and_that'
 	require 'ccls_engine/factories'
