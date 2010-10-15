@@ -1,3 +1,4 @@
+require 'redcloth'
 module RedCloth::Formatters::HTML
 
 	def link_with_prefix(opts)

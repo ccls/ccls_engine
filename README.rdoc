@@ -2,6 +2,17 @@
 
 This is both a plugin engine and a basic rails app.
 
+
+
+== ToDo
+
+I am converting this to a gem, primarily for convenience,
+so some things will need changed.
+
+* create a generator and remove the rsync stuff
+
+
+
 == Expectations
 
 * ../../aaronchi/jrails or ../jrails plugin
@@ -24,5 +35,22 @@ This is both a plugin engine and a basic rails app.
  rake db:fixtures:load
  rake test
  script/server
+
+
+
+== Gemified with Jeweler
+
+ vi Rakefile
+ rake version:write
+
+ rake version:bump:patch
+ rake version:bump:minor
+ rake version:bump:major
+
+ rake gemspec
+
+ rake install
+ rake release
+
 
 Copyright (c) 2010 [Jake Wendt], released under the MIT license
