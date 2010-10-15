@@ -9,7 +9,7 @@ This is both a plugin engine and a basic rails app.
 I am converting this to a gem, primarily for convenience,
 so some things will need changed.
 
-* create a generator and remove the rsync stuff
+* create a generator and remove the rake rsync stuff
 
 
 
