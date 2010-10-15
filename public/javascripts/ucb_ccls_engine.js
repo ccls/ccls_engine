@@ -5,7 +5,11 @@ jQuery(function(){
 	});
 
 	jQuery('form.destroy_link_to').submit(function(){
-		if( !confirm('Seriously?') ){
+		var message = "Destroy?  Seriously?"
+		if( this.confirm && this.confirm.value ) {
+			message = this.confirm.value
+		}
+		if( !confirm(message) ){
 			return false;
 		}
 	});
