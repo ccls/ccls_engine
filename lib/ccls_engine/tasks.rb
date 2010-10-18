@@ -1,1 +1,1 @@
-Dir["#{File.dirname(__FILE__)}../tasks/**/*.rake"].sort.each { |ext| load ext }
+Dir["#{File.dirname(__FILE__)}/../tasks/**/*.rake"].sort.each { |ext| load ext }
