@@ -13,11 +13,6 @@ so some things will need changed.
 * append Rakefile with generator
 
 
-
-== Expectations
-
-* ../../aaronchi/jrails or ../jrails plugin
-
 == Required Gems
 
 * {assert_this_and_that}[http://github.com/jakewendt/assert_this_and_that]

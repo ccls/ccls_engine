@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + '/../../test_helper'
 
 class Ccls::StylesheetsControllerTest < ActionController::TestCase
 	tests StylesheetsController

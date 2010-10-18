@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + '/../../test_helper'
 
 class Ccls::DocumentsControllerTest < ActionController::TestCase
 	tests DocumentsController
@@ -141,7 +141,7 @@ class Ccls::DocumentsControllerTest < ActionController::TestCase
 	test "should download document by id with document and #{cu} login" do
 		document = Document.create!(Factory.attributes_for(:document, 
 			:document => File.open(File.dirname(__FILE__) + 
-				'/../assets/edit_save_wireframe.pdf')))
+				'/../../assets/edit_save_wireframe.pdf')))
 		login_as send(cu)
 		get :show, :id => document.reload.id
 		assert_nil flash[:error]
@@ -153,7 +153,7 @@ class Ccls::DocumentsControllerTest < ActionController::TestCase
 	test "should download document by name with document and #{cu} login" do
 		document = Document.create!(Factory.attributes_for(:document, 
 			:document => File.open(File.dirname(__FILE__) + 
-				'/../assets/edit_save_wireframe.pdf')))
+				'/../../assets/edit_save_wireframe.pdf')))
 		login_as send(cu)
 		get :show, :id => 'edit_save_wireframe',
 			:format => 'pdf'

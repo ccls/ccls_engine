@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + '/../../test_helper'
 
 class Ccls::JavascriptsControllerTest < ActionController::TestCase
 	tests JavascriptsController
