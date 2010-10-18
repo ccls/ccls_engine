@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-10-15}
+  s.date = %q{2010-10-18}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -68,6 +68,8 @@ Gem::Specification.new do |s|
      "config/document.yml",
      "config/photo.yml",
      "config/routes.rb",
+     "generators/ccls_engine/USAGE",
+     "generators/ccls_engine/ccls_engine_generator.rb",
      "lib/ccls_engine.rb",
      "lib/ccls_engine/authorization.rb",
      "lib/ccls_engine/controller.rb",
@@ -79,7 +81,13 @@ Gem::Specification.new do |s|
      "lib/ccls_engine/helper.rb",
      "lib/ccls_engine/pending.rb",
      "lib/ccls_engine/redcloth/formatters/html.rb",
-     "lib/ccls_engine/user_model.rb"
+     "lib/ccls_engine/tasks.rb",
+     "lib/ccls_engine/user_model.rb",
+     "lib/tasks/application.rake",
+     "lib/tasks/database.rake",
+     "lib/tasks/documentation.rake",
+     "lib/tasks/rcov.rake",
+     "lib/tasks/ucb_ccls_engine_tasks.rake"
   ]
   s.homepage = %q{http://github.com/jakewendt/ucb_ccls_engine}
   s.rdoc_options = ["--charset=UTF-8"]
