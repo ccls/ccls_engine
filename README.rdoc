@@ -10,6 +10,7 @@ I am converting this to a gem, primarily for convenience,
 so some things will need changed.
 
 * create a generator and remove the rake rsync stuff
+* append Rakefile with generator
 
 
 
@@ -21,6 +22,22 @@ so some things will need changed.
 
 * {assert_this_and_that}[http://github.com/jakewendt/assert_this_and_that]
 * {ruby_extension}[http://github.com/jakewendt/ruby_extension] - modifications, updates and patches for ruby.
+* rails ~> 2
+* i18n =0.3.7
+* jrails
+* chronic
+* ruby-hmac
+* aws-s3
+* ssl_requirement
+* ryanb-acts-as-list
+* gravatar
+* RedCloth
+* paperclip
+* thoughtbot-factory_girl
+* jakewendt-rails_helpers
+* jakewendt-ruby_extension
+* jakewendt-assert_this_and_that
+* jakewendt-calnet_authenticated
 
 == Installation (as a plugin/engine)
 
