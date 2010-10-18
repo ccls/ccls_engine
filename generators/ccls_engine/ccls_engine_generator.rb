@@ -58,3 +58,17 @@ class CclsEngineGenerator < Rails::Generator::Base
 #	where does "file_path" come from?
 
 end
+class Rails::Generator::Commands::Base
+protected
+	#	the loop through migrations happens so fast
+	#	that they all have the same timestamp which
+	#	won't work when you actually try to migrate.
+	#	All the timestamps MUST be unique.
+	def next_migration_string(padding = 3)
+		@s = (!@s.nil?)? @s.to_i + 1 : if ActiveRecord::Base.timestamped_migrations
+			Time.now.utc.strftime("%Y%m%d%H%M%S")
+		else
+			"%.#{padding}d" % next_migration_number
+		end
+	end
+end
