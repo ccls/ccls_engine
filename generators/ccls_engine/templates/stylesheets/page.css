@@ -1,0 +1,17 @@
+input[type='text'],
+textarea {
+	width: 99%;
+}
+
+div.parent {
+	float:left;
+}
+div.locale {
+	float:left;
+}
+div.hide_menu {
+	float:right;
+}
+div.fields {
+	clear:left;
+}

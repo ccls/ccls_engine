@@ -1,0 +1,97 @@
+
+.flash {
+	/* http://css-radius.heroku.com */
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	padding: 0.7em;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12pt;
+}
+.flash#error {
+	border: 2px solid #F44;
+	background-color: #FCC;
+}
+.flash#notice {
+	border: 2px solid #4F4;
+	background-color: #CFC;
+}
+.flash#noscript {
+	border: 2px solid #FF8C00;
+	background-color: #FFC5AF;
+}
+
+fieldset {
+	/* http://css-radius.heroku.com */
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+p > small {
+	color: gray;
+	font-size: 6pt;
+}
+
+div.header {
+	clear:both;
+	padding: 6px;
+}
+.row {
+	clear:left;
+	border: 1px solid silver;
+	border-top: 0;
+	padding: 6px;
+	overflow: auto;
+}
+.row div.manage {
+	text-align:right;
+}
+.row:nth-child(1) {
+	border-top: 1px solid silver;
+}
+.row:nth-child(2n)   { background-color: #EEE; }
+.row:nth-child(2n+1) { background-color: #DDD; }
+
+table {
+	border-collapse:collapse;
+	width: 100%;
+}
+tr.row td {
+	padding: 6px;
+}
+td.manage {
+	text-align:right;
+}
+
+form.link_to {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+div.pagination {
+	text-align: center;
+}
+
+
+/* http://www.positioniseverything.net/articles/onetruelayout/equalheight */
+.equal_height_column_wrapper {
+	overflow:hidden;
+}
+.equal_height_column {
+	padding-bottom: 32767px;
+	margin-bottom: -32767px;
+}
+
+
+.columns {
+	clear:both;
+}
+.columns > div {
+	float:left;
+	display:table;
+}
+.columns > div:last-child {
+	float:none;
+}

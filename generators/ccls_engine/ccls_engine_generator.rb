@@ -15,10 +15,25 @@ class CclsEngineGenerator < Rails::Generator::Base
 		#	rails-2.3.10/lib/rails_generator/commands.rb
 		#	for code methods for record (Manifest)
 		record do |m|
-			m.directory('test/unit/ccls')
-			Dir["#{File.dirname(__FILE__)}/templates/unit/*rb"].each{|file| 
+
+			%w( create_users create_pages create_user_invitations
+				create_roles create_roles_users create_photos
+				add_attachments_image_to_photo create_documents
+				add_attachments_document_to_document ).each do |migration|
+				m.migration_template "migrations/#{migration}.rb",
+					'db/migrate', 
+					:migration_file_name => migration
+			end
+
+			m.directory('public/javascripts')
+			Dir["#{File.dirname(__FILE__)}/templates/javascripts/*js"].each{|file| 
 				f = file.split('/').slice(-2,2).join('/')
-				m.file(f, "test/unit/ccls/#{File.basename(file)}")
+				m.file(f, "public/javascripts/#{File.basename(file)}")
+			}
+			m.directory('public/stylesheets')
+			Dir["#{File.dirname(__FILE__)}/templates/stylesheets/*css"].each{|file| 
+				f = file.split('/').slice(-2,2).join('/')
+				m.file(f, "public/stylesheets/#{File.basename(file)}")
 			}
 			m.directory('test/functional/ccls')
 			Dir["#{File.dirname(__FILE__)}/templates/functional/*rb"].each{|file| 
@@ -26,7 +41,6 @@ class CclsEngineGenerator < Rails::Generator::Base
 				m.file(f, "test/functional/ccls/#{File.basename(file)}")
 			}
 
-#			m.file('unit_tests', 'test/unit/ccls/ccls')
 #			m.file('application.css', 'public/stylesheets/application.css')
 #			m.migration_template 'migration.rb', 'db/migrate', 
 #				:migration_file_name => "add_calnet_authenticated_columns_to_#{file_path.gsub(/\//, '_').pluralize}"
