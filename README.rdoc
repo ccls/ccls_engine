@@ -29,6 +29,11 @@ so some things will need changed.
 
  rake ccls:sync   # can and will overwrite contents in /db/ and /public/
 
+
+Add ... to Rakefile (puts this in generator)
+
+ require 'ccls_engine/tasks'
+
 == Testing (as an app)
 
  rake db:migrate
