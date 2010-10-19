@@ -76,8 +76,13 @@ begin
 #		Gem.sources << 'http://gems.github.com'
 #		Gem.configuration.write
 #
-		gem.add_dependency('rails', '~> 2')
 		gem.add_dependency('i18n', '=0.3.7')
+		gem.add_dependency('rails', '~> 2')
+		gem.add_dependency('activerecord', '~> 2')
+		gem.add_dependency('activeresource', '~> 2')
+		gem.add_dependency('activesupport', '~> 2')
+		gem.add_dependency('actionmailer', '~> 2')
+		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')
 		gem.add_dependency('jakewendt-rails_helpers')
 		gem.add_dependency('jakewendt-ruby_extension')

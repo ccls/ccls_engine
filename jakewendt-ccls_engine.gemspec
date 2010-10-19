@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "0.2.3"
+  s.version = "0.2.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -142,8 +142,13 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails>, ["~> 2"])
       s.add_runtime_dependency(%q<i18n>, ["= 0.3.7"])
+      s.add_runtime_dependency(%q<rails>, ["~> 2"])
+      s.add_runtime_dependency(%q<activerecord>, ["~> 2"])
+      s.add_runtime_dependency(%q<activeresource>, ["~> 2"])
+      s.add_runtime_dependency(%q<activesupport>, ["~> 2"])
+      s.add_runtime_dependency(%q<actionmailer>, ["~> 2"])
+      s.add_runtime_dependency(%q<actionpack>, ["~> 2"])
       s.add_runtime_dependency(%q<jrails>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-rails_helpers>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
@@ -159,8 +164,13 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<jakewendt-assert_this_and_that>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
     else
-      s.add_dependency(%q<rails>, ["~> 2"])
       s.add_dependency(%q<i18n>, ["= 0.3.7"])
+      s.add_dependency(%q<rails>, ["~> 2"])
+      s.add_dependency(%q<activerecord>, ["~> 2"])
+      s.add_dependency(%q<activeresource>, ["~> 2"])
+      s.add_dependency(%q<activesupport>, ["~> 2"])
+      s.add_dependency(%q<actionmailer>, ["~> 2"])
+      s.add_dependency(%q<actionpack>, ["~> 2"])
       s.add_dependency(%q<jrails>, [">= 0"])
       s.add_dependency(%q<jakewendt-rails_helpers>, [">= 0"])
       s.add_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
@@ -177,8 +187,13 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rails>, ["~> 2"])
     s.add_dependency(%q<i18n>, ["= 0.3.7"])
+    s.add_dependency(%q<rails>, ["~> 2"])
+    s.add_dependency(%q<activerecord>, ["~> 2"])
+    s.add_dependency(%q<activeresource>, ["~> 2"])
+    s.add_dependency(%q<activesupport>, ["~> 2"])
+    s.add_dependency(%q<actionmailer>, ["~> 2"])
+    s.add_dependency(%q<actionpack>, ["~> 2"])
     s.add_dependency(%q<jrails>, [">= 0"])
     s.add_dependency(%q<jakewendt-rails_helpers>, [">= 0"])
     s.add_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
