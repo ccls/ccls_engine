@@ -43,7 +43,8 @@ module ResourcefulController
 				instance_variable_get("@#{resource.singular}").send(
 					:update_attributes!,params[resource.singular])
 				flash[:notice] = 'Success!'
-				redirect_to send("#{resource.plural}_path")
+				redirect_to send(options[:update_redirect]||
+					"#{resource.plural}_path")
 			rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
 				flash.now[:error] = "There was a problem updating " <<
 					"the #{resource.singular}"
