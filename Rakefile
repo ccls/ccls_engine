@@ -57,6 +57,25 @@ begin
 		gem.files += FileList['generators/**/*']
 		gem.files -= FileList['**/versions/*']
 		gem.test_files = []
+#
+#	It would be really nice if there was a way to
+#	add a source here as ryanb-acts-as-list is on
+#	http://gems.github.com which is rare now.
+#	
+#	Something like ...
+#
+#		gem.add_source('http://gems.github.com')
+#
+#	or
+#
+#		gem.add_dependency('ryanb-acts-as-list',
+#			:source => 'http://gems.github.com')
+#
+#	Perhaps I can just jam this in somewhere!
+#
+#		Gem.sources << 'http://gems.github.com'
+#		Gem.configuration.write
+#
 		gem.add_dependency('rails', '~> 2')
 		gem.add_dependency('i18n', '=0.3.7')
 		gem.add_dependency('jrails')
