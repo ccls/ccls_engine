@@ -13,6 +13,11 @@ so some things will need changed.
 * append Rakefile with generator
 
 
+== Required Gem Sources
+
+ gem sources -a http://rubygems.org
+ gem sources -a http://gems.github.com
+
 == Required Gems
 
 * {assert_this_and_that}[http://github.com/jakewendt/assert_this_and_that]
