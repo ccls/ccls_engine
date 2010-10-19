@@ -21,9 +21,3 @@
 .row:nth-child(2n+1).editor        { background-color: #CDD; }
 .row:nth-child(2n).employee        { background-color: #FDD; }
 .row:nth-child(2n+1).employee      { background-color: #EDD; }
-/*
-.row:nth-child(2n).administrator   { background-color: #EEE; }
-.row:nth-child(2n+1).administrator { background-color: #DDD; }
-.row:nth-child(2n).administrator   { background-color: #EEE; }
-.row:nth-child(2n+1).administrator { background-color: #DDD; }
-*/
