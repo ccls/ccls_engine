@@ -21,24 +21,22 @@ Rails::Initializer.run do |config|
 	#	This must be called early, or someone else will load a newer version.
 	config.gem "i18n", :version => '=0.3.7'
 
+	config.gem 'jakewendt-authorized',
+		:lib => 'authorized'
+
 	config.plugin_paths = [
 		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
 		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter'))
-#		File.expand_path(File.join(File.dirname(__FILE__),'../../..','aaronchi'))
 	]
 	config.plugins = [:ucb_ccls_engine,
-#		:jrails,
 		:html_test,
 		:html_test_extension]
 
 	config.frameworks -= [:active_resource]
 
-#	config.action_controller.relative_url_root = ''
-
 	config.routes_configuration_file = File.expand_path(
 		File.join(File.dirname(__FILE__),'..','test/config/routes.rb'))
 
-#	config.load_paths += [
 	config.autoload_paths += [
 		File.expand_path(
 			File.join(File.dirname(__FILE__),'..','test/app/models')),

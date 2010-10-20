@@ -86,6 +86,7 @@ begin
 		gem.add_dependency('jrails')
 		gem.add_dependency('jakewendt-rails_helpers')
 		gem.add_dependency('jakewendt-ruby_extension')
+		gem.add_dependency('jakewendt-authorized')
 		gem.add_dependency('chronic')
 		gem.add_dependency('ruby-hmac')
 		gem.add_dependency('aws-s3')
