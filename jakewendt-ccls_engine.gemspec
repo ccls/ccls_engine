@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "0.2.6"
+  s.version = "0.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -20,14 +20,12 @@ Gem::Specification.new do |s|
      "app/controllers/javascripts_controller.rb",
      "app/controllers/locales_controller.rb",
      "app/controllers/pages_controller.rb",
-     "app/controllers/photos_controller.rb",
      "app/controllers/stylesheets_controller.rb",
      "app/controllers/user_invitations_controller.rb",
      "app/controllers/users_controller.rb",
      "app/models/document.rb",
      "app/models/page.rb",
      "app/models/page_sweeper.rb",
-     "app/models/photo.rb",
      "app/models/user_invitation.rb",
      "app/models/user_invitation_mailer.rb",
      "app/models/user_session.rb",
@@ -47,12 +45,6 @@ Gem::Specification.new do |s|
      "app/views/pages/new.html.erb",
      "app/views/pages/show.html.erb",
      "app/views/pages/translate.js.erb",
-     "app/views/photos/_form.html.erb",
-     "app/views/photos/_photo.html.erb",
-     "app/views/photos/edit.html.erb",
-     "app/views/photos/index.html.erb",
-     "app/views/photos/new.html.erb",
-     "app/views/photos/show.html.erb",
      "app/views/stylesheets/dynamic.css.erb",
      "app/views/user_invitation_mailer/invitation.erb",
      "app/views/user_invitations/new.html.erb",
@@ -72,7 +64,6 @@ Gem::Specification.new do |s|
      "generators/ccls_engine/templates/functional/javascripts_controller_test.rb",
      "generators/ccls_engine/templates/functional/locales_controller_test.rb",
      "generators/ccls_engine/templates/functional/pages_controller_test.rb",
-     "generators/ccls_engine/templates/functional/photos_controller_test.rb",
      "generators/ccls_engine/templates/functional/roles_controller_test.rb",
      "generators/ccls_engine/templates/functional/sessions_controller_test.rb",
      "generators/ccls_engine/templates/functional/stylesheets_controller_test.rb",
@@ -84,23 +75,19 @@ Gem::Specification.new do |s|
      "generators/ccls_engine/templates/javascripts/pages.js",
      "generators/ccls_engine/templates/javascripts/ucb_ccls_engine.js",
      "generators/ccls_engine/templates/migrations/add_attachments_document_to_document.rb",
-     "generators/ccls_engine/templates/migrations/add_attachments_image_to_photo.rb",
      "generators/ccls_engine/templates/migrations/create_documents.rb",
      "generators/ccls_engine/templates/migrations/create_pages.rb",
-     "generators/ccls_engine/templates/migrations/create_photos.rb",
      "generators/ccls_engine/templates/migrations/create_user_invitations.rb",
      "generators/ccls_engine/templates/migrations/create_users.rb",
      "generators/ccls_engine/templates/stylesheets/documents.css",
      "generators/ccls_engine/templates/stylesheets/page.css",
      "generators/ccls_engine/templates/stylesheets/pages.css",
-     "generators/ccls_engine/templates/stylesheets/photos.css",
      "generators/ccls_engine/templates/stylesheets/shared.css",
      "generators/ccls_engine/templates/stylesheets/user.css",
      "generators/ccls_engine/templates/stylesheets/users.css",
      "generators/ccls_engine/templates/unit/core_extension_test.rb",
      "generators/ccls_engine/templates/unit/document_test.rb",
      "generators/ccls_engine/templates/unit/page_test.rb",
-     "generators/ccls_engine/templates/unit/photo_test.rb",
      "generators/ccls_engine/templates/unit/redcloth_extension_test.rb",
      "generators/ccls_engine/templates/unit/role_test.rb",
      "generators/ccls_engine/templates/unit/user_invitation_mailer_test.rb",
@@ -130,14 +117,14 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/jakewendt/ucb_ccls_engine}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{one-line summary of your gem}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<i18n>, ["= 0.3.7"])
       s.add_runtime_dependency(%q<rails>, ["~> 2"])
       s.add_runtime_dependency(%q<activerecord>, ["~> 2"])
