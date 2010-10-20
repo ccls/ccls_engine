@@ -14,5 +14,5 @@ FileUtils.module_eval do
         rm(src)
       end
     end
-  end
+  end unless FileUtils.methods.include?('built_in_mv')
 end
