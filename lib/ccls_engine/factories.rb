@@ -14,9 +14,9 @@ Factory.define :page do |f|
 	f.body_en  "Page Body"
 end
 
-Factory.define :role do |f|
-	f.sequence(:name) { |n| "name#{n}" }
-end
+#Factory.define :role do |f|
+#	f.sequence(:name) { |n| "name#{n}" }
+#end
 
 Factory.define :user do |f|
 	f.sequence(:uid) { |n| "UID#{n}" }

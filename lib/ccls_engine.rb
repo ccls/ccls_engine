@@ -31,7 +31,7 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'factory_girl'
 	require 'assert_this_and_that'
 	require 'ccls_engine/factories'
-	require 'ccls_engine/factory_test_helper'
+#	require 'ccls_engine/factory_test_helper'
 	require 'ccls_engine/pending'
 end
 
