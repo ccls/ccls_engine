@@ -12,10 +12,11 @@ module CclsEngine
 end
 
 #	This doesn't seem necessary
-#%w{models controllers}.each do |dir|
-#	path = File.expand_path(File.join(File.dirname(__FILE__), '../app', dir))
-#	ActiveSupport::Dependencies.autoload_paths << path
-#end
+%w{models controllers}.each do |dir|
+	path = File.expand_path(File.join(File.dirname(__FILE__), '../app', dir))
+	ActiveSupport::Dependencies.autoload_paths << path
+	ActiveSupport::Dependencies.autoload_once_paths << path
+end
 
 HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
 	id class style
@@ -57,3 +58,8 @@ if defined? ::Paperclip::Glue
 else
 	ActiveRecord::Base.send(:include, ::Paperclip)
 end
+
+ActionController::Routing::Routes.add_configuration_file(
+	File.expand_path(
+		File.join(
+			File.dirname(__FILE__), '../config/routes.rb')))
