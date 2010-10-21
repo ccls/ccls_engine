@@ -21,16 +21,15 @@ Rails::Initializer.run do |config|
 	#	This must be called early, or someone else will load a newer version.
 	config.gem "i18n", :version => '=0.3.7'
 
-	config.gem 'jakewendt-authorized',
-		:lib => 'authorized'
+#	config.gem 'jakewendt-authorized',
+#		:lib => 'authorized'
 
 	config.plugin_paths = [
 		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
 		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter'))
 	]
 	config.plugins = [:ucb_ccls_engine,
-		:html_test,
-		:html_test_extension]
+		:html_test, :html_test_extension]
 
 	config.frameworks -= [:active_resource]
 
@@ -67,7 +66,7 @@ Rails::Initializer.run do |config|
 	else
 		config.gem "sqlite3-ruby", :lib => "sqlite3"
 	end
-	config.gem "jrails"
+#	config.gem "jrails"
 	
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }
