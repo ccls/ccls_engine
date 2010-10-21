@@ -18,11 +18,7 @@ HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
 require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/user_model'
-#require 'ccls_engine/authorization'
 require 'ccls_engine/helper'
-#require 'ccls_engine/controller'
-#require 'ccls_engine/resourceful_controller'
-#require 'ccls_engine/permissive_controller'
 require 'ccls_engine/redcloth/formatters/html'
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
@@ -31,7 +27,6 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'factory_girl'
 	require 'assert_this_and_that'
 	require 'ccls_engine/factories'
-#	require 'ccls_engine/factory_test_helper'
 	require 'ccls_engine/pending'
 end
 

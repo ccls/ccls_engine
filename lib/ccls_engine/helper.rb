@@ -1,5 +1,5 @@
-module Ccls
-module UcbCclsEngineHelper
+module CclsEngine
+module Helper
 
 	def user_roles
 		s = ''
@@ -25,4 +25,4 @@ module UcbCclsEngineHelper
 
 end
 end
-ActionView::Base.send(:include, Ccls::UcbCclsEngineHelper)
+ActionView::Base.send(:include, CclsEngine::Helper)

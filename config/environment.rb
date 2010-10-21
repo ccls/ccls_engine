@@ -44,17 +44,17 @@ Rails::Initializer.run do |config|
 			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
 	]
 
-	config.eager_load_paths += [
-		File.expand_path(
-			File.join(File.dirname(__FILE__),'..','test/app/models')),
-		File.expand_path(
-			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
-	]
-
-	config.controller_paths += [
-		File.expand_path(
-			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
-	]
+#	config.eager_load_paths += [
+#		File.expand_path(
+#			File.join(File.dirname(__FILE__),'..','test/app/models')),
+#		File.expand_path(
+#			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
+#	]
+#
+#	config.controller_paths += [
+#		File.expand_path(
+#			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
+#	]
 
 	if RUBY_PLATFORM =~ /java/
 		#	I'm surprised that I don't need this in my apps.

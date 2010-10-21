@@ -3,9 +3,9 @@ Factory.define :document do |f|
 #	f.sequence(:document_file_name) { |n| "document_file_name#{n}" }
 end
 
-Factory.define :photo do |f|
-	f.sequence(:title) { |n| "Title#{n}" }
-end
+#Factory.define :photo do |f|
+#	f.sequence(:title) { |n| "Title#{n}" }
+#end
 
 Factory.define :page do |f|
 	f.sequence(:path) { |n| "/path#{n}" }
