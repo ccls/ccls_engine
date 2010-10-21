@@ -4,6 +4,12 @@ require 'authorized'
 require 'gravatar'
 require 'calnet_authenticated'
 require 'acts_as_list'
+module Ccls
+#	predefine namespace
+end
+module CclsEngine
+#	predefine namespace
+end
 
 #	This doesn't seem necessary
 #%w{models controllers}.each do |dir|
