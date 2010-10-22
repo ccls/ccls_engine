@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "0.2.8"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-10-21}
+  s.date = %q{2010-10-22}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -18,14 +18,10 @@ Gem::Specification.new do |s|
   s.files = [
     "app/controllers/documents_controller.rb",
      "app/controllers/javascripts_controller.rb",
-     "app/controllers/locales_controller.rb",
-     "app/controllers/pages_controller.rb",
      "app/controllers/stylesheets_controller.rb",
      "app/controllers/user_invitations_controller.rb",
      "app/controllers/users_controller.rb",
      "app/models/document.rb",
-     "app/models/page.rb",
-     "app/models/page_sweeper.rb",
      "app/models/user_invitation.rb",
      "app/models/user_invitation_mailer.rb",
      "app/models/user_session.rb",
@@ -62,8 +58,6 @@ Gem::Specification.new do |s|
      "generators/ccls_engine/ccls_engine_generator.rb",
      "generators/ccls_engine/templates/functional/documents_controller_test.rb",
      "generators/ccls_engine/templates/functional/javascripts_controller_test.rb",
-     "generators/ccls_engine/templates/functional/locales_controller_test.rb",
-     "generators/ccls_engine/templates/functional/pages_controller_test.rb",
      "generators/ccls_engine/templates/functional/roles_controller_test.rb",
      "generators/ccls_engine/templates/functional/sessions_controller_test.rb",
      "generators/ccls_engine/templates/functional/stylesheets_controller_test.rb",
@@ -72,23 +66,17 @@ Gem::Specification.new do |s|
      "generators/ccls_engine/templates/javascripts/jquery-ui.js",
      "generators/ccls_engine/templates/javascripts/jquery.js",
      "generators/ccls_engine/templates/javascripts/jrails.js",
-     "generators/ccls_engine/templates/javascripts/pages.js",
      "generators/ccls_engine/templates/javascripts/ucb_ccls_engine.js",
      "generators/ccls_engine/templates/migrations/add_attachments_document_to_document.rb",
      "generators/ccls_engine/templates/migrations/create_documents.rb",
-     "generators/ccls_engine/templates/migrations/create_pages.rb",
      "generators/ccls_engine/templates/migrations/create_user_invitations.rb",
      "generators/ccls_engine/templates/migrations/create_users.rb",
      "generators/ccls_engine/templates/stylesheets/documents.css",
-     "generators/ccls_engine/templates/stylesheets/page.css",
-     "generators/ccls_engine/templates/stylesheets/pages.css",
      "generators/ccls_engine/templates/stylesheets/shared.css",
      "generators/ccls_engine/templates/stylesheets/user.css",
      "generators/ccls_engine/templates/stylesheets/users.css",
      "generators/ccls_engine/templates/unit/core_extension_test.rb",
      "generators/ccls_engine/templates/unit/document_test.rb",
-     "generators/ccls_engine/templates/unit/page_test.rb",
-     "generators/ccls_engine/templates/unit/redcloth_extension_test.rb",
      "generators/ccls_engine/templates/unit/role_test.rb",
      "generators/ccls_engine/templates/unit/user_invitation_mailer_test.rb",
      "generators/ccls_engine/templates/unit/user_invitation_test.rb",
