@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -16,31 +16,14 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    "app/controllers/documents_controller.rb",
-     "app/controllers/javascripts_controller.rb",
+    "app/controllers/javascripts_controller.rb",
      "app/controllers/stylesheets_controller.rb",
      "app/controllers/user_invitations_controller.rb",
      "app/controllers/users_controller.rb",
-     "app/models/document.rb",
      "app/models/user_invitation.rb",
      "app/models/user_invitation_mailer.rb",
      "app/models/user_session.rb",
-     "app/views/documents/_document.html.erb",
-     "app/views/documents/_form.html.erb",
-     "app/views/documents/edit.html.erb",
-     "app/views/documents/index.html.erb",
-     "app/views/documents/new.html.erb",
-     "app/views/documents/preview.html.erb",
      "app/views/javascripts/cache_helper.js.erb",
-     "app/views/layouts/application.html.erb",
-     "app/views/pages/_child.html.erb",
-     "app/views/pages/_form.html.erb",
-     "app/views/pages/_page.html.erb",
-     "app/views/pages/edit.html.erb",
-     "app/views/pages/index.html.erb",
-     "app/views/pages/new.html.erb",
-     "app/views/pages/show.html.erb",
-     "app/views/pages/translate.js.erb",
      "app/views/stylesheets/dynamic.css.erb",
      "app/views/user_invitation_mailer/invitation.erb",
      "app/views/user_invitations/new.html.erb",
@@ -51,12 +34,9 @@ Gem::Specification.new do |s|
      "app/views/users/menu.js.erb",
      "app/views/users/new.html.erb",
      "app/views/users/show.html.erb",
-     "config/document.yml",
-     "config/photo.yml",
      "config/routes.rb",
      "generators/ccls_engine/USAGE",
      "generators/ccls_engine/ccls_engine_generator.rb",
-     "generators/ccls_engine/templates/functional/documents_controller_test.rb",
      "generators/ccls_engine/templates/functional/javascripts_controller_test.rb",
      "generators/ccls_engine/templates/functional/roles_controller_test.rb",
      "generators/ccls_engine/templates/functional/sessions_controller_test.rb",
@@ -67,16 +47,12 @@ Gem::Specification.new do |s|
      "generators/ccls_engine/templates/javascripts/jquery.js",
      "generators/ccls_engine/templates/javascripts/jrails.js",
      "generators/ccls_engine/templates/javascripts/ucb_ccls_engine.js",
-     "generators/ccls_engine/templates/migrations/add_attachments_document_to_document.rb",
-     "generators/ccls_engine/templates/migrations/create_documents.rb",
      "generators/ccls_engine/templates/migrations/create_user_invitations.rb",
      "generators/ccls_engine/templates/migrations/create_users.rb",
-     "generators/ccls_engine/templates/stylesheets/documents.css",
      "generators/ccls_engine/templates/stylesheets/shared.css",
      "generators/ccls_engine/templates/stylesheets/user.css",
      "generators/ccls_engine/templates/stylesheets/users.css",
      "generators/ccls_engine/templates/unit/core_extension_test.rb",
-     "generators/ccls_engine/templates/unit/document_test.rb",
      "generators/ccls_engine/templates/unit/role_test.rb",
      "generators/ccls_engine/templates/unit/user_invitation_mailer_test.rb",
      "generators/ccls_engine/templates/unit/user_invitation_test.rb",
@@ -120,16 +96,13 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-authorized>, [">= 0"])
       s.add_runtime_dependency(%q<chronic>, [">= 0"])
-      s.add_runtime_dependency(%q<ruby-hmac>, [">= 0"])
-      s.add_runtime_dependency(%q<aws-s3>, [">= 0"])
       s.add_runtime_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_runtime_dependency(%q<ryanb-acts-as-list>, [">= 0"])
       s.add_runtime_dependency(%q<gravatar>, [">= 0"])
-      s.add_runtime_dependency(%q<RedCloth>, [">= 0"])
-      s.add_runtime_dependency(%q<paperclip>, [">= 0"])
       s.add_runtime_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-assert_this_and_that>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
+      s.add_runtime_dependency(%q<jakewendt-pages>, [">= 0"])
     else
       s.add_dependency(%q<i18n>, ["= 0.3.7"])
       s.add_dependency(%q<rails>, ["~> 2"])
@@ -143,16 +116,13 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
       s.add_dependency(%q<jakewendt-authorized>, [">= 0"])
       s.add_dependency(%q<chronic>, [">= 0"])
-      s.add_dependency(%q<ruby-hmac>, [">= 0"])
-      s.add_dependency(%q<aws-s3>, [">= 0"])
       s.add_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
       s.add_dependency(%q<gravatar>, [">= 0"])
-      s.add_dependency(%q<RedCloth>, [">= 0"])
-      s.add_dependency(%q<paperclip>, [">= 0"])
       s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_dependency(%q<jakewendt-assert_this_and_that>, [">= 0"])
       s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
+      s.add_dependency(%q<jakewendt-pages>, [">= 0"])
     end
   else
     s.add_dependency(%q<i18n>, ["= 0.3.7"])
@@ -167,16 +137,13 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
     s.add_dependency(%q<jakewendt-authorized>, [">= 0"])
     s.add_dependency(%q<chronic>, [">= 0"])
-    s.add_dependency(%q<ruby-hmac>, [">= 0"])
-    s.add_dependency(%q<aws-s3>, [">= 0"])
     s.add_dependency(%q<ssl_requirement>, [">= 0"])
     s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
     s.add_dependency(%q<gravatar>, [">= 0"])
-    s.add_dependency(%q<RedCloth>, [">= 0"])
-    s.add_dependency(%q<paperclip>, [">= 0"])
     s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
     s.add_dependency(%q<jakewendt-assert_this_and_that>, [">= 0"])
     s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
+    s.add_dependency(%q<jakewendt-pages>, [">= 0"])
   end
 end
 
