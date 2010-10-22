@@ -4,6 +4,7 @@ require 'authorized'
 require 'gravatar'
 require 'calnet_authenticated'
 require 'acts_as_list'
+require 'pages'
 module Ccls
 #	predefine namespace
 end
@@ -26,7 +27,7 @@ require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/user_model'
 require 'ccls_engine/helper'
-require 'ccls_engine/redcloth/formatters/html'
+#require 'ccls_engine/redcloth/formatters/html'
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'active_support'

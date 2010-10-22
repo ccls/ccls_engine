@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Ccls::PageTest < ActiveSupport::TestCase
+class Pages::PageTest < ActiveSupport::TestCase
 
 	assert_should_require(:path,:menu_en,:title_en,:body_en,
 		:model => 'Page')

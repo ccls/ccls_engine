@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Ccls::LocalesControllerTest < ActionController::TestCase
+class Pages::LocalesControllerTest < ActionController::TestCase
 	tests LocalesController
 
 	test "should set locale to en" do

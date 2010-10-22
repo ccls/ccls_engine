@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Ccls::RedClothExtensionTest < ActiveSupport::TestCase
+class Pages::RedClothExtensionTest < ActiveSupport::TestCase
 
 	teardown :destroy_relative_url_root
 
