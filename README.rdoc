@@ -38,14 +38,12 @@ so some things will need changed.
 * jakewendt-ruby_extension
 * jakewendt-assert_this_and_that
 * jakewendt-calnet_authenticated
+* jakewendt-pages
 
 == Installation (as a plugin/engine)
 
  cp config/s3.yml.example config/s3.yml
  # Add your own s3 access keys.  Leave 'test' as it is.
-
- rake ccls:sync   # can and will overwrite contents in /db/ and /public/
-
 
 Add ... to Rakefile (puts this in generator)
 
@@ -57,8 +55,6 @@ Add ... to Rakefile (puts this in generator)
  rake db:fixtures:load
  rake test
  script/server
-
-
 
 == Gemified with Jeweler
 
@@ -73,6 +69,5 @@ Add ... to Rakefile (puts this in generator)
 
  rake install
  rake release
-
 
 Copyright (c) 2010 [Jake Wendt], released under the MIT license
