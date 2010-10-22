@@ -27,7 +27,6 @@ require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/user_model'
 require 'ccls_engine/helper'
-#require 'ccls_engine/redcloth/formatters/html'
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'active_support'
@@ -37,10 +36,6 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'ccls_engine/factories'
 	require 'ccls_engine/pending'
 end
-
-#if RUBY_PLATFORM =~ /java/i
-#	require 'ccls_engine/file_utils_extension'
-#end
 
 silence_warnings {
 	#	This will complain that the constant is already defined.
@@ -53,17 +48,13 @@ ActionView::Helpers::AssetTagHelper.register_javascript_include_default(
 ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
 	:defaults => ['scaffold','application'] )
 
-#require 'paperclip'
-#if defined? ::Paperclip::Glue
-#	ActiveRecord::Base.send(:include, ::Paperclip::Glue)
-#else
-#	ActiveRecord::Base.send(:include, ::Paperclip)
-#end
-
 ActionController::Routing::Routes.add_configuration_file(
 	File.expand_path(
 		File.join(
 			File.dirname(__FILE__), '../config/routes.rb')))
 
+ActionController::Base.view_paths <<
+	File.expand_path(
+		File.join(
+			File.dirname(__FILE__), '../app/views'))
 
-#ActionController::Base.view_paths
