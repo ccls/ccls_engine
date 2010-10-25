@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Authorized::RoleTest < ActiveSupport::TestCase
+class SimplyAuthorized::RoleTest < ActiveSupport::TestCase
 
 	assert_should_act_as_list(:model => 'Role')
 	assert_should_require(:name,

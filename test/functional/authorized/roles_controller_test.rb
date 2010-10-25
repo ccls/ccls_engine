@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Authorized::RolesControllerTest < ActionController::TestCase
+class SimplyAuthorized::RolesControllerTest < ActionController::TestCase
 	tests RolesController
 
 	#	no user_id

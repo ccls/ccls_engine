@@ -38,7 +38,8 @@ so some things will need changed.
 * jakewendt-ruby_extension
 * jakewendt-assert_this_and_that
 * jakewendt-calnet_authenticated
-* jakewendt-pages
+* jakewendt-simply_authorized
+* jakewendt-simply_pages
 
 == Installation (as a plugin/engine)
 

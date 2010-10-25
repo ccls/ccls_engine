@@ -8,18 +8,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-#desc 'Default: run unit tests.'
-#task :default => :test
-#
-#desc 'Test the ucb_ccls_engine plugin.'
-#Rake::TestTask.new(:test) do |t|
-#	t.libs << 'lib'
-#	t.libs << 'test'
-#	t.pattern = 'test/**/*_test.rb'
-#	t.verbose = true
-#end
-
-desc 'Generate documentation for the ucb_ccls_engine plugin.'
+desc 'Generate documentation for the gem.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
 	rdoc.rdoc_dir = 'rdoc'
 	rdoc.title		= 'UCB CCLS Engine'
@@ -28,12 +17,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 	rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-#	It would be nice to have the full set of rails rake tasks,
-#	but this will probably require some work.
-#
-#RAILS_ROOT = File.dirname(__FILE__) unless defined?(RAILS_ROOT)
 require 'tasks/rails'
-
 
 
 begin
@@ -78,15 +62,15 @@ begin
 #
 		gem.add_dependency('i18n', '=0.3.7')
 		gem.add_dependency('rails', '~> 2')
-		gem.add_dependency('activerecord', '~> 2')
-		gem.add_dependency('activeresource', '~> 2')
-		gem.add_dependency('activesupport', '~> 2')
-		gem.add_dependency('actionmailer', '~> 2')
-		gem.add_dependency('actionpack', '~> 2')
+#		gem.add_dependency('activerecord', '~> 2')
+#		gem.add_dependency('activeresource', '~> 2')
+#		gem.add_dependency('activesupport', '~> 2')
+#		gem.add_dependency('actionmailer', '~> 2')
+#		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')
 		gem.add_dependency('jakewendt-rails_helpers')
 		gem.add_dependency('jakewendt-ruby_extension')
-		gem.add_dependency('jakewendt-authorized')
+		gem.add_dependency('jakewendt-simply_authorized')
 		gem.add_dependency('chronic')
 #		gem.add_dependency('ruby-hmac')
 #		gem.add_dependency('aws-s3')
@@ -98,7 +82,7 @@ begin
 		gem.add_dependency('thoughtbot-factory_girl')
 		gem.add_dependency('jakewendt-assert_this_and_that')
 		gem.add_dependency('jakewendt-calnet_authenticated')
-		gem.add_dependency('jakewendt-pages')
+		gem.add_dependency('jakewendt-simply_pages')
 	end
 	Jeweler::GemcutterTasks.new
 rescue LoadError

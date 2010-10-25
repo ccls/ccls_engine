@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Pages::PagesControllerTest < ActionController::TestCase
+class SimplyPages::PagesControllerTest < ActionController::TestCase
 	tests PagesController
 
 	ASSERT_ACCESS_OPTIONS = {
