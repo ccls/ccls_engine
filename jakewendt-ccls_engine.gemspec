@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "0.3.1"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-10-22}
+  s.date = %q{2010-10-25}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -86,15 +86,10 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<i18n>, ["= 0.3.7"])
       s.add_runtime_dependency(%q<rails>, ["~> 2"])
-      s.add_runtime_dependency(%q<activerecord>, ["~> 2"])
-      s.add_runtime_dependency(%q<activeresource>, ["~> 2"])
-      s.add_runtime_dependency(%q<activesupport>, ["~> 2"])
-      s.add_runtime_dependency(%q<actionmailer>, ["~> 2"])
-      s.add_runtime_dependency(%q<actionpack>, ["~> 2"])
       s.add_runtime_dependency(%q<jrails>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-rails_helpers>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
-      s.add_runtime_dependency(%q<jakewendt-authorized>, [">= 0"])
+      s.add_runtime_dependency(%q<jakewendt-simply_authorized>, [">= 0"])
       s.add_runtime_dependency(%q<chronic>, [">= 0"])
       s.add_runtime_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_runtime_dependency(%q<ryanb-acts-as-list>, [">= 0"])
@@ -102,19 +97,14 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-assert_this_and_that>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
-      s.add_runtime_dependency(%q<jakewendt-pages>, [">= 0"])
+      s.add_runtime_dependency(%q<jakewendt-simply_pages>, [">= 0"])
     else
       s.add_dependency(%q<i18n>, ["= 0.3.7"])
       s.add_dependency(%q<rails>, ["~> 2"])
-      s.add_dependency(%q<activerecord>, ["~> 2"])
-      s.add_dependency(%q<activeresource>, ["~> 2"])
-      s.add_dependency(%q<activesupport>, ["~> 2"])
-      s.add_dependency(%q<actionmailer>, ["~> 2"])
-      s.add_dependency(%q<actionpack>, ["~> 2"])
       s.add_dependency(%q<jrails>, [">= 0"])
       s.add_dependency(%q<jakewendt-rails_helpers>, [">= 0"])
       s.add_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
-      s.add_dependency(%q<jakewendt-authorized>, [">= 0"])
+      s.add_dependency(%q<jakewendt-simply_authorized>, [">= 0"])
       s.add_dependency(%q<chronic>, [">= 0"])
       s.add_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
@@ -122,20 +112,15 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_dependency(%q<jakewendt-assert_this_and_that>, [">= 0"])
       s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
-      s.add_dependency(%q<jakewendt-pages>, [">= 0"])
+      s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
     end
   else
     s.add_dependency(%q<i18n>, ["= 0.3.7"])
     s.add_dependency(%q<rails>, ["~> 2"])
-    s.add_dependency(%q<activerecord>, ["~> 2"])
-    s.add_dependency(%q<activeresource>, ["~> 2"])
-    s.add_dependency(%q<activesupport>, ["~> 2"])
-    s.add_dependency(%q<actionmailer>, ["~> 2"])
-    s.add_dependency(%q<actionpack>, ["~> 2"])
     s.add_dependency(%q<jrails>, [">= 0"])
     s.add_dependency(%q<jakewendt-rails_helpers>, [">= 0"])
     s.add_dependency(%q<jakewendt-ruby_extension>, [">= 0"])
-    s.add_dependency(%q<jakewendt-authorized>, [">= 0"])
+    s.add_dependency(%q<jakewendt-simply_authorized>, [">= 0"])
     s.add_dependency(%q<chronic>, [">= 0"])
     s.add_dependency(%q<ssl_requirement>, [">= 0"])
     s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
@@ -143,7 +128,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
     s.add_dependency(%q<jakewendt-assert_this_and_that>, [">= 0"])
     s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
-    s.add_dependency(%q<jakewendt-pages>, [">= 0"])
+    s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
   end
 end
 
