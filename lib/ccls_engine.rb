@@ -1,5 +1,5 @@
 require 'ruby_extension'
-require 'rails_helpers'
+require 'simply_helpful'
 require 'gravatar'
 require 'calnet_authenticated'
 require 'simply_authorized'
