@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "1.0.1"
+  s.version = "1.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -68,9 +68,7 @@ Gem::Specification.new do |s|
      "lib/ccls_engine/tasks.rb",
      "lib/ccls_engine/user_model.rb",
      "lib/tasks/application.rake",
-     "lib/tasks/database.rake",
      "lib/tasks/documentation.rake",
-     "lib/tasks/rcov.rake",
      "lib/tasks/ucb_ccls_engine_tasks.rake"
   ]
   s.homepage = %q{http://github.com/jakewendt/ucb_ccls_engine}
