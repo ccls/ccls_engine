@@ -20,6 +20,15 @@ jQuery(function(){
 			*/
 			alert("Page order hasn't changed. Nothing to save.");
 			return false
+		} else {
+			new_action = jQuery(this).attr('action');
+			if( (/\?/).test(new_action) ){
+				new_action += '&';
+			} else {
+				new_action += '?';
+			}
+			new_action += page_order();
+			jQuery(this).attr('action',new_action);
 		}
 	})
 
