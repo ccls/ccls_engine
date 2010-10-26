@@ -20,8 +20,8 @@ so some things will need changed.
 
 == Required Gems
 
-* {assert_this_and_that}[http://github.com/jakewendt/assert_this_and_that]
-* {ruby_extension}[http://github.com/jakewendt/ruby_extension] - modifications, updates and patches for ruby.
+* {jakewendt-assert_this_and_that}[http://github.com/jakewendt/assert_this_and_that]
+* {jakewendt-ruby_extension}[http://github.com/jakewendt/ruby_extension] - modifications, updates and patches for ruby.
 * rails ~> 2
 * i18n =0.3.7
 * jrails
@@ -34,12 +34,10 @@ so some things will need changed.
 * RedCloth
 * paperclip
 * thoughtbot-factory_girl
-* jakewendt-rails_helpers
-* jakewendt-ruby_extension
-* jakewendt-assert_this_and_that
-* jakewendt-calnet_authenticated
-* jakewendt-simply_authorized
-* jakewendt-simply_pages
+* {jakewendt-simply_helpful}[http://github.com/jakewendt/simply_helpful]
+* {jakewendt-calnet_authenticated}[http://github.com/jakewendt/calnet_authenticated]
+* {jakewendt-simply_authorized}[http://github.com/jakewendt/simply_authorized]
+* {jakewendt-simply_pages}[http://github.com/jakewendt/simply_pages]
 
 == Installation (as a plugin/engine)
 
