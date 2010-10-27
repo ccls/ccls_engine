@@ -1,3 +1,4 @@
+require 'active_support'
 require 'ruby_extension'
 require 'simply_helpful'
 require 'gravatar'
@@ -29,7 +30,6 @@ require 'ccls_engine/user_model'
 require 'ccls_engine/helper'
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
-	require 'active_support'
 	require 'active_support/test_case'
 	require 'factory_girl'
 	require 'assert_this_and_that'
