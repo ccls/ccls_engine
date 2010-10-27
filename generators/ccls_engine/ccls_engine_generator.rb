@@ -6,9 +6,7 @@ class CclsEngineGenerator < Rails::Generator::Base
 		#	for code methods for record (Manifest)
 		record do |m|
 
-			%w( create_users create_user_invitations
-				create_documents
-				add_attachments_document_to_document ).each do |migration|
+			%w( create_users create_user_invitations ).each do |migration|
 				m.migration_template "migrations/#{migration}.rb",
 					'db/migrate', :migration_file_name => migration
 			end
