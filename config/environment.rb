@@ -19,7 +19,7 @@ Rails::Initializer.run do |config|
 	#	The {{key}} interpolation syntax in I18n 
 	#	messages is deprecated. Please use %{key} instead.
 	#	This must be called early, or someone else will load a newer version.
-	config.gem "i18n", :version => '=0.3.7'
+#	config.gem "i18n", :version => '=0.3.7'
 
 #	config.gem 'jakewendt-authorized',
 #		:lib => 'authorized'
