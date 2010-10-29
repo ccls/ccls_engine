@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "1.0.7"
+  s.version = "1.0.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-10-27}
+  s.date = %q{2010-10-29}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -58,6 +58,7 @@ Gem::Specification.new do |s|
      "generators/ccls_engine/templates/unit/user_invitation_test.rb",
      "generators/ccls_engine/templates/unit/user_test.rb",
      "lib/ccls_engine.rb",
+     "lib/ccls_engine/autotest.rb",
      "lib/ccls_engine/core_extension.rb",
      "lib/ccls_engine/date_and_time_formats.rb",
      "lib/ccls_engine/factories.rb",
@@ -66,6 +67,7 @@ Gem::Specification.new do |s|
      "lib/ccls_engine/pending.rb",
      "lib/ccls_engine/redcloth/formatters/html.rb",
      "lib/ccls_engine/tasks.rb",
+     "lib/ccls_engine/test_tasks.rb",
      "lib/ccls_engine/user_model.rb",
      "lib/tasks/application.rake",
      "lib/tasks/documentation.rake",
@@ -76,6 +78,25 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{one-line summary of your gem}
+  s.test_files = [
+    "test/app/controllers/application_controller.rb",
+     "test/app/models/home_page_pic.rb",
+     "test/app/models/user.rb",
+     "test/config/routes.rb",
+     "test/functional/ccls/javascripts_controller_test.rb",
+     "test/functional/ccls/roles_controller_test.rb",
+     "test/functional/ccls/sessions_controller_test.rb",
+     "test/functional/ccls/stylesheets_controller_test.rb",
+     "test/functional/ccls/user_invitations_controller_test.rb",
+     "test/functional/ccls/users_controller_test.rb",
+     "test/helpers/authlogic_test_helper.rb",
+     "test/test_helper.rb",
+     "test/unit/ccls/core_extension_test.rb",
+     "test/unit/ccls/role_test.rb",
+     "test/unit/ccls/user_invitation_mailer_test.rb",
+     "test/unit/ccls/user_invitation_test.rb",
+     "test/unit/ccls/user_test.rb"
+  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
