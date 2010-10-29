@@ -40,7 +40,13 @@ begin
 		gem.files += FileList['lib/**/*.rake']
 		gem.files += FileList['generators/**/*']
 		gem.files -= FileList['**/versions/*']
-		gem.test_files = []
+#   
+#		I'm not quite sure if it matters whether these files
+#		are included as 'files' or 'test_files', but
+#		they need to be included if I'm gonna use'em.
+#
+		gem.test_files = FileList['test/**/*.rb']
+
 #
 #	It would be really nice if there was a way to
 #	add a source here as ryanb-acts-as-list is on
@@ -78,3 +84,7 @@ begin
 rescue LoadError
 	puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
+#	From `script/generate simply_authorized` ...
+require 'simply_authorized/test_tasks'
+#	From `script/generate simply_pages` ...
+require 'simply_pages/test_tasks'

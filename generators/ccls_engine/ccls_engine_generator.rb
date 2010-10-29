@@ -6,6 +6,19 @@ class CclsEngineGenerator < Rails::Generator::Base
 		#	for code methods for record (Manifest)
 		record do |m|
 
+			File.open('Rakefile','a'){|f|
+				f.puts <<-EOF
+# From `script/generate ccls_engine` ...
+require 'ccls_engine/test_tasks'
+				EOF
+			}
+			File.open('.autotest','a'){|f| 
+				f.puts <<-EOF
+# From `script/generate ccls_engine` ...
+require 'ccls_engine/autotest'
+				EOF
+			}
+
 			%w( create_users create_user_invitations ).each do |migration|
 				m.migration_template "migrations/#{migration}.rb",
 					'db/migrate', :migration_file_name => migration
@@ -21,16 +34,16 @@ class CclsEngineGenerator < Rails::Generator::Base
 				f = file.split('/').slice(-2,2).join('/')
 				m.file(f, "public/stylesheets/#{File.basename(file)}")
 			}
-			m.directory('test/functional/ccls')
-			Dir["#{File.dirname(__FILE__)}/templates/functional/*rb"].each{|file| 
-				f = file.split('/').slice(-2,2).join('/')
-				m.file(f, "test/functional/ccls/#{File.basename(file)}")
-			}
-			m.directory('test/unit/ccls')
-			Dir["#{File.dirname(__FILE__)}/templates/unit/*rb"].each{|file| 
-				f = file.split('/').slice(-2,2).join('/')
-				m.file(f, "test/unit/ccls/#{File.basename(file)}")
-			}
+#			m.directory('test/functional/ccls')
+#			Dir["#{File.dirname(__FILE__)}/templates/functional/*rb"].each{|file| 
+#				f = file.split('/').slice(-2,2).join('/')
+#				m.file(f, "test/functional/ccls/#{File.basename(file)}")
+#			}
+#			m.directory('test/unit/ccls')
+#			Dir["#{File.dirname(__FILE__)}/templates/unit/*rb"].each{|file| 
+#				f = file.split('/').slice(-2,2).join('/')
+#				m.file(f, "test/unit/ccls/#{File.basename(file)}")
+#			}
 		end
 	end
 
