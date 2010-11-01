@@ -75,8 +75,8 @@ begin
 		gem.add_dependency('ssl_requirement')
 		gem.add_dependency('ryanb-acts-as-list')
 		gem.add_dependency('gravatar')
-		gem.add_dependency('thoughtbot-factory_girl')
-		gem.add_dependency('jakewendt-assert_this_and_that')
+#		gem.add_dependency('thoughtbot-factory_girl')
+#		gem.add_dependency('jakewendt-assert_this_and_that')
 		gem.add_dependency('jakewendt-calnet_authenticated')
 		gem.add_dependency('jakewendt-simply_pages')
 	end

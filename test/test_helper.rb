@@ -14,11 +14,4 @@ class ActionController::TestCase
 
 	setup :turn_https_on
 
-#	now in @@
-#
-#	def assert_layout(layout)
-#		layout = "layouts/#{layout}" unless layout.match(/^layouts/)
-#		assert_equal layout, @response.layout
-#	end
-
 end
