@@ -34,7 +34,6 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'factory_girl'
 	require 'simply_testable'
 	require 'ccls_engine/factories'
-	require 'ccls_engine/pending'
 end
 
 silence_warnings {
