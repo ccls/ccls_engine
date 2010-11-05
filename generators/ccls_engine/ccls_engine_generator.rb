@@ -5,19 +5,23 @@ class CclsEngineGenerator < Rails::Generator::Base
 		#	rails-2.3.10/lib/rails_generator/commands.rb
 		#	for code methods for record (Manifest)
 		record do |m|
+			m.directory('config/autotest')
+			m.file('autotest_ccls_engine.rb', 'config/autotest/ccls_engine.rb')
+			m.directory('lib/tasks')
+			m.file('ccls_engine.rake', 'lib/tasks/ccls_engine.rake')
 
-			File.open('Rakefile','a'){|f|
-				f.puts <<-EOF
-# From `script/generate ccls_engine` ...
-require 'ccls_engine/test_tasks'
-				EOF
-			}
-			File.open('.autotest','a'){|f| 
-				f.puts <<-EOF
-# From `script/generate ccls_engine` ...
-require 'ccls_engine/autotest'
-				EOF
-			}
+#			File.open('Rakefile','a'){|f|
+#				f.puts <<-EOF
+## From `script/generate ccls_engine` ...
+#require 'ccls_engine/test_tasks'
+#				EOF
+#			}
+#			File.open('.autotest','a'){|f| 
+#				f.puts <<-EOF
+## From `script/generate ccls_engine` ...
+#require 'ccls_engine/autotest'
+#				EOF
+#			}
 
 			%w( create_users create_user_invitations ).each do |migration|
 				m.migration_template "migrations/#{migration}.rb",
