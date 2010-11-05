@@ -86,9 +86,3 @@ begin
 rescue LoadError
 	puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
-#	From `script/generate simply_authorized` ...
-require 'simply_authorized/test_tasks'
-#	From `script/generate simply_pages` ...
-require 'simply_pages/test_tasks'
-#	From `script/generate calnet_authenticated` ...
-require 'calnet_authenticated/test_tasks'
