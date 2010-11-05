@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "1.1.4"
+  s.version = "1.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-11-03}
+  s.date = %q{2010-11-05}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -37,6 +37,8 @@ Gem::Specification.new do |s|
      "config/routes.rb",
      "generators/ccls_engine/USAGE",
      "generators/ccls_engine/ccls_engine_generator.rb",
+     "generators/ccls_engine/templates/autotest_ccls_engine.rb",
+     "generators/ccls_engine/templates/ccls_engine.rake",
      "generators/ccls_engine/templates/functional/javascripts_controller_test.rb",
      "generators/ccls_engine/templates/functional/roles_controller_test.rb",
      "generators/ccls_engine/templates/functional/sessions_controller_test.rb",
