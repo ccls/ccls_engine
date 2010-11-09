@@ -1,4 +1,4 @@
-class CclsEngineGenerator < Rails::Generator::Base
+class CclsEngineGenerator < Rails::Generator::NamedBase
 
 	def manifest
 		#	See Rails::Generator::Commands::Create
@@ -9,19 +9,8 @@ class CclsEngineGenerator < Rails::Generator::Base
 			m.file('autotest_ccls_engine.rb', 'config/autotest/ccls_engine.rb')
 			m.directory('lib/tasks')
 			m.file('ccls_engine.rake', 'lib/tasks/ccls_engine.rake')
-
-#			File.open('Rakefile','a'){|f|
-#				f.puts <<-EOF
-## From `script/generate ccls_engine` ...
-#require 'ccls_engine/test_tasks'
-#				EOF
-#			}
-#			File.open('.autotest','a'){|f| 
-#				f.puts <<-EOF
-## From `script/generate ccls_engine` ...
-#require 'ccls_engine/autotest'
-#				EOF
-#			}
+			m.directory('config/initializers')
+			m.template('initializer.rb', 'config/initializers/ccls_engine.rb')
 
 			%w( create_users create_user_invitations ).each do |migration|
 				m.migration_template "migrations/#{migration}.rb",

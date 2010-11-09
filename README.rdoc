@@ -45,6 +45,8 @@ Add ... to Rakefile (puts this in generator)
 
  require 'ccls_engine/tasks'
 
+ script/generate ccls_engine User
+
 == Testing (as an app)
 
  rake db:migrate
