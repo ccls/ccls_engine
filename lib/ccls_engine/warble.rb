@@ -38,8 +38,33 @@ module WarblerConfig
 	end
 
 	#	ALWAYS RECEIVE AND PASS A BLOCK!
-	def initialize_with_removal(warbler_home = WARBLER_HOME,&block)
-		@remove_gem_files = []
+	def initialize_with_removal(warbler_home = Warbler::WARBLER_HOME,&block)
+#		@remove_gem_files = []
+# just before creating the war file, files matching
+# these will be removed from the list. 
+#   WEB-INF/gems/gems/REGEX
+		@remove_gem_files = %w( 
+			activesupport-3
+			activerecord-3
+			activeresource-3
+			actionpack-3
+			actionmailer-3
+			activemodel-3
+			railties-3
+			rails-3
+			rack-1.2.1
+			rack-mount-
+			rack-test-
+			abstract-
+			arel-
+			bundler-
+			erubis-
+			mail-
+			polyglot-
+			thor-
+			treetop-
+			tzinfo-
+		)
 		initialize_without_removal(warbler_home,&block)
 	end
 
