@@ -21,7 +21,8 @@ Rails::Initializer.run do |config|
 
 	config.plugin_paths = [
 		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
-		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter'))
+		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
+		File.expand_path(File.join(File.dirname(__FILE__),'../../..','jakewendt'))
 	]
 	config.plugins = [:ucb_ccls_engine,
 		:html_test, :html_test_extension]
