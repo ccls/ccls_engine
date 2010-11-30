@@ -81,8 +81,17 @@ begin
 #		gem.add_dependency('jakewendt-assert_this_and_that')
 		gem.add_dependency('jakewendt-calnet_authenticated')
 		gem.add_dependency('jakewendt-simply_pages')
+		gem.add_dependency('jakewendt-use_db')
 	end
 	Jeweler::GemcutterTasks.new
 rescue LoadError
 	puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
+
+
+
+unless (g = Gem.source_index.find_name('jakewendt-use_db')).empty?
+require 'use_db/tasks'
+#Dir["#{g.last.full_gem_path}/lib/tasks/**/*rake"].sort.each { |ext| load ext }
+end
+

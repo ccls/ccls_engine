@@ -7,6 +7,7 @@ coverage.data
 test/documents/
 db/seeds.rb
 db/schema.rb
+db/*_structure.sql
 db/*.sqlite3
 db/*.sqlite3-journal
 s3.yml

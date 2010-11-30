@@ -35,6 +35,7 @@ so some things will need changed.
 * {jakewendt-calnet_authenticated}[http://github.com/jakewendt/calnet_authenticated]
 * {jakewendt-simply_authorized}[http://github.com/jakewendt/simply_authorized]
 * {jakewendt-simply_pages}[http://github.com/jakewendt/simply_pages]
+* {jakewendt-use_db}[http://github.com/jakewendt/use_db]
 
 == Installation (as a plugin/engine)
 

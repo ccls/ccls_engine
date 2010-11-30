@@ -67,6 +67,8 @@ Rails::Initializer.run do |config|
 	else
 		config.gem "sqlite3-ruby", :lib => "sqlite3"
 	end
+
+	config.gem "jakewendt-use_db", :lib => "use_db"
 	
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }
