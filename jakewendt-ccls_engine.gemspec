@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "1.2.6"
+  s.version = "1.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-11-24}
+  s.date = %q{2010-12-01}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -20,9 +20,11 @@ Gem::Specification.new do |s|
     "app/controllers/stylesheets_controller.rb",
     "app/controllers/user_invitations_controller.rb",
     "app/controllers/users_controller.rb",
+    "app/models/maker.rb",
     "app/models/user_invitation.rb",
     "app/models/user_invitation_mailer.rb",
     "app/models/user_session.rb",
+    "app/models/widget.rb",
     "app/views/javascripts/cache_helper.js.erb",
     "app/views/stylesheets/dynamic.css.erb",
     "app/views/user_invitation_mailer/invitation.erb",
@@ -68,6 +70,7 @@ Gem::Specification.new do |s|
     "lib/ccls_engine/file_utils_extension.rb",
     "lib/ccls_engine/helper.rb",
     "lib/ccls_engine/redcloth/formatters/html.rb",
+    "lib/ccls_engine/shared_database.rb",
     "lib/ccls_engine/tasks.rb",
     "lib/ccls_engine/test_tasks.rb",
     "lib/ccls_engine/user_model.rb",
@@ -78,7 +81,8 @@ Gem::Specification.new do |s|
     "lib/tasks/simply_authorized.rake",
     "lib/tasks/simply_helpful.rake",
     "lib/tasks/simply_pages.rake",
-    "lib/tasks/ucb_ccls_engine_tasks.rake"
+    "lib/tasks/ucb_ccls_engine_tasks.rake",
+    "lib/tasks/use_db.rake"
   ]
   s.homepage = %q{http://github.com/jakewendt/ucb_ccls_engine}
   s.require_paths = ["lib"]
@@ -89,6 +93,17 @@ Gem::Specification.new do |s|
     "test/app/models/home_page_pic.rb",
     "test/app/models/user.rb",
     "test/config/routes.rb",
+    "test/db/migrate/20100129183000_create_users.rb",
+    "test/db/migrate/20100216172803_create_pages.rb",
+    "test/db/migrate/20100512165245_create_user_invitations.rb",
+    "test/db/migrate/20100618220110_create_roles.rb",
+    "test/db/migrate/20100618220452_create_roles_users.rb",
+    "test/db/migrate/20100714195841_create_photos.rb",
+    "test/db/migrate/20100714195926_add_attachments_image_to_photo.rb",
+    "test/db/migrate/20100714200248_create_documents.rb",
+    "test/db/migrate/20100714200317_add_attachments_document_to_document.rb",
+    "test/db/migrate/20101029225331_add_calnet_authenticated_columns_to_users.rb",
+    "test/factories.rb",
     "test/functional/ccls/javascripts_controller_test.rb",
     "test/functional/ccls/roles_controller_test.rb",
     "test/functional/ccls/sessions_controller_test.rb",
@@ -100,7 +115,9 @@ Gem::Specification.new do |s|
     "test/unit/ccls/role_test.rb",
     "test/unit/ccls/user_invitation_mailer_test.rb",
     "test/unit/ccls/user_invitation_test.rb",
-    "test/unit/ccls/user_test.rb"
+    "test/unit/ccls/user_test.rb",
+    "test/unit/maker_test.rb",
+    "test/unit/widget_test.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -119,6 +136,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<gravatar>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-simply_pages>, [">= 0"])
+      s.add_runtime_dependency(%q<jakewendt-use_db>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 2"])
       s.add_dependency(%q<jrails>, [">= 0"])
@@ -131,6 +149,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<gravatar>, [">= 0"])
       s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
       s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
+      s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
     end
   else
     s.add_dependency(%q<rails>, ["~> 2"])
@@ -144,6 +163,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<gravatar>, [">= 0"])
     s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
     s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
+    s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
   end
 end
 
