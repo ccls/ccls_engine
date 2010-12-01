@@ -3,14 +3,16 @@
 #	the usage of rake gems:install
 #	If we wrap it in this condition, it works fine.
 #
-if Gem.searcher.find('paperclip')
+#if Gem.searcher.find('paperclip')
+unless Gem.source_index.find_name('paperclip').empty?
 	require 'paperclip'
 	load "tasks/paperclip.rake"
 end
 
-if Gem.searcher.find('simply_helpful')
-	require 'simply_helpful/tasks'
-end
+#if Gem.searcher.find('simply_helpful')
+#unless Gem.source_index.find_name('jakewendt-simply_helpful').empty?
+	#require 'simply_helpful/tasks'
+#end
 
 
 #
@@ -19,6 +21,10 @@ end
 #
 #	Unfortunately, this does not yet facilitate up and down
 #	as these migration numbers get "lost"
+#
+#	Actually, if done right, they can both be in the same place
+#	with the use_db designators and the production db could
+#	just be an sqlite3 db that we ignore.
 #
 
 namespace :db do
