@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "1.2.7"
+  s.version = "1.2.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -37,6 +37,8 @@ Gem::Specification.new do |s|
     "app/views/users/new.html.erb",
     "app/views/users/show.html.erb",
     "config/routes.rb",
+    "config/shared_database.yml",
+    "config/shared_use_db.yml",
     "generators/ccls_engine/USAGE",
     "generators/ccls_engine/ccls_engine_generator.rb",
     "generators/ccls_engine/templates/autotest_ccls_engine.rb",

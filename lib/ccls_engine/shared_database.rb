@@ -48,8 +48,10 @@ require 'use_db'
 #end
 #UseDbPlugin.send(:include,UseDbPluginExtension)
 
-USE_DB_CONFIG  =  File.join( Rails.root,'config','shared_use_db.yml')
-OTHER_DB_FILES = [File.join( Rails.root,'config','shared_database.yml')]
+#USE_DB_CONFIG  =  File.join( Rails.root,'config','shared_use_db.yml')
+USE_DB_CONFIG  =  File.join( File.dirname(__FILE__),'..','..','config','shared_use_db.yml')
+#OTHER_DB_FILES = [File.join( Rails.root,'config','shared_database.yml')]
+OTHER_DB_FILES = [File.join( File.dirname(__FILE__),'..','..','config','shared_database.yml')]
 
 class ActiveSupport::TestCase
 	unless defined?(CLONED_DB_FOR_CCLS_TEST)
