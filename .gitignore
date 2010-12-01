@@ -12,3 +12,4 @@ db/*.sqlite3
 db/*.sqlite3-journal
 s3.yml
 pkg/
+config/*database.yml

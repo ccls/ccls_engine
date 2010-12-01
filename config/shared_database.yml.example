@@ -1,0 +1,19 @@
+
+shared_development:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/shared_development.sqlite3	
+
+shared_test:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/shared_test.sqlite3
+
+shared_production:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/shared_production.sqlite3
+

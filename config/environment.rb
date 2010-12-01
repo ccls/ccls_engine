@@ -58,17 +58,33 @@ Rails::Initializer.run do |config|
 
 	if RUBY_PLATFORM =~ /java/
 		#	I'm surprised that I don't need this in my apps.
+#		config.gem 'activerecord-jdbcsqlite3-adapter',
+#			:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter',
+#			:version => '~>0.9'
+#		#	1.0.1 is for rails 3 I think
+#		config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
+#		config.gem 'jruby-openssl', :lib => 'openssl'
+		#	I expected to have to change database.yml for this but didn't
 		config.gem 'activerecord-jdbcsqlite3-adapter',
-			:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter',
-			:version => '~>0.9'
+			:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter'	#,
+#			:version => '~>0.9'
 		#	1.0.1 is for rails 3 I think
+		config.gem 'activerecord-jdbcmysql-adapter',
+			:lib => 'active_record/connection_adapters/jdbcmysql_adapter'	#,
+#			:version => '~>0.9'
+		#	1.0.1 is for rails 3 I think
+
+		config.gem 'jdbc-mysql', :lib => 'jdbc/mysql'
+		#	Additional jruby specific jars required in the war
 		config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
 		config.gem 'jruby-openssl', :lib => 'openssl'
 	else
+		config.gem 'mysql'
 		config.gem "sqlite3-ruby", :lib => "sqlite3"
 	end
 
 	config.gem "jakewendt-use_db", :lib => "use_db"
+	config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
 	
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }

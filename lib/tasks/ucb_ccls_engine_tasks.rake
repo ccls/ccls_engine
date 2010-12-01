@@ -31,3 +31,22 @@ namespace :db do
 end
 Rake::Task['db:migrate'].prerequisites.unshift(
 	"db:migrate:dev_only" ) if Rails.env == 'development'
+
+#namespace :db do
+#	task :load_config => :rails_env do
+#		require 'ccls_engine/shared_database'
+#	end
+#	namespace :test do
+#		task :purge_use_db do
+#			require 'ccls_engine/shared_database'
+#		end
+#		task :clone_structure_use_db do
+#			require 'ccls_engine/shared_database'
+#		end
+#	end
+#	namespace :structure do
+#		task :dump_use_db do
+##			load 'ccls_engine/shared_database.rb'
+#		end
+#	end
+#end

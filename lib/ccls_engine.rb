@@ -1,3 +1,10 @@
+#	Unfortunately, this does hold water with things like
+#		rake db:create:all
+#require 'active_record'
+#ActiveRecord::Base.configurations.update(YAML::load(ERB.new(IO.read(
+#	File.join( Rails.root,'config','shared_database.yml'))).result))
+require 'ccls_engine/shared_database'
+
 require 'active_support'
 require 'ruby_extension'
 require 'simply_helpful'
