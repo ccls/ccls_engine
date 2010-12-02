@@ -13,3 +13,4 @@ db/*.sqlite3-journal
 s3.yml
 pkg/
 config/*database.yml
+db/test_*_schema.rb
