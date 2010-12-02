@@ -1,17 +1,11 @@
 = UCB CCLS Engine
 
-This is both a plugin engine and a basic rails app.
-
-
-
-== ToDo
-
-I am converting this to a gem, primarily for convenience,
-so some things will need changed.
-
-* create a generator and remove the rake rsync stuff
-* append Rakefile with generator
-
+This is a gem, basic rails app and plugin engine (GRAPE).
+As a gem, it shares functionality and access to shared database.
+As an app, it is used to manage the migrations of the shared database.
+It is no longer really used as a plugin, but does contain the
+relevant features of an 'engine' including models, controllers,
+views and routes to the aforementioned resources.
 
 == Required Gem Sources
 
@@ -37,16 +31,22 @@ so some things will need changed.
 * {jakewendt-simply_pages}[http://github.com/jakewendt/simply_pages]
 * {jakewendt-use_db}[http://github.com/jakewendt/use_db]
 
-== Installation (as a plugin/engine)
+== Installation (as a gem/plugin/engine)
 
  cp config/s3.yml.example config/s3.yml
  # Add your own s3 access keys.  Leave 'test' as it is.
 
-Add ... to Rakefile (puts this in generator)
+In your config/environments.rb
 
- require 'ccls_engine/tasks'
+ config.gem 'jakewendt-ccls_engine', :lib => 'ccls_engine'
+
+Generate an initializer and copy in some files.
 
  script/generate ccls_engine User
+
+Also need to manually add a shared_database.yml with matching configuration.
+
+ cp config/shared_database.yml.example config/shared_database.yml
 
 == Testing (as an app)
 
