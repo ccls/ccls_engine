@@ -40,3 +40,7 @@ Factory.define :user_invitation do |f|
 	f.association :sender, :factory => :user
 	f.sequence(:email){|n| "invitation#{n}@example.com"}
 end
+Factory.define :maker do |f|
+end
+Factory.define :widget do |f|
+end
