@@ -27,16 +27,16 @@ end
 #	just be an sqlite3 db that we ignore.
 #
 
-namespace :db do
-	namespace :migrate do
-		task :dev_only => :environment do
-			ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
-			ActiveRecord::Migrator.migrate("test/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
-		end
-	end
-end
-Rake::Task['db:migrate'].prerequisites.unshift(
-	"db:migrate:dev_only" ) if Rails.env == 'development'
+#namespace :db do
+#	namespace :migrate do
+#		task :dev_only => :environment do
+#			ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
+#			ActiveRecord::Migrator.migrate("test/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+#		end
+#	end
+#end
+#Rake::Task['db:migrate'].prerequisites.unshift(
+#	"db:migrate:dev_only" ) if Rails.env == 'development'
 
 #namespace :db do
 #	task :load_config => :rails_env do
