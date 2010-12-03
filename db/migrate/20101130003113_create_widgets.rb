@@ -1,8 +1,4 @@
-class CreateWidgets < ActiveRecord::Migration
-	def self.database_model
-		return "Widget"
-	end
-
+class CreateWidgets < SharedMigration
 	def self.up
 		create_table :widgets do |t|
 			t.references :maker

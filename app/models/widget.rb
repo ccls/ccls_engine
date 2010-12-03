@@ -1,4 +1,3 @@
-class Widget < ActiveRecord::Base
-	use_db :prefix => "shared_"
+class Widget < Shared
 	belongs_to :maker
 end
