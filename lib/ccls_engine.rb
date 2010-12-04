@@ -1,8 +1,3 @@
-#	Unfortunately, this does hold water with things like
-#		rake db:create:all
-#require 'active_record'
-#ActiveRecord::Base.configurations.update(YAML::load(ERB.new(IO.read(
-#	File.join( Rails.root,'config','shared_database.yml'))).result))
 require 'ccls_engine/shared_database'
 
 require 'active_support'
@@ -63,4 +58,33 @@ ActionController::Base.view_paths <<
 	File.expand_path(
 		File.join(
 			File.dirname(__FILE__), '../app/views'))
+
+
+require 'paperclip'
+if defined? ::Paperclip::Glue
+	ActiveRecord::Base.send(:include, ::Paperclip::Glue)
+else
+	ActiveRecord::Base.send(:include, ::Paperclip)
+end
+
+YNDK = HashWithIndifferentAccess.new({
+	:yes   => 1,
+	:true  => 1,
+	:no    => 2,
+	:false => 2,
+	:dk    => 999
+}).freeze
+
+#Survey.use_db :prefix => 'shared_'
+#SurveySection.use_db :prefix => 'shared_'
+#Question.use_db :prefix => 'shared_'
+#QuestionGroup.use_db :prefix => 'shared_'
+#Answer.use_db :prefix => 'shared_'
+#ResponseSet.use_db :prefix => 'shared_'
+#Response.use_db :prefix => 'shared_'
+#Dependency.use_db :prefix => 'shared_'
+#DependencyCondition.use_db :prefix => 'shared_'
+#Validation.use_db :prefix => 'shared_'
+#ValidationCondition.use_db :prefix => 'shared_'
+#Track.use_db :prefix => 'shared_'
 

@@ -19,7 +19,7 @@ Rails::Initializer.run do |config|
 #	config.gem 'ryanb-acts-as-list',
 #		:lib => 'acts_as_list'
 
-	config.plugin_paths = [
+	config.plugin_paths += [
 		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
 		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
 		File.expand_path(File.join(File.dirname(__FILE__),'../../..','jakewendt'))
@@ -57,25 +57,11 @@ Rails::Initializer.run do |config|
 	]
 
 	if RUBY_PLATFORM =~ /java/
-		#	I'm surprised that I don't need this in my apps.
-#		config.gem 'activerecord-jdbcsqlite3-adapter',
-#			:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter',
-#			:version => '~>0.9'
-#		#	1.0.1 is for rails 3 I think
-#		config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
-#		config.gem 'jruby-openssl', :lib => 'openssl'
-		#	I expected to have to change database.yml for this but didn't
 		config.gem 'activerecord-jdbcsqlite3-adapter',
-			:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter'	#,
-#			:version => '~>0.9'
-		#	1.0.1 is for rails 3 I think
+			:lib => 'active_record/connection_adapters/jdbcsqlite3_adapter'
 		config.gem 'activerecord-jdbcmysql-adapter',
-			:lib => 'active_record/connection_adapters/jdbcmysql_adapter'	#,
-#			:version => '~>0.9'
-		#	1.0.1 is for rails 3 I think
-
+			:lib => 'active_record/connection_adapters/jdbcmysql_adapter'
 		config.gem 'jdbc-mysql', :lib => 'jdbc/mysql'
-		#	Additional jruby specific jars required in the war
 		config.gem 'jdbc-sqlite3', :lib => 'jdbc/sqlite3'
 		config.gem 'jruby-openssl', :lib => 'openssl'
 	else
@@ -86,6 +72,28 @@ Rails::Initializer.run do |config|
 	config.gem "jakewendt-use_db", :lib => "use_db"
 	config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
 	
+
+	config.gem 'jakewendt-simply_trackable',
+		:lib    => 'simply_trackable'
+
+config.gem "rcov"
+
+#	Without the :lib => false, the 'rake test' actually fails?
+config.gem "mocha", :lib => false
+
+config.gem "autotest-rails", :lib => 'autotest/rails'
+
+config.gem "ZenTest"
+
+	config.gem 'haml'      # Needed for Surveyor
+	#	Keep chronic here
+	config.gem "chronic"   #		http://chronic.rubyforge.org/
+	config.gem 'active_shipping'
+	config.gem 'will_paginate'
+	config.gem 'fastercsv'
+	config.gem 'paperclip'
+
+
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }
 

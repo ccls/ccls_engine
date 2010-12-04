@@ -2,7 +2,8 @@ require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
 # Use the updated rdoc gem rather than version
 # included with ruby.
-#require 'rdoc'
+require 'rdoc'
+require 'rdoc/rdoc'
 
 require 'rake'
 require 'rake/testtask'
@@ -91,3 +92,5 @@ begin
 rescue LoadError
 	puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
+
+#require 'lib/surveyor/survey_extensions'
