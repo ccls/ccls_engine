@@ -1,0 +1,60 @@
+20100921124218_survey_section_1:
+  data_export_identifier: "basic_questions"
+  display_order: 1
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Basic questions"
+20100921124218_survey_section_2:
+  data_export_identifier: "jobs"
+  display_order: 2
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Jobs"
+20100921124218_survey_section_3:
+  data_export_identifier: "products"
+  display_order: 3
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Products"
+20100921124218_survey_section_4:
+  data_export_identifier: "home"
+  display_order: 4
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Home"
+20100921124218_survey_section_5:
+  data_export_identifier: "heat"
+  display_order: 5
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Heat"
+20100921124218_survey_section_6:
+  data_export_identifier: "gas"
+  display_order: 6
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Gas"
+20100921124218_survey_section_7:
+  data_export_identifier: "remodelling"
+  display_order: 7
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Remodelling"
+20100921124218_survey_section_8:
+  data_export_identifier: "tobacco"
+  display_order: 8
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Tobacco"
+20100921124218_survey_section_9:
+  data_export_identifier: "furnishings"
+  display_order: 9
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Furnishings"
+20100921124218_survey_section_10:
+  data_export_identifier: "electronics"
+  display_order: 10
+  reference_identifier: 
+  survey: 20100921124218_survey_1
+  title: "Electronics"

@@ -1,0 +1,12 @@
+dk:
+  id: 1
+  position: 1
+  document_type_id: 11
+  title: unknown
+  description: unable to discern correct version
+consent1:
+  id: 2
+  position: 2
+  document_type_id: 1
+  title: verbal consent
+  description: home exposures verbal consent, V1

@@ -1,0 +1,20 @@
+home:
+  id: 1
+  position: 1
+  code: home
+  description: home
+mobile:
+  id: 2
+  position: 2
+  code: mobile
+  description: mobile
+work:
+  id: 3
+  position: 3
+  code: work
+  description: work
+dk:
+  id: 4
+  position: 4
+  code: unknown
+  description: unknown

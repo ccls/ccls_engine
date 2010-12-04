@@ -1,0 +1,30 @@
+tier1:
+  id: 1
+  code: Tier_1
+  position: 1
+  description: CCLS Tier 1 study
+tier2:
+  id: 2
+  code: Tier_2
+  position: 2
+  description: CCLS Tier 2 study
+EMF:
+  id: 3
+  code: EMF
+  position: 3
+  description: EMF testing study
+HomeExposures:
+  id: 4
+  code: HomeExposures
+  position: 4
+  description: Follow-up Home Exposure study
+other:
+  id: 5
+  code: 7
+  position: 5
+  description: Other
+dk:
+  id: 6
+  code: 999
+  position: 6
+  description: Don't Know

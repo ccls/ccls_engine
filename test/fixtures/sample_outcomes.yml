@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+complete:
+  id: 1
+  position: 1
+  code: complete
+  description: complete
+lab:
+  id: 2
+  position: 2
+  code: lab
+  description: to lab
+received:
+  id: 3
+  position: 3
+  code: received
+  description: sample received
+kit_sent:
+  id: 4
+  position: 4
+  code: sent
+  description: kit sent
+pending:
+  id: 5
+  position: 5
+  code: pending
+  description: pending

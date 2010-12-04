@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+complete:
+  id: 1
+  position: 1
+  code: complete
+  description: complete
+incomplete:
+  id: 2
+  position: 2
+  code: incomplete
+  description: interview is incomplete
+scheduled:
+  id: 3
+  position: 3
+  code: scheduled
+  description: interview has been scheduled
+pending:
+  id: 4
+  position: 4
+  code: pending
+  description: pending

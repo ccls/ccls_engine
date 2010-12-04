@@ -1,0 +1,123 @@
+20100921124218_dependency_1:
+  question: 20100921124218_question_6
+  rule: "A"
+20100921124218_dependency_2:
+  question: 20100921124218_question_7
+  rule: "A"
+20100921124218_dependency_3:
+  question: 20100921124218_question_8
+  rule: "A"
+20100921124218_dependency_4:
+  question: 20100921124218_question_9
+  rule: "A"
+20100921124218_dependency_5:
+  question: 20100921124218_question_10
+  rule: "A"
+20100921124218_dependency_6:
+  question: 20100921124218_question_11
+  rule: "A"
+20100921124218_dependency_7:
+  question: 20100921124218_question_12
+  rule: "A and (B or C or D)"
+20100921124218_dependency_8:
+  question: 20100921124218_question_13
+  rule: "A"
+20100921124218_dependency_9:
+  question: 20100921124218_question_39
+  rule: "A"
+20100921124218_dependency_10:
+  question: 20100921124218_question_41
+  rule: "A"
+20100921124218_dependency_11:
+  question: 20100921124218_question_43
+  rule: "A"
+20100921124218_dependency_12:
+  question: 20100921124218_question_45
+  rule: "A"
+20100921124218_dependency_13:
+  question: 20100921124218_question_47
+  rule: "A"
+20100921124218_dependency_14:
+  question: 20100921124218_question_49
+  rule: "A"
+20100921124218_dependency_15:
+  question: 20100921124218_question_51
+  rule: "A"
+20100921124218_dependency_16:
+  question: 20100921124218_question_53
+  rule: "A"
+20100921124218_dependency_17:
+  question: 20100921124218_question_55
+  rule: "A"
+20100921124218_dependency_18:
+  question: 20100921124218_question_57
+  rule: "A"
+20100921124218_dependency_19:
+  question: 20100921124218_question_59
+  rule: "A"
+20100921124218_dependency_20:
+  question: 20100921124218_question_61
+  rule: "A"
+20100921124218_dependency_21:
+  question: 20100921124218_question_70
+  rule: "A"
+20100921124218_dependency_22:
+  question: 20100921124218_question_73
+  rule: "A"
+20100921124218_dependency_23:
+  question: 20100921124218_question_74
+  rule: "A or B"
+20100921124218_dependency_24:
+  question: 20100921124218_question_75
+  rule: "A"
+20100921124218_dependency_25:
+  question: 20100921124218_question_80
+  rule: "A"
+20100921124218_dependency_26:
+  question: 20100921124218_question_82
+  rule: "A"
+20100921124218_dependency_27:
+  question: 20100921124218_question_83
+  rule: "A"
+20100921124218_dependency_28:
+  question: 20100921124218_question_94
+  rule: "A"
+20100921124218_dependency_29:
+  question: 20100921124218_question_96
+  rule: "A"
+20100921124218_dependency_30:
+  question: 20100921124218_question_97
+  rule: "A or B or C"
+20100921124218_dependency_31:
+  question: 20100921124218_question_103
+  rule: "A"
+20100921124218_dependency_32:
+  question: 20100921124218_question_113
+  rule: "A"
+20100921124218_dependency_33:
+  question: 20100921124218_question_115
+  rule: "A"
+20100921124218_dependency_34:
+  question: 20100921124218_question_117
+  rule: "A"
+20100921124218_dependency_35:
+  question: 20100921124218_question_120
+  rule: "A or B or C"
+20100921124218_dependency_36:
+  question: 20100921124218_question_121
+  rule: "A or B or C"
+20100921124218_dependency_37:
+  question: 20100921124218_question_123
+  rule: "A"
+20100921124218_dependency_38:
+  question: 20100921124218_question_125
+  rule: "A"
+20100921124218_dependency_39:
+  question: 20100921124218_question_126
+  rule: "A"
+20100921124218_dependency_40:
+  question: 20100921124218_question_128
+  rule: "A"
+20100921124218_dependency_41:
+  question: 20100921124218_question_129
+  rule: "A"

@@ -1,0 +1,12 @@
+homex:
+  id: 1
+  project_id: 4
+  code: homex
+  name: Home Exposures Interview
+  description: Interview collects data regarding potential environmental exposures in the home to be compared with results of tests of dust sample collected immediately following the interview.
+  interview_method_id: 1
+unknown:
+  id: 2
+  code: unknown
+  name: Unknown instrument used
+  description: We do not know which instrument was used to collect the specified data.

@@ -10,6 +10,7 @@ db/schema.rb
 db/*_structure.sql
 db/*.sqlite3
 db/*.sqlite3-journal
+fed_ex.yml
 s3.yml
 pkg/
 config/*database.yml

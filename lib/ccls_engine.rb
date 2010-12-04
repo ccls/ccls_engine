@@ -75,16 +75,16 @@ YNDK = HashWithIndifferentAccess.new({
 	:dk    => 999
 }).freeze
 
-#Survey.use_db :prefix => 'shared_'
-#SurveySection.use_db :prefix => 'shared_'
-#Question.use_db :prefix => 'shared_'
-#QuestionGroup.use_db :prefix => 'shared_'
-#Answer.use_db :prefix => 'shared_'
-#ResponseSet.use_db :prefix => 'shared_'
-#Response.use_db :prefix => 'shared_'
-#Dependency.use_db :prefix => 'shared_'
-#DependencyCondition.use_db :prefix => 'shared_'
-#Validation.use_db :prefix => 'shared_'
-#ValidationCondition.use_db :prefix => 'shared_'
-#Track.use_db :prefix => 'shared_'
+Survey.use_db :prefix => 'shared_'
+SurveySection.use_db :prefix => 'shared_'
+Question.use_db :prefix => 'shared_'
+QuestionGroup.use_db :prefix => 'shared_'
+Answer.use_db :prefix => 'shared_'
+ResponseSet.use_db :prefix => 'shared_'
+Response.use_db :prefix => 'shared_'
+Dependency.use_db :prefix => 'shared_'
+DependencyCondition.use_db :prefix => 'shared_'
+Validation.use_db :prefix => 'shared_'
+ValidationCondition.use_db :prefix => 'shared_'
+Track.use_db :prefix => 'shared_'
 

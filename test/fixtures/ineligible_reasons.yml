@@ -1,0 +1,20 @@
+moved:
+  id: 1
+  position: 1
+  code: moved
+  description: subject moved
+vacuum:
+  id: 2
+  position: 2 
+  code: no vacuum
+  description: no vacuum cleaner used
+other:
+  id: 3
+  position: 3
+  code: other
+  description: other
+nonCA:
+  id: 4
+  position: 4
+  code: newnonCA
+  description: new non-CA subject

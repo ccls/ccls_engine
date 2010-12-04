@@ -1,0 +1,24 @@
+white:
+  id: 1
+  code: 1
+  description: White, Non-Hispanic
+black:
+  id: 2
+  code: 2
+  description: Black / African American
+nativeamerican:
+  id: 3
+  code: 3
+  description: Native American
+asian:
+  id: 4
+  code: 4
+  description: Asian / Pacific Islander
+other:
+  id: 5
+  code: 7
+  description: Other
+dk:
+  id: 6
+  code: 999
+  description: Don't Know

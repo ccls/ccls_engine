@@ -24,7 +24,7 @@ Rails::Initializer.run do |config|
 		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
 		File.expand_path(File.join(File.dirname(__FILE__),'../../..','jakewendt'))
 	]
-	config.plugins = [:ucb_ccls_engine,
+	config.plugins = [:surveyor,:ucb_ccls_engine,
 		:html_test, :html_test_extension]
 
 	config.frameworks -= [:active_resource]

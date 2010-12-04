@@ -1,0 +1,98 @@
+intro:
+  id: 1
+  position: 1
+  project_id:  4
+  code: intro
+  event_category: correspondence
+  description: intro letter sent
+scheduled:
+  id: 2
+  position: 2
+  project_id:  4
+  code: scheduled
+  event_category: interviews
+  description: interview scheduled with respondent
+iv_complete:
+  id: 3
+  position: 3
+  project_id:  4
+  code: iv_complete
+  event_category: interviews
+  description: interview completed
+kit_sent:
+  id: 4
+  position: 4
+  project_id:  4
+  code: kit_sent
+  event_category: samples
+  description: sample kit sent
+sample_received:
+  id: 5
+  position: 5
+  project_id:  4
+  code: sample_received
+  event_category: samples
+  description: sample received by CCLS
+sample_to_lab:
+  id: 6
+  position: 6
+  project_id:  4
+  code: sample_to_lab
+  event_category: samples
+  description: sample sent to lab
+giftcard:
+  id: 7
+  position: 7
+  project_id:  4
+  code: giftcard
+  event_category: compensation
+  description: gift card issued
+thankyou:
+  id: 8
+  position: 8
+  project_id:  4
+  code: thank_you
+  event_category: correspondence
+  description: thank you letter sent to respondent
+completed:
+  id: 9
+  position: 9
+  project_id:  4
+  code: complete
+  event_category: completions
+  description: completed all study requirements
+other:
+  id: 10
+  position: 10
+  project_id:  4
+  code: other
+  event_category:  
+  description: other event - please specify
+sample_complete:
+  id: 11
+  position: 11
+  project_id:  4
+  code: sample_complete
+  event_category:  completions
+  description: sample collection completed
+subject_moved:
+  id: 12
+  position: 12
+  project_id:  4
+  code: subject_moved
+  event_category:  operations
+  description: subject moved
+reopened:
+  id: 13
+  position: 13
+  project_id:  4
+  code: reopened
+  event_category:  completions
+  description: subject's enrollment re-opened (changed completed from 'yes')
+ineligible:
+  id: 14
+  position: 14
+  project_id: 4
+  code: ineligible
+  event_category:  enrollments
+  description: subject determined to be ineligible

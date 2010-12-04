@@ -1,0 +1,20 @@
+phone:
+  id: 1
+  code: phone
+  description: phone interview conducted by study interviewer
+in_person:
+  id: 2
+  code: in_person
+  description: in person interview conducted by a study interviewer
+self:
+  id: 3
+  code: self
+  description: self-administered instrument
+other:
+  id: 4
+  code: other
+  description: some other data collection method
+dk:
+  id: 5
+  code: dk
+  description: interview method unknown

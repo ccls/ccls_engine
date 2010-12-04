@@ -93,4 +93,4 @@ rescue LoadError
 	puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-#require 'lib/surveyor/survey_extensions'
+require 'lib/surveyor/survey_extensions'

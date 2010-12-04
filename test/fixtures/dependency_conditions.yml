@@ -1,0 +1,306 @@
+20100921124218_dependency_condition_1:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_1
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_2:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_2
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_3:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_3
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_4:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_4
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_5:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_5
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_6:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_6
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_7:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_7
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_8:
+  answer: 20100921124218_answer_31
+  dependency: 20100921124218_dependency_7
+  operator: "=="
+  question: 20100921124218_question_11
+  rule_key: "B"
+20100921124218_dependency_condition_9:
+  answer: 20100921124218_answer_32
+  dependency: 20100921124218_dependency_7
+  operator: "=="
+  question: 20100921124218_question_11
+  rule_key: "C"
+20100921124218_dependency_condition_10:
+  answer: 20100921124218_answer_33
+  dependency: 20100921124218_dependency_7
+  operator: "=="
+  question: 20100921124218_question_11
+  rule_key: "D"
+20100921124218_dependency_condition_11:
+  answer: 20100921124218_answer_12
+  dependency: 20100921124218_dependency_8
+  operator: "=="
+  question: 20100921124218_question_5
+  rule_key: "A"
+20100921124218_dependency_condition_12:
+  answer: 20100921124218_answer_99
+  dependency: 20100921124218_dependency_9
+  operator: "=="
+  question: 20100921124218_question_38
+  rule_key: "A"
+20100921124218_dependency_condition_13:
+  answer: 20100921124218_answer_104
+  dependency: 20100921124218_dependency_10
+  operator: "=="
+  question: 20100921124218_question_40
+  rule_key: "A"
+20100921124218_dependency_condition_14:
+  answer: 20100921124218_answer_109
+  dependency: 20100921124218_dependency_11
+  operator: "=="
+  question: 20100921124218_question_42
+  rule_key: "A"
+20100921124218_dependency_condition_15:
+  answer: 20100921124218_answer_114
+  dependency: 20100921124218_dependency_12
+  operator: "=="
+  question: 20100921124218_question_44
+  rule_key: "A"
+20100921124218_dependency_condition_16:
+  answer: 20100921124218_answer_119
+  dependency: 20100921124218_dependency_13
+  operator: "=="
+  question: 20100921124218_question_46
+  rule_key: "A"
+20100921124218_dependency_condition_17:
+  answer: 20100921124218_answer_124
+  dependency: 20100921124218_dependency_14
+  operator: "=="
+  question: 20100921124218_question_48
+  rule_key: "A"
+20100921124218_dependency_condition_18:
+  answer: 20100921124218_answer_129
+  dependency: 20100921124218_dependency_15
+  operator: "=="
+  question: 20100921124218_question_50
+  rule_key: "A"
+20100921124218_dependency_condition_19:
+  answer: 20100921124218_answer_134
+  dependency: 20100921124218_dependency_16
+  operator: "=="
+  question: 20100921124218_question_52
+  rule_key: "A"
+20100921124218_dependency_condition_20:
+  answer: 20100921124218_answer_139
+  dependency: 20100921124218_dependency_17
+  operator: "=="
+  question: 20100921124218_question_54
+  rule_key: "A"
+20100921124218_dependency_condition_21:
+  answer: 20100921124218_answer_144
+  dependency: 20100921124218_dependency_18
+  operator: "=="
+  question: 20100921124218_question_56
+  rule_key: "A"
+20100921124218_dependency_condition_22:
+  answer: 20100921124218_answer_149
+  dependency: 20100921124218_dependency_19
+  operator: "=="
+  question: 20100921124218_question_58
+  rule_key: "A"
+20100921124218_dependency_condition_23:
+  answer: 20100921124218_answer_154
+  dependency: 20100921124218_dependency_20
+  operator: "=="
+  question: 20100921124218_question_60
+  rule_key: "A"
+20100921124218_dependency_condition_24:
+  answer: 20100921124218_answer_177
+  dependency: 20100921124218_dependency_21
+  operator: "=="
+  question: 20100921124218_question_69
+  rule_key: "A"
+20100921124218_dependency_condition_25:
+  answer: 20100921124218_answer_185
+  dependency: 20100921124218_dependency_22
+  operator: "=="
+  question: 20100921124218_question_72
+  rule_key: "A"
+20100921124218_dependency_condition_26:
+  answer: 20100921124218_answer_181
+  dependency: 20100921124218_dependency_23
+  operator: "=="
+  question: 20100921124218_question_72
+  rule_key: "A"
+20100921124218_dependency_condition_27:
+  answer: 20100921124218_answer_182
+  dependency: 20100921124218_dependency_23
+  operator: "=="
+  question: 20100921124218_question_72
+  rule_key: "B"
+20100921124218_dependency_condition_28:
+  answer: 20100921124218_answer_183
+  dependency: 20100921124218_dependency_24
+  operator: "=="
+  question: 20100921124218_question_72
+  rule_key: "A"
+20100921124218_dependency_condition_29:
+  answer: 20100921124218_answer_201
+  dependency: 20100921124218_dependency_25
+  operator: "=="
+  question: 20100921124218_question_79
+  rule_key: "A"
+20100921124218_dependency_condition_30:
+  answer: 20100921124218_answer_204
+  dependency: 20100921124218_dependency_26
+  operator: "=="
+  question: 20100921124218_question_81
+  rule_key: "A"
+20100921124218_dependency_condition_31:
+  answer: 20100921124218_answer_207
+  dependency: 20100921124218_dependency_27
+  operator: "=="
+  question: 20100921124218_question_82
+  rule_key: "A"
+20100921124218_dependency_condition_32:
+  answer: 20100921124218_answer_243
+  dependency: 20100921124218_dependency_28
+  operator: "=="
+  question: 20100921124218_question_93
+  rule_key: "A"
+20100921124218_dependency_condition_33:
+  answer: 20100921124218_answer_250
+  dependency: 20100921124218_dependency_29
+  operator: "=="
+  question: 20100921124218_question_95
+  rule_key: "A"
+20100921124218_dependency_condition_34:
+  answer: 20100921124218_answer_253
+  dependency: 20100921124218_dependency_30
+  operator: "=="
+  question: 20100921124218_question_96
+  rule_key: "A"
+20100921124218_dependency_condition_35:
+  answer: 20100921124218_answer_254
+  dependency: 20100921124218_dependency_30
+  operator: "=="
+  question: 20100921124218_question_96
+  rule_key: "B"
+20100921124218_dependency_condition_36:
+  answer: 20100921124218_answer_255
+  dependency: 20100921124218_dependency_30
+  operator: "=="
+  question: 20100921124218_question_96
+  rule_key: "C"
+20100921124218_dependency_condition_37:
+  answer: 20100921124218_answer_269
+  dependency: 20100921124218_dependency_31
+  operator: "=="
+  question: 20100921124218_question_102
+  rule_key: "A"
+20100921124218_dependency_condition_38:
+  answer: 20100921124218_answer_294
+  dependency: 20100921124218_dependency_32
+  operator: "=="
+  question: 20100921124218_question_112
+  rule_key: "A"
+20100921124218_dependency_condition_39:
+  answer: 20100921124218_answer_298
+  dependency: 20100921124218_dependency_33
+  operator: "=="
+  question: 20100921124218_question_114
+  rule_key: "A"
+20100921124218_dependency_condition_40:
+  answer: 20100921124218_answer_304
+  dependency: 20100921124218_dependency_34
+  operator: "=="
+  question: 20100921124218_question_116
+  rule_key: "A"
+20100921124218_dependency_condition_41:
+  answer: 20100921124218_answer_314
+  dependency: 20100921124218_dependency_35
+  operator: "=="
+  question: 20100921124218_question_119
+  rule_key: "A"
+20100921124218_dependency_condition_42:
+  answer: 20100921124218_answer_315
+  dependency: 20100921124218_dependency_35
+  operator: "=="
+  question: 20100921124218_question_119
+  rule_key: "B"
+20100921124218_dependency_condition_43:
+  answer: 20100921124218_answer_316
+  dependency: 20100921124218_dependency_35
+  operator: "=="
+  question: 20100921124218_question_119
+  rule_key: "C"
+20100921124218_dependency_condition_44:
+  answer: 20100921124218_answer_314
+  dependency: 20100921124218_dependency_36
+  operator: "=="
+  question: 20100921124218_question_119
+  rule_key: "A"
+20100921124218_dependency_condition_45:
+  answer: 20100921124218_answer_315
+  dependency: 20100921124218_dependency_36
+  operator: "=="
+  question: 20100921124218_question_119
+  rule_key: "B"
+20100921124218_dependency_condition_46:
+  answer: 20100921124218_answer_316
+  dependency: 20100921124218_dependency_36
+  operator: "=="
+  question: 20100921124218_question_119
+  rule_key: "C"
+20100921124218_dependency_condition_47:
+  answer: 20100921124218_answer_326
+  dependency: 20100921124218_dependency_37
+  operator: "=="
+  question: 20100921124218_question_122
+  rule_key: "A"
+20100921124218_dependency_condition_48:
+  answer: 20100921124218_answer_334
+  dependency: 20100921124218_dependency_38
+  operator: "=="
+  question: 20100921124218_question_124
+  rule_key: "A"
+20100921124218_dependency_condition_49:
+  answer: 20100921124218_answer_334
+  dependency: 20100921124218_dependency_39
+  operator: "=="
+  question: 20100921124218_question_124
+  rule_key: "A"
+20100921124218_dependency_condition_50:
+  answer: 20100921124218_answer_344
+  dependency: 20100921124218_dependency_40
+  operator: "=="
+  question: 20100921124218_question_127
+  rule_key: "A"
+20100921124218_dependency_condition_51:
+  answer: 20100921124218_answer_344
+  dependency: 20100921124218_dependency_41
+  operator: "=="
+  question: 20100921124218_question_127
+  rule_key: "A"

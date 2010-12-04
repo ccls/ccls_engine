@@ -1,0 +1,17 @@
+production:
+  :login:    # meter number
+  :password: # password from email
+  :key:      # key from initial web page (never found again)
+  :account:  # account number
+
+development:
+  :login:    # meter number
+  :password: # password from email
+  :key:      # key from initial web page (never found again)
+  :account:  # account number
+
+test:
+  :login:    # meter number
+  :password: # password from email
+  :key:      # key from initial web page (never found again)
+  :account:  # account number

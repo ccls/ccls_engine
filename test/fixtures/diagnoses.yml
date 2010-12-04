@@ -1,0 +1,15 @@
+all:
+  id: 1
+  position: 1
+  code: 1
+  description: ALL
+aml:
+  id: 2
+  position: 2 
+  code: 2
+  description: AML
+other:
+  id: 3
+  position: 3
+  code: 3
+  description: other
