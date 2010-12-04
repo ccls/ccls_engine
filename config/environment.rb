@@ -19,13 +19,13 @@ Rails::Initializer.run do |config|
 #	config.gem 'ryanb-acts-as-list',
 #		:lib => 'acts_as_list'
 
-	config.plugin_paths += [
-		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
-		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
-		File.expand_path(File.join(File.dirname(__FILE__),'../../..','jakewendt'))
-	]
-	config.plugins = [:surveyor,:ucb_ccls_engine,
-		:html_test, :html_test_extension]
+#	config.plugin_paths += [
+#		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
+#		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
+#		File.expand_path(File.join(File.dirname(__FILE__),'../../..','jakewendt'))
+#	]
+#	config.plugins = [:surveyor,:ucb_ccls_engine,
+#		:html_test, :html_test_extension]
 
 	config.frameworks -= [:active_resource]
 
@@ -97,4 +97,5 @@ config.gem "ZenTest"
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }
 
+config.action_mailer.template_root = 'app/views'
 end

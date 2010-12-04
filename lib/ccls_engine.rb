@@ -1,3 +1,4 @@
+puts "in ccls_engine"
 require 'ccls_engine/shared_database'
 
 require 'active_support'
