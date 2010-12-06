@@ -1,8 +1,4 @@
 #if surveyor_gem = Gem.searcher.find('surveyor')
-if surveyor_gem = Gem.source_index.find_name('surveyor').last
-	require surveyor_gem.full_gem_path + '/script/surveyor/parser'
-	require surveyor_gem.full_gem_path + '/script/surveyor/survey'
-end
 #	
 #	http://github.com/breakpointer/surveyor/issues/issue/45
 #
@@ -121,5 +117,9 @@ module SurveyExtensions
 end
 end
 #	need in rvm/jruby
-require 'vendor/plugins/surveyor/script/surveyor/parser'
+#require 'vendor/plugins/surveyor/script/surveyor/parser'
+if surveyor_gem = Gem.source_index.find_name('jakewendt-surveyor').last
+	require surveyor_gem.full_gem_path + '/script/surveyor/parser'
+	require surveyor_gem.full_gem_path + '/script/surveyor/survey'
 SurveyParser::Survey.send(:include, SurveyParser::SurveyExtensions)
+end

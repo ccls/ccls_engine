@@ -71,19 +71,21 @@ Rails::Initializer.run do |config|
 
 	config.gem "jakewendt-use_db", :lib => "use_db"
 	config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
-	
 
 	config.gem 'jakewendt-simply_trackable',
 		:lib    => 'simply_trackable'
 
-config.gem "rcov"
+	config.gem 'jakewendt-surveyor',
+		:lib    => 'surveyor'
 
-#	Without the :lib => false, the 'rake test' actually fails?
-config.gem "mocha", :lib => false
+	config.gem "rcov"
 
-config.gem "autotest-rails", :lib => 'autotest/rails'
+	#	Without the :lib => false, the 'rake test' actually fails?
+	config.gem "mocha", :lib => false
 
-config.gem "ZenTest"
+	config.gem "autotest-rails", :lib => 'autotest/rails'
+
+	config.gem "ZenTest"
 
 	config.gem 'haml'      # Needed for Surveyor
 	#	Keep chronic here
@@ -92,7 +94,6 @@ config.gem "ZenTest"
 	config.gem 'will_paginate'
 	config.gem 'fastercsv'
 	config.gem 'paperclip'
-
 
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }
