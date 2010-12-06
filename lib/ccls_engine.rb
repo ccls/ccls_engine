@@ -1,4 +1,3 @@
-puts "in ccls_engine"
 require 'ccls_engine/shared_database'
 
 require 'active_support'
@@ -76,6 +75,7 @@ YNDK = HashWithIndifferentAccess.new({
 	:dk    => 999
 }).freeze
 
+require 'surveyor'
 Survey.use_db :prefix => 'shared_'
 SurveySection.use_db :prefix => 'shared_'
 Question.use_db :prefix => 'shared_'
@@ -87,5 +87,7 @@ Dependency.use_db :prefix => 'shared_'
 DependencyCondition.use_db :prefix => 'shared_'
 Validation.use_db :prefix => 'shared_'
 ValidationCondition.use_db :prefix => 'shared_'
+
+require 'simply_trackable'
 Track.use_db :prefix => 'shared_'
 

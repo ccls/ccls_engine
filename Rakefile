@@ -87,6 +87,8 @@ begin
 		gem.add_dependency('jakewendt-calnet_authenticated')
 		gem.add_dependency('jakewendt-simply_pages')
 		gem.add_dependency('jakewendt-use_db')
+		gem.add_dependency('jakewendt-surveyor')
+		gem.add_dependency('jakewendt-simply_trackable')
 	end
 	Jeweler::GemcutterTasks.new
 rescue LoadError
