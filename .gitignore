@@ -15,3 +15,10 @@ s3.yml
 pkg/
 config/*database.yml
 db/test_*_schema.rb
+
+
+app/models.orig/
+db/migrate.orig/
+packages_updated.test
+s.git/
+test/unit.orig/
