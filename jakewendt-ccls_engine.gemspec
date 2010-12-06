@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "2.0.2"
+  s.version = "2.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -154,6 +154,7 @@ Gem::Specification.new do |s|
     "lib/tasks/simply_authorized.rake",
     "lib/tasks/simply_helpful.rake",
     "lib/tasks/simply_pages.rake",
+    "lib/tasks/simply_trackable.rake",
     "lib/tasks/ucb_ccls_engine_tasks.rake",
     "lib/tasks/use_db.rake"
   ]
@@ -210,7 +211,6 @@ Gem::Specification.new do |s|
     "test/unit/ccls/interview_test.rb",
     "test/unit/ccls/interview_type_test.rb",
     "test/unit/ccls/language_test.rb",
-    "test/unit/ccls/maker_test.rb",
     "test/unit/ccls/operational_event_test.rb",
     "test/unit/ccls/operational_event_type_test.rb",
     "test/unit/ccls/organization_test.rb",
@@ -245,7 +245,8 @@ Gem::Specification.new do |s|
     "test/unit/ccls/user_invitation_test.rb",
     "test/unit/ccls/user_test.rb",
     "test/unit/ccls/vital_status_test.rb",
-    "test/unit/ccls/widget_test.rb"
+    "test/unit/maker_test.rb",
+    "test/unit/widget_test.rb"
   ]
 
   if s.respond_to? :specification_version then
