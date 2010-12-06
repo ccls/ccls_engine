@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class RefusalReasonTest < ActiveSupport::TestCase
+class Ccls::RefusalReasonTest < ActiveSupport::TestCase
 
 #	Only IF subject not consented
 #	assert_should_have_many(:enrollments)

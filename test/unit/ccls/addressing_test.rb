@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class AddressingTest < ActiveSupport::TestCase
+class Ccls::AddressingTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_not_require_attributes( :address_id )

@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class SurveyInvitationTest < ActiveSupport::TestCase
+class Ccls::SurveyInvitationTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_belong_to( :response_set )

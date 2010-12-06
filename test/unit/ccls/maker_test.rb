@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MakerTest < ActiveSupport::TestCase
+class Ccls::MakerTest < ActiveSupport::TestCase
 
 	assert_should_have_many :widgets
 

@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class PersonTest < ActiveSupport::TestCase
+class Ccls::PersonTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_require_attribute( :last_name )

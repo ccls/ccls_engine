@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class SubjectSearchTest < ActiveSupport::TestCase
+class Ccls::SubjectSearchTest < ActiveSupport::TestCase
 
 	test "should return SubjectSearch" do
 		assert SubjectSearch().is_a?(SubjectSearch)

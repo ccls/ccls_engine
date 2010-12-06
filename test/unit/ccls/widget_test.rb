@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class WidgetTest < ActiveSupport::TestCase
+class Ccls::WidgetTest < ActiveSupport::TestCase
 
 	assert_should_belong_to :maker
 

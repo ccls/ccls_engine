@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class SubjectRelationshipTest < ActiveSupport::TestCase
+class Ccls::SubjectRelationshipTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list

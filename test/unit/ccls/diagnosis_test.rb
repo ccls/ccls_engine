@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class DiagnosisTest < ActiveSupport::TestCase
+class Ccls::DiagnosisTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_require_attributes(:code)

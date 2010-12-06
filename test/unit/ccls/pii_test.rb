@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class PiiTest < ActiveSupport::TestCase
+class Ccls::PiiTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_belong_to(:subject)

@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class ProjectTest < ActiveSupport::TestCase
+class Ccls::ProjectTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 

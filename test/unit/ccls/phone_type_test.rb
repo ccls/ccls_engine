@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class PhoneTypeTest < ActiveSupport::TestCase
+class Ccls::PhoneTypeTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list

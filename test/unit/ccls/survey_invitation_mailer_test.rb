@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class SurveyInvitationMailerTest < ActionMailer::TestCase
+class Ccls::SurveyInvitationMailerTest < ActionMailer::TestCase
 
 	setup :build_stuff
 	def build_stuff

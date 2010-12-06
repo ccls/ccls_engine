@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class SampleKitTest < ActiveSupport::TestCase
+class Ccls::SampleKitTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_initially_belong_to( :sample )
