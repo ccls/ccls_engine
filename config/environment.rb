@@ -78,6 +78,9 @@ Rails::Initializer.run do |config|
 	config.gem 'jakewendt-surveyor',
 		:lib    => 'surveyor'
 
+	config.gem 'jakewendt-html_test',
+		:lib    => 'html_test'
+
 	config.gem "rcov"
 
 	#	Without the :lib => false, the 'rake test' actually fails?
@@ -98,5 +101,6 @@ Rails::Initializer.run do |config|
 	config.action_mailer.default_url_options = { 
 		:host => "localhost:3000" }
 
-config.action_mailer.template_root = 'app/views'
+	config.action_mailer.template_root = 'app/views'
+
 end
