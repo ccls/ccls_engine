@@ -6,22 +6,22 @@ homex_consents:
 abstract:
   id: 2
   position: 2
-  title: 
+  title: abstract data form
   description: abstract data form
 homex:
   id: 3
   position: 3
-  title: 
+  title: home exposures questionnaire
   description: home exposures questionnaire
 t1interview:
   id: 4
   position: 4
-  title: 
+  title: Tier I Interview
   description: Tier I Interview
 t2interview:
   id: 5
   position: 5
-  title:  
+  title:  Tier II Interview
   description: Tier II Interview
 hsq:
   id: 6
@@ -41,15 +41,15 @@ hps:
 diet:
   id: 9
   position: 9
-  title: 
+  title: instrument for capturing information about maternal diet
   description: instrument for capturing information about maternal diet
 other:
   id: 10
   position: 10
-  title: 
+  title: unspecified or other instrument
   description: unspecified or other instrument
 dk:
   id: 11
   position: 11
-  title: 
+  title: don't know
   description: don't know
