@@ -346,7 +346,7 @@ module Ccls::FactoryTestHelper
 	end
 
 	def self.included(base)
-		base.alias_method_chain :method_missing, :pluralization
+		base.alias_method_chain :method_missing, :pluralization unless base.respond_to?(:method_missing_without_pluralization)
 	end
 
 end
