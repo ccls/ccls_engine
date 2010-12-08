@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "2.1.0"
+  s.version = "2.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -20,12 +20,6 @@ Gem::Specification.new do |s|
     "app/controllers/stylesheets_controller.rb",
     "app/controllers/user_invitations_controller.rb",
     "app/controllers/users_controller.rb",
-    "app/models.orig/maker.rb",
-    "app/models.orig/shared.rb",
-    "app/models.orig/user_invitation.rb",
-    "app/models.orig/user_invitation_mailer.rb",
-    "app/models.orig/user_session.rb",
-    "app/models.orig/widget.rb",
     "app/models/address.rb",
     "app/models/address_type.rb",
     "app/models/addressing.rb",
@@ -129,12 +123,15 @@ Gem::Specification.new do |s|
     "generators/ccls_engine/templates/unit/user_invitation_test.rb",
     "generators/ccls_engine/templates/unit/user_test.rb",
     "lib/ccls_engine.rb",
+    "lib/ccls_engine/assertions.rb",
     "lib/ccls_engine/autotest.rb",
     "lib/ccls_engine/core_extension.rb",
     "lib/ccls_engine/date_and_time_formats.rb",
     "lib/ccls_engine/factories.rb",
+    "lib/ccls_engine/factory_test_helper.rb",
     "lib/ccls_engine/file_utils_extension.rb",
     "lib/ccls_engine/helper.rb",
+    "lib/ccls_engine/package_test_helper.rb",
     "lib/ccls_engine/redcloth/formatters/html.rb",
     "lib/ccls_engine/shared_database.rb",
     "lib/ccls_engine/tasks.rb",
@@ -163,7 +160,6 @@ Gem::Specification.new do |s|
     "test/app/models/user.rb",
     "test/config/routes.rb",
     "test/factories.rb",
-    "test/factory_test_helper.rb",
     "test/functional/ccls/javascripts_controller_test.rb",
     "test/functional/ccls/roles_controller_test.rb",
     "test/functional/ccls/sessions_controller_test.rb",
@@ -171,14 +167,6 @@ Gem::Specification.new do |s|
     "test/functional/ccls/user_invitations_controller_test.rb",
     "test/functional/ccls/users_controller_test.rb",
     "test/helpers/authlogic_test_helper.rb",
-    "test/package_test_helper.rb",
-    "test/unit.orig/ccls/core_extension_test.rb",
-    "test/unit.orig/ccls/role_test.rb",
-    "test/unit.orig/ccls/user_invitation_mailer_test.rb",
-    "test/unit.orig/ccls/user_invitation_test.rb",
-    "test/unit.orig/ccls/user_test.rb",
-    "test/unit.orig/maker_test.rb",
-    "test/unit.orig/widget_test.rb",
     "test/unit/ccls/address_test.rb",
     "test/unit/ccls/address_type_test.rb",
     "test/unit/ccls/addressing_test.rb",
