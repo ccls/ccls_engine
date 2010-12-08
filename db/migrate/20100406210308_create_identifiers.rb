@@ -10,12 +10,14 @@ class CreateIdentifiers < SharedMigration
 			t.string :related_childid
 			t.string :related_case_childid
 			t.string :ssn
+			t.string :subjectid, :limit => 6
 			t.timestamps
 		end
 		add_index :identifiers, :ssn, :unique => true
 		add_index :identifiers, [:patid,:case_control_type,:orderno],
 			:unique => true,:name => 'piccton'
 		add_index :identifiers, :subject_id, :unique => true
+		add_index :identifiers, :subjectid, :unique => true
 	end
 
 	def self.down

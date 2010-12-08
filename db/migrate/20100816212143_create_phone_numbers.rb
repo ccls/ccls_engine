@@ -7,7 +7,7 @@ class CreatePhoneNumbers < SharedMigration
 			t.integer    :data_source_id
 			t.string     :phone_number
 			t.boolean    :is_primary
-			t.boolean    :is_valid
+			t.integer    :is_valid
 			t.string     :why_invalid
 			t.boolean    :is_verified
 			t.string     :how_verified

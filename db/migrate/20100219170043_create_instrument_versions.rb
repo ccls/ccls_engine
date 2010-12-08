@@ -1,6 +1,6 @@
-class CreateInterviewVersions < SharedMigration
+class CreateInstrumentVersions < SharedMigration
 	def self.up
-		create_table :interview_versions do |t|
+		create_table :instrument_versions do |t|
 			t.integer :position
 			t.references :interview_type
 			t.references :language
@@ -8,13 +8,14 @@ class CreateInterviewVersions < SharedMigration
 			t.date :ended_use_on
 			t.string :code, :null => false
 			t.string :description
+			t.integer :instrument_id
 			t.timestamps
 		end
-		add_index :interview_versions, :code, :unique => true
-		add_index :interview_versions, :description, :unique => true
+		add_index :instrument_versions, :code, :unique => true
+		add_index :instrument_versions, :description, :unique => true
 	end
 
 	def self.down
-		drop_table :interview_versions
+		drop_table :instrument_versions
 	end
 end

@@ -14,11 +14,15 @@ class CreateSubjects < SharedMigration
 #			t.boolean :is_hispanic
 			t.integer :response_sets_count, :default => 0
 			t.string :sex
-			t.string :subjectid, :limit => 6
+#			t.string :subjectid, :limit => 6
 			t.boolean :do_not_contact, :default => false, :null => false
+			t.string :matchingid, :limit => 6
+			t.string :familyid, :limit => 6
 			t.timestamps
 		end
-		add_index :subjects, :subjectid, :unique => true
+#		add_index :subjects, :subjectid, :unique => true
+#		add_index :subjects, :matchingid, :unique => true
+		add_index :subjects, :familyid, :unique => true
 	end
 
 	def self.down

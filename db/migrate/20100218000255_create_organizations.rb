@@ -2,9 +2,10 @@ class CreateOrganizations < SharedMigration
 	def self.up
 		create_table :organizations do |t|
 			t.integer :position
-			t.integer :aliquots_count, :default => 0
-			t.string :code, :null => false
+#			t.integer :aliquots_count, :default => 0
+			t.string :code, :null => false, :limit => 15
 			t.string :name
+			t.integer :person_id
 			t.timestamps
 		end
 		add_index :organizations, :code, :unique => true

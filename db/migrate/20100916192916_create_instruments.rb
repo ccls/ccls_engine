@@ -2,7 +2,7 @@ class CreateInstruments < SharedMigration
 	def self.up
 		create_table :instruments do |t|
 			t.integer :position
-			t.references :project, :null => false
+			t.references :project, :null => true
 			t.integer :results_table_id
 			t.string :code, :null => false
 			t.string :name, :null => false

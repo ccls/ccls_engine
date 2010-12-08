@@ -5,24 +5,27 @@ class CreateEnrollments < SharedMigration
 			t.references :subject
 			t.references :project
 			t.string :recruitment_priority
-			t.boolean :able_to_locate
-			t.boolean :is_candidate
-			t.boolean :is_eligible
+			t.integer :able_to_locate
+			t.integer :is_candidate
+			t.integer :is_eligible
 			t.references :ineligible_reason
 			t.string :ineligible_reason_specify
-			t.boolean :consented
+			t.integer :consented
 			t.date :consented_on
 			t.references :refusal_reason
 			t.string :other_refusal_reason
-			t.boolean :is_chosen
+			t.integer :is_chosen
 			t.string :reason_not_chosen
-			t.boolean :terminated_participation
+			t.integer :terminated_participation
 			t.string :terminated_reason
-			t.boolean :is_complete
+			t.integer :is_complete
 			t.date :completed_on
 			t.boolean :is_closed
 			t.string :reason_closed
 			t.text :notes
+			t.integer :document_version_id
+			t.integer :project_outcome_id
+			t.date :project_outcome_on
 			t.timestamps
 		end
 		add_index :enrollments, [:project_id, :subject_id],

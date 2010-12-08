@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "2.0.3"
+  s.version = "2.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-12-06}
+  s.date = %q{2010-12-07}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -67,8 +67,6 @@ Gem::Specification.new do |s|
     "app/models/project_outcome.rb",
     "app/models/race.rb",
     "app/models/refusal_reason.rb",
-    "app/models/response_extensions.rb",
-    "app/models/response_set_extensions.rb",
     "app/models/sample.rb",
     "app/models/sample_kit.rb",
     "app/models/sample_outcome.rb",
@@ -81,9 +79,6 @@ Gem::Specification.new do |s|
     "app/models/subject_relationship.rb",
     "app/models/subject_search.rb",
     "app/models/subject_type.rb",
-    "app/models/survey_extensions.rb",
-    "app/models/survey_invitation.rb",
-    "app/models/survey_invitation_mailer.rb",
     "app/models/transfer.rb",
     "app/models/unit.rb",
     "app/models/user.rb",
@@ -224,8 +219,6 @@ Gem::Specification.new do |s|
     "test/unit/ccls/project_test.rb",
     "test/unit/ccls/race_test.rb",
     "test/unit/ccls/refusal_reason_test.rb",
-    "test/unit/ccls/response_set_test.rb",
-    "test/unit/ccls/response_test.rb",
     "test/unit/ccls/role_test.rb",
     "test/unit/ccls/sample_kit_test.rb",
     "test/unit/ccls/sample_outcome_test.rb",
@@ -236,9 +229,6 @@ Gem::Specification.new do |s|
     "test/unit/ccls/subject_search_test.rb",
     "test/unit/ccls/subject_test.rb",
     "test/unit/ccls/subject_type_test.rb",
-    "test/unit/ccls/survey_invitation_mailer_test.rb",
-    "test/unit/ccls/survey_invitation_test.rb",
-    "test/unit/ccls/survey_test.rb",
     "test/unit/ccls/transfer_test.rb",
     "test/unit/ccls/unit_test.rb",
     "test/unit/ccls/user_invitation_mailer_test.rb",

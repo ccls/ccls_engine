@@ -75,8 +75,11 @@ Rails::Initializer.run do |config|
 	config.gem 'jakewendt-simply_trackable',
 		:lib    => 'simply_trackable'
 
-	config.gem 'jakewendt-surveyor',
-		:lib    => 'surveyor'
+	config.gem 'jakewendt-simply_authorized',
+		:lib    => 'simply_authorized'
+
+#	config.gem 'jakewendt-surveyor',
+#		:lib    => 'surveyor'
 
 	config.gem 'jakewendt-html_test',
 		:lib    => 'html_test'

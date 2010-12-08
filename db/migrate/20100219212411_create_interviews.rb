@@ -5,15 +5,16 @@ class CreateInterviews < SharedMigration
 			t.references :identifier
 			t.references :address
 			t.references :interviewer
-			t.references :interview_version
+			t.references :instrument_version
 			t.references :interview_method
 			t.references :language
 			t.date :began_on
 			t.date :ended_on
 			t.string :respondent_first_name
 			t.string :respondent_last_name
-			t.integer :respondent_relationship_id
-			t.string :respondent_relationship_other
+			t.integer :subject_relationship_id
+			t.string :subject_relationship_other
+			t.date  :intro_letter_sent_on
 			t.timestamps
 		end
 	end

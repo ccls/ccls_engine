@@ -3,13 +3,13 @@ class CreateGiftCards < SharedMigration
 		create_table :gift_cards do |t|
 			t.references :subject
 			t.references :project
-			t.date :gift_card_issued_on
-			t.string :gift_card_expiration, :limit => 25
-			t.string :gift_card_type
-			t.string :gift_card_number, :null => false
+			t.date :issued_on
+			t.string :expiration, :limit => 25
+			t.string :vendor
+			t.string :number, :null => false
 			t.timestamps
 		end
-		add_index :gift_cards, :gift_card_number, :unique => true
+		add_index :gift_cards, :number, :unique => true
 	end
 
 	def self.down

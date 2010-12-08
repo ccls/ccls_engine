@@ -3,9 +3,10 @@ class CreateOperationalEventTypes < SharedMigration
 		create_table :operational_event_types do |t|
 			t.integer :position
 			t.references :project
-			t.references :interview
+#			t.references :interview
 			t.string :code, :null => false
 			t.string :description
+			t.string :event_category
 			t.timestamps
 		end
 		add_index :operational_event_types, :code, :unique => true

@@ -8,10 +8,10 @@ class CreatePiis < SharedMigration
 			t.date :dob
 			t.date :died_on
 			t.string :state_id_no
-			t.string :phone_primary
-			t.string :phone_alternate
-			t.string :phone_alternate_2
-			t.string :phone_alternate_3
+#			t.string :phone_primary
+#			t.string :phone_alternate
+#			t.string :phone_alternate_2
+#			t.string :phone_alternate_3
 			t.string :mother_first_name
 			t.string :mother_middle_name
 			t.string :mother_maiden_name

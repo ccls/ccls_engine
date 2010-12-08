@@ -7,7 +7,7 @@ class CreateAddressings < SharedMigration
 			t.integer    :address_at_diagnosis
 			t.date       :valid_from
 			t.date       :valid_to
-			t.boolean    :is_valid
+			t.integer    :is_valid
 			t.string     :why_invalid
 			t.boolean    :is_verified
 			t.string     :how_verified
