@@ -1,5 +1,6 @@
 require 'ccls_engine/shared_database'
 
+require 'active_record'
 require 'active_support'
 require 'ruby_extension'
 require 'simply_helpful'
@@ -26,6 +27,7 @@ HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
 	id class style
 ))
 
+require 'ccls_engine/active_record_extension'
 require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/user_model'

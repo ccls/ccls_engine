@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "2.2.0"
+  s.version = "2.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -35,7 +35,6 @@ Gem::Specification.new do |s|
     "app/models/gift_card.rb",
     "app/models/gift_card_search.rb",
     "app/models/home_exposure_response.rb",
-    "app/models/home_page_pic.rb",
     "app/models/homex_outcome.rb",
     "app/models/hospital.rb",
     "app/models/identifier.rb",
@@ -123,6 +122,7 @@ Gem::Specification.new do |s|
     "generators/ccls_engine/templates/unit/user_invitation_test.rb",
     "generators/ccls_engine/templates/unit/user_test.rb",
     "lib/ccls_engine.rb",
+    "lib/ccls_engine/active_record_extension.rb",
     "lib/ccls_engine/assertions.rb",
     "lib/ccls_engine/autotest.rb",
     "lib/ccls_engine/core_extension.rb",
@@ -182,7 +182,6 @@ Gem::Specification.new do |s|
     "test/unit/ccls/enrollment_test.rb",
     "test/unit/ccls/gift_card_test.rb",
     "test/unit/ccls/home_exposure_response_test.rb",
-    "test/unit/ccls/home_page_pic_test.rb",
     "test/unit/ccls/homex_outcome_test.rb",
     "test/unit/ccls/hospital_test.rb",
     "test/unit/ccls/identifier_test.rb",
