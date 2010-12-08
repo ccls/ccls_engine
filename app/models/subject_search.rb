@@ -1,14 +1,16 @@
 # don't know exactly
 class SubjectSearch < Search
 
-	@@searchable_attributes = [
-#		:race, :type, :races, :types, :vital_statuses
-		:races, :types, :vital_statuses, :q,
-		:sample_outcome, :interview_outcome,
-		:projects, :has_gift_card
-	]
+	def self.searchable_attributes 
+		[ :races, :types, :vital_statuses, :q,
+			:sample_outcome, :interview_outcome,
+			:projects, :has_gift_card
+		]
+	end
 
-	@@attr_accessors.push :search_gift_cards
+	def self.attr_accessors
+		Search.attr_accessors.push :search_gift_cards
+	end
 	attr_accessor :search_gift_cards
 
 #	includes= [:pii,:identifier]
@@ -19,6 +21,12 @@ class SubjectSearch < Search
 			load 'identifier.rb'
 			load 'gift_card.rb'
 		end
+#puts "in subject_search.subjects"
+#puts "Is subjects memoized?:#{@subjects.nil?}"
+#puts "order:#{order}"
+#puts "joins:#{joins}"
+#puts "conditions:#{conditions}"
+#puts "projects:#{projects}"
 		@subjects ||= Subject.send(
 			(paginate)?'paginate':'all',{
 				:include => [:pii,:identifier],

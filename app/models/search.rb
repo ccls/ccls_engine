@@ -3,10 +3,14 @@
 #
 class Search
 
-	@@searchable_attributes = []
-	@@attr_accessors = [ :order, :dir, :includes, 
-		:paginate, :per_page, :page ]
-	attr_accessor *@@attr_accessors
+	def self.searchable_attributes
+		[]
+	end
+
+	def self.attr_accessors
+		[ :order, :dir, :includes, :paginate, :per_page, :page ]
+	end
+	attr_accessor *self.attr_accessors
 
 private
 
@@ -19,10 +23,13 @@ private
 	end
 
 	def initialize(options={})
-		self.class.send('attr_accessor', *@@searchable_attributes)
+#puts "In search initialize"
+#puts options.inspect
+#puts self.class.searchable_attributes.inspect
+		self.class.send('attr_accessor', *self.class.searchable_attributes)
 		options.each do |attr,value|
-			if @@attr_accessors.include?(attr.to_sym) ||
-				@@searchable_attributes.include?(attr.to_sym)
+			if self.class.attr_accessors.include?(attr.to_sym) ||
+				self.class.searchable_attributes.include?(attr.to_sym)
 				self.send("#{attr}=",value)
 			end
 		end

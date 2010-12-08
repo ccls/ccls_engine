@@ -1,7 +1,9 @@
 # don't know exactly
 class GiftCardSearch < Search
 
-	@@searchable_attributes = [ :q, :number ]
+	def self.searchable_attributes 
+		[ :q, :number ]
+	end
 
 	def gift_cards
 		@gift_cards ||= GiftCard.send(

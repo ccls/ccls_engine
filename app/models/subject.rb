@@ -166,6 +166,10 @@ class Subject < Shared
 #	end
 
 	def self.for_hx(params={})
+#puts "In for_hx"
+#puts params.inspect
+#puts params.deep_merge(:projects=>{hx_id=>{}}).inspect
+#puts "searching ..."
 		Subject.search(params.deep_merge(
 			:projects=>{hx_id=>{}}
 		))
