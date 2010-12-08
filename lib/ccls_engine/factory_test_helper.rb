@@ -1,29 +1,68 @@
-module FactoryTestHelper
+module Ccls::FactoryTestHelper
 
 	def full_response(options={})
-		survey = Factory(:survey)
-		survey_section = Factory(:survey_section, :survey => survey)
-		question = Factory(:question, { 
-			:survey_section => survey_section }.merge(options[:question]||{}))
-		answer = Factory(:answer, { :question => question,
-			:response_class => "answer" }.merge(options[:answer]||{}))
-		response_set = Factory(:response_set, {
-			:survey => survey}.merge(options[:response_set]||{}))
-		response = Factory(:response, {
-			:response_set => response_set,
-			:question => question, 
-			:answer => answer}.merge(options[:response]||{})
-		)
+		survey = survey_section = question = answer = response_set = response = nil
+		assert_difference('Survey.count',1) {
+			survey = Factory(:survey)
+		}
+		assert_difference('Survey.count',0) {
+		assert_difference('SurveySection.count',1) {
+			survey_section = Factory(:survey_section, :survey => survey)
+		} }
+		assert_difference('Survey.count',0) {
+		assert_difference('SurveySection.count',0) {
+		assert_difference('Question.count',1) {
+			question = Factory(:question, { 
+				:survey_section => survey_section }.merge(options[:question]||{}))
+		} } }
+		assert_difference('Survey.count',0) {
+		assert_difference('SurveySection.count',0) {
+		assert_difference('Question.count',0) {
+		assert_difference('Answer.count',1) {
+			answer = Factory(:answer, { :question => question,
+				:response_class => "answer" }.merge(options[:answer]||{}))
+		} } } }
+		assert_difference('Survey.count',0) {
+		assert_difference('SurveySection.count',0) {
+		assert_difference('Question.count',0) {
+		assert_difference('Answer.count',0) {
+		assert_difference('ResponseSet.count',1) {
+			response_set = Factory(:response_set, {
+				:survey => survey}.merge(options[:response_set]||{}))
+		} } } } }
+		assert_difference('Survey.count',0) {
+		assert_difference('SurveySection.count',0) {
+		assert_difference('Question.count',0) {
+		assert_difference('Answer.count',0) {
+		assert_difference('ResponseSet.count',0) {
+		assert_difference('Response.count',1) {
+			response = Factory(:response, {
+				:response_set => response_set,
+				:question => question, 
+				:answer => answer}.merge(options[:response]||{})
+			)
+		} } } } } }
+		response
 	end
 
 	def q_and_a_for(survey_section, options={})
-		question = Factory(:question, { 
-			:survey_section => survey_section 
-		}.merge(options[:question]||{}))
-		Factory(:answer, { 
-			:question => question,
-			:response_class => "answer" 
-		}.merge(options[:answer]||{}))
+		question = answer = nil
+		assert_difference('Survey.count',0) {
+		assert_difference('SurveySection.count',0) {
+		assert_difference('Question.count',1) {
+			question = Factory(:question, { 
+				:survey_section => survey_section 
+			}.merge(options[:question]||{}))
+		} } }
+		assert_difference('Survey.count',0) {
+		assert_difference('SurveySection.count',0) {
+		assert_difference('Question.count',0) {
+		assert_difference('Answer.count',1) {
+			Factory(:answer, { 
+				:question => question,
+				:response_class => "answer" 
+			}.merge(options[:answer]||{}))
+		} } } }
 		question
 	end
 
@@ -79,35 +118,55 @@ module FactoryTestHelper
 	end
 
 	def fill_out_survey(options={})
-		response_set = Factory(:response_set,{
-			:completed_at => Time.now
-		}.merge(options))
+		response_set = nil
+		assert ResponseSet.new.respond_to?(:subject)
+		assert_difference('ResponseSet.count',1) {
+			response_set = Factory(:response_set,{
+				:completed_at => Time.now
+			}.merge(options))
+#puts response_set.survey.inspect
+#puts response_set.subject.inspect
+		}
 		response_set.survey.sections.each do |section|
 			section.questions.each do |question|
 				next if question.answers.length <= 0
-				response = Factory.build(:response, {
-					:response_set => response_set,
-					:question     => question,
-					:answer => question.answers.first
-				})
-				case response.answer.response_class
-					when 'string'||'text'
-						response.string_value = "some text"
-					when 'integer'
-						response.integer_value = 1942
-				end
-				response.save
+				response = nil
+				assert_difference('Response.count',1) {
+					response = Factory.build(:response, {
+						:response_set => response_set,
+						:question     => question,
+						:answer => question.answers.first
+					})
+					case response.answer.response_class
+						when 'string'||'text'
+							response.string_value = "some text"
+						when 'integer'
+							response.integer_value = 1942
+					end
+					response.save
+				}
 			end
 		end
 		response_set
 	end
 
 	def create_home_exposure_with_subject(options={})
-		subject    = Factory(:subject,options[:subject]||{})
-		identifier = Factory(:identifier, :subject => subject)
+		subject = identifier = project = nil
+		assert_difference('Subject.count',1) {
+			subject    = Factory(:subject,options[:subject]||{})
+		}
+		assert_difference('Subject.count',0) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:identifier, :subject => subject)
+		} }
 		project = Project.find_or_create_by_code('HomeExposures')
-		Factory(:enrollment, (options[:enrollment]||{}).merge(
-			:subject => subject, :project => project ))
+		assert_not_nil project
+		assert_difference('Subject.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('Enrollment.count',1) {
+			Factory(:enrollment, (options[:enrollment]||{}).merge(
+				:subject => subject, :project => project ))
+		} } }
 		subject
 	end
 	alias_method :create_hx_subject, :create_home_exposure_with_subject
@@ -139,6 +198,8 @@ module FactoryTestHelper
 	end
 
 	def create_subject(options = {})
+		#	May contain options for testing failing so can't assert
+		#	that Subject.count will change here.
 		record = Factory.build(:subject,options)
 		record.save
 		record
@@ -151,12 +212,20 @@ module FactoryTestHelper
 	end
 
 	def create_subjects_with_recruitment_priorities(*priorities)
-		project = Factory(:project)
+		project = nil
+		assert_difference('Project.count',1) {
+			project = Factory(:project)
+		}
 		subjects = priorities.collect do |priority|
-			subject = create_subject
-			Factory(:enrollment, :project => project, 
-				:subject => subject,
-				:recruitment_priority => priority)
+			subject = nil
+			assert_difference('Subject.count',1) {
+				subject = create_subject
+			}
+			assert_difference('Enrollment.count',1){
+				Factory(:enrollment, :project => project, 
+					:subject => subject,
+					:recruitment_priority => priority)
+			}
 			subject
 		end
 		return [project,*subjects]
@@ -281,4 +350,4 @@ module FactoryTestHelper
 	end
 
 end
-ActiveSupport::TestCase.send(:include, FactoryTestHelper)
+ActiveSupport::TestCase.send(:include, Ccls::FactoryTestHelper)

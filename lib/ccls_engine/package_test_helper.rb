@@ -1,4 +1,4 @@
-class ActiveSupport::TestCase
+module Ccls::PackageTestHelper
 
 	def stub_package_for_in_transit(options={})
 		stub_package_for_successful_event(:event => 'Departed')
@@ -46,3 +46,4 @@ protected
 	end
 
 end
+ActiveSupport::TestCase.send(:include, Ccls::PackageTestHelper)
