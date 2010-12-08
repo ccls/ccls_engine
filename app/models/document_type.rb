@@ -6,4 +6,9 @@ class DocumentType < Shared
 		o.validates_length_of :title
 		o.validates_length_of :description
 	end
+
+	def to_s
+		description
+	end
+
 end

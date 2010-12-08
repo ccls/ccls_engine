@@ -13,4 +13,9 @@ class Ccls::DocumentTypeTest < ActiveSupport::TestCase
 		o.assert_should_require_attribute_length( :description )
 	end
 
+	test "should return description as to_s" do
+		object = create_object
+		assert_equal object.description, "#{object}"
+	end
+
 end
