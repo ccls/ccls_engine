@@ -1,7 +1,7 @@
 = UCB CCLS Engine
 
 This is a gem, basic rails app and plugin engine (GRAPE).
-As a gem, it shares functionality and access to shared database.
+As a gem, it shares functionality and access to the shared database.
 As an app, it is used to manage the migrations of the shared database.
 It is no longer really used as a plugin, but does contain the
 relevant features of an 'engine' including models, controllers,
