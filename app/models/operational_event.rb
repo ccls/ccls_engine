@@ -26,6 +26,14 @@ class OperationalEvent < Shared
 			:order => order(options))
 	end
 
+	before_save :copy_operational_event_type_description
+
+	def copy_operational_event_type_description
+		if self.description.blank?
+			self.description = operational_event_type.description
+		end
+	end
+
 protected
 
 	def self.valid_orders

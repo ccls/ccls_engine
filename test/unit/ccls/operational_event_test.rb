@@ -19,10 +19,10 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 		assert_equal object.description, "#{object}"
 	end
 
-	test "should return NOT description as to_s if nil" do
-		object = create_object
-		assert_not_equal object.description, "#{object}"
-	end
+#	test "should return NOT description as to_s if nil" do
+#		object = create_object
+#		assert_not_equal object.description, "#{object}"
+#	end
 
 	test "should order by type ASC" do
 		oes = create_oet_objects
@@ -101,6 +101,11 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 		oes = create_occurred_on_objects
 		events = OperationalEvent.search(:dir => 'ASC')
 		assert_equal events, [oes[2],oes[0],oes[1]]
+	end
+
+	test "should copy operational event type description on create" do
+		object = create_object
+		assert_equal object.reload.description, object.operational_event_type.description
 	end
 
 protected
