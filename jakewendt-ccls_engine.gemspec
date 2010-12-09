@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "2.3.1"
+  s.version = "2.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-12-08}
+  s.date = %q{2010-12-09}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -52,7 +52,6 @@ Gem::Specification.new do |s|
     "app/models/interview_outcome.rb",
     "app/models/interview_type.rb",
     "app/models/language.rb",
-    "app/models/maker.rb",
     "app/models/operational_event.rb",
     "app/models/operational_event_type.rb",
     "app/models/organization.rb",
@@ -85,7 +84,6 @@ Gem::Specification.new do |s|
     "app/models/user_invitation_mailer.rb",
     "app/models/user_session.rb",
     "app/models/vital_status.rb",
-    "app/models/widget.rb",
     "app/views/javascripts/cache_helper.js.erb",
     "app/views/stylesheets/dynamic.css.erb",
     "app/views/survey_invitation_mailer/invitation.erb",
@@ -234,9 +232,7 @@ Gem::Specification.new do |s|
     "test/unit/ccls/user_invitation_mailer_test.rb",
     "test/unit/ccls/user_invitation_test.rb",
     "test/unit/ccls/user_test.rb",
-    "test/unit/ccls/vital_status_test.rb",
-    "test/unit/maker_test.rb",
-    "test/unit/widget_test.rb"
+    "test/unit/ccls/vital_status_test.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -253,6 +249,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_runtime_dependency(%q<ryanb-acts-as-list>, [">= 0"])
       s.add_runtime_dependency(%q<gravatar>, [">= 0"])
+      s.add_runtime_dependency(%q<paperclip>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-simply_pages>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-use_db>, [">= 0"])
@@ -268,6 +265,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
       s.add_dependency(%q<gravatar>, [">= 0"])
+      s.add_dependency(%q<paperclip>, [">= 0"])
       s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
       s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
       s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
@@ -284,6 +282,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<ssl_requirement>, [">= 0"])
     s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
     s.add_dependency(%q<gravatar>, [">= 0"])
+    s.add_dependency(%q<paperclip>, [">= 0"])
     s.add_dependency(%q<jakewendt-calnet_authenticated>, [">= 0"])
     s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
     s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
