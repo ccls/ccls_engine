@@ -35,7 +35,7 @@ module ActiveRecordExtension
 			send(validation_method(configuration[:on]), configuration) do |record|
 				attr_names.each do |attr_name|
 					date = record.send(attr_name)
-					if date.blank?  && Time.now < date
+					if !date.blank? && Time.now < date
 						record.errors.add(attr_name, configuration[:message])
 					end
 				end

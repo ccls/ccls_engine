@@ -33,6 +33,12 @@ class Sample < Shared
 		o.validates_complete_date_for :aliquotted_on
 		o.validates_complete_date_for :receipt_confirmed_on
 	end
+	validates_past_date_for :sent_to_subject_on
+	validates_past_date_for :received_by_ccls_on
+	validates_past_date_for :sent_to_lab_on
+	validates_past_date_for :received_by_lab_on
+	validates_past_date_for :aliquotted_on
+	validates_past_date_for :receipt_confirmed_on
 
 	validate :tracking_numbers_are_different
 	validate :date_chronology

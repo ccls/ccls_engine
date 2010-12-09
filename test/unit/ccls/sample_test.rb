@@ -36,6 +36,17 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :aliquotted_on )
 	assert_requires_complete_date( :receipt_confirmed_on )
 
+%w( sent_to_subject_on received_by_ccls_on sent_to_lab_on received_by_lab_on aliquotted_on 
+).each do |d|
+	test "should require #{d} be in the past" do
+		assert_difference( "#{model_name}.count", 0 ) do
+			object = create_object( d => Chronic.parse('tomorrow'))
+			assert object.errors.on(d)
+			assert_match(/future/, object.errors.on(d))
+		end
+	end
+end
+
 	test "should require that kit and sample tracking " <<
 		"numbers are different" do
 		assert_difference( 'Sample.count', 0 ) do
