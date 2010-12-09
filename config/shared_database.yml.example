@@ -1,19 +1,39 @@
 
+#
+#	This database NEEDS to exist, be migrated and the same
+#	in the apps that use it in dev.  It will be used to
+#	create the app's test database
+#
 shared_development:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/shared_development.sqlite3	
+  adapter: mysql
+  encoding: utf8
+  database: shared_development
+  username: root
+  password:
+  host: localhost
 
+#
+#	This database NEEDS to be different in the apps that
+#	use this so that they do not step all over each other.
+#
 shared_test:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/shared_test.sqlite3
+  adapter: mysql
+  encoding: utf8
+  database: shared_ccls_engine_test
+  username: root
+  password:
+  host: localhost
 
+#
+#	This is the common production database, but in the ccls_engine
+#	the username and production MUST have the ability to create
+#	and modify the structure as this 'app' runs the migrations.
+#
 shared_production:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/shared_production.sqlite3
+  adapter: mysql
+  encoding: utf8
+  database: shared_ccls_engine_production_example
+  username: root
+  password:
+  host: localhost
 

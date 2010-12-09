@@ -1,21 +1,23 @@
-#	This file is here so that the plugin/engine can
-#	run standard rails rake tasks.
+
 development:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/development.sqlite3	
-#  database: ":memory:"
+  adapter: mysql
+  encoding: utf8
+  database: ccls_engine_development
+  username: root
+  password: 
+  host: localhost
+
 test:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/test.sqlite3
-#  database: ":memory:"
+  adapter: mysql
+  encoding: utf8
+  database: ccls_engine_test
+  username: root
+  password: 
+  host: localhost
+
 production:
   adapter: sqlite3
   pool: 5
   timeout: 5000
   database: db/production.sqlite3
-#  database: ":memory:"
 
