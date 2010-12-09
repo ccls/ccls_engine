@@ -1,7 +1,7 @@
 #	==	requires
 #	*	description ( unique and > 3 chars )
 #	*	project
-class InterviewType < Shared
+class InstrumentType < Shared
 	acts_as_list
 	default_scope :order => :position
 
