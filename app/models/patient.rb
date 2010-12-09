@@ -40,7 +40,8 @@ class Patient < Shared
 	validates_presence_of   :subject
 	validates_uniqueness_of :study_subject_id
 
-	validate :diagnosis_date_is_in_the_past
+#	validate :diagnosis_date_is_in_the_past
+	validates_past_date_for :diagnosis_date
 	validate :diagnosis_date_is_after_dob
 	validate :subject_is_case
 

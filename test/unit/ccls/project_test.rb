@@ -7,7 +7,7 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 #	TODO
 #	assert_should_have_many( :operational_event_types )
 
-	assert_should_have_many( :interview_types )
+	assert_should_have_many( :instrument_types )
 	assert_should_have_many( :enrollments )
 	assert_should_have_many( :instruments )
 	assert_should_have_many( :gift_cards )

@@ -7,7 +7,7 @@ class Project < Shared
 
 	has_and_belongs_to_many :samples
 	has_many :operational_event_types
-	has_many :interview_types
+	has_many :instrument_types
 	has_many :enrollments
 	has_many :gift_cards
 	has_many :subjects, :through => :enrollments, :foreign_key => 'study_subject_id'

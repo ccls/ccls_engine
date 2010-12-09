@@ -27,6 +27,21 @@ module ActiveRecordExtension
 			end
 		end
 
+		def validates_past_date_for(*attr_names)
+			configuration = { :on => :save,
+				:message => "is in the future and must be in the past." }
+			configuration.update(attr_names.extract_options!)
+
+			send(validation_method(configuration[:on]), configuration) do |record|
+				attr_names.each do |attr_name|
+					date = record.send(attr_name)
+					if date.blank?  && Time.now < date
+						record.errors.add(attr_name, configuration[:message])
+					end
+				end
+			end
+		end
+
 		#	This doesn't work as one would expect if the column
 		#	is a DateTime instead of just a Date.
 		#	For some reason, *_before_type_cast actually
