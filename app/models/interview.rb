@@ -43,7 +43,7 @@ class Interview < Shared
 		:if => :subject_relationship_is_other?
 	validates_absence_of :subject_relationship_other,
 		:message => "not allowed",
-		:unless => :subject_relationship_is_other?
+		:if => :subject_relationship_id_blank?
 
 	before_save :update_intro_operational_event,
 		:if => :intro_letter_sent_on_changed?
@@ -54,6 +54,10 @@ class Interview < Shared
 	end
 
 protected
+
+	def subject_relationship_id_blank?
+		subject_relationship_id.blank?
+	end
 
 	def subject_relationship_is_other?
 		subject_relationship.try(:is_other?)

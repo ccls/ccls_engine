@@ -42,29 +42,20 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	assert_should_initially_belong_to(:project)
 	assert_requires_complete_date(:completed_on)
 	assert_requires_complete_date(:consented_on)
+	assert_requires_past_date(:completed_on)	#	pass options to it? (i guess isn't needed)
+	assert_requires_past_date(:consented_on)
 
-	test "should require consented_on be in the past" do
-		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object(
-				:consented_on => Chronic.parse('tomorrow'))
-			assert object.errors.on(:consented_on)
-			assert_match(/future/,
-				object.errors.on(:consented_on))
-		end
-	end
-
-	test "should require completed_on be in the past" do
-		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object(
-				:is_complete  => YNDK[:yes],
-				:completed_on => Chronic.parse('tomorrow'))
-			#	sometimes this fails during test:coverage?
-			assert object.errors.on(:completed_on)
-			assert_match(/future/,
-				object.errors.on(:completed_on))
-		end
-	end
-
+#	test "should require completed_on be in the past" do
+#		assert_difference( "#{model_name}.count", 0 ) do
+#			object = create_object(
+#				:is_complete  => YNDK[:yes],
+#				:completed_on => Chronic.parse('tomorrow'))
+#			#	sometimes this fails during test:coverage?
+#			assert object.errors.on(:completed_on)
+#			assert_match(/future/,
+#				object.errors.on(:completed_on))
+#		end
+#	end
 
 	test "should require ineligible_reason if is_eligible == :no" do
 		assert_difference( "#{model_name}.count", 0 ) do

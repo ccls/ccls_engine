@@ -16,6 +16,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_requires_valid_association( :subject, :as => 'study_subject' )
 
 	assert_requires_complete_date(:diagnosis_date)
+	assert_requires_past_date(:diagnosis_date)
 
 	test "should require Case subject" do
 		assert_difference( "#{model_name}.count", 0 ) do
@@ -30,16 +31,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 #			assert object.errors.on(:subject)
 #		end
 #	end
-
-	test "should require diagnosis_date be in the past" do
-		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object(
-				:diagnosis_date => Chronic.parse('tomorrow'))
-			assert object.errors.on(:diagnosis_date)
-			assert_match(/future/,
-				object.errors.on(:diagnosis_date))
-		end
-	end
 
 	test "should require diagnosis_date be after DOB" do
 		assert_difference( "#{model_name}.count", 0 ) do
