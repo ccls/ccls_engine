@@ -75,24 +75,26 @@ protected
 		end
 	end
 
-	# https://ccls.lighthouseapp.com/projects/45778/tickets/185
-	# When data is saved, the diagnosis date for the case child 
-	# should be updated and the reference date for all subjects 
-	# whose matchingID is the same as the child subject's 
-	# matchingID should be updated with the new (or revised) 
-	# diagnosis date.
+#	move me to identifiers
 
-	def update_matching_subjects_reference_date
-puts "update_matching_subjects_reference_date"
-puts "diagnosis_date was:#{diagnosis_date_was}"
-puts "diagnosis_date is:#{diagnosis_date}"
-
-puts "matchingid is blank (FYI)" if subject.matchingid.blank?
-
-#	unless subject.matchingid.blank?
-#puts Subject.update_all({ :reference_date => diagnosis_date },
-#		"matchingid = #{subject.matchingid}")
-
-	end
+#	# https://ccls.lighthouseapp.com/projects/45778/tickets/185
+#	# When data is saved, the diagnosis date for the case child 
+#	# should be updated and the reference date for all subjects 
+#	# whose matchingID is the same as the child subject's 
+#	# matchingID should be updated with the new (or revised) 
+#	# diagnosis date.
+#
+#	def update_matching_subjects_reference_date
+#puts "update_matching_subjects_reference_date"
+#puts "diagnosis_date was:#{diagnosis_date_was}"
+#puts "diagnosis_date is:#{diagnosis_date}"
+#
+#puts "matchingid is blank (FYI)" if subject.matchingid.blank?
+#
+##	unless subject.matchingid.blank?
+##puts Subject.update_all({ :reference_date => diagnosis_date },
+##		"matchingid = #{subject.matchingid}")
+#
+#	end
 
 end

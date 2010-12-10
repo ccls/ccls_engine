@@ -30,7 +30,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		o.assert_should_require_attribute_length( :related_childid )
 		o.assert_should_require_attribute_length( :related_case_childid )
 	end
-
+	assert_should_not_require_attributes( :matchingid )
+	assert_should_not_require_attributes( :familyid )
 
 #	assert_should_protect_attributes(:subjectid)
 

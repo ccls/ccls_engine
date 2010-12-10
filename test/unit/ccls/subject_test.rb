@@ -28,8 +28,6 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :reference_date )
 	assert_should_not_require_attributes( :response_sets_count )
 	assert_should_not_require_attributes( :sex )
-	assert_should_not_require_attributes( :matchingid )
-	assert_should_not_require_attributes( :familyid )
 
 
 	test "should create subject" do
