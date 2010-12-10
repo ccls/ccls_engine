@@ -136,17 +136,17 @@ class Enrollment < Shared
 
 protected
 
-	def completed_on_is_in_the_past
-		if !completed_on.blank? && Time.now < completed_on
-			errors.add(:completed_on, "is in the future and must be in the past.") 
-		end
-	end
-
-	def consented_on_is_in_the_past
-		if !consented_on.blank? && Time.now < consented_on
-			errors.add(:consented_on, "is in the future and must be in the past.") 
-		end
-	end
+#	def completed_on_is_in_the_past
+#		if !completed_on.blank? && Time.now < completed_on
+#			errors.add(:completed_on, "is in the future and must be in the past.") 
+#		end
+#	end
+#
+#	def consented_on_is_in_the_past
+#		if !consented_on.blank? && Time.now < consented_on
+#			errors.add(:consented_on, "is in the future and must be in the past.") 
+#		end
+#	end
 
 	def ineligible_reason_is_other?
 		ineligible_reason.try(:is_other?)

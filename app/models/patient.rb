@@ -53,12 +53,12 @@ class Patient < Shared
 
 protected
 
-	def diagnosis_date_is_in_the_past
-		if !diagnosis_date.blank? && Time.now < diagnosis_date
-			errors.add(:diagnosis_date, 
-				"is in the future and must be in the past.") 
-		end
-	end
+#	def diagnosis_date_is_in_the_past
+#		if !diagnosis_date.blank? && Time.now < diagnosis_date
+#			errors.add(:diagnosis_date, 
+#				"is in the future and must be in the past.") 
+#		end
+#	end
 
 	def diagnosis_date_is_after_dob
 		if !diagnosis_date.blank? && 
