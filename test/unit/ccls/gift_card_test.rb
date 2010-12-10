@@ -23,4 +23,10 @@ class Ccls::GiftCardTest < ActiveSupport::TestCase
 		assert_equal object.number, "#{object}"
 	end
 
+#	Add search tests
+
+	test "should search for stuff" do
+pending
+	end
+
 end

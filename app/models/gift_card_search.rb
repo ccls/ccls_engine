@@ -53,6 +53,7 @@ private	#	THIS IS REQUIRED
 			c = []
 			v = {}
 			q.to_s.split(/\s+/).each_with_index do |t,i|
+				c.push("gift_cards.number LIKE :t#{i}")
 				c.push("piis.first_name LIKE :t#{i}")
 				c.push("piis.last_name LIKE :t#{i}")
 				c.push("identifiers.patid LIKE :t#{i}")
