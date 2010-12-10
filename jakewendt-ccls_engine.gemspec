@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "2.3.2"
+  s.version = "2.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -46,11 +46,11 @@ Gem::Specification.new do |s|
     "app/models/identifier.rb",
     "app/models/ineligible_reason.rb",
     "app/models/instrument.rb",
+    "app/models/instrument_type.rb",
     "app/models/instrument_version.rb",
     "app/models/interview.rb",
     "app/models/interview_method.rb",
     "app/models/interview_outcome.rb",
-    "app/models/interview_type.rb",
     "app/models/language.rb",
     "app/models/operational_event.rb",
     "app/models/operational_event_type.rb",
@@ -198,11 +198,11 @@ Gem::Specification.new do |s|
     "test/unit/ccls/identifier_test.rb",
     "test/unit/ccls/ineligible_reason_test.rb",
     "test/unit/ccls/instrument_test.rb",
+    "test/unit/ccls/instrument_type_test.rb",
     "test/unit/ccls/instrument_version_test.rb",
     "test/unit/ccls/interview_method_test.rb",
     "test/unit/ccls/interview_outcome_test.rb",
     "test/unit/ccls/interview_test.rb",
-    "test/unit/ccls/interview_type_test.rb",
     "test/unit/ccls/language_test.rb",
     "test/unit/ccls/operational_event_test.rb",
     "test/unit/ccls/operational_event_type_test.rb",
