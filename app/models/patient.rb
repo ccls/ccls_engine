@@ -85,7 +85,7 @@ protected
 #	# matchingID should be updated with the new (or revised) 
 #	# diagnosis date.
 #
-#	def update_matching_subjects_reference_date
+	def update_matching_subjects_reference_date
 #puts "update_matching_subjects_reference_date"
 #puts "diagnosis_date was:#{diagnosis_date_was}"
 #puts "diagnosis_date is:#{diagnosis_date}"
@@ -96,6 +96,6 @@ protected
 ##puts Subject.update_all({ :reference_date => diagnosis_date },
 ##		"matchingid = #{subject.matchingid}")
 #
-#	end
+	end
 
 end
