@@ -317,20 +317,31 @@ module Ccls::FactoryTestHelper
 		create_subjects_with_interview_outcome_ons('12/31/2005','12/31/2001','12/31/2003')
 	end
 
-	def create_subject_with_sample_sent_on(date)
-		create_hx_subject		#	will need extended eventually
+	def create_subject_with_sent_to_subject_on(date)
+		subject = create_hx_subject
+		Factory(:sample,
+			:subject => subject,
+			:sent_to_subject_on => Chronic.parse(date)
+		)
+		subject
 	end
 
-	def three_subjects_with_sample_sent_on
-		create_subjects_with_sample_sent_ons('12/31/2005','12/31/2001','12/31/2003')
+	def three_subjects_with_sent_to_subject_on
+		create_subjects_with_sent_to_subject_on('12/31/2005','12/31/2001','12/31/2003')
 	end
 
-	def create_subject_with_sample_received_on(date)
-		create_hx_subject		#	will need extended eventually
+	def create_subject_with_received_by_ccls_on(date)
+		subject = create_hx_subject
+		Factory(:sample,
+			:subject => subject,
+			:sent_to_subject_on  => (Chronic.parse(date) - 1000000),
+			:received_by_ccls_on => Chronic.parse(date)
+		)
+		subject
 	end
 
-	def three_subjects_with_sample_received_on
-		create_subjects_with_sample_received_ons('12/31/2005','12/31/2001','12/31/2003')
+	def three_subjects_with_received_by_ccls_on
+		create_subjects_with_received_by_ccls_on('12/31/2005','12/31/2001','12/31/2003')
 	end
 
 	def method_missing_with_pluralization(symb,*args, &block)

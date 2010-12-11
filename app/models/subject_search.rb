@@ -21,12 +21,6 @@ class SubjectSearch < Search
 			load 'identifier.rb'
 			load 'gift_card.rb'
 		end
-#puts "in subject_search.subjects"
-#puts "Is subjects memoized?:#{@subjects.nil?}"
-#puts "order:#{order}"
-#puts "joins:#{joins}"
-#puts "conditions:#{conditions}"
-#puts "projects:#{projects}"
 		@subjects ||= Subject.send(
 			(paginate)?'paginate':'all',{
 				:include => [:pii,:identifier],
@@ -44,7 +38,8 @@ class SubjectSearch < Search
 
 	def valid_orders
 		%w( id childid last_name first_name dob studyid priority sample_outcome
-			interview_outcome_on sample_sent_on sample_received_on number issued_on )
+			interview_outcome_on sample_sent_on sample_received_on number issued_on 
+			sent_to_subject_on received_by_ccls_on )
 	end
 
 private	#	THIS IS REQUIRED
@@ -70,8 +65,8 @@ private	#	THIS IS REQUIRED
 				when 'interview_outcome_on' then 'homex_outcomes.interview_outcome_on'
 				when 'number' then 'gift_cards.number'
 				when 'issued_on' then 'gift_cards.issued_on'
-#				when 'sample_sent_on'       then 'recruitment_priority'
-#				when 'sample_received_on'   then 'recruitment_priority'
+				when 'sent_to_subject_on'  then 'samples.sent_to_subject_on'
+				when 'received_by_ccls_on' then 'samples.received_by_ccls_on'
 				else @order
 			end
 			dir = case @dir.try(:downcase)
@@ -82,6 +77,11 @@ private	#	THIS IS REQUIRED
 		else
 			nil
 		end
+	end
+
+	def samples_joins
+		"JOIN samples ON subjects.id " <<
+			"= samples.study_subject_id" if %w( sent_to_subject_on received_by_ccls_on ).include?(@order)
 	end
 
 	def vital_statuses_joins

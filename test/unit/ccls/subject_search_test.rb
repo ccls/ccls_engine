@@ -464,25 +464,28 @@ pending
 		assert_equal [s3,s2,s1], subjects
 	end
 
-#			sample_sent_on sample_received_on 
 	%w( childid studyid dob first_name last_name 
 			sample_outcome interview_outcome_on 
+			sent_to_subject_on received_by_ccls_on
 			).each do |column|
 		test "should order by #{column} asc by default" do
 			s1,s2,s3 = send("three_subjects_with_#{column}")
 			subjects = Subject.search(:order => column)
+			assert_equal 3, subjects.length
 			assert_equal [s2,s3,s1], subjects
 		end
 
 		test "should order by #{column} asc" do
 			s1,s2,s3 = send("three_subjects_with_#{column}")
 			subjects = Subject.search(:order => column, :dir => 'asc')
+			assert_equal 3, subjects.length
 			assert_equal [s2,s3,s1], subjects
 		end
 
 		test "should order by #{column} desc" do
 			s1,s2,s3 = send("three_subjects_with_#{column}")
 			subjects = Subject.search(:order => column, :dir => 'desc')
+			assert_equal 3, subjects.length
 			assert_equal [s1,s3,s2], subjects
 		end
 	end
