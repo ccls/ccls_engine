@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jakewendt-ccls_engine}
-  s.version = "2.4.0"
+  s.version = "2.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2010-12-09}
+  s.date = %q{2010-12-10}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jake.otherinbox.com}
   s.extra_rdoc_files = [
@@ -146,6 +146,7 @@ Gem::Specification.new do |s|
     "lib/surveyor/survey_extensions.rb",
     "lib/tasks/application.rake",
     "lib/tasks/calnet_authenticated.rake",
+    "lib/tasks/database.rake",
     "lib/tasks/documentation.rake",
     "lib/tasks/simply_authorized.rake",
     "lib/tasks/simply_helpful.rake",
@@ -171,13 +172,6 @@ Gem::Specification.new do |s|
     "test/functional/ccls/user_invitations_controller_test.rb",
     "test/functional/ccls/users_controller_test.rb",
     "test/helpers/authlogic_test_helper.rb",
-    "test/unit.orig/ccls/core_extension_test.rb",
-    "test/unit.orig/ccls/role_test.rb",
-    "test/unit.orig/ccls/user_invitation_mailer_test.rb",
-    "test/unit.orig/ccls/user_invitation_test.rb",
-    "test/unit.orig/ccls/user_test.rb",
-    "test/unit.orig/maker_test.rb",
-    "test/unit.orig/widget_test.rb",
     "test/unit/ccls/address_test.rb",
     "test/unit/ccls/address_type_test.rb",
     "test/unit/ccls/addressing_test.rb",
