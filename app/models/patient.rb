@@ -76,6 +76,7 @@ protected
 	end
 
 #	move me to identifiers
+#	actually, this stays here, but the attributes moved to identifiers
 
 #	# https://ccls.lighthouseapp.com/projects/45778/tickets/185
 #	# When data is saved, the diagnosis date for the case child 
