@@ -18,6 +18,14 @@ class PhoneNumber < Shared
 		o.validates_length_of :how_verified
 	end
 
+#	named_scope :current, :conditions => {
+#		:current_address => 1
+#	}
+#
+#	named_scope :historic, :conditions => [
+#		'current_address IS NULL OR current_address != 1'
+#	]
+
 	before_save :format_phone_number
 
 	before_save :set_verifier, 
