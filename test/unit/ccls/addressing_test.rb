@@ -24,6 +24,11 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 	assert_requires_complete_date(:valid_from)
 	assert_requires_complete_date(:valid_to)
 
+	test "current_address should default to 1" do
+		addressing = Addressing.new
+		assert_equal 1, addressing.current_address
+	end
+
 	#
 	# addressing uses accepts_attributes_for :address
 	# so the addressing can't require address_id on create
