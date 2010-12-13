@@ -4,6 +4,7 @@ namespace :db do
 	task :import_csv_data => [
 		:destroy_csv_data,
 		:import_subject_data,
+		:import_matchingid_and_familyid,
 		:import_address_data,
 		:random_enrollments_data
 	]
@@ -116,19 +117,6 @@ namespace :db do
 
 			identifier.update_attributes!(:subjectid => line[4])
 
-#			subject.addressings << Addressing.create!(
-#				:subject_id  => subject.id,
-#				:current_address => 1,		#	Yes
-#				:is_valid    => true,
-#				:is_verified => false,
-#				:address_attributes => {
-#					:address_type_id => line[1].to_i,
-#					:line_1 => line[2]||"FAKE LINE 1",
-#					:city => line[3]||"FAKE CITY",
-#					:state => line[4]||"FAKE STATE",
-#					:zip => line[5]||"12345-6789"
-#				}
-#			)
 		end
 	end
 
