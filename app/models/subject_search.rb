@@ -167,7 +167,8 @@ private	#	THIS IS REQUIRED
 	def sample_outcome_conditions
 		unless sample_outcome.blank?
 			if sample_outcome =~ /^Complete$/i
-				['sample_outcomes.code = :sample_outcome',{:sample_outcome => sample_outcome}]
+#				['sample_outcomes.code = :sample_outcome',{:sample_outcome => sample_outcome}]
+				['sample_outcomes.code IS NOT NULL && sample_outcomes.code NOT IN ("Sent","Pending")']
 			else
 				["(sample_outcomes.code != 'Complete' " <<
 						"OR sample_outcomes.code IS NULL)"]
