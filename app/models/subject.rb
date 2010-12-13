@@ -48,6 +48,7 @@ class Subject < Shared
 			o.delegate :dob
 			o.delegate :fathers_name
 			o.delegate :mothers_name
+			o.delegate :state_id_no
 		end
 		n.with_options :to => :identifier do |o|
 			o.delegate :childid
