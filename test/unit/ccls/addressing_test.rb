@@ -43,17 +43,19 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		end
 	end
 
-	[:yes,:dk,:nil].each do |yndk|
+	[:yes,:nil].each do |yndk|
 		test "should NOT require why_invalid if is_valid is #{yndk}" do
 			assert_difference( "#{model_name}.count", 1 ) do
 				object = create_object(:is_valid => YNDK[yndk])
 			end
 		end
 	end
-	test "should require why_invalid if is_valid is :no" do
-		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object(:is_valid => YNDK[:no])
-			assert object.errors.on(:why_invalid)
+	[:no,:dk].each do |yndk|
+		test "should require why_invalid if is_valid is #{yndk}" do
+			assert_difference( "#{model_name}.count", 0 ) do
+				object = create_object(:is_valid => YNDK[yndk])
+				assert object.errors.on(:why_invalid)
+			end
 		end
 	end
 

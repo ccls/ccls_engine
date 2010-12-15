@@ -39,9 +39,9 @@ class PhoneNumber < Shared
 	attr_accessor :current_user
 
 	#	Returns boolean of comparison
-	#	true only if is_valid == 2
+	#	true only if is_valid == 2 or 999
 	def is_not_valid?
-		is_valid == 2
+		[2,999].include?(is_valid)
 	end
 
 protected
