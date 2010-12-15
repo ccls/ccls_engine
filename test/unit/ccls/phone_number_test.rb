@@ -21,11 +21,36 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :how_verified )
 	assert_should_not_require_attributes( :verified_on )
 	assert_should_not_require_attributes( :verified_by_id )
+	assert_should_not_require_attributes( :current_phone )
 	with_options :maximum => 250 do |o|
 		o.assert_should_require_attribute_length( :how_verified )
 		o.assert_should_require_attribute_length( :why_invalid )
 	end
 
+	test "current_phone should default to 1" do
+		phone_number = PhoneNumber.new
+		assert_equal 1, phone_number.current_phone
+	end
+
+	test "should only return current phone_numbers" do
+		create_object(:current_phone => YNDK[:yes])
+		create_object(:current_phone => YNDK[:no])
+		create_object(:current_phone => YNDK[:dk])
+		objects = PhoneNumber.current
+		objects.each do |object|
+			assert_equal 1, object.current_phone
+		end
+	end
+
+	test "should only return historic phone_numbers" do
+		create_object(:current_phone => YNDK[:yes])
+		create_object(:current_phone => YNDK[:no])
+		create_object(:current_phone => YNDK[:dk])
+		objects = PhoneNumber.historic
+		objects.each do |object|
+			assert_not_equal 1, object.current_phone
+		end
+	end
 
 	test "should require properly formated phone number" do
 		[ 'asdf', 'me@some@where.com','12345678','12345678901' 
