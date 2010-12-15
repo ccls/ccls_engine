@@ -9,7 +9,6 @@ class State < Shared
 	validates_uniqueness_of :name
 	validates_uniqueness_of :fips_state_code
 	with_options :maximum => 250 do |o|
-#, :allow_blank => true
 		o.validates_length_of :code
 		o.validates_length_of :name
 		o.validates_length_of :fips_state_code

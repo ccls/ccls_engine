@@ -16,11 +16,9 @@ class SubjectSearch < Search
 #	includes= [:pii,:identifier]
 
 	def subjects
-		if RAILS_ENV == 'development'
-			load 'pii.rb'	
-			load 'identifier.rb'
-			load 'gift_card.rb'
-		end
+		require_dependency 'pii.rb'	
+		require_dependency 'identifier.rb'
+		require_dependency 'gift_card.rb'
 		@subjects ||= Subject.send(
 			(paginate)?'paginate':'all',{
 				:include => [:pii,:identifier],
@@ -90,7 +88,6 @@ private	#	THIS IS REQUIRED
 	end
 
 	def vital_statuses_conditions
-#		['vital_statuses.code IN (?)', vital_statuses
 		['vital_statuses.code IN (:vital_statuses)', { :vital_statuses => vital_statuses }
 			] unless vital_statuses.blank?
 	end
@@ -100,7 +97,6 @@ private	#	THIS IS REQUIRED
 	end
 
 	def races_conditions
-#		['races.description IN (?)', races
 		['races.description IN (:races)', { :races => races }
 			] unless races.blank?
 	end
@@ -111,7 +107,6 @@ private	#	THIS IS REQUIRED
 	end
 
 	def types_conditions
-#		['subject_types.description IN (?)', types
 		['subject_types.description IN (:types)', { :types => types }
 			] unless types.blank?
 	end

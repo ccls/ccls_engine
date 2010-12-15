@@ -30,10 +30,6 @@ class Package < Shared
 		"#{RAILS_ROOT}/packages_updated.#{RAILS_ENV}"
 	end
 
-#	named_scope :delivered, :conditions => [
-#		'status LIKE ?', 'Delivered%'
-#	]
-
 	named_scope :delivered, :conditions => {
 		:status => 'Delivered'
 	}

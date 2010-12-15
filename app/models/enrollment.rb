@@ -51,7 +51,6 @@ class Enrollment < Shared
 	validates_absence_of :consented_on,
 		:message => 'not allowed with unknown consent',
 		:if => :consent_unknown?
-#	validate :consented_on_is_in_the_past
 	validates_past_date_for :consented_on
 
 	validates_presence_of :other_refusal_reason,
@@ -70,7 +69,6 @@ class Enrollment < Shared
 		:if => :is_complete?
 	validates_absence_of :completed_on,
 		:unless => :is_complete?
-#	validate :completed_on_is_in_the_past
 	validates_past_date_for :completed_on
 
 	validates_absence_of :document_version,
@@ -135,18 +133,6 @@ class Enrollment < Shared
 	end
 
 protected
-
-#	def completed_on_is_in_the_past
-#		if !completed_on.blank? && Time.now < completed_on
-#			errors.add(:completed_on, "is in the future and must be in the past.") 
-#		end
-#	end
-#
-#	def consented_on_is_in_the_past
-#		if !consented_on.blank? && Time.now < consented_on
-#			errors.add(:consented_on, "is in the future and must be in the past.") 
-#		end
-#	end
 
 	def ineligible_reason_is_other?
 		ineligible_reason.try(:is_other?)

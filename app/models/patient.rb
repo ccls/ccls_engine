@@ -86,9 +86,9 @@ protected
 #	# diagnosis date.
 #
 	def update_matching_subjects_reference_date
-#puts "update_matching_subjects_reference_date"
-#puts "diagnosis_date was:#{diagnosis_date_was}"
-#puts "diagnosis_date is:#{diagnosis_date}"
+puts "update_matching_subjects_reference_date"
+puts "diagnosis_date was:#{diagnosis_date_was}"
+puts "diagnosis_date is:#{diagnosis_date}"
 #
 #puts "matchingid is blank (FYI)" if subject.matchingid.blank?
 #

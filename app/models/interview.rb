@@ -50,7 +50,6 @@ class Interview < Shared
 
 	#	Returns string containing respondent's first and last name
 	def respondent_full_name
-#		"#{respondent_first_name} #{respondent_last_name}"
 		[respondent_first_name, respondent_last_name].compact.join(' ')
 	end
 
@@ -66,10 +65,6 @@ protected
 
 	def update_intro_operational_event
 		oet = OperationalEventType['intro']
-#puts identifier.reload.inspect
-#puts identifier.subject.inspect
-#puts subject.inspect
-#		hxe = subject.hx_enrollment
 		hxe = identifier.subject.hx_enrollment
 		if oet && hxe
 			oe = hxe.operational_events.find(:first,

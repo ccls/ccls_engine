@@ -6,12 +6,6 @@ class HomeExposureResponse < Shared
 	validates_presence_of   :subject
 	validates_uniqueness_of :study_subject_id
 
-#	def self.q_column_names
-#		column_names - 
-#			%w( id subject_id childid created_at updated_at ) -
-#			%w( vacuum_bag_last_changed vacuum_used_outside_home )
-#	end
-
 	#	could have just used column_names, but these
 	#	are ordered to match the survey
 	def self.field_names
