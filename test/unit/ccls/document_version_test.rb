@@ -27,4 +27,9 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should return title as to_s" do
+		object = create_object
+		assert_equal object.title, "#{object}"
+	end
+
 end

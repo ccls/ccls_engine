@@ -104,4 +104,18 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should return join of father's name" do
+		object = create_object(
+			:father_first_name => "Santa",
+			:father_last_name => "Claus" )
+		assert_equal 'Santa Claus', object.fathers_name 
+	end
+
+	test "should return join of mother's name" do
+		object = create_object(
+			:mother_first_name => "Ms",
+			:mother_last_name => "Claus" )
+		assert_equal 'Ms Claus', object.mothers_name 
+	end
+
 end

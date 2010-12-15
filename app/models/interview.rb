@@ -50,7 +50,8 @@ class Interview < Shared
 
 	#	Returns string containing respondent's first and last name
 	def respondent_full_name
-		"#{respondent_first_name} #{respondent_last_name}"
+#		"#{respondent_first_name} #{respondent_last_name}"
+		[respondent_first_name, respondent_last_name].compact.join(' ')
 	end
 
 protected

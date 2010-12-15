@@ -45,12 +45,12 @@ class Pii < Shared
 
 	#	Returns string containing subject's father's first, middle and last name
 	def fathers_name
-		[father_first_name, father_middle_name, father_last_name].join(' ')
+		[father_first_name, father_middle_name, father_last_name].compact.join(' ')
 	end
 
 	#	Returns string containing subject's mother's first, middle and last name
 	def mothers_name
-		[mother_first_name, mother_middle_name, mother_maiden_name, mother_last_name].join(' ')
+		[mother_first_name, mother_middle_name, mother_maiden_name, mother_last_name].compact.join(' ')
 	end
 
 	#	I don't know if I still need this

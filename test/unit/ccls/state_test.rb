@@ -19,4 +19,11 @@ class Ccls::StateTest < ActiveSupport::TestCase
 		o.assert_should_require_attribute_length( :fips_country_code )
 	end
 
+	test "should return an array of state abbreviations" do
+		abbreviations = State.abbreviations
+		assert_not_nil abbreviations
+		assert abbreviations.is_a?(Array)
+		assert abbreviations.length > 50
+	end
+
 end

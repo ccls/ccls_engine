@@ -60,4 +60,14 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 #		}
 #	end
 
+	#	this method seems like it would be better suited to 
+	#	be in the Subject model rather than Project
+	test "should return projects not enrolled by given subject" do
+		subject = create_subject
+		unenrolled = Project.unenrolled_projects(subject)
+		assert_not_nil unenrolled
+		assert unenrolled.is_a?(Array)
+		assert_equal 6, unenrolled.length
+	end
+
 end

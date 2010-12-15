@@ -129,4 +129,11 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should return join of respondent's name" do
+		object = create_object(
+			:respondent_first_name => "Santa",
+			:respondent_last_name => "Claus" )
+		assert_equal 'Santa Claus', object.respondent_full_name
+	end
+
 end

@@ -539,6 +539,48 @@ pending
 		assert_not_nil subject.hx_interview
 	end
 
+	test "should return concat of 3 fields as to_s" do
+		object = create_object
+#	[childid,'(',studyid,full_name,')'].compact.join(' ')
+		assert_equal [object.childid,'(',object.studyid,object.full_name,')'].compact.join(' '), "#{object}"
+	end
+
+	test "should return hx_id" do
+		hx_id = Project['HomeExposures'].id
+		assert_not_nil hx_id
+		assert_equal Subject.hx_id, hx_id
+	end
+
+	test "should search for_hx" do
+		subjects = Subject.for_hx()
+		assert_not_nil subjects
+		assert subjects.is_a?(Array)
+	end
+
+	test "should search for_hx_interview" do
+		subjects = Subject.for_hx_interview()
+		assert_not_nil subjects
+		assert subjects.is_a?(Array)
+	end
+
+	test "should search need_gift_card" do
+		subjects = Subject.need_gift_card()
+		assert_not_nil subjects
+		assert subjects.is_a?(Array)
+	end
+
+	test "should search for_hx_followup" do
+		subjects = Subject.for_hx_followup()
+		assert_not_nil subjects
+		assert subjects.is_a?(Array)
+	end
+
+	test "should search for_hx_sample" do
+		subjects = Subject.for_hx_sample()
+		assert_not_nil subjects
+		assert subjects.is_a?(Array)
+	end
+
 protected
 
 #	def create_survey_response_sets

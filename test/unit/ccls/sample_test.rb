@@ -234,4 +234,36 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		} } #}
 	end
 
+	test "should respond to sample_type_parent" do
+		object = create_object
+		assert object.respond_to? :sample_type_parent
+		sample_type_parent = object.sample_type_parent
+		assert_not_nil sample_type_parent
+		assert sample_type_parent.is_a?(SampleType)
+	end
+
+	test "should respond to kit_sent_on" do
+		object = create_object
+		assert object.respond_to? :kit_sent_on
+		assert_nil object.kit_sent_on
+	end
+
+	test "should respond to kit_received_on" do
+		object = create_object
+		assert object.respond_to? :kit_received_on
+		assert_nil object.kit_received_on
+	end
+
+	test "should respond to sample_sent_on" do
+		object = create_object
+		assert object.respond_to? :sample_sent_on
+		assert_nil object.sample_sent_on
+	end
+
+	test "should respond to sample_received_on" do
+		object = create_object
+		assert object.respond_to? :sample_received_on
+		assert_nil object.sample_received_on
+	end
+
 end
