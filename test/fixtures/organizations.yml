@@ -88,3 +88,25 @@ UCSF:
   code:  UCSF
   name:  University of California, San Francisco
   person_id:  12
+Smith:
+  id: 16
+  code: Smith
+  name:  Smith Lab
+  person_id: 16
+GEGL:
+  id: 17
+  code: GEGL
+  name: Barcellos Lab (GEGL)
+  person_id: 1
+CalEPA:
+  id: 18
+  code: CalEPA
+  name: California EPA
+CCLS:
+  id: 19
+  code: CCLS
+  name: California Childhood Leukemia Study (CCLS)
+CDC:
+  id: 20
+  code: CDC
+  name:  United States Center for Disease Control
