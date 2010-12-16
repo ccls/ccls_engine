@@ -7,6 +7,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_have_many( :aliquots )
 	assert_should_belong_to( :aliquot_sample_format )
 	assert_should_belong_to( :unit )
+#	assert_should_belong_to( :location )
 	assert_should_initially_belong_to( :subject )
 	assert_should_initially_belong_to( :sample_type )
 	assert_should_habtm( :projects )
@@ -28,6 +29,8 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :external_id_source )
 	assert_should_not_require_attributes( :receipt_confirmed_on )
 	assert_should_not_require_attributes( :receipt_confirmed_by )
+	assert_should_not_require_attributes( :collected_on )
+	assert_should_not_require_attributes( :location_id )
 
 	assert_requires_complete_date( :sent_to_subject_on )
 	assert_requires_complete_date( :received_by_ccls_on )
