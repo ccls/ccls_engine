@@ -36,6 +36,7 @@ class SubjectSearch < Search
 
 	def valid_orders
 		%w( id childid last_name first_name dob studyid priority sample_outcome
+			sample_outcome_on
 			interview_outcome_on sample_sent_on sample_received_on number issued_on 
 			sent_to_subject_on received_by_ccls_on )
 	end
@@ -60,6 +61,7 @@ private	#	THIS IS REQUIRED
 				when 'studyid'    then 'identifiers.patid'
 				when 'priority'   then 'recruitment_priority'
 				when 'sample_outcome'       then 'homex_outcomes.sample_outcome_id'
+				when 'sample_outcome_on'    then 'homex_outcomes.sample_outcome_on'
 				when 'interview_outcome_on' then 'homex_outcomes.interview_outcome_on'
 				when 'number' then 'gift_cards.number'
 				when 'issued_on' then 'gift_cards.issued_on'
@@ -150,7 +152,7 @@ private	#	THIS IS REQUIRED
 		"LEFT JOIN homex_outcomes ON homex_outcomes.study_subject_id " <<
 			"= subjects.id" if( !sample_outcome.blank? ||
 				!interview_outcome.blank? ||
-				[ 'sample_outcome','interview_outcome_on'].include?(@order) )
+				[ 'sample_outcome','sample_outcome_on','interview_outcome_on'].include?(@order) )
 	end
 
 	def sample_outcome_joins

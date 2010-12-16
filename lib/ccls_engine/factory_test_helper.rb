@@ -295,6 +295,18 @@ module Ccls::FactoryTestHelper
 		create_subjects_with_dobs('12/31/2005','12/31/2001','12/31/2003')
 	end
 
+	def create_subject_with_sample_outcome_on(date)
+		s = create_hx_subject
+		s.update_attributes( 
+			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
+				:sample_outcome_on => date) )
+		s
+	end
+
+	def three_subjects_with_sample_outcome_on
+		create_subjects_with_sample_outcome_ons('12/31/2005','12/31/2001','12/31/2003')
+	end
+
 	def create_subject_with_sample_outcome(outcome)
 		s = create_hx_subject
 		s.update_attributes( 

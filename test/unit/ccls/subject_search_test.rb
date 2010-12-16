@@ -466,6 +466,7 @@ pending
 
 	%w( childid studyid dob first_name last_name 
 			sample_outcome interview_outcome_on 
+			sample_outcome_on
 			sent_to_subject_on received_by_ccls_on
 			).each do |column|
 		test "should order by #{column} asc by default" do
