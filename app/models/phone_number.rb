@@ -18,12 +18,12 @@ class PhoneNumber < Shared
 		o.validates_length_of :how_verified
 	end
 
-	named_scope :current, :conditions => {
-		:current_phone => 1
-	}
+	named_scope :current, :conditions => [
+		'current_phone IS NOT NULL AND current_phone != 2'
+	]
 
 	named_scope :historic, :conditions => [
-		'current_phone IS NULL OR current_phone != 1'
+		'current_phone IS NULL OR current_phone = 2'
 	]
 
 	before_save :format_phone_number

@@ -37,8 +37,9 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 		create_object(:current_phone => YNDK[:no])
 		create_object(:current_phone => YNDK[:dk])
 		objects = PhoneNumber.current
+		assert_equal 2, objects.length
 		objects.each do |object|
-			assert_equal 1, object.current_phone
+			assert [1,999].include?(object.current_phone)
 		end
 	end
 
@@ -47,8 +48,9 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 		create_object(:current_phone => YNDK[:no])
 		create_object(:current_phone => YNDK[:dk])
 		objects = PhoneNumber.historic
+		assert_equal 1, objects.length
 		objects.each do |object|
-			assert_not_equal 1, object.current_phone
+			assert ![1,999].include?(object.current_phone)
 		end
 	end
 

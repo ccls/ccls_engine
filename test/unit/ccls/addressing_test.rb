@@ -128,8 +128,9 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		create_object(:current_address => YNDK[:no])
 		create_object(:current_address => YNDK[:dk])
 		objects = Addressing.current
+		assert_equal 2, objects.length
 		objects.each do |object|
-			assert_equal 1, object.current_address
+			assert [1,999].include?(object.current_address)
 		end
 	end
 
@@ -138,8 +139,9 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		create_object(:current_address => YNDK[:no])
 		create_object(:current_address => YNDK[:dk])
 		objects = Addressing.historic
+		assert_equal 1, objects.length
 		objects.each do |object|
-			assert_not_equal 1, object.current_address
+			assert ![1,999].include?(object.current_address)
 		end
 	end
 

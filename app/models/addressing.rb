@@ -24,12 +24,12 @@ class Addressing < Shared
 	validates_complete_date_for :valid_from, :valid_to,
 		:allow_nil => true
 
-	named_scope :current, :conditions => {
-		:current_address => 1
-	}
+	named_scope :current, :conditions => [
+		'current_address IS NOT NULL AND current_address != 2'
+	]
 
 	named_scope :historic, :conditions => [
-		'current_address IS NULL OR current_address != 1'
+		'current_address IS NULL OR current_address = 2'
 	]
 
 	before_save :set_verifier, 
