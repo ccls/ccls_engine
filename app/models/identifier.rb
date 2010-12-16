@@ -33,6 +33,7 @@ class Identifier < Shared
 	end
 
 	before_validation :pad_zeros_to_subjectid
+	before_validation :pad_zeros_to_matchingid
 	before_validation :format_ssn
 
 	#	Returns a string containing the patid,
@@ -69,6 +70,18 @@ protected
 		# so convert back to Integer first
 		subjectid.try(:gsub!,/\D/,'')
 		self.subjectid = sprintf("%06d",subjectid.to_i) unless subjectid.blank?
+	end 
+
+	#	Pad leading zeroes to matchingid
+	def pad_zeros_to_matchingid
+		matchingid.try(:gsub!,/\D/,'')
+		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
+	end 
+
+	#	Pad leading zeroes to familyid
+	def pad_zeros_to_familyid
+		familyid.try(:gsub!,/\D/,'')
+		self.familyid = sprintf("%06d",familyid.to_i) unless familyid.blank?
 	end 
 
 end

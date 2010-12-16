@@ -42,6 +42,15 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert identifier.subjectid.length == 6
 	end 
 
+	test "should pad matchingid with leading zeros" do
+		identifier = Factory.build(:identifier,{ :matchingid => '123' })
+		assert identifier.matchingid.length < 6 
+		assert_equal '123', identifier.matchingid
+		identifier.save
+		assert identifier.matchingid.length == 6
+		assert_equal '000123', identifier.matchingid
+	end 
+
 	test "should create with all numeric ssn" do
 		assert_difference( "#{model_name}.count", 1 ) do
 			object = create_object(:ssn => 987654321)

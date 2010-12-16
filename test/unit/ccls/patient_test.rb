@@ -25,13 +25,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		end
 	end
 
-#	test "should require valid study_subject_id" do
-#		assert_difference( "#{model_name}.count", 0 ) do
-#			object = create_object(:study_subject_id => 0)
-#			assert object.errors.on(:subject)
-#		end
-#	end
-
 	test "should require diagnosis_date be after DOB" do
 		assert_difference( "#{model_name}.count", 0 ) do
 			subject = Factory(:case_subject)
@@ -48,10 +41,22 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	test "should update all matching subjects' reference date " <<
 			"with updated diagnosis date" do
-pending
-		subject = Factory(:patient).subject
+		subject = create_hx_subject(:patient => {},
+			:identifier => { :matchingid => '12345' }).reload
+		other  = create_hx_subject( :identifier => { :matchingid => '12345' }).reload
+		nobody = create_hx_subject( :identifier => { :matchingid => '54321' }).reload
+		assert_nil subject.reference_date
+		assert_nil subject.patient.diagnosis_date
+		assert_nil other.reference_date
+		assert_nil nobody.reference_date
 		subject.patient.update_attributes(
 			:diagnosis_date => Chronic.parse('yesterday'))
+		assert_not_nil subject.patient.diagnosis_date
+		assert_not_nil subject.reload.reference_date
+		assert_not_nil other.reload.reference_date
+		assert_nil     nobody.reload.reference_date
+		assert_equal subject.reference_date, subject.patient.diagnosis_date
+		assert_equal subject.reference_date, other.reference_date
 	end
 
 end

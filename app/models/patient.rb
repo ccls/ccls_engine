@@ -40,7 +40,6 @@ class Patient < Shared
 	validates_presence_of   :subject
 	validates_uniqueness_of :study_subject_id
 
-#	validate :diagnosis_date_is_in_the_past
 	validates_past_date_for :diagnosis_date
 	validate :diagnosis_date_is_after_dob
 	validate :subject_is_case
@@ -52,13 +51,6 @@ class Patient < Shared
 		:if => :diagnosis_date_changed?
 
 protected
-
-#	def diagnosis_date_is_in_the_past
-#		if !diagnosis_date.blank? && Time.now < diagnosis_date
-#			errors.add(:diagnosis_date, 
-#				"is in the future and must be in the past.") 
-#		end
-#	end
 
 	def diagnosis_date_is_after_dob
 		if !diagnosis_date.blank? && 
@@ -75,27 +67,27 @@ protected
 		end
 	end
 
-#	move me to identifiers
-#	actually, this stays here, but the attributes moved to identifiers
-
-#	# https://ccls.lighthouseapp.com/projects/45778/tickets/185
-#	# When data is saved, the diagnosis date for the case child 
-#	# should be updated and the reference date for all subjects 
-#	# whose matchingID is the same as the child subject's 
-#	# matchingID should be updated with the new (or revised) 
-#	# diagnosis date.
-#
 	def update_matching_subjects_reference_date
-puts "update_matching_subjects_reference_date"
-puts "diagnosis_date was:#{diagnosis_date_was}"
-puts "diagnosis_date is:#{diagnosis_date}"
-#
-#puts "matchingid is blank (FYI)" if subject.matchingid.blank?
-#
-##	unless subject.matchingid.blank?
-##puts Subject.update_all({ :reference_date => diagnosis_date },
-##		"matchingid = #{subject.matchingid}")
-#
+		#	puts "update_matching_subjects_reference_date"
+		#	puts "diagnosis_date was:#{diagnosis_date_was}"
+		#	puts "diagnosis_date is:#{diagnosis_date}"
+		#	puts "matchingid is blank (FYI)" if subject.try(:identifier).try(:matchingid).blank?
+		unless subject.try(:identifier).try(:matchingid).blank?
+			#	I would prefer something friendlier, but update_all
+			#	doesn't take a :joins option which is mind boggling.
+#	TODO
+#	I need to sanitize this as it opens a door to a bad place
+
+#			Subject.connection.execute("UPDATE `subjects` " <<
+#				"JOIN `identifiers` ON `identifiers`.`study_subject_id` = `subjects`.`id` " <<
+#				"SET `reference_date` = '#{diagnosis_date.to_s(:db)}' " <<
+#				"WHERE `identifiers`.`matchingid` = '#{subject.identifier.matchingid}'")
+			Subject.update_all({:reference_date => diagnosis_date },
+				['identifiers.matchingid = ?',subject.identifier.matchingid],
+				{ :joins => :identifier })
+#			Subject.update_all ..... just don't join.
+#UPDATE `subjects` SET `reference_date` = '2010-12-15 12:00:00' WHERE (identifiers.matchingid = '012345')
+		end
 	end
 
 end
