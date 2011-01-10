@@ -212,7 +212,8 @@ module Ccls::FactoryTestHelper
 		subject = create_hx_subject
 		Factory(:sample,
 			:subject => subject,
-			:sent_to_subject_on  => (Chronic.parse(date) - 1000000),
+			:sent_to_subject_on  => (Chronic.parse(date) - 2000000),
+			:collected_on  => (Chronic.parse(date) - 1000000),
 			:received_by_ccls_on => Chronic.parse(date)
 		)
 		subject
