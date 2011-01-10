@@ -7,7 +7,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_have_many( :aliquots )
 	assert_should_belong_to( :aliquot_sample_format )
 	assert_should_belong_to( :unit )
-#	assert_should_belong_to( :location )
+	assert_should_belong_to( :organization )
 	assert_should_initially_belong_to( :subject )
 	assert_should_initially_belong_to( :sample_type )
 	assert_should_habtm( :projects )

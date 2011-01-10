@@ -5,7 +5,7 @@ class Sample < Shared
 	belongs_to :aliquot_sample_format
 	belongs_to :sample_type
 	belongs_to :subject, :foreign_key => 'study_subject_id'
-#	belongs_to :location, :foreign_key => 'organization_id'
+	belongs_to :organization, :foreign_key => 'location_id'
 	belongs_to :unit
 	has_many :aliquots
 	has_and_belongs_to_many :projects
