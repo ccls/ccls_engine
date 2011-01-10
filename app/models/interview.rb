@@ -40,6 +40,7 @@ class Interview < Shared
 	end
 
 	validates_presence_of :subject_relationship_other,
+		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
 		:if => :subject_relationship_is_other?
 	validates_absence_of :subject_relationship_other,
 		:message => "not allowed",

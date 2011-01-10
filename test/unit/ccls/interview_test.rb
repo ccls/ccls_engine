@@ -101,6 +101,13 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should return join of respondent's name" do
+		object = create_object(
+			:respondent_first_name => "Santa",
+			:respondent_last_name => "Claus" )
+		assert_equal 'Santa Claus', object.respondent_full_name
+	end
+
 	test "should require subject_relationship_other if " <<
 			"subject_relationship == other" do
 		assert_difference( "#{model_name}.count", 0 ) do
@@ -129,11 +136,16 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should return join of respondent's name" do
-		object = create_object(
-			:respondent_first_name => "Santa",
-			:respondent_last_name => "Claus" )
-		assert_equal 'Santa Claus', object.respondent_full_name
+	test "should require subject_relationship_other with custom message" do
+		assert_difference( "#{model_name}.count", 0 ) do
+			object = create_object(
+				:subject_relationship => SubjectRelationship['other'] )
+			assert object.errors.on(:subject_relationship_other)
+			assert_match /You must specify a relationship with 'other relationship' is selected/, 
+				object.errors.full_messages.to_sentence
+			assert_no_match /Subject relationship other/, 
+				object.errors.full_messages.to_sentence
+		end
 	end
 
 end
