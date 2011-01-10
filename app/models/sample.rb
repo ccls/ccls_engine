@@ -23,6 +23,8 @@ class Sample < Shared
 	validates_presence_of :subject
 
 	validates_presence_of :sent_to_subject_on, 
+		:if => :collected_on
+	validates_presence_of :collected_on, 
 		:if => :received_by_ccls_on
 	validates_presence_of :received_by_ccls_on, 
 		:if => :sent_to_lab_on
@@ -33,6 +35,7 @@ class Sample < Shared
 
 	with_options :allow_nil => true do |o|
 		o.validates_complete_date_for :sent_to_subject_on
+		o.validates_complete_date_for :collected_on
 		o.validates_complete_date_for :received_by_ccls_on
 		o.validates_complete_date_for :sent_to_lab_on
 		o.validates_complete_date_for :received_by_lab_on
@@ -40,6 +43,7 @@ class Sample < Shared
 		o.validates_complete_date_for :receipt_confirmed_on
 	end
 	validates_past_date_for :sent_to_subject_on
+	validates_past_date_for :collected_on
 	validates_past_date_for :received_by_ccls_on
 	validates_past_date_for :sent_to_lab_on
 	validates_past_date_for :received_by_lab_on
@@ -100,10 +104,15 @@ protected
 	end
 
 	def date_chronology
-		errors.add(:received_by_ccls_on,
+		errors.add(:collected_on,
 			"must be after sent_to_subject_on") if
-			( sent_to_subject_on && received_by_ccls_on ) &&
-			( sent_to_subject_on >  received_by_ccls_on )
+			( sent_to_subject_on && collected_on ) &&
+			( sent_to_subject_on >  collected_on )
+
+		errors.add(:received_by_ccls_on,
+			"must be after collected_on") if
+			( collected_on && received_by_ccls_on ) &&
+			( collected_on >  received_by_ccls_on )
 
 		errors.add(:sent_to_lab_on,
 			"must be after received_by_ccls_on") if

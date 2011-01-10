@@ -38,12 +38,14 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :received_by_lab_on )
 	assert_requires_complete_date( :aliquotted_on )
 	assert_requires_complete_date( :receipt_confirmed_on )
+	assert_requires_complete_date( :collected_on )
 	assert_requires_past_date( :sent_to_subject_on )
 	assert_requires_past_date( :received_by_ccls_on )
 	assert_requires_past_date( :sent_to_lab_on )
 	assert_requires_past_date( :received_by_lab_on )
 	assert_requires_past_date( :aliquotted_on )
 	assert_requires_past_date( :receipt_confirmed_on )
+	assert_requires_past_date( :collected_on )
 
 
 	test "should require that kit and sample tracking " <<
@@ -88,11 +90,11 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		pending
 	end
 
-	test "should require sent_to_subject_on if received_by_ccls_on" do
+	test "should require sent_to_subject_on if collected_on" do
 		assert_difference( 'Sample.count', 0 ) do
 			object = create_object(
 				:sent_to_subject_on => nil,
-				:received_by_ccls_on => Chronic.parse('yesterday')
+				:collected_on => Chronic.parse('yesterday')
 			)
 			assert object.errors.on(:sent_to_subject_on)
 			assert_match(/be blank/,
@@ -100,14 +102,38 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should require received_by_ccls_on be after sent_to_subject_on" do
+	test "should require collected_on be after sent_to_subject_on" do
 		assert_difference( 'Sample.count', 0 ) do
 			object = create_object(
 				:sent_to_subject_on => Chronic.parse('tomorrow'),
+				:collected_on => Chronic.parse('yesterday')
+			)
+			assert object.errors.on(:collected_on)
+			assert_match(/after sent_to_subject_on/,
+				object.errors.on(:collected_on) )
+		end
+	end
+
+	test "should require collected_on if received_by_ccls_on" do
+		assert_difference( 'Sample.count', 0 ) do
+			object = create_object(
+				:collected_on => nil,
+				:received_by_ccls_on => Chronic.parse('yesterday')
+			)
+			assert object.errors.on(:collected_on)
+			assert_match(/be blank/,
+				object.errors.on(:collected_on) )
+		end
+	end
+
+	test "should require received_by_ccls_on be after collected_on" do
+		assert_difference( 'Sample.count', 0 ) do
+			object = create_object(
+				:collected_on => Chronic.parse('tomorrow'),
 				:received_by_ccls_on => Chronic.parse('yesterday')
 			)
 			assert object.errors.on(:received_by_ccls_on)
-			assert_match(/after sent_to_subject_on/,
+			assert_match(/after collected_on/,
 				object.errors.on(:received_by_ccls_on) )
 		end
 	end
@@ -212,7 +238,8 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
 				:subject => create_hx_subject(),
-				:sent_to_subject_on => Chronic.parse('2 days ago'),
+				:sent_to_subject_on => Chronic.parse('3 days ago'),
+				:collected_on => Chronic.parse('2 days ago'),
 				:received_by_ccls_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['received'],
 				object.subject.homex_outcome.sample_outcome
@@ -227,7 +254,8 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
 				:subject => create_hx_subject(),
-				:sent_to_subject_on => Chronic.parse('3 days ago'),
+				:sent_to_subject_on => Chronic.parse('4 days ago'),
+				:collected_on => Chronic.parse('3 days ago'),
 				:received_by_ccls_on => Chronic.parse('2 days ago'),
 				:sent_to_lab_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['lab'],
