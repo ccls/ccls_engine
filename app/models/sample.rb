@@ -27,6 +27,8 @@ class Sample < Shared
 		:if => :collected_on
 	validates_presence_of :collected_on, 
 		:if => :received_by_ccls_on
+	validates_presence_of :location_id, 
+		:if => :sent_to_lab_on
 	validates_presence_of :received_by_ccls_on, 
 		:if => :sent_to_lab_on
 	validates_presence_of :sent_to_lab_on, 

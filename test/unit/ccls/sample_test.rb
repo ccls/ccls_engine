@@ -186,6 +186,16 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should require location_id be after sent_to_lab_on" do
+		assert_difference( 'Sample.count', 0 ) do
+			object = create_object(
+				:sent_to_lab_on => Chronic.parse('yesterday')
+			)
+			assert object.errors.on(:location_id)
+			assert_match(/blank/, object.errors.on(:location_id) )
+		end
+	end
+
 	test "should require received_by_lab_on if aliquotted_on" do
 		assert_difference( 'Sample.count', 0 ) do
 			object = create_object(
@@ -254,10 +264,12 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
 				:subject => create_hx_subject(),
+				:organization => Factory(:organization),
 				:sent_to_subject_on => Chronic.parse('4 days ago'),
 				:collected_on => Chronic.parse('3 days ago'),
 				:received_by_ccls_on => Chronic.parse('2 days ago'),
 				:sent_to_lab_on => Chronic.parse('yesterday') )
+			assert !object.new_record?, "Object was not created"
 			assert_equal SampleOutcome['lab'],
 				object.subject.homex_outcome.sample_outcome
 			assert_equal object.sent_to_lab_on,
