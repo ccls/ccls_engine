@@ -28,7 +28,7 @@ begin
 		gem.summary = %Q{one-line summary of your gem}
 		gem.description = %Q{longer description of your gem}
 		gem.email = "github@jakewendt.com"
-		gem.homepage = "http://github.com/jakewendt/ucb_ccls_engine"
+		gem.homepage = "http://github.com/ccls/ucb_ccls_engine"
 		gem.authors = ["George 'Jake' Wendt"]
 		# gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
 
