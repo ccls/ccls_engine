@@ -33,13 +33,16 @@ namespace :doc do	|doc|
 
 			Rake::RDocTask.new(plugin) { |rdoc|
 				plugin_base  = "vendor/plugins/#{plugin}"
-				ENV['format'] ||= 'railsfish'
+#	newer versions of rdoc have problems with rdoc_rails so
+#	until then, comment this out.
+#				ENV['format'] ||= 'railsfish'
 				rdoc.rdoc_dir = "doc/plugins/#{plugin}"
 				rdoc.template = ENV['template'] if ENV['template']
 				rdoc.title    = "#{plugin.titlecase} Plugin Documentation"
-				rdoc.options << '--line-numbers' << '--inline-source'
+				rdoc.options << '--line-numbers' 
+#				rdoc.options << '--inline-source'
 				rdoc.options << '--charset' << 'utf-8'
-				rdoc.options << '--format'  << ENV['format']
+#				rdoc.options << '--format'  << ENV['format']
 				rdoc.rdoc_files.include("#{plugin_base}/lib/**/*.rb")
 				rdoc.rdoc_files.include("#{plugin_base}/app/**/*.rb")
 
