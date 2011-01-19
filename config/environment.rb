@@ -84,6 +84,9 @@ Rails::Initializer.run do |config|
 	config.gem 'jakewendt-html_test',
 		:lib    => 'html_test'
 
+	#	require it, but don't load it
+	config.gem 'jakewendt-rdoc_rails', :lib => false
+
 	config.gem "rcov"
 
 	#	Without the :lib => false, the 'rake test' actually fails?
