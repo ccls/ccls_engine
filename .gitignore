@@ -1,5 +1,6 @@
 versions
-log
+log/
+doc/
 test/log
 *sqlite3
 coverage
