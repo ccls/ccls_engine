@@ -24,7 +24,7 @@ require 'tasks/rails'
 begin
 	require 'jeweler'
 	Jeweler::Tasks.new do |gem|
-		gem.name = "jakewendt-ccls_engine"
+		gem.name = "ccls-ccls_engine"
 		gem.summary = %Q{one-line summary of your gem}
 		gem.description = %Q{longer description of your gem}
 		gem.email = "github@jakewendt.com"
