@@ -472,7 +472,7 @@ pending
 		assert_equal [s3,s2,s1], subjects
 	end
 
-	%w( childid studyid dob first_name last_name 
+	%w( childid patid studyid dob first_name last_name 
 			sample_outcome interview_outcome_on 
 			sample_outcome_on
 			sent_to_subject_on received_by_ccls_on

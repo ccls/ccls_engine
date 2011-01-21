@@ -36,7 +36,7 @@ class SubjectSearch < Search
 
 	def valid_orders
 		%w( id childid last_name first_name dob studyid priority sample_outcome
-			sample_outcome_on
+			sample_outcome_on patid
 			interview_outcome_on sample_sent_on sample_received_on number issued_on 
 			sent_to_subject_on received_by_ccls_on )
 	end
@@ -59,6 +59,7 @@ private	#	THIS IS REQUIRED
 				when 'first_name' then 'piis.first_name'
 				when 'dob'        then 'piis.dob'
 				when 'studyid'    then 'identifiers.patid'
+				when 'patid'      then 'identifiers.patid'
 				when 'priority'   then 'recruitment_priority'
 				when 'sample_outcome'       then 'homex_outcomes.sample_outcome_id'
 				when 'sample_outcome_on'    then 'homex_outcomes.sample_outcome_on'
