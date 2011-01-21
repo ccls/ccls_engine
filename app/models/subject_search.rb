@@ -36,7 +36,7 @@ class SubjectSearch < Search
 
 	def valid_orders
 		%w( id childid last_name first_name dob studyid priority sample_outcome
-			sample_outcome_on patid
+			sample_outcome_on patid abstracts_count
 			interview_outcome_on sample_sent_on sample_received_on number issued_on 
 			sent_to_subject_on received_by_ccls_on )
 	end
