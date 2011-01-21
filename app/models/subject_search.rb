@@ -4,7 +4,7 @@ class SubjectSearch < Search
 	def self.searchable_attributes 
 		[ :races, :types, :vital_statuses, :q,
 			:sample_outcome, :interview_outcome,
-			:projects, :has_gift_card
+			:projects, :has_gift_card, :patid
 		]
 	end
 
@@ -96,6 +96,10 @@ private	#	THIS IS REQUIRED
 
 	def races_joins
 		"INNER JOIN races ON races.id = subjects.race_id" unless races.blank?
+	end
+
+	def patid_conditions
+		['identifiers.patid = :patid', {:patid => patid}] unless patid.blank?
 	end
 
 	def races_conditions

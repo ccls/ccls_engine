@@ -408,6 +408,14 @@ pending
 		assert  subjects.include?(e2.subject)
 	end
 
+	test "should include subject by complete patid" do
+		s1,s2,s3 = create_subjects_with_patids(1234,5678,9)
+		subjects = Subject.search(:patid => 5678)
+		assert !subjects.include?(s1)
+		assert  subjects.include?(s2)
+		assert !subjects.include?(s3)
+	end
+
 	test "should NOT order by bogus column with dir" do
 		s1,s2,s3 = create_subjects(3)
 		subjects = Subject.search(
