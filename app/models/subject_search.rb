@@ -1,19 +1,33 @@
 # don't know exactly
 class SubjectSearch < Search
 
-	def self.searchable_attributes 
-		[ :races, :types, :vital_statuses, :q,
-			:sample_outcome, :interview_outcome,
-			:projects, :has_gift_card, :patid
-		]
-	end
+	self.searchable_attributes += [ :races, :types, :vital_statuses, :q,
+		:sample_outcome, :interview_outcome,
+		:projects, :has_gift_card, :patid
+	]
 
-	def self.attr_accessors
-		Search.attr_accessors.push :search_gift_cards
-	end
-	attr_accessor :search_gift_cards
+	self.attr_accessors += [ :search_gift_cards ]
 
-#	includes= [:pii,:identifier]
+	self.valid_orders.merge!({
+		:id => nil,
+		:childid => 'identifiers.childid',
+		:last_name => 'piis.last_name',
+		:first_name => 'piis.first_name',
+		:dob => 'piis.dob',
+		:studyid => 'identifiers.patid',
+		:priority => 'recruitment_priority',
+		:sample_outcome => 'homex_outcomes.sample_outcome_id',
+		:sample_outcome_on => 'homex_outcomes.sample_outcome_on',
+		:patid => 'identifiers.patid',
+#		:abstracts_count => nil,
+		:interview_outcome_on => 'homex_outcomes.interview_outcome_on',
+		:sample_sent_on => nil,
+		:sample_received_on => nil,
+		:number => 'gift_cards.number',
+		:issued_on => 'gift_cards.issued_on',
+		:sent_to_subject_on => 'samples.sent_to_subject_on',
+		:received_by_ccls_on => 'samples.received_by_ccls_on'
+	})
 
 	def subjects
 		require_dependency 'pii.rb'	
@@ -22,7 +36,7 @@ class SubjectSearch < Search
 		@subjects ||= Subject.send(
 			(paginate)?'paginate':'all',{
 				:include => [:pii,:identifier],
-				:order => order,
+				:order => search_order,
 				:joins => joins,
 				:conditions => conditions
 			}.merge(
@@ -34,51 +48,7 @@ class SubjectSearch < Search
 		)
 	end
 
-	def valid_orders
-		%w( id childid last_name first_name dob studyid priority sample_outcome
-			sample_outcome_on patid abstracts_count
-			interview_outcome_on sample_sent_on sample_received_on number issued_on 
-			sent_to_subject_on received_by_ccls_on )
-	end
-
 private	#	THIS IS REQUIRED
-
-#	def initialize_with_return(options={},&block)
-#		initialize_without_return(options,&block)
-#		subjects
-#	end
-#	alias_method_chain :initialize, :return
-
-	#	we should probably keep this more MySQL than Rails
-
-	def order
-		if valid_orders.include?(@order)
-			order_string = case @order
-				when 'childid'    then 'identifiers.childid'
-				when 'last_name'  then 'piis.last_name'
-				when 'first_name' then 'piis.first_name'
-				when 'dob'        then 'piis.dob'
-				when 'studyid'    then 'identifiers.patid'
-				when 'patid'      then 'identifiers.patid'
-				when 'priority'   then 'recruitment_priority'
-				when 'sample_outcome'       then 'homex_outcomes.sample_outcome_id'
-				when 'sample_outcome_on'    then 'homex_outcomes.sample_outcome_on'
-				when 'interview_outcome_on' then 'homex_outcomes.interview_outcome_on'
-				when 'number' then 'gift_cards.number'
-				when 'issued_on' then 'gift_cards.issued_on'
-				when 'sent_to_subject_on'  then 'samples.sent_to_subject_on'
-				when 'received_by_ccls_on' then 'samples.received_by_ccls_on'
-				else @order
-			end
-			dir = case @dir.try(:downcase)
-				when 'desc' then 'desc'
-				else 'asc'
-			end
-			[order_string,dir].join(' ')
-		else
-			nil
-		end
-	end
 
 	def samples_joins
 		"JOIN samples ON subjects.id " <<

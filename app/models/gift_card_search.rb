@@ -1,14 +1,22 @@
 # don't know exactly
 class GiftCardSearch < Search
 
-	def self.searchable_attributes 
-		[ :q, :number ]
-	end
+	self.searchable_attributes += [ :q, :number ]
+
+	self.valid_orders.merge!({
+		:id => nil,
+		:childid => 'identifiers.childid',
+		:last_name => 'piis.last_name',
+		:first_name => 'piis.first_name',
+		:studyid => 'identifiers.patid',
+		:number => nil,
+		:issued_on => nil
+	})
 
 	def gift_cards
 		@gift_cards ||= GiftCard.send(
 			(paginate)?'paginate':'all',{
-				:order => order,
+				:order => search_order,
 				:joins => joins,
 				:conditions => conditions
 			}.merge(
@@ -20,33 +28,7 @@ class GiftCardSearch < Search
 		)
 	end
 
-	def valid_orders
-		%w( id childid last_name first_name studyid 
-			number issued_on )
-	end
-
 private	#	THIS IS REQUIRED
-
-	#	we should probably keep this more MySQL than Rails
-
-	def order
-		if valid_orders.include?(@order)
-			order_string = case @order
-				when 'childid'    then 'identifiers.childid'
-				when 'last_name'  then 'piis.last_name'
-				when 'first_name' then 'piis.first_name'
-				when 'studyid'    then 'identifiers.patid'
-				else @order
-			end
-			dir = case @dir.try(:downcase)
-				when 'desc' then 'desc'
-				else 'asc'
-			end
-			[order_string,dir].join(' ')
-		else
-			nil
-		end
-	end
 
 	def q_conditions
 		unless q.blank?
