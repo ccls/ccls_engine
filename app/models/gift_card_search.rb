@@ -15,12 +15,12 @@ class GiftCardSearch < Search
 
 	def gift_cards
 		@gift_cards ||= GiftCard.send(
-			(paginate)?'paginate':'all',{
+			(paginate?)?'paginate':'all',{
 				:order => search_order,
 				:joins => joins,
 				:conditions => conditions
 			}.merge(
-				(paginate)?{
+				(paginate?)?{
 					:per_page => per_page||25,
 					:page     => page||1
 				}:{}

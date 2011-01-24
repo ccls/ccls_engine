@@ -59,7 +59,7 @@ class Search
 
 private
 
-	def paginate
+	def paginate?
 		(@paginate.nil?) ? true : @paginate
 	end
 

@@ -34,13 +34,13 @@ class SubjectSearch < Search
 		require_dependency 'identifier.rb'
 		require_dependency 'gift_card.rb'
 		@subjects ||= Subject.send(
-			(paginate)?'paginate':'all',{
+			(paginate?)?'paginate':'all',{
 				:include => [:pii,:identifier],
 				:order => search_order,
 				:joins => joins,
 				:conditions => conditions
 			}.merge(
-				(paginate)?{
+				(paginate?)?{
 					:per_page => per_page||25,
 					:page     => page||1
 				}:{}
