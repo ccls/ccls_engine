@@ -9,7 +9,7 @@ class SubjectSearch < Search
 	self.attr_accessors += [ :search_gift_cards ]
 
 	self.valid_orders.merge!({
-		:id => nil,
+		:id => 'subjects.id',	#	must remove any possible ambiguity
 		:childid => 'identifiers.childid',
 		:last_name => 'piis.last_name',
 		:first_name => 'piis.first_name',
