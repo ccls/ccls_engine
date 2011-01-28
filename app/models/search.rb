@@ -64,6 +64,7 @@ private
 	end
 
 	def initialize(options={})
+#		self.class.send('attr_accessor', *searchable_attributes)
 		self.class.send('attr_accessor', *searchable_attributes)
 		options.each do |attr,value|
 			if attr_accessors.include?(attr.to_sym) ||

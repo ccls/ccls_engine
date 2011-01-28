@@ -8,7 +8,9 @@ class SubjectSearch < Search
 
 	self.attr_accessors += [ :search_gift_cards ]
 
-	self.valid_orders.merge!({
+#	self.valid_orders.merge!({  #	NO!
+#	@valid_orders.merge!({      #	NO!
+	self.valid_orders = self.valid_orders.merge({
 		:id => 'subjects.id',	#	must remove any possible ambiguity
 		:childid => 'identifiers.childid',
 		:last_name => 'piis.last_name',

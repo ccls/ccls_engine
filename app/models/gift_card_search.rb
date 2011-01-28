@@ -3,7 +3,9 @@ class GiftCardSearch < Search
 
 	self.searchable_attributes += [ :q, :number ]
 
-	self.valid_orders.merge!({
+#	self.valid_orders.merge!({  #	NO!
+#	@valid_orders.merge!({      #	NO!
+	self.valid_orders = self.valid_orders.merge({
 		:id => nil,
 		:childid => 'identifiers.childid',
 		:last_name => 'piis.last_name',
