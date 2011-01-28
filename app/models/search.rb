@@ -74,9 +74,11 @@ private
 	end
 
 	def self.inherited(subclass)
-		subclass.searchable_attributes = searchable_attributes
-		subclass.attr_accessors = attr_accessors
-		subclass.valid_orders = valid_orders
+		#	USE DUP! Without it, the two will share the same object_id
+		#	resulting is cross contamination
+		subclass.searchable_attributes = searchable_attributes.dup
+		subclass.attr_accessors = attr_accessors.dup
+		subclass.valid_orders = valid_orders.dup
 		#	Create 'shortcut'
 		#	SubjectSearch(options) -> SubjectSearch.new(options)
 		Object.class_eval do
