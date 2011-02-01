@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 #	unloadable
 
 	skip_before_filter :login_required, :only => :menu
-	skip_before_filter :build_menu_js,  :only => :menu
+#	skip_before_filter :build_menu_js,  :only => :menu
 #		:only => [:new, :create]
 
 #	before_filter :no_current_user_required, :only => [:new, :create]
