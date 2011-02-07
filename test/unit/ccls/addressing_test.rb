@@ -212,6 +212,14 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		assert_subject_is_eligible(subject)
 	end
 
+	%w( address_type address_type_id
+			line_1 line_2 city state zip csz county ).each do |method_name|
+		test "should respond to #{method_name}" do
+			addressing = create_object
+			assert addressing.respond_to?(method_name)
+		end
+	end
+	
 protected
 
 	def create_addressing_with_address(subject,options={})

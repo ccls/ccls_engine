@@ -13,7 +13,7 @@ class Addressing < Shared
 	accepts_nested_attributes_for :address
 
 	delegate :address_type, :address_type_id,
-		:line_1,:line_2,:city,:state,:zip,:csz,
+		:line_1,:line_2,:city,:state,:zip,:csz,:county,
 		:to => :address, :allow_nil => true
 
 	validates_presence_of :why_invalid,
