@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.0.8"
+  s.version = "3.0.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-01-28}
+  s.date = %q{2011-02-07}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -160,7 +160,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/ccls/ucb_ccls_engine}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.4.2}
+  s.rubygems_version = %q{1.5.0}
   s.summary = %q{one-line summary of your gem}
   s.test_files = [
     "test/app/controllers/application_controller.rb",
