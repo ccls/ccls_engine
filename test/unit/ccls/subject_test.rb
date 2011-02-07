@@ -356,25 +356,52 @@ pending
 #		} }
 #	end
 
-	test "should return nil ssn without identifier" do
-		subject = create_subject
-		assert_nil subject.ssn
+	%w( full_name first_name last_name fathers_name 
+			mothers_name mother_maiden_name email dob state_id_no
+			ssn childid patid orderno studyid 
+			interview_outcome interview_outcome_on 
+			sample_outcome sample_outcome_on ).each do |method_name|
+		test "should respond to #{method_name}" do
+			subject = create_subject
+			assert subject.respond_to?(method_name)
+		end
 	end
 
-	test "should return ssn with identifier" do
-#		subject = Factory(:identifier, :subject => create_subject).subject
-		subject = Factory(:identifier).subject
-		assert_not_nil subject.ssn
+	%w( ssn childid patid orderno studyid ).each do |method_name|
+		test "should return nil #{method_name} without identifier" do
+			subject = create_subject
+			assert_nil subject.send(method_name)
+		end
+		test "should return #{method_name} with identifier" do
+			subject = Factory(:identifier).subject
+			assert_not_nil subject.send(method_name)
+		end
 	end
 
-	test "should return nil full_name without pii" do
-		subject = create_subject
-		assert_nil subject.full_name
+	%w( full_name first_name last_name fathers_name 
+			mothers_name email dob state_id_no ).each do |method_name|
+		test "should return nil #{method_name} without pii" do
+			subject = create_subject
+			assert_nil subject.send(method_name)
+		end
+
+		test "should return #{method_name} with pii" do
+			subject = Factory(:pii, :subject => create_subject).subject
+			assert_not_nil subject.send(method_name)
+		end
 	end
 
-	test "should return full_name with pii" do
-		subject = Factory(:pii, :subject => create_subject).subject
-		assert_not_nil subject.full_name
+	%w( interview_outcome interview_outcome_on 
+			sample_outcome sample_outcome_on ).each do |method_name|
+		test "should return nil #{method_name} without homex_outcome" do
+			subject = create_subject
+			assert_nil subject.send(method_name)
+		end
+
+		test "should return #{method_name} with homex_outcome" do
+			subject = Factory(:homex_outcome, :subject => create_subject).subject
+#			assert_not_nil subject.send(method_name)
+		end
 	end
 
 #	test "should return true response sets the same" do
@@ -580,6 +607,8 @@ pending
 		assert_not_nil subjects
 		assert subjects.is_a?(Array)
 	end
+
+
 
 protected
 
