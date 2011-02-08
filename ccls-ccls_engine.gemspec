@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.0.11"
+  s.version = "3.0.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-02-07}
+  s.date = %q{2011-02-08}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -125,6 +125,7 @@ Gem::Specification.new do |s|
     "generators/ccls_engine/templates/unit/user_invitation_mailer_test.rb",
     "generators/ccls_engine/templates/unit/user_invitation_test.rb",
     "generators/ccls_engine/templates/unit/user_test.rb",
+    "lib/ccls-ccls_engine.rb",
     "lib/ccls_engine.rb",
     "lib/ccls_engine/active_record_extension.rb",
     "lib/ccls_engine/active_record_extension/base.rb",

@@ -38,7 +38,7 @@ views and routes to the aforementioned resources.
 
 In your config/environment.rb
 
- config.gem 'ccls-ccls_engine', :lib => 'ccls_engine'
+ config.gem 'ccls-ccls_engine'
 
 Generate an initializer and copy in some files.
 
