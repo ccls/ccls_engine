@@ -61,6 +61,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:is_eligible => YNDK[:no])
 			assert object.errors.on(:ineligible_reason)
+			assert object.errors.on_attr_and_type(:ineligible_reason,:blank)
 		end
 	end
 	[:yes,:dk,:nil].each do |yndk|
@@ -69,6 +70,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				object = create_object(:is_eligible => YNDK[yndk],
 					:ineligible_reason => Factory(:ineligible_reason) )
 				assert object.errors.on(:ineligible_reason)
+				assert object.errors.on_attr_and_type(:ineligible_reason,:present)
 			end
 		end
 	end
@@ -80,6 +82,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				:is_eligible => YNDK[:no],
 				:ineligible_reason => IneligibleReason['other'] )
 			assert object.errors.on(:ineligible_reason_specify)
+			assert object.errors.on_attr_and_type(:ineligible_reason_specify,:blank)
 		end
 	end
 	test "should ALLOW ineligible_reason_specify if " <<
@@ -101,6 +104,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 					:ineligible_reason => Factory(:ineligible_reason),
 					:ineligible_reason_specify => 'blah blah blah' )
 				assert object.errors.on(:ineligible_reason_specify)
+				assert object.errors.on_attr_and_type(:ineligible_reason_specify,:present)
 			end
 		end
 	end
@@ -110,6 +114,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:is_chosen => YNDK[:no])
 			assert object.errors.on(:reason_not_chosen)
+			assert object.errors.on_attr_and_type(:reason_not_chosen,:blank)
 		end
 	end
 	[:yes,:dk,:nil].each do |yndk|
@@ -118,6 +123,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				object = create_object(:is_chosen => YNDK[yndk],
 					:reason_not_chosen => "blah blah blah")
 				assert object.errors.on(:reason_not_chosen)
+				assert object.errors.on_attr_and_type(:reason_not_chosen,:present)
 			end
 		end
 	end
@@ -127,6 +133,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:consented => YNDK[:no])
 			assert object.errors.on(:refusal_reason)
+			assert object.errors.on_attr_and_type(:refusal_reason,:blank)
 		end
 	end
 	[:yes,:dk,:nil].each do |yndk|
@@ -135,6 +142,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				object = create_object(:consented => YNDK[yndk],
 					:refusal_reason => Factory(:refusal_reason))
 				assert object.errors.on(:refusal_reason)
+				assert object.errors.on_attr_and_type(:refusal_reason,:present)
 			end
 		end
 	end
@@ -145,6 +153,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 			object = create_object(:consented => YNDK[:no],
 				:refusal_reason => RefusalReason['other'] )
 			assert object.errors.on(:other_refusal_reason)
+			assert object.errors.on_attr_and_type(:other_refusal_reason,:blank)
 		end
 	end
 	test "should ALLOW other_refusal_reason if " <<
@@ -164,6 +173,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 					:refusal_reason => Factory(:refusal_reason),
 					:other_refusal_reason => 'asdfasdf' )
 				assert object.errors.on(:other_refusal_reason)
+				assert object.errors.on_attr_and_type(:other_refusal_reason,:present)
 			end
 		end
 	end
@@ -174,7 +184,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 			assert_difference( "#{model_name}.count", 0 ) do
 				object = create_object(:consented => YNDK[yndk],
 					:consented_on => nil)
-				assert object.errors.on(:consented_on)
+				assert object.errors.on_attr_and_type(:consented_on,:blank)
 			end
 		end
 	end
@@ -184,6 +194,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				object = create_object(:consented => YNDK[yndk],
 					:consented_on => Date.today)
 				assert object.errors.on(:consented_on)
+				assert object.errors.on_attr_and_type(:consented_on,:present)
 			end
 		end
 	end
@@ -194,6 +205,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:terminated_participation => YNDK[:yes])
 			assert object.errors.on(:terminated_reason)
+			assert object.errors.on_attr_and_type(:terminated_reason,:blank)
 		end
 	end
 
@@ -205,6 +217,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 					:terminated_participation => YNDK[yndk],
 					:terminated_reason => 'some bogus reason')
 				assert object.errors.on(:terminated_reason)
+				assert object.errors.on_attr_and_type(:terminated_reason,:present)
 			end
 		end
 	end
@@ -214,6 +227,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:is_complete => YNDK[:yes])
 			assert object.errors.on(:completed_on)
+			assert object.errors.on_attr_and_type(:completed_on,:blank)
 		end
 	end
 	[:no,:dk,:nil].each do |yndk|
@@ -222,6 +236,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				object = create_object(:is_complete => YNDK[yndk],
 					:completed_on => Date.today)
 				assert object.errors.on(:completed_on)
+				assert object.errors.on_attr_and_type(:completed_on,:present)
 			end
 		end
 	end
@@ -233,6 +248,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				object = create_object(:consented => YNDK[yndk],
 					:document_version => Factory(:document_version) )
 				assert object.errors.on(:document_version)
+				assert object.errors.on_attr_and_type(:document_version,:present)
 			end
 		end
 	end
