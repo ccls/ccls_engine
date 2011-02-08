@@ -42,12 +42,13 @@ class Enrollment < Shared
 		:message => "not allowed with consent",
 		:unless => :not_consented?
 
+#	validates_presence_of :consented_on,
+#		:message => 'date is required when adding consent information',
+#		:if => :consented?
 	validates_presence_of :consented_on,
-		:message => 'required with consent',
-		:if => :consented?
-	validates_presence_of :consented_on,
-		:message => 'required without consent',
-		:if => :not_consented?
+		:message => 'date is required when adding consent information',
+		:unless => :consent_unknown?
+#		:if => :not_consented?
 	validates_absence_of :consented_on,
 		:message => 'not allowed with unknown consent',
 		:if => :consent_unknown?
