@@ -69,20 +69,12 @@ Rails::Initializer.run do |config|
 		config.gem "sqlite3-ruby", :lib => "sqlite3"
 	end
 
-	config.gem "jakewendt-use_db"	#, :lib => "use_db"
+	config.gem "jakewendt-use_db"
 	config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
 
-	config.gem 'jakewendt-simply_trackable'	#,
-#		:lib    => 'simply_trackable'
-
-	config.gem 'jakewendt-simply_authorized'	#,
-#		:lib    => 'simply_authorized'
-
-#	config.gem 'jakewendt-surveyor',
-#		:lib    => 'surveyor'
-
-	config.gem 'jakewendt-html_test'	#,
-#		:lib    => 'html_test'
+	config.gem 'jakewendt-simply_trackable'
+	config.gem 'jakewendt-simply_authorized'
+	config.gem 'jakewendt-html_test'
 
 	#	require it, but don't load it
 	config.gem 'jakewendt-rdoc_rails', :lib => false
