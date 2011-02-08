@@ -1,12 +1,12 @@
 Barcellos:
   id:  1
-  position:  1
+  position:  18
   last_name:  Barcellos
   first_name:  Lisa
   person_type_id:  2
 Cooper:
   id:  2
-  position:  2
+  position:  19
   last_name:  Cooper
   first_name:  Robert
   person_type_id:  1
@@ -100,3 +100,16 @@ Zomorodian:
   last_name:  Zomorodian
   first_name:  Toska
   person_type_id:  1
+Enzminger:
+  id:  18
+  position:  1
+  last_name:  Anna
+  first_name:  Enzminger
+  person_type_id:  3
+Zomorodian:
+  id:  19
+  position:  2
+  last_name:  Rosensweig
+  first_name:  Ellen
+  person_type_id:  3
+
