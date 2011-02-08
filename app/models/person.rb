@@ -15,6 +15,8 @@ class Person < Shared
 		o.validates_length_of :honorific
 	end
 
+	named_scope :interviewers, :conditions => { :person_type_id => 3 }
+
 	#	Returns string containing first and last name
 	def full_name
 		"#{first_name} #{last_name}"
