@@ -1,3 +1,7 @@
+def random_float
+	rand * 100
+end
+
 Factory.define :document do |f|
 	f.sequence(:title) { |n| "Title#{n}" }
 #	f.sequence(:document_file_name) { |n| "document_file_name#{n}" }
@@ -444,3 +448,13 @@ Factory.define :answer do |f|
 #	f.response_class "answer"
 end
 
+
+Factory.define :zip_code do |f|
+	f.sequence(:zip_code){ |n| sprintf("X%04d",n) }
+	f.latitude random_float()
+	f.longitude random_float()
+	f.sequence(:city){ |n| sprintf("%05d",n) }
+	f.sequence(:state){ |n| sprintf("%05d",n) }
+	f.sequence(:county){ |n| sprintf("%05d",n) }
+	f.zip_class "TESTING"
+end
