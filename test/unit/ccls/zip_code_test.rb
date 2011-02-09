@@ -23,14 +23,20 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 #		object = create_object
 #		assert_equal object.name, "#{object}"
 #	end
-#
-	test "should find by code with ['string']" do
-		object = ZipCode['94703']
+
+	test "should not find non-existant zip code with ['string']" do
+		assert_nil ZipCode['94700']
+	end
+
+	test "should find by zip code with ['string']" do
+		Factory(:zip_code,:zip_code => '94700')
+		object = ZipCode['94700']
 		assert object.is_a?(ZipCode)
 	end
 
-	test "should find by code with [:symbol]" do
-		object = ZipCode['94703'.to_sym]	#	:1 is no good, but '1'.to_sym is OK
+	test "should find by zip code with [:symbol]" do
+		Factory(:zip_code,:zip_code => '94700')
+		object = ZipCode['94700'.to_sym]	#	:1 is no good, but '1'.to_sym is OK
 		assert object.is_a?(ZipCode)
 	end
 
