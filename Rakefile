@@ -99,6 +99,7 @@ begin
 		gem.add_dependency('jakewendt-use_db')
 		gem.add_dependency('jakewendt-surveyor')
 		gem.add_dependency('jakewendt-simply_trackable')
+		gem.add_dependency('RedCloth','!= 4.2.6')
 	end
 	Jeweler::GemcutterTasks.new
 rescue LoadError

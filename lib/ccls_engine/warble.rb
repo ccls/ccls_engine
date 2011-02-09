@@ -1,5 +1,5 @@
 #		RAILS_GEM_VERSION to use the latest version installed.
-gem 'activesupport', '~>2.3.10'
+gem 'activesupport', '~>2.3'
 
 #	for alias_method_chain
 require 'active_support'	#	note the name disparity
@@ -64,6 +64,7 @@ module WarblerConfig
 			thor-
 			treetop-
 			tzinfo-
+			RedCloth-4.2.6
 		)
 		initialize_without_removal(warbler_home,&block)
 	end

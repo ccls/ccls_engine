@@ -8,8 +8,6 @@ namespace :app do
 
 	desc "Load some fixtures to database for application"
 	task :update => :environment do
-#			guides
-#			pages
 #			gift_cards
 		fixtures = %w(
 			address_types
