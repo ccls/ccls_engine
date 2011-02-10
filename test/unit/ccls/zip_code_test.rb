@@ -10,9 +10,7 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 	end
 
 	%w( zip_code ).each do |f|
-#	need to add the :is option to this method
-#		assert_should_require_attribute_length( f.to_sym, :is => 5 )
-#		assert_should_require_attribute_length( f.to_sym, :minimum => 5, :maximum => 5 )
+		assert_should_require_attribute_length( f.to_sym, :is => 5 )
 	end
 
 	%w( city state county zip_class ).each do |f|
