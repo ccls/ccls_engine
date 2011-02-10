@@ -23,10 +23,9 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 		o.assert_should_have_many(:outgoing_transfers, 
 			:foreign_key => :from_organization_id)
 	end
-	with_options :minimum => 4, :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :code )
-		o.assert_should_require_attribute_length( :name )
-	end
+
+	assert_should_require_attribute_length( :code, :in => 4..250 )
+	assert_should_require_attribute_length( :name, :in => 4..250 )
 
 	test "new incoming_transfer should have matching organization id" do
 		organization = create_organization

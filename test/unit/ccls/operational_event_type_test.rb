@@ -11,13 +11,9 @@ class Ccls::OperationalEventTypeTest < ActiveSupport::TestCase
 	assert_should_require_unique_attributes( :description )
 	assert_should_not_require_attributes( :position )
 	assert_should_not_require_attributes( :project_id )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :code )
-		o.with_options :minimum => 4 do |m|
-			m.assert_should_require_attribute_length( :description )
-			m.assert_should_require_attribute_length( :event_category )
-		end
-	end
+	assert_should_require_attribute_length( :code, :maximum => 250 )
+	assert_should_require_attribute_length( :description,    :in => 4..250 )
+	assert_should_require_attribute_length( :event_category, :in => 4..250 )
 
 	test "should return event_category as to_s" do
 		object = create_object

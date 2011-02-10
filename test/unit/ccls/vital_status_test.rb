@@ -9,7 +9,7 @@ class Ccls::VitalStatusTest < ActiveSupport::TestCase
 	assert_should_require_attributes( :description )
 	assert_should_require_unique_attributes( :code )
 	assert_should_not_require_attributes( :position )
-	assert_should_require_attribute_length( :description, :minimum => 4, :maximum => 250 )
+	assert_should_require_attribute_length( :description, :in => 4..250 )
 
 	test "should return description as to_s" do
 		object = create_object
