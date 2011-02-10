@@ -56,7 +56,7 @@ Rails::Initializer.run do |config|
 			File.join(File.dirname(__FILE__),'..','test/app/views'))
 	]
 
-	config.gem 'RedCloth', :version => '!= 4.2.6'
+#	config.gem 'RedCloth', :version => '!= 4.2.6', :lib => 'redcloth'
 
 	if RUBY_PLATFORM =~ /java/
 		config.gem 'activerecord-jdbcsqlite3-adapter',
