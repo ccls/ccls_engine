@@ -94,10 +94,10 @@ begin
 		gem.add_dependency('paperclip')	#	not all apps use, but should be there
 #		gem.add_dependency('thoughtbot-factory_girl')
 #		gem.add_dependency('jakewendt-assert_this_and_that')
-		gem.add_dependency('jakewendt-calnet_authenticated')
+		gem.add_dependency('ccls-calnet_authenticated')
 		gem.add_dependency('jakewendt-simply_pages')
 		gem.add_dependency('jakewendt-use_db')
-		gem.add_dependency('jakewendt-surveyor')
+		gem.add_dependency('ccls-surveyor')
 		gem.add_dependency('jakewendt-simply_trackable')
 		gem.add_dependency('RedCloth','!= 4.2.6')
 	end
