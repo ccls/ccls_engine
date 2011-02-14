@@ -27,11 +27,13 @@ HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
 	id class style
 ))
 
-require 'ccls_engine/active_record_extension'
 require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/user_model'
 require 'ccls_engine/helper'
+
+gem 'jakewendt-rails_extension'
+require 'jakewendt-rails_extension'
 
 if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'active_support/test_case'
@@ -39,7 +41,6 @@ if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 	require 'ccls_engine/package_test_helper'
 	require 'ccls_engine/assertions'
 	require 'factory_girl'
-	require 'simply_testable'
 	require 'ccls_engine/factories'
 end
 

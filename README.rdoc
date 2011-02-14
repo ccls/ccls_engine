@@ -30,6 +30,7 @@ views and routes to the aforementioned resources.
 * {jakewendt-simply_authorized}[http://github.com/jakewendt/simply_authorized]
 * {jakewendt-simply_pages}[http://github.com/jakewendt/simply_pages]
 * {jakewendt-use_db}[http://github.com/jakewendt/use_db]
+* {jakewendt-rails_extension}[http://github.com/jakewendt/rails_extension]
 
 == Installation (as a gem/plugin/engine)
 
