@@ -35,7 +35,6 @@ require 'ccls_engine/helper'
 gem 'jakewendt-rails_extension'
 require 'jakewendt-rails_extension'
 
-#if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
 if Rails.class_variable_defined?("@@configuration")
 	require 'active_support/test_case'
 	require 'ccls_engine/factory_test_helper'
@@ -44,7 +43,7 @@ if Rails.class_variable_defined?("@@configuration")
 	require 'factory_girl'
 	require 'ccls_engine/factories'
 #	else
-#	running a rake task
+#		running a rake task
 end
 
 silence_warnings {
@@ -68,7 +67,6 @@ ActionController::Base.view_paths <<
 		File.join(
 			File.dirname(__FILE__), '../app/views'))
 
-
 require 'paperclip'
 if defined? ::Paperclip::Glue
 	ActiveRecord::Base.send(:include, ::Paperclip::Glue)
@@ -83,19 +81,6 @@ YNDK = HashWithIndifferentAccess.new({
 	:false => 2,
 	:dk    => 999
 }).freeze
-
-#require 'surveyor'
-#Survey.use_db :prefix => 'shared_'
-#SurveySection.use_db :prefix => 'shared_'
-#Question.use_db :prefix => 'shared_'
-#QuestionGroup.use_db :prefix => 'shared_'
-#Answer.use_db :prefix => 'shared_'
-#ResponseSet.use_db :prefix => 'shared_'
-#Response.use_db :prefix => 'shared_'
-#Dependency.use_db :prefix => 'shared_'
-#DependencyCondition.use_db :prefix => 'shared_'
-#Validation.use_db :prefix => 'shared_'
-#ValidationCondition.use_db :prefix => 'shared_'
 
 require 'simply_trackable'
 Track.use_db :prefix => 'shared_'
