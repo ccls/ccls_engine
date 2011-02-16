@@ -35,13 +35,16 @@ require 'ccls_engine/helper'
 gem 'jakewendt-rails_extension'
 require 'jakewendt-rails_extension'
 
-if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
+#if !defined?(RAILS_ENV) || RAILS_ENV == 'test'
+if Rails.class_variable_defined?("@@configuration")
 	require 'active_support/test_case'
 	require 'ccls_engine/factory_test_helper'
 	require 'ccls_engine/package_test_helper'
 	require 'ccls_engine/assertions'
 	require 'factory_girl'
 	require 'ccls_engine/factories'
+#	else
+#	running a rake task
 end
 
 silence_warnings {

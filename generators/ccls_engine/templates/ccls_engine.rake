@@ -18,6 +18,11 @@ unless Gem.source_index.find_name('ccls-ccls_engine').empty?
 #	Don't do this ...
 #		require 'ccls_engine'
 
+#	this is now OK IF the requiring of factory_girl and related
+#	are wrapped in the condition ...
+# if Rails.class_variable_defined?("@@configuration")
+	require 'ccls_engine'
+
 	require 'ccls_engine/tasks'
 	#	From `script/generate ccls_engine` ...
 	require 'ccls_engine/test_tasks'
