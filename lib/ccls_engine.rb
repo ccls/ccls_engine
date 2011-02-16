@@ -35,7 +35,8 @@ require 'ccls_engine/helper'
 gem 'jakewendt-rails_extension'
 require 'jakewendt-rails_extension'
 
-if Rails.class_variable_defined?("@@configuration")
+#if Rails.class_variable_defined?("@@configuration")
+if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")
 	require 'active_support/test_case'
 	require 'ccls_engine/factory_test_helper'
 	require 'ccls_engine/package_test_helper'
