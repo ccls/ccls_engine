@@ -66,6 +66,24 @@ namespace :app do
 		end
 	end
 
+	desc "Add user by UID"
+	task :add_user => :environment do
+		puts
+		if ENV['uid'].blank?
+			puts "User's CalNet UID required."
+			puts "Usage: rake #{$*} uid=INTEGER"
+			puts
+			exit
+		end
+		if !User.exists?(:uid => ENV['uid'])
+			puts "No user found with uid=#{ENV['uid']}. Adding..."
+			User.find_create_and_update_by_uid(ENV['uid'])
+		else
+			puts "User with uid #{ENV['uid']} already exists."
+		end
+		puts
+	end
+
 	desc "Deputize user by UID"
 	task :deputize => :environment do
 		puts
