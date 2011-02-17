@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.2.5"
+  s.version = "3.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -16,7 +16,13 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
+    "app/controllers/calendars_controller.rb",
+    "app/controllers/ineligible_reasons_controller.rb",
     "app/controllers/javascripts_controller.rb",
+    "app/controllers/languages_controller.rb",
+    "app/controllers/people_controller.rb",
+    "app/controllers/races_controller.rb",
+    "app/controllers/refusal_reasons_controller.rb",
     "app/controllers/stylesheets_controller.rb",
     "app/controllers/user_invitations_controller.rb",
     "app/controllers/users_controller.rb",
@@ -79,7 +85,38 @@ Gem::Specification.new do |s|
     "app/models/user_session.rb",
     "app/models/vital_status.rb",
     "app/models/zip_code.rb",
+    "app/views/calendars/show.html.erb",
+    "app/views/ineligible_reasons/_form.html.erb",
+    "app/views/ineligible_reasons/_ineligible_reason.html.erb",
+    "app/views/ineligible_reasons/edit.html.erb",
+    "app/views/ineligible_reasons/index.html.erb",
+    "app/views/ineligible_reasons/new.html.erb",
+    "app/views/ineligible_reasons/show.html.erb",
     "app/views/javascripts/cache_helper.js.erb",
+    "app/views/languages/_form.html.erb",
+    "app/views/languages/_language.html.erb",
+    "app/views/languages/edit.html.erb",
+    "app/views/languages/index.html.erb",
+    "app/views/languages/new.html.erb",
+    "app/views/languages/show.html.erb",
+    "app/views/people/_form.html.erb",
+    "app/views/people/_person.html.erb",
+    "app/views/people/edit.html.erb",
+    "app/views/people/index.html.erb",
+    "app/views/people/new.html.erb",
+    "app/views/people/show.html.erb",
+    "app/views/races/_form.html.erb",
+    "app/views/races/_race.html.erb",
+    "app/views/races/edit.html.erb",
+    "app/views/races/index.html.erb",
+    "app/views/races/new.html.erb",
+    "app/views/races/show.html.erb",
+    "app/views/refusal_reasons/_form.html.erb",
+    "app/views/refusal_reasons/_refusal_reason.html.erb",
+    "app/views/refusal_reasons/edit.html.erb",
+    "app/views/refusal_reasons/index.html.erb",
+    "app/views/refusal_reasons/new.html.erb",
+    "app/views/refusal_reasons/show.html.erb",
     "app/views/stylesheets/dynamic.css.erb",
     "app/views/survey_invitation_mailer/invitation.erb",
     "app/views/survey_invitation_mailer/reminder.erb",
@@ -160,7 +197,13 @@ Gem::Specification.new do |s|
     "test/app/models/user.rb",
     "test/config/routes.rb",
     "test/factories.rb",
+    "test/functional/ccls/calendars_controller_test.rb",
+    "test/functional/ccls/ineligible_reasons_controller_test.rb",
     "test/functional/ccls/javascripts_controller_test.rb",
+    "test/functional/ccls/languages_controller_test.rb",
+    "test/functional/ccls/people_controller_test.rb",
+    "test/functional/ccls/races_controller_test.rb",
+    "test/functional/ccls/refusal_reasons_controller_test.rb",
     "test/functional/ccls/roles_controller_test.rb",
     "test/functional/ccls/sessions_controller_test.rb",
     "test/functional/ccls/stylesheets_controller_test.rb",
