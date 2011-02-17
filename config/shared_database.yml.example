@@ -24,6 +24,14 @@ shared_test:
   password:
   host: localhost
 
+shared_staging:
+  adapter: mysql
+  encoding: utf8
+  database: shared_staging
+  username: root
+  password:
+  host: localhost
+
 #
 #	This is the common production database, but in the ccls_engine
 #	the username and production MUST have the ability to create

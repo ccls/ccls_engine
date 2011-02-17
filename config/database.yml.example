@@ -15,6 +15,12 @@ test:
   password: 
   host: localhost
 
+staging:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/staging.sqlite3
+
 production:
   adapter: sqlite3
   pool: 5
