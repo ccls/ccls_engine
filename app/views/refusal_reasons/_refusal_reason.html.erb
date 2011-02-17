@@ -1,0 +1,14 @@
+<% content_tag_for :tr, refusal_reason, :class => 'row' do %>
+	<td class='code'>
+		<%= refusal_reason.code %>
+	</td>
+	<td class='description'>
+		<%= refusal_reason.description %>
+	</td>
+	<td class='manage'>
+		<%= button_link_to 'Edit', edit_refusal_reason_path(refusal_reason) %>&nbsp;
+<% destroy_link_to 'Destroy', refusal_reason_path(refusal_reason) do %>
+<%= hidden_field_tag 'confirm', "Destroy refusal_reason '#{refusal_reason}'?", :id => nil %>
+<% end %>
+	</td>
+<% end %>

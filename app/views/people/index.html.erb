@@ -1,0 +1,10 @@
+<h4>People:</h4>
+<% unless @people.empty? %>
+<table id='people'><tbody>
+<%= render :partial => 'person', :collection => @people %>
+</tbody></table>
+<% else %>
+Sorry, no people yet.
+<% end %>
+
+<p><%= button_link_to 'Create new person', new_person_path %></p>

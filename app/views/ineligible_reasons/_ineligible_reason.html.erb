@@ -1,0 +1,14 @@
+<% content_tag_for :tr, ineligible_reason, :class => 'row' do %>
+	<td class='code'>
+		<%= ineligible_reason.code %>
+	</td>
+	<td class='description'>
+		<%= ineligible_reason.description %>
+	</td>
+	<td class='manage'>
+		<%= button_link_to 'Edit', edit_ineligible_reason_path(ineligible_reason) %>&nbsp;
+<% destroy_link_to 'Destroy', ineligible_reason_path(ineligible_reason) do %>
+<%= hidden_field_tag 'confirm', "Destroy ineligible_reason '#{ineligible_reason}'?", :id => nil %>
+<% end %>
+	</td>
+<% end %>
