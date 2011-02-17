@@ -40,17 +40,30 @@ class Patient < Shared
 	validates_presence_of   :subject
 	validates_uniqueness_of :study_subject_id
 
+	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
+	validate :admit_date_is_after_dob
 	validate :diagnosis_date_is_after_dob
 	validate :subject_is_case
 
+	validates_complete_date_for :admit_date,
+		:allow_nil => true
 	validates_complete_date_for :diagnosis_date,
 		:allow_nil => true
 
 	after_save :update_matching_subjects_reference_date,
-		:if => :diagnosis_date_changed?
+		:if => :admit_date_changed?
 
 protected
+
+	def admit_date_is_after_dob
+		if !admit_date.blank? && 
+			!subject.blank? && 
+			!subject.dob.blank? && 
+			admit_date < subject.dob
+			errors.add(:admit_date, "is before subject's dob.") 
+		end
+	end
 
 	def diagnosis_date_is_after_dob
 		if !diagnosis_date.blank? && 
@@ -69,8 +82,8 @@ protected
 
 	def update_matching_subjects_reference_date
 		#	puts "update_matching_subjects_reference_date"
-		#	puts "diagnosis_date was:#{diagnosis_date_was}"
-		#	puts "diagnosis_date is:#{diagnosis_date}"
+		#	puts "admit_date was:#{admit_date}"
+		#	puts "admit_date is:#{admit_date}"
 		#	puts "matchingid is blank (FYI)" if subject.try(:identifier).try(:matchingid).blank?
 		unless subject.try(:identifier).try(:matchingid).blank?
 			#	I would prefer something friendlier, but update_all
@@ -80,9 +93,9 @@ protected
 
 #			Subject.connection.execute("UPDATE `subjects` " <<
 #				"JOIN `identifiers` ON `identifiers`.`study_subject_id` = `subjects`.`id` " <<
-#				"SET `reference_date` = '#{diagnosis_date.to_s(:db)}' " <<
+#				"SET `reference_date` = '#{admit_date.to_s(:db)}' " <<
 #				"WHERE `identifiers`.`matchingid` = '#{subject.identifier.matchingid}'")
-			Subject.update_all({:reference_date => diagnosis_date },
+			Subject.update_all({:reference_date => admit_date },
 				['identifiers.matchingid = ?',subject.identifier.matchingid],
 				{ :joins => :identifier })
 #			Subject.update_all ..... just don't join.
