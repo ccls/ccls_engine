@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.3.0"
+  s.version = "3.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-02-17}
+  s.date = %q{2011-02-18}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -161,6 +161,7 @@ Gem::Specification.new do |s|
     "lib/ccls_engine.rb",
     "lib/ccls_engine/assertions.rb",
     "lib/ccls_engine/autotest.rb",
+    "lib/ccls_engine/ccls_user.rb",
     "lib/ccls_engine/core_extension.rb",
     "lib/ccls_engine/date_and_time_formats.rb",
     "lib/ccls_engine/factories.rb",
@@ -172,7 +173,6 @@ Gem::Specification.new do |s|
     "lib/ccls_engine/shared_database.rb",
     "lib/ccls_engine/tasks.rb",
     "lib/ccls_engine/test_tasks.rb",
-    "lib/ccls_engine/user_model.rb",
     "lib/ccls_engine/warble.rb",
     "lib/shared_migration.rb",
     "lib/surveyor/survey_extensions.rb",
@@ -194,7 +194,6 @@ Gem::Specification.new do |s|
   s.test_files = [
     "test/app/controllers/application_controller.rb",
     "test/app/models/home_page_pic.rb",
-    "test/app/models/user.rb",
     "test/config/routes.rb",
     "test/factories.rb",
     "test/functional/ccls/calendars_controller_test.rb",
