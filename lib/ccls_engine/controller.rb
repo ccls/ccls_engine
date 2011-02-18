@@ -37,6 +37,7 @@ module ClassMethods
 private
 
 	def inherited_with_ccls_calnet_before_filter(base)
+#	def self.inherited(base)
 		identifier = 'inherited_ccls_calnet_authenticated_login_required'
 		unless filter_chain.select(&:before?).map(&:identifier
 			).include?(identifier)
@@ -44,6 +45,7 @@ private
 				:identifier => identifier
 		end
 		inherited_without_ccls_calnet_before_filter(base)
+#		super
 	end
 
 end
@@ -62,7 +64,7 @@ module InstanceMethods
 	alias_method :login_required, :current_user_required
 
 	def current_user
-		load 'user.rb'
+		load 'user.rb' unless defined?(User)
 		@current_user ||= if( session && session[:calnetuid] )
 				#	if the user model hasn't been loaded yet
 				#	this will return nil and fail.
