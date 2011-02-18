@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.4.0"
+  s.version = "3.5.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     "app/controllers/people_controller.rb",
     "app/controllers/races_controller.rb",
     "app/controllers/refusal_reasons_controller.rb",
+    "app/controllers/sessions_controller.rb",
     "app/controllers/stylesheets_controller.rb",
     "app/controllers/user_invitations_controller.rb",
     "app/controllers/users_controller.rb",
@@ -70,7 +71,6 @@ Gem::Specification.new do |s|
     "app/models/sample_outcome.rb",
     "app/models/sample_type.rb",
     "app/models/search.rb",
-    "app/models/shared.rb",
     "app/models/state.rb",
     "app/models/states.rb",
     "app/models/subject.rb",
@@ -161,7 +161,9 @@ Gem::Specification.new do |s|
     "lib/ccls_engine.rb",
     "lib/ccls_engine/assertions.rb",
     "lib/ccls_engine/autotest.rb",
+    "lib/ccls_engine/ccls_subject.rb",
     "lib/ccls_engine/ccls_user.rb",
+    "lib/ccls_engine/controller.rb",
     "lib/ccls_engine/core_extension.rb",
     "lib/ccls_engine/date_and_time_formats.rb",
     "lib/ccls_engine/factories.rb",
@@ -170,14 +172,15 @@ Gem::Specification.new do |s|
     "lib/ccls_engine/helper.rb",
     "lib/ccls_engine/package_test_helper.rb",
     "lib/ccls_engine/redcloth/formatters/html.rb",
+    "lib/ccls_engine/shared.rb",
     "lib/ccls_engine/shared_database.rb",
     "lib/ccls_engine/tasks.rb",
+    "lib/ccls_engine/test_helper.rb",
     "lib/ccls_engine/test_tasks.rb",
     "lib/ccls_engine/warble.rb",
     "lib/shared_migration.rb",
     "lib/surveyor/survey_extensions.rb",
     "lib/tasks/application.rake",
-    "lib/tasks/calnet_authenticated.rake",
     "lib/tasks/database.rake",
     "lib/tasks/documentation.rake",
     "lib/tasks/simply_authorized.rake",
@@ -283,7 +286,8 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<gravatar>, [">= 0"])
       s.add_runtime_dependency(%q<paperclip>, [">= 0"])
       s.add_runtime_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
-      s.add_runtime_dependency(%q<ccls-calnet_authenticated>, [">= 0"])
+      s.add_runtime_dependency(%q<ucb_ldap>, [">= 1.4.2"])
+      s.add_runtime_dependency(%q<rubycas-client>, [">= 2.2.1"])
       s.add_runtime_dependency(%q<jakewendt-simply_pages>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-use_db>, [">= 0"])
       s.add_runtime_dependency(%q<ccls-surveyor>, [">= 0"])
@@ -302,7 +306,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<gravatar>, [">= 0"])
       s.add_dependency(%q<paperclip>, [">= 0"])
       s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
-      s.add_dependency(%q<ccls-calnet_authenticated>, [">= 0"])
+      s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
+      s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
       s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
       s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
       s.add_dependency(%q<ccls-surveyor>, [">= 0"])
@@ -322,7 +327,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<gravatar>, [">= 0"])
     s.add_dependency(%q<paperclip>, [">= 0"])
     s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
-    s.add_dependency(%q<ccls-calnet_authenticated>, [">= 0"])
+    s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
+    s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
     s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
     s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
     s.add_dependency(%q<ccls-surveyor>, [">= 0"])
