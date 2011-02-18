@@ -8,10 +8,10 @@
 
 
 # no longer necessary?
-#unless Gem.source_index.find_name('ccls-ccls_engine').empty?
-#	gem 'ccls-ccls_engine'
-#	require '<%=class_name.underscore-%>' unless defined?(<%=class_name-%>)
-#end
+unless Gem.source_index.find_name('ccls-ccls_engine').empty?
+	gem 'ccls-ccls_engine'
+	require '<%=class_name.underscore-%>' unless defined?(<%=class_name-%>)
+end
 
 
 #require 'user' unless defined?(User)
