@@ -9,6 +9,8 @@ require 'calnet_authenticated'
 require 'simply_authorized'
 require 'acts_as_list'
 require 'simply_pages'
+#gem 'jakewendt-rails_extension'
+require 'jakewendt-rails_extension'
 module Ccls
 #	predefine namespace
 end
@@ -29,12 +31,12 @@ HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
 
 require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
+require 'ccls_engine/shared'
 require 'ccls_engine/ccls_user'
+require 'ccls_engine/ccls_subject'
 #require 'ccls_engine/user_model'
 require 'ccls_engine/helper'
 
-gem 'jakewendt-rails_extension'
-require 'jakewendt-rails_extension'
 
 #if Rails.class_variable_defined?("@@configuration")
 if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")
