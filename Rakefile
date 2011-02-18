@@ -93,7 +93,9 @@ begin
 		gem.add_dependency('gravatar')
 		gem.add_dependency('paperclip')	#	not all apps use, but should be there
 		gem.add_dependency('thoughtbot-factory_girl')
-		gem.add_dependency('ccls-calnet_authenticated')
+#		gem.add_dependency('ccls-calnet_authenticated')
+		gem.add_dependency('ucb_ldap', '>= 1.4.2')
+		gem.add_dependency('rubycas-client', '>= 2.2.1')
 		gem.add_dependency('jakewendt-simply_pages')
 		gem.add_dependency('jakewendt-use_db')
 		gem.add_dependency('ccls-surveyor')

@@ -28,6 +28,23 @@ class Ccls::User < ActiveRecord::Base
 			:conditions => conditions )
 	end 
 
+	#	Find or Create a user from a given uid, and then 
+	#	proceed to update the user's information from the 
+	#	UCB::LDAP::Person.find_by_uid(uid) response.
+	#	
+	#	Returns: user
+	def self.find_create_and_update_by_uid(uid)
+		user = self.find_or_create_by_uid(uid)
+		person = UCB::LDAP::Person.find_by_uid(uid) 
+		user.update_attributes!({
+			:displayname     => person.displayname,
+			:sn              => person.sn.first,
+			:mail            => person.mail.first || '',
+			:telephonenumber => person.telephonenumber.first
+		}) unless person.nil?
+		user
+	end
+
 	#	FYI.  gravatar can't deal with a nil email
 	gravatar :mail, :rating => 'PG'
 
@@ -69,7 +86,9 @@ class Ccls::User < ActiveRecord::Base
 			#	is necessary anymore.  This is the only place that 
 			#	it is ever used.  I'll import the calnet_authenticated
 			#	functionality later.
-			calnet_authenticated
+#			calnet_authenticated
+			validates_presence_of   :uid
+			validates_uniqueness_of :uid
 
 			#	include the many may_*? for use in the controllers
 			authorized

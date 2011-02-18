@@ -5,7 +5,15 @@ require 'active_support'
 require 'ruby_extension'
 require 'simply_helpful'
 require 'gravatar'
-require 'calnet_authenticated'
+#require 'calnet_authenticated'
+gem 'rubycas-client', '>= 2.2.1'
+require 'rubycas-client'
+require 'casclient'
+require 'casclient/frameworks/rails/filter'
+gem 'ucb_ldap', '>= 1.4.2'
+require 'ucb_ldap'
+
+
 require 'simply_authorized'
 require 'acts_as_list'
 require 'simply_pages'
@@ -36,11 +44,13 @@ require 'ccls_engine/ccls_user'
 require 'ccls_engine/ccls_subject'
 #require 'ccls_engine/user_model'
 require 'ccls_engine/helper'
+require 'ccls_engine/controller'
 
 
 #if Rails.class_variable_defined?("@@configuration")
 if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")
 	require 'active_support/test_case'
+	require 'ccls_engine/test_helper'
 	require 'ccls_engine/factory_test_helper'
 	require 'ccls_engine/package_test_helper'
 	require 'ccls_engine/assertions'
