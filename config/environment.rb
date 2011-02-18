@@ -13,19 +13,11 @@ RAILS_APP_NAME = 'ccls'
 
 Rails::Initializer.run do |config|
 
-#	config.gem 'jakewendt-simply_testable',
-#		:lib => 'simply_testable'
-#
-#	config.gem 'ryanb-acts-as-list',
-#		:lib => 'acts_as_list'
+	config.plugin_paths += [
+		File.expand_path(File.join(File.dirname(__FILE__),'../..'))
+	]
 
-#	config.plugin_paths += [
-#		File.expand_path(File.join(File.dirname(__FILE__),'../..')),
-#		File.expand_path(File.join(File.dirname(__FILE__),'../../..','peter')),
-#		File.expand_path(File.join(File.dirname(__FILE__),'../../..','jakewendt'))
-#	]
-#	config.plugins = [:surveyor,:ucb_ccls_engine,
-#		:html_test, :html_test_extension]
+	config.plugins = [ :ucb_ccls_engine ]
 
 	config.frameworks -= [:active_resource]
 

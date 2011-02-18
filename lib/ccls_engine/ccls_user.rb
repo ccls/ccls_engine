@@ -62,6 +62,7 @@ class Ccls::User < ActiveRecord::Base
 	def self.inherited(subclass)
 
 		subclass.class_eval do
+			#	for some reason is nil which causes problems
 			self.default_scoping = []
 
 			#	I don't think that having this in a separate gem
@@ -85,9 +86,7 @@ class Ccls::User < ActiveRecord::Base
 				alias_method "may_update_#{resource}?".to_sym,  :may_administrate?
 				alias_method "may_destroy_#{resource}?".to_sym, :may_administrate?
 			end
-		end
-	end
+		end	#	class_eval
+	end	#	inherited()
 
-end
-class User < Ccls::User
 end

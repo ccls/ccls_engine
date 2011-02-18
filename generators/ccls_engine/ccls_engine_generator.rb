@@ -9,8 +9,10 @@ class CclsEngineGenerator < Rails::Generator::NamedBase
 			m.file('autotest_ccls_engine.rb', 'config/autotest/ccls_engine.rb')
 			m.directory('lib/tasks')
 			m.file('ccls_engine.rake', 'lib/tasks/ccls_engine.rake')
-			m.directory('config/initializers')
-			m.template('initializer.rb', 'config/initializers/ccls_engine.rb')
+
+#	no longer seems to be needed
+#			m.directory('config/initializers')
+#			m.template('initializer.rb', 'config/initializers/ccls_engine.rb')
 
 			%w( create_users create_user_invitations ).each do |migration|
 				m.migration_template "migrations/#{migration}.rb",

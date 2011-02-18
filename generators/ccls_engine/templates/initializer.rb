@@ -5,10 +5,14 @@
 #	a User is yet, which causes lots of ...
 #	NoMethodError (undefined method `find_create_and_update_by_uid' for nil:NilClass):
 #	so ...
-unless Gem.source_index.find_name('ccls-ccls_engine').empty?
-	gem 'ccls-ccls_engine'
-	require '<%=class_name.underscore-%>' unless defined?(<%=class_name-%>)
-end
+
+
+# no longer necessary?
+#unless Gem.source_index.find_name('ccls-ccls_engine').empty?
+#	gem 'ccls-ccls_engine'
+#	require '<%=class_name.underscore-%>' unless defined?(<%=class_name-%>)
+#end
+
 
 #require 'user' unless defined?(User)
 #if RAILS_ENV == 'development' &&
