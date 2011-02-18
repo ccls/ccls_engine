@@ -62,6 +62,7 @@ module InstanceMethods
 	alias_method :login_required, :current_user_required
 
 	def current_user
+		load 'user.rb'
 		@current_user ||= if( session && session[:calnetuid] )
 				#	if the user model hasn't been loaded yet
 				#	this will return nil and fail.
