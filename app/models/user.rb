@@ -6,9 +6,40 @@
 #	*	displayname
 #	*	mail
 #	*	telephonenumber
-class User < ActiveRecord::Base
+class Ccls::User < ActiveRecord::Base
+	self.abstract_class = true
 
-	ucb_authenticated
+	def self.search(options={})
+		conditions = {}
+		includes = joins = []
+		if !options[:role_name].blank?
+			includes = [:roles]
+			if Role.all.collect(&:name).include?(options[:role_name])
+				joins = [:roles]
+#				conditions = ["roles.name = '#{options[:role_name]}'"]
+				conditions = ["roles.name = ?",options[:role_name]]
+	#		else
+	#			@errors = "No such role '#{options[:role_name]}'"
+			end 
+		end 
+		self.all( 
+			:joins => joins, 
+			:include => includes,
+			:conditions => conditions )
+	end 
+
+	#	FYI.  gravatar can't deal with a nil email
+	gravatar :mail, :rating => 'PG'
+
+	#	gravatar.url will include & that are not encoded to &amp;
+	#	which works just fine, but technically is invalid html.
+	def gravatar_url
+		gravatar.url.gsub(/&/,'&amp;')
+	end
+
+
+#	this has been included above
+#	ucb_authenticated
 
 #	defined in plugin/engine ...
 #
@@ -28,58 +59,35 @@ class User < ActiveRecord::Base
 #		).length > 0
 #	end
 
-	alias_method :may_create?,  :may_edit?
-	alias_method :may_update?,  :may_edit?
-	alias_method :may_destroy?, :may_edit?
+	def self.inherited(subclass)
 
-	%w(	people races languages refusal_reasons ineligible_reasons
-			).each do |resource|
-		alias_method "may_create_#{resource}?".to_sym,  :may_administrate?
-		alias_method "may_read_#{resource}?".to_sym,    :may_administrate?
-		alias_method "may_edit_#{resource}?".to_sym,    :may_administrate?
-		alias_method "may_update_#{resource}?".to_sym,  :may_administrate?
-		alias_method "may_destroy_#{resource}?".to_sym, :may_administrate?
+		subclass.class_eval do
+			self.default_scoping = []
+
+			#	I don't think that having this in a separate gem
+			#	is necessary anymore.  This is the only place that 
+			#	it is ever used.  I'll import the calnet_authenticated
+			#	functionality later.
+			calnet_authenticated
+
+			#	include the many may_*? for use in the controllers
+			authorized
+
+			alias_method :may_create?,  :may_edit?
+			alias_method :may_update?,  :may_edit?
+			alias_method :may_destroy?, :may_edit?
+
+			%w(	people races languages refusal_reasons ineligible_reasons
+					).each do |resource|
+				alias_method "may_create_#{resource}?".to_sym,  :may_administrate?
+				alias_method "may_read_#{resource}?".to_sym,    :may_administrate?
+				alias_method "may_edit_#{resource}?".to_sym,    :may_administrate?
+				alias_method "may_update_#{resource}?".to_sym,  :may_administrate?
+				alias_method "may_destroy_#{resource}?".to_sym, :may_administrate?
+			end
+		end
 	end
 
-##	alias_method :may_take_surveys?, :may_administrate?
-#
-#	%w(	interviews people races response_sets samples sample_kits
-#			languages gift_cards refusal_reasons ineligible_reasons
-#			document_versions
-#			).each do |resource|
-#		alias_method "may_create_#{resource}?".to_sym,  :may_administrate?
-#		alias_method "may_read_#{resource}?".to_sym,    :may_administrate?
-#		alias_method "may_edit_#{resource}?".to_sym,    :may_administrate?
-#		alias_method "may_update_#{resource}?".to_sym,  :may_administrate?
-#		alias_method "may_destroy_#{resource}?".to_sym, :may_administrate?
-#	end
-#
-#	%w(	contacts guides home_page_pics patients
-#			).each do |resource|
-#		alias_method "may_create_#{resource}?".to_sym,  :may_edit?
-#		alias_method "may_read_#{resource}?".to_sym,    :may_edit?
-#		alias_method "may_edit_#{resource}?".to_sym,    :may_edit?
-#		alias_method "may_update_#{resource}?".to_sym,  :may_edit?
-#		alias_method "may_destroy_#{resource}?".to_sym, :may_edit?
-#	end
-#
-#	%w(	addressings addresses home_exposures phone_numbers
-#			).each do |resource|
-#		alias_method "may_create_#{resource}?".to_sym,  :may_create?
-#		alias_method "may_read_#{resource}?".to_sym,    :may_read?
-#		alias_method "may_edit_#{resource}?".to_sym,    :may_edit?
-#		alias_method "may_update_#{resource}?".to_sym,  :may_update?
-#		alias_method "may_destroy_#{resource}?".to_sym, :may_destroy?
-#	end
-#
-#	%w(	enrollments home_exposure_responses packages projects subjects
-#			events
-#			).each do |resource|
-#		alias_method "may_create_#{resource}?".to_sym,  :may_read?
-#		alias_method "may_read_#{resource}?".to_sym,    :may_read?
-#		alias_method "may_edit_#{resource}?".to_sym,    :may_read?
-#		alias_method "may_update_#{resource}?".to_sym,  :may_read?
-#		alias_method "may_destroy_#{resource}?".to_sym, :may_read?
-#	end
-
+end
+class User < Ccls::User
 end
