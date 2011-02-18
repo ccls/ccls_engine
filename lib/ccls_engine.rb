@@ -2,6 +2,8 @@ require 'ccls_engine/shared_database'
 
 require 'active_record'
 require 'active_support'
+require 'action_controller'
+
 require 'ruby_extension'
 require 'simply_helpful'
 require 'gravatar'
