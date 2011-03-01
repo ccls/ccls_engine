@@ -47,6 +47,6 @@ Rails::Initializer.run do |config|
 	config.gem 'paperclip'
 
 	config.after_initialize do
-		load File.expand_path(File.join(File.dirname(__FILE__),'..','init.rb'))
+		load File.expand_path(File.join(File.dirname(__FILE__),'../lib','ccls_engine.rb'))
 	end
 end

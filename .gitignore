@@ -25,3 +25,4 @@ s.git/
 test.unit.orig/
 test/unit.orig/
 misc/
+/*.war
