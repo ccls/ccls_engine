@@ -1,0 +1,41 @@
+<% stylesheets('page') %>
+
+<fieldset id='page'>
+<legend>Page</legend>
+
+<div class='parent'>
+<b>Parent?</b> (Is this a main or sub menu page?)<br/>
+<%= f.collection_select :parent_id, Page.all(:order => "menu_en"), 
+	:id, :menu, :include_blank => true %>  
+</div>
+
+<div class='hide_menu'>
+<br/>
+<%= f.check_box :hide_menu %>
+<%= f.label :hide_menu, "Hide in menu system" %>
+</div>
+
+<div class='fields'>
+
+<p><b>Path:</b> (this is the path in the url. ie. /help/login )</p>
+<%= f.text_field :path %>
+
+<p><b>Title</b> (this is the text on the top of the browser)</p>
+English:<%= f.text_field :title_en %>
+
+<p><b>Menu</b> (this is the text on the menu)</p>
+English:<%= f.text_field :menu_en %>
+
+<p><b>Body</b> (uses sanitized <%= link_to 'textile', 'http://redcloth.org', :target => 'new' %>)</p>
+English:<%= f.text_area :body_en, :rows => 30 %>
+</div><!-- fields -->
+
+<p class='note'>
+For special characters, like &ntilde;, &oacute;, &eacute;, etc., use the 'friendly code' from 
+<%= link_to "About.com", "http://webdesign.about.com/library/bl_htmlcodes.htm", :target => 'new' %> 
+or 'Entity Name' from
+<%= link_to "W3Schools.com", "http://www.w3schools.com/tags/ref_entities.asp", :target => 'new' %>.
+The 'Numerical Code', 'Hex Code' or 'Entity Number' work just as well, but aren't as clear.
+</p>
+
+</fieldset>

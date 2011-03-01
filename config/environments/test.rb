@@ -27,6 +27,29 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
-#config.action_mailer.default_url_options = { 
-#	:host => "dev.sph.berkeley.edu:3000" }
+config.action_mailer.default_url_options = { 
+	:host => "localhost:3000" }
+
+config.routes_configuration_file = File.expand_path(
+	File.join(File.dirname(__FILE__),'../../test/config/routes.rb'))
+
+config.autoload_paths += [
+	File.expand_path(
+		File.join(File.dirname(__FILE__),'../../test/app/models'))
+]
+
+config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
+
+config.gem 'jakewendt-html_test'
+
+config.gem "rcov"
+
+#	Without the :lib => false, the 'rake test' actually fails?
+config.gem "mocha", :lib => false
+
+config.gem "autotest-rails", :lib => 'autotest/rails'
+
+config.gem "ZenTest"
+
+config.action_mailer.template_root = 'app/views'
 

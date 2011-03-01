@@ -7,6 +7,8 @@ It is no longer really used as a plugin, but does contain the
 relevant features of an 'engine' including models, controllers,
 views and routes to the aforementioned resources.
 
+FYI ... It is about to become an actual app.
+
 == Required Gem Sources
 
  gem sources -a http://rubygems.org

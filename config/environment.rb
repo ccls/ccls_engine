@@ -13,42 +13,10 @@ RAILS_APP_NAME = 'ccls'
 
 Rails::Initializer.run do |config|
 
-	config.plugin_paths += [
-		File.expand_path(File.join(File.dirname(__FILE__),'../..'))
-	]
-
-	config.plugins = [ :ucb_ccls_engine ]
-
 	config.frameworks -= [:active_resource]
 
 	config.routes_configuration_file = File.expand_path(
 		File.join(File.dirname(__FILE__),'..','test/config/routes.rb'))
-
-	config.autoload_paths += [
-		File.expand_path(
-			File.join(File.dirname(__FILE__),'..','test/app/models')),
-		File.expand_path(
-			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
-	]
-
-#	config.eager_load_paths += [
-#		File.expand_path(
-#			File.join(File.dirname(__FILE__),'..','test/app/models')),
-#		File.expand_path(
-#			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
-#	]
-#
-#	config.controller_paths += [
-#		File.expand_path(
-#			File.join(File.dirname(__FILE__),'..','test/app/controllers'))
-#	]
-
-	config.view_path = [
-		File.expand_path(
-			File.join(File.dirname(__FILE__),'..','test/app/views'))
-	]
-
-#	config.gem 'RedCloth', :version => '!= 4.2.6', :lib => 'redcloth'
 
 	if RUBY_PLATFORM =~ /java/
 		config.gem 'activerecord-jdbcsqlite3-adapter',
@@ -60,28 +28,15 @@ Rails::Initializer.run do |config|
 		config.gem 'jruby-openssl', :lib => 'openssl'
 	else
 		config.gem 'mysql'
-#		config.gem "sqlite3-ruby", :lib => "sqlite3"
 		config.gem "sqlite3"
 	end
 
 	config.gem "jakewendt-use_db"
-	config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
-
 	config.gem 'jakewendt-simply_trackable'
 	config.gem 'jakewendt-simply_authorized'
-	config.gem 'jakewendt-html_test'
-
+	config.gem 'jakewendt-simply_pages'
 	#	require it, but don't load it
 	config.gem 'jakewendt-rdoc_rails', :lib => false
-
-	config.gem "rcov"
-
-	#	Without the :lib => false, the 'rake test' actually fails?
-	config.gem "mocha", :lib => false
-
-	config.gem "autotest-rails", :lib => 'autotest/rails'
-
-	config.gem "ZenTest"
 
 	config.gem 'haml'      # Needed for Surveyor
 	#	Keep chronic here
@@ -91,9 +46,7 @@ Rails::Initializer.run do |config|
 	config.gem 'fastercsv'
 	config.gem 'paperclip'
 
-	config.action_mailer.default_url_options = { 
-		:host => "localhost:3000" }
-
-	config.action_mailer.template_root = 'app/views'
-
+	config.after_initialize do
+		load File.expand_path(File.join(File.dirname(__FILE__),'..','init.rb'))
+	end
 end

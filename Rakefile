@@ -54,6 +54,8 @@ begin
 		gem.files += FileList['lib/**/*.rake']
 		gem.files += FileList['generators/**/*']
 		gem.files -= FileList['**/versions/*']
+		gem.files -= FileList['app/controllers/application_controller.rb']
+		gem.files -= FileList['app/views/layouts/application.html.erb']
 #   
 #		I'm not quite sure if it matters whether these files
 #		are included as 'files' or 'test_files', but
@@ -93,7 +95,6 @@ begin
 		gem.add_dependency('gravatar')
 		gem.add_dependency('paperclip')	#	not all apps use, but should be there
 		gem.add_dependency('thoughtbot-factory_girl')
-#		gem.add_dependency('ccls-calnet_authenticated')
 		gem.add_dependency('ucb_ldap', '>= 1.4.2')
 		gem.add_dependency('rubycas-client', '>= 2.2.1')
 		gem.add_dependency('jakewendt-simply_pages')
