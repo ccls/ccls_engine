@@ -85,6 +85,12 @@ begin
 #		Gem.configuration.write
 #
 		gem.add_dependency('rails', '~> 2')
+#	had to explicitly add rails components as greater
+#	versions were being loaded 
+		gem.add_dependency('activerecord', '~> 2')
+		gem.add_dependency('activeresource', '~> 2')
+		gem.add_dependency('activesupport', '~> 2')
+		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')
 		gem.add_dependency('jakewendt-simply_helpful')
 		gem.add_dependency('jakewendt-ruby_extension')
