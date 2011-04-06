@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.5.5"
+  s.version = "3.5.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-04-05}
+  s.date = %q{2011-04-06}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
     "app/controllers/refusal_reasons_controller.rb",
     "app/controllers/sessions_controller.rb",
     "app/controllers/stylesheets_controller.rb",
-    "app/controllers/user_invitations_controller.rb",
     "app/controllers/users_controller.rb",
     "app/models/address.rb",
     "app/models/address_type.rb",
@@ -80,8 +79,6 @@ Gem::Specification.new do |s|
     "app/models/transfer.rb",
     "app/models/unit.rb",
     "app/models/user.rb",
-    "app/models/user_invitation.rb",
-    "app/models/user_invitation_mailer.rb",
     "app/models/user_session.rb",
     "app/models/vital_status.rb",
     "app/models/zip_code.rb",
@@ -123,8 +120,6 @@ Gem::Specification.new do |s|
     "app/views/survey_invitation_mailer/invitation.erb",
     "app/views/survey_invitation_mailer/reminder.erb",
     "app/views/survey_invitation_mailer/thank_you.erb",
-    "app/views/user_invitation_mailer/invitation.erb",
-    "app/views/user_invitations/new.html.erb",
     "app/views/user_sessions/new.html.erb",
     "app/views/users/_form.html.erb",
     "app/views/users/edit.html.erb",
@@ -210,7 +205,6 @@ Gem::Specification.new do |s|
     "test/functional/ccls/roles_controller_test.rb",
     "test/functional/ccls/sessions_controller_test.rb",
     "test/functional/ccls/stylesheets_controller_test.rb",
-    "test/functional/ccls/user_invitations_controller_test.rb",
     "test/functional/ccls/users_controller_test.rb",
     "test/helpers/authlogic_test_helper.rb",
     "test/unit/ccls/address_test.rb",
@@ -265,8 +259,6 @@ Gem::Specification.new do |s|
     "test/unit/ccls/subject_type_test.rb",
     "test/unit/ccls/transfer_test.rb",
     "test/unit/ccls/unit_test.rb",
-    "test/unit/ccls/user_invitation_mailer_test.rb",
-    "test/unit/ccls/user_invitation_test.rb",
     "test/unit/ccls/user_test.rb",
     "test/unit/ccls/vital_status_test.rb",
     "test/unit/ccls/zip_code_test.rb"
