@@ -1,4 +1,5 @@
-namespace :app do
+#namespace :app do
+namespace :ccls do
 
 #	task :args_as_array do
 #		args = $*.dup.slice(1..-1)
