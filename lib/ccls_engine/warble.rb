@@ -22,7 +22,7 @@ module WarblerWar
 			#	complained that rails 2.3.10 wasn't installed??
 			k =~ %r{WEB-INF/gems/[^/]+/(#{config.remove_gem_files.join('|')})}
 		} unless config.remove_gem_files.empty?
-		puts "AFTER:#{@files.keys.length} (~4900)"
+		puts "AFTER:#{@files.keys.length} (should be ~1000 less)"
 	end
 
 end

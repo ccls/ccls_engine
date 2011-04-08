@@ -184,7 +184,7 @@ class Ccls::Subject < Shared
 		SubjectSearch.new(params).subjects
 	end
 
-	#	Rails' update_all DOES NOT SUPPORT JOINS depite many requests online.
+	#	Rails' update_all DOES NOT SUPPORT JOINS despite many requests online.
 	#	I must admit that it was unbelievably complex.  NOT.
 	#	All I did was split the first line, and jam the joins in the middle.
 	#	The sole purpose of all this is for the Patient callback 
