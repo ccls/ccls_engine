@@ -364,6 +364,11 @@ Factory.define :subject_race do |f|
 	f.association :race
 end
 
+Factory.define :subject_language do |f|
+	f.association :subject
+	f.association :language
+end
+
 Factory.define :subject_relationship do |f|
 	f.sequence(:code) { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }

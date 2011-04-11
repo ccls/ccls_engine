@@ -11,6 +11,7 @@ class Ccls::Subject < Shared
 
 	with_options :foreign_key => 'study_subject_id' do |f|
 		f.has_many :subject_races
+		f.has_many :subject_languages
 		f.has_and_belongs_to_many :analyses
 		f.has_many :addressings
 		f.has_many :enrollments
@@ -28,6 +29,7 @@ class Ccls::Subject < Shared
 		end
 	end
 	has_many :races, :through => :subject_races
+	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
 
 	accepts_nested_attributes_for :gift_cards

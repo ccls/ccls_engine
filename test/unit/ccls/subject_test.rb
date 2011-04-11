@@ -37,6 +37,18 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
+	test "should create subject with language" do
+		assert_difference( 'Language.count', 1 ){
+		assert_difference( 'SubjectLanguage.count', 1 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "#{model_name}.count", 1 ) {
+			subject = create_subject
+			subject.languages << Factory(:language)
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+		} } } }
+	end
+
 	test "should create subject with race" do
 		assert_difference( 'Race.count', 1 ){
 		assert_difference( 'SubjectRace.count', 1 ){
