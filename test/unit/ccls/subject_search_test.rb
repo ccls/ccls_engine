@@ -37,13 +37,15 @@ class Ccls::SubjectSearchTest < ActiveSupport::TestCase
 	end
 
 	test "should include subject by races" do
-		s1,s2,s3 = create_subjects(3)
-#		subjects = Subject.search(
-#			:races => [s1,s2].collect{|s|s.race.name})
-#		assert  subjects.include?(s1)
-#		assert  subjects.include?(s2)
-#		assert !subjects.include?(s3)
-pending
+		s1,s2,s3 = nil
+		assert_difference('Subject.count',3) do
+			s1,s2,s3 = create_subjects_with_races(3)
+		end
+		subjects = Subject.search(
+			:races => [s1,s2].collect{|s|s.races.first.name})
+		assert  subjects.include?(s1)
+		assert  subjects.include?(s2)
+		assert !subjects.include?(s3)
 	end
 
 	test "should include subject by hispanicity" do

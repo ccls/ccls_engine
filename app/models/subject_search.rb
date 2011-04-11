@@ -55,9 +55,6 @@ class SubjectSearch < Search
 
 private	#	THIS IS REQUIRED
 
-#>> subjects = Subject.find(:all, :joins => "left join samples on subjects.id = samples.study_subject_id", :group => 'subjects.id', :having => ["sample_ids LIKE '%?%'",1], :select => "subjects.id, GROUP_CONCAT(samples.id) as sample_ids")
-#=> [#<Subject id: 1>, #<Subject id: 2014>]
-
 	def samples_joins
 		"JOIN samples ON subjects.id " <<
 			"= samples.study_subject_id" if %w( sent_to_subject_on received_by_ccls_on ).include?(@order)
@@ -77,23 +74,40 @@ private	#	THIS IS REQUIRED
 		['identifiers.patid = :patid', {:patid => patid}] unless patid.blank?
 	end
 
+
 	def races_joins
-		"INNER JOIN races ON races.id = subjects.race_id" unless races.blank?
+#		"INNER JOIN races ON races.id = subjects.race_id" unless races.blank?
+		"LEFT JOIN subject_races ON subjects.id = subject_races.study_subject_id LEFT JOIN races ON races.id = subject_races.race_id" unless races.blank?
 	end
 
-	def races_conditions
-		['races.description IN (:races)', { :races => races }
-			] unless races.blank?
-	end
+#	def races_conditions
+#		['races.description IN (:races)', { :races => races }
+#			] unless races.blank?
+#	end
+
+#>> subjects = Subject.find(:all, :joins => "left join samples on subjects.id = samples.study_subject_id", :group => 'subjects.id', :having => ["sample_ids LIKE '%?%'",1], :select => "subjects.id, GROUP_CONCAT(samples.id) as sample_ids")
+#=> [#<Subject id: 1>, #<Subject id: 2014>]
 
 	def races_groups
+		'subjects.id' unless races.blank?
 	end
 	
 	def races_selects
+		"subjects.*, CONCAT('|',GROUP_CONCAT(races.description SEPARATOR '|'),'|') as race_descriptions" unless races.blank?
 	end
 
 	def races_havings
+		unless races.blank?
+			c = []
+			v = {}
+			races.each_with_index do |race,i|
+				c << "race_descriptions LIKE :r#{i}"
+				v["r#{i}".to_sym] = "%|#{race}|%"
+			end
+			[ c.join(' OR '), v ]
+		end
 	end
+
 
 	def types_joins
 		"INNER JOIN subject_types ON subject_types.id " <<

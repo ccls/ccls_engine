@@ -101,6 +101,12 @@ module Ccls::FactoryTestHelper
 		subject
 	end
 
+	def create_subjects_with_races(count=0,options={})
+		subjects = create_subjects(count)
+		subjects.each{|s|s.races << Factory(:race)}
+		subjects
+	end
+
 	def create_subject_with_childid(childid)
 		subject = create_subject
 		Factory(:identifier, 
