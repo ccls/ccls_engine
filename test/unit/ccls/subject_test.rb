@@ -7,10 +7,8 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_should_have_many( :enrollments )
 	assert_should_have_many( :gift_cards )
 	assert_should_have_many( :phone_numbers )
-#	assert_should_have_many( :response_sets )
 	assert_should_have_many( :samples )
-#	assert_should_have_many( :survey_invitations )
-	assert_should_initially_belong_to( :race )
+#	assert_should_initially_belong_to( :race )
 	assert_should_initially_belong_to( :subject_type )
 	assert_should_initially_belong_to( :vital_status )
 
@@ -31,13 +29,24 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 
 	test "should create subject" do
-		assert_difference( 'Race.count' ){
-		assert_difference( 'SubjectType.count' ){
+		assert_difference( 'SubjectType.count', 1 ){
 		assert_difference( "#{model_name}.count", 1 ) {
 			subject = create_subject
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
-		} } }
+		} }
+	end
+
+	test "should create subject with race" do
+		assert_difference( 'Race.count', 1 ){
+		assert_difference( 'SubjectRace.count', 1 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "#{model_name}.count", 1 ) {
+			subject = create_subject
+			subject.races << Factory(:race)
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+		} } } }
 	end
 
 	test "should create subject with pii" do
@@ -212,44 +221,6 @@ pending
 #		assert_not_nil subject.vital_status
 	end
 
-#	def sscount(subject_id,survey_id)
-#		SurveyInvitation.count(:conditions => {
-#			:study_subject_id => subject_id, :survey_id => survey_id })
-#	end
-
-#	test "should have one survey_invitation per survey" do
-#		subject = create_subject
-#		survey  = Factory(:survey)
-#		assert_difference("sscount(#{subject.id},#{survey.id})",1){
-#			Factory(:survey_invitation, {
-#				:subject => subject, :survey_id => survey.id })
-#		}
-#		assert_difference("sscount(#{subject.id},#{survey.id})",0){
-#		assert_raise(ActiveRecord::RecordInvalid){
-#			Factory(:survey_invitation, {
-#				:subject => subject, :survey_id => survey.id })
-#		} }
-#	end
-
-#	test "her_invitation should return home_exposure_survey invitation" do
-#		subject = create_subject
-#		assert_nil subject.her_invitation
-#		si = Factory(:survey_invitation, 
-#			:subject => subject,
-#			:survey  => Survey.first)
-#		assert_not_nil subject.her_invitation
-#	end
-
-#	test "should NOT destroy survey_invitations with subject" do
-#		subject = create_subject
-#		Factory(:survey_invitation, :subject => subject)
-#		Factory(:survey_invitation, :subject => subject)
-#		assert_difference( "#{model_name}.count", -1 ) {
-#		assert_difference('SurveyInvitation.count',0) {
-#			subject.destroy
-#		} }
-#	end
-
 #	test "should NOT destroy dust_kit with subject" do
 #		subject = create_subject
 #		Factory(:dust_kit, :subject => subject)
@@ -278,7 +249,6 @@ pending
 	end
 
 	test "should NOT destroy patient with subject" do
-#		subject = create_subject
 		subject = Factory(:case_subject)
 		Factory(:patient, :subject => subject)
 		assert_difference( "#{model_name}.count", -1 ) {
@@ -288,8 +258,6 @@ pending
 	end
 
 	test "should NOT destroy home_exposure_response with subject" do
-#		subject = create_subject
-#		Factory(:home_exposure_response, :subject => subject)
 		subject = Factory(:home_exposure_response).subject
 		assert_difference( "#{model_name}.count", -1 ) {
 		assert_difference('HomeExposureResponse.count',0) {
@@ -346,40 +314,36 @@ pending
 		} }
 	end
 
-#	test "should NOT destroy response_sets with subject" do
-#		subject = create_subject
-#		Factory(:response_set, :subject => subject)
-#		Factory(:response_set, :subject => subject)
-#		assert_difference( "#{model_name}.count", -1 ) {
-#		assert_difference('ResponseSet.count',0) {
-#			subject.destroy
-#		} }
-#	end
-
 	%w( full_name first_name last_name fathers_name 
 			mothers_name mother_maiden_name email dob state_id_no
 			ssn childid patid orderno studyid 
 			interview_outcome interview_outcome_on 
 			sample_outcome sample_outcome_on ).each do |method_name|
+
 		test "should respond to #{method_name}" do
 			subject = create_subject
 			assert subject.respond_to?(method_name)
 		end
+
 	end
 
 	%w( ssn childid patid orderno studyid ).each do |method_name|
+
 		test "should return nil #{method_name} without identifier" do
 			subject = create_subject
 			assert_nil subject.send(method_name)
 		end
+
 		test "should return #{method_name} with identifier" do
 			subject = Factory(:identifier).subject
 			assert_not_nil subject.send(method_name)
 		end
+
 	end
 
 	%w( full_name first_name last_name fathers_name 
 			mothers_name email dob state_id_no ).each do |method_name|
+
 		test "should return nil #{method_name} without pii" do
 			subject = create_subject
 			assert_nil subject.send(method_name)
@@ -389,10 +353,12 @@ pending
 			subject = Factory(:pii, :subject => create_subject).subject
 			assert_not_nil subject.send(method_name)
 		end
+
 	end
 
 	%w( interview_outcome interview_outcome_on 
 			sample_outcome sample_outcome_on ).each do |method_name|
+
 		test "should return nil #{method_name} without homex_outcome" do
 			subject = create_subject
 			assert_nil subject.send(method_name)
@@ -402,63 +368,8 @@ pending
 			subject = Factory(:homex_outcome, :subject => create_subject).subject
 #			assert_not_nil subject.send(method_name)
 		end
+
 	end
-
-#	test "should return true response sets the same" do
-#		sets = create_survey_response_sets
-#		assert sets.first.subject.response_sets_the_same?
-#	end
-
-#	test "should return false response sets the same" do
-#		sets = create_survey_response_sets
-#		sets.last.responses.first.destroy
-#		assert !sets.first.subject.response_sets_the_same?
-#	end
-
-#	test "should raise error 1 response sets the same" do
-#		sets = create_survey_response_sets
-#		sets.last.destroy
-#		assert_raise(Subject::NotTwoResponseSets) {
-#			sets.first.subject.response_sets_the_same?
-#		}
-#	end
-
-#	test "should raise error 3 response sets the same" do
-#		sets = create_survey_response_sets
-#		fill_out_survey(:survey => sets.first.survey,
-#			:subject => sets.first.subject)
-#		assert_raise(Subject::NotTwoResponseSets) {
-#			sets.first.subject.response_sets_the_same?
-#		}
-#	end
-
-#	test "should return diffs on response set diffs" do
-#		sets = create_survey_response_sets
-#		sets.last.responses.first.destroy
-#		assert !sets.first.subject.response_set_diffs.blank?
-#	end
-
-#	test "should return empty diffs on response set diffs when the same" do
-#		sets = create_survey_response_sets
-#		assert sets.first.subject.response_set_diffs.blank?
-#	end
-
-#	test "should raise error 1 response set diffs" do
-#		sets = create_survey_response_sets
-#		sets.last.destroy
-#		assert_raise(Subject::NotTwoResponseSets) {
-#			sets.first.subject.response_set_diffs
-#		}
-#	end
-
-#	test "should raise error 3 response set diffs" do
-#		sets = create_survey_response_sets
-#		fill_out_survey(:survey => sets.first.survey,
-#			:subject => sets.first.subject)
-#		assert_raise(Subject::NotTwoResponseSets) {
-#			sets.first.subject.response_set_diffs
-#		}
-#	end
 
 	test "should be ineligible for invitation without email" do
 		subject = create_subject
@@ -521,9 +432,10 @@ pending
 #	end
 
 	test "should return race name for string" do
+pending
 		subject = create_subject
-		assert_equal subject.race.name, 
-			"#{subject.race}"
+#		assert_equal subject.race.name, 
+#			"#{subject.race}"
 	end
 
 	test "should return subject_type description for string" do
@@ -568,8 +480,10 @@ pending
 
 	test "should return concat of 3 fields as to_s" do
 		object = create_object
-#	[childid,'(',studyid,full_name,')'].compact.join(' ')
-		assert_equal [object.childid,'(',object.studyid,object.full_name,')'].compact.join(' '), "#{object}"
+		#	[childid,'(',studyid,full_name,')'].compact.join(' ')
+		assert_equal [
+			object.childid,'(',object.studyid,object.full_name,')'].compact.join(' '), 
+			"#{object}"
 	end
 
 	test "should return hx_id" do
@@ -608,17 +522,7 @@ pending
 		assert subjects.is_a?(Array)
 	end
 
-
-
 protected
-
-#	def create_survey_response_sets
-#		survey = Survey.find_by_access_code("home_exposure_survey")
-#		rs1 = fill_out_survey(:survey => survey)
-#		rs2 = fill_out_survey(:survey => survey,
-#			:subject => rs1.subject)
-#		[rs1.reload,rs2.reload]
-#	end
 
 #	def create_dust_kit(options = {})
 #		Factory(:dust_kit, {

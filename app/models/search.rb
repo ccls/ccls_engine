@@ -141,4 +141,51 @@ private
 		private_methods(false).grep(/_joins$/).sort.map { |m| send(m) }.compact
 	end
 
+	def select
+		#	:select - By default, this is "*" as in "SELECT * FROM", 
+		#		but can be changed if you, for example, want to do a join 
+		#		but not include the joined columns. Takes a string with the 
+		#		SELECT SQL fragment (e.g. "id, name").
+		selects = private_methods(false).grep(/_selects$/).sort.map { |m| send(m) }.compact
+		#	select CANNOT be ''
+		#	ActiveRecord::StatementInvalid: Mysql::Error: You have an error in your SQL syntax; 
+		#		check the manual that corresponds to your MySQL server version for the right 
+		#		syntax to use near 'FROM `subjects`   LIMIT 0, 25' at line 1: 
+		#		SELECT  FROM `subjects`   LIMIT 0, 25
+		#	nil will cause default use of '*', which could also be passed
+		( selects.empty? ) ? nil : selects.join(',')
+	end
+
+	def group
+		#	:group - An attribute name by which the result should be grouped. 
+		#		Uses the GROUP BY SQL-clause
+		groups = private_methods(false).grep(/_groups$/).sort.map { |m| send(m) }.compact
+		#	ActiveRecord::StatementInvalid: Mysql::Error: You have an error in your SQL syntax; 
+		#		check the manual that corresponds to your MySQL server version for the right 
+		#		syntax to use near '' at line 1: SELECT * FROM `subjects`  GROUP BY
+		#	nil will cause group by to not be used
+		( groups.empty? ) ? nil : groups.join(',')
+	end
+
+	def having
+		#	:having - Combined with :group this can be used to filter the records 
+		#		that a GROUP BY returns. Uses the HAVING SQL-clause.
+		#	this is very similar to :conditions/WHERE so may have to add all of the
+		#	conditions_* methods to handle
+		[having_clauses.join(' AND '), *having_options]
+	end
+
+	def having_clauses
+		having_parts.map { |condition| condition.first }
+	end
+
+	def having_options
+		parts = having_parts.map { |condition| condition[1..-1] }.flatten(1)
+		[parts.inject(:merge)]
+	end
+
+	def having_parts
+		private_methods(false).grep(/_havings$/).map { |m| send(m) }.compact
+	end
+
 end

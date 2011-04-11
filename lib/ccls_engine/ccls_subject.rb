@@ -5,11 +5,12 @@ class Ccls::Subject < Shared
 	self.abstract_class = true
 
 #	belongs_to :hispanicity
-	belongs_to :race
+#	belongs_to :race
 	belongs_to :subject_type
 	belongs_to :vital_status
 
 	with_options :foreign_key => 'study_subject_id' do |f|
+		f.has_many :subject_races
 		f.has_and_belongs_to_many :analyses
 		f.has_many :addressings
 		f.has_many :enrollments
@@ -26,14 +27,15 @@ class Ccls::Subject < Shared
 			p.has_one :hx_gift_card,  :class_name => "GiftCard"
 		end
 	end
-
+	has_many :races, :through => :subject_races
 	has_many :addresses, :through => :addressings
+
 	accepts_nested_attributes_for :gift_cards
 
 	validates_presence_of :subject_type
-	validates_presence_of :race
+#	validates_presence_of :race
 	validates_presence_of :subject_type_id
-	validates_presence_of :race_id
+#	validates_presence_of :race_id
 
 	validates_inclusion_of :do_not_contact, :in => [ true, false ]
 

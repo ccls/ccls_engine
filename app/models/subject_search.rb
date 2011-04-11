@@ -38,8 +38,11 @@ class SubjectSearch < Search
 		@subjects ||= Subject.send(
 			(paginate?)?'paginate':'all',{
 				:include => [:pii,:identifier],
-				:order => search_order,
-				:joins => joins,
+				:select  => select,
+				:group   => group,
+				:having  => having,
+				:order   => search_order,
+				:joins   => joins,
 				:conditions => conditions
 			}.merge(
 				(paginate?)?{
@@ -51,6 +54,9 @@ class SubjectSearch < Search
 	end
 
 private	#	THIS IS REQUIRED
+
+#>> subjects = Subject.find(:all, :joins => "left join samples on subjects.id = samples.study_subject_id", :group => 'subjects.id', :having => ["sample_ids LIKE '%?%'",1], :select => "subjects.id, GROUP_CONCAT(samples.id) as sample_ids")
+#=> [#<Subject id: 1>, #<Subject id: 2014>]
 
 	def samples_joins
 		"JOIN samples ON subjects.id " <<
@@ -67,17 +73,26 @@ private	#	THIS IS REQUIRED
 			] unless vital_statuses.blank?
 	end
 
-	def races_joins
-		"INNER JOIN races ON races.id = subjects.race_id" unless races.blank?
-	end
-
 	def patid_conditions
 		['identifiers.patid = :patid', {:patid => patid}] unless patid.blank?
+	end
+
+	def races_joins
+		"INNER JOIN races ON races.id = subjects.race_id" unless races.blank?
 	end
 
 	def races_conditions
 		['races.description IN (:races)', { :races => races }
 			] unless races.blank?
+	end
+
+	def races_groups
+	end
+	
+	def races_selects
+	end
+
+	def races_havings
 	end
 
 	def types_joins

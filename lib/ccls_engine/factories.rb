@@ -40,14 +40,14 @@ Factory.define :owner, :parent => :user do |f|
 #	This is really just an alias of convenience for Document
 end	#	parent must be defined first
 
-Factory.define :user_invitation do |f|
-	f.association :sender, :factory => :user
-	f.sequence(:email){|n| "invitation#{n}@example.com"}
-end
-Factory.define :maker do |f|
-end
-Factory.define :widget do |f|
-end
+#Factory.define :user_invitation do |f|
+#	f.association :sender, :factory => :user
+#	f.sequence(:email){|n| "invitation#{n}@example.com"}
+#end
+#Factory.define :maker do |f|
+#end
+#Factory.define :widget do |f|
+#end
 
 
 
@@ -347,7 +347,7 @@ end
 
 Factory.define :subject do |f|
 	f.association :subject_type
-	f.association :race
+#	f.association :subject_race
 	f.association :vital_status
 #	f.sequence(:subjectid){|n| "#{n}"}
 	f.sequence(:sex){|n|
@@ -357,6 +357,11 @@ Factory.define :case_subject, :parent => :subject do |f|
 	f.subject_type { SubjectType.find(:first,:conditions => {
 			:code => 'Case'
 		}) }
+end
+
+Factory.define :subject_race do |f|
+	f.association :subject
+	f.association :race
 end
 
 Factory.define :subject_relationship do |f|
@@ -447,6 +452,9 @@ Factory.define :answer do |f|
 	f.sequence(:data_export_identifier){|n| "adei_#{n}" }
 #	f.response_class "answer"
 end
+
+
+
 
 
 Factory.define :zip_code do |f|

@@ -5,7 +5,8 @@ class Race < Shared
 	acts_as_list
 	default_scope :order => :position
 
-	has_many :subjects
+#	Don't think that I ever user this relationship in this direction
+#	has_many :subjects
 
 	validates_presence_of   :code
 	validates_uniqueness_of :code
