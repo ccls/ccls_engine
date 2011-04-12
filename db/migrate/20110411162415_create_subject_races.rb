@@ -3,7 +3,7 @@ class CreateSubjectRaces < SharedMigration
 		create_table :subject_races do |t|
 			t.integer :study_subject_id
 			t.integer :race_id
-			t.boolean :primary, :default => false, :null => false
+			t.boolean :is_primary, :default => false, :null => false
 			t.timestamps
 		end
 	end
