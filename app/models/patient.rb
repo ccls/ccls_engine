@@ -1,35 +1,3 @@
-
-#	DON'T LEAVE THIS HERE AS IT MUCKS UP OTHER STUFF!
-
-
-#Subject.class_eval do
-#	def self.update_all(updates, conditions = nil, options = {})
-#		sql  = "UPDATE #{quoted_table_name} SET " <<
-#			"#{sanitize_sql_for_assignment(updates)} "
-#
-#		scope = scope(:find)
-#
-#		select_sql = ""
-#		add_conditions!(select_sql, conditions, scope)
-#
-#		if options.has_key?(:limit) || (scope && scope[:limit])
-#			# Only take order from scope if limit is also provided by scope, this
-#			# is useful for updating a has_many association with a limit.
-#			add_order!(select_sql, options[:order], scope)
-#			add_limit!(select_sql, options, scope)
-#			sql.concat(connection.limited_update_conditions(
-#				select_sql, quoted_table_name, 
-#				connection.quote_column_name(primary_key)))
-#		else
-#			add_order!(select_sql, options[:order], nil)
-#			sql.concat(select_sql)
-#		end
-#
-#		#connection.update(sql, "#{name} Update")
-#		sql
-#	end
-#end
-
 # Patient related subject info.
 class Patient < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
@@ -86,20 +54,9 @@ protected
 		#	puts "admit_date is:#{admit_date}"
 		#	puts "matchingid is blank (FYI)" if subject.try(:identifier).try(:matchingid).blank?
 		unless subject.try(:identifier).try(:matchingid).blank?
-			#	I would prefer something friendlier, but update_all
-			#	doesn't take a :joins option which is mind boggling.
-#	TODO
-#	I need to sanitize this as it opens a door to a bad place
-
-#			Subject.connection.execute("UPDATE `subjects` " <<
-#				"JOIN `identifiers` ON `identifiers`.`study_subject_id` = `subjects`.`id` " <<
-#				"SET `reference_date` = '#{admit_date.to_s(:db)}' " <<
-#				"WHERE `identifiers`.`matchingid` = '#{subject.identifier.matchingid}'")
 			Subject.update_all({:reference_date => admit_date },
 				['identifiers.matchingid = ?',subject.identifier.matchingid],
 				{ :joins => :identifier })
-#			Subject.update_all ..... just don't join.
-#UPDATE `subjects` SET `reference_date` = '2010-12-15 12:00:00' WHERE (identifiers.matchingid = '012345')
 		end
 	end
 

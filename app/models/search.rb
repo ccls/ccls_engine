@@ -181,6 +181,8 @@ private
 
 	def having_options
 		parts = having_parts.map { |condition| condition[1..-1] }.flatten(1)
+#	just like conditions, these parts need to be hashes of symbol names
+#	for use in the sql command.  Not ?.
 		[parts.inject(:merge)]
 	end
 

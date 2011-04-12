@@ -80,11 +80,6 @@ private	#	THIS IS REQUIRED
 		"LEFT JOIN subject_races ON subjects.id = subject_races.study_subject_id LEFT JOIN races ON races.id = subject_races.race_id" unless races.blank?
 	end
 
-#	def races_conditions
-#		['races.description IN (:races)', { :races => races }
-#			] unless races.blank?
-#	end
-
 #>> subjects = Subject.find(:all, :joins => "left join samples on subjects.id = samples.study_subject_id", :group => 'subjects.id', :having => ["sample_ids LIKE '%?%'",1], :select => "subjects.id, GROUP_CONCAT(samples.id) as sample_ids")
 #=> [#<Subject id: 1>, #<Subject id: 2014>]
 
