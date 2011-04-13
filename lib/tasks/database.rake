@@ -222,10 +222,11 @@ namespace :db do
 					:dob => dob
 				},
 				:subject_type => subject_type,
-				:race => race,
+#				:race => race,
 				:sex => line[5],
 				:reference_date => refdate
 			})
+			subject.races = [race]
 
 			Identifier.create!({
 					:subject_id => subject.id,
