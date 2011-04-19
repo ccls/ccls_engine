@@ -127,43 +127,82 @@ pending
 #		} }
 	end
 
-#	test "should create subject with patient" do
-#		assert_difference( 'Patient.count', 1) {
-#		assert_difference( 'Subject.count', 1) {
-##			subject = Factory(:case_subject,
-#			subject = create_subject(
-#				:patient_attributes => Factory.attributes_for(:patient))
-#			assert !subject.new_record?, 
-#				"#{subject.errors.full_messages.to_sentence}"
-#		} }
-#	end
-
-	test "should NOT create subject with second patient" do
+	test "should create case subject with patient" do
 		assert_difference( 'Patient.count', 1) {
 		assert_difference( "#{model_name}.count", 1 ) {
-#			subject = create_subject(
-#				:patient_attributes => Factory.attributes_for(:patient))
-#			assert !subject.new_record?, 
-#				"#{subject.errors.full_messages.to_sentence}"
-#			subject.update_attributes(
-#				:patient_attributes => Factory.attributes_for(:patient))
-#			assert subject.errors.on('patient.study_subject_id')
-			subject = Factory(:case_subject)
-			patient1 = Factory(:patient,:subject => subject)
-			patient2 = Factory.build(:patient,:subject => subject)
-			patient2.save
-			assert patient2.errors.on(:study_subject_id)
+			subject = Factory(:case_subject,
+				:patient_attributes => Factory.attributes_for(:patient))
+			assert  subject.is_case?
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
 		} }
 	end
 
-#	test "should NOT create subject with empty patient" do
-#
-##	patient has no requirements so it would actually work
-##	TODO
-#
-#		pending
-#
-#	end
+	test "should NOT create non-case subject with patient" do
+		assert_difference( 'Patient.count', 0) {
+		assert_difference( "#{model_name}.count", 0 ) {
+			subject = create_subject(
+				:patient_attributes => Factory.attributes_for(:patient))
+			assert !subject.is_case?
+			assert  subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+		} }
+	end
+
+	test "should create patient for case subject" do
+		assert_difference( 'Patient.count', 1) {
+		assert_difference( "#{model_name}.count", 1 ) {
+			subject = Factory(:case_subject)
+			assert subject.is_case?
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+			patient = Factory(:patient, :subject => subject)
+			assert !patient.new_record?, 
+				"#{patient.errors.full_messages.to_sentence}"
+		} }
+	end
+
+	test "should NOT create patient for non-case subject" do
+		assert_difference( 'Patient.count', 0) {
+		assert_difference( "#{model_name}.count", 1 ) {
+			subject = create_subject
+			assert !subject.is_case?
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+			patient = Factory.build(:patient, :subject => subject)
+			patient.save	#	avoid an exception being raised
+			assert patient.errors.on(:subject)
+		} }
+	end
+
+	test "should NOT create subject with second patient" do
+		#	this should be failing, but I don't think that I can stop it 
+		#	when using accepts_nested_attributes_for
+		assert_difference( 'Patient.count', 1) {
+		assert_difference( "#{model_name}.count", 1 ) {
+#			subject = create_subject(
+			subject = Factory(:case_subject,
+				:patient_attributes => Factory.attributes_for(:patient))
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+			subject.update_attributes(
+				:patient_attributes => Factory.attributes_for(:patient))
+			assert subject.errors.on('patient.study_subject_id')
+		} }
+	end
+
+	test "should NOT create subject with empty patient" do
+pending
+		assert_difference( 'Patient.count', 0) {
+		assert_difference( "#{model_name}.count", 0 ) {
+#			subject = create_subject( :pii_attributes => {})
+#			assert subject.errors.on('patient.state_id_no')
+#	##	patient has no requirements so it would actually work
+#	##	TODO
+		} }
+	end
+
+
 
 #	test "should create subject with identifier" do
 #		assert_difference( 'Identifier.count', 1) {

@@ -83,7 +83,15 @@ class Ccls::Subject < Shared
 	accepts_nested_attributes_for :homex_outcome
 
 #	Where do I use patient_attributes?
-#	accepts_nested_attributes_for :patient
+#		ODMS does for new subject
+	accepts_nested_attributes_for :patient
+	validate :must_be_case_if_patient_attributes
+	def must_be_case_if_patient_attributes
+		if !patient.nil? and !is_case?
+			errors.add(:patient ,"must be case to have patient info")
+		end
+	end
+
 #	Where do I use identifier_attributes?
 #	accepts_nested_attributes_for :identifier
 ##	accepts_nested_attributes_for :dust_kit

@@ -249,7 +249,7 @@ end
 
 Factory.define :patient do |f|
 	#	really don't see the point of a patient w/o a subject
-	f.association :subject, :factory => :case_subject
+#	f.association :subject, :factory => :case_subject
 end
 
 Factory.define :person do |f|
