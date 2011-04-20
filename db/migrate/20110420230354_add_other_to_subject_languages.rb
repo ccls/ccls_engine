@@ -1,4 +1,4 @@
-class AddOtherToSubjectLanguages < ShareMigration
+class AddOtherToSubjectLanguages < SharedMigration
 	def self.up
 		add_column :subject_languages, :other, :string
 	end
