@@ -12,7 +12,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :study_subject_id )
 	assert_should_not_require_attributes( :admit_date )
 	assert_should_not_require_attributes( :diagnosis_date )
-	assert_should_not_require_attributes( :hospital_no )
 	assert_should_not_require_attributes( :diagnosis_id )
 	assert_should_not_require_attributes( :organization_id )
 
@@ -31,7 +30,8 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	test "should require study_subject_id on update" do
 		assert_difference( "#{model_name}.count", 1 ) do
 				object = create_object
-			object.reload.update_attributes(:hospital_no => "New Hospital Number")
+#			object.reload.update_attributes(:hospital_no => "New Hospital Number")
+			object.reload.update_attributes(:diagnosis_date => Date.today)
 			assert object.errors.on(:subject)
 		end
 	end

@@ -24,6 +24,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :lab_no )
 	assert_should_not_require_attributes( :related_childid )
 	assert_should_not_require_attributes( :related_case_childid )
+	assert_should_not_require_attributes( :hospital_no )
 	assert_should_require_attributes( :state_id_no )
 	assert_should_require_unique_attributes( :state_id_no )
 	with_options :maximum => 250 do |o|
@@ -90,6 +91,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		end
 	end
 
+protected
 
 	def create_object(options={})
 		record = Factory.build(:identifier,options)
