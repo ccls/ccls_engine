@@ -1,0 +1,16 @@
+#!/bin/sh
+
+for table in `\
+	mysql \
+	--user=root \
+	--column-names=false \
+	--execute='show tables;' \
+	--database=shared_development`
+do 
+	echo "\nTable: $table"
+	mysql \
+	--user=root \
+	--table=true \
+	--execute="describe $table;" \
+	--database=shared_development
+done
