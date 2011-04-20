@@ -4,9 +4,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_belong_to(:subject)
-	assert_should_require_attributes( :state_id_no )
 	assert_should_require_attributes( :dob )
-	assert_should_require_unique_attributes( :state_id_no )
 	assert_should_require_unique_attributes( :email )
 	assert_should_not_require_attributes( :study_subject_id )
 	assert_should_not_require_attributes( :first_name )
@@ -25,7 +23,6 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		o.assert_should_require_attribute_length( :first_name )
 		o.assert_should_require_attribute_length( :middle_name )
 		o.assert_should_require_attribute_length( :last_name )
-		o.assert_should_require_attribute_length( :state_id_no )
 		o.assert_should_require_attribute_length( :mother_first_name )
 		o.assert_should_require_attribute_length( :mother_middle_name )
 		o.assert_should_require_attribute_length( :mother_maiden_name )

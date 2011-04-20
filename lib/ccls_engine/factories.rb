@@ -109,6 +109,7 @@ Factory.define :identifier do |f|
 	f.sequence(:case_control_type){|n|
 		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n%36] }
 	f.sequence(:subjectid){|n| "#{n}"}
+	f.sequence(:state_id_no){|n| "#{n}"}
 end
 
 Factory.define :context do |f|
@@ -264,7 +265,6 @@ Factory.define :pii do |f|
 	f.first_name "First"
 	f.middle_name "Middle"
 	f.last_name "Last"
-	f.sequence(:state_id_no){|n| "#{n}"}
 	f.sequence(:email){|n| "email#{n}@example.com"}
 	f.dob Date.jd(2440000+rand(15000))
 end

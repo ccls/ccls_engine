@@ -52,9 +52,9 @@ class Ccls::Subject < Shared
 			o.delegate :fathers_name
 			o.delegate :mothers_name
 			o.delegate :mother_maiden_name
-			o.delegate :state_id_no
 		end
 		n.with_options :to => :identifier do |o|
+			o.delegate :state_id_no
 			o.delegate :childid
 			o.delegate :ssn
 			o.delegate :patid

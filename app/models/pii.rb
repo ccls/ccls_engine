@@ -1,7 +1,6 @@
 # == PII (Personally Identifiable Information)
 #	==	requires
 #	*	subject_id
-#	*	state_id_no ( unique )
 class Pii < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 
@@ -10,8 +9,6 @@ class Pii < Shared
 	validates_presence_of   :subject, :on => :update
 
 	validates_presence_of   :dob
-	validates_presence_of   :state_id_no
-	validates_uniqueness_of :state_id_no
 	with_options :allow_nil => true do |o|
 		o.validates_uniqueness_of     :study_subject_id
 		o.validates_complete_date_for :dob
@@ -25,7 +22,6 @@ class Pii < Shared
 	before_validation :nullify_blank_email
 
 	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :state_id_no
 		o.validates_length_of :first_name
 		o.validates_length_of :middle_name
 		o.validates_length_of :last_name

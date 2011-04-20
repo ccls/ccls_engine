@@ -1,6 +1,7 @@
 #	==	requires
 #	*	childid (unique)
 #	*	subject_id (unique)
+#	*	state_id_no ( unique )
 class Identifier < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 	has_many :interviews
@@ -24,7 +25,10 @@ class Identifier < Shared
 	validates_presence_of   :subjectid
 	validates_uniqueness_of :subjectid
 
+	validates_presence_of   :state_id_no
+	validates_uniqueness_of :state_id_no
 	with_options :maximum => 250, :allow_blank => true do |o|
+		o.validates_length_of :state_id_no
 		o.validates_length_of :case_control_type
 		o.validates_length_of :lab_no
 		o.validates_length_of :related_childid

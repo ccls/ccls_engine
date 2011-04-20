@@ -88,7 +88,8 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		assert_difference( 'Pii.count', 0) {
 		assert_difference( "#{model_name}.count", 0 ) {
 			subject = create_subject( :pii_attributes => {})
-			assert subject.errors.on('pii.state_id_no')
+#			assert subject.errors.on('pii.state_id_no')
+			assert subject.errors.on('pii.dob')
 		} }
 	end
 
@@ -378,7 +379,7 @@ pending
 
 	end
 
-	%w( ssn childid patid orderno studyid ).each do |method_name|
+	%w( ssn childid patid orderno studyid state_id_no ).each do |method_name|
 
 		test "should return nil #{method_name} without identifier" do
 			subject = create_subject
@@ -393,7 +394,7 @@ pending
 	end
 
 	%w( full_name first_name last_name fathers_name 
-			mothers_name email dob state_id_no ).each do |method_name|
+			mothers_name email dob ).each do |method_name|
 
 		test "should return nil #{method_name} without pii" do
 			subject = create_subject

@@ -24,7 +24,10 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :lab_no )
 	assert_should_not_require_attributes( :related_childid )
 	assert_should_not_require_attributes( :related_case_childid )
+	assert_should_require_attributes( :state_id_no )
+	assert_should_require_unique_attributes( :state_id_no )
 	with_options :maximum => 250 do |o|
+		o.assert_should_require_attribute_length( :state_id_no )
 		o.assert_should_require_attribute_length( :case_control_type )
 		o.assert_should_require_attribute_length( :lab_no )
 		o.assert_should_require_attribute_length( :related_childid )
