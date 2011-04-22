@@ -4,9 +4,13 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_have_many(:interviews)
-	assert_should_initially_belong_to(:subject)
 
-	assert_requires_valid_association( :subject, :as => 'study_subject' )
+
+	assert_should_not_require_attributes( :study_subject_id )
+
+#	assert_should_initially_belong_to(:subject)
+
+#	assert_requires_valid_association( :subject, :as => 'study_subject' )
 
 	assert_should_require_attributes( :case_control_type )
 	assert_should_require_attributes( :childid )
@@ -14,10 +18,10 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attributes( :patid )
 	assert_should_require_attributes( :ssn )
 	assert_should_require_attributes( :subjectid )
-	assert_should_require_attributes( :study_subject_id )
+#	assert_should_require_attributes( :study_subject_id )
 	assert_should_require_unique_attributes( :childid )
 	assert_should_require_unique_attributes( :ssn )
-	assert_should_require_unique_attributes( :study_subject_id )
+#	assert_should_require_unique_attributes( :study_subject_id )
 	assert_should_require_unique_attributes( :subjectid )
 	assert_should_require_unique_attribute( :patid, 
 		:scope => [:orderno,:case_control_type] )
@@ -38,6 +42,30 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :familyid )
 
 #	assert_should_protect_attributes(:subjectid)
+
+	#
+	#	subject uses accepts_attributes_for :pii
+	#	so the pii can't require subject_id on create
+	#	or this test fails.
+	#
+	test "should require study_subject_id on update" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object
+			object.reload.update_attributes(:orderno => "New Order No")
+			assert object.errors.on(:subject)
+		end
+	end
+
+	test "should require unique study_subject_id" do
+		subject = Factory(:subject)
+		create_object(:subject => subject)
+		assert_difference( "#{model_name}.count", 0 ) do
+			object = create_object(:subject => subject)
+			assert object.errors.on(:study_subject_id)
+		end
+	end
+
+
 
 	test "should pad subjectid with leading zeros" do
 		identifier = Factory.build(:identifier)

@@ -16,6 +16,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_should_have_one( :homex_outcome )
 	assert_should_have_one( :identifier )
 	assert_should_have_one( :pii )
+#	assert_should_have_one( :patient )
 
 	assert_should_habtm(:analyses)
 
@@ -205,31 +206,32 @@ pending
 
 
 
-#	test "should create subject with identifier" do
-#		assert_difference( 'Identifier.count', 1) {
-#		assert_difference( 'Subject.count', 1) {
-#			subject = create_subject(
-#				:identifier_attributes => Factory.attributes_for(:identifier))
-#			assert !subject.new_record?, 
-#				"#{subject.errors.full_messages.to_sentence}"
-#		} }
-#	end
+	test "should create subject with identifier" do
+		assert_difference( 'Identifier.count', 1) {
+		assert_difference( 'Subject.count', 1) {
+			subject = create_subject(
+				:identifier_attributes => Factory.attributes_for(:identifier))
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+		} }
+	end
 
 	test "should NOT create subject with second identifier" do
-		assert_difference( 'Identifier.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+#		assert_difference( 'Identifier.count', 1) {
+#		assert_difference( "#{model_name}.count", 1 ) {
 #			subject = create_subject(
 #				:identifier_attributes => Factory.attributes_for(:identifier))
 #			assert !subject.new_record?, 
 #				"#{subject.errors.full_messages.to_sentence}"
 #			subject.update_attributes(
 #				:identifier_attributes => Factory.attributes_for(:identifier))
-			subject = create_subject
-			identifier1 = Factory(:identifier,:subject => subject)
-			identifier2 = Factory.build(:identifier,:subject => subject)
-			identifier2.save
-			assert identifier2.errors.on(:study_subject_id)
-		} }
+#			subject = create_subject
+#			identifier1 = Factory(:identifier,:subject => subject)
+#			identifier2 = Factory.build(:identifier,:subject => subject)
+#			identifier2.save
+#			assert identifier2.errors.on(:study_subject_id)
+#		} }
+pending
 	end
 
 #	test "should NOT create subject with empty identifier" do
@@ -387,7 +389,7 @@ pending
 		end
 
 		test "should return #{method_name} with identifier" do
-			subject = Factory(:identifier).subject
+			subject = create_subject(:identifier => Factory(:identifier))
 			assert_not_nil subject.send(method_name)
 		end
 

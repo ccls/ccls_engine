@@ -95,7 +95,7 @@ Factory.define :analysis do |f|
 end
 
 Factory.define :identifier do |f|
-	f.association :subject
+#	f.association :subject
 	f.sequence(:childid) { |n| "#{n}" }
 	f.sequence(:ssn){|n| sprintf("%09d",n) }
 	f.sequence(:patid){|n| "#{n}"}

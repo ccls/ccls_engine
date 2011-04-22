@@ -1,11 +1,9 @@
 #	==	requires
 #	*	subject_type_id
-#	*	race_id
 class Ccls::Subject < Shared
 	self.abstract_class = true
 
 #	belongs_to :hispanicity
-#	belongs_to :race
 	belongs_to :subject_type
 	belongs_to :vital_status
 
@@ -35,9 +33,7 @@ class Ccls::Subject < Shared
 	accepts_nested_attributes_for :gift_cards
 
 	validates_presence_of :subject_type
-#	validates_presence_of :race
 	validates_presence_of :subject_type_id
-#	validates_presence_of :race_id
 
 	validates_inclusion_of :do_not_contact, :in => [ true, false ]
 
@@ -81,6 +77,7 @@ class Ccls::Subject < Shared
 	#	Make all these require a unique study_subject_id
 	accepts_nested_attributes_for :pii
 	accepts_nested_attributes_for :homex_outcome
+	accepts_nested_attributes_for :identifier
 
 #	Where do I use patient_attributes?
 #		ODMS does for new subject
@@ -91,10 +88,6 @@ class Ccls::Subject < Shared
 			errors.add(:patient ,"must be case to have patient info")
 		end
 	end
-
-#	Where do I use identifier_attributes?
-#	accepts_nested_attributes_for :identifier
-##	accepts_nested_attributes_for :dust_kit
 
 #	class NotTwoResponseSets < StandardError; end
 
@@ -118,6 +111,9 @@ class Ccls::Subject < Shared
 		subject_type.try(:code) == 'Case'
 	end
 
+	def race_names
+		races.collect(&:to_s).join(', ')
+	end
 #	replaced with has_one relationship
 #	#	Returns home exposures enrollment
 #	def hx_enrollment

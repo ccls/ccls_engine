@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.5.7"
+  s.version = "3.5.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-04-07}
+  s.date = %q{2011-04-22}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -73,6 +73,8 @@ Gem::Specification.new do |s|
     "app/models/state.rb",
     "app/models/states.rb",
     "app/models/subject.rb",
+    "app/models/subject_language.rb",
+    "app/models/subject_race.rb",
     "app/models/subject_relationship.rb",
     "app/models/subject_search.rb",
     "app/models/subject_type.rb",
@@ -117,9 +119,6 @@ Gem::Specification.new do |s|
     "app/views/refusal_reasons/new.html.erb",
     "app/views/refusal_reasons/show.html.erb",
     "app/views/stylesheets/dynamic.css.erb",
-    "app/views/survey_invitation_mailer/invitation.erb",
-    "app/views/survey_invitation_mailer/reminder.erb",
-    "app/views/survey_invitation_mailer/thank_you.erb",
     "app/views/user_sessions/new.html.erb",
     "app/views/users/_form.html.erb",
     "app/views/users/edit.html.erb",
@@ -253,6 +252,8 @@ Gem::Specification.new do |s|
     "test/unit/ccls/sample_test.rb",
     "test/unit/ccls/sample_type_test.rb",
     "test/unit/ccls/state_test.rb",
+    "test/unit/ccls/subject_language_test.rb",
+    "test/unit/ccls/subject_race_test.rb",
     "test/unit/ccls/subject_relationship_test.rb",
     "test/unit/ccls/subject_search_test.rb",
     "test/unit/ccls/subject_test.rb",
