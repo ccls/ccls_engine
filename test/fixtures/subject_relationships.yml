@@ -26,3 +26,11 @@ other:
   id: 7
   code: other
   description:  Other relationship to Subject
+sibling:
+  id: 8
+  code: sibling
+  description: Subject's sibling
+stepparent:
+  id: 9
+  code: stepparent
+  description: Subject's step parent
