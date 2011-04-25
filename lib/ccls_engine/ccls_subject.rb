@@ -31,6 +31,7 @@ class Ccls::Subject < Shared
 	has_many :addresses, :through => :addressings
 
 	accepts_nested_attributes_for :gift_cards
+	accepts_nested_attributes_for :subject_races, :allow_destroy => true
 
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id

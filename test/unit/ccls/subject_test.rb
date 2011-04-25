@@ -8,7 +8,6 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_should_have_many( :gift_cards )
 	assert_should_have_many( :phone_numbers )
 	assert_should_have_many( :samples )
-#	assert_should_initially_belong_to( :race )
 	assert_should_initially_belong_to( :subject_type )
 	assert_should_initially_belong_to( :vital_status )
 
@@ -16,7 +15,6 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_should_have_one( :homex_outcome )
 	assert_should_have_one( :identifier )
 	assert_should_have_one( :pii )
-#	assert_should_have_one( :patient )
 
 	assert_should_habtm(:analyses)
 
@@ -50,16 +48,17 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} } } }
 	end
 
-	test "should create subject with race" do
-		assert_difference( 'Race.count', 1 ){
+	test "should create subject with subject race" do
+		assert Race.count > 0
 		assert_difference( 'SubjectRace.count', 1 ){
 		assert_difference( 'SubjectType.count', 1 ){
 		assert_difference( "#{model_name}.count", 1 ) {
-			subject = create_subject
-			subject.races << Factory(:race)
+			subject = create_subject(:subject_races_attributes => {
+				:some_random_id => { :race_id => Race.first.id }
+			})
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
-		} } } }
+		} } }
 	end
 
 	test "should create subject with pii" do
@@ -486,10 +485,9 @@ pending
 #	end
 
 	test "should return race name for string" do
-pending
 		subject = create_subject
-#		assert_equal subject.race.name, 
-#			"#{subject.race}"
+		assert_equal subject.race_names, 
+			"#{subject.races.first}"
 	end
 
 	test "should return subject_type description for string" do
