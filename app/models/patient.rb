@@ -9,9 +9,6 @@ class Patient < Shared
 	validates_presence_of   :subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
-#	validates_presence_of   :study_subject_id
-#	validates_presence_of   :subject
-#	validates_uniqueness_of :study_subject_id
 
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
@@ -27,7 +24,19 @@ class Patient < Shared
 	after_save :update_matching_subjects_reference_date,
 		:if => :admit_date_changed?
 
+	before_save :set_was_under_15_at_dx
+
 protected
+
+	def set_was_under_15_at_dx
+#
+#		[#34]
+#
+#		self.was_under_15_at_dx = (((
+#			admit_date.to_date - subject.dob.to_date 
+#			) / 365 ) < 15 )
+#
+	end
 
 	def admit_date_is_after_dob
 		if !admit_date.blank? && 
