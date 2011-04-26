@@ -31,7 +31,9 @@ class Ccls::Subject < Shared
 	has_many :addresses, :through => :addressings
 
 	accepts_nested_attributes_for :gift_cards
-	accepts_nested_attributes_for :subject_races, :allow_destroy => true
+	accepts_nested_attributes_for :subject_races, 
+		:allow_destroy => true,
+		:reject_if => proc{|attributes| attributes['race_id'].blank? }
 
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id

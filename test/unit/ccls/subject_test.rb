@@ -29,7 +29,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	test "should create subject" do
 		assert_difference( 'SubjectType.count', 1 ){
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
@@ -40,7 +40,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		assert_difference( 'Language.count', 1 ){
 		assert_difference( 'SubjectLanguage.count', 1 ){
 		assert_difference( 'SubjectType.count', 1 ){
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject
 			subject.languages << Factory(:language)
 			assert !subject.new_record?, 
@@ -48,22 +48,22 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} } } }
 	end
 
-	test "should create subject with subject race" do
-		assert Race.count > 0
-		assert_difference( 'SubjectRace.count', 1 ){
-		assert_difference( 'SubjectType.count', 1 ){
-		assert_difference( "#{model_name}.count", 1 ) {
-			subject = create_subject(:subject_races_attributes => {
-				:some_random_id => { :race_id => Race.first.id }
-			})
-			assert !subject.new_record?, 
-				"#{subject.errors.full_messages.to_sentence}"
-		} } }
-	end
+#	test "should create subject with subject race" do
+#		assert Race.count > 0
+#		assert_difference( 'SubjectRace.count', 1 ){
+#		assert_difference( 'SubjectType.count', 1 ){
+#		assert_difference( "Subject.count", 1 ) {
+#			subject = create_subject(:subject_races_attributes => {
+#				:some_random_id => { :race_id => Race.first.id }
+#			})
+#			assert !subject.new_record?, 
+#				"#{subject.errors.full_messages.to_sentence}"
+#		} } }
+#	end
 
 	test "should create subject with pii" do
 		assert_difference( 'Pii.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
 				:pii_attributes => Factory.attributes_for(:pii))
 			assert !subject.new_record?, 
@@ -73,7 +73,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	test "should NOT create subject with second pii" do
 		assert_difference( 'Pii.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
 				:pii_attributes => Factory.attributes_for(:pii))
 			assert !subject.new_record?, 
@@ -86,7 +86,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	test "should NOT create subject with empty pii" do
 		assert_difference( 'Pii.count', 0) {
-		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Subject.count", 0 ) {
 			subject = create_subject( :pii_attributes => {})
 #			assert subject.errors.on('pii.state_id_no')
 			assert subject.errors.on('pii.dob')
@@ -97,7 +97,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	test "should create subject with homex_outcome" do
 		assert_difference( 'HomexOutcome.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
 				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
 			assert !subject.new_record?, 
@@ -107,7 +107,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	test "should NOT create subject with second homex_outcome" do
 		assert_difference( 'HomexOutcome.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
 				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
 			assert !subject.new_record?, 
@@ -130,7 +130,7 @@ pending
 
 	test "should create case subject with patient" do
 		assert_difference( 'Patient.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = Factory(:case_subject,
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert  subject.is_case?
@@ -141,7 +141,7 @@ pending
 
 	test "should NOT create non-case subject with patient" do
 		assert_difference( 'Patient.count', 0) {
-		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Subject.count", 0 ) {
 			subject = create_subject(
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert !subject.is_case?
@@ -152,7 +152,7 @@ pending
 
 	test "should create patient for case subject" do
 		assert_difference( 'Patient.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = Factory(:case_subject)
 			assert subject.is_case?
 			assert !subject.new_record?, 
@@ -165,7 +165,7 @@ pending
 
 	test "should NOT create patient for non-case subject" do
 		assert_difference( 'Patient.count', 0) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject
 			assert !subject.is_case?
 			assert !subject.new_record?, 
@@ -180,7 +180,7 @@ pending
 		#	this should be failing, but I don't think that I can stop it 
 		#	when using accepts_nested_attributes_for
 		assert_difference( 'Patient.count', 1) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Subject.count", 1 ) {
 #			subject = create_subject(
 			subject = Factory(:case_subject,
 				:patient_attributes => Factory.attributes_for(:patient))
@@ -195,7 +195,7 @@ pending
 	test "should NOT create subject with empty patient" do
 pending
 		assert_difference( 'Patient.count', 0) {
-		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Subject.count", 0 ) {
 #			subject = create_subject( :pii_attributes => {})
 #			assert subject.errors.on('patient.state_id_no')
 #	##	patient has no requirements so it would actually work
@@ -217,7 +217,7 @@ pending
 
 	test "should NOT create subject with second identifier" do
 #		assert_difference( 'Identifier.count', 1) {
-#		assert_difference( "#{model_name}.count", 1 ) {
+#		assert_difference( "Subject.count", 1 ) {
 #			subject = create_subject(
 #				:identifier_attributes => Factory.attributes_for(:identifier))
 #			assert !subject.new_record?, 
@@ -286,7 +286,7 @@ pending
 	test "should NOT destroy identifier with subject" do
 		subject = create_subject
 		Factory(:identifier, :subject => subject)
-		assert_difference( "#{model_name}.count", -1 ) {
+		assert_difference( "Subject.count", -1 ) {
 		assert_difference('Identifier.count',0) {
 			subject.destroy
 		} }
@@ -295,7 +295,7 @@ pending
 	test "should NOT destroy pii with subject" do
 		subject = create_subject
 		Factory(:pii, :subject => subject)
-		assert_difference( "#{model_name}.count", -1 ) {
+		assert_difference( "Subject.count", -1 ) {
 		assert_difference('Pii.count',0) {
 			subject.destroy
 		} }
@@ -304,7 +304,7 @@ pending
 	test "should NOT destroy patient with subject" do
 		subject = Factory(:case_subject)
 		Factory(:patient, :subject => subject)
-		assert_difference( "#{model_name}.count", -1 ) {
+		assert_difference( "Subject.count", -1 ) {
 		assert_difference('Patient.count',0) {
 			subject.destroy
 		} }
@@ -312,7 +312,7 @@ pending
 
 	test "should NOT destroy home_exposure_response with subject" do
 		subject = Factory(:home_exposure_response).subject
-		assert_difference( "#{model_name}.count", -1 ) {
+		assert_difference( "Subject.count", -1 ) {
 		assert_difference('HomeExposureResponse.count',0) {
 			subject.destroy
 		} }
@@ -342,7 +342,7 @@ pending
 		subject = create_subject
 		Factory(:enrollment, :subject => subject)
 		Factory(:enrollment, :subject => subject)
-		assert_difference( "#{model_name}.count", -1 ) {
+		assert_difference( "Subject.count", -1 ) {
 		assert_difference('Enrollment.count',0) {
 			subject.destroy
 		} }
@@ -361,7 +361,7 @@ pending
 		subject = create_subject
 		Factory(:sample, :subject => subject)
 		Factory(:sample, :subject => subject)
-		assert_difference( "#{model_name}.count", -1 ) {
+		assert_difference( "Subject.count", -1 ) {
 		assert_difference('Sample.count',0) {
 			subject.destroy
 		} }
@@ -572,6 +572,129 @@ pending
 		subjects = Subject.for_hx_sample()
 		assert_not_nil subjects
 		assert subjects.is_a?(Array)
+	end
+
+	test "should create subject with empty subject_races_attributes" do
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_races_attributes => { })
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} }
+		assert @subject.races.empty?
+		assert @subject.subject_races.empty?
+	end
+
+	test "should create subject with subject_races_attributes race_id" do
+		assert Race.count > 0
+		assert_difference( 'SubjectRace.count', 1 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_races_attributes => {
+				:some_random_id => { :race_id => Race.first.id }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert !@subject.races.empty?
+		assert !@subject.subject_races.empty?
+		assert !@subject.subject_races.first.is_primary
+	end
+
+	test "should create subject with subject_races_attributes race_id and is_primary" do
+		assert Race.count > 0
+		assert_difference( 'SubjectRace.count', 1 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_races_attributes => {
+				:some_random_id => { :race_id => Race.first.id, :is_primary => 'true' }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert !@subject.races.empty?
+		assert !@subject.subject_races.empty?
+		assert  @subject.subject_races.first.is_primary
+	end
+
+	test "should create subject with subject_races_attributes multiple races" do
+		assert Race.count > 2
+		races = Race.all
+		assert_difference( 'SubjectRace.count', 3 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_races_attributes => {
+				:some_random_id1 => { :race_id => races[1].id },
+				:some_random_id2 => { :race_id => races[2].id },
+				:some_random_id3 => { :race_id => races[3].id }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert !@subject.races.empty?
+		assert_equal 3, @subject.races.length
+		assert !@subject.subject_races.empty?
+		assert_equal 3, @subject.subject_races.length
+		assert !@subject.subject_races.collect(&:is_primary).any?
+	end
+
+	test "should create subject with subject_races_attributes multiple races and is_primaries" do
+		assert Race.count > 2
+		races = Race.all
+		assert_difference( 'SubjectRace.count', 3 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_races_attributes => {
+				:some_random_id1 => { :race_id => races[1].id, :is_primary => 'true' },
+				:some_random_id2 => { :race_id => races[2].id, :is_primary => 'true' },
+				:some_random_id3 => { :race_id => races[3].id, :is_primary => 'true' }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert !@subject.races.empty?
+		assert_equal 3, @subject.races.length
+		assert !@subject.subject_races.empty?
+		assert_equal 3, @subject.subject_races.length
+		assert  @subject.subject_races.collect(&:is_primary).all?
+	end
+
+	test "should create subject with subject_races_attributes with is_primary and no race_id" do
+		assert Race.count > 0
+		assert_difference( 'SubjectRace.count', 0 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_races_attributes => {
+				:some_random_id => { :is_primary => 'true' }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert @subject.races.empty?
+		assert @subject.subject_races.empty?
+	end
+
+	test "should update subject with subject_races_attributes" do
+		assert Race.count > 0
+		assert_difference( 'SubjectRace.count', 0 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert @subject.races.empty?
+		assert @subject.subject_races.empty?
+		assert_difference( 'SubjectRace.count', 1 ){
+		assert_difference( 'SubjectType.count', 0 ){
+		assert_difference( "Subject.count", 0 ) {
+			@subject.update_attributes(:subject_races_attributes => {
+				:some_random_id => { :race_id => Race.first.id, :is_primary => 'true' }
+			})
+		} } }
+		assert !@subject.races.empty?
+		assert !@subject.subject_races.empty?
+		assert  @subject.subject_races.first.is_primary
 	end
 
 protected
