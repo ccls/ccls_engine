@@ -26,3 +26,5 @@ test.unit.orig/
 test/unit.orig/
 misc/
 /*.war
+*_errors.txt
+*.swp
