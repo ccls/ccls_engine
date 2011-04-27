@@ -260,7 +260,7 @@ namespace :import do
 				:completed_on              => line[17],
 				:is_closed                 => line[18],
 				:reason_closed             => line[19],
-#	20 - notes
+				:notes                     => line[20],
 #	21 - created_at
 #	22 - updated_at
 				:document_version_id       => line[23],
