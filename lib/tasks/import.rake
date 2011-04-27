@@ -102,7 +102,13 @@ namespace :import do
 #	16 - email
 
 			dob     = (line[6].blank?) ? Chronic.parse('10 years ago') : Time.parse(line[6])
+#
+#	convert dob back to this format to ensure it is the same
+#
 			died_on = (line[7].blank?) ? '' : Time.parse(line[7])
+#
+#	convert died_on back to this format to ensure it is the same
+#
 			attributes = {
 				:study_subject_id   => line[0],
 				:first_name         => line[3],
