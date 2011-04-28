@@ -35,9 +35,34 @@ namespace :import do
 #		'import:identifiers'
 #		'import:piis'
 #		'import:subjects'
-		'import:enrollments'
+#		'import:enrollments'
+		'import:contacts'
 	]
 
+	desc "Import data from contacts.csv file"
+	task :contacts => :environment do
+		puts "Importing subjects"
+		require 'fastercsv'
+
+		error_file = File.open('contacts_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/contacts.csv', 'rb',{
+			:headers => true })).each do |line|
+
+#"ID","Review","ReviewNotes","DataSource","AddressType","ChildID","Street","City","State","Zipcode","FIPSCountyCode","County","Original","Interview","IsCurrent","StartDate","EndDate","EntryDate","T2KAddressID","childID-deleteme","study_subject_id","t2k_primary_phone","t2k_alt_phone","src_primary_phone","src_alt_phone_1","src_alt_phone_2","src_alt_phone_3"
+#3,FALSE,,"tAddresses (T2K)","Residence",393,"1247 Green Acres Ct","Santa Cruz","CA","95062","087","Santa Cruz",TRUE,FALSE,TRUE,,,20-Nov-00,415,,1867,"(831) 476-7564",,"(831) 336-9389",,,
+
+			puts "Processing line #{f.lineno}"
+			puts line
+
+
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :contacts => :environment do
+
+
+	desc "Import data from piis.csv file"
 	desc "Import data from subjects.csv file"
 	task :subjects => :environment do
 		puts "Importing subjects"
