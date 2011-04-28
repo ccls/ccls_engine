@@ -5,7 +5,6 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_have_many(:interviews)
 
-
 	assert_should_not_require_attributes( :study_subject_id )
 
 #	assert_should_initially_belong_to(:subject)
@@ -31,7 +30,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :related_childid )
 	assert_should_not_require_attributes( :related_case_childid )
 	assert_should_not_require_attributes( :hospital_no )
-	assert_should_require_attributes( :state_id_no )
+#	assert_should_require_attributes( :state_id_no )
+	assert_should_not_require_attributes( :state_id_no )
 	assert_should_require_unique_attributes( :state_id_no )
 	with_options :maximum => 250 do |o|
 		o.assert_should_require_attribute_length( :state_id_no )
@@ -42,6 +42,20 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	end
 	assert_should_not_require_attributes( :matchingid )
 	assert_should_not_require_attributes( :familyid )
+
+	assert_should_require_attribute_length :childidwho, :maximum => 10
+	assert_should_require_attribute_length :newid, :maximum => 6
+	assert_should_require_attribute_length :gbid, :maximum => 26
+	assert_should_require_attribute_length :lab_no_wiemels, :maximum => 25
+	assert_should_require_attribute_length :idno_wiemels, :maximum => 10
+	assert_should_require_attribute_length :accession_no, :maximum => 25
+	assert_should_require_attribute_length :icf_master_id, :maximum => 9
+
+#	computed fields so won't test correctly like this
+#	assert_should_require_attribute_length :studyid, :maximum => 14
+#	assert_should_require_attribute_length :studyid_nohyphen, :maximum => 12
+#	assert_should_require_attribute_length :studyid_intonly_nohyphen, :maximum => 12
+
 
 #	assert_should_protect_attributes(:subjectid)
 

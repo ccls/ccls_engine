@@ -30,15 +30,27 @@ class Identifier < Shared
 #	validates_presence_of   :subjectid
 	validates_uniqueness_of :subjectid, :allow_nil => true
 
-	validates_presence_of   :state_id_no
-	validates_uniqueness_of :state_id_no
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :state_id_no
-		o.validates_length_of :case_control_type
-		o.validates_length_of :lab_no
-		o.validates_length_of :related_childid
-		o.validates_length_of :related_case_childid
-		o.validates_length_of :ssn
+#	validates_presence_of   :state_id_no
+	validates_uniqueness_of :state_id_no, :allow_nil => true
+	with_options :allow_blank => true do |blank|
+		blank.with_options :maximum => 250 do |o|
+			o.validates_length_of :state_id_no
+			o.validates_length_of :case_control_type
+			o.validates_length_of :lab_no
+			o.validates_length_of :related_childid
+			o.validates_length_of :related_case_childid
+			o.validates_length_of :ssn
+		end
+		blank.validates_length_of :childidwho, :maximum => 10
+		blank.validates_length_of :studyid, :maximum => 14
+		blank.validates_length_of :newid, :maximum => 6
+		blank.validates_length_of :gbid, :maximum => 26
+		blank.validates_length_of :lab_no_wiemels, :maximum => 25
+		blank.validates_length_of :idno_wiemels, :maximum => 10
+		blank.validates_length_of :accession_no, :maximum => 25
+		blank.validates_length_of :studyid_nohyphen, :maximum => 12
+		blank.validates_length_of :studyid_intonly_nohyphen, :maximum => 12
+		blank.validates_length_of :icf_master_id, :maximum => 9
 	end
 
 	before_validation :pad_zeros_to_subjectid
@@ -46,14 +58,24 @@ class Identifier < Shared
 	before_validation :format_ssn
 	before_validation :nullify_subjectid
 	before_validation :nullify_ssn
+	before_validation :nullify_state_id_no
+	before_save :set_studyids
+
+#	this will most certainly need some modification due to the addition of the field studyid
 
 	#	Returns a string containing the patid,
 	#	case_control_type and orderno
-	def studyid
-		"#{patid}-#{case_control_type}-#{orderno}"
-	end
+#	def studyid
+#		"#{patid}-#{case_control_type}-#{orderno}"
+#	end
 
 protected
+
+	def set_studyids
+		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
+#		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"	???
+#		self.studyid_intonly_nohyphen = "#{patid}#{orderno}"		???
+	end
 
 	#	Strips out all non-numeric characters
 	def format_ssn
@@ -105,6 +127,12 @@ protected
 		#	mysql allows multiple NULLs in unique column
 		#	but NOT multiple blanks
 		self.ssn = nil if ssn.blank?
+	end
+
+	def nullify_state_id_no
+		#	mysql allows multiple NULLs in unique column
+		#	but NOT multiple blanks
+		self.state_id_no = nil if state_id_no.blank?
 	end
 
 end
