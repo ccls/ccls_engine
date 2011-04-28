@@ -29,12 +29,115 @@ namespace :import do
 	desc "Import subject and address data from CSV files"
 	task :csv_data => [
 		'destroy:csv_data',
-		'import:subjects',
+		'import:homex_identifiers',
+		'import:homex_subjects'
+#		'import:subjects',
 #		'import:identifiers'
 #		'import:piis',
 #		'import:enrollments',
 #		'import:contacts'
 	]
+
+	desc "Import data from homex_identifiers.csv file"
+	task :homex_identifiers => :environment do
+		puts "Importing homex_identifiers"
+
+		error_file = File.open('homex_identifiers_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/homex_identifiers.csv', 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			#	"childIDWho","childID","subjectID","familyid","matchingid","PatID",
+			#		"case_control_type","OrderNo","StudyID","newID","subjectType","GBID",
+			#		"lab_no","lab_no_wiemels","IDNO_wiemels","accession_no","state_id_no",
+			#		"studyID_noHyphen","studyID_intOnly_noHyphen","icf_master_id","hospital_no"
+
+			#	case_control_type and subjectType are the same
+
+			attributes = {
+				:childidwho => line['childIDWho'],
+				:childid => line['childID'],
+				:subjectid => line['subjectID'],
+				:familyid => line['familyid'],
+				:matchingid => line['matchingid'],
+				:patid => line['PatID'],
+				:case_control_type => line['case_control_type'],
+				:orderno => line['OrderNo'],
+				:studyid => line['StudyID'],
+				:newid => line['newID'],
+				:gbid => line['GBID'],
+				:lab_no => line['lab_no'],
+				:lab_no_wiemels => line['lab_no_wiemels'],
+				:idno_wiemels => line['IDNO_wiemels'],
+				:accession_no => line['accession_no'],
+				:state_id_no => line['state_id_no'],
+				:studyid_nohyphen => line['studyID_noHyphen'],
+				:studyid_intonly_nohyphen => line['studyID_intOnly_noHyphen'],
+				:icf_master_id => line['icf_master_id'],
+				:hospital_no => line['hospital_no']
+			}
+#			if attributes[:state_id_no] == "non-CA"
+#				attributes[:state_id_no] = "#{attributes[:state_id_no]} #{f.lineno}"
+#			end
+			Identifier.create!(attributes)
+
+#			identifier = Identifier.create(attributes)
+#			if identifier.new_record?
+#				error_file.puts line
+#				error_file.puts identifier.errors.full_messages.to_sentence
+#				error_file.puts
+#			end
+
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :homex_identifiers => :environment do
+
+
+	desc "Import data from homex_subjects.csv file"
+	task :homex_subjects => :environment do
+		puts "Importing homex_subjects"
+
+		error_file = File.open('homex_subjects_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/homex_subjects.csv', 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			#	"ChildId","subjectID","reference_date","sex","created_at",
+			#		"vital_status_id","subject_type_id","race_id","DoNotContact"
+
+			created_at = (line['created_at'].blank?) ? nil : Time.parse(line['created_at'])
+			reference_date = (line['reference_date'].blank?) ? nil : Time.parse(line['reference_date'])
+			attributes = {
+				:reference_date => reference_date,
+				:sex => line['sex'],
+				:created_at => created_at,
+				:vital_status_id => line['vital_status_id'],
+				:subject_type_id => line['subject_type_id'],
+				:do_not_contact => line['DoNotContact']
+			}
+			subject = Subject.create!(attributes)
+
+			identifier = Identifier.find_by_childid(line['ChildId'])
+			unless identifier
+				error_file.puts line
+				error_file.puts "No identifier found with childid = #{line['ChildId']}" 
+				error_file.puts
+			else
+				identifier.subject = subject
+				identifier.save!
+			end
+
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :homex_subjects => :environment do
+
+######################################################################
 
 	desc "Import data from contacts.csv file"
 	task :contacts => :environment do
