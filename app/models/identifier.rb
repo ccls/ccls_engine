@@ -23,12 +23,12 @@ class Identifier < Shared
 	validates_presence_of   :case_control_type
 	validates_uniqueness_of :patid, :scope => [:orderno,:case_control_type]
 
-	validates_presence_of   :ssn
-	validates_uniqueness_of :ssn
-	validates_format_of     :ssn, :with => /\A\d{9}\z/
+#	validates_presence_of   :ssn
+	validates_uniqueness_of :ssn, :allow_nil => true
+#	validates_format_of     :ssn, :with => /\A\d{9}\z/
 
-	validates_presence_of   :subjectid
-	validates_uniqueness_of :subjectid
+#	validates_presence_of   :subjectid
+	validates_uniqueness_of :subjectid, :allow_nil => true
 
 	validates_presence_of   :state_id_no
 	validates_uniqueness_of :state_id_no
@@ -44,6 +44,8 @@ class Identifier < Shared
 	before_validation :pad_zeros_to_subjectid
 	before_validation :pad_zeros_to_matchingid
 	before_validation :format_ssn
+	before_validation :nullify_subjectid
+	before_validation :nullify_ssn
 
 	#	Returns a string containing the patid,
 	#	case_control_type and orderno
@@ -92,5 +94,17 @@ protected
 		familyid.try(:gsub!,/\D/,'')
 		self.familyid = sprintf("%06d",familyid.to_i) unless familyid.blank?
 	end 
+
+	def nullify_subjectid
+		#	mysql allows multiple NULLs in unique column
+		#	but NOT multiple blanks
+		self.subjectid = nil if subjectid.blank?
+	end
+
+	def nullify_ssn
+		#	mysql allows multiple NULLs in unique column
+		#	but NOT multiple blanks
+		self.ssn = nil if ssn.blank?
+	end
 
 end

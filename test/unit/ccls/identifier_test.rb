@@ -16,8 +16,10 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attributes( :childid )
 	assert_should_require_attributes( :orderno )
 	assert_should_require_attributes( :patid )
-	assert_should_require_attributes( :ssn )
-	assert_should_require_attributes( :subjectid )
+#	assert_should_require_attributes( :ssn )
+	assert_should_not_require_attributes( :ssn )
+#	assert_should_require_attributes( :subjectid )
+	assert_should_not_require_attributes( :subjectid )
 #	assert_should_require_attributes( :study_subject_id )
 	assert_should_require_unique_attributes( :childid )
 	assert_should_require_unique_attributes( :ssn )
@@ -111,12 +113,13 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	end
 
 	test "should require 9 digits in ssn" do
-		%w( 12345678X 12345678 1-34-56-789 ).each do |invalid_ssn|
-			assert_difference( "#{model_name}.count", 0 ) do
-				object = create_object(:ssn => invalid_ssn)
-				assert object.errors.on(:ssn)
-			end
-		end
+pending
+#		%w( 12345678X 12345678 1-34-56-789 ).each do |invalid_ssn|
+#			assert_difference( "#{model_name}.count", 0 ) do
+#				object = create_object(:ssn => invalid_ssn)
+#				assert object.errors.on(:ssn)
+#			end
+#		end
 	end
 
 protected
