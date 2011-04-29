@@ -81,10 +81,6 @@ namespace :import do
 				:icf_master_id => line['icf_master_id'],
 				:hospital_no => line['hospital_no']
 			}
-#	state_id_no no longer required
-#			if attributes[:state_id_no] == "non-CA"
-#				attributes[:state_id_no] = "#{attributes[:state_id_no]} #{f.lineno}"
-#			end
 			Identifier.create!(attributes)
 
 #			identifier = Identifier.create(attributes)
@@ -215,9 +211,6 @@ namespace :import do
 
 			consented_on       = (line['consented_on'].blank?)     ? 
 				nil : Time.parse(line['consented_on'])
-#			completed_on       = if( line['is_complete'] == '1' ) 
-#				(line['completed_on'].blank?) ? Time.now : Time.parse(line['completed_on'])
-#			end
 			completed_on       = (line['completed_on'].blank?) ? 
 				nil : Time.parse(line['completed_on'])
 			project_outcome_on = (line['project_outcome_on'].blank?) ? 
@@ -272,6 +265,7 @@ namespace :import do
 				error_file.puts
 			else
 				enrollment = identifier.subject.enrollments.new(attributes)
+#	many won't be valid, so skip validations
 				enrollment.save(false)
 			end
 		end	#	FasterCSV.open
