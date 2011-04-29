@@ -69,6 +69,7 @@ class Enrollment < Shared
 	validates_presence_of :completed_on,
 		:if => :is_complete?
 	validates_absence_of :completed_on,
+		:message => "not allowed if not complete",
 		:unless => :is_complete?
 	validates_past_date_for :completed_on
 
