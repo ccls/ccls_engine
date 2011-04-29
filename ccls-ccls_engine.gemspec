@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.6.3"
+  s.version = "3.6.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-04-26}
+  s.date = %q{2011-04-29}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -179,6 +179,7 @@ Gem::Specification.new do |s|
     "lib/tasks/application.rake",
     "lib/tasks/database.rake",
     "lib/tasks/documentation.rake",
+    "lib/tasks/import.rake",
     "lib/tasks/simply_authorized.rake",
     "lib/tasks/simply_helpful.rake",
     "lib/tasks/simply_pages.rake",
