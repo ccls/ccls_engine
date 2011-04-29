@@ -21,7 +21,7 @@ class Address < Shared
 	end
 
 	validates_format_of :zip,
-		:with => /\A\s*\d{5}(-\d{4})?\s*\z/,
+		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
 		:message => "should be 12345 or 12345-1234"
 
 	before_save :format_zip
@@ -46,7 +46,8 @@ protected
 
 	#	Simply squish the zip removing leading and trailing spaces.
 	def format_zip
-		self.zip.squish!
+		#	zip was nil during import and skipping validations
+		self.zip.squish! unless zip.nil?
 	end
 
 end

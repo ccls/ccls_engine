@@ -23,17 +23,17 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 
 
 	test "should require 5 or 9 digit zip" do
-		%w( asdf 1234 123456 1234Q 123456789 ).each do |bad_zip|
+		%w( asdf 1234 123456 1234Q ).each do |bad_zip|
 			assert_difference( "#{model_name}.count", 0 ) do
 				object = create_object( :zip => bad_zip )
 				assert object.errors.on(:zip)
 			end
 		end
-		%w( 12345 12345-6789 ).each do |good_zip|
+		%w( 12345 12345-6789 123456789 ).each do |good_zip|
 			assert_difference( "#{model_name}.count", 1 ) do
 				object = create_object( :zip => good_zip )
 				assert !object.errors.on(:zip)
-				assert object.zip =~ /\A\d{5}(-\d{4})?\z/
+				assert object.zip =~ /\A\d{5}(-)?(\d{4})?\z/
 			end
 		end
 	end
