@@ -30,7 +30,9 @@ namespace :import do
 	task :csv_data => [
 		'destroy:csv_data',
 		'import:homex_identifiers',
-		'import:homex_subjects'
+		'import:homex_subjects',
+		'import:homex_piis',
+		'import:homex_enrollments'
 #		'import:subjects',
 #		'import:identifiers'
 #		'import:piis',
@@ -79,6 +81,7 @@ namespace :import do
 				:icf_master_id => line['icf_master_id'],
 				:hospital_no => line['hospital_no']
 			}
+#	state_id_no no longer required
 #			if attributes[:state_id_no] == "non-CA"
 #				attributes[:state_id_no] = "#{attributes[:state_id_no]} #{f.lineno}"
 #			end
@@ -136,6 +139,147 @@ namespace :import do
 		end	#	FasterCSV.open
 		error_file.close
 	end		#	task :homex_subjects => :environment do
+  	  	
+
+	desc "Import data from homex_piis.csv file"
+	task :homex_piis => :environment do
+		puts "Importing homex_piis"
+
+		error_file = File.open('homex_piis_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/homex_piis.csv', 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			#	"childID","subjectID","study_subject_id","first_name","middle_name",
+			#		"last_name","dob","died_on","state_id_no","mother_first_name",
+			#		"mother_middle_name","mother_last_name","mother_maiden_name",
+			#		"father_first_name","father_middle_name","father_last_name","email"
+
+			dob     = (line['dob'].blank?)     ? nil : Time.parse(line['dob'])
+			died_on = (line['died_on'].blank?) ? nil : Time.parse(line['died_on'])
+			attributes = {
+				:dob => dob,
+				:died_on => died_on,
+				:first_name => line['first_name'],
+				:middle_name => line['middle_name'],
+				:last_name => line['last_name'],
+				:mother_first_name => line['mother_first_name'],
+				:mother_middle_name => line['mother_middle_name'],
+				:mother_last_name => line['mother_last_name'],
+				:mother_maiden_name => line['mother_maiden_name'],
+				:father_first_name => line['father_first_name'],
+				:father_middle_name => line['father_middle_name'],
+				:father_last_name => line['father_last_name'],
+				:email => line['email'],
+			}
+			pii = Pii.create!(attributes)
+
+			identifier = Identifier.find_by_childid(line['childID'])
+			unless identifier
+				error_file.puts line
+				error_file.puts "No identifier found with childid = #{line['childID']}" 
+				error_file.puts
+			else
+				pii.subject = identifier.subject
+				pii.save!
+			end
+
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :homex_piis => :environment do
+
+
+
+	desc "Import data from homex_enrollments.csv file"
+	task :homex_enrollments => :environment do
+		puts "Importing homex_enrollments"
+
+		error_file = File.open('homex_enrollments_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/homex_enrollments.csv', 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			#	"id","study_subject_id","project_id","recruitment_priority","able_to_locate",
+			#		"is_candidate","is_eligible","ineligible_reason_id","ineligible_reason_specify",
+			#		"consented","consented_on","refusal_reason_id","other_refusal_reason","is_chosen",
+			#		"reason_not_chosen","terminated_participation","terminated_reason","is_complete",
+			#		"completed_on","is_closed","reason_closed","notes","created_at","updated_at",
+			#		"document_version_id","project_outcome_id","project_outcome_on",
+			#		"childID-deleteme","problem","search_outcome","letter_outcome"
+
+			consented_on       = (line['consented_on'].blank?)     ? 
+				nil : Time.parse(line['consented_on'])
+#			completed_on       = if( line['is_complete'] == '1' ) 
+#				(line['completed_on'].blank?) ? Time.now : Time.parse(line['completed_on'])
+#			end
+			completed_on       = (line['completed_on'].blank?) ? 
+				nil : Time.parse(line['completed_on'])
+			project_outcome_on = (line['project_outcome_on'].blank?) ? 
+				nil : Time.parse(line['project_outcome_on'])
+			attributes = {
+				:project_id                => line['project_id'],
+				:recruitment_priority      => line['recruitment_priority'],
+				:able_to_locate            => line['able_to_locate'],
+				:is_candidate              => line['is_candidate'],
+				:is_eligible               => line['is_eligible'],
+				:ineligible_reason_id      => line['ineligible_reason_id'],
+				:ineligible_reason_specify => line['ineligible_reason_specify'],
+				:consented                 => line['consented'],
+				:consented_on              => consented_on,
+				:refusal_reason_id         => line['refusal_reason_id'],
+				:other_refusal_reason      => line['other_refusal_reason'],
+				:is_chosen                 => line['is_chosen'],
+				:reason_not_chosen         => line['reason_not_chosen'],
+				:terminated_participation  => line['terminated_participation'],
+				:terminated_reason         => line['terminated_reason'],
+				:is_complete               => line['is_complete'],
+				:completed_on              => completed_on,
+				:is_closed                 => line['is_closed'],
+				:reason_closed             => line['reason_closed'],
+				:notes                     => line['notes'],
+				:document_version_id       => line['document_version_id'],
+				:project_outcome_id        => line['project_outcome_id'],
+				:project_outcome_on        => project_outcome_on
+			#		"childID-deleteme","problem","search_outcome","letter_outcome"
+			}
+#			if attributes[:is_complete] && attributes[:completed_on].blank?
+#				attributes[:completed_on] = Date.today 
+#			end
+#			if attributes[:consented] && attributes[:consented_on].blank?
+#				attributes[:consented_on] = Date.today 
+#			end
+#			if attributes[:is_eligible] == '2' && attributes[:ineligible_reason_id].blank?
+#				attributes[:ineligible_reason_id] = IneligibleReason['other'].id
+#			end
+#			if attributes[:consented] == '2' && attributes[:refusal_reason_id].blank?
+#				attributes[:refusal_reason_id] = RefusalReason['other'].id
+#			end
+#			if attributes[:refusal_reason_id] == '7' && attributes[:other_refusal_reason].blank?
+#				attributes[:other_refusal_reason] = "unknown at data import"
+#			end
+
+			identifier = Identifier.find_by_childid(line['childID-deleteme'])
+			unless identifier
+				error_file.puts line
+				error_file.puts "No identifier found with childid = #{line['childID-deleteme']}" 
+				error_file.puts "Enrollment creation not attempted"
+				error_file.puts
+			else
+				enrollment = identifier.subject.enrollments.new(attributes)
+				enrollment.save(false)
+			end
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :homex_enrollments => :environment do
+
+
+  	  	
 
 ######################################################################
 
