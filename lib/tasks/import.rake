@@ -32,7 +32,8 @@ namespace :import do
 		'import:homex_identifiers',
 		'import:homex_subjects',
 		'import:homex_piis',
-		'import:homex_enrollments'
+		'import:homex_enrollments',
+		'import:homex_addresses'
 #		'import:subjects',
 #		'import:identifiers'
 #		'import:piis',
@@ -271,6 +272,70 @@ namespace :import do
 		end	#	FasterCSV.open
 		error_file.close
 	end		#	task :homex_enrollments => :environment do
+
+
+	desc "Import data from homex_addresses.csv file"
+	task :homex_addresses => :environment do
+		puts "Importing homex_addresses"
+
+		error_file = File.open('homex_addresses_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/homex_addresses.csv', 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			#	"ID","Review","ReviewNotes","DataSource","AddressType","ChildID","Street","City",
+			#		"State","Zipcode","FIPSCountyCode","County","Original","Interview","IsCurrent",
+			#		"StartDate","EndDate","EntryDate","T2KAddressID","childID-deleteme","study_subject_id"
+
+			valid_from = (line['StartDate'].blank?)     ? 
+				nil : Time.parse(line['StartDate'])
+			valid_to   = (line['EndDate'].blank?)     ? 
+				nil : Time.parse(line['EndDate'])
+
+			attributes = {
+			#	"ID","Review","ReviewNotes","DataSource",
+			#		"FIPSCountyCode","Original","Interview",
+			#		"EntryDate","T2KAddressID"
+				:address_attributes => {
+					:address_type_id => AddressType[line['AddressType'].downcase].id,
+					:line_1          => line['Street'],
+					:city            => line['City'],
+					:state           => line['State'],
+					:zip             => line['Zipcode'],
+					:county          => line['County'],
+				},
+				:current_address => line['IsCurrent'],
+				:valid_from      => valid_from,
+				:valid_to        => valid_to
+			}
+
+#			if attributes[:address_attributes][:city].blank?
+#				attributes[:address_attributes][:city] = "NoneGiven"
+#			end
+#			if attributes[:address_attributes][:state].blank?
+#				attributes[:address_attributes][:state] = "NoneGiven"
+#			end
+#			if attributes[:address_attributes][:zip].blank?
+#				attributes[:address_attributes][:zip] = "00000"
+#			end
+
+			identifier = Identifier.find_by_childid(line['ChildID'])
+			unless identifier
+				error_file.puts line
+				error_file.puts "No identifier found with childid = #{line['ChildID']}" 
+				error_file.puts "Addressing creation not attempted"
+				error_file.puts
+			else
+				addressing = identifier.subject.addressings.new(attributes)
+#	one won't be valid, so skip validations for all
+				addressing.save(false)
+			end
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :homex_addresses => :environment do
 
 
   	  	
