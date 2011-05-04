@@ -54,7 +54,8 @@ module Ccls::FactoryTestHelper
 		instrument_version = Factory(:instrument_version, 
 			:instrument => instrument)
 		interview = Factory(:interview, 
-			:identifier => subject.identifier,
+#			:identifier => subject.identifier,
+			:subject => subject,
 			:instrument_version => instrument_version)
 		subject
 	end

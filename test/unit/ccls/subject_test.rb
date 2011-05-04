@@ -8,6 +8,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_should_have_many( :gift_cards )
 	assert_should_have_many( :phone_numbers )
 	assert_should_have_many( :samples )
+	assert_should_have_many( :interviews )
 	assert_should_initially_belong_to( :subject_type )
 	assert_should_initially_belong_to( :vital_status )
 

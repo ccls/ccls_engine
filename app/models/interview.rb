@@ -1,9 +1,9 @@
 #	==	requires
 #	*	address_id
 #	*	interviewer_id
-#	*	identifier_id
+#	*	subject_id
 class Interview < Shared
-	belongs_to :identifier
+#	belongs_to :identifier
 #	Occassionally getting .... for when 
 #		Instrument Version ... Instrument ... Project was unknown?
 #TypeError (can't dup NilClass):
@@ -18,7 +18,8 @@ class Interview < Shared
 #	has_one :interview_outcome, :through => :homex_outcome
 
 	#	in order to do nested attributes, can't be delegate
-	has_one :subject, :through => :identifier
+#	has_one :subject, :through => :identifier
+	belongs_to :subject, :foreign_key => 'study_subject_id'
 	accepts_nested_attributes_for :subject
 
 	belongs_to :address
@@ -66,7 +67,8 @@ protected
 
 	def update_intro_operational_event
 		oet = OperationalEventType['intro']
-		hxe = identifier.subject.hx_enrollment
+#		hxe = identifier.subject.hx_enrollment
+		hxe = subject.hx_enrollment
 		if oet && hxe
 			oe = hxe.operational_events.find(:first,
 				:conditions => { :operational_event_type_id => oet.id } )

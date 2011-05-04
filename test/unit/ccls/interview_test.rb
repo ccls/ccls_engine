@@ -3,7 +3,8 @@ require 'test_helper'
 class Ccls::InterviewTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_initially_belong_to(:identifier)
+#	assert_should_initially_belong_to(:identifier)
+	assert_should_initially_belong_to(:subject)
 	assert_should_belong_to( :address )
 	assert_should_belong_to( :instrument_version )
 	assert_should_belong_to( :interview_method )
@@ -15,7 +16,8 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :interviewer_id )
 	assert_should_not_require_attributes( :instrument_version_id )
 	assert_should_not_require_attributes( :interview_method_id )
-	assert_should_not_require_attributes( :identifier_id )
+#	assert_should_not_require_attributes( :identifier_id )
+	assert_should_not_require_attributes( :study_subject_id )
 	assert_should_not_require_attributes( :began_on )
 	assert_should_not_require_attributes( :ended_on )
 	assert_should_not_require_attributes( :intro_letter_sent_on )
@@ -34,12 +36,13 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		assert_difference( "OperationalEvent.count", 1 ) {
 		assert_difference( "#{model_name}.count", 1 ) {
 		assert_difference( "Enrollment.count", 1 ) {
-		assert_difference( "Identifier.count", 1 ) {
+#		assert_difference( "Identifier.count", 1 ) {
 		assert_difference( "Subject.count", 1 ) {
 			create_object(
-				:identifier => create_hx_subject.identifier,
+#				:identifier => create_hx_subject.identifier,
+				:subject => create_hx_subject,
 				:intro_letter_sent_on => Chronic.parse('yesterday'))
-		} } } } }
+		} } } } #}
 		assert_equal OperationalEventType['intro'],
 			OperationalEvent.last.operational_event_type
 		assert_equal model_name.constantize.last.intro_letter_sent_on,
@@ -49,7 +52,8 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	test "should update intro letter operational event " <<
 			"when intro_letter_sent_on updated" do
 		object = create_object(
-			:identifier => create_hx_subject.identifier,
+#			:identifier => create_hx_subject.identifier,
+			:subject => create_hx_subject,
 			:intro_letter_sent_on => Chronic.parse('yesterday'))
 		assert_difference( "OperationalEvent.count", 0 ) {
 		assert_difference( "#{model_name}.count", 0 ) {
@@ -94,10 +98,17 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should NOT require valid identifier_id" do
+#	test "should NOT require valid identifier_id" do
+#		assert_difference( "#{model_name}.count", 1 ) do
+#			object = create_object(:identifier_id => 0)
+#			assert !object.errors.on(:identifier_id)
+#		end
+#	end
+
+	test "should NOT require valid study_subject_id" do
 		assert_difference( "#{model_name}.count", 1 ) do
-			object = create_object(:identifier_id => 0)
-			assert !object.errors.on(:identifier_id)
+			object = create_object(:study_subject_id => 0)
+			assert !object.errors.on(:study_subject_id)
 		end
 	end
 

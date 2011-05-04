@@ -4,7 +4,7 @@
 #	*	state_id_no ( unique )
 class Identifier < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
-	has_many :interviews
+#	has_many :interviews
 
 #	validates_presence_of   :study_subject_id
 #	validates_presence_of   :subject

@@ -16,6 +16,7 @@ class Ccls::Subject < Shared
 		f.has_many :gift_cards
 		f.has_many :phone_numbers
 		f.has_many :samples
+		f.has_many :interviews
 		f.has_one :identifier
 		f.has_one :home_exposure_response
 		f.has_one :homex_outcome
@@ -127,7 +128,8 @@ class Ccls::Subject < Shared
 
 	#	Returns home exposures interview
 	def hx_interview
-		identifier.interviews.find(:first,
+#		identifier.interviews.find(:first,
+		interviews.find(:first,
 			:conditions => "projects.code = 'HomeExposures'",
 			:joins => [:instrument_version => [:instrument => :project]]
 		) unless identifier.nil?

@@ -3,7 +3,7 @@ require 'test_helper'
 class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_have_many(:interviews)
+#	assert_should_have_many(:interviews)
 
 	assert_should_not_require_attributes( :study_subject_id )
 
