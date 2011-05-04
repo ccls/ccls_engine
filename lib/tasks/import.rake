@@ -232,7 +232,7 @@ namespace :import do
 				:consented_on              => consented_on,
 				:refusal_reason_id         => line['refusal_reason_id'],
 				:other_refusal_reason      => line['other_refusal_reason'],
-				:is_chosen                 => line['is_chosen'],
+				:is_chosen                 => line['is_chosen'].try(:gsub,/^-/,''),		#	were -1
 				:reason_not_chosen         => line['reason_not_chosen'],
 				:terminated_participation  => line['terminated_participation'],
 				:terminated_reason         => line['terminated_reason'],
