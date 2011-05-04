@@ -45,16 +45,19 @@ namespace :ccls do
 		Rake::Task["db:fixtures:load"].invoke
 		Rake::Task["db:fixtures:load"].reenable
 
-		#	the zip_codes.csv fixtures is too big and takes too long to
-		#	load in testing, so I left a small one there and put
-		#	the full version from http://www.populardata.com/zipcode_database.html
-		fixtures = %w(
-			zip_codes
-		)
-		ENV['FIXTURES'] = fixtures.join(',')
-		ENV['FIXTURES_PATH'] = 'production/fixtures'
-		puts "Loading production fixtures for #{ENV['FIXTURES']}"
-		Rake::Task["db:fixtures:load"].invoke
+#	We don't use this yet, plus it hasn't changed, so why keep updating it?
+#	It takes a couple minutes.
+#
+#		#	the zip_codes.csv fixtures is too big and takes too long to
+#		#	load in testing, so I left a small one there and put
+#		#	the full version from http://www.populardata.com/zipcode_database.html
+#		fixtures = %w(
+#			zip_codes
+#		)
+#		ENV['FIXTURES'] = fixtures.join(',')
+#		ENV['FIXTURES_PATH'] = 'production/fixtures'
+#		puts "Loading production fixtures for #{ENV['FIXTURES']}"
+#		Rake::Task["db:fixtures:load"].invoke
 	end
 
 	desc "Add some expected users."
