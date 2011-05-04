@@ -33,7 +33,9 @@ namespace :import do
 		'import:homex_subjects',
 		'import:homex_piis',
 		'import:homex_enrollments',
-		'import:homex_addresses'
+		'import:homex_addresses',
+		'import:homex_interviews',
+		'import:homex_outcomes'
 #		'import:subjects',
 #		'import:identifiers'
 #		'import:piis',
@@ -123,10 +125,11 @@ namespace :import do
 			}
 			subject = Subject.create!(attributes)
 
-			identifier = Identifier.find_by_childid(line['ChildId'])
+#			identifier = Identifier.find_by_childid(line['ChildId'])
+			identifier = Identifier.find_by_subjectid(sprintf("%06d",line['subjectID'].to_i))
 			unless identifier
 				error_file.puts line
-				error_file.puts "No identifier found with childid = #{line['ChildId']}" 
+				error_file.puts "No identifier found with subjectID = #{line['subjectID']}" 
 				error_file.puts
 			else
 				identifier.subject = subject
@@ -174,10 +177,11 @@ namespace :import do
 			}
 			pii = Pii.create!(attributes)
 
-			identifier = Identifier.find_by_childid(line['childID'])
+#			identifier = Identifier.find_by_childid(line['childID'])
+			identifier = Identifier.find_by_subjectid(sprintf("%06d",line['subjectID'].to_i))
 			unless identifier
 				error_file.puts line
-				error_file.puts "No identifier found with childid = #{line['childID']}" 
+				error_file.puts "No identifier found with subjectID = #{line['subjectID']}" 
 				error_file.puts
 			else
 				pii.subject = identifier.subject
@@ -242,32 +246,35 @@ namespace :import do
 				:project_outcome_on        => project_outcome_on
 			#		"childID-deleteme","problem","search_outcome","letter_outcome"
 			}
-#			if attributes[:is_complete] && attributes[:completed_on].blank?
-#				attributes[:completed_on] = Date.today 
-#			end
+			if attributes[:is_complete] && attributes[:completed_on].blank?
+				attributes[:completed_on] = Chronic.parse("01/01/1900")
+			end
 #			if attributes[:consented] && attributes[:consented_on].blank?
 #				attributes[:consented_on] = Date.today 
 #			end
 #			if attributes[:is_eligible] == '2' && attributes[:ineligible_reason_id].blank?
-#				attributes[:ineligible_reason_id] = IneligibleReason['other'].id
+#				attributes[:ineligible_reason_id] = IneligibleReason['legacy'].id
+#puts "Manually setting ineligible reason"
+#puts IneligibleReason['legacy'].inspect
 #			end
 #			if attributes[:consented] == '2' && attributes[:refusal_reason_id].blank?
 #				attributes[:refusal_reason_id] = RefusalReason['other'].id
 #			end
-#			if attributes[:refusal_reason_id] == '7' && attributes[:other_refusal_reason].blank?
-#				attributes[:other_refusal_reason] = "unknown at data import"
-#			end
+			if attributes[:refusal_reason_id] == '7' && attributes[:other_refusal_reason].blank?
+				attributes[:other_refusal_reason] = "unknown at legacy data import"
+			end
 
-			identifier = Identifier.find_by_childid(line['childID-deleteme'])
+			identifier = Identifier.find_by_subjectid(sprintf("%06d",line['subjectID'].to_i))
 			unless identifier
 				error_file.puts line
-				error_file.puts "No identifier found with childid = #{line['childID-deleteme']}" 
+				error_file.puts "No identifier found with subjectID = #{line['subjectID']}" 
 				error_file.puts "Enrollment creation not attempted"
 				error_file.puts
 			else
-				enrollment = identifier.subject.enrollments.new(attributes)
+				enrollment = identifier.subject.enrollments.create!(attributes)
+#				enrollment = identifier.subject.enrollments.new(attributes)
 #	many won't be valid, so skip validations
-				enrollment.save(false)
+#				enrollment.save(false)
 			end
 		end	#	FasterCSV.open
 		error_file.close
@@ -329,6 +336,7 @@ namespace :import do
 				error_file.puts "Addressing creation not attempted"
 				error_file.puts
 			else
+#				addressing = identifier.subject.addressings.create!(attributes)
 				addressing = identifier.subject.addressings.new(attributes)
 #	one won't be valid, so skip validations for all
 				addressing.save(false)
@@ -336,6 +344,125 @@ namespace :import do
 		end	#	FasterCSV.open
 		error_file.close
 	end		#	task :homex_addresses => :environment do
+
+
+  	  	
+	desc "Import data from homex_interviews.csv file"
+	task :homex_interviews => :environment do
+		puts "Importing homex_interviews"
+
+		error_file = File.open('homex_interviews_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/homex_interviews.csv', 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			#	"subjectID","Questionnaire","began_on","ended_on","consented_on",
+			#		"intro letter sent","instrument_version_id","interview_method_id"
+
+			began_on = (line['began_on'].blank?) ? 
+				nil : Time.parse(line['began_on'])
+			ended_on = (line['ended_on'].blank?) ? 
+				nil : Time.parse(line['ended_on'])
+			consented_on = (line['consented_on'].blank?) ? 
+				nil : Time.parse(line['consented_on'])
+			letter_sent_on = (line['intro letter sent'].blank?) ? 
+				nil : Time.parse(line['intro letter sent'])
+
+			attributes = {
+				:began_on => began_on,
+				:ended_on => ended_on,
+#				:consented_on => consented_on,
+				:intro_letter_sent_on => letter_sent_on,
+				:instrument_version_id => line['instrument_version_id'],
+				:interview_method_id => line['interview_method_id']
+			}
+
+			identifier = Identifier.find_by_subjectid(sprintf("%06d",line['subjectID'].to_i))
+			unless identifier
+				error_file.puts line
+				error_file.puts "No identifier found with subjectid = #{line['subjectID']}" 
+				error_file.puts
+			else
+				identifier.subject.interviews.create!(attributes)
+			end
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :homex_interviews => :environment do
+
+
+	desc "Import data from homex_outcomes.csv file"
+	task :homex_outcomes => :environment do
+		puts "Importing homex_outcomes"
+
+		error_file = File.open('homex_outcomes_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open('misc/homex_outcomes.csv', 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			#	"id","position","childID","subjectid","sample_outcome_id","sample_outcome_on",
+			#		"interview_outcome_id","interview_outcome_on","created_at","updated_at"
+			sample_outcome_on = (line['sample_outcome_on'].blank?) ? 
+				nil : Time.parse(line['sample_outcome_on'])
+			interview_outcome_on = (line['interview_outcome_on'].blank?) ? 
+				nil : Time.parse(line['interview_outcome_on'])
+
+			attributes = {
+				:sample_outcome_id => line['sample_outcome_id'],
+				:sample_outcome_on => sample_outcome_on,
+				:interview_outcome_id => line['interview_outcome_id'],
+				:interview_outcome_on => interview_outcome_on
+			}
+
+			identifier = Identifier.find_by_subjectid(sprintf("%06d",line['subjectid'].to_i))
+			unless identifier
+				error_file.puts line
+				error_file.puts "No identifier found with subjectid = #{line['subjectid']}" 
+				error_file.puts
+			else
+				identifier.subject.create_homex_outcome(attributes) or raise "homex_outcome create failed"
+			end
+		end	#	FasterCSV.open
+		error_file.close
+	end		#	task :homex_outcomes => :environment do
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   	  	
