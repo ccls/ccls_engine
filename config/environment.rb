@@ -11,6 +11,9 @@ require File.join(File.dirname(__FILE__), 'boot')
 #       for controlling the path to documents.
 RAILS_APP_NAME = 'ccls'
 
+#	great.  now I have to require i18n here too???
+require 'i18n'
+
 Rails::Initializer.run do |config|
 
 	config.frameworks -= [:active_resource]
