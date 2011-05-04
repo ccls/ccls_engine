@@ -33,3 +33,8 @@ other:
   position: 7
   code: other
   description: other reason for refusal
+legacy:
+  id: 888
+  position: 8
+  code: legacy
+  description: legacy data import

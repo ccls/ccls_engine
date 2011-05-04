@@ -18,3 +18,8 @@ nonCA:
   position: 4
   code: newnonCA
   description: new non-CA subject
+legacy:
+  id: 888
+  position: 5
+  code: legacy
+  description: legacy data import
