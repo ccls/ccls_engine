@@ -145,6 +145,18 @@ Table: contexts
 | updated_at  | datetime     | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 
+Table: counties
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| id           | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name         | varchar(255) | YES  |     | NULL    |                |
+| fips_code    | varchar(5)   | YES  |     | NULL    |                |
+| state_abbrev | varchar(2)   | YES  |     | NULL    |                |
+| created_at   | datetime     | YES  |     | NULL    |                |
+| updated_at   | datetime     | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+
 Table: data_sources
 +-----------------+--------------+------+-----+---------+----------------+
 | Field           | Type         | Null | Key | Default | Extra          |
@@ -1040,12 +1052,10 @@ Table: zip_codes
 +------------+--------------+------+-----+---------+----------------+
 | id         | int(11)      | NO   | PRI | NULL    | auto_increment |
 | zip_code   | varchar(5)   | NO   | UNI | NULL    |                |
-| latitude   | float        | NO   |     | NULL    |                |
-| longitude  | float        | NO   |     | NULL    |                |
 | city       | varchar(255) | NO   |     | NULL    |                |
 | state      | varchar(255) | NO   |     | NULL    |                |
-| county     | varchar(255) | NO   |     | NULL    |                |
 | zip_class  | varchar(255) | NO   |     | NULL    |                |
 | created_at | datetime     | YES  |     | NULL    |                |
 | updated_at | datetime     | YES  |     | NULL    |                |
+| county_id  | int(11)      | YES  |     | NULL    |                |
 +------------+--------------+------+-----+---------+----------------+
