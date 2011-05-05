@@ -1,3 +1,3 @@
-zip_code,latitude,longitude,city,state,county,zip_class
-"17857","+40.908050","-076.784197","NORTHUMBERLAND","PA","NORTHUMBERLAND","STANDARD"
-"94703","+37.865725","-122.275730","BERKELEY","CA","ALAMEDA","STANDARD"
+zip_code,city,state,zip_class,county_id
+"17857","NORTHUMBERLAND","PA","STANDARD",2144
+"94703","BERKELEY","CA","STANDARD",149
