@@ -462,6 +462,11 @@ end
 
 
 
+Factory.define :county do |f|
+	f.sequence(:name){ |n| "Name #{n}" }
+	f.state_abbrev 'XX'
+end
+
 Factory.define :zip_code do |f|
 	f.sequence(:zip_code){ |n| sprintf("X%04d",n) }
 	f.latitude random_float()
