@@ -411,6 +411,9 @@ Table: home_exposure_responses
 | vacuum_used_outside_home           | int(11)      | YES  |     | NULL    |                |
 | created_at                         | datetime     | YES  |     | NULL    |                |
 | updated_at                         | datetime     | YES  |     | NULL    |                |
+| consent_read_over_phone            | tinyint(1)   | YES  |     | NULL    |                |
+| respondent_requested_new_consent   | tinyint(1)   | YES  |     | NULL    |                |
+| consent_reviewed_with_respondent   | tinyint(1)   | YES  |     | NULL    |                |
 +------------------------------------+--------------+------+-----+---------+----------------+
 
 Table: homex_outcomes

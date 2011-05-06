@@ -21,6 +21,9 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :began_on )
 	assert_should_not_require_attributes( :ended_on )
 	assert_should_not_require_attributes( :intro_letter_sent_on )
+	assert_should_not_require_attributes( :consent_read_over_phone )
+	assert_should_not_require_attributes( :respondent_requested_new_consent )
+	assert_should_not_require_attributes( :consent_reviewed_with_respondent )
 	with_options :maximum => 250 do |o|
 		o.assert_should_require_attribute_length( :subject_relationship_other )
 		o.assert_should_require_attribute_length( :respondent_first_name )
