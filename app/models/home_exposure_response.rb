@@ -10,6 +10,9 @@ class HomeExposureResponse < Shared
 	#	are ordered to match the survey
 	def self.field_names
 		%w(
+			consent_read_over_phone
+			respondent_requested_new_consent
+			consent_reviewed_with_respondent
 			vacuum_has_disposable_bag
 			how_often_vacuumed_12mos
 			shoes_usually_off_inside_12mos
