@@ -3,22 +3,7 @@
 #	*	interviewer_id
 #	*	subject_id
 class Interview < Shared
-#	belongs_to :identifier
-#	Occassionally getting .... for when 
-#		Instrument Version ... Instrument ... Project was unknown?
-#TypeError (can't dup NilClass):
-#  app/controllers/interviews_controller.rb:52:in `valid_id_required'
-#	has_one :subject, :through => :identifier
-#		changed from has_one to delegate to see if better
-#	delegate :subject, :to => :identifier
 
-#	I think that these are pushing it a bit far.
-#		(they do work though)
-#	has_one :homex_outcome, :through => :subject
-#	has_one :interview_outcome, :through => :homex_outcome
-
-	#	in order to do nested attributes, can't be delegate
-#	has_one :subject, :through => :identifier
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 	accepts_nested_attributes_for :subject
 
@@ -50,12 +35,29 @@ class Interview < Shared
 	before_save :update_intro_operational_event,
 		:if => :intro_letter_sent_on_changed?
 
+	before_save :set_began_at
+	before_save :set_ended_at
+
 	#	Returns string containing respondent's first and last name
 	def respondent_full_name
 		[respondent_first_name, respondent_last_name].compact.join(' ')
 	end
 
 protected
+
+	def set_began_at
+		if [began_on, began_at_hour,began_at_minute,began_at_meridiem].all?
+			self.began_at = DateTime.parse(
+				"#{began_on} #{began_at_hour}:#{began_at_minute} #{began_at_meridiem} PST")
+		end
+	end
+
+	def set_ended_at
+		if [ended_on, ended_at_hour,ended_at_minute,ended_at_meridiem].all?
+			self.ended_at = DateTime.parse(
+				"#{ended_on} #{ended_at_hour}:#{ended_at_minute} #{ended_at_meridiem} PST")
+		end
+	end
 
 	def subject_relationship_id_blank?
 		subject_relationship_id.blank?

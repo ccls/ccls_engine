@@ -3,7 +3,7 @@ require 'test_helper'
 class Ccls::InterviewTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-#	assert_should_initially_belong_to(:identifier)
+
 	assert_should_initially_belong_to(:subject)
 	assert_should_belong_to( :address )
 	assert_should_belong_to( :instrument_version )
@@ -11,12 +11,12 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	assert_should_belong_to( :language )
 	assert_should_belong_to( :subject_relationship )
 	assert_should_belong_to( :interviewer, :class_name => 'Person')
+
 	assert_should_not_require_attributes( :address_id )
 	assert_should_not_require_attributes( :language_id )
 	assert_should_not_require_attributes( :interviewer_id )
 	assert_should_not_require_attributes( :instrument_version_id )
 	assert_should_not_require_attributes( :interview_method_id )
-#	assert_should_not_require_attributes( :identifier_id )
 	assert_should_not_require_attributes( :study_subject_id )
 	assert_should_not_require_attributes( :began_on )
 	assert_should_not_require_attributes( :ended_on )
@@ -24,6 +24,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :consent_read_over_phone )
 	assert_should_not_require_attributes( :respondent_requested_new_consent )
 	assert_should_not_require_attributes( :consent_reviewed_with_respondent )
+
 	with_options :maximum => 250 do |o|
 		o.assert_should_require_attribute_length( :subject_relationship_other )
 		o.assert_should_require_attribute_length( :respondent_first_name )
@@ -39,13 +40,11 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		assert_difference( "OperationalEvent.count", 1 ) {
 		assert_difference( "#{model_name}.count", 1 ) {
 		assert_difference( "Enrollment.count", 1 ) {
-#		assert_difference( "Identifier.count", 1 ) {
 		assert_difference( "Subject.count", 1 ) {
 			create_object(
-#				:identifier => create_hx_subject.identifier,
 				:subject => create_hx_subject,
 				:intro_letter_sent_on => Chronic.parse('yesterday'))
-		} } } } #}
+		} } } }
 		assert_equal OperationalEventType['intro'],
 			OperationalEvent.last.operational_event_type
 		assert_equal model_name.constantize.last.intro_letter_sent_on,
@@ -55,7 +54,6 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	test "should update intro letter operational event " <<
 			"when intro_letter_sent_on updated" do
 		object = create_object(
-#			:identifier => create_hx_subject.identifier,
 			:subject => create_hx_subject,
 			:intro_letter_sent_on => Chronic.parse('yesterday'))
 		assert_difference( "OperationalEvent.count", 0 ) {
@@ -100,13 +98,6 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			assert !object.errors.on(:language_id)
 		end
 	end
-
-#	test "should NOT require valid identifier_id" do
-#		assert_difference( "#{model_name}.count", 1 ) do
-#			object = create_object(:identifier_id => 0)
-#			assert !object.errors.on(:identifier_id)
-#		end
-#	end
 
 	test "should NOT require valid study_subject_id" do
 		assert_difference( "#{model_name}.count", 1 ) do
@@ -159,6 +150,126 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 				object.errors.full_messages.to_sentence
 			assert_no_match /Subject relationship other/, 
 				object.errors.full_messages.to_sentence
+		end
+	end
+
+	test "should NOT create began_at on save if time fields NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object
+			assert_nil object.began_at
+		end
+	end
+
+	test "should NOT create began_at on save if began_on NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:began_at_hour => 1,
+				:began_at_minute => 30,
+				:began_at_meridiem => 'PM' )
+			assert_nil object.began_at
+		end
+	end
+
+	test "should NOT create began_at on save if began_at_hour NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:began_on => Chronic.parse('May 12, 2000').to_date,
+				:began_at_minute => 30,
+				:began_at_meridiem => 'PM' )
+			assert_nil object.began_at
+		end
+	end
+
+	test "should NOT create began_at on save if began_at_minute NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:began_on => Chronic.parse('May 12, 2000').to_date,
+				:began_at_hour => 1,
+				:began_at_meridiem => 'PM' )
+			assert_nil object.began_at
+		end
+	end
+
+	test "should NOT create began_at on save if began_at_meridiem NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:began_on => Chronic.parse('May 12, 2000').to_date,
+				:began_at_hour => 1,
+				:began_at_minute => 30 )
+			assert_nil object.began_at
+		end
+	end
+
+	test "should create began_at on save if time fields given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:began_on => Chronic.parse('May 12, 2000').to_date,
+				:began_at_hour => 1,
+				:began_at_minute => 30,
+				:began_at_meridiem => 'PM' )
+			assert_not_nil object.began_at
+			assert_equal object.began_at,
+				DateTime.parse("May 12, 2000 1:30 PM PST")
+		end
+	end
+
+	test "should NOT create ended_at on save if time fields NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object
+			assert_nil object.ended_at
+		end
+	end
+
+	test "should NOT create ended_at on save if ended_on NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:ended_at_hour => 1,
+				:ended_at_minute => 30,
+				:ended_at_meridiem => 'PM' )
+			assert_nil object.ended_at
+		end
+	end
+
+	test "should NOT create ended_at on save if ended_at_hour NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:ended_on => Chronic.parse('May 12, 2000').to_date,
+				:ended_at_minute => 30,
+				:ended_at_meridiem => 'PM' )
+			assert_nil object.ended_at
+		end
+	end
+
+	test "should NOT create ended_at on save if ended_at_minute NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:ended_on => Chronic.parse('May 12, 2000').to_date,
+				:ended_at_hour => 1,
+				:ended_at_meridiem => 'PM' )
+			assert_nil object.ended_at
+		end
+	end
+
+	test "should NOT create ended_at on save if ended_at_meridiem NOT given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:ended_on => Chronic.parse('May 12, 2000').to_date,
+				:ended_at_hour => 1,
+				:ended_at_minute => 30 )
+			assert_nil object.ended_at
+		end
+	end
+
+	test "should create ended_at on save if time fields given" do
+		assert_difference( "#{model_name}.count", 1 ) do
+			object = create_object(
+				:ended_on => Chronic.parse('May 12, 2000').to_date,
+				:ended_at_hour => 1,
+				:ended_at_minute => 30,
+				:ended_at_meridiem => 'PM' )
+			assert_not_nil object.ended_at
+			assert_equal object.ended_at,
+				DateTime.parse("May 12, 2000 1:30 PM PST")
 		end
 	end
 
