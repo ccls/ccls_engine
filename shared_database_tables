@@ -603,27 +603,30 @@ Table: interview_outcomes
 +-------------+--------------+------+-----+---------+----------------+
 
 Table: interviews
-+----------------------------+--------------+------+-----+---------+----------------+
-| Field                      | Type         | Null | Key | Default | Extra          |
-+----------------------------+--------------+------+-----+---------+----------------+
-| id                         | int(11)      | NO   | PRI | NULL    | auto_increment |
-| position                   | int(11)      | YES  |     | NULL    |                |
-| address_id                 | int(11)      | YES  |     | NULL    |                |
-| interviewer_id             | int(11)      | YES  |     | NULL    |                |
-| instrument_version_id      | int(11)      | YES  |     | NULL    |                |
-| interview_method_id        | int(11)      | YES  |     | NULL    |                |
-| language_id                | int(11)      | YES  |     | NULL    |                |
-| began_on                   | date         | YES  |     | NULL    |                |
-| ended_on                   | date         | YES  |     | NULL    |                |
-| respondent_first_name      | varchar(255) | YES  |     | NULL    |                |
-| respondent_last_name       | varchar(255) | YES  |     | NULL    |                |
-| subject_relationship_id    | int(11)      | YES  |     | NULL    |                |
-| subject_relationship_other | varchar(255) | YES  |     | NULL    |                |
-| created_at                 | datetime     | YES  |     | NULL    |                |
-| updated_at                 | datetime     | YES  |     | NULL    |                |
-| intro_letter_sent_on       | date         | YES  |     | NULL    |                |
-| study_subject_id           | int(11)      | YES  | MUL | NULL    |                |
-+----------------------------+--------------+------+-----+---------+----------------+
++----------------------------------+--------------+------+-----+---------+----------------+
+| Field                            | Type         | Null | Key | Default | Extra          |
++----------------------------------+--------------+------+-----+---------+----------------+
+| id                               | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position                         | int(11)      | YES  |     | NULL    |                |
+| address_id                       | int(11)      | YES  |     | NULL    |                |
+| interviewer_id                   | int(11)      | YES  |     | NULL    |                |
+| instrument_version_id            | int(11)      | YES  |     | NULL    |                |
+| interview_method_id              | int(11)      | YES  |     | NULL    |                |
+| language_id                      | int(11)      | YES  |     | NULL    |                |
+| began_on                         | date         | YES  |     | NULL    |                |
+| ended_on                         | date         | YES  |     | NULL    |                |
+| respondent_first_name            | varchar(255) | YES  |     | NULL    |                |
+| respondent_last_name             | varchar(255) | YES  |     | NULL    |                |
+| subject_relationship_id          | int(11)      | YES  |     | NULL    |                |
+| subject_relationship_other       | varchar(255) | YES  |     | NULL    |                |
+| created_at                       | datetime     | YES  |     | NULL    |                |
+| updated_at                       | datetime     | YES  |     | NULL    |                |
+| intro_letter_sent_on             | date         | YES  |     | NULL    |                |
+| study_subject_id                 | int(11)      | YES  | MUL | NULL    |                |
+| consent_read_over_phone          | tinyint(1)   | YES  |     | NULL    |                |
+| respondent_requested_new_consent | tinyint(1)   | YES  |     | NULL    |                |
+| consent_reviewed_with_respondent | tinyint(1)   | YES  |     | NULL    |                |
++----------------------------------+--------------+------+-----+---------+----------------+
 
 Table: languages
 +-------------+--------------+------+-----+---------+----------------+
