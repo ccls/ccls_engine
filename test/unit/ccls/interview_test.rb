@@ -35,6 +35,9 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :ended_on )
 	assert_requires_complete_date( :intro_letter_sent_on )
 
+	assert_should_protect(:began_at)
+	assert_should_protect(:ended_at)
+
 	test "should create intro letter operational event " <<
 			"when intro_letter_sent_on set" do
 		assert_difference( "OperationalEvent.count", 1 ) {
@@ -197,6 +200,34 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 				assert_equal object.send("#{time}_at"),
 					DateTime.parse("May 12, 2000 1:30 PM PST")
 			end
+		end
+
+		test "should nilify #{time}_at on update if #{time}_on NOT given" do
+			object = create_interview_with_times
+			assert_not_nil object.send("#{time}_at")
+			object.update_attributes("#{time}_on" => nil)
+			assert_nil object.send("#{time}_at")
+		end
+
+		test "should nilify #{time}_at on update if #{time}_at_hour NOT given" do
+			object = create_interview_with_times
+			assert_not_nil object.send("#{time}_at")
+			object.update_attributes("#{time}_at_hour" => nil)
+			assert_nil object.send("#{time}_at")
+		end
+
+		test "should nilify #{time}_at on update if #{time}_at_minute NOT given" do
+			object = create_interview_with_times
+			assert_not_nil object.send("#{time}_at")
+			object.update_attributes("#{time}_at_minute" => nil)
+			assert_nil object.send("#{time}_at")
+		end
+
+		test "should nilify #{time}_at on update if #{time}_at_meridiem NOT given" do
+			object = create_interview_with_times
+			assert_not_nil object.send("#{time}_at")
+			object.update_attributes("#{time}_at_meridiem" => nil)
+			assert_nil object.send("#{time}_at")
 		end
 
 		test "should require #{time}_at_hour be greater than 0" do

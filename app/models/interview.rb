@@ -50,6 +50,8 @@ class Interview < Shared
 
 	before_save :set_began_at
 	before_save :set_ended_at
+	attr_protected :began_at
+	attr_protected :ended_at
 
 	#	Returns string containing respondent's first and last name
 	def respondent_full_name
@@ -62,6 +64,8 @@ protected
 		if [began_on, began_at_hour,began_at_minute,began_at_meridiem].all?
 			self.began_at = DateTime.parse(
 				"#{began_on} #{began_at_hour}:#{began_at_minute} #{began_at_meridiem} PST")
+		else
+			self.began_at = nil
 		end
 	end
 
@@ -69,6 +73,8 @@ protected
 		if [ended_on, ended_at_hour,ended_at_minute,ended_at_meridiem].all?
 			self.ended_at = DateTime.parse(
 				"#{ended_on} #{ended_at_hour}:#{ended_at_minute} #{ended_at_meridiem} PST")
+		else
+			self.ended_at = nil
 		end
 	end
 
