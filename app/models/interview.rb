@@ -63,7 +63,8 @@ protected
 	def set_began_at
 		if [began_on, began_at_hour,began_at_minute,began_at_meridiem].all?
 			self.began_at = DateTime.parse(
-				"#{began_on} #{began_at_hour}:#{began_at_minute} #{began_at_meridiem} PST")
+				"#{began_on} #{began_at_hour}:#{began_at_minute} #{began_at_meridiem}")
+#				"#{began_on} #{began_at_hour}:#{began_at_minute} #{began_at_meridiem} PST")
 		else
 			self.began_at = nil
 		end
@@ -72,7 +73,8 @@ protected
 	def set_ended_at
 		if [ended_on, ended_at_hour,ended_at_minute,ended_at_meridiem].all?
 			self.ended_at = DateTime.parse(
-				"#{ended_on} #{ended_at_hour}:#{ended_at_minute} #{ended_at_meridiem} PST")
+				"#{ended_on} #{ended_at_hour}:#{ended_at_minute} #{ended_at_meridiem}")
+#				"#{ended_on} #{ended_at_hour}:#{ended_at_minute} #{ended_at_meridiem} PST")
 		else
 			self.ended_at = nil
 		end

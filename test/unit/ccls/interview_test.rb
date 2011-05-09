@@ -198,7 +198,8 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 				object = create_interview_with_times
 				assert_not_nil object.send("#{time}_at")
 				assert_equal object.send("#{time}_at"),
-					DateTime.parse("May 12, 2000 1:30 PM PST")
+					DateTime.parse("May 12, 2000 1:30 PM")
+#					DateTime.parse("May 12, 2000 1:30 PM PST")
 			end
 		end
 
