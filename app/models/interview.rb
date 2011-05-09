@@ -32,6 +32,19 @@ class Interview < Shared
 		:message => "not allowed",
 		:if => :subject_relationship_id_blank?
 
+	validates_inclusion_of :began_at_hour, :in => (1..12),
+		:allow_blank => true
+	validates_inclusion_of :began_at_minute, :in => (0..59),
+		:allow_blank => true
+	validates_format_of    :began_at_meridiem, :with => /\A(AM|PM)\z/i,
+		:allow_blank => true
+	validates_inclusion_of :ended_at_hour, :in => (1..12),
+		:allow_blank => true
+	validates_inclusion_of :ended_at_minute, :in => (0..59),
+		:allow_blank => true
+	validates_format_of    :ended_at_meridiem, :with => /\A(AM|PM)\z/i,
+		:allow_blank => true
+
 	before_save :update_intro_operational_event,
 		:if => :intro_letter_sent_on_changed?
 
