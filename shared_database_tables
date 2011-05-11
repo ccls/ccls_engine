@@ -474,7 +474,7 @@ Table: identifiers
 | matchingid               | varchar(6)   | YES  |     | NULL    |                |
 | familyid                 | varchar(6)   | YES  |     | NULL    |                |
 | state_id_no              | varchar(255) | YES  | UNI | NULL    |                |
-| hospital_no              | int(11)      | YES  |     | NULL    |                |
+| hospital_no              | varchar(25)  | YES  |     | NULL    |                |
 | childidwho               | varchar(10)  | YES  |     | NULL    |                |
 | studyid                  | varchar(14)  | YES  |     | NULL    |                |
 | newid                    | varchar(6)   | YES  |     | NULL    |                |
