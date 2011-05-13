@@ -54,6 +54,9 @@ class Ccls::User < ActiveRecord::Base
 		gravatar.url.gsub(/&/,'&amp;')
 	end
 
+	def to_s
+		displayname
+	end
 
 #	this has been included above
 #	ucb_authenticated

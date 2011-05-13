@@ -304,6 +304,12 @@ class Ccls::UserTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should return displayname as to_s" do
+		object = create_object(:displayname => "Mr Test")
+		assert_equal object.displayname, "Mr Test"
+		assert_equal object.displayname, "#{object}"
+	end
+
 protected
 
 	#
