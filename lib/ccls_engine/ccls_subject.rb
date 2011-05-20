@@ -31,6 +31,9 @@ class Ccls::Subject < Shared
 	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
 
+	accepts_nested_attributes_for :enrollments
+	accepts_nested_attributes_for :addressings
+	accepts_nested_attributes_for :phone_numbers
 	accepts_nested_attributes_for :gift_cards
 	accepts_nested_attributes_for :subject_races, 
 		:allow_destroy => true,

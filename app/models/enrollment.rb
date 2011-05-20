@@ -12,10 +12,15 @@ class Enrollment < Shared
 	has_many   :operational_events
 
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id]
-	validates_presence_of :study_subject_id
 	validates_presence_of :project_id
-	validates_presence_of :subject
 	validates_presence_of :project
+
+#	validates_presence_of :study_subject_id
+#	validates_presence_of :subject
+	# because subject now accepts_nested_attributes for enrollments
+	# we can't require subject_id on create
+	validates_presence_of   :subject, :on => :update
+
 
 	validates_presence_of :ineligible_reason,
 		:message => 'required if ineligible',

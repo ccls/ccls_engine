@@ -4,6 +4,10 @@ class PhoneNumber < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 	belongs_to :phone_type
 
+	# because subject now accepts_nested_attributes for phone_numbers
+	# we can't require subject_id on create
+#	validates_presence_of   :subject, :on => :update
+
 	validates_presence_of :phone_number
 	validates_format_of :phone_number,
 	  :with => /\A(\D*\d\D*){10}\z/

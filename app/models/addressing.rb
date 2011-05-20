@@ -4,7 +4,12 @@ class Addressing < Shared
 	belongs_to :address
 
 	validates_presence_of :address, :on => :update
-	validates_presence_of :study_subject_id, :subject
+
+#	validates_presence_of :study_subject_id, :subject
+	# because subject now accepts_nested_attributes for addressings
+	# we can't require subject_id on create
+	validates_presence_of   :subject, :on => :update
+
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :why_invalid
 		o.validates_length_of :how_verified
