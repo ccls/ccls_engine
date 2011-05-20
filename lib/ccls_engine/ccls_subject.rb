@@ -32,7 +32,14 @@ class Ccls::Subject < Shared
 	has_many :addresses, :through => :addressings
 
 	accepts_nested_attributes_for :enrollments
-	accepts_nested_attributes_for :addressings
+	accepts_nested_attributes_for :addressings,
+		:reject_if => proc { |attrs|
+			attrs[:address_attributes][:line_1].blank? &&
+			attrs[:address_attributes][:line_2].blank? &&
+			attrs[:address_attributes][:city].blank? &&
+			attrs[:address_attributes][:zip].blank? &&
+			attrs[:address_attributes][:county].blank?
+		}
 	accepts_nested_attributes_for :phone_numbers,
 		:reject_if => proc { |attrs| attrs[:phone_number].blank? }
 	accepts_nested_attributes_for :gift_cards

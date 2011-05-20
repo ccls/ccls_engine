@@ -75,11 +75,34 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} } }
 	end
 
+	test "should create subject and ignore blank address" do
+		assert_difference( 'Address.count', 0) {
+		assert_difference( 'Addressing.count', 0) {
+		assert_difference( "Subject.count", 1 ) {
+			subject = create_subject(
+				:addressings_attributes => [Factory.attributes_for(:addressing,
+					:address_attributes => { :address_type => AddressType['residence'] } )])
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+		} } }
+	end
+
 	test "should create subject and accept_attributes_for phone_numbers" do
 		assert_difference( 'PhoneNumber.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
 				:phone_numbers_attributes => [Factory.attributes_for(:phone_number)])
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+		} }
+	end
+
+	test "should create subject and ignore blank phone_number" do
+		assert_difference( 'PhoneNumber.count', 0) {
+		assert_difference( "Subject.count", 1 ) {
+			subject = create_subject(
+				:phone_numbers_attributes => [Factory.attributes_for(:phone_number,
+					:phone_number => '' )])
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
 		} }
