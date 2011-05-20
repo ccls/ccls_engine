@@ -24,6 +24,13 @@
 	background-color: #FFC5AF;
 }
 
+.warning {
+	border: 2px solid #F44;
+	background-color: #FCC;
+	margin: 1px;
+	padding: 1px;
+}
+
 fieldset {
 	/* http://css-radius.heroku.com */
 	-webkit-border-radius: 10px;
@@ -76,21 +83,11 @@ div.pagination {
 	text-align: center;
 }
 
-
-/* http://www.positioniseverything.net/articles/onetruelayout/equalheight */
-.equal_height_column_wrapper {
-	overflow:hidden;
-}
-.equal_height_column {
-	padding-bottom: 32767px;
-	margin-bottom: -32767px;
-}
-
-
 .columns {
 	clear:both;
 	/* this holds the div open to the size of the contents */
 	display:table-row;
+	margin: 13.333px 0;
 }
 .columns > div {
 	/* and this seems to alleviate the need for floating */
@@ -121,4 +118,31 @@ th {
 
 form.destroy_link_to {
 	display:inline;
+}
+
+
+.field_error {
+	background-color: #F88;
+}
+
+.required {
+	font-size: 12pt;
+	color: red;
+	font-weight: bold;
+}
+p.submit_bar {
+	text-align: center;
+}
+
+input.small  { width: 10em; }
+input.medium { width: 20em; }
+
+div.table {
+	display:table;
+}
+div.table .row {
+	display:table-row;
+}
+div.table .row .cell {
+	display:table-cell;
 }
