@@ -33,7 +33,8 @@ class Ccls::Subject < Shared
 
 	accepts_nested_attributes_for :enrollments
 	accepts_nested_attributes_for :addressings
-	accepts_nested_attributes_for :phone_numbers
+	accepts_nested_attributes_for :phone_numbers,
+		:reject_if => proc { |attrs| attrs[:phone_number].blank? }
 	accepts_nested_attributes_for :gift_cards
 	accepts_nested_attributes_for :subject_races, 
 		:allow_destroy => true,

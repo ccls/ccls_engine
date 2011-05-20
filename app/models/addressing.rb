@@ -15,7 +15,14 @@ class Addressing < Shared
 		o.validates_length_of :how_verified
 	end
 
-	accepts_nested_attributes_for :address
+	accepts_nested_attributes_for :address,
+		:reject_if => proc { |attrs|
+			attrs[:line_1].blank? &&
+			attrs[:line_2].blank? &&
+			attrs[:city].blank? &&
+			attrs[:zip].blank? &&
+			attrs[:county].blank?
+		}
 
 	delegate :address_type, :address_type_id,
 		:line_1,:line_2,:city,:state,:zip,:csz,:county,
