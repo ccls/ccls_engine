@@ -632,6 +632,54 @@ pending
 		assert subjects.is_a?(Array)
 	end
 
+	test "should create subject with empty subject_languages_attributes" do
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_languages_attributes => { })
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} }
+		assert @subject.languages.empty?
+		assert @subject.subject_languages.empty?
+	end
+
+	test "should create subject with subject_languages_attributes language_id" do
+		assert Language.count > 0
+		assert_difference( 'SubjectLanguage.count', 1 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language.first.id }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert !@subject.languages.empty?
+		assert_equal 1, @subject.languages.length
+		assert !@subject.subject_languages.empty?
+		assert_equal 1, @subject.subject_languages.length
+	end
+
+	test "should create subject with subject_languages_attributes multiple languages" do
+		assert Language.count > 1
+		languages = Language.all
+		assert_difference( 'SubjectLanguage.count', 2 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_languages_attributes => {
+				:some_random_id1 => { :language_id => languages[0].id },
+				:some_random_id2 => { :language_id => languages[1].id }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} } }
+		assert !@subject.languages.empty?
+		assert_equal 2, @subject.languages.length
+		assert !@subject.subject_languages.empty?
+		assert_equal 2, @subject.subject_languages.length
+	end
+
+
 	test "should create subject with empty subject_races_attributes" do
 		assert_difference( 'SubjectType.count', 1 ){
 		assert_difference( "Subject.count", 1 ) {

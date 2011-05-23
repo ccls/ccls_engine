@@ -27,7 +27,7 @@ class Ccls::Subject < Shared
 			p.has_one :hx_gift_card,  :class_name => "GiftCard"
 		end
 	end
-	has_many :races, :through => :subject_races
+	has_many :races,     :through => :subject_races
 	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
 
@@ -46,6 +46,9 @@ class Ccls::Subject < Shared
 	accepts_nested_attributes_for :subject_races, 
 		:allow_destroy => true,
 		:reject_if => proc{|attributes| attributes['race_id'].blank? }
+	accepts_nested_attributes_for :subject_languages, 
+		:allow_destroy => true,
+		:reject_if => proc{|attributes| attributes['language_id'].blank? }
 
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id

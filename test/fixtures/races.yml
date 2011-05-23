@@ -1,24 +1,33 @@
+#
+#	Do not change id or key
+#
 white:
   id: 1
+  key: white
   code: 1
   description: White, Non-Hispanic
 black:
   id: 2
+  key: black
   code: 2
   description: Black / African American
 nativeamerican:
   id: 3
+  key: nativeamerican
   code: 3
   description: Native American
 asian:
   id: 4
+  key: asian
   code: 4
   description: Asian / Pacific Islander
 other:
   id: 5
+  key: other
   code: 7
   description: Other
 dk:
   id: 6
+  key: unknown
   code: 999
   description: Don't Know

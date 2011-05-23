@@ -223,6 +223,7 @@ Factory.define :instrument_version do |f|
 end
 
 Factory.define :language do |f|
+	f.sequence(:key) { |n| "Key#{n}" }
 	f.sequence(:code) { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
@@ -275,6 +276,7 @@ Factory.define :project_outcome do |f|
 end
 
 Factory.define :race do |f|
+	f.sequence(:key){|n| "key#{n}"}
 	f.sequence(:code){|n| "Race#{n}"}
 	f.sequence(:description){|n| "Desc#{n}"}
 end
