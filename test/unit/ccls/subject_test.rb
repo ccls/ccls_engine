@@ -62,7 +62,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 #		} } }
 #	end
 
-	test "should create subject and accept_attributes_for addressings" do
+	test "should create subject and accept_nested_attributes_for addressings" do
 		assert_difference( 'Address.count', 1) {
 		assert_difference( 'Addressing.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
@@ -87,7 +87,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} } }
 	end
 
-	test "should create subject and accept_attributes_for phone_numbers" do
+	test "should create subject and accept_nested_attributes_for phone_numbers" do
 		assert_difference( 'PhoneNumber.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
@@ -108,7 +108,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should create subject and accept_attributes_for enrollments" do
+	test "should create subject and accept_nested_attributes_for enrollments" do
 		assert_difference( 'Enrollment.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
@@ -119,7 +119,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should create subject and accept_attributes_for pii" do
+	test "should create subject and accept_nested_attributes_for pii" do
 		assert_difference( 'Pii.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
@@ -153,7 +153,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 
 
-	test "should create subject and accept_attributes_for homex_outcome" do
+	test "should create subject and accept_nested_attributes_for homex_outcome" do
 		assert_difference( 'HomexOutcome.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
 			subject = create_subject(
@@ -186,7 +186,7 @@ pending
 #		} }
 	end
 
-	test "should create case subject and accept_attributes_for patient" do
+	test "should create case subject and accept_nested_attributes_for patient" do
 		assert_difference( 'Patient.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
 			subject = Factory(:case_subject,
@@ -263,7 +263,7 @@ pending
 
 
 
-	test "should create subject and accept_attributes_for identifier" do
+	test "should create subject and accept_nested_attributes_for identifier" do
 		assert_difference( 'Identifier.count', 1) {
 		assert_difference( 'Subject.count', 1) {
 			subject = create_subject(
