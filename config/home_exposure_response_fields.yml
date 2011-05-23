@@ -1,0 +1,240 @@
+-
+  :db: consent_read_over_phone
+-
+  :db: respondent_requested_new_consent
+-
+  :db: consent_reviewed_with_respondent
+-
+  :db: vacuum_has_disposable_bag
+-
+  :db: how_often_vacuumed_12mos
+-
+  :db: shoes_usually_off_inside_12mos
+-
+  :db: someone_ate_meat_12mos
+-
+  :db: freq_pan_fried_meat_12mos
+-
+  :db: freq_deep_fried_meat_12mos
+-
+  :db: freq_oven_fried_meat_12mos
+-
+  :db: freq_grilled_meat_outside_12mos
+-
+  :db: freq_other_high_temp_cooking_12mos
+-
+  :db: other_type_high_temp_cooking
+-
+  :db: doneness_of_meat_exterior_12mos
+-
+  :db: job_is_plane_mechanic_12mos
+-
+  :db: job_is_artist_12mos
+-
+  :db: job_is_janitor_12mos
+-
+  :db: job_is_construction_12mos
+-
+  :db: job_is_dentist_12mos
+-
+  :db: job_is_electrician_12mos
+-
+  :db: job_is_engineer_12mos
+-
+  :db: job_is_farmer_12mos
+-
+  :db: job_is_gardener_12mos
+-
+  :db: job_is_lab_worker_12mos
+-
+  :db: job_is_manufacturer_12mos
+-
+  :db: job_auto_mechanic_12mos
+-
+  :db: job_is_patient_care_12mos
+-
+  :db: job_is_agr_packer_12mos
+-
+  :db: job_is_painter_12mos
+-
+  :db: job_is_pesticides_12mos
+-
+  :db: job_is_photographer_12mos
+-
+  :db: job_is_teacher_12mos
+-
+  :db: job_is_welder_12mos
+-
+  :db: used_flea_control_12mos
+-
+  :db: freq_used_flea_control_12mos
+-
+  :db: used_ant_control_12mos
+-
+  :db: freq_ant_control_12mos
+-
+  :db: used_bee_control_12mos
+-
+  :db: freq_bee_control_12mos
+-
+  :db: used_indoor_plant_prod_12mos
+-
+  :db: freq_indoor_plant_product_12mos
+-
+  :db: used_other_indoor_product_12mos
+-
+  :db: freq_other_indoor_product_12mos
+-
+  :db: used_indoor_foggers
+-
+  :db: freq_indoor_foggers_12mos
+-
+  :db: used_pro_pest_inside_12mos
+-
+  :db: freq_pro_pest_inside_12mos
+-
+  :db: used_pro_pest_outside_12mos
+-
+  :db: freq_used_pro_pest_outside_12mos
+-
+  :db: used_pro_lawn_service_12mos
+-
+  :db: freq_pro_lawn_service_12mos
+-
+  :db: used_lawn_products_12mos
+-
+  :db: freq_lawn_products_12mos
+-
+  :db: used_slug_control_12mos
+-
+  :db: freq_slug_control_12mos
+-
+  :db: used_rat_control_12mos
+-
+  :db: freq_rat_control_12mos
+-
+  :db: used_mothballs_12mos
+-
+  :db: cmty_sprayed_gypsy_moths_12mos
+-
+  :db: cmty_sprayed_medflies_12mos
+-
+  :db: cmty_sprayed_mosquitoes_12mos
+-
+  :db: cmty_sprayed_sharpshooters_12mos
+-
+  :db: cmty_sprayed_apple_moths_12mos
+-
+  :db: cmty_sprayed_other_pest_12mos
+-
+  :db: other_pest_community_sprayed
+-
+  :db: type_of_residence
+-
+  :db: other_type_of_residence
+-
+  :db: number_of_floors_in_residence
+-
+  :db: number_of_stories_in_building
+-
+  :db: year_home_built
+-
+  :db: home_square_footage
+-
+  :db: number_of_rooms_in_home
+-
+  :db: home_constructed_of
+-
+  :db: other_home_material
+-
+  :db: home_has_attached_garage
+-
+  :db: vehicle_in_garage_1mo
+-
+  :db: freq_in_out_garage_1mo
+-
+  :db: home_has_electric_cooling
+-
+  :db: freq_windows_open_cold_mos_12mos
+-
+  :db: freq_windows_open_warm_mos_12mos
+-
+  :db: used_electric_heat_12mos
+-
+  :db: used_kerosene_heat_12mos
+-
+  :db: used_radiator_12mos
+-
+  :db: used_gas_heat_12mos
+-
+  :db: used_wood_burning_stove_12mos
+-
+  :db: freq_used_wood_stove_12mos
+-
+  :db: used_wood_fireplace_12mos
+-
+  :db: freq_used_wood_fireplace_12mos
+-
+  :db: used_fireplace_insert_12mos
+-
+  :db: used_gas_stove_12mos
+-
+  :db: used_gas_dryer_12mos
+-
+  :db: used_gas_water_heater_12mos
+-
+  :db: used_other_gas_appliance_12mos
+-
+  :db: type_of_other_gas_appliance
+-
+  :db: painted_inside_home
+-
+  :db: carpeted_in_home
+-
+  :db: refloored_in_home
+-
+  :db: weather_proofed_home
+-
+  :db: replaced_home_windows
+-
+  :db: roof_work_on_home
+-
+  :db: construction_in_home
+-
+  :db: other_home_remodelling
+-
+  :db: type_other_home_remodelling
+-
+  :db: regularly_smoked_indoors
+-
+  :db: regularly_smoked_indoors_12mos
+-
+  :db: regularly_smoked_outdoors
+-
+  :db: regularly_smoked_outdoors_12mos
+-
+  :db: used_smokeless_tobacco_12mos
+-
+  :db: qty_of_upholstered_furniture
+-
+  :db: qty_bought_after_2006
+-
+  :db: furniture_has_exposed_foam
+-
+  :db: home_has_carpets
+-
+  :db: percent_home_with_carpet
+-
+  :db: home_has_televisions
+-
+  :db: number_of_televisions_in_home
+-
+  :db: avg_number_hours_tvs_used
+-
+  :db: home_has_computers
+-
+  :db: number_of_computers_in_home
+-
+  :db: avg_number_hours_computers_used
+-
+  :db: additional_comments

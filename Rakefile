@@ -42,8 +42,9 @@ begin
 		# gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
 
 		gem.files  = FileList['config/routes.rb']
-		gem.files += FileList['config/document.yml']
-		gem.files += FileList['config/photo.yml']
+#		gem.files += FileList['config/document.yml']
+#		gem.files += FileList['config/photo.yml']
+		gem.files += FileList['config/home_exposure_response_fields.yml']
 		gem.files += FileList['config/shared_use_db.yml']
 #	This may eventually have user/password info, so don't include.
 #	It will need to be manually maintained and copied to apps.
