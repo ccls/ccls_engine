@@ -3,6 +3,7 @@
 #	*	subject_id
 class Pii < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
 	#	because subject accepts_nested_attributes for pii 
 	#	we can't require subject_id on create
@@ -21,6 +22,10 @@ class Pii < Shared
 
 	before_validation :nullify_blank_email
 
+	validates_presence_of :guardian_relationship_other,
+		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
+		:if => :guardian_relationship_is_other?
+
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :first_name
 		o.validates_length_of :middle_name
@@ -32,6 +37,10 @@ class Pii < Shared
 		o.validates_length_of :mother_middle_name
 		o.validates_length_of :mother_maiden_name
 		o.validates_length_of :mother_last_name
+		o.validates_length_of :guardian_first_name
+		o.validates_length_of :guardian_middle_name
+		o.validates_length_of :guardian_last_name
+		o.validates_length_of :guardian_relationship_other
 	end
 
 	#	Returns string containing subject's first, middle and last name
@@ -49,6 +58,11 @@ class Pii < Shared
 		[mother_first_name, mother_middle_name, mother_last_name].compact.join(' ')
 	end
 
+	#	Returns string containing subject's guardian's first, middle and last name
+	def guardians_name
+		[guardian_first_name, guardian_middle_name, guardian_last_name].compact.join(' ')
+	end
+
 	#	I don't know if I still need this
 	#	commented out 20101014
 	#	uncommented 20101014
@@ -63,6 +77,10 @@ protected
 	def nullify_blank_email
 		#	An empty form field is not NULL to MySQL so ...
 		self.email = nil if email.blank?
+	end
+
+	def guardian_relationship_is_other?
+		guardian_relationship.try(:is_other?)
 	end
 
 end

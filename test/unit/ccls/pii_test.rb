@@ -4,6 +4,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_belong_to(:subject)
+	assert_should_belong_to( :guardian_relationship, :class_name => 'SubjectRelationship' )
 	assert_should_require_attributes( :dob )
 	assert_should_require_unique_attributes( :email )
 	assert_should_not_require_attributes( :study_subject_id )
@@ -18,6 +19,10 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :father_first_name )
 	assert_should_not_require_attributes( :father_middle_name )
 	assert_should_not_require_attributes( :father_last_name )
+	assert_should_not_require_attributes( :guardian_first_name )
+	assert_should_not_require_attributes( :guardian_middle_name )
+	assert_should_not_require_attributes( :guardian_last_name )
+	assert_should_not_require_attributes( :guardian_relationship_other )
 	assert_should_not_require_attributes( :email )
 	with_options :maximum => 250 do |o|
 		o.assert_should_require_attribute_length( :first_name )
@@ -30,6 +35,10 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		o.assert_should_require_attribute_length( :father_first_name )
 		o.assert_should_require_attribute_length( :father_middle_name )
 		o.assert_should_require_attribute_length( :father_last_name )
+		o.assert_should_require_attribute_length( :guardian_first_name )
+		o.assert_should_require_attribute_length( :guardian_middle_name )
+		o.assert_should_require_attribute_length( :guardian_last_name )
+		o.assert_should_require_attribute_length( :guardian_relationship_other )
 	end
 
 	assert_requires_complete_date( :dob )
@@ -44,7 +53,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		assert_difference( "#{model_name}.count", 1 ) do
 			object = create_object
 			object.reload.update_attributes(:first_name => "New First Name")
-			assert object.errors.on(:subject)
+			assert object.errors.on_attr_and_type(:subject,:blank)
 		end
 	end
 
@@ -53,7 +62,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		create_object(:subject => subject)
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:subject => subject)
-			assert object.errors.on(:study_subject_id)
+			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
 		end
 	end
 
@@ -66,15 +75,15 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 
 	test "should require properly formated email address" do
 		assert_difference( "#{model_name}.count", 0 ) do
-			%w( asdf me@some@where.com ).each do |bad_email|
+			%w( asdf me@some@where.com me@somewhere ).each do |bad_email|
 				object = create_object(:email => bad_email)
-				assert object.errors.on(:email)
+				assert object.errors.on_attr_and_type(:email,:invalid)
 			end
 		end
 		assert_difference( "#{model_name}.count", 1 ) do
 			%w( me@some.where.com ).each do |good_email|
 				object = create_object(:email => good_email)
-				assert !object.errors.on(:email)
+				assert !object.errors.on_attr_and_type(:email,:invalid)
 			end
 		end
 	end
@@ -113,6 +122,22 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 			:mother_first_name => "Ms",
 			:mother_last_name => "Claus" )
 		assert_equal 'Ms Claus', object.mothers_name 
+	end
+
+	test "should return join of guardian's name" do
+		object = create_object(
+			:guardian_first_name => "Jack",
+			:guardian_last_name => "Frost" )
+		assert_equal 'Jack Frost', object.guardians_name 
+	end
+
+	test "should require guardian_relationship_other if " <<
+			"guardian_relationship == other" do
+		assert_difference( "#{model_name}.count", 0 ) do
+			object = create_object(
+				:guardian_relationship => SubjectRelationship['other'] )
+			assert object.errors.on_attr_and_type(:guardian_relationship_other,:blank)
+		end
 	end
 
 end
