@@ -119,5 +119,6 @@ end
 #require 'lib/surveyor/survey_extensions'
 
 #	This is an array of Regexs excluded from test coverage report.
-RCOV_EXCLUDES = ['lib/ccls_engine.rb','lib/ccls_engine/shared_database.rb','app/models/search.rb']
+RCOV_EXCLUDES = ['lib/ccls_engine.rb','lib/ccls_engine/shared_database.rb',
+	'app/models/search.rb','lib/ccls_engine/factories.rb']
 
