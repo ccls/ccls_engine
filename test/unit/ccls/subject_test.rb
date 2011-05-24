@@ -652,11 +652,25 @@ pending
 	end
 
 	test "should create subject with empty subject_languages_attributes" do
+		assert_difference( 'SubjectLanguage.count', 0 ){
 		assert_difference( "Subject.count", 1 ) {
 			@subject = create_subject(:subject_languages_attributes => { })
 			assert !@subject.new_record?, 
 				"#{@subject.errors.full_messages.to_sentence}"
-		}
+		} }
+		assert @subject.languages.empty?
+		assert @subject.subject_languages.empty?
+	end
+
+	test "should create subject with blank language_id" do
+		assert_difference( 'SubjectLanguage.count', 0 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_languages_attributes => { 
+				:some_random_id => { :language_id => '' }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} }
 		assert @subject.languages.empty?
 		assert @subject.subject_languages.empty?
 	end
@@ -709,11 +723,25 @@ pending
 
 
 	test "should create subject with empty subject_races_attributes" do
+		assert_difference( 'SubjectRace.count', 0 ){
 		assert_difference( "Subject.count", 1 ) {
 			@subject = create_subject(:subject_races_attributes => { })
 			assert !@subject.new_record?, 
 				"#{@subject.errors.full_messages.to_sentence}"
-		}
+		} }
+		assert @subject.races.empty?
+		assert @subject.subject_races.empty?
+	end
+
+	test "should create subject with blank race_id" do
+		assert_difference( 'SubjectRace.count', 0 ){
+		assert_difference( "Subject.count", 1 ) {
+			@subject = create_subject(:subject_races_attributes => { 
+				:some_random_id => { :race_id => '' }
+			})
+			assert !@subject.new_record?, 
+				"#{@subject.errors.full_messages.to_sentence}"
+		} }
 		assert @subject.races.empty?
 		assert @subject.subject_races.empty?
 	end
