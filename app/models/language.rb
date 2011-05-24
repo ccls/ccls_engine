@@ -15,7 +15,8 @@ class Language < Shared
 	validates_uniqueness_of :description
 	validates_length_of     :description, :minimum => 4
 
-	with_options :maximum => 250, :allow_blank => true do |o|
+#	with_options :maximum => 250, :allow_blank => true do |o|
+	with_options :maximum => 250 do |o|
 		o.validates_length_of :key
 		o.validates_length_of :code
 		o.validates_length_of :description

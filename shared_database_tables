@@ -649,6 +649,7 @@ Table: languages
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
+| key         | varchar(255) | YES  | UNI | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 
 Table: operational_event_types
@@ -847,6 +848,7 @@ Table: races
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
+| key         | varchar(255) | YES  | UNI | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 
 Table: refusal_reasons
@@ -1070,6 +1072,7 @@ Table: vital_statuses
 | description | varchar(255) | NO   |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
+| key         | varchar(255) | YES  | UNI | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 
 Table: zip_codes
