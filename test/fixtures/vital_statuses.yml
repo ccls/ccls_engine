@@ -1,15 +1,23 @@
+#
+#	Do not change id or key
+#		'id' could be referenced by existing data
+#		'key' is used in the rails code for searching 
+#
 living:
   id: 1
   position: 1
+  key: living
   code: 1
   description: living
 deceased:
   id: 2
   position: 2 
+  key: deceased
   code: 2
   description: deceased
 dk:
   id: 3
   position: 3
+  key: unknown
   code: 3
   description: don't know
