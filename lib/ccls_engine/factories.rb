@@ -12,7 +12,7 @@ end
 #end
 
 Factory.define :page do |f|
-	f.sequence(:path) { |n| "/path#{n}" }
+	f.sequence(:path)    { |n| "/path#{n}" }
 	f.sequence(:menu_en) { |n| "Menu #{n}" }
 	f.sequence(:title_en){ |n| "Title #{n}" }
 	f.body_en  "Page Body"
@@ -85,12 +85,12 @@ Factory.define :aliquot do |f|
 end
 
 Factory.define :aliquot_sample_format do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :analysis do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -113,7 +113,7 @@ Factory.define :identifier do |f|
 end
 
 Factory.define :context do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -121,7 +121,7 @@ Factory.define :data_source do |f|
 end
 
 Factory.define :diagnosis do |f|
-	f.sequence(:code) { |n| n+4 }	#	1, 2 and 3 are in the fixtures
+	f.sequence(:code)        { |n| n+4 }	#	1, 2 and 3 are in the fixtures
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -154,8 +154,8 @@ end
 
 Factory.define :guide do |f|
 	f.sequence(:controller){ |n| "controller#{n}" }
-	f.sequence(:action){ |n| "action#{n}" }
-	f.sequence(:body){ |n| "Body #{n}" }
+	f.sequence(:action)    { |n| "action#{n}" }
+	f.sequence(:body)      { |n| "Body #{n}" }
 end
 
 Factory.define :hospital do |f|
@@ -180,7 +180,7 @@ Factory.define :home_page_pic do |f|
 end
 
 Factory.define :ineligible_reason do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -192,7 +192,7 @@ Factory.define :interview do |f|
 end
 
 Factory.define :interview_method do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -201,14 +201,14 @@ Factory.define :interview_outcome do |f|
 end
 
 Factory.define :instrument_type do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 	f.association :project
 end
 
 Factory.define :instrument do |f|
 	f.association :project
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.name 'Instrument Name'
 	f.sequence(:description) { |n| "Desc#{n}" }
 #	f.association :instrument_type
@@ -216,15 +216,15 @@ Factory.define :instrument do |f|
 end
 
 Factory.define :instrument_version do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 	f.association :instrument_type
 #	f.association :language
 end
 
 Factory.define :language do |f|
-	f.sequence(:key) { |n| "Key#{n}" }
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -239,8 +239,8 @@ Factory.define :operational_event do |f|
 end
 
 Factory.define :operational_event_type do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
-	f.sequence(:description) { |n| "Desc#{n}" }
+	f.sequence(:code)           { |n| "Code#{n}" }
+	f.sequence(:description)    { |n| "Desc#{n}" }
 	f.sequence(:event_category) { |n| "Cat#{n}" }
 end
 
@@ -271,13 +271,13 @@ Factory.define :pii do |f|
 end
 
 Factory.define :project_outcome do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :race do |f|
-	f.sequence(:key){|n| "key#{n}"}
-	f.sequence(:code){|n| "Race#{n}"}
+	f.sequence(:key)        {|n| "key#{n}"}
+	f.sequence(:code)       {|n| "Race#{n}"}
 	f.sequence(:description){|n| "Desc#{n}"}
 end
 
@@ -286,7 +286,7 @@ end
 #end
 
 Factory.define :refusal_reason do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -305,7 +305,7 @@ Factory.define :sample_outcome do |f|
 end
 
 Factory.define :sample_type do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 	f.association :parent, :factory => :sample_type_parent
 end
@@ -327,7 +327,7 @@ Factory.define :phone_type do |f|
 end
 
 Factory.define :project do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -355,10 +355,14 @@ Factory.define :subject do |f|
 	f.sequence(:sex){|n|
 		%w( male female )[n%2] }
 end
+#	f.subject_type { SubjectType.find(:first,:conditions => {
+#			:code => 'Case'
+#		}) }
 Factory.define :case_subject, :parent => :subject do |f|
-	f.subject_type { SubjectType.find(:first,:conditions => {
-			:code => 'Case'
-		}) }
+	f.subject_type { SubjectType['Case'] }
+end
+Factory.define :control_subject, :parent => :subject do |f|
+	f.subject_type { SubjectType['Control'] }
 end
 
 Factory.define :subject_race do |f|
@@ -372,12 +376,12 @@ Factory.define :subject_language do |f|
 end
 
 Factory.define :subject_relationship do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :subject_type do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -400,13 +404,13 @@ Factory.define :transfer do |f|
 end
 
 Factory.define :unit do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :vital_status do |f|
-#	f.sequence(:code) { |n| "Code#{n}" }
-	f.sequence(:code) { |n| n+3 }									#	3 in fixtures
+	f.sequence(:key)         { |n| "key#{n}" }
+	f.sequence(:code)        { |n| n+3 }							#	3 in fixtures
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -419,7 +423,7 @@ Factory.define :import do |f|
 end
 Factory.define :export do |f|
 	f.sequence(:childid) { |n| "childid#{n}" }
-	f.sequence(:patid) { |n| "patid#{n}" }
+	f.sequence(:patid)   { |n| "patid#{n}" }
 end
 
 
