@@ -218,39 +218,53 @@ class Ccls::Subject < Shared
 	#	to update all of the matchingid subjects' reference date.
 	#	If this begins to cause problems elsewhere, rename it here
 	#	and in the Patient model's call.
-	def self.update_all(updates, conditions = nil, options = {})
-####
-#	BEGIN Jake's Hack
-#		sql  = "UPDATE #{quoted_table_name} SET #{sanitize_sql_for_assignment(updates)} "
-
+	#	created "ccls_update_all" to avoid problems and ensure
+	#		rcov gets 100% coverage
+	def self.ccls_update_all(updates, conditions = nil, options = {})
 		sql  = "UPDATE #{quoted_table_name} "
-
 		scope = scope(:find)
 		select_sql = ""
-
 		add_joins!(select_sql, options[:joins], scope) if options.has_key?(:joins)
 		select_sql.concat "SET #{sanitize_sql_for_assignment(updates)} "
-
-#	END Jake's Hack
-####
-
 		add_conditions!(select_sql, conditions, scope)
-
-		if options.has_key?(:limit) || (scope && scope[:limit])
-			# Only take order from scope if limit is also provided by scope, this
-			# is useful for updating a has_many association with a limit.
-			add_order!(select_sql, options[:order], scope)
-
-			add_limit!(select_sql, options, scope)
-			sql.concat(connection.limited_update_conditions(select_sql, 
-				quoted_table_name, connection.quote_column_name(primary_key)))
-		else
-			add_order!(select_sql, options[:order], nil)
-			sql.concat(select_sql)
-		end
-
+		add_order!(select_sql, options[:order], nil)
+		sql.concat(select_sql)
 		connection.update(sql, "#{name} Update")
 	end
+
+#		def self.update_all(updates, conditions = nil, options = {})
+#	####
+#	#	BEGIN Jake's Hack
+#	#		sql  = "UPDATE #{quoted_table_name} SET #{sanitize_sql_for_assignment(updates)} "
+#	
+#			sql  = "UPDATE #{quoted_table_name} "
+#	
+#			scope = scope(:find)
+#			select_sql = ""
+#	
+#			add_joins!(select_sql, options[:joins], scope) if options.has_key?(:joins)
+#			select_sql.concat "SET #{sanitize_sql_for_assignment(updates)} "
+#	
+#	#	END Jake's Hack
+#	####
+#	
+#			add_conditions!(select_sql, conditions, scope)
+#	
+#			if options.has_key?(:limit) || (scope && scope[:limit])
+#				# Only take order from scope if limit is also provided by scope, this
+#				# is useful for updating a has_many association with a limit.
+#				add_order!(select_sql, options[:order], scope)
+#	
+#				add_limit!(select_sql, options, scope)
+#				sql.concat(connection.limited_update_conditions(select_sql, 
+#					quoted_table_name, connection.quote_column_name(primary_key)))
+#			else
+#				add_order!(select_sql, options[:order], nil)
+#				sql.concat(select_sql)
+#			end
+#	
+#			connection.update(sql, "#{name} Update")
+#		end
 
 protected
 

@@ -58,7 +58,7 @@ protected
 
 	def subject_is_case
 		if subject and subject.subject_type.code != 'Case'
-		errors.add(:subject,"must be case to have patient info")
+			errors.add(:subject,"must be case to have patient info")
 		end
 	end
 
@@ -68,7 +68,7 @@ protected
 		#	puts "admit_date is:#{admit_date}"
 		#	puts "matchingid is blank (FYI)" if subject.try(:identifier).try(:matchingid).blank?
 		unless subject.try(:identifier).try(:matchingid).blank?
-			Subject.update_all({:reference_date => admit_date },
+			Subject.ccls_update_all({:reference_date => admit_date },
 				['identifiers.matchingid = ?',subject.identifier.matchingid],
 				{ :joins => :identifier })
 		end

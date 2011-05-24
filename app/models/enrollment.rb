@@ -111,9 +111,10 @@ class Enrollment < Shared
 
 	#	Return boolean of comparison
 	#	true only if consented == 1
-	def consented?
-		consented == 1
-	end
+#	no longer used, I believe
+#	def consented?
+#		consented == 1
+#	end
 
 	#	Return boolean of comparison
 	#	true only if consented == 2

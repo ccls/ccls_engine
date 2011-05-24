@@ -112,10 +112,11 @@ protected
 	end 
 
 	#	Pad leading zeroes to familyid
-	def pad_zeros_to_familyid
-		familyid.try(:gsub!,/\D/,'')
-		self.familyid = sprintf("%06d",familyid.to_i) unless familyid.blank?
-	end 
+#	no longer used I believe
+#	def pad_zeros_to_familyid
+#		familyid.try(:gsub!,/\D/,'')
+#		self.familyid = sprintf("%06d",familyid.to_i) unless familyid.blank?
+#	end 
 
 	def nullify_subjectid
 		#	mysql allows multiple NULLs in unique column
