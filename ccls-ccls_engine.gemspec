@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.7.0"
+  s.version = "3.7.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-05-20}
+  s.date = %q{2011-05-24}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -127,6 +127,7 @@ Gem::Specification.new do |s|
     "app/views/users/menu.js.erb",
     "app/views/users/new.html.erb",
     "app/views/users/show.html.erb",
+    "config/home_exposure_response_fields.yml",
     "config/routes.rb",
     "config/shared_use_db.yml",
     "generators/ccls_engine/USAGE",
