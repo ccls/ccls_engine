@@ -679,6 +679,20 @@ pending
 		assert_equal 2, @subject.subject_languages.length
 	end
 
+	test "should NOT create subject with subject_languages_attributes " <<
+			"if language is other and no other given" do
+		assert Language.count > 0
+		assert_difference( 'SubjectLanguage.count', 0 ){
+		assert_difference( 'SubjectType.count', 1 ){
+		assert_difference( "Subject.count", 0 ) {
+			@subject = create_subject(:subject_languages_attributes => {
+#			@subject = create_case_subject(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language['other'].id }
+			})
+			assert @subject.errors.on_attr_and_type("subject_languages.other",:blank)
+		} } }
+	end
+
 
 	test "should create subject with empty subject_races_attributes" do
 		assert_difference( 'SubjectType.count', 1 ){
