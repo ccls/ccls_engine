@@ -1,240 +1,480 @@
 -
   :db: consent_read_over_phone
+  :number: 1a
+  :question: READ CONSENT OVER THE PHONE
 -
   :db: respondent_requested_new_consent
+  :number: 1b
+  :question: RESPONDENT REQUESTED ANOTHER LETTER/CONSENT
 -
   :db: consent_reviewed_with_respondent
+  :number: 1c
+  :question: CHECK HERE IF THE ELEMENTS OF CONSENT HAVE BEEN REVIEWED WITH THE RESPONDENT AND THE RESPONDENT HAS BEEN GIVEN AN OPPORTUNITY TO ASK QUESTIONS.
 -
   :db: vacuum_has_disposable_bag
+  :number: 2
+  :question: Does your vacuum cleaner have a disposable bag?
 -
   :db: how_often_vacuumed_12mos
+  :number: 3
+  :question: In the last 12 months, on average, how often were the rugs and floors in your home usually vacuumed?  Would you say...
 -
   :db: shoes_usually_off_inside_12mos
+  :number: 4
+  :question: In the last 12 months, did all of the people who lived in your home usually take off their shoes when entering the home?
 -
   :db: someone_ate_meat_12mos
+  :number: 5
+  :question: During the last 12 months, did you or anyone else in your home eat hamburger, steak, pork, chicken or other meat products?
 -
   :db: freq_pan_fried_meat_12mos
+  :number: 6a
+  :question: Pan fry (very hot)
 -
   :db: freq_deep_fried_meat_12mos
+  :number: 6b
+  :question: Deep fry
 -
   :db: freq_oven_fried_meat_12mos
+  :number: 6c
+  :question: Oven broil
 -
   :db: freq_grilled_meat_outside_12mos
+  :number: 6d
+  :question: Grill or barbeque?
 -
   :db: freq_other_high_temp_cooking_12mos
+  :number: 6e
+  :question: Other High Temp Cooking
 -
   :db: other_type_high_temp_cooking
+  :number: 6f
+  :question: Specify Other High Temp Cooking
 -
   :db: doneness_of_meat_exterior_12mos
+  :number: 7
+  :question: During the last 12 months, when you or other household members ate meat products, how well were they usually cooked on the outside? Would you say...
 -
   :db: job_is_plane_mechanic_12mos
+  :number: 8
+  :question: 1 = Airplane Mechanic
 -
   :db: job_is_artist_12mos
+  :number: 8
+  :question: 2 = Artist / Art Teacher
 -
   :db: job_is_janitor_12mos
+  :number: 8
+  :question: 3 = Cleaner / Janitor
 -
   :db: job_is_construction_12mos
+  :number: 8
+  :question: 4 = Construction Worker / Carpenter
 -
   :db: job_is_dentist_12mos
+  :number: 8
+  :question: 5 = Dentist / Dental Worker
 -
   :db: job_is_electrician_12mos
+  :number: 8
+  :question: 6 = Electrician / Lineman / Cable puller
 -
   :db: job_is_engineer_12mos
+  :number: 8
+  :question: 7 = Engineer/ Environmental Scientist
 -
   :db: job_is_farmer_12mos
+  :number: 8
+  :question: 8 = Farmer / Farm or Ranch Worker
 -
   :db: job_is_gardener_12mos
+  :number: 8
+  :question: 9 = Gardner / Groundskeeper / Landscaper / Nursery worker
 -
   :db: job_is_lab_worker_12mos
+  :number: 8
+  :question: 10 = Laboratory worker / Lab ScienceTeacher
 -
   :db: job_is_manufacturer_12mos
+  :number: 8
+  :question: 11 = Manufacturing / Assembly / Industrial operations/ Product repair
 -
   :db: job_auto_mechanic_12mos
+  :number: 8
+  :question: 12 = Mechanic-auto / truck / bus
 -
   :db: job_is_patient_care_12mos
+  :number: 8
+  :question: 13 = Medical Patient Care Worker
 -
   :db: job_is_agr_packer_12mos
+  :number: 8
+  :question: 14 = Packer - Agricultural
 -
   :db: job_is_painter_12mos
+  :number: 8
+  :question: 15 = Painter / Wallpaperer
 -
   :db: job_is_pesticides_12mos
+  :number: 8
+  :question: 16 = Pesticiding Handling / Production / Formulation or Mixing
 -
   :db: job_is_photographer_12mos
+  :number: 8
+  :question: 17 = Photographer / Framer / Photography Teacher
 -
   :db: job_is_teacher_12mos
+  :number: 8
+  :question: 18 = Teacher-- Preschool to 5th Grade
 -
   :db: job_is_welder_12mos
+  :number: 8
+  :question: 19 = Welder / Joiner
 -
   :db: used_flea_control_12mos
+  :number: 9
+  :question: During the last 12 months, did you have a pet that was treated for fleas or ticks using shampoos, soaps, collars, sprays, dusts, powders, or skin applications?
 -
   :db: freq_used_flea_control_12mos
+  :number: 9a
+  :question: How often during the past 12 months? Would you say...
 -
   :db: used_ant_control_12mos
+  :number: 10
+  :question: During the last 12 months, have you or anyone else in your home used ant, fly, or cockroach control products in or around the house?
 -
   :db: freq_ant_control_12mos
+  :number: 10a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_bee_control_12mos
+  :number: 11
+  :question: During the last 12 months, have you or anyone else in your home used bee, wasp, or hornet control products in or around the house?
 -
   :db: freq_bee_control_12mos
+  :number: 11a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_indoor_plant_prod_12mos
+  :number: 12
+  :question: During the last 12 months, did you or anyone in your home use any products to control indoor plant insects or diseases?
 -
   :db: freq_indoor_plant_product_12mos
+  :number: 12a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_other_indoor_product_12mos
+  :number: 13
+  :question: During the last 12 months, did you or anyone in your home treat any other indoor insects or other types of pests?  Do not include products applied outside on your lawn, garden, or trees.
 -
   :db: freq_other_indoor_product_12mos
+  :number: 13a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_indoor_foggers
+  :number: 14
+  :question: During the last 12 months, have you or anyone else in your home used indoor foggers or bombs?
 -
   :db: freq_indoor_foggers_12mos
+  :number: 14a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_pro_pest_inside_12mos
+  :number: 15
+  :question: During the last 12 months has a professional pest control person or exterminator applied products inside this dwelling?
 -
   :db: freq_pro_pest_inside_12mos
+  :number: 15a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_pro_pest_outside_12mos
+  :number: 16
+  :question: During the last 12 months, has a professional pest control person or exterminator applied products on the exterior or foundation of this dwelling?
 -
   :db: freq_used_pro_pest_outside_12mos
+  :number: 16a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_pro_lawn_service_12mos
+  :number: 17
+  :question: During the last 12 months, has a professional lawn or landscape service treated the lawn, garden, trees or other outdoor plants with products to control weeds, insects, or plant diseases?
 -
   :db: freq_pro_lawn_service_12mos
+  :number: 17a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_lawn_products_12mos
+  :number: 18
+  :question: In the last 12 months, did you or anyone in your home treat the lawn, garden, trees, or other outdoor plants with products to control weeds, insects, or plant diseases?
 -
   :db: freq_lawn_products_12mos
+  :number: 18a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_slug_control_12mos
+  :number: 19
+  :question: In the last 12 months, did you or anyone in your home use products to control slugs or snails?
 -
   :db: freq_slug_control_12mos
+  :number: 19a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_rat_control_12mos
+  :number: 20
+  :question: In the last 12 months, did you or anyone in your home use products, not including traps, to control rats, mice, gophers or moles?
 -
   :db: freq_rat_control_12mos
+  :number: 20a
+  :question: How often during the past 12 months?  Would you say...
 -
   :db: used_mothballs_12mos
+  :number: 21
+  :question: In the last 12 months, have mothballs been used in your home?
 -
   :db: cmty_sprayed_gypsy_moths_12mos
+  :number: 22a
+  :question: Gypsy moths
 -
   :db: cmty_sprayed_medflies_12mos
+  :number: 22b
+  :question: Mediterranean fruit flies
 -
   :db: cmty_sprayed_mosquitoes_12mos
+  :number: 22c
+  :question: Mosquitoes
 -
   :db: cmty_sprayed_sharpshooters_12mos
+  :number: 22d
+  :question: Glassy Winged Sharpshooter
 -
   :db: cmty_sprayed_apple_moths_12mos
+  :number: 22e
+  :question: Light Brown Apple Moth
 -
   :db: cmty_sprayed_other_pest_12mos
+  :number: 22f
+  :question: Some Other insect (specify)
 -
   :db: other_pest_community_sprayed
+  :number: 22g
+  :question: Other pest
 -
   :db: type_of_residence
+  :number: 23
+  :question: Which of the following best describes your residence?
 -
   :db: other_type_of_residence
+  :number: 23other
+  :question: Other
 -
   :db: number_of_floors_in_residence
+  :number: 23a
+  :question: How many floors are there in your residence?
 -
   :db: number_of_stories_in_building
+  :number: 23b
+  :question: How many stories are there in your building?
 -
   :db: year_home_built
+  :number: 24
+  :question: In what year was your home built?
 -
   :db: home_square_footage
+  :number: 25
+  :question: We are interested in the approximate size of your living space. The living space is defined as all heated areas in the home or apartment that are suitable for year-round use.  About how many square feet is your residence?
 -
   :db: number_of_rooms_in_home
+  :number: 26
+  :question: How many rooms are there in your residence, not including closets, crawl spaces, attics and basements?
 -
   :db: home_constructed_of
+  :number: 27
+  :question: Is your residence mostly constructed of?
 -
   :db: other_home_material
+  :number: 27other
+  :question: Other
 -
   :db: home_has_attached_garage
+  :number: 28
+  :question: Does this home have an attached garage?  (An attached garage has a door connecting directly to the house.)
 -
   :db: vehicle_in_garage_1mo
+  :number: 28a
+  :question: Has there been a car or motorcycle parked in the attached garage during the past month?
 -
   :db: freq_in_out_garage_1mo
+  :number: 28b
+  :question: How often was the car or motorcycle moved in and out of garage during the past month?  Would you say...
 -
   :db: home_has_electric_cooling
+  :number: 29
+  :question: Does this residence have any type of electric cooling system such as air conditioning?
 -
   :db: freq_windows_open_cold_mos_12mos
+  :number: 30
+  :question: During the last 12 months, how often was at least one window or door open on a regular basis during the colder months?  Would you say...
 -
   :db: freq_windows_open_warm_mos_12mos
+  :number: 31
+  :question: During the last 12 months, how often was at least one window or door open on a regular basis during the warmer months? Would you say...
 -
   :db: used_electric_heat_12mos
+  :number: 32a
+  :question: Electric heat
 -
   :db: used_kerosene_heat_12mos
+  :number: 32b
+  :question: Kerosene heat
 -
   :db: used_radiator_12mos
+  :number: 32c
+  :question: Radiator or steam heat
 -
   :db: used_gas_heat_12mos
+  :number: 32d
+  :question: Gas heat (including gas fireplace)
 -
   :db: used_wood_burning_stove_12mos
+  :number: 32e
+  :question: Wood-burning Stove
 -
   :db: freq_used_wood_stove_12mos
+  :number: 32f
+  :question: How often did you use wood-burning stove during the past 12 months?
 -
   :db: used_wood_fireplace_12mos
+  :number: 32g
+  :question: Wood-burning Fireplace?
 -
   :db: freq_used_wood_fireplace_12mos
+  :number: 32h
+  :question: How often did you use during the past 12 months?
 -
   :db: used_fireplace_insert_12mos
+  :number: 32i
+  :question: Was an insert used in the fireplace in the last 12 months? (An insert is a wood stove designed to fit into a conventional open fireplace and allows for clean efficient burning of wood.)
 -
   :db: used_gas_stove_12mos
+  :number: 33a
+  :question: A gas stove/oven
 -
   :db: used_gas_dryer_12mos
+  :number: 33b
+  :question: A gas clothes dryer
 -
   :db: used_gas_water_heater_12mos
+  :number: 33c
+  :question: A gas water heater
 -
   :db: used_other_gas_appliance_12mos
+  :number: 33d
+  :question: How about some other gas appliance
 -
   :db: type_of_other_gas_appliance
+  :number: 33other
+  :question: Other (DO NOT INCLUDE GAS HEAT)
 -
   :db: painted_inside_home
+  :number: 34a
+  :question: Painting (indoors)
 -
   :db: carpeted_in_home
+  :number: 34b
+  :question: Carpeting
 -
   :db: refloored_in_home
+  :number: 34c
+  :question: Reflooring
 -
   :db: weather_proofed_home
+  :number: 34d
+  :question: Weather Proofing
 -
   :db: replaced_home_windows
+  :number: 34e
+  :question: Window Replacement
 -
   :db: roof_work_on_home
+  :number: 34f
+  :question: Roofing
 -
   :db: construction_in_home
+  :number: 34g
+  :question: Construction
 -
   :db: other_home_remodelling
+  :number: 34h
+  :question: "Other: SPECIFY"
 -
   :db: type_other_home_remodelling
+  :number: 34other
+  :question: Other
 -
   :db: regularly_smoked_indoors
+  :number: 35
+  :question: During the time you have lived in this home, have you or anyone else regularly - that is once a week or more - smoked cigarettes, pipes or cigars inside this home?
 -
   :db: regularly_smoked_indoors_12mos
+  :number: 35a
+  :question: During the last 12 months, have you or anyone else regularly - that is once a week or more - smoked cigarettes, pipes or cigars inside this home?
 -
   :db: regularly_smoked_outdoors
+  :number: 36
+  :question: During the time you have lived in this home, have you or anyone who lives in this home regularly smoked cigarettes, pipes or cigars outside this home (in the car, at work, yard, deck, etc.)?
 -
   :db: regularly_smoked_outdoors_12mos
+  :number: 36a
+  :question: During the last 12 months, have you or anyone else who lives in this home regularly smoked cigarettes, pipes or cigars outside this home?
 -
   :db: used_smokeless_tobacco_12mos
+  :number: 37
+  :question: During the last 12 months, have you or anyone else regularly - that is once a week or more - used smokeless tobacco products such as dipping or chewing tobacco in this home?
 -
   :db: qty_of_upholstered_furniture
+  :number: 38
+  :question: Not including mattresses, how many pieces of upholstered furniture do you have in your home (like padded or cushioned chairs, couches, or love seats)?
 -
   :db: qty_bought_after_2006
+  :number: 38a
+  :question: How many of the items were purchased after 2006?
 -
   :db: furniture_has_exposed_foam
+  :number: 38b
+  :question: Does any of the upholstered furniture have exposed or crumbling foam?
 -
   :db: home_has_carpets
+  :number: 39
+  :question: Not including area rugs, are there any carpets in your home?
 -
   :db: percent_home_with_carpet
+  :number: 39a
+  :question: Approximately what percentage of your home has carpet?
 -
   :db: home_has_televisions
+  :number: 40
+  :question: Do you have any televisions in your home?
 -
   :db: number_of_televisions_in_home
+  :number: 40a
+  :question: How many televisions are in your home?
 -
   :db: avg_number_hours_tvs_used
+  :number: 40b
+  :question: On average, how many hours per day is the television/are the televisions on in your home? IF MORE THAN ONE TV, please include the total hours each television is on.  Would you say...
 -
   :db: home_has_computers
+  :number: 41
+  :question: Do you have any computers in your home?
 -
   :db: number_of_computers_in_home
+  :number: 41a
+  :question: How many computers are in your home?
 -
   :db: avg_number_hours_computers_used
+  :number: 41b
+  :question: On average, how many hours per day is the computer/are the computers in use in your home? IF MORE THAN ONE COMPUTER, please include the total hours each computer is in use. Would you say...
 -
   :db: additional_comments
+  :number: 42
+  :question: That’s all the questions I have for today.  Do you have any comments or additional information you would like to tell me?
