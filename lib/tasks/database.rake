@@ -20,14 +20,14 @@ namespace :db do
 		Identifier.destroy_all
 		Patient.destroy_all
 		Pii.destroy_all
-		ResponseSet.destroy_all
-		Response.destroy_all
+#		ResponseSet.destroy_all
+#		Response.destroy_all
 		Sample.destroy_all
 		SampleKit.destroy_all
 		Package.destroy_all
 		HomexOutcome.destroy_all
 		HomeExposureResponse.destroy_all
-		SurveyInvitation.destroy_all
+#		SurveyInvitation.destroy_all
 	end
 
 	task :random_enrollments_data => :environment do 
@@ -112,10 +112,10 @@ namespace :db do
 			#	due to padding it with zeros, NEED this to be an Integer
 			#	doesn't work correctly in sqlite so just pad it before search
 			identifier = Identifier.find_by_childid(
-				sprintf("%06d",line[0].to_i))
+				sprintf("%06d",line['Childid'].to_i))
 			raise ActiveRecord::RecordNotFound unless identifier
 
-			identifier.update_attributes!(:subjectid => line[4])
+			identifier.update_attributes!(:subjectid => line['subjectID'])
 
 		end
 	end
@@ -129,7 +129,7 @@ namespace :db do
 #	subjectID,matchingID,familyid
 			puts "Processing line #{f.lineno}"
 			puts line
-			if line[0] =~ /^\s*#/
+			if line['subjectID'] =~ /^\s*#/
 				puts "skipping as subjectid not found"
 				next 
 			end
@@ -137,12 +137,12 @@ namespace :db do
 			#	due to padding it with zeros, NEED this to be an Integer
 			#	doesn't work correctly in sqlite so just pad it before search
 			identifier = Identifier.find_by_subjectid(
-				sprintf("%06d",line[0].to_i))
+				sprintf("%06d",line['subjectID'].to_i))
 			raise ActiveRecord::RecordNotFound unless identifier
 
 			identifier.update_attributes!(
-				:matchingid => line[1],
-				:familyid   => line[2]
+				:matchingid => line['matchingID'],
+				:familyid   => line['familyid']
 			)
 
 		end
@@ -161,7 +161,7 @@ namespace :db do
 			#	due to padding it with zeros, NEED this to be an Integer
 			#	doesn't work correctly in sqlite so just pad it before search
 			subject = Identifier.find_by_subjectid(
-				sprintf("%06d",line[0].to_i)).subject
+				sprintf("%06d",line['subjectID'].to_i)).subject
 			raise ActiveRecord::RecordNotFound unless subject
 
 #			address_type = AddressType.find(line[1].to_s)
@@ -169,17 +169,18 @@ namespace :db do
 #				(line[1].to_s == '1')?'Home':'Mailing')
 #			raise ActiveRecord::RecordNotFound unless address_type
 
-			subject.addressings << Addressing.create!(
-				:subject_id  => subject.id,
+#			subject.addressings << Addressing.create!(
+#				:subject_id  => subject.id,
+			subject.addressings.create!(
 				:current_address => 1,		#	Yes
 				:is_valid    => true,
 				:is_verified => false,
 				:address_attributes => {
-					:address_type_id => line[1].to_i,
-					:line_1 => line[2]||"FAKE LINE 1",
-					:city => line[3]||"FAKE CITY",
-					:state => line[4]||"FAKE STATE",
-					:zip => line[5]||"12345-6789"
+					:address_type_id => line['Address_Type_ID'].to_i,
+					:line_1 => line['Address_Line1']||"FAKE LINE 1",
+					:city => line['Address_City']||"FAKE CITY",
+					:state => line['Address_State']||"FAKE STATE",
+					:zip => line['Address_Zip']||"12345-6789"
 				}
 			)
 		end
@@ -202,52 +203,61 @@ namespace :db do
 #			race = Race[1]
 			race = Race.random()
 
-			dob = (line[6].blank?)?'':Time.parse(line[6])
-			refdate = (line[7].blank?)?'':Time.parse(line[7])
-			interview_date = (line[8].blank?)?'':Time.parse(line[8])
+			dob = (line['DOB'].blank?)?'':Time.parse(line['DOB'])
+			refdate = (line['RefDate'].blank?)?'':Time.parse(line['RefDate'])
+			interview_date = (line['InterviewDate'].blank?)?'':Time.parse(line['InterviewDate'])
 			subject = Subject.create!({
 #				:patient_attributes  => { },										#	TODO (patid)
 				:pii_attributes => {
-					:state_id_no => sprintf('%09d',line[0]),			#	TODO
-					:first_name  => line[9],
-					:middle_name => line[10],
-					:last_name   => line[11],
-					:father_first_name  => line[16],
-					:father_middle_name => line[17],
-					:father_last_name   => line[18],
-					:mother_first_name  => line[12],
-					:mother_middle_name => line[13],
-					:mother_maiden_name => line[14],
-					:mother_last_name   => line[15],
+					:first_name  => line['First_Name'],
+					:middle_name => line['Middle_Name'],
+					:last_name   => line['Last_Name'],
+					:father_first_name  => line['Father_First_Name'],
+					:father_middle_name => line['Father_Middle_Name'],
+					:father_last_name   => line['Father_Last_Name'],
+					:mother_first_name  => line['Mother_First_Name'],
+					:mother_middle_name => line['Mother_Middle_Name'],
+					:mother_maiden_name => line['Mother_Maiden_Name'],
+					:mother_last_name   => line['Mother_Last_Name'],
 					:dob => dob
 				},
+				:identifier_attributes => {
+					:state_id_no       => sprintf('%09d',line['Childid']),			#	TODO
+					:subjectid         => line['subjectID'],
+					:ssn               => sprintf('%09d',line['Childid']),							#	TODO
+					:patid             => line['patID'],
+					:case_control_type => line['Type'],
+					:orderno           => line['OrderNo'],
+					:childid           => line['Childid'] 
+				},
 				:subject_type => subject_type,
-#				:race => race,
-				:sex => line[5],
+				:sex => line['sex'],
 				:reference_date => refdate
 			})
 			subject.races = [race]
 
-			Identifier.create!({
-					:subject_id => subject.id,
-					:subjectid => line[4],
-					:ssn => sprintf('%09d',line[0]),							#	TODO
-					:patid => line[1],
-					:case_control_type => line[2],
-					:orderno => line[3],
-					:childid => line[0] 
-				})
+#			Identifier.create!({
+#					:subject_id        => subject.id,
+#					:state_id_no       => sprintf('%09d',line['Childid']),			#	TODO
+#					:subjectid         => line['subjectID'],
+#					:ssn               => sprintf('%09d',line['Childid']),							#	TODO
+#					:patid             => line['patID'],
+#					:case_control_type => line['Type'],
+#					:orderno           => line['OrderNo'],
+#					:childid           => line['Childid'] 
+#				})
 
 			(19..22).each do |i|
-				PhoneNumber.create!({
-					:subject_id    => subject.id,
+#				PhoneNumber.create!({
+				subject.phone_numbers.create!({
+#					:subject_id    => subject.id,
 					:phone_type_id => 1,
 					:phone_number  => line[i]
 				}) unless line[i].blank?
 			end
 
 			options = {
-				:identifier_id => subject.identifier.id,
+#				:identifier_id => subject.identifier.id,
 				:interview_method => InterviewMethod.random(),
 				:interviewer => Person.random(),
 				:language   => Language.random(),
@@ -260,7 +270,8 @@ namespace :db do
 				options[:subject_relationship_other] = 'super unknown god buddy'
 			end
 			
-			Interview.create!(options)
+#			Interview.create!(options)
+			subject.interviews.create!(options)
 			
 #	use Time.parse to parse all dates (better than Date.parse)
 
