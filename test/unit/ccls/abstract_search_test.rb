@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AbstractSearchTest < ActiveSupport::TestCase
+class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 
 	test "should return AbstractSearch" do
 		assert AbstractSearch().is_a?(AbstractSearch)
