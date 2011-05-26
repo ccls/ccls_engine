@@ -14,6 +14,8 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :diagnosis_date )
 	assert_should_not_require_attributes( :diagnosis_id )
 	assert_should_not_require_attributes( :organization_id )
+	assert_should_not_require_attributes( :raf_zip )
+	assert_should_not_require_attributes( :raf_county_id )
 
 #	assert_requires_valid_association( :subject, :as => 'study_subject' )
 
