@@ -1,0 +1,77 @@
+#use the "- " prefix to force an array rather than an unordered hash
+
+-
+  :label: Identifying Data
+  :controller: IdentifyingDatasController
+  :edit:  :edit_abstract_identifying_data_path
+  :show:  :abstract_identifying_data_path
+-
+  :label: Bone Marrow
+  :controller: BoneMarrowsController
+  :edit:  :edit_abstract_bone_marrow_path
+  :show:  :abstract_bone_marrow_path
+-
+  :label: Flow Cytometry
+  :controller: FlowCytometriesController
+  :edit:  :edit_abstract_flow_cytometry_path
+  :show:  :abstract_flow_cytometry_path
+-
+  :label: TDT
+  :controller: TdtsController
+  :edit:  :edit_abstract_tdt_path
+  :show:  :abstract_tdt_path
+-
+  :label: Histocompatibility
+  :controller: HistocompatibilitiesController
+  :edit:  :edit_abstract_histocompatibility_path
+  :show:  :abstract_histocompatibility_path
+-
+  :label: Cytogenetics
+  :controller: CytogeneticsController
+  :edit:  :edit_abstract_cytogenetic_path
+  :show:  :abstract_cytogenetic_path
+-
+  :label: CBC
+  :controller: CbcsController
+  :edit:  :edit_abstract_cbc_path
+  :show:  :abstract_cbc_path
+-
+  :label: Cerebrospinal Fluid
+  :controller: CerebrospinalFluidsController
+  :edit:  :edit_abstract_cerebrospinal_fluid_path
+  :show:  :abstract_cerebrospinal_fluid_path
+-
+  :label: Chest Imaging
+  :controller: ChestImagingsController
+  :edit:  :edit_abstract_chest_imaging_path
+  :show:  :abstract_chest_imaging_path
+-
+  :label: "H &amp; P / Discharge"
+  :controller: DischargesController
+  :edit:  :edit_abstract_discharge_path
+  :show:  :abstract_discharge_path
+-
+  :label: Clinical Chemo Protocol
+  :controller: ClinicalChemoProtocolsController
+  :edit:  :edit_abstract_clinical_chemo_protocol_path
+  :show:  :abstract_clinical_chemo_protocol_path
+-
+  :label: Response to Therapy
+  :controller: TherapyResponsesController
+  :edit:  :edit_abstract_therapy_response_path
+  :show:  :abstract_therapy_response_path
+-
+  :label: Diagnosis
+  :controller: DiagnosesController
+  :edit:  :edit_abstract_diagnosis_path
+  :show:  :abstract_diagnosis_path
+-
+  :label: Checklist
+  :controller: ChecklistsController
+  :edit:  :edit_abstract_checklist_path
+  :show:  :abstract_checklist_path
+-
+  :label: Name
+  :controller: NamesController
+  :edit:  :edit_abstract_name_path
+  :show:  :abstract_name_path

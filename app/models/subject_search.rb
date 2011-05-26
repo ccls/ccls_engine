@@ -3,10 +3,11 @@ class SubjectSearch < Search
 
 	self.searchable_attributes += [ :races, :types, :vital_statuses, :q,
 		:sample_outcome, :interview_outcome,
-		:projects, :has_gift_card, :patid
+		:projects, :has_gift_card, :patid,
+		:abstracts_count
 	]
 
-	self.attr_accessors += [ :search_gift_cards ]
+	self.attr_accessors += [ :search_gift_cards, :abstracts_count ]
 
 #	self.valid_orders.merge!({  #	NO!
 #	@valid_orders.merge!({      #	NO!
@@ -21,7 +22,7 @@ class SubjectSearch < Search
 		:sample_outcome => 'homex_outcomes.sample_outcome_id',
 		:sample_outcome_on => 'homex_outcomes.sample_outcome_on',
 		:patid => 'identifiers.patid',
-#		:abstracts_count => nil,
+		:abstracts_count => nil,
 		:interview_outcome_on => 'homex_outcomes.interview_outcome_on',
 		:sample_sent_on => nil,
 		:sample_received_on => nil,
@@ -240,5 +241,15 @@ private	#	THIS IS REQUIRED
 			[conditions.compact,values].flatten(1) unless conditions.empty?
 		end #	unless projects.blank?
 	end	#	def projects_conditions
+
+	def abstracts_count_conditions
+		unless @abstracts_count.blank?
+			case @abstracts_count.to_s
+				when '0' then ["abstracts_count <= 0"]
+				when '1' then ["abstracts_count = 1"]
+				when '2' then ["abstracts_count = 2"]
+			end
+		end
+	end
 
 end
