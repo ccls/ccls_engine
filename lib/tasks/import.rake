@@ -1,5 +1,8 @@
 require 'fastercsv'
 require 'chronic'
+
+BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/Database/DataLists/jake/"
+
 namespace :destroy do
 
 	desc "Destroy subject and address data"
@@ -50,7 +53,7 @@ namespace :import do
 		error_file = File.open('homex_identifiers_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/homex_identifiers.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/homex_identifiers.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -105,7 +108,7 @@ namespace :import do
 		error_file = File.open('homex_subjects_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/homex_subjects.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/homex_subjects.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -148,7 +151,7 @@ namespace :import do
 		error_file = File.open('homex_piis_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/homex_piis.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/homex_piis.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -201,7 +204,7 @@ namespace :import do
 		error_file = File.open('homex_enrollments_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/homex_enrollments.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/homex_enrollments.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -288,7 +291,7 @@ namespace :import do
 		error_file = File.open('homex_addresses_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/homex_addresses.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/homex_addresses.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -354,7 +357,7 @@ namespace :import do
 		error_file = File.open('homex_interviews_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/homex_interviews.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/homex_interviews.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -400,7 +403,7 @@ namespace :import do
 		error_file = File.open('homex_outcomes_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/homex_outcomes.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/homex_outcomes.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -476,7 +479,7 @@ namespace :import do
 		error_file = File.open('contacts_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/contacts.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/contacts.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -500,7 +503,7 @@ namespace :import do
 		error_file = File.open('subjects_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/subjects.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/subjects.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -533,7 +536,7 @@ namespace :import do
 		error_file = File.open('piis_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/piis.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/piis.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -587,7 +590,7 @@ namespace :import do
 		error_file = File.open('identifiers_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/identifiers.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/identifiers.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -629,7 +632,7 @@ namespace :import do
 		error_file = File.open('enrollments_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/enrollments.csv', 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/enrollments.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
