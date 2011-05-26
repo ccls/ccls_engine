@@ -3,36 +3,31 @@ require 'test_helper'
 class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-#	assert_should_have_many(:interviews)
-
-	assert_should_not_require_attributes( :study_subject_id )
-
-#	assert_should_initially_belong_to(:subject)
-
-#	assert_requires_valid_association( :subject, :as => 'study_subject' )
 
 	assert_should_require_attributes( :case_control_type )
 	assert_should_require_attributes( :childid )
 	assert_should_require_attributes( :orderno )
 	assert_should_require_attributes( :patid )
-#	assert_should_require_attributes( :ssn )
-	assert_should_not_require_attributes( :ssn )
-#	assert_should_require_attributes( :subjectid )
-	assert_should_not_require_attributes( :subjectid )
-#	assert_should_require_attributes( :study_subject_id )
-	assert_should_require_unique_attributes( :childid )
-	assert_should_require_unique_attributes( :ssn )
-#	assert_should_require_unique_attributes( :study_subject_id )
-	assert_should_require_unique_attributes( :subjectid )
+
+	assert_should_require_unique_attribute( :childid )
+	assert_should_require_unique_attribute( :ssn )
+	assert_should_require_unique_attribute( :subjectid )
 	assert_should_require_unique_attribute( :patid, 
 		:scope => [:orderno,:case_control_type] )
+	assert_should_require_unique_attribute( :state_id_no )
+	assert_should_require_unique_attribute( :icf_master_id )
+
+	assert_should_not_require_attributes( :study_subject_id )
+	assert_should_not_require_attributes( :ssn )
+	assert_should_not_require_attributes( :subjectid )
 	assert_should_not_require_attributes( :lab_no )
 	assert_should_not_require_attributes( :related_childid )
 	assert_should_not_require_attributes( :related_case_childid )
 	assert_should_not_require_attributes( :hospital_no )
-#	assert_should_require_attributes( :state_id_no )
 	assert_should_not_require_attributes( :state_id_no )
-	assert_should_require_unique_attributes( :state_id_no )
+	assert_should_not_require_attributes( :matchingid )
+	assert_should_not_require_attributes( :familyid )
+
 	with_options :maximum => 250 do |o|
 		o.assert_should_require_attribute_length( :state_id_no )
 		o.assert_should_require_attribute_length( :case_control_type )
@@ -40,8 +35,6 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		o.assert_should_require_attribute_length( :related_childid )
 		o.assert_should_require_attribute_length( :related_case_childid )
 	end
-	assert_should_not_require_attributes( :matchingid )
-	assert_should_not_require_attributes( :familyid )
 
 	assert_should_require_attribute_length :childidwho, :maximum => 10
 	assert_should_require_attribute_length :newid, :maximum => 6
@@ -55,7 +48,6 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 #	assert_should_require_attribute_length :studyid, :maximum => 14
 #	assert_should_require_attribute_length :studyid_nohyphen, :maximum => 12
 #	assert_should_require_attribute_length :studyid_intonly_nohyphen, :maximum => 12
-
 
 #	assert_should_protect_attributes(:subjectid)
 
@@ -80,8 +72,6 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 			assert object.errors.on(:study_subject_id)
 		end
 	end
-
-
 
 	test "should pad subjectid with leading zeros" do
 		identifier = Factory.build(:identifier)

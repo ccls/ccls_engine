@@ -4,11 +4,6 @@
 #	*	state_id_no ( unique )
 class Identifier < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
-#	has_many :interviews
-
-#	validates_presence_of   :study_subject_id
-#	validates_presence_of   :subject
-#	validates_uniqueness_of :study_subject_id
 
 	#	because subject accepts_nested_attributes for pii 
 	#	we can't require subject_id on create
@@ -30,8 +25,11 @@ class Identifier < Shared
 #	validates_presence_of   :subjectid
 	validates_uniqueness_of :subjectid, :allow_nil => true
 
+	validates_uniqueness_of :icf_master_id, :allow_nil => true
+
 #	validates_presence_of   :state_id_no
 	validates_uniqueness_of :state_id_no, :allow_nil => true
+
 	with_options :allow_blank => true do |blank|
 		blank.with_options :maximum => 250 do |o|
 			o.validates_length_of :state_id_no
