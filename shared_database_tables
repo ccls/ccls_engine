@@ -1,4 +1,356 @@
 
+Table: abstracts
++--------------------------------------------+---------------+------+-----+---------+----------------+
+| Field                                      | Type          | Null | Key | Default | Extra          |
++--------------------------------------------+---------------+------+-----+---------+----------------+
+| id                                         | int(11)       | NO   | PRI | NULL    | auto_increment |
+| subject_id                                 | int(11)       | YES  |     | NULL    |                |
+| response_day14or28_flag                    | int(11)       | YES  |     | NULL    |                |
+| received_bone_marrow_biopsy                | int(11)       | YES  |     | NULL    |                |
+| received_h_and_p                           | int(11)       | YES  |     | NULL    |                |
+| received_other_reports                     | int(11)       | YES  |     | NULL    |                |
+| received_discharge_summary                 | int(11)       | YES  |     | NULL    |                |
+| received_chemo_protocol                    | int(11)       | YES  |     | NULL    |                |
+| received_resp_to_therapy                   | int(11)       | YES  |     | NULL    |                |
+| received_specify_other_reports             | text          | YES  |     | NULL    |                |
+| received_bone_marrow_aspirate              | int(11)       | YES  |     | NULL    |                |
+| received_flow_cytometry                    | int(11)       | YES  |     | NULL    |                |
+| received_ploidy                            | int(11)       | YES  |     | NULL    |                |
+| received_hla_typing                        | int(11)       | YES  |     | NULL    |                |
+| received_cytogenetics                      | int(11)       | YES  |     | NULL    |                |
+| received_cbc                               | int(11)       | YES  |     | NULL    |                |
+| received_csf                               | int(11)       | YES  |     | NULL    |                |
+| received_chest_xray                        | int(11)       | YES  |     | NULL    |                |
+| response_report_found_day_14               | int(11)       | YES  |     | NULL    |                |
+| response_report_found_day_28               | int(11)       | YES  |     | NULL    |                |
+| response_report_found_day_7                | int(11)       | YES  |     | NULL    |                |
+| response_report_on_day_14                  | date          | YES  |     | NULL    |                |
+| response_report_on_day_28                  | date          | YES  |     | NULL    |                |
+| response_report_on_day_7                   | date          | YES  |     | NULL    |                |
+| response_classification_day_14             | varchar(2)    | YES  |     | NULL    |                |
+| response_classification_day_28             | varchar(2)    | YES  |     | NULL    |                |
+| response_classification_day_7              | varchar(2)    | YES  |     | NULL    |                |
+| response_blasts_day_14                     | int(11)       | YES  |     | NULL    |                |
+| response_blasts_day_28                     | int(11)       | YES  |     | NULL    |                |
+| response_blasts_day_7                      | int(11)       | YES  |     | NULL    |                |
+| response_blasts_units_day_14               | varchar(15)   | YES  |     | NULL    |                |
+| response_blasts_units_day_28               | varchar(15)   | YES  |     | NULL    |                |
+| response_blasts_units_day_7                | varchar(15)   | YES  |     | NULL    |                |
+| response_in_remission_day_14               | int(11)       | YES  |     | NULL    |                |
+| marrow_biopsy_report_found                 | int(11)       | YES  |     | NULL    |                |
+| marrow_biopsy_on                           | date          | YES  |     | NULL    |                |
+| marrow_biopsy_diagnosis                    | text          | YES  |     | NULL    |                |
+| marrow_aspirate_report_found               | int(11)       | YES  |     | NULL    |                |
+| marrow_aspirate_taken_on                   | date          | YES  |     | NULL    |                |
+| marrow_aspirate_diagnosis                  | text          | YES  |     | NULL    |                |
+| response_marrow_kappa_day_14               | int(11)       | YES  |     | NULL    |                |
+| response_marrow_kappa_day_7                | int(11)       | YES  |     | NULL    |                |
+| response_marrow_lambda_day_14              | int(11)       | YES  |     | NULL    |                |
+| response_marrow_lambda_day_7               | int(11)       | YES  |     | NULL    |                |
+| cbc_report_found                           | int(11)       | YES  |     | NULL    |                |
+| cbc_report_on                              | date          | YES  |     | NULL    |                |
+| cbc_white_blood_count                      | decimal(10,0) | YES  |     | NULL    |                |
+| cbc_percent_blasts                         | int(11)       | YES  |     | NULL    |                |
+| cbc_number_blasts                          | int(11)       | YES  |     | NULL    |                |
+| cbc_hemoglobin_level                       | decimal(10,0) | YES  |     | NULL    |                |
+| cbc_platelet_count                         | int(11)       | YES  |     | NULL    |                |
+| cerebrospinal_fluid_report_found           | int(11)       | YES  |     | NULL    |                |
+| csf_report_on                              | date          | YES  |     | NULL    |                |
+| csf_white_blood_count                      | int(11)       | YES  |     | NULL    |                |
+| csf_white_blood_count_text                 | text          | YES  |     | NULL    |                |
+| csf_red_blood_count                        | int(11)       | YES  |     | NULL    |                |
+| csf_red_blood_count_text                   | varchar(255)  | YES  |     | NULL    |                |
+| blasts_are_present                         | varchar(255)  | YES  |     | NULL    |                |
+| number_of_blasts                           | int(11)       | YES  |     | NULL    |                |
+| peripheral_blood_in_csf                    | varchar(255)  | YES  |     | NULL    |                |
+| csf_comment                                | text          | YES  |     | NULL    |                |
+| chemo_protocol_report_found                | int(11)       | YES  |     | NULL    |                |
+| patient_on_chemo_protocol                  | int(11)       | YES  |     | NULL    |                |
+| chemo_protocol_name                        | varchar(255)  | YES  |     | NULL    |                |
+| chemo_protocol_agent_description           | text          | YES  |     | NULL    |                |
+| response_cd10_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd10_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd13_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd13_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd14_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd14_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd15_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd15_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd19_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd19_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd19cd10_day_14                   | varchar(10)   | YES  |     | NULL    |                |
+| response_cd19cd10_day_7                    | varchar(10)   | YES  |     | NULL    |                |
+| response_cd1a_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd2a_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd20_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd20_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd3a_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd3_day_7                         | varchar(10)   | YES  |     | NULL    |                |
+| response_cd33_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd33_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd34_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd34_day_7                        | varchar(10)   | YES  |     | NULL    |                |
+| response_cd4a_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd5a_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd56_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd61_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd7a_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_cd8a_day_14                       | varchar(10)   | YES  |     | NULL    |                |
+| response_day30_is_in_remission             | int(11)       | YES  |     | NULL    |                |
+| chest_imaging_report_found                 | int(11)       | YES  |     | NULL    |                |
+| chest_imaging_report_on                    | date          | YES  |     | NULL    |                |
+| mediastinal_mass_present                   | int(11)       | YES  |     | NULL    |                |
+| chest_imaging_comment                      | text          | YES  |     | NULL    |                |
+| received_chest_ct                          | int(11)       | YES  |     | NULL    |                |
+| chest_ct_taken_on                          | date          | YES  |     | NULL    |                |
+| chest_ct_medmass_present                   | int(11)       | YES  |     | NULL    |                |
+| cytogen_trisomy10                          | int(11)       | YES  |     | NULL    |                |
+| cytogen_trisomy17                          | int(11)       | YES  |     | NULL    |                |
+| cytogen_trisomy21                          | int(11)       | YES  |     | NULL    |                |
+| is_down_syndrome_phenotype                 | int(11)       | YES  |     | NULL    |                |
+| cytogen_trisomy4                           | int(11)       | YES  |     | NULL    |                |
+| cytogen_trisomy5                           | int(11)       | YES  |     | NULL    |                |
+| cytogen_report_found                       | int(11)       | YES  |     | NULL    |                |
+| cytogen_report_on                          | date          | YES  |     | NULL    |                |
+| conventional_karyotype_results             | varchar(255)  | YES  |     | NULL    |                |
+| normal_cytogen                             | varchar(5)    | YES  |     | NULL    |                |
+| is_cytogen_hosp_fish_t1221_done            | varchar(5)    | YES  |     | NULL    |                |
+| is_karyotype_normal                        | varchar(5)    | YES  |     | NULL    |                |
+| number_normal_metaphase_karyotype          | int(11)       | YES  |     | NULL    |                |
+| number_metaphase_tested_karyotype          | int(11)       | YES  |     | NULL    |                |
+| cytogen_comment                            | text          | YES  |     | NULL    |                |
+| is_verification_complete                   | tinyint(1)    | YES  |     | NULL    |                |
+| discharge_summary                          | text          | YES  |     | NULL    |                |
+| diagnosis_is_b_all                         | int(11)       | YES  |     | NULL    |                |
+| diagnosis_is_t_all                         | int(11)       | YES  |     | NULL    |                |
+| diagnosis_is_all                           | int(11)       | YES  |     | NULL    |                |
+| diagnosis_all_type_id                      | int(11)       | YES  |     | NULL    |                |
+| diagnosis_is_cml                           | int(11)       | YES  |     | NULL    |                |
+| diagnosis_is_cll                           | int(11)       | YES  |     | NULL    |                |
+| diagnosis_is_aml                           | int(11)       | YES  |     | NULL    |                |
+| diagnosis_aml_type_id                      | int(11)       | YES  |     | NULL    |                |
+| diagnosis_is_other                         | int(11)       | YES  |     | NULL    |                |
+| flow_cyto_report_found                     | int(11)       | YES  |     | NULL    |                |
+| received_flow_cyto_day_14                  | int(11)       | YES  |     | NULL    |                |
+| received_flow_cyto_day_7                   | int(11)       | YES  |     | NULL    |                |
+| flow_cyto_report_on                        | date          | YES  |     | NULL    |                |
+| response_flow_cyto_day_14_on               | date          | YES  |     | NULL    |                |
+| response_flow_cyto_day_7_on                | date          | YES  |     | NULL    |                |
+| flow_cyto_cd10                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_igm                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_igm_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_bm_kappa                         | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_bm_kappa_text                    | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_bm_lambda                        | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_bm_lambda_text                   | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd10_19                          | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd10_19_text                     | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd10_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd19                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd19_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd20                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd20_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd21                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd21_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd22                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd22_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd23                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd23_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd24                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd24_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd40                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd40_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_surface_ig                       | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_surface_ig_text                  | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd1a                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd1a_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd2                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd2_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd3                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd3_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd4                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd4_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd5                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd5_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd7                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd7_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd8                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd8_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd3_cd4                          | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd3_cd4_text                     | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd3_cd8                          | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd3_cd8_text                     | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd11b                            | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd11b_text                       | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd11c                            | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd11c_text                       | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd13                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd13_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd15                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd15_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd33                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd33_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd41                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd41_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cdw65                            | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cdw65_text                       | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd34                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd34_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd61                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd61_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd14                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd14_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_glycoa                           | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_glycoa_text                      | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd16                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd16_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd56                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd56_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd57                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd57_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd9                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd9_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd25                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd25_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd38                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd38_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd45                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd45_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_cd71                             | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_cd71_text                        | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_tdt                              | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_tdt_text                         | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_hladr                            | varchar(10)   | YES  |     | NULL    |                |
+| flow_cyto_hladr_text                       | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_1_name              | varchar(20)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_1                   | varchar(4)    | YES  |     | NULL    |                |
+| flow_cyto_other_marker_1_text              | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_2_name              | varchar(20)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_2                   | varchar(4)    | YES  |     | NULL    |                |
+| flow_cyto_other_marker_2_text              | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_3_name              | varchar(20)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_3                   | varchar(4)    | YES  |     | NULL    |                |
+| flow_cyto_other_marker_3_text              | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_4_name              | varchar(20)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_4                   | varchar(4)    | YES  |     | NULL    |                |
+| flow_cyto_other_marker_4_text              | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_5_name              | varchar(20)   | YES  |     | NULL    |                |
+| flow_cyto_other_marker_5                   | varchar(4)    | YES  |     | NULL    |                |
+| flow_cyto_other_marker_5_text              | varchar(50)   | YES  |     | NULL    |                |
+| flow_cyto_remarks                          | text          | YES  |     | NULL    |                |
+| tdt_often_found_flow_cytometry             | int(11)       | YES  |     | NULL    |                |
+| tdt_report_found                           | int(11)       | YES  |     | NULL    |                |
+| tdt_report_on                              | date          | YES  |     | NULL    |                |
+| tdt_positive_or_negative                   | int(11)       | YES  |     | NULL    |                |
+| tdt_numerical_result                       | int(11)       | YES  |     | NULL    |                |
+| tdt_found_in_flow_cyto_chart               | tinyint(1)    | YES  |     | NULL    |                |
+| tdt_found_in_separate_report               | tinyint(1)    | YES  |     | NULL    |                |
+| response_comment_day_7                     | text          | YES  |     | NULL    |                |
+| response_comment_day_14                    | text          | YES  |     | NULL    |                |
+| cytogen_karyotype_done                     | int(11)       | YES  |     | NULL    |                |
+| cytogen_hospital_fish_done                 | int(11)       | YES  |     | NULL    |                |
+| hospital_fish_results                      | varchar(255)  | YES  |     | NULL    |                |
+| cytogen_ucb_fish_done                      | int(11)       | YES  |     | NULL    |                |
+| ucb_fish_results                           | varchar(50)   | YES  |     | NULL    |                |
+| response_hladr_day_14                      | varchar(10)   | YES  |     | NULL    |                |
+| response_hladr_day_7                       | varchar(10)   | YES  |     | NULL    |                |
+| histo_report_found                         | varchar(5)    | YES  |     | NULL    |                |
+| histo_report_on                            | date          | YES  |     | NULL    |                |
+| histo_report_results                       | text          | YES  |     | NULL    |                |
+| diagnosed_on                               | date          | YES  |     | NULL    |                |
+| treatment_began_on                         | date          | YES  |     | NULL    |                |
+| response_is_inconclusive_day_14            | int(11)       | YES  |     | NULL    |                |
+| response_is_inconclusive_day_21            | int(11)       | YES  |     | NULL    |                |
+| response_is_inconclusive_day_28            | int(11)       | YES  |     | NULL    |                |
+| response_is_inconclusive_day_7             | int(11)       | YES  |     | NULL    |                |
+| abstractor_id                              | int(11)       | YES  |     | NULL    |                |
+| abstracted_on                              | date          | YES  |     | NULL    |                |
+| reviewer_id                                | int(11)       | YES  |     | NULL    |                |
+| reviewed_on                                | date          | YES  |     | NULL    |                |
+| data_entry_done_on                         | date          | YES  |     | NULL    |                |
+| flow_cyto_num_results_available            | int(11)       | YES  |     | NULL    |                |
+| response_other1_value_day_14               | varchar(4)    | YES  |     | NULL    |                |
+| response_other1_value_day_7                | varchar(4)    | YES  |     | NULL    |                |
+| response_other2_value_day_14               | varchar(4)    | YES  |     | NULL    |                |
+| response_other2_value_day_7                | varchar(4)    | YES  |     | NULL    |                |
+| response_other3_value_day_14               | varchar(4)    | YES  |     | NULL    |                |
+| response_other4_value_day_14               | varchar(4)    | YES  |     | NULL    |                |
+| response_other5_value_day_14               | varchar(4)    | YES  |     | NULL    |                |
+| h_and_p_reports_found                      | int(11)       | YES  |     | NULL    |                |
+| is_h_and_p_report_found                    | tinyint(1)    | YES  |     | NULL    |                |
+| h_and_p_reports_on                         | date          | YES  |     | NULL    |                |
+| physical_neuro                             | varchar(5)    | YES  |     | NULL    |                |
+| physical_other_soft_2                      | varchar(5)    | YES  |     | NULL    |                |
+| vital_status_id                            | int(11)       | YES  |     | NULL    |                |
+| dod                                        | date          | YES  |     | NULL    |                |
+| discharge_summary_found                    | int(11)       | YES  |     | NULL    |                |
+| physical_gingival                          | varchar(5)    | YES  |     | NULL    |                |
+| physical_leukemic_skin                     | varchar(5)    | YES  |     | NULL    |                |
+| physical_lymph                             | varchar(5)    | YES  |     | NULL    |                |
+| physical_spleen                            | varchar(5)    | YES  |     | NULL    |                |
+| physical_testicle                          | varchar(5)    | YES  |     | NULL    |                |
+| physical_other_soft                        | varchar(5)    | YES  |     | NULL    |                |
+| ploidy_report_found                        | int(11)       | YES  |     | NULL    |                |
+| ploidy_report_on                           | date          | YES  |     | NULL    |                |
+| is_hypodiploid                             | varchar(5)    | YES  |     | NULL    |                |
+| is_hyperdiploid                            | varchar(5)    | YES  |     | NULL    |                |
+| is_diploid                                 | varchar(5)    | YES  |     | NULL    |                |
+| dna_index                                  | varchar(5)    | YES  |     | NULL    |                |
+| other_dna_measure                          | varchar(15)   | YES  |     | NULL    |                |
+| ploidy_comment                             | varchar(100)  | YES  |     | NULL    |                |
+| hepatomegaly_present                       | int(11)       | YES  |     | NULL    |                |
+| splenomegaly_present                       | int(11)       | YES  |     | NULL    |                |
+| response_comment                           | text          | YES  |     | NULL    |                |
+| response_other1_name_day_14                | varchar(25)   | YES  |     | NULL    |                |
+| response_other1_name_day_7                 | varchar(25)   | YES  |     | NULL    |                |
+| response_other2_name_day_14                | varchar(25)   | YES  |     | NULL    |                |
+| response_other2_name_day_7                 | varchar(25)   | YES  |     | NULL    |                |
+| response_other3_name_day_14                | varchar(25)   | YES  |     | NULL    |                |
+| response_other4_name_day_14                | varchar(25)   | YES  |     | NULL    |                |
+| response_other5_name_day_14                | varchar(25)   | YES  |     | NULL    |                |
+| fab_classification                         | varchar(50)   | YES  |     | NULL    |                |
+| diagnosis_icdo_description                 | varchar(55)   | YES  |     | NULL    |                |
+| diagnosis_icdo_number                      | varchar(50)   | YES  |     | NULL    |                |
+| cytogen_t1221                              | varchar(9)    | YES  |     | NULL    |                |
+| cytogen_inv16                              | varchar(9)    | YES  |     | NULL    |                |
+| cytogen_t119                               | varchar(9)    | YES  |     | NULL    |                |
+| cytogen_t821                               | varchar(9)    | YES  |     | NULL    |                |
+| cytogen_t1517                              | varchar(9)    | YES  |     | NULL    |                |
+| cytogen_is_hyperdiploidy                   | varchar(5)    | YES  |     | NULL    |                |
+| cytogen_chromosome_number                  | varchar(3)    | YES  |     | NULL    |                |
+| cytogen_other_trans_1                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_2                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_3                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_4                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_5                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_6                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_7                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_8                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_9                      | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_other_trans_10                     | varchar(35)   | YES  |     | NULL    |                |
+| cytogen_t922                               | varchar(50)   | YES  |     | NULL    |                |
+| response_fab_subtype                       | varchar(15)   | YES  |     | NULL    |                |
+| response_tdt_day_14                        | varchar(10)   | YES  |     | NULL    |                |
+| response_tdt_day_7                         | varchar(10)   | YES  |     | NULL    |                |
+| abstract_version_id                        | int(11)       | YES  |     | NULL    |                |
+| height_at_diagnosis                        | float         | YES  |     | NULL    |                |
+| weight_at_diagnosis                        | float         | YES  |     | NULL    |                |
+| hyperdiploidy_by                           | varchar(255)  | YES  |     | NULL    |                |
+| cbc_percent_blasts_unknown                 | tinyint(1)    | YES  |     | 0       |                |
+| response_day_7_days_since_treatment_began  | int(11)       | YES  |     | NULL    |                |
+| response_day_7_days_since_diagnosis        | int(11)       | YES  |     | NULL    |                |
+| response_day_14_days_since_treatment_began | int(11)       | YES  |     | NULL    |                |
+| response_day_14_days_since_diagnosis       | int(11)       | YES  |     | NULL    |                |
+| response_day_28_days_since_treatment_began | int(11)       | YES  |     | NULL    |                |
+| response_day_28_days_since_diagnosis       | int(11)       | YES  |     | NULL    |                |
+| entry_1_by_uid                             | varchar(255)  | YES  |     | NULL    |                |
+| entry_2_by_uid                             | varchar(255)  | YES  |     | NULL    |                |
+| merged_by_uid                              | varchar(255)  | YES  |     | NULL    |                |
+| discharge_summary_found_on                 | date          | YES  |     | NULL    |                |
+| created_at                                 | datetime      | YES  |     | NULL    |                |
+| updated_at                                 | datetime      | YES  |     | NULL    |                |
++--------------------------------------------+---------------+------+-----+---------+----------------+
+
 Table: address_types
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
@@ -234,11 +586,11 @@ Table: enrollments
 | is_closed                 | tinyint(1)   | YES  |     | NULL    |                |
 | reason_closed             | varchar(255) | YES  |     | NULL    |                |
 | notes                     | text         | YES  |     | NULL    |                |
-| created_at                | datetime     | YES  |     | NULL    |                |
-| updated_at                | datetime     | YES  |     | NULL    |                |
 | document_version_id       | int(11)      | YES  |     | NULL    |                |
 | project_outcome_id        | int(11)      | YES  |     | NULL    |                |
 | project_outcome_on        | date         | YES  |     | NULL    |                |
+| created_at                | datetime     | YES  |     | NULL    |                |
+| updated_at                | datetime     | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
 
 Table: exports
@@ -461,16 +813,16 @@ Table: identifiers
 | id                       | int(11)      | NO   | PRI | NULL    | auto_increment |
 | study_subject_id         | int(11)      | YES  | UNI | NULL    |                |
 | childid                  | int(11)      | YES  |     | NULL    |                |
-| patid                    | int(11)      | YES  | MUL | NULL    |                |
+| patid                    | varchar(4)   | YES  | MUL | NULL    |                |
 | case_control_type        | varchar(1)   | YES  |     | NULL    |                |
 | orderno                  | int(11)      | YES  |     | NULL    |                |
 | lab_no                   | varchar(255) | YES  |     | NULL    |                |
 | related_childid          | varchar(255) | YES  |     | NULL    |                |
 | related_case_childid     | varchar(255) | YES  |     | NULL    |                |
 | ssn                      | varchar(255) | YES  | UNI | NULL    |                |
+| subjectid                | varchar(6)   | YES  | UNI | NULL    |                |
 | created_at               | datetime     | YES  |     | NULL    |                |
 | updated_at               | datetime     | YES  |     | NULL    |                |
-| subjectid                | varchar(6)   | YES  | UNI | NULL    |                |
 | matchingid               | varchar(6)   | YES  |     | NULL    |                |
 | familyid                 | varchar(6)   | YES  |     | NULL    |                |
 | state_id_no              | varchar(255) | YES  | UNI | NULL    |                |
@@ -484,7 +836,7 @@ Table: identifiers
 | accession_no             | varchar(25)  | YES  |     | NULL    |                |
 | studyid_nohyphen         | varchar(12)  | YES  |     | NULL    |                |
 | studyid_intonly_nohyphen | varchar(12)  | YES  |     | NULL    |                |
-| icf_master_id            | varchar(9)   | YES  |     | NULL    |                |
+| icf_master_id            | varchar(9)   | YES  | UNI | NULL    |                |
 +--------------------------+--------------+------+-----+---------+----------------+
 
 Table: imports
@@ -558,9 +910,9 @@ Table: instrument_versions
 | ended_use_on       | date         | YES  |     | NULL    |                |
 | code               | varchar(255) | NO   | UNI | NULL    |                |
 | description        | varchar(255) | YES  | UNI | NULL    |                |
+| instrument_id      | int(11)      | YES  |     | NULL    |                |
 | created_at         | datetime     | YES  |     | NULL    |                |
 | updated_at         | datetime     | YES  |     | NULL    |                |
-| instrument_id      | int(11)      | YES  |     | NULL    |                |
 +--------------------+--------------+------+-----+---------+----------------+
 
 Table: instruments
@@ -622,9 +974,9 @@ Table: interviews
 | respondent_last_name             | varchar(255) | YES  |     | NULL    |                |
 | subject_relationship_id          | int(11)      | YES  |     | NULL    |                |
 | subject_relationship_other       | varchar(255) | YES  |     | NULL    |                |
+| intro_letter_sent_on             | date         | YES  |     | NULL    |                |
 | created_at                       | datetime     | YES  |     | NULL    |                |
 | updated_at                       | datetime     | YES  |     | NULL    |                |
-| intro_letter_sent_on             | date         | YES  |     | NULL    |                |
 | study_subject_id                 | int(11)      | YES  | MUL | NULL    |                |
 | consent_read_over_phone          | tinyint(1)   | YES  |     | NULL    |                |
 | respondent_requested_new_consent | tinyint(1)   | YES  |     | NULL    |                |
@@ -661,9 +1013,9 @@ Table: operational_event_types
 | project_id     | int(11)      | YES  |     | NULL    |                |
 | code           | varchar(255) | NO   | UNI | NULL    |                |
 | description    | varchar(255) | YES  | UNI | NULL    |                |
+| event_category | varchar(255) | YES  |     | NULL    |                |
 | created_at     | datetime     | YES  |     | NULL    |                |
 | updated_at     | datetime     | YES  |     | NULL    |                |
-| event_category | varchar(255) | YES  |     | NULL    |                |
 +----------------+--------------+------+-----+---------+----------------+
 
 Table: operational_events
@@ -672,11 +1024,11 @@ Table: operational_events
 +---------------------------+--------------+------+-----+---------+----------------+
 | id                        | int(11)      | NO   | PRI | NULL    | auto_increment |
 | operational_event_type_id | int(11)      | YES  |     | NULL    |                |
-| created_at                | datetime     | YES  |     | NULL    |                |
-| updated_at                | datetime     | YES  |     | NULL    |                |
 | occurred_on               | date         | YES  |     | NULL    |                |
 | enrollment_id             | int(11)      | YES  |     | NULL    |                |
 | description               | varchar(255) | YES  |     | NULL    |                |
+| created_at                | datetime     | YES  |     | NULL    |                |
+| updated_at                | datetime     | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
 
 Table: organizations
@@ -685,11 +1037,11 @@ Table: organizations
 +------------+--------------+------+-----+---------+----------------+
 | id         | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position   | int(11)      | YES  |     | NULL    |                |
-| code       | varchar(15)  | YES  | UNI | NULL    |                |
+| code       | varchar(15)  | NO   | UNI | NULL    |                |
 | name       | varchar(255) | YES  | UNI | NULL    |                |
+| person_id  | int(11)      | YES  |     | NULL    |                |
 | created_at | datetime     | YES  |     | NULL    |                |
 | updated_at | datetime     | YES  |     | NULL    |                |
-| person_id  | int(11)      | YES  |     | NULL    |                |
 +------------+--------------+------+-----+---------+----------------+
 
 Table: packages
@@ -714,9 +1066,9 @@ Table: patients
 | study_subject_id             | int(11)      | YES  | UNI | NULL    |                |
 | diagnosis_date               | date         | YES  |     | NULL    |                |
 | diagnosis_id                 | int(11)      | YES  |     | NULL    |                |
+| organization_id              | int(11)      | YES  | MUL | NULL    |                |
 | created_at                   | datetime     | YES  |     | NULL    |                |
 | updated_at                   | datetime     | YES  |     | NULL    |                |
-| organization_id              | int(11)      | YES  | MUL | NULL    |                |
 | admit_date                   | date         | YES  |     | NULL    |                |
 | treatment_began_on           | date         | YES  |     | NULL    |                |
 | sample_was_collected         | tinyint(1)   | YES  |     | NULL    |                |
@@ -734,10 +1086,10 @@ Table: people
 | position       | int(11)      | YES  |     | NULL    |                |
 | first_name     | varchar(255) | YES  |     | NULL    |                |
 | last_name      | varchar(255) | YES  |     | NULL    |                |
-| created_at     | datetime     | YES  |     | NULL    |                |
-| updated_at     | datetime     | YES  |     | NULL    |                |
 | honorific      | varchar(20)  | YES  |     | NULL    |                |
 | person_type_id | int(11)      | YES  |     | NULL    |                |
+| created_at     | datetime     | YES  |     | NULL    |                |
+| updated_at     | datetime     | YES  |     | NULL    |                |
 +----------------+--------------+------+-----+---------+----------------+
 
 Table: phone_numbers
@@ -823,7 +1175,7 @@ Table: projects
 | position             | int(11)      | YES  |     | NULL    |                |
 | began_on             | date         | YES  |     | NULL    |                |
 | ended_on             | date         | YES  |     | NULL    |                |
-| code                 | varchar(255) | YES  | UNI | NULL    |                |
+| code                 | varchar(255) | NO   | UNI | NULL    |                |
 | description          | varchar(255) | YES  | UNI | NULL    |                |
 | eligibility_criteria | text         | YES  |     | NULL    |                |
 | created_at           | datetime     | YES  |     | NULL    |                |
@@ -969,9 +1321,9 @@ Table: subject_races
 | id               | int(11)    | NO   | PRI | NULL    | auto_increment |
 | study_subject_id | int(11)    | YES  |     | NULL    |                |
 | race_id          | int(11)    | YES  |     | NULL    |                |
+| is_primary       | tinyint(1) | NO   |     | 0       |                |
 | created_at       | datetime   | YES  |     | NULL    |                |
 | updated_at       | datetime   | YES  |     | NULL    |                |
-| is_primary       | tinyint(1) | NO   |     | 0       |                |
 +------------------+------------+------+-----+---------+----------------+
 
 Table: subject_relationships

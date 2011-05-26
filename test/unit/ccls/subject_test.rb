@@ -3,6 +3,7 @@ require 'test_helper'
 class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
+	assert_should_have_many( :abstracts )
 	assert_should_have_many( :addressings )
 	assert_should_have_many( :enrollments )
 	assert_should_have_many( :gift_cards )
@@ -26,7 +27,6 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :reference_date )
 	assert_should_not_require_attributes( :response_sets_count )
 	assert_should_not_require_attributes( :sex )
-
 
 	test "create_control_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
@@ -68,18 +68,6 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 				"#{subject.errors.full_messages.to_sentence}"
 		} } }
 	end
-
-#	test "should create subject with subject race" do
-#		assert Race.count > 0
-#		assert_difference( 'SubjectRace.count', 1 ){
-#		assert_difference( "Subject.count", 1 ) {
-#			subject = create_subject(:subject_races_attributes => {
-#				:some_random_id => { :race_id => Race.first.id }
-#			})
-#			assert !subject.new_record?, 
-#				"#{subject.errors.full_messages.to_sentence}"
-#		} }
-#	end
 
 	test "should create subject and accept_nested_attributes_for addressings" do
 		assert_difference( 'Address.count', 1) {
@@ -320,20 +308,15 @@ pending
 #	end
 
 	test "studyid should be patid, case_control_type and orderno" do
-#		subject = create_subject(
-#			:identifier_attributes => Factory.attributes_for(:identifier, 
-#				:case_control_type => 'A',
-#				:patid   => '123',
-#				:orderno => '4'
-#		))
-		subject = create_subject
-		Factory(:identifier, 
-			:subject => subject,
-			:case_control_type => 'A',
-			:patid   => '123',
-			:orderno => '4'
-		)
-		assert_equal "123-A-4", subject.reload.studyid
+		subject = create_subject(
+			:identifier_attributes => Factory.attributes_for(:identifier, 
+				:case_control_type => 'A',
+				:patid   => '123',
+				:orderno => '4'
+		))
+		assert_equal "0123-A-4", subject.reload.studyid
+		assert_equal "0123A4",   subject.identifier.studyid_nohyphen
+		assert_equal "012304",   subject.identifier.studyid_intonly_nohyphen
 	end
 
 	test "should belong to vital_status" do
@@ -465,7 +448,8 @@ pending
 		end
 
 		test "should return #{method_name} with identifier" do
-			subject = create_subject(:identifier => Factory(:identifier))
+#			subject = create_subject(:identifier => Factory(:identifier))
+			subject = create_subject(:identifier_attributes => Factory.attributes_for(:identifier))
 			assert_not_nil subject.send(method_name)
 		end
 
@@ -480,7 +464,8 @@ pending
 		end
 
 		test "should return #{method_name} with pii" do
-			subject = Factory(:pii, :subject => create_subject).subject
+#			subject = Factory(:pii, :subject => create_subject).subject
+			subject = create_subject(:pii_attributes => Factory.attributes_for(:pii))
 			assert_not_nil subject.send(method_name)
 		end
 
@@ -495,7 +480,8 @@ pending
 		end
 
 		test "should return #{method_name} with homex_outcome" do
-			subject = Factory(:homex_outcome, :subject => create_subject).subject
+#			subject = Factory(:homex_outcome, :subject => create_subject).subject
+			subject = create_subject(:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
 #			assert_not_nil subject.send(method_name)
 		end
 
@@ -850,13 +836,6 @@ pending
 		assert !@subject.subject_races.empty?
 		assert  @subject.subject_races.first.is_primary
 	end
-
-
-
-
-
-
-	assert_should_have_many :abstracts
 
 	test "should raise Subject::NotTwoAbstracts with 0 abstracts on abstracts_the_same?" do
 		subject = Factory(:subject)

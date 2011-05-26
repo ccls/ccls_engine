@@ -36,6 +36,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		o.assert_should_require_attribute_length( :related_case_childid )
 	end
 
+#	can't do this due to before_validation modification
+#	assert_should_require_attribute_length :patid, :maximum => 4
 	assert_should_require_attribute_length :childidwho, :maximum => 10
 	assert_should_require_attribute_length :newid, :maximum => 6
 	assert_should_require_attribute_length :gbid, :maximum => 26
@@ -89,6 +91,15 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_equal '000123', identifier.matchingid
 	end 
 
+	test "should pad patid with leading zeros" do
+		identifier = Factory.build(:identifier,{ :patid => '123' })
+		assert identifier.patid.length < 4
+		assert_equal '123', identifier.patid
+		identifier.save
+		assert identifier.patid.length == 4
+		assert_equal '0123', identifier.patid
+	end 
+
 	test "should create with all numeric ssn" do
 		assert_difference( "#{model_name}.count", 1 ) do
 			object = create_object(:ssn => 987654321)
@@ -125,6 +136,26 @@ pending
 #			end
 #		end
 	end
+
+
+
+#	patid and childid should be protected as they are generated values
+
+	test "studyid should be patid, case_control_type and orderno" do
+		identifier = Factory(:identifier, 
+			:case_control_type => 'A',
+			:patid   => '123',
+			:orderno => '4'
+		).reload
+		assert_equal "0123-A-4", identifier.studyid
+		assert_equal "0123A4",   identifier.studyid_nohyphen
+		assert_equal "012304",   identifier.studyid_intonly_nohyphen
+	end
+
+
+
+
+
 
 protected
 

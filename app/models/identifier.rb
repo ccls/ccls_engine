@@ -15,6 +15,8 @@ class Identifier < Shared
 
 	validates_presence_of   :orderno
 	validates_presence_of   :patid
+#	pointless
+#	validates_length_of     :patid, :maximum => 4
 	validates_presence_of   :case_control_type
 	validates_uniqueness_of :patid, :scope => [:orderno,:case_control_type]
 
@@ -51,6 +53,8 @@ class Identifier < Shared
 		blank.validates_length_of :icf_master_id, :maximum => 9
 	end
 
+
+	before_validation :pad_zeros_to_patid
 	before_validation :pad_zeros_to_subjectid
 	before_validation :pad_zeros_to_matchingid
 	before_validation :format_ssn
@@ -71,8 +75,10 @@ protected
 
 	def set_studyids
 		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
-#		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"	???
-#		self.studyid_intonly_nohyphen = "#{patid}#{orderno}"		???
+		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
+		#	replace case_control_type with 0
+		#		0 may only be for C, so this may need updated
+		self.studyid_intonly_nohyphen = "#{patid}0#{orderno}"
 	end
 
 	#	Strips out all non-numeric characters
@@ -107,6 +113,12 @@ protected
 	def pad_zeros_to_matchingid
 		matchingid.try(:gsub!,/\D/,'')
 		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
+	end 
+
+	#	Pad leading zeroes to patid
+	def pad_zeros_to_patid
+		patid.try(:gsub!,/\D/,'')
+		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
 	end 
 
 	#	Pad leading zeroes to familyid
