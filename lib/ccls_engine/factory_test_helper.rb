@@ -124,7 +124,7 @@ module Ccls::FactoryTestHelper
 		subject = create_subject
 		Factory(:identifier, 
 			:subject => subject,
-			:patid   => patid )
+			:patid   => patid.to_s )
 		subject
 	end
 	alias_method :create_subject_with_studyid,   :create_subject_with_patid
@@ -274,11 +274,16 @@ module Ccls::FactoryTestHelper
 
 
 	def create_case_subject_with_patid(patid)
-		subject = create_subject( :subject_type => SubjectType['Case'] )
-		Factory(:identifier,
-			:subject => subject,
-			:patid   => patid )
-		subject
+#		subject = create_subject( :subject_type => SubjectType['Case'] )
+#		Factory(:identifier,
+#			:subject => subject,
+#			:patid   => patid.to_s )
+#		subject
+		subject = create_subject( 
+			:subject_type => SubjectType['Case'],
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				:patid   => patid.to_s )
+		)
 	end
 
 	def create_abstracts(count=0,options={})

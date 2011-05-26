@@ -671,7 +671,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert_difference('Identifier.count',1) {
 		assert_difference('Subject.count',1) {
 			@subject = create_case_subject_with_patid(1234)
-			assert_equal 1234, @subject.patid
+			assert_equal '1234', @subject.patid
 		} }
 		@current_user = Factory(:user)
 		assert_difference('Abstract.count',1) {
@@ -687,7 +687,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert_difference('Identifier.count',1) {
 		assert_difference('Subject.count',1) {
 			@subject = create_case_subject_with_patid(1234)
-			assert_equal 1234, @subject.patid
+			assert_equal '1234', @subject.patid
 		} }
 		@current_user = Factory(:user)
 		abstract = create_abstract(:current_user => @current_user,
@@ -706,7 +706,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert_difference('Identifier.count',1) {
 		assert_difference('Subject.count',1) {
 			@subject = create_case_subject_with_patid(1234)
-			assert_equal 1234, @subject.patid
+			assert_equal '1234', @subject.patid
 		} }
 		@current_user = Factory(:user)
 		abstract = create_abstract(:current_user => @current_user,
@@ -725,7 +725,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert_difference('Identifier.count',1) {
 		assert_difference('Subject.count',1) {
 			@subject = create_case_subject_with_patid(1234)
-			assert_equal 1234, @subject.patid
+			assert_equal '1234', @subject.patid
 		} }
 		@current_user = Factory(:user)
 		abstract = create_abstract(:current_user => @current_user,

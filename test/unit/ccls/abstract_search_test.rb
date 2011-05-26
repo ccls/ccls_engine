@@ -96,8 +96,8 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 	end
 
 	test "should include abstract by q patid" do
-		a1,a2 = create_abstracts_with_patids(999999,'1')
-		assert_equal 999999, a1.subject.patid
+		a1,a2 = create_abstracts_with_patids(9999,'1')
+		assert_equal '9999', a1.subject.patid
 		abstracts = Abstract.search(:q => a1.subject.identifier.patid)
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
