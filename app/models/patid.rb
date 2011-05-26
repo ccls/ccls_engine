@@ -1,0 +1,2 @@
+class Patid < Shared
+end

@@ -484,6 +484,15 @@ Table: bdrb_job_queues
 | scheduled_at   | datetime     | YES  |     | NULL    |                |
 +----------------+--------------+------+-----+---------+----------------+
 
+Table: childids
++------------+----------+------+-----+---------+----------------+
+| Field      | Type     | Null | Key | Default | Extra          |
++------------+----------+------+-----+---------+----------------+
+| id         | int(11)  | NO   | PRI | NULL    | auto_increment |
+| created_at | datetime | YES  |     | NULL    |                |
+| updated_at | datetime | YES  |     | NULL    |                |
++------------+----------+------+-----+---------+----------------+
+
 Table: contexts
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
@@ -1057,6 +1066,15 @@ Table: packages
 | tracking_number | varchar(255) | YES  | UNI | NULL    |                |
 | latest_event    | varchar(255) | YES  |     | NULL    |                |
 +-----------------+--------------+------+-----+---------+----------------+
+
+Table: patids
++------------+----------+------+-----+---------+----------------+
+| Field      | Type     | Null | Key | Default | Extra          |
++------------+----------+------+-----+---------+----------------+
+| id         | int(11)  | NO   | PRI | NULL    | auto_increment |
+| created_at | datetime | YES  |     | NULL    |                |
+| updated_at | datetime | YES  |     | NULL    |                |
++------------+----------+------+-----+---------+----------------+
 
 Table: patients
 +------------------------------+--------------+------+-----+---------+----------------+

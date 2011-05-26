@@ -1,0 +1,2 @@
+class Childid < Shared
+end
