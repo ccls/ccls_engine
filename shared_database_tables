@@ -374,7 +374,7 @@ Table: addresses
 | line_2              | varchar(255) | YES  |     | NULL    |                |
 | city                | varchar(255) | YES  |     | NULL    |                |
 | state               | varchar(255) | YES  |     | NULL    |                |
-| zip                 | varchar(255) | YES  |     | NULL    |                |
+| zip                 | varchar(10)  | YES  |     | NULL    |                |
 | external_address_id | int(11)      | YES  |     | NULL    |                |
 | created_at          | datetime     | YES  |     | NULL    |                |
 | updated_at          | datetime     | YES  |     | NULL    |                |

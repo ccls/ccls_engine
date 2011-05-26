@@ -19,6 +19,7 @@ class Address < Shared
 		o.validates_length_of :city
 		o.validates_length_of :state
 	end
+	validates_length_of :zip, :maximum => 10
 
 	validates_format_of :zip,
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,

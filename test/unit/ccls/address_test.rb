@@ -10,6 +10,7 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :line_2 )
 	assert_should_not_require_attributes( :data_source_id )
 	assert_should_not_require_attributes( :external_address_id )
+	assert_should_require_attribute_length( :zip, :maximum => 10 )
 	with_options :maximum => 250 do |o|
 		o.assert_should_require_attribute_length( :line_1 )
 		o.assert_should_require_attribute_length( :line_2 )
