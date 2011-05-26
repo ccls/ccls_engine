@@ -1071,7 +1071,7 @@ Table: patients
 | updated_at                   | datetime     | YES  |     | NULL    |                |
 | admit_date                   | date         | YES  |     | NULL    |                |
 | treatment_began_on           | date         | YES  |     | NULL    |                |
-| sample_was_collected         | tinyint(1)   | YES  |     | NULL    |                |
+| sample_was_collected         | int(11)      | YES  |     | NULL    |                |
 | admitting_oncologist         | varchar(255) | YES  |     | NULL    |                |
 | was_ca_resident_at_diagnosis | tinyint(1)   | YES  |     | 1       |                |
 | was_previously_treated       | tinyint(1)   | YES  |     | 0       |                |
