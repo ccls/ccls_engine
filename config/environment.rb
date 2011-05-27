@@ -35,6 +35,7 @@ Rails::Initializer.run do |config|
 	config.gem 'jakewendt-simply_trackable'
 	config.gem 'jakewendt-simply_authorized'
 	config.gem 'jakewendt-simply_pages'
+	config.gem 'jakewendt-simply_helpful'
 	#	require it, but don't load it
 	config.gem 'jakewendt-rdoc_rails', :lib => false
 
