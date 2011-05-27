@@ -38,7 +38,7 @@ begin
 		gem.summary = %Q{one-line summary of your gem}
 		gem.description = %Q{longer description of your gem}
 		gem.email = "github@jakewendt.com"
-		gem.homepage = "http://github.com/ccls/ucb_ccls_engine"
+		gem.homepage = "http://github.com/ccls/ccls_engine"
 		gem.authors = ["George 'Jake' Wendt"]
 		# gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
 
@@ -96,7 +96,7 @@ begin
 		gem.add_dependency('activesupport', '~> 2')
 		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')	# hopefully, can drop soon, don't know if I use it
-		gem.add_dependency('jakewendt-simply_helpful')
+#		gem.add_dependency('jakewendt-simply_helpful')
 		gem.add_dependency('jakewendt-ruby_extension')
 		gem.add_dependency('jakewendt-simply_authorized')
 		gem.add_dependency('chronic')
