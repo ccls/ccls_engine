@@ -6,6 +6,11 @@ class Patient < Shared
 
 	# because subject accepts_nested_attributes for pii 
 	# we can't require subject_id on create
+#
+#		TODO
+#	While "subject" isn't resolved on create,
+#	the "study_subject_id" does exist, so we could require it.
+#
 	validates_presence_of   :subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
