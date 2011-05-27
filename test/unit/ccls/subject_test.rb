@@ -210,6 +210,7 @@ pending
 			subject = create_subject(
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert !subject.is_case?
+			assert subject.errors.on(:patient)	#	no type
 			assert  subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
 		} }

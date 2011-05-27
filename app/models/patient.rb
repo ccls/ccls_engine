@@ -9,7 +9,6 @@ class Patient < Shared
 	validates_presence_of   :subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
-
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
 	validate :admit_date_is_after_dob
@@ -29,13 +28,24 @@ class Patient < Shared
 protected
 
 	def set_was_under_15_at_dx
-#
-#		[#34]
-#
-#		self.was_under_15_at_dx = (((
-#			admit_date.to_date - subject.dob.to_date 
-#			) / 365 ) < 15 )
-#
+		#	Because this can be called from subject with nested attributes,
+		#	the subject association may not be known to patient.  We'll need
+		#	to be explicit and find it ourselves.  Also, the pii must be
+		#	created first (pii listed before patient in subject) so that it
+		#	is created before the patient record is so that we can read the
+		#	subject's dob.
+		if study_subject_id
+			s = Subject.find(study_subject_id)
+			p = Pii.find_by_study_subject_id(study_subject_id)
+			dob = p.dob if p
+		end
+		if study_subject_id and s and dob and admit_date
+			self.was_under_15_at_dx = (((
+				admit_date.to_date - dob.to_date 
+				) / 365 ) < 15 )
+		end
+		#	make sure we return true
+		true
 	end
 
 	def admit_date_is_after_dob

@@ -20,8 +20,18 @@ class Ccls::Subject < Shared
 		f.has_one :identifier
 		f.has_one :home_exposure_response
 		f.has_one :homex_outcome
-		f.has_one :patient
+
+##########
+#
+#	Declaration order does matter.  Because of a patient callback that 
+#	references the subject's dob when using nested attributes, 
+#	pii NEEDS to be before patient.
+#
 		f.has_one :pii
+		f.has_one :patient
+#
+##########
+
 		f.with_options :conditions => ["projects.code = 'HomeExposures'"], :include => :project do |p|
 			p.has_one :hx_enrollment, :class_name => "Enrollment"
 			p.has_one :hx_gift_card,  :class_name => "GiftCard"

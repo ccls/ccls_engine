@@ -3,12 +3,11 @@ require 'test_helper'
 class Ccls::PatientTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-#	assert_should_initially_belong_to(:subject)
+
 	assert_should_belong_to(:subject)
 	assert_should_belong_to( :organization )
 	assert_should_belong_to( :diagnosis )
-#	assert_should_require_attributes( :study_subject_id )
-#	assert_should_require_unique_attributes( :study_subject_id )
+
 	assert_should_not_require_attributes( :study_subject_id )
 	assert_should_not_require_attributes( :admit_date )
 	assert_should_not_require_attributes( :diagnosis_date )
@@ -16,8 +15,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :organization_id )
 	assert_should_not_require_attributes( :raf_zip )
 	assert_should_not_require_attributes( :raf_county_id )
-
-#	assert_requires_valid_association( :subject, :as => 'study_subject' )
 
 	assert_requires_complete_date(:admit_date)
 	assert_requires_past_date(:admit_date)
@@ -32,7 +29,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	test "should require study_subject_id on update" do
 		assert_difference( "#{model_name}.count", 1 ) do
 				object = create_object
-#			object.reload.update_attributes(:hospital_no => "New Hospital Number")
 			object.reload.update_attributes(:diagnosis_date => Date.today)
 			assert object.errors.on(:subject)
 		end
@@ -100,6 +96,50 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_nil     nobody.reload.reference_date
 		assert_equal subject.reference_date, subject.patient.admit_date
 		assert_equal subject.reference_date, other.reference_date
+	end
+
+	test "should set was_under_15_at_dx to true" do
+		assert_difference( "Subject.count", 1 ) {
+		assert_difference( "Pii.count", 1 ) {
+		assert_difference( "Patient.count", 1 ) {
+			dob        = 14.years.ago.to_date
+			admit_date = 1.year.ago.to_date
+			subject = create_case_subject(
+				:pii_attributes     => Factory.attributes_for(:pii,{
+					:dob => dob
+				}),
+				:patient_attributes => Factory.attributes_for(:patient,{
+					:admit_date => admit_date
+				})
+			).reload
+			assert_equal dob,        subject.pii.dob
+			assert_equal admit_date, subject.patient.admit_date
+			#
+			#	this is actually the default so I'm not really testing 
+			#	anything other than it wasn't explicitly set to false
+			#
+			assert subject.patient.was_under_15_at_dx
+		} } }
+	end
+
+	test "should set was_under_15_at_dx to false" do
+		assert_difference( "Subject.count", 1 ) {
+		assert_difference( "Pii.count", 1 ) {
+		assert_difference( "Patient.count", 1 ) {
+			dob        = 20.years.ago.to_date
+			admit_date = 1.year.ago.to_date
+			subject = create_case_subject(
+				:pii_attributes     => Factory.attributes_for(:pii,{
+					:dob => dob
+				}),
+				:patient_attributes => Factory.attributes_for(:patient,{
+					:admit_date => admit_date
+				})
+			).reload
+			assert_equal dob,        subject.pii.dob
+			assert_equal admit_date, subject.patient.admit_date
+			assert !subject.patient.was_under_15_at_dx
+		} } }
 	end
 
 end
