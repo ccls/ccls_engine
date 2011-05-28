@@ -98,7 +98,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_equal subject.reference_date, other.reference_date
 	end
 
-	test "should set was_under_15_at_dx to true" do
+	test "should set was_under_15_at_dx to true using nested attributes" do
 		assert_difference( "Subject.count", 1 ) {
 		assert_difference( "Pii.count", 1 ) {
 		assert_difference( "Patient.count", 1 ) {
@@ -122,7 +122,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		} } }
 	end
 
-	test "should set was_under_15_at_dx to false" do
+	test "should set was_under_15_at_dx to false using nested attributes" do
 		assert_difference( "Subject.count", 1 ) {
 		assert_difference( "Pii.count", 1 ) {
 		assert_difference( "Patient.count", 1 ) {
@@ -140,6 +140,58 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			assert_equal admit_date, subject.patient.admit_date
 			assert !subject.patient.was_under_15_at_dx
 		} } }
+	end
+
+	test "should set was_under_15_at_dx to false not using nested attributes" do
+		assert_difference( "Subject.count", 1 ) {
+		assert_difference( "Pii.count", 1 ) {
+		assert_difference( "Patient.count", 1 ) {
+			dob        = 20.years.ago.to_date
+			admit_date = 1.year.ago.to_date
+			subject = create_case_subject
+			pii     = Factory(:pii,{
+				:subject => subject,
+				:dob     => dob
+			})
+			#	patient creation MUST come AFTER pii creation
+			patient = Factory(:patient,{
+				:subject    => subject,
+				:admit_date => admit_date
+			})
+			subject.reload
+			assert_equal dob,        subject.pii.dob
+			assert_equal admit_date, subject.patient.admit_date
+			assert !subject.patient.was_under_15_at_dx
+		} } }
+	end
+
+	test "should set was_under_15_at_dx on dob change" do
+		subject = create_case_subject(
+			:pii_attributes     => Factory.attributes_for(:pii,{
+				:dob => 20.years.ago.to_date
+			}),
+			:patient_attributes => Factory.attributes_for(:patient,{
+				:admit_date => 1.year.ago.to_date
+			})
+		).reload
+		assert !subject.patient.was_under_15_at_dx
+		subject.pii.update_attribute(:dob, 10.years.ago.to_date)
+#		assert  subject.patient.was_under_15_at_dx
+pending
+	end
+
+	test "should set was_under_15_at_dx on admit_date change" do
+		subject = create_case_subject(
+			:pii_attributes     => Factory.attributes_for(:pii,{
+				:dob => 20.years.ago.to_date
+			}),
+			:patient_attributes => Factory.attributes_for(:patient,{
+				:admit_date => 1.year.ago.to_date
+			})
+		).reload
+		assert !subject.patient.was_under_15_at_dx
+		subject.patient.update_attribute(:admit_date, 10.years.ago.to_date)
+		assert  subject.patient.was_under_15_at_dx
 	end
 
 end

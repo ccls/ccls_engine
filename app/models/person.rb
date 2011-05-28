@@ -9,6 +9,7 @@ class Person < Shared
 	has_many :organizations
 
 	validates_presence_of :last_name
+#	TODO couldn't this just be a one liner?
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :first_name
 		o.validates_length_of :last_name

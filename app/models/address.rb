@@ -21,6 +21,7 @@ class Address < Shared
 	end
 	validates_length_of :zip, :maximum => 10
 
+#	TODO again, perhaps replace the inline regex with a method that returns it
 	validates_format_of :zip,
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
 		:message => "should be 12345 or 12345-1234"

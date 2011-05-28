@@ -9,6 +9,9 @@ class PhoneNumber < Shared
 #	validates_presence_of   :subject, :on => :update
 
 	validates_presence_of :phone_number
+#
+#	TODO again, try using a method for the :with
+#
 	validates_format_of :phone_number,
 	  :with => /\A(\D*\d\D*){10}\z/
 

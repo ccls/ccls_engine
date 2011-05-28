@@ -7,6 +7,9 @@ class Identifier < Shared
 
 	#	because subject accepts_nested_attributes for pii 
 	#	we can't require subject_id on create
+#
+#	TODO	could be validated
+#
 	validates_presence_of   :subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
@@ -19,6 +22,10 @@ class Identifier < Shared
 #	validates_length_of     :patid, :maximum => 4
 	validates_presence_of   :case_control_type
 	validates_uniqueness_of :patid, :scope => [:orderno,:case_control_type]
+
+#
+#	TODO : simplify with with_options block
+#
 
 #	validates_presence_of   :ssn
 	validates_uniqueness_of :ssn, :allow_nil => true
@@ -54,14 +61,30 @@ class Identifier < Shared
 	end
 
 
+#
+#	TODO why before_validation and not just before_save?
+#			I don't think that any of these fields are really validated
+#
 	before_validation :pad_zeros_to_patid
 	before_validation :pad_zeros_to_subjectid
 	before_validation :pad_zeros_to_matchingid
 	before_validation :format_ssn
+#
+#	TODO actually the nullify fields NEED to be before validation as they are unique
+#
 	before_validation :nullify_subjectid
 	before_validation :nullify_ssn
 	before_validation :nullify_state_id_no
+
+#
+#	TODO perhaps just a before_save :set_computed_fields and include those above
+#
 	before_save :set_studyids
+
+
+#
+#	TODO could probably remove this now
+#
 
 #	this will most certainly need some modification due to the addition of the field studyid
 

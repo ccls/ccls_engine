@@ -8,6 +8,9 @@ class Addressing < Shared
 #	validates_presence_of :study_subject_id, :subject
 	# because subject now accepts_nested_attributes for addressings
 	# we can't require subject_id on create
+#
+#	TODO above not really true
+#
 	validates_presence_of   :subject, :on => :update
 
 	with_options :maximum => 250, :allow_blank => true do |o|

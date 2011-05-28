@@ -28,6 +28,8 @@ class OperationalEvent < Shared
 
 	before_save :copy_operational_event_type_description
 
+#	TODO make protected?
+
 	def copy_operational_event_type_description
 		if self.description.blank?
 			self.description = operational_event_type.description

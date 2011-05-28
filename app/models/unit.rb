@@ -8,6 +8,7 @@ class Unit < Shared
 	has_many :aliquots
 	has_many :samples
 
+#	TODO smaller
 	validates_presence_of   :code
 	validates_uniqueness_of :code
 	validates_length_of     :description, :minimum => 4

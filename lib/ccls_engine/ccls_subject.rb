@@ -3,6 +3,10 @@
 class Ccls::Subject < Shared
 	self.abstract_class = true
 
+#
+#	TODO clean this up.  Seriously
+#
+
 #	belongs_to :hispanicity
 	belongs_to :subject_type
 	belongs_to :vital_status
@@ -112,6 +116,9 @@ class Ccls::Subject < Shared
 	accepts_nested_attributes_for :patient
 	validate :must_be_case_if_patient_attributes
 	def must_be_case_if_patient_attributes
+#
+#	TODO surprised that this works
+#
 		if !patient.nil? and !is_case?
 			errors.add(:patient ,"must be case to have patient info")
 		end

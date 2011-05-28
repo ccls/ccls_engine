@@ -1,7 +1,11 @@
 # don't know exactly
 class Analysis < Shared
+#
+#	TODO remove the habtm and replace it with hmt SubjectAnalyses ?
+#
 	has_and_belongs_to_many :subjects, :association_foreign_key => 'study_subject_id'
 
+#	TODO seriously?  remove the block as its more code that it replaces
 	with_options :class_name => 'Person' do |o|
 		o.belongs_to :analyst
 		o.belongs_to :analytic_file_creator

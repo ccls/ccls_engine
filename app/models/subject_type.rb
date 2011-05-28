@@ -6,6 +6,7 @@ class SubjectType < Shared
 
 	has_many :subjects
 
+#	TODO smaller
 	validates_presence_of   :code
 	validates_uniqueness_of :code
 	validates_presence_of   :description

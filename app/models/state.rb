@@ -1,6 +1,8 @@
 # Currently just US states + DC
 class State < Shared
 	acts_as_list
+
+#	TODO smaller please
 	validates_presence_of   :code
 	validates_presence_of   :name
 	validates_presence_of   :fips_state_code

@@ -17,6 +17,9 @@ class Enrollment < Shared
 
 #	validates_presence_of :study_subject_id
 #	validates_presence_of :subject
+#
+#	TODO again, the study_subject_id DOES exist at creation
+#
 	# because subject now accepts_nested_attributes for enrollments
 	# we can't require subject_id on create
 	validates_presence_of   :subject, :on => :update

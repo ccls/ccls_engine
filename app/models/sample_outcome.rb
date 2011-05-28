@@ -5,6 +5,7 @@ class SampleOutcome < Shared
 
 	has_many :homex_outcomes
 
+#	TODO smaller
 	validates_presence_of   :code
 	validates_uniqueness_of :code
 	with_options :maximum => 250, :allow_blank => true do |o|

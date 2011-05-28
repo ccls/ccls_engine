@@ -25,6 +25,7 @@ class Interview < Shared
 		o.validates_length_of :respondent_last_name
 	end
 
+#	TODO don't like the message thing
 	validates_presence_of :subject_relationship_other,
 		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
 		:if => :subject_relationship_is_other?

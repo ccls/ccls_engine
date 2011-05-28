@@ -134,6 +134,13 @@ class Package < Shared
 		end
 	end
 
+#
+#
+#	TODO What?  No file locking? I know that there SHOULD only be one
+#			app accessing this file, and its not crucial but come on.
+#
+#
+
 	#	Write the current time to the packages_updated file
 	#	used by both the app and the background process.
 	def self.just_updated

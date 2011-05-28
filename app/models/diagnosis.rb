@@ -15,4 +15,6 @@ class Diagnosis < Shared
 		description
 	end
 
+#	TODO add key and basic hash-like searching
+
 end

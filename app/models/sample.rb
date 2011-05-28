@@ -36,6 +36,8 @@ class Sample < Shared
 	validates_presence_of :received_by_lab_on, 
 		:if => :aliquotted_on
 
+#	TODO make me smaller
+
 	with_options :allow_nil => true do |o|
 		o.validates_complete_date_for :sent_to_subject_on
 		o.validates_complete_date_for :collected_on
@@ -66,6 +68,9 @@ class Sample < Shared
 		o.delegate :sample_package
 	end
 
+#
+#	TODO can I delegate these
+#
 	#	Returns tracking number of the kit package
 	def kit_tracking_number
 		kit_package.try(:tracking_number)

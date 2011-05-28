@@ -54,6 +54,7 @@ protected
 	end
 
 	def admit_date_is_after_dob
+#	TODO doubt that this really works since subject probably hasn't been resolved yet
 		if !admit_date.blank? && 
 			!subject.blank? && 
 			!subject.dob.blank? && 
@@ -63,6 +64,7 @@ protected
 	end
 
 	def diagnosis_date_is_after_dob
+#	TODO doubt that this really works since subject probably hasn't been resolved yet
 		if !diagnosis_date.blank? && 
 			!subject.blank? && 
 			!subject.dob.blank? && 
@@ -72,12 +74,14 @@ protected
 	end
 
 	def subject_is_case
+#	TODO doubt that this really works since subject probably hasn't been resolved yet
 		if subject and subject.subject_type.code != 'Case'
 			errors.add(:subject,"must be case to have patient info")
 		end
 	end
 
 	def update_matching_subjects_reference_date
+#	TODO doubt that this really works since subject probably hasn't been resolved yet
 		#	puts "update_matching_subjects_reference_date"
 		#	puts "admit_date was:#{admit_date}"
 		#	puts "admit_date is:#{admit_date}"

@@ -3,6 +3,7 @@
 #	If Authlogic or other is reused, uncomment all this.
 #
 #class UserSession < Authlogic::Session::Base
+#	TODO destroy me
 class UserSession	#	:nodoc:
 #	consecutive_failed_logins_limit 50
 end

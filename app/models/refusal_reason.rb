@@ -11,6 +11,8 @@ class RefusalReason < Shared
 	validates_length_of     :description, :minimum => 4
 	validates_uniqueness_of :description
 
+#	TODO compress me
+
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :code
 		o.validates_length_of :description

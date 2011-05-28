@@ -8,6 +8,7 @@ class Language < Shared
 	has_many :interviews
 	has_many :instrument_versions
 
+#	TODO cleanup in aisle 5
 	validates_presence_of   :key
 	validates_uniqueness_of :key
 	validates_presence_of   :code

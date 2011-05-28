@@ -13,6 +13,8 @@ class ZipCode < Shared
 
 	validates_length_of :zip_code, :is => 5
 
+#	TODO smaller
+
 	with_options :maximum => 250 do |o|
 		o.validates_length_of :city
 		o.validates_length_of :state

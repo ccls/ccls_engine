@@ -9,6 +9,8 @@ class Transfer < Shared
 		o.belongs_to :to_organization
 	end
 
+#	TODO smaller
+
 	validates_presence_of :aliquot_id
 	validates_presence_of :aliquot
 	validates_presence_of :to_organization_id

@@ -27,6 +27,7 @@ class AbstractSearch < Search
 private	#	THIS IS REQUIRED
 
 	def merged_conditions
+#	TODO what if merged is false?
 		['abstracts.merged_by_uid IS NOT NULL'] unless merged.blank?
 	end
 

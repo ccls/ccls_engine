@@ -18,6 +18,8 @@ class SampleType < Shared
 	named_scope :not_roots, :conditions => [
 		'sample_types.parent_id IS NOT NULL' ]
 
+#	TODO smaller
+
 	validates_presence_of   :code
 	validates_uniqueness_of :code
 	validates_length_of     :description, :minimum => 4

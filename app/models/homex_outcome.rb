@@ -9,6 +9,9 @@ class HomexOutcome < Shared
 
 	# because subject accepts_nested_attributes for homex_outcome
 	# we can't require subject_id on create
+#
+#	TODO again, not entirely accurate
+#
 	validates_presence_of   :subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 

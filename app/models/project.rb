@@ -17,7 +17,7 @@ class Project < Shared
 	validates_uniqueness_of :code
 	validates_length_of     :description, :minimum => 4
 	validates_uniqueness_of :description
-
+#	TODO simplify all this
 	with_options :allow_nil => true do |o|
 		o.validates_complete_date_for :began_on
 		o.validates_complete_date_for :ended_on
@@ -28,6 +28,7 @@ class Project < Shared
 		o.validates_length_of :description
 	end
 
+#	TODO perhaps move this into subject where is clearly belongs
 	#	Returns all projects for which the subject
 	#	does not have an enrollment
 	def self.unenrolled_projects(subject)

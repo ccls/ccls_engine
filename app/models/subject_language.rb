@@ -6,6 +6,7 @@ class SubjectLanguage < Shared
 		:if => :language_is_other?
 
 protected
+#	TODO delegate :is_other?
 
 	def language_is_other?
 		language.try(:is_other?)

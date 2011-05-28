@@ -19,6 +19,8 @@ class SampleKit < Shared
 
 #	after_update :update_sample_dates
 
+#	TODO clean up your room young man
+
 	#	Returns kit shipping status
 	def status
 		status = case
