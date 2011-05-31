@@ -1,5 +1,5 @@
-module CclsEngine
-module CoreExtension
+#module CclsEngine
+module Ccls::CoreExtension
 
 	def class_exists?(full_class_name)
 		name_spaces = full_class_name.to_s.split('::')
@@ -11,6 +11,6 @@ module CoreExtension
 		return false
 	end
 
-end	#	CoreExtension
-end	#	CclsEngine
-include CclsEngine::CoreExtension
+end	#	Ccls::CoreExtension
+#include CclsEngine::CoreExtension
+include Ccls::CoreExtension

@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class CclsEngine::HelperTest < ActionView::TestCase
+#class CclsEngine::HelperTest < ActionView::TestCase
+class Ccls::HelperTest < ActionView::TestCase
 
 #	user_roles
 

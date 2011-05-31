@@ -1,4 +1,5 @@
-module CclsEngine::Helper
+#module CclsEngine::Helper
+module Ccls::Helper
 
 	#	&uarr; and &darr;
 	def sort_link(column,text=nil)
@@ -45,4 +46,5 @@ module CclsEngine::Helper
 	end
 
 end
-ActionView::Base.send(:include, CclsEngine::Helper)
+#ActionView::Base.send(:include, CclsEngine::Helper)
+ActionView::Base.send(:include, Ccls::Helper)

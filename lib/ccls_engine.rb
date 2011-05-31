@@ -23,9 +23,9 @@ require 'jakewendt-rails_extension'
 module Ccls
 #	predefine namespace
 end
-module CclsEngine
+#module CclsEngine
 #	predefine namespace
-end
+#end
 
 #	This doesn't seem necessary
 %w{models controllers}.each do |dir|
