@@ -1,1 +1,42 @@
 Dir["#{File.dirname(__FILE__)}/config/autotest/**/*rb"].sort.each { |ext| load ext }
+
+class Autotest::Rails
+
+	def run_with_ccls_namespace_models
+
+		add_exception %r%versions/%
+		add_exception %r%\.git/%
+
+#	still not linked to actual model
+#	would like updating app/models/*rb to trigger running
+#		matching test/unit/ccls/*_test.rb
+
+#			%r{^#{File.expand_path(File.join(File.dirname(__FILE__),'/app/models'))}/.*\.rb$}
+		add_mapping( %r{^app/models/.*\.rb$} ) do |filename, _|
+#			modelname = File.basename(filename)
+#files_matching %r%^test/.*#{possible}$%
+#			File.expand_path(File.join(File.dirname(__FILE__),"/test/unit/ccls/#{modelname}_test.rb"))
+#puts "JAKE test/unit/ccls/#{filename}_test.rb"
+			"test/unit/ccls/#{File.basename(filename)}_test.rb"
+		end
+
+		add_mapping( %r{^test/(unit|functional)/ccls/.*_test\.rb$} ) do |filename, _|
+			filename
+		end
+
+		#	This stops the ...
+		#
+		#	Unable to map class Ccls::IdentifierTest to a file
+		#	Unable to map class Ccls::SubjectTest to a file
+		#
+#		Dir["#{File.dirname(__FILE__)}/test/unit/**/*rb"].each do |f|
+		Dir["test/unit/**/*rb"].each do |f|
+			f =~ /test\/unit\/(ccls\/.*)\.rb/
+			self.extra_class_map[$1.camelcase] = f
+		end
+
+		run_without_ccls_namespace_models
+	end
+	alias_method_chain :run, :ccls_namespace_models
+
+end
