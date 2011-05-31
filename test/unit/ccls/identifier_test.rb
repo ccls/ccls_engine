@@ -75,27 +75,54 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should pad subjectid with leading zeros" do
+	test "should nullify blank subjectid before validation" do
+		identifier = Factory.build(:identifier, :subjectid => '')
+		assert  identifier.subjectid.blank?
+		assert !identifier.subjectid.nil?
+		identifier.valid?
+		assert  identifier.subjectid.blank?
+		assert  identifier.subjectid.nil?
+	end 
+
+	test "should nullify blank ssn before validation" do
+		identifier = Factory.build(:identifier, :ssn => '')
+		assert  identifier.ssn.blank?
+		assert !identifier.ssn.nil?
+		identifier.valid?
+		assert  identifier.ssn.blank?
+		assert  identifier.ssn.nil?
+	end 
+
+	test "should nullify blank state_id_no before validation" do
+		identifier = Factory.build(:identifier, :state_id_no => '')
+		assert  identifier.state_id_no.blank?
+		assert !identifier.state_id_no.nil?
+		identifier.valid?
+		assert  identifier.state_id_no.blank?
+		assert  identifier.state_id_no.nil?
+	end 
+
+	test "should pad subjectid with leading zeros before validation" do
 		identifier = Factory.build(:identifier)
 		assert identifier.subjectid.length < 6 
-		identifier.save
+		identifier.valid?	#save
 		assert identifier.subjectid.length == 6
 	end 
 
-	test "should pad matchingid with leading zeros" do
+	test "should pad matchingid with leading zeros before validation" do
 		identifier = Factory.build(:identifier,{ :matchingid => '123' })
 		assert identifier.matchingid.length < 6 
 		assert_equal '123', identifier.matchingid
-		identifier.save
+		identifier.valid?	#save
 		assert identifier.matchingid.length == 6
 		assert_equal '000123', identifier.matchingid
 	end 
 
-	test "should pad patid with leading zeros" do
+	test "should pad patid with leading zeros before validation" do
 		identifier = Factory.build(:identifier,{ :patid => '123' })
 		assert identifier.patid.length < 4
 		assert_equal '123', identifier.patid
-		identifier.save
+		identifier.valid?	#save
 		assert identifier.patid.length == 4
 		assert_equal '0123', identifier.patid
 	end 
@@ -127,6 +154,17 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should remove non-numeric chars from ssn before validation" do
+		identifier = Factory.build(:identifier, :ssn => '1s2n3-4k5=6;7sdfg8  9  ')
+		assert identifier.ssn.length > 9
+		assert '123456789' != identifier.ssn
+		identifier.valid?
+		assert identifier.ssn.length == 9
+		assert '123456789' == identifier.ssn
+	end 
+
+
+
 	test "should require 9 digits in ssn" do
 pending
 #		%w( 12345678X 12345678 1-34-56-789 ).each do |invalid_ssn|
@@ -136,6 +174,8 @@ pending
 #			end
 #		end
 	end
+
+
 
 
 

@@ -81,19 +81,6 @@ class Identifier < Shared
 #
 	before_save :set_studyids
 
-
-#
-#	TODO could probably remove this now
-#
-
-#	this will most certainly need some modification due to the addition of the field studyid
-
-	#	Returns a string containing the patid,
-	#	case_control_type and orderno
-#	def studyid
-#		"#{patid}-#{case_control_type}-#{orderno}"
-#	end
-
 protected
 
 	def set_studyids
@@ -106,7 +93,14 @@ protected
 
 	#	Strips out all non-numeric characters
 	def format_ssn
-		self.ssn.to_s.gsub!(/\D/,'')
+#
+#	TODO this shouldn't work but seems to.  The gsub! shouldn't be 
+#		updating the ssn due to the to_s method in between
+#	TODO add more tests for this (try with valid? method)
+#
+#		self.ssn.to_s.gsub!(/\D/,'')
+#		self.ssn = ssn.to_s.gsub!(/\D/,'')
+		self.ssn = ssn.to_s.gsub(/\D/,'')
 	end
 
 	#	Pad leading zeroes to subjectid
@@ -129,18 +123,21 @@ protected
 		# CANNOT have leading 0's and include and 8 or 9 as it thinks its octal
 		# so convert back to Integer first
 		subjectid.try(:gsub!,/\D/,'')
+#	TODO add more tests for this (try with valid? method)
 		self.subjectid = sprintf("%06d",subjectid.to_i) unless subjectid.blank?
 	end 
 
 	#	Pad leading zeroes to matchingid
 	def pad_zeros_to_matchingid
 		matchingid.try(:gsub!,/\D/,'')
+#	TODO add more tests for this (try with valid? method)
 		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
 	end 
 
 	#	Pad leading zeroes to patid
 	def pad_zeros_to_patid
 		patid.try(:gsub!,/\D/,'')
+#	TODO add more tests for this (try with valid? method)
 		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
 	end 
 
@@ -154,19 +151,32 @@ protected
 	def nullify_subjectid
 		#	mysql allows multiple NULLs in unique column
 		#	but NOT multiple blanks
+#	TODO add more tests for this (try with valid? method)
 		self.subjectid = nil if subjectid.blank?
 	end
 
 	def nullify_ssn
 		#	mysql allows multiple NULLs in unique column
 		#	but NOT multiple blanks
+#	TODO add more tests for this (try with valid? method)
 		self.ssn = nil if ssn.blank?
 	end
 
 	def nullify_state_id_no
 		#	mysql allows multiple NULLs in unique column
 		#	but NOT multiple blanks
+#	TODO add more tests for this (try with valid? method)
 		self.state_id_no = nil if state_id_no.blank?
+	end
+
+	#	Use the ! so that an exception is raised on failure
+	def generate_next_patid
+		Patid.create!.destroy.id
+	end
+
+	#	Use the ! so that an exception is raised on failure
+	def generate_next_childid
+		Childid.create!.destroy.id
 	end
 
 end
