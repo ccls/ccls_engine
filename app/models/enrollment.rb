@@ -15,14 +15,17 @@ class Enrollment < Shared
 	validates_presence_of :project_id
 	validates_presence_of :project
 
+
+	##	TODO - find a way to do this
+	# because subject now accepts_nested_attributes for enrollments
+	# we can't require study_subject_id on create
+	#
+	#	study_subject_id is not known until before_save
+	#		so cannot be validated on creation
+	#
+	validates_presence_of   :subject, :on => :update
 #	validates_presence_of :study_subject_id
 #	validates_presence_of :subject
-#
-#	TODO again, the study_subject_id DOES exist at creation
-#
-	# because subject now accepts_nested_attributes for enrollments
-	# we can't require subject_id on create
-	validates_presence_of   :subject, :on => :update
 
 
 	validates_presence_of :ineligible_reason,

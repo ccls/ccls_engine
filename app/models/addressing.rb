@@ -3,15 +3,24 @@ class Addressing < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 	belongs_to :address
 
+	##	TODO - find a way to do this
+	# because addressing now accepts_nested_attributes for addresss
+	# we can't require address_id on create
+	#
+	#	address_id is not known until before_save
+	#		so cannot be validated on creation
+	#
 	validates_presence_of :address, :on => :update
 
-#	validates_presence_of :study_subject_id, :subject
+	##	TODO - find a way to do this
 	# because subject now accepts_nested_attributes for addressings
-	# we can't require subject_id on create
-#
-#	TODO above not really true
-#
+	# we can't require study_subject_id on create
+	#
+	#	study_subject_id is not known until before_save
+	#		so cannot be validated on creation
+	#
 	validates_presence_of   :subject, :on => :update
+#	validates_presence_of :study_subject_id, :subject
 
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :why_invalid

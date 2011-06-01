@@ -5,6 +5,9 @@
 class Interview < Shared
 
 	belongs_to :subject, :foreign_key => 'study_subject_id'
+
+	##
+	#	why is this here?	Homex for assigning interview outcome
 	accepts_nested_attributes_for :subject
 
 	belongs_to :address
