@@ -277,7 +277,7 @@ Factory.define :pii do |f|
 	#	but ...
 #	f.association :subject
 	f.first_name "First"
-	f.middle_name "Middle"
+#	f.middle_name "Middle"
 	f.last_name "Last"
 	f.sequence(:email){|n| "email#{n}@example.com"}
 	f.dob Date.jd(2440000+rand(15000))
