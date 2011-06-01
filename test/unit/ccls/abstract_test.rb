@@ -755,4 +755,12 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		}
 	end
 
+	test "should return abstract sections" do
+		assert !Abstract.class_variable_defined?("@@sections")
+		sections = Abstract.sections
+		assert  Abstract.class_variable_defined?("@@sections")
+		assert sections.is_a?(Array)
+		assert sections.length >= 15
+	end
+
 end
