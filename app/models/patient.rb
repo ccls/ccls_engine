@@ -4,13 +4,13 @@ class Patient < Shared
 	belongs_to :organization
 	belongs_to :diagnosis
 
+	##	TODO - find a way to do this
 	# because subject accepts_nested_attributes for pii 
-	# we can't require subject_id on create
-#
-#		TODO
-#	While "subject" isn't resolved on create,
-#	the "study_subject_id" does exist, so we could require it.
-#
+	# we can't require study_subject_id on create
+	#
+	#	study_subject_id is not known until before_save
+	#		so cannot be validated on creation
+	#
 	validates_presence_of   :subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
