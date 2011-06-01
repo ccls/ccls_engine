@@ -3,14 +3,22 @@ require 'test_helper'
 class Ccls::PiiTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_belong_to(:subject)
+
+#	assert_should_belong_to(:subject)
+	assert_should_initially_belong_to(:subject)
+	assert_should_protect( :study_subject_id )
+	assert_should_not_require_attributes( :study_subject_id )
+#	assert_should_require_attributes( :study_subject_id )
+#	assert_should_require_unique_attributes( :study_subject_id )
+
 	assert_should_belong_to( :guardian_relationship, :class_name => 'SubjectRelationship' )
 	assert_should_require_attributes( :dob )
 	assert_should_require_unique_attributes( :email )
-	assert_should_not_require_attributes( :study_subject_id )
-	assert_should_not_require_attributes( :first_name )
+#	assert_should_not_require_attributes( :first_name )
+	assert_should_require_attributes( :first_name )
 	assert_should_not_require_attributes( :middle_name )
-	assert_should_not_require_attributes( :last_name )
+#	assert_should_not_require_attributes( :last_name )
+	assert_should_require_attributes( :last_name )
 	assert_should_not_require_attributes( :died_on )
 	assert_should_not_require_attributes( :mother_first_name )
 	assert_should_not_require_attributes( :mother_middle_name )
@@ -49,12 +57,20 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	#	so the pii can't require subject_id on create
 	#	or this test fails.
 	#
-	test "should require study_subject_id on update" do
-		assert_difference( "#{model_name}.count", 1 ) do
-			object = create_object
-			object.reload.update_attributes(:first_name => "New First Name")
-			assert object.errors.on_attr_and_type(:subject,:blank)
-		end
+#	test "should require study_subject_id on update" do
+#		assert_difference( "#{model_name}.count", 1 ) do
+#			object = create_object
+#			object.reload.update_attributes(:first_name => "New First Name")
+#			assert object.errors.on_attr_and_type(:subject,:blank)
+#		end
+#	end
+
+	test "should require study_subject_id" do
+		assert_difference( "Subject.count", 0 ) {
+		assert_difference( "#{model_name}.count", 0 ) {
+				object = create_object(:subject => nil)
+			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
+		} }
 	end
 
 	test "should require unique study_subject_id" do

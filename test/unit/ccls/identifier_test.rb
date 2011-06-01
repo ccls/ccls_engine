@@ -17,7 +17,13 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_unique_attribute( :state_id_no )
 	assert_should_require_unique_attribute( :icf_master_id )
 
+	assert_should_initially_belong_to( :subject )
 	assert_should_not_require_attributes( :study_subject_id )
+	assert_should_protect( :study_subject_id )
+#	assert_should_require_attributes( :study_subject_id )
+#	assert_should_require_unique_attributes( :study_subject_id )
+#	assert_should_belong_to( :subject )
+
 	assert_should_not_require_attributes( :ssn )
 	assert_should_not_require_attributes( :subjectid )
 	assert_should_not_require_attributes( :lab_no )
@@ -58,12 +64,20 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	#	so the pii can't require subject_id on create
 	#	or this test fails.
 	#
-	test "should require study_subject_id on update" do
-		assert_difference( "#{model_name}.count", 1 ) do
-			object = create_object
-			object.reload.update_attributes(:orderno => "New Order No")
-			assert object.errors.on(:subject)
-		end
+#	test "should require study_subject_id on update" do
+#		assert_difference( "#{model_name}.count", 1 ) do
+#			object = create_object
+#			object.reload.update_attributes(:orderno => "New Order No")
+#			assert object.errors.on(:subject)
+#		end
+#	end
+
+	test "should require study_subject_id" do
+		assert_difference( "Subject.count", 0 ) {
+		assert_difference( "#{model_name}.count", 0 ) {
+			object = create_object(:subject => nil)
+			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
+		} }
 	end
 
 	test "should require unique study_subject_id" do
@@ -71,7 +85,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		create_object(:subject => subject)
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:subject => subject)
-			assert object.errors.on(:study_subject_id)
+			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
 		end
 	end
 
@@ -197,13 +211,13 @@ pending
 
 
 
-protected
-
-	def create_object(options={})
-		record = Factory.build(:identifier,options)
-		record.attributes=options
-		record.save
-		record
-	end
+#protected
+#
+#	def create_object(options={})
+#		record = Factory.build(:identifier,options)
+#		record.attributes=options
+#		record.save
+#		record
+#	end
 
 end

@@ -5,13 +5,24 @@
 class Identifier < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 
+	##	TODO - find a way to do this
 	#	because subject accepts_nested_attributes for pii 
-	#	we can't require subject_id on create
-#
-#	TODO	could be validated
-#
-	validates_presence_of   :subject, :on => :update
+	#	we can't require study_subject_id on create
+	#
+	#	study_subject_id is not known until before_save
+	#		so cannot be validated on creation
+	#
+	attr_protected :study_subject_id
+	validates_presence_of   :subject,          :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
+#	validates_uniqueness_of :study_subject_id, :on => :update
+
+	##
+	#	since I can't use the conventional validations to check 
+	#	study_subject_id, do it before_save.  This'll rollback 
+	#	the subject creation too if using nested attributes.
+	before_create :ensure_presence_and_uniqueness_of_study_subject_id
+
 
 	validates_presence_of   :childid
 	validates_uniqueness_of :childid
@@ -82,6 +93,20 @@ class Identifier < Shared
 	before_save :set_studyids
 
 protected
+
+	##
+	#	since I can't use the conventional validations to check 
+	#	study_subject_id, do it before_save.  This'll rollback 
+	#	the subject creation too if using nested attributes.
+	def ensure_presence_and_uniqueness_of_study_subject_id
+		if study_subject_id.blank?
+			errors.add(:study_subject_id, :blank )
+			return false
+#		elsif Identifier.exists?(:study_subject_id => study_subject_id)
+#			errors.add(:study_subject_id, :taken )
+#			return false
+		end
+	end
 
 	def set_studyids
 		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"

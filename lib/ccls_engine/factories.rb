@@ -107,7 +107,7 @@ Factory.define :analysis do |f|
 end
 
 Factory.define :identifier do |f|
-#	f.association :subject
+	f.association :subject
 	f.sequence(:childid) { |n| "#{n}" }
 	f.sequence(:ssn){|n| sprintf("%09d",n) }
 	f.sequence(:patid){|n| "#{n}"}
@@ -264,7 +264,7 @@ end
 
 Factory.define :patient do |f|
 	#	really don't see the point of a patient w/o a subject
-#	f.association :subject, :factory => :case_subject
+	f.association :subject, :factory => :case_subject
 end
 
 Factory.define :person do |f|
@@ -275,7 +275,7 @@ end
 Factory.define :pii do |f|
 	#	really don't see the point of a PII w/o a subject
 	#	but ...
-#	f.association :subject
+	f.association :subject
 	f.first_name "First"
 #	f.middle_name "Middle"
 	f.last_name "Last"

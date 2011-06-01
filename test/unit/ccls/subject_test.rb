@@ -145,6 +145,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 				"#{subject.errors.full_messages.to_sentence}"
 			subject.update_attributes(
 				:pii_attributes => Factory.attributes_for(:pii))
+			assert subject.pii.errors.on_attr_and_type('study_subject_id',:taken)
 			assert subject.errors.on_attr_and_type('pii.study_subject_id',:taken)
 		} }
 	end
@@ -247,7 +248,6 @@ pending
 		#	when using accepts_nested_attributes_for
 		assert_difference( 'Patient.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
-#			subject = create_subject(
 			subject = Factory(:case_subject,
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert !subject.new_record?, 
@@ -282,31 +282,30 @@ pending
 	end
 
 	test "should NOT create subject with second identifier" do
-#		assert_difference( 'Identifier.count', 1) {
-#		assert_difference( "Subject.count", 1 ) {
-#			subject = create_subject(
-#				:identifier_attributes => Factory.attributes_for(:identifier))
-#			assert !subject.new_record?, 
-#				"#{subject.errors.full_messages.to_sentence}"
-#			subject.update_attributes(
-#				:identifier_attributes => Factory.attributes_for(:identifier))
-#			subject = create_subject
-#			identifier1 = Factory(:identifier,:subject => subject)
-#			identifier2 = Factory.build(:identifier,:subject => subject)
-#			identifier2.save
-#			assert identifier2.errors.on(:study_subject_id)
-#		} }
-pending
+		assert_difference( 'Identifier.count', 1) {
+		assert_difference( "Subject.count", 1 ) {
+			subject = create_subject(
+				:identifier_attributes => Factory.attributes_for(:identifier))
+			assert !subject.new_record?, 
+				"#{subject.errors.full_messages.to_sentence}"
+			subject.update_attributes(
+				:identifier_attributes => Factory.attributes_for(:identifier))
+			assert subject.identifier.errors.on_attr_and_type('study_subject_id',:taken)
+			assert subject.errors.on_attr_and_type('identifier.study_subject_id',:taken)
+		} }
 	end
 
-#	test "should NOT create subject with empty identifier" do
-#		assert_difference( 'Identifier.count', 0) {
-#		assert_difference( 'Subject.count', 0) {
-#			subject = create_subject(
-#				:identifier_attributes => {} )
-#			assert subject.errors.on('identifier.childid')
-#		} }
-#	end
+	test "should NOT create subject with empty identifier" do
+		assert_difference( 'Identifier.count', 0) {
+		assert_difference( 'Subject.count', 0) {
+			subject = create_subject(
+				:identifier_attributes => {} )
+			assert subject.errors.on_attr_and_type('identifier.orderno',:blank)
+			assert subject.errors.on_attr_and_type('identifier.patid',:blank)
+			assert subject.errors.on_attr_and_type('identifier.case_control_type',:blank)
+			assert subject.errors.on_attr_and_type('identifier.childid',:blank)
+		} }
+	end
 
 	test "studyid should be patid, case_control_type and orderno" do
 		subject = create_subject(

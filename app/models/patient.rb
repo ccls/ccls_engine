@@ -11,8 +11,16 @@ class Patient < Shared
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	validates_presence_of   :subject, :on => :update
+	attr_protected :study_subject_id
+	validates_presence_of   :subject,          :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
+
+	##
+	#	since I can't use the conventional validations to check 
+	#	study_subject_id, do it before_save.  This'll rollback 
+	#	the subject creation too if using nested attributes.
+	before_create :ensure_presence_and_uniqueness_of_study_subject_id
+
 
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
@@ -31,6 +39,21 @@ class Patient < Shared
 	before_save :set_was_under_15_at_dx
 
 protected
+
+	##
+	#	since I can't use the conventional validations to check 
+	#	study_subject_id, do it before_save.  This'll rollback 
+	#	the subject creation too if using nested attributes.
+	def ensure_presence_and_uniqueness_of_study_subject_id
+		if study_subject_id.blank?
+			errors.add(:study_subject_id, :blank )
+			return false
+		#	As this is only on create, we don't need to consider self.id
+#		elsif Patient.exists?(:study_subject_id => study_subject_id)
+#			errors.add(:study_subject_id, :taken )
+#			return false
+		end
+	end
 
 	def set_was_under_15_at_dx
 		#	Because this can be called from subject with nested attributes,
@@ -76,6 +99,7 @@ protected
 	def subject_is_case
 #	TODO doubt that this really works since subject probably hasn't been resolved yet
 		if subject and subject.subject_type.code != 'Case'
+#		if study_subject_id and s = Subject.find(study_subject_id) and s.subject_type.code != 'Case'
 			errors.add(:subject,"must be case to have patient info")
 		end
 	end
