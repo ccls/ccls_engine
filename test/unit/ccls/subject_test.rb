@@ -145,7 +145,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 				"#{subject.errors.full_messages.to_sentence}"
 			subject.update_attributes(
 				:pii_attributes => Factory.attributes_for(:pii))
-			assert subject.errors.on('pii.study_subject_id')
+			assert subject.errors.on_attr_and_type('pii.study_subject_id',:taken)
 		} }
 	end
 
@@ -179,7 +179,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 				"#{subject.errors.full_messages.to_sentence}"
 			subject.update_attributes(
 				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
-			assert subject.errors.on('homex_outcome.study_subject_id')
+			assert subject.errors.on_attr_and_type('homex_outcome.study_subject_id',:taken)
 		} }
 	end
 
@@ -254,7 +254,7 @@ pending
 				"#{subject.errors.full_messages.to_sentence}"
 			subject.update_attributes(
 				:patient_attributes => Factory.attributes_for(:patient))
-			assert subject.errors.on('patient.study_subject_id')
+			assert subject.errors.on_attr_and_type('patient.study_subject_id',:taken)
 		} }
 	end
 
