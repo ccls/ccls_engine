@@ -189,7 +189,17 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		).reload
 		assert !subject.patient.was_under_15_at_dx
 		subject.pii.update_attribute(:dob, 10.years.ago.to_date)
-#		assert  subject.patient.was_under_15_at_dx
+#
+#	TODO this change needs triggered from pii, since that's what changed
+#			this is also where the problem with this cross-model dependency
+#			will create issues.  If I update the patient model, it will also
+#			update itself in the before save, which will probably work, but ?
+#
+		#	no triggered change
+		assert !subject.patient.was_under_15_at_dx
+		#	manually triggered change
+		subject.patient.touch
+		assert  subject.patient.was_under_15_at_dx
 pending
 	end
 
