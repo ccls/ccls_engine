@@ -2,7 +2,7 @@
 #	==	requires
 #	*	subject_id
 class Pii < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :subject, :foreign_key => 'study_subject_id'	#, :touch => true
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
 	##	TODO - find a way to do this

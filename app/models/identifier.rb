@@ -3,7 +3,7 @@
 #	*	subject_id (unique)
 #	*	state_id_no ( unique )
 class Identifier < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :subject, :foreign_key => 'study_subject_id'	#, :touch => true
 
 	##	TODO - find a way to do this
 	#	because subject accepts_nested_attributes for pii 

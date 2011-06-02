@@ -57,10 +57,20 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should require Case subject" do
-		assert_difference( "#{model_name}.count", 0 ) do
+		assert_difference( "Subject.count", 1 ) {
+		assert_difference( "#{model_name}.count", 0 ) {
 			object = create_object(:subject => Factory(:subject))
 			assert object.errors.on(:subject)
-		end
+		} }
+	end
+
+	test "should require case subject when using nested attributes" do
+		assert_difference( "Subject.count", 0 ) {
+		assert_difference( "#{model_name}.count", 0 ) {
+			subject = create_subject(
+				:patient_attributes => Factory.attributes_for(:patient))
+			assert subject.errors.on(:patient)	#	raised from subject model, NOT patient
+		} }
 	end
 
 	test "should require admit_date be after DOB" do
@@ -77,6 +87,22 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should require admit_date be after DOB when using nested attributes" do
+#		assert_difference( "Pii.count", 0 ) {
+#		assert_difference( "Subject.count", 0 ) {
+#		assert_difference( "#{model_name}.count", 0 ) {
+			subject = create_case_subject(
+				:pii_attributes => Factory.attributes_for(:pii),
+				:patient_attributes => Factory.attributes_for(:patient,{
+					# smaller than my factory set dob
+					:admit_date => Date.jd(2430000),
+				}))
+#			assert subject.errors
+#			assert subject.errors.on('patient:admit_date')
+pending
+#		} } }
+	end
+
 	test "should require diagnosis_date be after DOB" do
 		assert_difference( "#{model_name}.count", 0 ) do
 			subject = Factory(:case_subject)
@@ -89,6 +115,22 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			assert_match(/before.*dob/,
 				object.errors.on(:diagnosis_date))
 		end
+	end
+
+	test "should require diagnosis_date be after DOB when using nested attributes" do
+#		assert_difference( "Pii.count", 0 ) {
+#		assert_difference( "Subject.count", 0 ) {
+#		assert_difference( "#{model_name}.count", 0 ) {
+			subject = create_case_subject(
+				:pii_attributes => Factory.attributes_for(:pii),
+				:patient_attributes => Factory.attributes_for(:patient,{
+					# smaller than my factory set dob
+					:diagnosis_date => Date.jd(2430000),
+				}))
+#			assert subject.errors
+#			assert subject.errors.on('patient:diagnosis_date')
+pending
+#		} } }
 	end
 
 	test "should update all matching subjects' reference date " <<

@@ -45,29 +45,12 @@ class Ccls::Subject < Shared
 	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
 
-	accepts_nested_attributes_for :enrollments
-	accepts_nested_attributes_for :addressings,
-		:reject_if => proc { |attrs|
-			attrs[:address_attributes][:line_1].blank? &&
-			attrs[:address_attributes][:line_2].blank? &&
-			attrs[:address_attributes][:city].blank? &&
-			attrs[:address_attributes][:zip].blank? &&
-			attrs[:address_attributes][:county].blank?
-		}
-	accepts_nested_attributes_for :phone_numbers,
-		:reject_if => proc { |attrs| attrs[:phone_number].blank? }
-	accepts_nested_attributes_for :gift_cards
-	accepts_nested_attributes_for :subject_races, 
-		:allow_destroy => true,
-		:reject_if => proc{|attributes| attributes['race_id'].blank? }
-	accepts_nested_attributes_for :subject_languages, 
-		:allow_destroy => true,
-		:reject_if => proc{|attributes| attributes['language_id'].blank? }
-
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
 
 	validates_inclusion_of :do_not_contact, :in => [ true, false ]
+
+	validate :must_be_case_if_patient
 
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
@@ -107,32 +90,47 @@ class Ccls::Subject < Shared
 	#	s.reload.pii  will return the first one (sorts by id)
 	#	s.pii.destroy will destroy the last one !?!?!?
 	#	Make all these require a unique study_subject_id
+	#	Newer versions of rails actually nullify the old record
+
+	accepts_nested_attributes_for :enrollments
+	accepts_nested_attributes_for :addressings,
+		:reject_if => proc { |attrs|
+			attrs[:address_attributes][:line_1].blank? &&
+			attrs[:address_attributes][:line_2].blank? &&
+			attrs[:address_attributes][:city].blank? &&
+			attrs[:address_attributes][:zip].blank? &&
+			attrs[:address_attributes][:county].blank?
+		}
+	accepts_nested_attributes_for :phone_numbers,
+		:reject_if => proc { |attrs| attrs[:phone_number].blank? }
+	accepts_nested_attributes_for :gift_cards
+	accepts_nested_attributes_for :subject_races, 
+		:allow_destroy => true,
+		:reject_if => proc{|attributes| attributes['race_id'].blank? }
+	accepts_nested_attributes_for :subject_languages, 
+		:allow_destroy => true,
+		:reject_if => proc{|attributes| attributes['language_id'].blank? }
 	accepts_nested_attributes_for :pii
 	accepts_nested_attributes_for :homex_outcome
 	accepts_nested_attributes_for :identifier
-
-#	Where do I use patient_attributes?
-#		ODMS does for new subject
 	accepts_nested_attributes_for :patient
-	validate :must_be_case_if_patient_attributes
-	def must_be_case_if_patient_attributes
-#
-#	TODO surprised that this works
-#
-		if !patient.nil? and !is_case?
-			errors.add(:patient ,"must be case to have patient info")
-		end
-	end
+
+
+
+
+
+
 
 #	class NotTwoResponseSets < StandardError; end
 
 	#	Returns number of addresses with 
 	#	address_type.code == 'residence'
 	def residence_addresses_count
-		addresses.count(
-			:joins => :address_type,
-			:conditions => "address_types.code = 'residence'"
-		)
+#		addresses.count(
+#			:joins => :address_type,
+#			:conditions => "address_types.code = 'residence'"
+#		)
+		addresses.count(:conditions => { :address_type_id => AddressType['residence'].id })
 	end
 
 	def to_s
@@ -249,46 +247,6 @@ class Ccls::Subject < Shared
 		connection.update(sql, "#{name} Update")
 	end
 
-#		def self.update_all(updates, conditions = nil, options = {})
-#	####
-#	#	BEGIN Jake's Hack
-#	#		sql  = "UPDATE #{quoted_table_name} SET #{sanitize_sql_for_assignment(updates)} "
-#	
-#			sql  = "UPDATE #{quoted_table_name} "
-#	
-#			scope = scope(:find)
-#			select_sql = ""
-#	
-#			add_joins!(select_sql, options[:joins], scope) if options.has_key?(:joins)
-#			select_sql.concat "SET #{sanitize_sql_for_assignment(updates)} "
-#	
-#	#	END Jake's Hack
-#	####
-#	
-#			add_conditions!(select_sql, conditions, scope)
-#	
-#			if options.has_key?(:limit) || (scope && scope[:limit])
-#				# Only take order from scope if limit is also provided by scope, this
-#				# is useful for updating a has_many association with a limit.
-#				add_order!(select_sql, options[:order], scope)
-#	
-#				add_limit!(select_sql, options, scope)
-#				sql.concat(connection.limited_update_conditions(select_sql, 
-#					quoted_table_name, connection.quote_column_name(primary_key)))
-#			else
-#				add_order!(select_sql, options[:order], nil)
-#				sql.concat(select_sql)
-#			end
-#	
-#			connection.update(sql, "#{name} Update")
-#		end
-
-
-
-
-
-
-
 
 	class NotTwoAbstracts < StandardError; end
 
@@ -298,24 +256,18 @@ class Ccls::Subject < Shared
 		:conditions => [
 			"entry_1_by_uid IS NOT NULL AND " <<
 			"entry_2_by_uid IS NULL AND " <<
-			"merged_by_uid  IS NULL"
-	]
+			"merged_by_uid  IS NULL" ]
 
 	has_one :second_abstract, :class_name => 'Abstract',
 		:conditions => [
 			"entry_2_by_uid IS NOT NULL AND " <<
-			"merged_by_uid  IS NULL"
-	]
+			"merged_by_uid  IS NULL" ]
 
 	has_one :merged_abstract, :class_name => 'Abstract',
-		:conditions => [
-			"merged_by_uid IS NOT NULL"
-	]
+		:conditions => [ "merged_by_uid IS NOT NULL" ]
 
 	has_many :unmerged_abstracts, :class_name => 'Abstract',
-		:conditions => [
-			"merged_by_uid IS NULL"
-	]
+		:conditions => [ "merged_by_uid IS NULL" ]
 
 	def abstracts_the_same?
 		raise Subject::NotTwoAbstracts unless abstracts_count == 2
@@ -338,6 +290,37 @@ protected
 	def self.hx_id
 		#	added try and || for usage on empty db
 		Project['HomeExposures'].try(:id)||0
+	end
+
+	def must_be_case_if_patient
+		#	Notes on accepts_nested_attributes_for :something when creating ...
+		#		immediately builds association via build_something with something_attributes
+		#		uses autosave to set
+		#			validate to validate_associated_records_for_something
+		#			after_save to autosave_associated_records_for_something
+		#
+		#			build_something called as soon as the params are passed to new()
+		#				before the save chain even begins
+		# * (-) <tt>save</tt>
+		# * (-) <tt>valid</tt>
+		# * (1) <tt>before_validation</tt>
+		# * (2) <tt>before_validation_on_create</tt>
+		# * (-) <tt>validate</tt>
+		#			validate_associated_records_for_something I think
+		# * (-) <tt>validate_on_create</tt>
+		# * (3) <tt>after_validation</tt>
+		# * (5) <tt>before_save</tt>
+		# * (6) <tt>before_create</tt>
+		# * (-) <tt>create</tt>					#	id of self not known 'til now
+		# * (7) <tt>after_create</tt>
+		# * (8) <tt>after_save</tt>
+		#			autosave_associated_records_for_something I think
+		#
+		#	order of declaration will have some impact on what order some things are called
+		#		
+		if !patient.nil? and !is_case?
+			errors.add(:patient ,"must be case to have patient info")
+		end
 	end
 
 end

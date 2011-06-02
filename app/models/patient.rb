@@ -1,6 +1,14 @@
 # Patient related subject info.
 class Patient < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+
+#	Many ...
+#	SystemStackError: stack level too deep
+#	caused by after_saves calling after_saves with touch
+
+	belongs_to :subject, :foreign_key => 'study_subject_id'	#, :touch => true
+
+
+
 	belongs_to :organization
 	belongs_to :diagnosis
 
@@ -55,6 +63,9 @@ protected
 		end
 	end
 
+#
+#	TODO MOVE THIS INTO SUBJECT!
+#
 	def set_was_under_15_at_dx
 		#	Because this can be called from subject with nested attributes,
 		#	the subject association may not be known to patient.  We'll need
@@ -96,10 +107,10 @@ protected
 		end
 	end
 
+	#	subject model validation stops creating patient for non-case subject
+	#	This only stops it when created separately
 	def subject_is_case
-#	TODO doubt that this really works since subject probably hasn't been resolved yet
 		if subject and subject.subject_type.code != 'Case'
-#		if study_subject_id and s = Subject.find(study_subject_id) and s.subject_type.code != 'Case'
 			errors.add(:subject,"must be case to have patient info")
 		end
 	end

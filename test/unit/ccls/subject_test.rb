@@ -94,6 +94,22 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		} } }
 	end
 
+	test "should respond to residence_addresses_count" do
+		subject = create_subject
+		assert subject.respond_to?(:residence_addresses_count)
+		assert_equal 0, subject.residence_addresses_count
+		subject.update_attributes(
+				:addressings_attributes => [Factory.attributes_for(:addressing,
+					:address_attributes => Factory.attributes_for(:address,
+					{ :address_type => AddressType['residence'] } ))])
+		assert_equal 1, subject.reload.residence_addresses_count
+		subject.update_attributes(
+				:addressings_attributes => [Factory.attributes_for(:addressing,
+					:address_attributes => Factory.attributes_for(:address,
+					{ :address_type => AddressType['residence'] } ))])
+		assert_equal 2, subject.reload.residence_addresses_count
+	end
+
 	test "should create subject and accept_nested_attributes_for phone_numbers" do
 		assert_difference( 'PhoneNumber.count', 1) {
 		assert_difference( "Subject.count", 1 ) {
