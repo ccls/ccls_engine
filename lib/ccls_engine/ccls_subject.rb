@@ -3,11 +3,9 @@
 class Ccls::Subject < Shared
 	self.abstract_class = true
 
-#
-#	TODO clean this up.  Seriously
-#
+#	class NotTwoResponseSets < StandardError; end
+	class NotTwoAbstracts < StandardError; end
 
-#	belongs_to :hispanicity
 	belongs_to :subject_type
 	belongs_to :vital_status
 
@@ -45,12 +43,33 @@ class Ccls::Subject < Shared
 	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
 
+	has_many :abstracts
+
+	has_one :first_abstract, :class_name => 'Abstract',
+		:conditions => [
+			"entry_1_by_uid IS NOT NULL AND " <<
+			"entry_2_by_uid IS NULL AND " <<
+			"merged_by_uid  IS NULL" ]
+
+	has_one :second_abstract, :class_name => 'Abstract',
+		:conditions => [
+			"entry_2_by_uid IS NOT NULL AND " <<
+			"merged_by_uid  IS NULL" ]
+
+	has_one :merged_abstract, :class_name => 'Abstract',
+		:conditions => [ "merged_by_uid IS NOT NULL" ]
+
+	has_many :unmerged_abstracts, :class_name => 'Abstract',
+		:conditions => [ "merged_by_uid IS NULL" ]
+
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
 
 	validates_inclusion_of :do_not_contact, :in => [ true, false ]
 
 	validate :must_be_case_if_patient
+	validate :patient_admit_date_is_after_dob
+	validate :patient_diagnosis_date_is_after_dob
 
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
@@ -121,7 +140,6 @@ class Ccls::Subject < Shared
 
 
 
-#	class NotTwoResponseSets < StandardError; end
 
 	#	Returns number of addresses with 
 	#	address_type.code == 'residence'
@@ -147,13 +165,6 @@ class Ccls::Subject < Shared
 	def race_names
 		races.collect(&:to_s).join(', ')
 	end
-#	replaced with has_one relationship
-#	#	Returns home exposures enrollment
-#	def hx_enrollment
-#		enrollments.find(:first,
-#			:conditions => "projects.code = 'HomeExposures'",
-#			:joins => :project)
-#	end
 
 	#	Returns home exposures interview
 	def hx_interview
@@ -161,7 +172,8 @@ class Ccls::Subject < Shared
 		interviews.find(:first,
 			:conditions => "projects.code = 'HomeExposures'",
 			:joins => [:instrument_version => [:instrument => :project]]
-		) unless identifier.nil?
+#		) unless identifier.nil?
+		)
 	end
 
 	def is_eligible_for_invitation?
@@ -173,17 +185,15 @@ class Ccls::Subject < Shared
 #	end
 
 	def self.for_hx(params={})
-#puts "In for_hx"
-#puts params.inspect
-#puts params.deep_merge(:projects=>{hx_id=>{}}).inspect
-#puts "searching ..."
-		Subject.search(params.deep_merge(
+#		Subject.search(params.deep_merge(
+		Subject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{}}
 		))
 	end
 
 	def self.for_hx_interview(params={})
-		Subject.search(params.deep_merge(
+#		Subject.search(params.deep_merge(
+		Subject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{:chosen=>true}}
 		))
 #		@subjects = SubjectSearch.new(params).subjects
@@ -194,32 +204,46 @@ class Ccls::Subject < Shared
 	end
 
 	def self.need_gift_card(params={})
-		for_hx_followup(params.merge({
+#		for_hx_followup(params.merge({
+		for_hx_followup(params.dup.merge({
 			:has_gift_card => false
 		}))
 	end
 
 	def self.for_hx_followup(params={})
-		options = params.deep_merge(
-			:projects=>{hx_id=>{}}
-		)
-		options.merge!(
+#	Why in 3 statements?
+#		options = params.dup.deep_merge(
+#			:projects=>{hx_id=>{}}
+#		)
+#		options.merge!(
+#			:search_gift_cards => true,
+#			:sample_outcome => 'complete',
+#			:interview_outcome => 'complete'
+#		)
+#		Subject.search(options)
+		Subject.search( params.dup.deep_merge(
+			:projects=>{hx_id=>{}},
 			:search_gift_cards => true,
 			:sample_outcome => 'complete',
 			:interview_outcome => 'complete'
-		)
-		Subject.search(options)
+		))
 	end
 
 	def self.for_hx_sample(params={})
-		options = params.deep_merge(
-			:projects=>{hx_id=>{}}
-		)
-		options.merge!(
+#	Why in 3 statements?
+#		options = params.dup.deep_merge(
+#			:projects=>{hx_id=>{}}
+#		)
+#		options.merge!(
+##			:sample_outcome => 'incomplete',
+#			:interview_outcome => 'complete'
+#		)
+#		Subject.search(options)
+		Subject.search(params.dup.deep_merge(
+			:projects=>{hx_id=>{}},
 #			:sample_outcome => 'incomplete',
 			:interview_outcome => 'complete'
-		)
-		Subject.search(options)
+		))
 	end
 
 	def self.search(params={})
@@ -248,26 +272,6 @@ class Ccls::Subject < Shared
 	end
 
 
-	class NotTwoAbstracts < StandardError; end
-
-	has_many :abstracts
-
-	has_one :first_abstract, :class_name => 'Abstract',
-		:conditions => [
-			"entry_1_by_uid IS NOT NULL AND " <<
-			"entry_2_by_uid IS NULL AND " <<
-			"merged_by_uid  IS NULL" ]
-
-	has_one :second_abstract, :class_name => 'Abstract',
-		:conditions => [
-			"entry_2_by_uid IS NOT NULL AND " <<
-			"merged_by_uid  IS NULL" ]
-
-	has_one :merged_abstract, :class_name => 'Abstract',
-		:conditions => [ "merged_by_uid IS NOT NULL" ]
-
-	has_many :unmerged_abstracts, :class_name => 'Abstract',
-		:conditions => [ "merged_by_uid IS NULL" ]
 
 	def abstracts_the_same?
 		raise Subject::NotTwoAbstracts unless abstracts_count == 2
@@ -283,6 +287,7 @@ class Ccls::Subject < Shared
 		return abstracts[0].diff(abstracts[1])
 	end
 
+	##
 	#	triggered from patient and eventually from pii
 	def update_patient_was_under_15_at_dx
 		reload	#	reload subject so associations resolved
@@ -308,6 +313,24 @@ class Ccls::Subject < Shared
 	end
 
 protected
+
+	#	This is a duplication of a patient validation that won't
+	#	work if using nested attributes.  Don't like doing this.
+	def patient_admit_date_is_after_dob
+		if !patient.nil? && !patient.admit_date.blank? && 
+			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob
+			errors.add('patient:admit_date', "is before subject's dob.") 
+		end
+	end
+
+	#	This is a duplication of a patient validation that won't
+	#	work if using nested attributes.  Don't like doing this.
+	def patient_diagnosis_date_is_after_dob
+		if !patient.nil? && !patient.diagnosis_date.blank? && 
+			!pii.nil? && !pii.dob.blank? && patient.diagnosis_date < pii.dob
+			errors.add('patient:diagnosis_date', "is before subject's dob.") 
+		end
+	end
 
 	def self.hx_id
 		#	added try and || for usage on empty db
@@ -340,6 +363,12 @@ protected
 		#			autosave_associated_records_for_something I think
 		#
 		#	order of declaration will have some impact on what order some things are called
+#	In subject before_validation
+#	In patient before_validation
+#	In patient validate
+#	In patient after_validation
+#	In subject validate
+#	In subject after_validation
 		#		
 		if !patient.nil? and !is_case?
 			errors.add(:patient ,"must be case to have patient info")

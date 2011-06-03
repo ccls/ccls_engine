@@ -88,19 +88,17 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should require admit_date be after DOB when using nested attributes" do
-#		assert_difference( "Pii.count", 0 ) {
-#		assert_difference( "Subject.count", 0 ) {
-#		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Pii.count", 0 ) {
+		assert_difference( "Subject.count", 0 ) {
+		assert_difference( "#{model_name}.count", 0 ) {
 			subject = create_case_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
 					# smaller than my factory set dob
 					:admit_date => Date.jd(2430000),
 				}))
-#			assert subject.errors
-#			assert subject.errors.on('patient:admit_date')
-pending
-#		} } }
+			assert subject.errors.on('patient:admit_date')
+		} } }
 	end
 
 	test "should require diagnosis_date be after DOB" do
@@ -118,19 +116,17 @@ pending
 	end
 
 	test "should require diagnosis_date be after DOB when using nested attributes" do
-#		assert_difference( "Pii.count", 0 ) {
-#		assert_difference( "Subject.count", 0 ) {
-#		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Pii.count", 0 ) {
+		assert_difference( "Subject.count", 0 ) {
+		assert_difference( "#{model_name}.count", 0 ) {
 			subject = create_case_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
 					# smaller than my factory set dob
 					:diagnosis_date => Date.jd(2430000),
 				}))
-#			assert subject.errors
-#			assert subject.errors.on('patient:diagnosis_date')
-pending
-#		} } }
+			assert subject.errors.on('patient:diagnosis_date')
+		} } }
 	end
 
 	test "should update all matching subjects' reference date " <<

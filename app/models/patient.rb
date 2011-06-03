@@ -23,7 +23,6 @@ class Patient < Shared
 	#	the subject creation too if using nested attributes.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
 
-
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
 	validate :admit_date_is_after_dob
@@ -38,15 +37,14 @@ class Patient < Shared
 	after_save :update_matching_subjects_reference_date,
 		:if => :admit_date_changed?
 
-#	before_save :set_was_under_15_at_dx
-
 	after_save :trigger_setting_was_under_15_at_dx,
 		:if => :admit_date_changed?
+
+protected
+
 	def trigger_setting_was_under_15_at_dx
 		subject.update_patient_was_under_15_at_dx
 	end
-
-protected
 
 	##
 	#	since I can't use the conventional validations to check 
@@ -63,34 +61,11 @@ protected
 		end
 	end
 
-#
-#	TODO MOVE THIS INTO SUBJECT!
-#
-#	def set_was_under_15_at_dx
-#		#	Because this can be called from subject with nested attributes,
-#		#	the subject association may not be known to patient.  We'll need
-#		#	to be explicit and find it ourselves.  Also, the pii must be
-#		#	created first (pii listed before patient in subject) so that it
-#		#	is created before the patient record is so that we can read the
-#		#	subject's dob.
-#		if study_subject_id
-#			s = Subject.find(study_subject_id)
-#			p = Pii.find_by_study_subject_id(study_subject_id)
-#			dob = p.dob if p
-#		end
-#		if study_subject_id and s and dob and admit_date
-#			self.was_under_15_at_dx = (((
-#				admit_date.to_date - dob.to_date 
-#				) / 365 ) < 15 )		#	crude and probably off by a couple days
-#														#	would be better to compare year, month then day
-#		end
-#		#	make sure we return true
-#		true
-#	end
-
+	##
+	#	This validation does not work when using nested attributes as 
+	#	the subject has not been resolved yet, unless this is an update.
+	#	This results in a similar validation in Subject.
 	def admit_date_is_after_dob
-#	TODO doubt that this really works since subject probably hasn't been resolved yet
-#			if using nested_attributes
 		if !admit_date.blank? && 
 			!subject.blank? && 
 			!subject.dob.blank? && 
@@ -99,9 +74,11 @@ protected
 		end
 	end
 
+	##
+	#	This validation does not work when using nested attributes as 
+	#	the subject has not been resolved yet, unless this is an update.
+	#	This results in a similar validation in Subject.
 	def diagnosis_date_is_after_dob
-#	TODO doubt that this really works since subject probably hasn't been resolved yet
-#			if using nested_attributes
 		if !diagnosis_date.blank? && 
 			!subject.blank? && 
 			!subject.dob.blank? && 
@@ -110,8 +87,10 @@ protected
 		end
 	end
 
-	#	subject model validation stops creating patient for non-case subject
-	#	This only stops it when created separately
+	##
+	#	This validation does not work when using nested attributes as 
+	#	the subject has not been resolved yet, unless this is an update.
+	#	This results in a similar validation in Subject.
 	def subject_is_case
 		if subject and subject.subject_type.code != 'Case'
 			errors.add(:subject,"must be case to have patient info")
