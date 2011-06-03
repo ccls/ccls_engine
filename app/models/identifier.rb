@@ -23,6 +23,10 @@ class Identifier < Shared
 	#	the subject creation too if using nested attributes.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
 
+#	TODO
+#	At some point gonna need something like ...
+#	before_validation :set_childid
+#	before_validation :set_patid
 
 	validates_presence_of   :childid
 	validates_uniqueness_of :childid
@@ -92,7 +96,27 @@ class Identifier < Shared
 #
 	before_save :set_studyids
 
+	after_save :trigger_update_matching_subjects_reference_date, 
+		:if => :matchingid_changed?
+
 protected
+
+	def trigger_update_matching_subjects_reference_date
+#		puts "triggering_update_matching_subjects_reference_date from Identifier"
+#		puts matchingid_was
+#		puts "matchingid changed from:#{matchingid_was}:to:#{matchingid}"
+#		subject.update_matching_subjects_reference_date
+#	matchingid_was is only really important if this subject is the patient
+#	if have 2 groups of subjects with matchingids and 'move' the patient from
+#	one to the other, the initial subjects' reference_dates should be nullified when
+#	updated as there will no longer be a patient.admit_date.  The new subjects'
+#	reference_dates will update as normal
+#	don't send a blank one (matchingid_was is blank on create) deal with it in subjects
+#		subject.update_subjects_reference_date_matching(*[matchingid_was,matchingid].compact)
+#		subject.update_subjects_reference_date_matching(matchingid_was,matchingid)
+#puts "Matchingid after_save:#{matchingid}"
+		subject.update_subjects_reference_date_matching(matchingid_was,matchingid)
+	end
 
 	##
 	#	since I can't use the conventional validations to check 
@@ -156,7 +180,9 @@ protected
 	def pad_zeros_to_matchingid
 		matchingid.try(:gsub!,/\D/,'')
 #	TODO add more tests for this (try with valid? method)
+#puts "Matchingid before before validation:#{matchingid}"
 		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
+#puts "Matchingid after before validation:#{matchingid}"
 	end 
 
 	#	Pad leading zeroes to patid
@@ -194,14 +220,16 @@ protected
 		self.state_id_no = nil if state_id_no.blank?
 	end
 
-	#	Use the ! so that an exception is raised on failure
-	def generate_next_patid
-		Patid.create!.destroy.id
-	end
-
-	#	Use the ! so that an exception is raised on failure
-	def generate_next_childid
-		Childid.create!.destroy.id
-	end
+#	comment out 'til ready to use 'em
+#
+#	#	Use the ! so that an exception is raised on failure
+#	def generate_next_patid
+#		Patid.create!.destroy.id
+#	end
+#
+#	#	Use the ! so that an exception is raised on failure
+#	def generate_next_childid
+#		Childid.create!.destroy.id
+#	end
 
 end

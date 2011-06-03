@@ -19,7 +19,6 @@ class Ccls::Subject < Shared
 		f.has_many :phone_numbers
 		f.has_many :samples
 		f.has_many :interviews
-		f.has_one :identifier
 		f.has_one :home_exposure_response
 		f.has_one :homex_outcome
 
@@ -29,6 +28,9 @@ class Ccls::Subject < Shared
 #	references the subject's dob when using nested attributes, 
 #	pii NEEDS to be before patient.
 #
+#	identifier should also be before patient
+#
+		f.has_one :identifier
 		f.has_one :pii
 		f.has_one :patient
 #
@@ -184,6 +186,10 @@ class Ccls::Subject < Shared
 #		dust_kit.try(:status) || 'None'
 #	end
 
+	#	NOTE don't forget that deep_merge DOES NOT WORK on HashWithIndifferentAccess
+
+	##
+	#	Subjects with an enrollment in HomeExposures
 	def self.for_hx(params={})
 #		Subject.search(params.deep_merge(
 		Subject.search(params.dup.deep_merge(
@@ -191,6 +197,8 @@ class Ccls::Subject < Shared
 		))
 	end
 
+	##
+	#	Subjects with an enrollment in HomeExposures and ...
 	def self.for_hx_interview(params={})
 #		Subject.search(params.deep_merge(
 		Subject.search(params.dup.deep_merge(
@@ -203,6 +211,8 @@ class Ccls::Subject < Shared
 #		))
 	end
 
+	##
+	#	Subjects with an enrollment in HomeExposures and ...
 	def self.need_gift_card(params={})
 #		for_hx_followup(params.merge({
 		for_hx_followup(params.dup.merge({
@@ -210,6 +220,8 @@ class Ccls::Subject < Shared
 		}))
 	end
 
+	##
+	#	Subjects with an enrollment in HomeExposures and ...
 	def self.for_hx_followup(params={})
 #	Why in 3 statements?
 #		options = params.dup.deep_merge(
@@ -229,6 +241,8 @@ class Ccls::Subject < Shared
 		))
 	end
 
+	##
+	#	Subjects with an enrollment in HomeExposures and ...
 	def self.for_hx_sample(params={})
 #	Why in 3 statements?
 #		options = params.dup.deep_merge(
@@ -250,28 +264,26 @@ class Ccls::Subject < Shared
 		SubjectSearch.new(params).subjects
 	end
 
-	#	Rails' update_all DOES NOT SUPPORT JOINS despite many requests online.
-	#	I must admit that it was unbelievably complex.  NOT.
-	#	All I did was split the first line, and jam the joins in the middle.
-	#	The sole purpose of all this is for the Patient callback 
-	#	to update all of the matchingid subjects' reference date.
-	#	If this begins to cause problems elsewhere, rename it here
-	#	and in the Patient model's call.
-	#	created "ccls_update_all" to avoid problems and ensure
-	#		rcov gets 100% coverage
-	def self.ccls_update_all(updates, conditions = nil, options = {})
-		sql  = "UPDATE #{quoted_table_name} "
-		scope = scope(:find)
-		select_sql = ""
-		add_joins!(select_sql, options[:joins], scope) if options.has_key?(:joins)
-		select_sql.concat "SET #{sanitize_sql_for_assignment(updates)} "
-		add_conditions!(select_sql, conditions, scope)
-		add_order!(select_sql, options[:order], nil)
-		sql.concat(select_sql)
-		connection.update(sql, "#{name} Update")
-	end
-
-
+#	#	Rails' update_all DOES NOT SUPPORT JOINS despite many requests online.
+#	#	I must admit that it was unbelievably complex.  NOT.
+#	#	All I did was split the first line, and jam the joins in the middle.
+#	#	The sole purpose of all this is for the Patient callback 
+#	#	to update all of the matchingid subjects' reference date.
+#	#	If this begins to cause problems elsewhere, rename it here
+#	#	and in the Patient model's call.
+#	#	created "ccls_update_all" to avoid problems and ensure
+#	#		rcov gets 100% coverage
+#	def self.ccls_update_all(updates, conditions = nil, options = {})
+#		sql  = "UPDATE #{quoted_table_name} "
+#		scope = scope(:find)
+#		select_sql = ""
+#		add_joins!(select_sql, options[:joins], scope) if options.has_key?(:joins)
+#		select_sql.concat "SET #{sanitize_sql_for_assignment(updates)} "
+#		add_conditions!(select_sql, conditions, scope)
+#		add_order!(select_sql, options[:order], nil)
+#		sql.concat(select_sql)
+#		connection.update(sql, "#{name} Update")
+#	end
 
 	def abstracts_the_same?
 		raise Subject::NotTwoAbstracts unless abstracts_count == 2
@@ -290,7 +302,7 @@ class Ccls::Subject < Shared
 	##
 	#	triggered from patient and eventually from pii
 	def update_patient_was_under_15_at_dx
-		reload	#	reload subject so associations resolved
+		reload	#	reload subject so associations resolved.  I don't like that I have to do this.
 		if dob and patient and patient.admit_date
 			#
 			#	update_all(updates, conditions = nil, options = {})
@@ -312,7 +324,105 @@ class Ccls::Subject < Shared
 		true
 	end
 
+#	TODO
+#	Move this functionality into Subject
+#		Trigger from patient#after_save if admit_date changed?
+#		Trigger from identifier#after_save if matchingid changed for was* and current?
+#
+#	I'll need to accept some args as they are not dirty when they get here,
+#		but they are in the models themselves
+#
+
+	##
+	#	
+	#	options (SOON) can contain admit_date, matchingid and matchingid_was
+#	NO
+#		Instead, have the option to pass matchingids (matchingid,matchingid_was)
+#			from Identifier
+#		or nothing from Patient
+	def update_subjects_reference_date_matching(*matchingids)
+#	def update_matching_subjects_reference_date(options={})
+
+#
+#	This works like all subjects exist and when the patient updates the admit_date
+#	then all the matchingid subjects update their reference_date.  This is incomplete.
+#
+#	What about if the patient with admit_date exists when a 
+#		non-patient with matchingid is created? (triggered by identifier#after_save)
+#	What about if the patient with admit_date exists when a
+#		non-patient's matchingid is changed? (triggered by identifier#after_save)
+#	What if the patient's matchingid is changed?
+#		update those that matched the old? (they shouldn't match another patient, yet, as is unique so
+#			could only be nullified)
+#		update those that match   the new? (nothing special about this)
+#
+#	What if matchingid AND admit_date change?  This'll run twice (not a big problem)
+#
+#	There is much work to do.
+#
+
+#	puts "In update_matching_subjects_reference_date"
+#	puts matchingids.join(',')
+#	compact! : Removes nil elements from array. Returns nil if no changes were made. 
+#	f'ing stupid!  Why not just return self like every other ! method?
+#		I suppose this isn't the only one the returns 2 completely different classes
+#		depending on what it was and does?  This effectively means that the compact!
+#		command cannot be used inline.
+#	puts matchingids.compact!.join(',')
+#	puts (matchingids = matchingids.compact).join(',')
+#	puts matchingids.join(',')
+#
+#	puts patient.inspect
+#	puts identifier.inspect
+#	puts identifier.matchingid
+#	puts identifier.try(:matchingid)
+
+#	if matchingids ~ [nil,12345]
+#		identifier was either just created or matchingid added (compact as nil not needed)
+#	if matchingids ~ [12345,nil]
+#		matchingid was removed (compact as nil not needed)
+#	if matchingids ~ [12345,54321]
+#		matchingid was just changed
+#	if matchingids ~ []
+#		trigger came from Patient so need to find matchingid
+#		
+		matchingids.compact.push(identifier.try(:matchingid)).uniq.each do |matchingid|
+#puts "Processing matchingid:#{matchingid}"
+#		loop over matchingid and matchingid_was if both passed
+#	(matchingids||[identifier.try(:matchingid)]).each do |matchingid|
+			subject_ids = if( !matchingid.nil? )
+#		subject_ids = if( !(matchingid = identifier.try(:matchingid)).nil? )
+				Identifier.find_all_by_matchingid(matchingid
+					).collect(&:study_subject_id)
+			else
+				[id]
+			end
+#puts "Subject ids:#{subject_ids.join(',')}"
+
+			#	SHOULD only ever be 1 patient found amongst the subject_ids although there is
+			#		currently no validation applied to the uniqueness of matchingid
+			#	If there is more than one patient for a given matchingid, this'll just be wrong.
+#		matching_patient = patient || Patient.find_by_study_subject_id(subject_ids)
+#	if updated patient's matchingid, 
+			matching_patient = Patient.find_by_study_subject_id(subject_ids)
+			admit_date = matching_patient.try(:admit_date)
+
+			Subject.update_subjects_reference_date( subject_ids, admit_date )
+		end
+	end
+
 protected
+
+	def self.update_subjects_reference_date(subject_ids,new_reference_date)
+# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
+# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
+		if !subject_ids.empty? #and new_reference_date
+#puts "Updating #{subject_ids.join(',')} to #{new_reference_date}"
+			Subject.update_all(
+				{:reference_date => new_reference_date },
+				{ :id => subject_ids })
+		end
+	end
 
 	#	This is a duplication of a patient validation that won't
 	#	work if using nested attributes.  Don't like doing this.

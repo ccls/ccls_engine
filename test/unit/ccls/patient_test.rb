@@ -129,25 +129,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		} } }
 	end
 
-	test "should update all matching subjects' reference date " <<
-			"with updated admit date" do
-		subject = create_hx_subject(:patient => {},
-			:identifier => { :matchingid => '12345' }).reload
-		other  = create_hx_subject( :identifier => { :matchingid => '12345' }).reload
-		nobody = create_hx_subject( :identifier => { :matchingid => '54321' }).reload
-		assert_nil subject.reference_date
-		assert_nil subject.patient.admit_date
-		assert_nil other.reference_date
-		assert_nil nobody.reference_date
-		subject.patient.update_attributes(
-			:admit_date => Chronic.parse('yesterday'))
-		assert_not_nil subject.patient.admit_date
-		assert_not_nil subject.reload.reference_date
-		assert_not_nil other.reload.reference_date
-		assert_nil     nobody.reload.reference_date
-		assert_equal subject.reference_date, subject.patient.admit_date
-		assert_equal subject.reference_date, other.reference_date
-	end
 
 	test "should set was_under_15_at_dx to true using nested attributes" do
 		assert_difference( "Subject.count", 1 ) {

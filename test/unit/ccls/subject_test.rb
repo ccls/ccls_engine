@@ -935,7 +935,109 @@ pending
 	end
 
 
+	test "should set subject.reference_date to self.patient.admit_date on create" do
+		create_case_subject_with_patient_and_identifier
+	end
+
+	test "should update all matching subjects' reference date " <<
+			"with updated admit date" do
+		subject = create_hx_subject(:patient => {},
+			:identifier => { :matchingid => '12345' }).reload
+		other  = create_hx_subject( :identifier => { :matchingid => '12345' }).reload
+		nobody = create_hx_subject( :identifier => { :matchingid => '54321' }).reload
+		assert_nil subject.reference_date
+		assert_nil subject.patient.admit_date
+		assert_nil other.reference_date
+		assert_nil nobody.reference_date
+		subject.patient.update_attributes(
+			:admit_date => Chronic.parse('yesterday'))
+		assert_not_nil subject.patient.admit_date
+		assert_not_nil subject.reload.reference_date
+		assert_not_nil other.reload.reference_date
+		assert_nil     nobody.reload.reference_date
+		assert_equal subject.reference_date, subject.patient.admit_date
+		assert_equal subject.reference_date, other.reference_date
+	end
+
+	test "should set subject.reference_date to matching patient.admit_date " <<
+			"on create with patient created first" do
+		subject = create_case_subject_with_patient_and_identifier
+		other   = create_subject( 
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				{ :matchingid => '12345' })).reload
+		assert_not_nil other.reference_date
+		assert_equal   other.reference_date, subject.reference_date
+		assert_equal   other.reference_date, subject.patient.admit_date
+	end
+
+	test "should set subject.reference_date to matching patient.admit_date " <<
+			"on create with patient created last" do
+		other   = create_subject( 
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				{ :matchingid => '12345' })).reload
+		subject = create_case_subject_with_patient_and_identifier
+		assert_not_nil other.reload.reference_date
+		assert_equal   other.reference_date, subject.reference_date
+		assert_equal   other.reference_date, subject.patient.admit_date
+	end
+
+	test "should nullify subject.reference_date if matching patient changes matchingid" do
+		other   = create_subject( 
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				{ :matchingid => '12345' })).reload
+		subject = create_case_subject_with_patient_and_identifier
+		assert_not_nil other.reload.reference_date
+#	update_attribute skips validations!
+#		subject.identifier.update_attribute(:matchingid, '12346')
+		subject.identifier.update_attributes(:matchingid => '12346')
+		assert_nil     other.reload.reference_date
+	end
+
+	test "should nullify subject.reference_date if matching patient nullifies matchingid" do
+		other   = create_subject( 
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				{ :matchingid => '12345' })).reload
+		subject = create_case_subject_with_patient_and_identifier
+		assert_not_nil other.reload.reference_date
+#	update_attribute skips validations!
+#		subject.identifier.update_attribute(:matchingid, nil)
+		subject.identifier.update_attributes(:matchingid => nil)
+		assert_nil     other.reload.reference_date
+	end
+
+#
+#	This works like all subjects exist and when the patient updates the admit_date
+#	then all the matchingid subjects update their reference_date.  This is incomplete.
+#
+#	What about if the patient with admit_date exists when a 
+#		non-patient with matchingid is created? (triggered by identifier#after_save)
+#	What about if the patient with admit_date exists when a
+#		non-patient's matchingid is changed? (triggered by identifier#after_save)
+#	What if the patient's matchingid is changed?
+#		update those that matched the old? (they shouldn't match another patient, yet, as is unique so
+#			could only be nullified)
+#		update those that match   the new? (nothing special about this)
+#
+#	What if matchingid AND admit_date change?  This'll run twice (not a big problem)
+#
+#	There is much work to do.
+#
+
+
 protected
+
+	#	Used more than once so ...
+	def create_case_subject_with_patient_and_identifier
+		subject = create_case_subject( 
+			:patient_attributes    => Factory.attributes_for(:patient,
+				{ :admit_date => Chronic.parse('yesterday') }),
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				{ :matchingid => '12345' })).reload
+		assert_not_nil subject.reference_date
+		assert_not_nil subject.patient.admit_date
+		assert_equal subject.reference_date, subject.patient.admit_date
+		subject
+	end
 
 #	def create_dust_kit(options = {})
 #		Factory(:dust_kit, {

@@ -34,7 +34,7 @@ class Patient < Shared
 	validates_complete_date_for :diagnosis_date,
 		:allow_nil => true
 
-	after_save :update_matching_subjects_reference_date,
+	after_save :trigger_update_matching_subjects_reference_date,
 		:if => :admit_date_changed?
 
 	after_save :trigger_setting_was_under_15_at_dx,
@@ -44,6 +44,13 @@ protected
 
 	def trigger_setting_was_under_15_at_dx
 		subject.update_patient_was_under_15_at_dx
+	end
+
+	def trigger_update_matching_subjects_reference_date
+#		puts "triggering_update_matching_subjects_reference_date from Patient"
+#		puts "Admit date changed from:#{admit_date_was}:to:#{admit_date}"
+#		subject.update_matching_subjects_reference_date
+		subject.update_subjects_reference_date_matching
 	end
 
 	##
@@ -97,23 +104,23 @@ protected
 		end
 	end
 
-#	TODO
-#	Move this functionality into Subject
-#		Trigger from patient#after_save if admit_date changed?
-#		Trigger from identifier#after_save if matchingid changed for was* and current?
-#
-	def update_matching_subjects_reference_date
-#	TODO doubt that this really works since subject probably hasn't been resolved yet
-#			if using nested_attributes
-		#	puts "update_matching_subjects_reference_date"
-		#	puts "admit_date was:#{admit_date}"
-		#	puts "admit_date is:#{admit_date}"
-		#	puts "matchingid is blank (FYI)" if subject.try(:identifier).try(:matchingid).blank?
-		unless subject.try(:identifier).try(:matchingid).blank?
-			Subject.ccls_update_all({:reference_date => admit_date },
-				['identifiers.matchingid = ?',subject.identifier.matchingid],
-				{ :joins => :identifier })
-		end
-	end
+#	#	TODO
+#	#	Move this functionality into Subject
+#	#		Trigger from patient#after_save if admit_date changed?
+#	#		Trigger from identifier#after_save if matchingid changed for was* and current?
+#	#
+#		def update_matching_subjects_reference_date
+#	#	TODO doubt that this really works since subject probably hasn't been resolved yet
+#	#			if using nested_attributes
+#			#	puts "update_matching_subjects_reference_date"
+#			#	puts "admit_date was:#{admit_date}"
+#			#	puts "admit_date is:#{admit_date}"
+#			#	puts "matchingid is blank (FYI)" if subject.try(:identifier).try(:matchingid).blank?
+#			unless subject.try(:identifier).try(:matchingid).blank?
+#				Subject.ccls_update_all({:reference_date => admit_date },
+#					['identifiers.matchingid = ?',subject.identifier.matchingid],
+#					{ :joins => :identifier })
+#			end
+#		end
 
 end
