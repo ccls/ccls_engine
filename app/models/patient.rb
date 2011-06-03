@@ -1,13 +1,7 @@
 # Patient related subject info.
 class Patient < Shared
 
-#	Many ...
-#	SystemStackError: stack level too deep
-#	caused by after_saves calling after_saves with touch
-
-	belongs_to :subject, :foreign_key => 'study_subject_id'	#, :touch => true
-
-
+	belongs_to :subject, :foreign_key => 'study_subject_id'
 
 	belongs_to :organization
 	belongs_to :diagnosis
@@ -44,7 +38,13 @@ class Patient < Shared
 	after_save :update_matching_subjects_reference_date,
 		:if => :admit_date_changed?
 
-	before_save :set_was_under_15_at_dx
+#	before_save :set_was_under_15_at_dx
+
+	after_save :trigger_setting_was_under_15_at_dx,
+		:if => :admit_date_changed?
+	def trigger_setting_was_under_15_at_dx
+		subject.update_patient_was_under_15_at_dx
+	end
 
 protected
 
@@ -66,29 +66,31 @@ protected
 #
 #	TODO MOVE THIS INTO SUBJECT!
 #
-	def set_was_under_15_at_dx
-		#	Because this can be called from subject with nested attributes,
-		#	the subject association may not be known to patient.  We'll need
-		#	to be explicit and find it ourselves.  Also, the pii must be
-		#	created first (pii listed before patient in subject) so that it
-		#	is created before the patient record is so that we can read the
-		#	subject's dob.
-		if study_subject_id
-			s = Subject.find(study_subject_id)
-			p = Pii.find_by_study_subject_id(study_subject_id)
-			dob = p.dob if p
-		end
-		if study_subject_id and s and dob and admit_date
-			self.was_under_15_at_dx = (((
-				admit_date.to_date - dob.to_date 
-				) / 365 ) < 15 )
-		end
-		#	make sure we return true
-		true
-	end
+#	def set_was_under_15_at_dx
+#		#	Because this can be called from subject with nested attributes,
+#		#	the subject association may not be known to patient.  We'll need
+#		#	to be explicit and find it ourselves.  Also, the pii must be
+#		#	created first (pii listed before patient in subject) so that it
+#		#	is created before the patient record is so that we can read the
+#		#	subject's dob.
+#		if study_subject_id
+#			s = Subject.find(study_subject_id)
+#			p = Pii.find_by_study_subject_id(study_subject_id)
+#			dob = p.dob if p
+#		end
+#		if study_subject_id and s and dob and admit_date
+#			self.was_under_15_at_dx = (((
+#				admit_date.to_date - dob.to_date 
+#				) / 365 ) < 15 )		#	crude and probably off by a couple days
+#														#	would be better to compare year, month then day
+#		end
+#		#	make sure we return true
+#		true
+#	end
 
 	def admit_date_is_after_dob
 #	TODO doubt that this really works since subject probably hasn't been resolved yet
+#			if using nested_attributes
 		if !admit_date.blank? && 
 			!subject.blank? && 
 			!subject.dob.blank? && 
@@ -99,6 +101,7 @@ protected
 
 	def diagnosis_date_is_after_dob
 #	TODO doubt that this really works since subject probably hasn't been resolved yet
+#			if using nested_attributes
 		if !diagnosis_date.blank? && 
 			!subject.blank? && 
 			!subject.dob.blank? && 
@@ -115,8 +118,14 @@ protected
 		end
 	end
 
+#	TODO
+#	Move this functionality into Subject
+#		Trigger from patient#after_save if admit_date changed?
+#		Trigger from identifier#after_save if matchingid changed for was* and current?
+#
 	def update_matching_subjects_reference_date
 #	TODO doubt that this really works since subject probably hasn't been resolved yet
+#			if using nested_attributes
 		#	puts "update_matching_subjects_reference_date"
 		#	puts "admit_date was:#{admit_date}"
 		#	puts "admit_date is:#{admit_date}"

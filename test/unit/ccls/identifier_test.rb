@@ -206,16 +206,20 @@ pending
 		assert_equal "012304",   identifier.studyid_intonly_nohyphen
 	end
 
-
-
-
-
+#	test "should touch subject after save" do
+#		object = create_object
+#		assert_not_nil object.subject
+#		sleep 2
+#		assert_changes("Subject.find(#{object.subject.id}).updated_at") {
+#			object.touch
+#		}
+#	end
 
 #protected
 #
 #	def create_object(options={})
 #		record = Factory.build(:identifier,options)
-#		record.attributes=options
+#		record.attributes=options	#	can't remember why I did this, but doesn't seem needed now?
 #		record.save
 #		record
 #	end

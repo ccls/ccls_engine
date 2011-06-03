@@ -283,7 +283,29 @@ class Ccls::Subject < Shared
 		return abstracts[0].diff(abstracts[1])
 	end
 
-
+	#	triggered from patient and eventually from pii
+	def update_patient_was_under_15_at_dx
+		reload	#	reload subject so associations resolved
+		if dob and patient and patient.admit_date
+			#
+			#	update_all(updates, conditions = nil, options = {})
+			#
+			#		Updates all records with details given if they match a set of 
+			#		conditions supplied, limits and order can also be supplied. 
+			#		This method constructs a single SQL UPDATE statement and sends 
+			#		it straight to the database. It does not instantiate the involved 
+			#		models and it does not trigger Active Record callbacks. 
+			#
+			Patient.update_all({
+				:was_under_15_at_dx => (((
+					patient.admit_date.to_date - dob.to_date 
+					) / 365 ) < 15 )}, { :id => patient.id })
+				#	crude and probably off by a couple days
+				#	would be better to compare year, month then day
+		end
+		#	make sure we return true
+		true
+	end
 
 protected
 
@@ -300,7 +322,8 @@ protected
 		#			after_save to autosave_associated_records_for_something
 		#
 		#			build_something called as soon as the params are passed to new()
-		#				before the save chain even begins
+		#				before the save chain even begins.  Because of that, patient
+		#				will exist at validation time.
 		# * (-) <tt>save</tt>
 		# * (-) <tt>valid</tt>
 		# * (1) <tt>before_validation</tt>

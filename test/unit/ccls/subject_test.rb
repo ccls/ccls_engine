@@ -159,8 +159,11 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 				:pii_attributes => Factory.attributes_for(:pii))
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
-			subject.update_attributes(
+			subject.reload.update_attributes(
 				:pii_attributes => Factory.attributes_for(:pii))
+#	with :touch enabled, this will create a new pii and
+#	nullify the previous pii's study_subject_id
+#	don't quite understand it, but it does
 			assert subject.pii.errors.on_attr_and_type('study_subject_id',:taken)
 			assert subject.errors.on_attr_and_type('pii.study_subject_id',:taken)
 		} }
@@ -171,7 +174,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		assert_difference( "Subject.count", 0 ) {
 			subject = create_subject( :pii_attributes => {})
 #			assert subject.errors.on('pii.state_id_no')
-			assert subject.errors.on('pii.dob')
+			assert subject.errors.on_attr_and_type('pii.dob',:blank)
 		} }
 	end
 
@@ -194,7 +197,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
-			subject.update_attributes(
+			subject.reload.update_attributes(
 				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
 			assert subject.errors.on_attr_and_type('homex_outcome.study_subject_id',:taken)
 		} }
@@ -268,7 +271,7 @@ pending
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
-			subject.update_attributes(
+			subject.reload.update_attributes(
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert subject.errors.on_attr_and_type('patient.study_subject_id',:taken)
 		} }
@@ -304,7 +307,7 @@ pending
 				:identifier_attributes => Factory.attributes_for(:identifier))
 			assert !subject.new_record?, 
 				"#{subject.errors.full_messages.to_sentence}"
-			subject.update_attributes(
+			subject.reload.update_attributes(
 				:identifier_attributes => Factory.attributes_for(:identifier))
 			assert subject.identifier.errors.on_attr_and_type('study_subject_id',:taken)
 			assert subject.errors.on_attr_and_type('identifier.study_subject_id',:taken)
@@ -314,8 +317,7 @@ pending
 	test "should NOT create subject with empty identifier" do
 		assert_difference( 'Identifier.count', 0) {
 		assert_difference( 'Subject.count', 0) {
-			subject = create_subject(
-				:identifier_attributes => {} )
+			subject = create_subject( :identifier_attributes => {} )
 			assert subject.errors.on_attr_and_type('identifier.orderno',:blank)
 			assert subject.errors.on_attr_and_type('identifier.patid',:blank)
 			assert subject.errors.on_attr_and_type('identifier.case_control_type',:blank)

@@ -2,7 +2,7 @@
 #	==	requires
 #	*	subject_id
 class Pii < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'	#, :touch => true
+	belongs_to :subject, :foreign_key => 'study_subject_id'
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
 	##	TODO - find a way to do this
@@ -101,6 +101,12 @@ class Pii < Shared
 		#	added to_date to fix sqlite3 quirk which doesn't
 		#	differentiate between times and dates.
 		read_attribute(:dob).try(:to_s,:dob).try(:to_date)
+	end
+
+	after_save :trigger_setting_was_under_15_at_dx,
+		:if => :dob_changed?
+	def trigger_setting_was_under_15_at_dx
+		subject.update_patient_was_under_15_at_dx
 	end
 
 protected

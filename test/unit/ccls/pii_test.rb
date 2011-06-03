@@ -156,4 +156,13 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
+#	test "should touch subject after save" do
+#		object = create_object
+#		assert_not_nil object.subject
+#		sleep 2
+#		assert_changes("Subject.find(#{object.subject.id}).updated_at") {
+#			object.touch
+#		}
+#	end
+
 end
