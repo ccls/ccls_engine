@@ -530,4 +530,13 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert sections.length >= 15
 	end
 
+	test "should return abstract fields" do
+#	sometimes, it is defined?  sometimes?
+#		assert !Abstract.class_variable_defined?("@@fields")
+		fields = Abstract.fields
+		assert  Abstract.class_variable_defined?("@@fields")
+		assert fields.is_a?(Array)
+		assert fields.length >= 15
+	end
+
 end
