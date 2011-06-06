@@ -288,8 +288,13 @@ class Abstract < Shared
 		Abstract.fields
 	end
 
+	def self.db_fields
+#		@db_fields ||= fields.collect{|f|f[:db]}
+		Abstract.fields.collect{|f|f[:db]}
+	end
+
 	def db_fields
-		@db_fields ||= fields.collect{|f|f[:db]}
+		Abstract.db_fields
 	end
 
 	def comparable_attributes
