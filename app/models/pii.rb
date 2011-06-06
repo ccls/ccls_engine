@@ -23,17 +23,10 @@ class Pii < Shared
 	#	the subject creation too if using nested attributes.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
 
+	validates_presence_of       :dob
+	validates_complete_date_for :dob, :died_on, :allow_nil => true
+	validates_uniqueness_of     :email, :allow_nil => true
 
-	validates_presence_of   :dob
-	with_options :allow_nil => true do |o|
-		o.validates_complete_date_for :dob
-		o.validates_complete_date_for :died_on
-		o.validates_uniqueness_of     :email
-	end
-
-#
-#	TODO make this prettier, perhaps with a private email_format method
-#
 	validates_format_of :email,
 	  :with => /\A([-a-z0-9!\#$%&'*+\/=?^_`{|}~]+\.)*[-a-z0-9!\#$%&'*+\/=?^_`{|}~]+@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, 
 		:allow_blank => true
@@ -50,26 +43,13 @@ class Pii < Shared
 #
 #	TODO gonna need to require some of these names
 #
-#	TODO make this more of a one liner that a block
-#
-	validates_presence_of :first_name
-	validates_presence_of :last_name
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :first_name
-		o.validates_length_of :middle_name
-		o.validates_length_of :last_name
-		o.validates_length_of :father_first_name
-		o.validates_length_of :father_middle_name
-		o.validates_length_of :father_last_name
-		o.validates_length_of :mother_first_name
-		o.validates_length_of :mother_middle_name
-		o.validates_length_of :mother_maiden_name
-		o.validates_length_of :mother_last_name
-		o.validates_length_of :guardian_first_name
-		o.validates_length_of :guardian_middle_name
-		o.validates_length_of :guardian_last_name
-		o.validates_length_of :guardian_relationship_other
-	end
+	validates_presence_of :first_name, :last_name
+	validates_length_of :first_name, :last_name, :maximum => 250
+	validates_length_of :middle_name, :guardian_relationship_other,
+		:father_first_name, :father_middle_name, :father_last_name,
+		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
+		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
+			:maximum => 250, :allow_blank => true
 
 	#	Returns string containing subject's first, middle and last name
 	def full_name
