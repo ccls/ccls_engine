@@ -1,26 +1,15 @@
 class ZipCode < Shared
 	belongs_to :county
 
-	validates_uniqueness_of :zip_code
-
-	validates_presence_of :zip_code
 #	validates_presence_of :latitude
 #	validates_presence_of :longitude
-	validates_presence_of :city
-	validates_presence_of :state
 #	validates_presence_of :county
-	validates_presence_of :zip_class
 
-	validates_length_of :zip_code, :is => 5
-
-#	TODO smaller
-
-	with_options :maximum => 250 do |o|
-		o.validates_length_of :city
-		o.validates_length_of :state
-#		o.validates_length_of :county
-		o.validates_length_of :zip_class
-	end
+	validates_presence_of   :zip_code, :city, :state, :zip_class
+	validates_uniqueness_of :zip_code
+	validates_length_of     :zip_code, :is => 5
+	validates_length_of     :city, :state, :zip_class,
+		:maximum => 250
 
 	#	Treats the class a bit like a Hash and
 	#	searches for a record with a matching code.

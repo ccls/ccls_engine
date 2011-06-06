@@ -4,19 +4,12 @@
 #	*	to_organization_id
 class Transfer < Shared
 	belongs_to :aliquot
-	with_options :class_name => "Organization" do |o|
-		o.belongs_to :from_organization
-		o.belongs_to :to_organization
-	end
+	belongs_to :from_organization, :class_name => "Organization"
+	belongs_to :to_organization,   :class_name => "Organization"
 
-#	TODO smaller
-
-	validates_presence_of :aliquot_id
-	validates_presence_of :aliquot
-	validates_presence_of :to_organization_id
-	validates_presence_of :to_organization
-	validates_presence_of :from_organization_id
-	validates_presence_of :from_organization
+	validates_presence_of :aliquot_id, :aliquot,
+		:to_organization_id,   :to_organization,
+		:from_organization_id, :from_organization
 
 	validates_length_of :reason, 
 		:maximum => 250, :allow_blank => true
