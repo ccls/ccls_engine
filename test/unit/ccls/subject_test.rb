@@ -927,10 +927,12 @@ pending
 
 	test "should update all matching subjects' reference date " <<
 			"with updated admit date" do
-		subject = create_hx_subject(:patient => {},
-			:identifier => { :matchingid => '12345' }).reload
-		other  = create_hx_subject( :identifier => { :matchingid => '12345' }).reload
-		nobody = create_hx_subject( :identifier => { :matchingid => '54321' }).reload
+		subject = create_case_subject(
+			:patient_attributes    => Factory.attributes_for(:patient),
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				{ :matchingid => '12345' })).reload
+		other   = create_subject_with_matchingid
+		nobody  = create_subject_with_matchingid('54321')
 		assert_nil subject.reference_date
 		assert_nil subject.patient.admit_date
 		assert_nil other.reference_date
@@ -948,9 +950,7 @@ pending
 	test "should set subject.reference_date to matching patient.admit_date " <<
 			"on create with patient created first" do
 		subject = create_case_subject_with_patient_and_identifier
-		other   = create_subject( 
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => '12345' })).reload
+		other   = create_subject_with_matchingid
 		assert_not_nil other.reference_date
 		assert_equal   other.reference_date, subject.reference_date
 		assert_equal   other.reference_date, subject.patient.admit_date
@@ -958,9 +958,7 @@ pending
 
 	test "should set subject.reference_date to matching patient.admit_date " <<
 			"on create with patient created last" do
-		other   = create_subject( 
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => '12345' })).reload
+		other   = create_subject_with_matchingid
 		subject = create_case_subject_with_patient_and_identifier
 		assert_not_nil other.reload.reference_date
 		assert_equal   other.reference_date, subject.reference_date
@@ -968,30 +966,36 @@ pending
 	end
 
 	test "should nullify subject.reference_date if matching patient changes matchingid" do
-		other   = create_subject( 
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => '12345' })).reload
+		other   = create_subject_with_matchingid
 		subject = create_case_subject_with_patient_and_identifier
 		assert_not_nil other.reload.reference_date
-#	update_attribute skips validations!
-#		subject.identifier.update_attribute(:matchingid, '12346')
 		subject.identifier.update_attributes(:matchingid => '12346')
 		assert_nil     other.reload.reference_date
 	end
 
 	test "should nullify subject.reference_date if matching patient nullifies matchingid" do
-		other   = create_subject( 
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => '12345' })).reload
+		other   = create_subject_with_matchingid
 		subject = create_case_subject_with_patient_and_identifier
 		assert_not_nil other.reload.reference_date
-#	update_attribute skips validations!
-#		subject.identifier.update_attribute(:matchingid, nil)
 		subject.identifier.update_attributes(:matchingid => nil)
 		assert_nil     other.reload.reference_date
 	end
 
+	test "should nullify subject.reference_date if matching patient nullifies admit_date" do
+		other   = create_subject_with_matchingid
+		subject = create_case_subject_with_patient_and_identifier
+		assert_not_nil other.reload.reference_date
+		subject.patient.update_attributes(:admit_date => nil)
+		assert_nil     other.reload.reference_date
+	end
+
 protected
+
+	def create_subject_with_matchingid(matchingid='12345')
+		subject = create_subject( 
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				{ :matchingid => matchingid })).reload
+	end
 
 	#	Used more than once so ...
 	def create_case_subject_with_patient_and_identifier
