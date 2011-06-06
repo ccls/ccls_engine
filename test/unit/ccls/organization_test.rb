@@ -4,15 +4,11 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list
-	assert_should_require_attributes( :code )
-	assert_should_require_attributes( :name )
-	assert_should_require_unique_attributes( :code )
-	assert_should_require_unique_attributes( :name )
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :person_id )
+	assert_should_require_attributes( :code, :name )
+	assert_should_require_unique_attributes( :code, :name )
+	assert_should_not_require_attributes( :position, :person_id )
 	assert_should_belong_to( :person )
-	assert_should_have_many( :hospitals )
-	assert_should_have_many( :patients )
+	assert_should_have_many( :hospitals, :patients )
 
 	assert_should_have_many(:aliquots, 
 		:foreign_key => :owner_id)
@@ -24,8 +20,7 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 			:foreign_key => :from_organization_id)
 	end
 
-	assert_should_require_attribute_length( :code, :in => 4..250 )
-	assert_should_require_attribute_length( :name, :in => 4..250 )
+	assert_should_require_attribute_length( :code, :name, :in => 4..250 )
 
 	test "new incoming_transfer should have matching organization id" do
 		organization = create_organization

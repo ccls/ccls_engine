@@ -7,23 +7,11 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_require_unique_attribute(:zip_code)
-
 	assert_should_belong_to(:county)
-
-#	[ :zip_code, :latitude, :longitude, :city, :state, :county, :zip_class ].each do |f|
-#	[ :zip_code, :city, :state, :county, :zip_class ].each do |f|
-	[ :zip_code, :city, :state, :zip_class ].each do |f|
-		assert_should_require_attributes(f)
-	end
-
-	%w( zip_code ).each do |f|
-		assert_should_require_attribute_length( f.to_sym, :is => 5 )
-	end
-
-#	%w( city state county zip_class ).each do |f|
-	%w( city state zip_class ).each do |f|
-		assert_should_require_attribute_length( f.to_sym, :maximum => 250 )
-	end
+	assert_should_require_attributes( :zip_code, :city, :state, :zip_class )
+	assert_should_require_attribute_length( :zip_code, :is => 5 )
+	assert_should_require_attribute_length( :city, :state, :zip_class,
+		:maximum => 250 )
 
 #	test "should return name as to_s" do
 #		object = create_object

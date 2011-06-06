@@ -68,9 +68,6 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 		assert_equal [a3,a2,a1], abstracts
 	end
 
-#	Can't search across multiple databases.
-#	So doing a double search.
-
 	test "should include abstract by q first_name" do
 		a1,a2 = create_abstracts_with_first_names('Michael','Bob')
 		assert_equal 'Michael', a1.subject.first_name
@@ -102,13 +99,6 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
 	end
-
-#	test "should include abstract by q number" do
-#		a1,a2 = create_abstracts_with_numbers('9999','1111')
-#		abstracts = Abstract.search(:q => a1.number)
-#		assert  abstracts.include?(a1)
-#		assert !abstracts.include?(a2)
-#	end
 
 	test "should find abstracts that are merged" do
 		a1,a2 = create_abstracts(2)

@@ -3,20 +3,13 @@ require 'test_helper'
 class Ccls::AddressTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_require_attributes( :line_1 )
-	assert_should_require_attributes( :city )
-	assert_should_require_attributes( :state )
-	assert_should_require_attributes( :zip )
-	assert_should_not_require_attributes( :line_2 )
-	assert_should_not_require_attributes( :data_source_id )
-	assert_should_not_require_attributes( :external_address_id )
-	assert_should_require_attribute_length( :zip, :maximum => 10 )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :line_1 )
-		o.assert_should_require_attribute_length( :line_2 )
-		o.assert_should_require_attribute_length( :city )
-		o.assert_should_require_attribute_length( :state )
-	end
+	assert_should_require_attributes( :line_1, :city, :state, :zip )
+	assert_should_not_require_attributes( :line_2, :data_source_id, :external_address_id )
+	assert_should_require_attribute_length( :zip, 
+		:maximum => 10 )
+	assert_should_require_attribute_length( :line_1, :line_2, :city, :state,
+		:maximum => 250 )
+
 	assert_should_have_one(:addressing)
 	assert_should_have_many(:interviews)
 	assert_should_belong_to(:data_source)

@@ -7,25 +7,14 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 #	TODO
 #	assert_should_act_as_list( :scope => :study_subject_id )
 
-	assert_should_initially_belong_to( :subject )
-	assert_should_initially_belong_to( :phone_type )
+	assert_should_initially_belong_to( :subject, :phone_type )
 	assert_should_require_attribute(:phone_number)
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :study_subject_id )
-	assert_should_not_require_attributes( :phone_type_id )
-	assert_should_not_require_attributes( :data_source_id )
-	assert_should_not_require_attributes( :is_primary )
-	assert_should_not_require_attributes( :is_valid )
-	assert_should_not_require_attributes( :why_invalid )
-	assert_should_not_require_attributes( :is_verified )
-	assert_should_not_require_attributes( :how_verified )
-	assert_should_not_require_attributes( :verified_on )
-	assert_should_not_require_attributes( :verified_by_id )
-	assert_should_not_require_attributes( :current_phone )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :how_verified )
-		o.assert_should_require_attribute_length( :why_invalid )
-	end
+	assert_should_not_require_attributes( :position, :study_subject_id,
+		:phone_type_id, :data_source_id, :is_primary, :is_valid,
+		:why_invalid, :is_verified, :how_verified,
+		:verified_on, :verified_by_id, :current_phone )
+	assert_should_require_attribute_length( :how_verified, :why_invalid, 
+		:maximum => 250 )
 
 	test "current_phone should default to 1" do
 		phone_number = PhoneNumber.new

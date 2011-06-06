@@ -3,40 +3,33 @@ require 'test_helper'
 class Ccls::InterviewTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-
 	assert_should_initially_belong_to(:subject)
-	assert_should_belong_to( :address )
-	assert_should_belong_to( :instrument_version )
-	assert_should_belong_to( :interview_method )
-	assert_should_belong_to( :language )
-	assert_should_belong_to( :subject_relationship )
+	assert_should_belong_to( :address,
+		:instrument_version,
+		:interview_method,
+		:language,
+		:subject_relationship )
 	assert_should_belong_to( :interviewer, :class_name => 'Person')
-
-	assert_should_not_require_attributes( :address_id )
-	assert_should_not_require_attributes( :language_id )
-	assert_should_not_require_attributes( :interviewer_id )
-	assert_should_not_require_attributes( :instrument_version_id )
-	assert_should_not_require_attributes( :interview_method_id )
-	assert_should_not_require_attributes( :study_subject_id )
-	assert_should_not_require_attributes( :began_on )
-	assert_should_not_require_attributes( :ended_on )
-	assert_should_not_require_attributes( :intro_letter_sent_on )
-	assert_should_not_require_attributes( :consent_read_over_phone )
-	assert_should_not_require_attributes( :respondent_requested_new_consent )
-	assert_should_not_require_attributes( :consent_reviewed_with_respondent )
-
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :subject_relationship_other )
-		o.assert_should_require_attribute_length( :respondent_first_name )
-		o.assert_should_require_attribute_length( :respondent_last_name )
-	end
-
-	assert_requires_complete_date( :began_on )
-	assert_requires_complete_date( :ended_on )
-	assert_requires_complete_date( :intro_letter_sent_on )
-
-	assert_should_protect(:began_at)
-	assert_should_protect(:ended_at)
+	assert_should_not_require_attributes( 
+		:address_id,
+		:language_id,
+		:interviewer_id,
+		:instrument_version_id,
+		:interview_method_id,
+		:study_subject_id,
+		:began_on,
+		:ended_on,
+		:intro_letter_sent_on,
+		:consent_read_over_phone,
+		:respondent_requested_new_consent,
+		:consent_reviewed_with_respondent )
+	assert_should_require_attribute_length( 
+		:subject_relationship_other, 
+		:respondent_first_name,
+		:respondent_last_name, 
+			:maximum => 250 )
+	assert_requires_complete_date( :began_on, :ended_on, :intro_letter_sent_on )
+	assert_should_protect( :began_at, :ended_at )
 
 	test "should create intro letter operational event " <<
 			"when intro_letter_sent_on set" do

@@ -8,17 +8,12 @@ class Ccls::IneligibleReasonTest < ActiveSupport::TestCase
 #	only if subject is ineligible
 #	assert_should_have_many(:enrollments)
 
-	assert_should_require_attributes( :code )
-	assert_should_require_attributes( :description )
-	assert_should_require_unique_attributes( :code )
-	assert_should_require_unique_attributes( :description )
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :ineligible_context )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :code )
-		o.assert_should_require_attribute_length( :description, :minimum => 4 )
-		o.assert_should_require_attribute_length( :ineligible_context )
-	end
+	assert_should_require_attributes( :code, :description )
+	assert_should_require_unique_attributes( :code, :description )
+	assert_should_not_require_attributes( :position, :ineligible_context )
+	assert_should_require_attribute_length( :description, :in => 4..250 )
+	assert_should_require_attribute_length( :code, :ineligible_context, 
+		:maximum => 250 )
 
 	test "should return description as to_s" do
 		object = create_object

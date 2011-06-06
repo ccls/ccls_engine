@@ -4,18 +4,20 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
-	assert_should_require_attributes( :case_control_type )
-	assert_should_require_attributes( :childid )
-	assert_should_require_attributes( :orderno )
-	assert_should_require_attributes( :patid )
+	assert_should_require_attributes( 
+		:case_control_type,
+		:childid,
+		:orderno,
+		:patid )
 
-	assert_should_require_unique_attribute( :childid )
-	assert_should_require_unique_attribute( :ssn )
-	assert_should_require_unique_attribute( :subjectid )
+	assert_should_require_unique_attribute( 
+		:childid,
+		:ssn,
+		:subjectid,
+		:state_id_no,
+		:icf_master_id )
 	assert_should_require_unique_attribute( :patid, 
 		:scope => [:orderno,:case_control_type] )
-	assert_should_require_unique_attribute( :state_id_no )
-	assert_should_require_unique_attribute( :icf_master_id )
 
 	assert_should_initially_belong_to( :subject )
 	assert_should_not_require_attributes( :study_subject_id )
@@ -24,23 +26,24 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 #	assert_should_require_unique_attributes( :study_subject_id )
 #	assert_should_belong_to( :subject )
 
-	assert_should_not_require_attributes( :ssn )
-	assert_should_not_require_attributes( :subjectid )
-	assert_should_not_require_attributes( :lab_no )
-	assert_should_not_require_attributes( :related_childid )
-	assert_should_not_require_attributes( :related_case_childid )
-	assert_should_not_require_attributes( :hospital_no )
-	assert_should_not_require_attributes( :state_id_no )
-	assert_should_not_require_attributes( :matchingid )
-	assert_should_not_require_attributes( :familyid )
+	assert_should_not_require_attributes( 
+		:ssn,
+		:subjectid,
+		:lab_no,
+		:related_childid,
+		:related_case_childid,
+		:hospital_no,
+		:state_id_no,
+		:matchingid,
+		:familyid )
 
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :state_id_no )
-		o.assert_should_require_attribute_length( :case_control_type )
-		o.assert_should_require_attribute_length( :lab_no )
-		o.assert_should_require_attribute_length( :related_childid )
-		o.assert_should_require_attribute_length( :related_case_childid )
-	end
+	assert_should_require_attribute_length( 
+		:state_id_no,
+		:case_control_type,
+		:lab_no,
+		:related_childid,
+		:related_case_childid,
+			:maximum => 250 )
 
 #	can't do this due to before_validation modification
 #	assert_should_require_attribute_length :patid, :maximum => 4

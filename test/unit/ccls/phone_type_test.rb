@@ -7,13 +7,9 @@ class Ccls::PhoneTypeTest < ActiveSupport::TestCase
 	assert_should_have_many(:phone_numbers)
 	assert_should_require_attributes(:code)
 	assert_should_require_unique_attributes(:code)
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :description )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :code, :minimum => 4)
-		o.assert_should_require_attribute_length( :description )
-	end
-
+	assert_should_not_require_attributes( :position, :description )
+	assert_should_require_attribute_length( :code, :in => 4..250 )
+	assert_should_require_attribute_length( :description, :maximum => 250 )
 
 	test "should return code as to_s" do
 		object = create_object

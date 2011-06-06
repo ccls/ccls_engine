@@ -3,30 +3,16 @@ require 'test_helper'
 class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_have_many( :abstracts )
-	assert_should_have_many( :addressings )
-	assert_should_have_many( :enrollments )
-	assert_should_have_many( :gift_cards )
-	assert_should_have_many( :phone_numbers )
-	assert_should_have_many( :samples )
-	assert_should_have_many( :interviews )
-	assert_should_initially_belong_to( :subject_type )
-	assert_should_initially_belong_to( :vital_status )
-
-	assert_should_have_one( :home_exposure_response )
-	assert_should_have_one( :homex_outcome )
-	assert_should_have_one( :identifier )
-	assert_should_have_one( :pii )
-
+	assert_should_have_many( :abstracts, :addressings, :enrollments,
+		:gift_cards, :phone_numbers, :samples, :interviews )
+	assert_should_initially_belong_to( :subject_type, :vital_status )
+	assert_should_have_one( :home_exposure_response, :homex_outcome,
+		:identifier, :pii )
 	assert_should_habtm(:analyses)
-
 	assert_requires_complete_date( :reference_date )
 	assert_should_require_attributes_not_nil( :do_not_contact )
-	assert_should_not_require_attributes( :vital_status_id )
-	assert_should_not_require_attributes( :hispanicity_id )
-	assert_should_not_require_attributes( :reference_date )
-	assert_should_not_require_attributes( :response_sets_count )
-	assert_should_not_require_attributes( :sex )
+	assert_should_not_require_attributes( :vital_status_id, :hispanicity_id, 
+		:reference_date, :response_sets_count, :sex )
 
 	test "create_control_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){

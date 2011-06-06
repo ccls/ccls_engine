@@ -4,18 +4,15 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list
-	assert_should_belong_to( :subject )
-	assert_should_belong_to( :sample_outcome )
-	assert_should_belong_to( :interview_outcome )
-
-	assert_requires_complete_date( :interview_outcome_on )
-	assert_requires_complete_date( :sample_outcome_on )
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :study_subject_id )
-	assert_should_not_require_attributes( :sample_outcome_id )
-	assert_should_not_require_attributes( :sample_outcome_on )
-	assert_should_not_require_attributes( :interview_outcome_id )
-	assert_should_not_require_attributes( :interview_outcome_on )
+	assert_should_belong_to( :subject, :sample_outcome, :interview_outcome )
+	assert_requires_complete_date( :interview_outcome_on, :sample_outcome_on )
+	assert_should_not_require_attributes( 
+		:position,
+		:study_subject_id,
+		:sample_outcome_id,
+		:sample_outcome_on,
+		:interview_outcome_id,
+		:interview_outcome_on )
 
 #	TODO
 #	Need to add something to allow_nil => true

@@ -4,16 +4,10 @@ class Ccls::PackageTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_require_unique_attribute(:tracking_number)
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :status )
-	assert_should_not_require_attributes( :tracks_count )
-	assert_should_not_require_attributes( :tracking_number )
-	assert_should_not_require_attributes( :latest_event )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :status )
-		o.assert_should_require_attribute_length( :tracking_number )
-		o.assert_should_require_attribute_length( :latest_event )
-	end
+	assert_should_not_require_attributes( :position, :status, 
+		:tracks_count, :tracking_number, :latest_event )
+	assert_should_require_attribute_length( :status, :tracking_number, :latest_event, 
+		:maximum => 250 )
 
 	test "should NOT require 3 char tracking_number" do
 		assert_difference( "#{model_name}.count", 1 ) do

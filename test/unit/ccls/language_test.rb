@@ -4,20 +4,13 @@ class Ccls::LanguageTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list
-	assert_should_have_many( :interviews )
-	assert_should_have_many( :instrument_versions )
-	assert_should_require_attributes( :key )
-	assert_should_require_attributes( :code )
-	assert_should_require_attributes( :description )
-	assert_should_require_unique_attributes( :key )
-	assert_should_require_unique_attributes( :code )
-	assert_should_require_unique_attributes( :description )
+	assert_should_have_many( :interviews, :instrument_versions )
+	assert_should_require_attributes( :key, :code, :description )
+	assert_should_require_unique_attributes( :key, :code, :description )
 	assert_should_not_require_attributes( :position )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :key )
-		o.assert_should_require_attribute_length( :code )
-		o.assert_should_require_attribute_length( :description, :minimum => 4 )
-	end
+	assert_should_require_attribute_length( :key, :code, 
+		:maximum => 250 )
+	assert_should_require_attribute_length( :description, :in => 4..250 )
 
 	test "should find by key with ['string']" do
 		object = Language['english']

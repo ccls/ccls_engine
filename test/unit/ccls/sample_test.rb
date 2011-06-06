@@ -5,47 +5,37 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_have_one( :sample_kit )
 	assert_should_have_many( :aliquots )
-	assert_should_belong_to( :aliquot_sample_format )
-	assert_should_belong_to( :unit )
-	assert_should_belong_to( :organization )
-	assert_should_initially_belong_to( :subject )
-	assert_should_initially_belong_to( :sample_type )
+	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
+	assert_should_initially_belong_to( :subject, :sample_type )
 	assert_should_habtm( :projects )
-	assert_should_require_attributes( :sample_type_id )
-	assert_should_require_attributes( :study_subject_id )
+	assert_should_require_attributes( :sample_type_id, :study_subject_id )
 
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :aliquot_sample_format_id )
-	assert_should_not_require_attributes( :unit_id )
-	assert_should_not_require_attributes( :order_no )
-	assert_should_not_require_attributes( :quantity_in_sample )
-	assert_should_not_require_attributes( :aliquot_or_sample_on_receipt )
-	assert_should_not_require_attributes( :sent_to_subject_on )
-	assert_should_not_require_attributes( :received_by_ccls_on )
-	assert_should_not_require_attributes( :sent_to_lab_on )
-	assert_should_not_require_attributes( :received_by_lab_on )
-	assert_should_not_require_attributes( :aliquotted_on )
-	assert_should_not_require_attributes( :external_id )
-	assert_should_not_require_attributes( :external_id_source )
-	assert_should_not_require_attributes( :receipt_confirmed_on )
-	assert_should_not_require_attributes( :receipt_confirmed_by )
-	assert_should_not_require_attributes( :collected_on )
-	assert_should_not_require_attributes( :location_id )
+	assert_should_not_require_attributes( :position,
+		:aliquot_sample_format_id,
+		:unit_id,
+		:order_no,
+		:quantity_in_sample,
+		:aliquot_or_sample_on_receipt,
+		:sent_to_subject_on,
+		:received_by_ccls_on,
+		:sent_to_lab_on,
+		:received_by_lab_on,
+		:aliquotted_on,
+		:external_id,
+		:external_id_source,
+		:receipt_confirmed_on,
+		:receipt_confirmed_by,
+		:collected_on,
+		:location_id )
 
-	assert_requires_complete_date( :sent_to_subject_on )
-	assert_requires_complete_date( :received_by_ccls_on )
-	assert_requires_complete_date( :sent_to_lab_on )
-	assert_requires_complete_date( :received_by_lab_on )
-	assert_requires_complete_date( :aliquotted_on )
-	assert_requires_complete_date( :receipt_confirmed_on )
-	assert_requires_complete_date( :collected_on )
-	assert_requires_past_date( :sent_to_subject_on )
-	assert_requires_past_date( :received_by_ccls_on )
-	assert_requires_past_date( :sent_to_lab_on )
-	assert_requires_past_date( :received_by_lab_on )
-	assert_requires_past_date( :aliquotted_on )
-	assert_requires_past_date( :receipt_confirmed_on )
-	assert_requires_past_date( :collected_on )
+	assert_requires_complete_date( :sent_to_subject_on, 
+		:received_by_ccls_on, :sent_to_lab_on,
+		:received_by_lab_on, :aliquotted_on,
+		:receipt_confirmed_on, :collected_on )
+	assert_requires_past_date( :sent_to_subject_on,
+		:received_by_ccls_on, :sent_to_lab_on,
+		:received_by_lab_on, :aliquotted_on,
+		:receipt_confirmed_on, :collected_on )
 
 
 	test "should require that kit and sample tracking " <<

@@ -11,20 +11,13 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 #	assert_should_require_attributes( :study_subject_id )
 #	assert_should_require_unique_attributes( :study_subject_id )
 
-	assert_should_belong_to( :organization )
-	assert_should_belong_to( :diagnosis )
+	assert_should_belong_to( :organization, :diagnosis )
 
-	assert_should_not_require_attributes( :admit_date )
-	assert_should_not_require_attributes( :diagnosis_date )
-	assert_should_not_require_attributes( :diagnosis_id )
-	assert_should_not_require_attributes( :organization_id )
-	assert_should_not_require_attributes( :raf_zip )
-	assert_should_not_require_attributes( :raf_county_id )
+	assert_should_not_require_attributes( :admit_date, :diagnosis_date,
+		:diagnosis_id, :organization_id, :raf_zip, :raf_county_id )
 
-	assert_requires_complete_date(:admit_date)
-	assert_requires_past_date(:admit_date)
-	assert_requires_complete_date(:diagnosis_date)
-	assert_requires_past_date(:diagnosis_date)
+	assert_requires_complete_date( :admit_date, :diagnosis_date )
+	assert_requires_past_date( :admit_date, :diagnosis_date )
 
 	#
 	#	subject uses accepts_attributes_for :patient

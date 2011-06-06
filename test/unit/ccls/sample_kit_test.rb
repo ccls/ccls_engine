@@ -4,14 +4,10 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_initially_belong_to( :sample )
-	with_options :class_name => 'Package' do |o|
-		o.assert_should_belong_to( :sample_package )
-		o.assert_should_belong_to( :kit_package )
-	end
-
+	assert_should_belong_to( :sample_package, :kit_package, 
+		:class_name => 'Package' )
 	assert_should_require_unique_attribute( :sample_id )
-	assert_should_not_require_attributes( :kit_package_id )
-	assert_should_not_require_attributes( :sample_package_id )
+	assert_should_not_require_attributes( :kit_package_id, :sample_package_id )
 
 
 	test "should create sample kit with kit package" do

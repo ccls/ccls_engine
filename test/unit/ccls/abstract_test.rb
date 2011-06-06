@@ -2,502 +2,268 @@ require 'test_helper'
 
 class Ccls::AbstractTest < ActiveSupport::TestCase
 	assert_should_belong_to :subject
+	assert_should_protect( :subject_id, :entry_1_by_uid, 
+		:entry_2_by_uid, :merged_by_uid )
+	assert_should_not_require( *Abstract.db_fields )
 
-	assert_should_protect( :subject_id )
-	assert_should_protect( :entry_1_by_uid )
-	assert_should_protect( :entry_2_by_uid )
-	assert_should_protect( :merged_by_uid )
+	assert_should_require_length( 
+		:response_classification_day_7, 
+		:response_classification_day_14,
+		:response_classification_day_28,
+			:maximum => 2 )
 
-	assert_should_not_require( :cbc_percent_blasts_unknown )
-	assert_should_not_require( :cbc_percent_blasts )
-	assert_should_not_require( :response_classification_day_14 )
-	assert_should_not_require( :response_classification_day_28 )
-	assert_should_not_require( :response_classification_day_7 )
-	assert_should_not_require( :response_blasts_units_day_14 )
-	assert_should_not_require( :response_blasts_units_day_28 )
-	assert_should_not_require( :response_blasts_units_day_7 )
-	assert_should_not_require( :marrow_biopsy_diagnosis )
-	assert_should_not_require( :marrow_aspirate_diagnosis )
-	assert_should_not_require( :csf_white_blood_count_text )
-	assert_should_not_require( :csf_red_blood_count_text )
-	assert_should_not_require( :blasts_are_present )
-	assert_should_not_require( :peripheral_blood_in_csf )
-	assert_should_not_require( :csf_comment )
-	assert_should_not_require( :chemo_protocol_report_found )
-	assert_should_not_require( :chemo_protocol_name )
-	assert_should_not_require( :chemo_protocol_agent_description )
-	assert_should_not_require( :response_cd10_day_14 )
-	assert_should_not_require( :response_cd10_day_7 )
-	assert_should_not_require( :response_cd13_day_14 )
-	assert_should_not_require( :response_cd13_day_7 )
-	assert_should_not_require( :response_cd14_day_14 )
-	assert_should_not_require( :response_cd14_day_7 )
-	assert_should_not_require( :response_cd15_day_14 )
-	assert_should_not_require( :response_cd15_day_7 )
-	assert_should_not_require( :response_cd19_day_14 )
-	assert_should_not_require( :response_cd19_day_7 )
-	assert_should_not_require( :response_cd19cd10_day_14 )
-	assert_should_not_require( :response_cd19cd10_day_7 )
-	assert_should_not_require( :response_cd1a_day_14 )
-	assert_should_not_require( :response_cd2a_day_14 )
-	assert_should_not_require( :response_cd20_day_14 )
-	assert_should_not_require( :response_cd20_day_7 )
-	assert_should_not_require( :response_cd3a_day_14 )
-	assert_should_not_require( :response_cd3_day_7 )
-	assert_should_not_require( :response_cd33_day_14 )
-	assert_should_not_require( :response_cd33_day_7 )
-	assert_should_not_require( :response_cd34_day_14 )
-	assert_should_not_require( :response_cd34_day_7 )
-	assert_should_not_require( :response_cd4a_day_14 )
-	assert_should_not_require( :response_cd5a_day_14 )
-	assert_should_not_require( :response_cd56_day_14 )
-	assert_should_not_require( :response_cd61_day_14 )
-	assert_should_not_require( :response_cd7a_day_14 )
-	assert_should_not_require( :response_cd8a_day_14 )
-	assert_should_not_require( :chest_imaging_report_found )
-	assert_should_not_require( :mediastinal_mass_present )
-	assert_should_not_require( :chest_imaging_comment )
-	assert_should_not_require( :received_chest_ct )
-	assert_should_not_require( :chest_ct_taken_on )
-	assert_should_not_require( :chest_ct_medmass_present )
-	assert_should_not_require( :cytogen_report_found )
-	assert_should_not_require( :conventional_karyotype_results )
-	assert_should_not_require( :normal_cytogen )
-	assert_should_not_require( :is_cytogen_hosp_fish_t1221_done )
-	assert_should_not_require( :is_karyotype_normal )
-	assert_should_not_require( :cytogen_comment )
-	assert_should_not_require( :discharge_summary )
-	assert_should_not_require( :diagnosis_is_all )
-	assert_should_not_require( :diagnosis_all_type_id )
-	assert_should_not_require( :diagnosis_is_cml )
-	assert_should_not_require( :diagnosis_is_cll )
-	assert_should_not_require( :diagnosis_is_aml )
-	assert_should_not_require( :diagnosis_aml_type_id )
-	assert_should_not_require( :diagnosis_is_other )
-	assert_should_not_require( :flow_cyto_report_found )
-	assert_should_not_require( :flow_cyto_cd10 )
-	assert_should_not_require( :flow_cyto_igm )
-	assert_should_not_require( :flow_cyto_igm_text )
-	assert_should_not_require( :flow_cyto_bm_kappa )
-	assert_should_not_require( :flow_cyto_bm_kappa_text )
-	assert_should_not_require( :flow_cyto_bm_lambda )
-	assert_should_not_require( :flow_cyto_bm_lambda_text )
-	assert_should_not_require( :flow_cyto_cd10_19 )
-	assert_should_not_require( :flow_cyto_cd10_19_text )
-	assert_should_not_require( :flow_cyto_cd10_text )
-	assert_should_not_require( :flow_cyto_cd19 )
-	assert_should_not_require( :flow_cyto_cd19_text )
-	assert_should_not_require( :flow_cyto_cd20 )
-	assert_should_not_require( :flow_cyto_cd20_text )
-	assert_should_not_require( :flow_cyto_cd21 )
-	assert_should_not_require( :flow_cyto_cd21_text )
-	assert_should_not_require( :flow_cyto_cd22 )
-	assert_should_not_require( :flow_cyto_cd22_text )
-	assert_should_not_require( :flow_cyto_cd23 )
-	assert_should_not_require( :flow_cyto_cd23_text )
-	assert_should_not_require( :flow_cyto_cd24 )
-	assert_should_not_require( :flow_cyto_cd24_text )
-	assert_should_not_require( :flow_cyto_cd40 )
-	assert_should_not_require( :flow_cyto_cd40_text )
-	assert_should_not_require( :flow_cyto_surface_ig )
-	assert_should_not_require( :flow_cyto_surface_ig_text )
-	assert_should_not_require( :flow_cyto_cd1a )
-	assert_should_not_require( :flow_cyto_cd1a_text )
-	assert_should_not_require( :flow_cyto_cd2 )
-	assert_should_not_require( :flow_cyto_cd2_text )
-	assert_should_not_require( :flow_cyto_cd3 )
-	assert_should_not_require( :flow_cyto_cd3_text )
-	assert_should_not_require( :flow_cyto_cd4 )
-	assert_should_not_require( :flow_cyto_cd4_text )
-	assert_should_not_require( :flow_cyto_cd5 )
-	assert_should_not_require( :flow_cyto_cd5_text )
-	assert_should_not_require( :flow_cyto_cd7 )
-	assert_should_not_require( :flow_cyto_cd7_text )
-	assert_should_not_require( :flow_cyto_cd8 )
-	assert_should_not_require( :flow_cyto_cd8_text )
-	assert_should_not_require( :flow_cyto_cd3_cd4 )
-	assert_should_not_require( :flow_cyto_cd3_cd4_text )
-	assert_should_not_require( :flow_cyto_cd3_cd8 )
-	assert_should_not_require( :flow_cyto_cd3_cd8_text )
-	assert_should_not_require( :flow_cyto_cd11b )
-	assert_should_not_require( :flow_cyto_cd11b_text )
-	assert_should_not_require( :flow_cyto_cd11c )
-	assert_should_not_require( :flow_cyto_cd11c_text )
-	assert_should_not_require( :flow_cyto_cd13 )
-	assert_should_not_require( :flow_cyto_cd13_text )
-	assert_should_not_require( :flow_cyto_cd15 )
-	assert_should_not_require( :flow_cyto_cd15_text )
-	assert_should_not_require( :flow_cyto_cd33 )
-	assert_should_not_require( :flow_cyto_cd33_text )
-	assert_should_not_require( :flow_cyto_cd41 )
-	assert_should_not_require( :flow_cyto_cd41_text )
-	assert_should_not_require( :flow_cyto_cdw65 )
-	assert_should_not_require( :flow_cyto_cdw65_text )
-	assert_should_not_require( :flow_cyto_cd34 )
-	assert_should_not_require( :flow_cyto_cd34_text )
-	assert_should_not_require( :flow_cyto_cd61 )
-	assert_should_not_require( :flow_cyto_cd61_text )
-	assert_should_not_require( :flow_cyto_cd14 )
-	assert_should_not_require( :flow_cyto_cd14_text )
-	assert_should_not_require( :flow_cyto_glycoa )
-	assert_should_not_require( :flow_cyto_glycoa_text )
-	assert_should_not_require( :flow_cyto_cd16 )
-	assert_should_not_require( :flow_cyto_cd16_text )
-	assert_should_not_require( :flow_cyto_cd56 )
-	assert_should_not_require( :flow_cyto_cd56_text )
-	assert_should_not_require( :flow_cyto_cd57 )
-	assert_should_not_require( :flow_cyto_cd57_text )
-	assert_should_not_require( :flow_cyto_cd9 )
-	assert_should_not_require( :flow_cyto_cd9_text )
-	assert_should_not_require( :flow_cyto_cd25 )
-	assert_should_not_require( :flow_cyto_cd25_text )
-	assert_should_not_require( :flow_cyto_cd38 )
-	assert_should_not_require( :flow_cyto_cd38_text )
-	assert_should_not_require( :flow_cyto_cd45 )
-	assert_should_not_require( :flow_cyto_cd45_text )
-	assert_should_not_require( :flow_cyto_cd71 )
-	assert_should_not_require( :flow_cyto_cd71_text )
-	assert_should_not_require( :flow_cyto_tdt )
-	assert_should_not_require( :flow_cyto_tdt_text )
-	assert_should_not_require( :flow_cyto_hladr )
-	assert_should_not_require( :flow_cyto_hladr_text )
-	assert_should_not_require( :flow_cyto_other_marker_1_name )
-	assert_should_not_require( :flow_cyto_other_marker_1 )
-	assert_should_not_require( :flow_cyto_other_marker_1_text )
-	assert_should_not_require( :flow_cyto_other_marker_2_name )
-	assert_should_not_require( :flow_cyto_other_marker_2 )
-	assert_should_not_require( :flow_cyto_other_marker_2_text )
-	assert_should_not_require( :flow_cyto_other_marker_3_name )
-	assert_should_not_require( :flow_cyto_other_marker_3 )
-	assert_should_not_require( :flow_cyto_other_marker_3_text )
-	assert_should_not_require( :flow_cyto_other_marker_4_name )
-	assert_should_not_require( :flow_cyto_other_marker_4 )
-	assert_should_not_require( :flow_cyto_other_marker_4_text )
-	assert_should_not_require( :flow_cyto_other_marker_5_name )
-	assert_should_not_require( :flow_cyto_other_marker_5 )
-	assert_should_not_require( :flow_cyto_other_marker_5_text )
-	assert_should_not_require( :flow_cyto_remarks )
-	assert_should_not_require( :tdt_often_found_flow_cytometry )
-	assert_should_not_require( :tdt_report_found )
-	assert_should_not_require( :tdt_positive_or_negative )
-	assert_should_not_require( :response_comment_day_7 )
-	assert_should_not_require( :response_comment_day_14 )
-	assert_should_not_require( :hospital_fish_results )
-	assert_should_not_require( :ucb_fish_results )
-	assert_should_not_require( :response_hladr_day_14 )
-	assert_should_not_require( :response_hladr_day_7 )
-	assert_should_not_require( :histo_report_found )
-	assert_should_not_require( :histo_report_results )
-	assert_should_not_require( :response_other1_value_day_14 )
-	assert_should_not_require( :response_other1_value_day_7 )
-	assert_should_not_require( :response_other2_value_day_14 )
-	assert_should_not_require( :response_other2_value_day_7 )
-	assert_should_not_require( :response_other3_value_day_14 )
-	assert_should_not_require( :response_other4_value_day_14 )
-	assert_should_not_require( :response_other5_value_day_14 )
-	assert_should_not_require( :h_and_p_reports_found )
-	assert_should_not_require( :physical_neuro )
-	assert_should_not_require( :physical_other_soft_2 )
-	assert_should_not_require( :vital_status_id )
-	assert_should_not_require( :physical_gingival )
-	assert_should_not_require( :physical_leukemic_skin )
-	assert_should_not_require( :physical_lymph )
-	assert_should_not_require( :physical_spleen )
-	assert_should_not_require( :physical_testicle )
-	assert_should_not_require( :physical_other_soft )
-	assert_should_not_require( :ploidy_report_found )
-	assert_should_not_require( :is_hypodiploid )
-	assert_should_not_require( :is_hyperdiploid )
-	assert_should_not_require( :is_diploid )
-	assert_should_not_require( :dna_index )
-	assert_should_not_require( :other_dna_measure )
-	assert_should_not_require( :ploidy_comment )
-	assert_should_not_require( :response_comment )
-	assert_should_not_require( :response_other1_name_day_14 )
-	assert_should_not_require( :response_other1_name_day_7 )
-	assert_should_not_require( :response_other2_name_day_14 )
-	assert_should_not_require( :response_other2_name_day_7 )
-	assert_should_not_require( :response_other3_name_day_14 )
-	assert_should_not_require( :response_other4_name_day_14 )
-	assert_should_not_require( :response_other5_name_day_14 )
-	assert_should_not_require( :fab_classification )
-	assert_should_not_require( :diagnosis_icdo_description )
-	assert_should_not_require( :diagnosis_icdo_number )
-	assert_should_not_require( :cytogen_t1221 )
-	assert_should_not_require( :cytogen_inv16 )
-	assert_should_not_require( :cytogen_t119 )
-	assert_should_not_require( :cytogen_t821 )
-	assert_should_not_require( :cytogen_t1517 )
-	assert_should_not_require( :cytogen_is_hyperdiploidy )
-	assert_should_not_require( :cytogen_chromosome_number )
-	assert_should_not_require( :cytogen_other_trans_1 )
-	assert_should_not_require( :cytogen_other_trans_2 )
-	assert_should_not_require( :cytogen_other_trans_3 )
-	assert_should_not_require( :cytogen_other_trans_4 )
-	assert_should_not_require( :cytogen_other_trans_5 )
-	assert_should_not_require( :cytogen_other_trans_6 )
-	assert_should_not_require( :cytogen_other_trans_7 )
-	assert_should_not_require( :cytogen_other_trans_8 )
-	assert_should_not_require( :cytogen_other_trans_9 )
-	assert_should_not_require( :cytogen_other_trans_10 )
-	assert_should_not_require( :cytogen_t922 )
-	assert_should_not_require( :response_fab_subtype )
-	assert_should_not_require( :response_tdt_day_14 )
-	assert_should_not_require( :response_tdt_day_7 )
-	assert_should_not_require( :height_at_diagnosis )
-	assert_should_not_require( :weight_at_diagnosis )
-	assert_should_not_require( :hyperdiploidy_by )
-	assert_should_not_require( :current_user )
-	assert_should_not_require( :response_day_7_days_since_treatment_began )
-	assert_should_not_require( :response_day_7_days_since_diagnosis )
-	assert_should_not_require( :response_day_14_days_since_treatment_began )
-	assert_should_not_require( :response_day_14_days_since_diagnosis )
-	assert_should_not_require( :response_day_28_days_since_treatment_began )
-	assert_should_not_require( :response_day_28_days_since_diagnosis )
+	assert_should_require_length( 
+		:cytogen_chromosome_number, 
+			:maximum => 3 )
 
-	with_options :maximum => 2 do |o|
-		o.assert_should_require_length( :response_classification_day_14 )
-		o.assert_should_require_length( :response_classification_day_28 )
-		o.assert_should_require_length( :response_classification_day_7 )
-	end
-	with_options :maximum => 3 do |o|
-		o.assert_should_require_length( :cytogen_chromosome_number )
-	end
-	with_options :maximum => 4 do |o|
-		o.assert_should_require_length( :flow_cyto_other_marker_1 )
-		o.assert_should_require_length( :flow_cyto_other_marker_2 )
-		o.assert_should_require_length( :flow_cyto_other_marker_3 )
-		o.assert_should_require_length( :flow_cyto_other_marker_4 )
-		o.assert_should_require_length( :flow_cyto_other_marker_5 )
-		o.assert_should_require_length( :response_other1_value_day_14 )
-		o.assert_should_require_length( :response_other1_value_day_7 )
-		o.assert_should_require_length( :response_other2_value_day_14 )
-		o.assert_should_require_length( :response_other2_value_day_7 )
-		o.assert_should_require_length( :response_other3_value_day_14 )
-		o.assert_should_require_length( :response_other4_value_day_14 )
-		o.assert_should_require_length( :response_other5_value_day_14 )
-	end
-	with_options :maximum => 5 do |o|
-		o.assert_should_require_length( :normal_cytogen )
-		o.assert_should_require_length( :is_cytogen_hosp_fish_t1221_done )
-		o.assert_should_require_length( :is_karyotype_normal )
-		o.assert_should_require_length( :physical_neuro )
-		o.assert_should_require_length( :physical_other_soft_2 )
-		o.assert_should_require_length( :physical_gingival )
-		o.assert_should_require_length( :physical_leukemic_skin )
-		o.assert_should_require_length( :physical_lymph )
-		o.assert_should_require_length( :physical_spleen )
-		o.assert_should_require_length( :physical_testicle )
-		o.assert_should_require_length( :physical_other_soft )
-		o.assert_should_require_length( :is_hypodiploid )
-		o.assert_should_require_length( :is_hyperdiploid )
-		o.assert_should_require_length( :is_diploid )
-		o.assert_should_require_length( :dna_index )
-		o.assert_should_require_length( :cytogen_is_hyperdiploidy )
-	end
-	with_options :maximum => 9 do |o|
-		o.assert_should_require_length( :cytogen_t1221 )
-		o.assert_should_require_length( :cytogen_inv16 )
-		o.assert_should_require_length( :cytogen_t119 )
-		o.assert_should_require_length( :cytogen_t821 )
-		o.assert_should_require_length( :cytogen_t1517 )
-	end
-	with_options :maximum => 10 do |o|
-		o.assert_should_require_length( :response_tdt_day_14 )
-		o.assert_should_require_length( :response_tdt_day_7 )
-		o.assert_should_require_length( :response_cd10_day_14 )
-		o.assert_should_require_length( :response_cd10_day_7 )
-		o.assert_should_require_length( :response_cd13_day_14 )
-		o.assert_should_require_length( :response_cd13_day_7 )
-		o.assert_should_require_length( :response_cd14_day_14 )
-		o.assert_should_require_length( :response_cd14_day_7 )
-		o.assert_should_require_length( :response_cd15_day_14 )
-		o.assert_should_require_length( :response_cd15_day_7 )
-		o.assert_should_require_length( :response_cd19_day_14 )
-		o.assert_should_require_length( :response_cd19_day_7 )
-		o.assert_should_require_length( :response_cd19cd10_day_14 )
-		o.assert_should_require_length( :response_cd19cd10_day_7 )
-		o.assert_should_require_length( :response_cd1a_day_14 )
-		o.assert_should_require_length( :response_cd2a_day_14 )
-		o.assert_should_require_length( :response_cd20_day_14 )
-		o.assert_should_require_length( :response_cd20_day_7 )
-		o.assert_should_require_length( :response_cd3a_day_14 )
-		o.assert_should_require_length( :response_cd3_day_7 )
-		o.assert_should_require_length( :response_cd33_day_14 )
-		o.assert_should_require_length( :response_cd33_day_7 )
-		o.assert_should_require_length( :response_cd34_day_14 )
-		o.assert_should_require_length( :response_cd34_day_7 )
-		o.assert_should_require_length( :response_cd4a_day_14 )
-		o.assert_should_require_length( :response_cd5a_day_14 )
-		o.assert_should_require_length( :response_cd56_day_14 )
-		o.assert_should_require_length( :response_cd61_day_14 )
-		o.assert_should_require_length( :response_cd7a_day_14 )
-		o.assert_should_require_length( :response_cd8a_day_14 )
-		o.assert_should_require_length( :flow_cyto_cd10 )
-		o.assert_should_require_length( :flow_cyto_igm )
-		o.assert_should_require_length( :flow_cyto_bm_kappa )
-		o.assert_should_require_length( :flow_cyto_bm_lambda )
-		o.assert_should_require_length( :flow_cyto_cd10_19 )
-		o.assert_should_require_length( :flow_cyto_cd19 )
-		o.assert_should_require_length( :flow_cyto_cd20 )
-		o.assert_should_require_length( :flow_cyto_cd21 )
-		o.assert_should_require_length( :flow_cyto_cd22 )
-		o.assert_should_require_length( :flow_cyto_cd23 )
-		o.assert_should_require_length( :flow_cyto_cd24 )
-		o.assert_should_require_length( :flow_cyto_cd40 )
-		o.assert_should_require_length( :flow_cyto_surface_ig )
-		o.assert_should_require_length( :flow_cyto_cd1a )
-		o.assert_should_require_length( :flow_cyto_cd2 )
-		o.assert_should_require_length( :flow_cyto_cd3 )
-		o.assert_should_require_length( :flow_cyto_cd4 )
-		o.assert_should_require_length( :flow_cyto_cd5 )
-		o.assert_should_require_length( :flow_cyto_cd7 )
-		o.assert_should_require_length( :flow_cyto_cd8 )
-		o.assert_should_require_length( :flow_cyto_cd3_cd4 )
-		o.assert_should_require_length( :flow_cyto_cd3_cd8 )
-		o.assert_should_require_length( :flow_cyto_cd11b )
-		o.assert_should_require_length( :flow_cyto_cd11c )
-		o.assert_should_require_length( :flow_cyto_cd13 )
-		o.assert_should_require_length( :flow_cyto_cd15 )
-		o.assert_should_require_length( :flow_cyto_cd33 )
-		o.assert_should_require_length( :flow_cyto_cd41 )
-		o.assert_should_require_length( :flow_cyto_cdw65 )
-		o.assert_should_require_length( :flow_cyto_cd34 )
-		o.assert_should_require_length( :flow_cyto_cd61 )
-		o.assert_should_require_length( :flow_cyto_cd14 )
-		o.assert_should_require_length( :flow_cyto_glycoa )
-		o.assert_should_require_length( :flow_cyto_cd16 )
-		o.assert_should_require_length( :flow_cyto_cd56 )
-		o.assert_should_require_length( :flow_cyto_cd57 )
-		o.assert_should_require_length( :flow_cyto_cd9 )
-		o.assert_should_require_length( :flow_cyto_cd25 )
-		o.assert_should_require_length( :flow_cyto_cd38 )
-		o.assert_should_require_length( :flow_cyto_cd45 )
-		o.assert_should_require_length( :flow_cyto_cd71 )
-		o.assert_should_require_length( :flow_cyto_tdt )
-		o.assert_should_require_length( :flow_cyto_hladr )
-		o.assert_should_require_length( :response_hladr_day_14 )
-		o.assert_should_require_length( :response_hladr_day_7 )
-	end
-	with_options :maximum => 15 do |o|
-		o.assert_should_require_length( :response_blasts_units_day_14 )
-		o.assert_should_require_length( :response_blasts_units_day_28 )
-		o.assert_should_require_length( :response_blasts_units_day_7 )
-		o.assert_should_require_length( :other_dna_measure )
-		o.assert_should_require_length( :response_fab_subtype )
-	end
-	with_options :maximum => 20 do |o|
-		o.assert_should_require_length( :flow_cyto_other_marker_1_name )
-		o.assert_should_require_length( :flow_cyto_other_marker_2_name )
-		o.assert_should_require_length( :flow_cyto_other_marker_3_name )
-		o.assert_should_require_length( :flow_cyto_other_marker_4_name )
-		o.assert_should_require_length( :flow_cyto_other_marker_5_name )
-	end
-	with_options :maximum => 25 do |o|
-		o.assert_should_require_length( :response_other1_name_day_14 )
-		o.assert_should_require_length( :response_other1_name_day_7 )
-		o.assert_should_require_length( :response_other2_name_day_14 )
-		o.assert_should_require_length( :response_other2_name_day_7 )
-		o.assert_should_require_length( :response_other3_name_day_14 )
-		o.assert_should_require_length( :response_other4_name_day_14 )
-		o.assert_should_require_length( :response_other5_name_day_14 )
-	end
-	with_options :maximum => 35 do |o|
-		o.assert_should_require_length( :cytogen_other_trans_1 )
-		o.assert_should_require_length( :cytogen_other_trans_2 )
-		o.assert_should_require_length( :cytogen_other_trans_3 )
-		o.assert_should_require_length( :cytogen_other_trans_4 )
-		o.assert_should_require_length( :cytogen_other_trans_5 )
-		o.assert_should_require_length( :cytogen_other_trans_6 )
-		o.assert_should_require_length( :cytogen_other_trans_7 )
-		o.assert_should_require_length( :cytogen_other_trans_8 )
-		o.assert_should_require_length( :cytogen_other_trans_9 )
-		o.assert_should_require_length( :cytogen_other_trans_10 )
-	end
-	with_options :maximum => 50 do |o|
-		o.assert_should_require_length( :flow_cyto_igm_text )
-		o.assert_should_require_length( :flow_cyto_bm_kappa_text )
-		o.assert_should_require_length( :flow_cyto_bm_lambda_text )
-		o.assert_should_require_length( :flow_cyto_cd10_text )
-		o.assert_should_require_length( :flow_cyto_cd19_text )
-		o.assert_should_require_length( :flow_cyto_cd10_19_text )
-		o.assert_should_require_length( :flow_cyto_cd20_text )
-		o.assert_should_require_length( :flow_cyto_cd21_text )
-		o.assert_should_require_length( :flow_cyto_cd22_text )
-		o.assert_should_require_length( :flow_cyto_cd23_text )
-		o.assert_should_require_length( :flow_cyto_cd24_text )
-		o.assert_should_require_length( :flow_cyto_cd40_text )
-		o.assert_should_require_length( :flow_cyto_surface_ig_text )
-		o.assert_should_require_length( :flow_cyto_cd1a_text )
-		o.assert_should_require_length( :flow_cyto_cd2_text )
-		o.assert_should_require_length( :flow_cyto_cd3_text )
-		o.assert_should_require_length( :flow_cyto_cd4_text )
-		o.assert_should_require_length( :flow_cyto_cd5_text )
-		o.assert_should_require_length( :flow_cyto_cd7_text )
-		o.assert_should_require_length( :flow_cyto_cd8_text )
-		o.assert_should_require_length( :flow_cyto_cd3_cd4_text )
-		o.assert_should_require_length( :flow_cyto_cd3_cd8_text )
-		o.assert_should_require_length( :flow_cyto_cd11b_text )
-		o.assert_should_require_length( :flow_cyto_cd11c_text )
-		o.assert_should_require_length( :flow_cyto_cd13_text )
-		o.assert_should_require_length( :flow_cyto_cd15_text )
-		o.assert_should_require_length( :flow_cyto_cd33_text )
-		o.assert_should_require_length( :flow_cyto_cd41_text )
-		o.assert_should_require_length( :flow_cyto_cdw65_text )
-		o.assert_should_require_length( :flow_cyto_cd34_text )
-		o.assert_should_require_length( :flow_cyto_cd61_text )
-		o.assert_should_require_length( :flow_cyto_cd14_text )
-		o.assert_should_require_length( :flow_cyto_glycoa_text )
-		o.assert_should_require_length( :flow_cyto_cd16_text )
-		o.assert_should_require_length( :flow_cyto_cd56_text )
-		o.assert_should_require_length( :flow_cyto_cd57_text )
-		o.assert_should_require_length( :flow_cyto_cd9_text )
-		o.assert_should_require_length( :flow_cyto_cd25_text )
-		o.assert_should_require_length( :flow_cyto_cd38_text )
-		o.assert_should_require_length( :flow_cyto_cd45_text )
-		o.assert_should_require_length( :flow_cyto_cd71_text )
-		o.assert_should_require_length( :flow_cyto_tdt_text )
-		o.assert_should_require_length( :flow_cyto_hladr_text )
-		o.assert_should_require_length( :flow_cyto_other_marker_1_text )
-		o.assert_should_require_length( :flow_cyto_other_marker_2_text )
-		o.assert_should_require_length( :flow_cyto_other_marker_3_text )
-		o.assert_should_require_length( :flow_cyto_other_marker_4_text )
-		o.assert_should_require_length( :flow_cyto_other_marker_5_text )
-		o.assert_should_require_length( :ucb_fish_results )
-		o.assert_should_require_length( :fab_classification )
-		o.assert_should_require_length( :diagnosis_icdo_number )
-		o.assert_should_require_length( :cytogen_t922 )
-	end
-	with_options :maximum => 55 do |o|
-		o.assert_should_require_length( :diagnosis_icdo_description )
-	end
-	with_options :maximum => 100 do |o|
-		o.assert_should_require_length( :ploidy_comment )
-	end
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_length( :csf_red_blood_count_text )
-		o.assert_should_require_length( :blasts_are_present )
-		o.assert_should_require_length( :peripheral_blood_in_csf )
-		o.assert_should_require_length( :chemo_protocol_name )
-		o.assert_should_require_length( :conventional_karyotype_results )
-		o.assert_should_require_length( :hospital_fish_results )
-		o.assert_should_require_length( :hyperdiploidy_by )
-	end
-	with_options :maximum => 65000 do |o|
-		o.assert_should_require_length( :marrow_biopsy_diagnosis )
-		o.assert_should_require_length( :marrow_aspirate_diagnosis )
-		o.assert_should_require_length( :csf_white_blood_count_text )
-		o.assert_should_require_length( :csf_comment )
-		o.assert_should_require_length( :chemo_protocol_agent_description )
-		o.assert_should_require_length( :chest_imaging_comment )
-		o.assert_should_require_length( :cytogen_comment )
-		o.assert_should_require_length( :discharge_summary )
-		o.assert_should_require_length( :flow_cyto_remarks )
-		o.assert_should_require_length( :response_comment_day_7 )
-		o.assert_should_require_length( :response_comment_day_14 )
-		o.assert_should_require_length( :histo_report_results )
-		o.assert_should_require_length( :response_comment )
-	end
+	assert_should_require_length( 
+		:flow_cyto_other_marker_1,
+		:flow_cyto_other_marker_2,
+		:flow_cyto_other_marker_3,
+		:flow_cyto_other_marker_4,
+		:flow_cyto_other_marker_5,
+		:response_other1_value_day_7,
+		:response_other1_value_day_14,
+		:response_other2_value_day_7,
+		:response_other2_value_day_14,
+		:response_other3_value_day_14,
+		:response_other4_value_day_14,
+		:response_other5_value_day_14, 
+			:maximum => 4 )
+
+	assert_should_require_length( 
+		:normal_cytogen,
+		:is_cytogen_hosp_fish_t1221_done,
+		:is_karyotype_normal,
+		:physical_neuro,
+		:physical_other_soft_2,
+		:physical_gingival,
+		:physical_leukemic_skin,
+		:physical_lymph,
+		:physical_spleen,
+		:physical_testicle,
+		:physical_other_soft,
+		:is_hypodiploid,
+		:is_hyperdiploid,
+		:is_diploid,
+		:dna_index,
+		:cytogen_is_hyperdiploidy,
+			:maximum => 5 )
+
+	assert_should_require_length( 
+		:cytogen_t1221,
+		:cytogen_inv16,
+		:cytogen_t119,
+		:cytogen_t821,
+		:cytogen_t1517,
+			:maximum => 9 )
+
+	assert_should_require_length( 
+		:response_tdt_day_7,
+		:response_tdt_day_14,
+		:response_cd10_day_7,
+		:response_cd10_day_14,
+		:response_cd13_day_7,
+		:response_cd13_day_14,
+		:response_cd14_day_7,
+		:response_cd14_day_14,
+		:response_cd15_day_7,
+		:response_cd15_day_14,
+		:response_cd19_day_7,
+		:response_cd19_day_14,
+		:response_cd19cd10_day_7,
+		:response_cd19cd10_day_14,
+		:response_cd1a_day_14,
+		:response_cd2a_day_14,
+		:response_cd20_day_7,
+		:response_cd20_day_14,
+		:response_cd3_day_7,
+		:response_cd3a_day_14,
+		:response_cd33_day_7,
+		:response_cd33_day_14,
+		:response_cd34_day_7,
+		:response_cd34_day_14,
+		:response_cd4a_day_14,
+		:response_cd5a_day_14,
+		:response_cd56_day_14,
+		:response_cd61_day_14,
+		:response_cd7a_day_14,
+		:response_cd8a_day_14,
+		:flow_cyto_cd10,
+		:flow_cyto_igm,
+		:flow_cyto_bm_kappa,
+		:flow_cyto_bm_lambda,
+		:flow_cyto_cd10_19,
+		:flow_cyto_cd19,
+		:flow_cyto_cd20,
+		:flow_cyto_cd21,
+		:flow_cyto_cd22,
+		:flow_cyto_cd23,
+		:flow_cyto_cd24,
+		:flow_cyto_cd40,
+		:flow_cyto_surface_ig,
+		:flow_cyto_cd1a,
+		:flow_cyto_cd2,
+		:flow_cyto_cd3,
+		:flow_cyto_cd3_cd4,
+		:flow_cyto_cd3_cd8,
+		:flow_cyto_cd4,
+		:flow_cyto_cd5,
+		:flow_cyto_cd7,
+		:flow_cyto_cd8,
+		:flow_cyto_cd11b,
+		:flow_cyto_cd11c,
+		:flow_cyto_cd13,
+		:flow_cyto_cd15,
+		:flow_cyto_cd33,
+		:flow_cyto_cd41,
+		:flow_cyto_cdw65,
+		:flow_cyto_cd34,
+		:flow_cyto_cd61,
+		:flow_cyto_cd14,
+		:flow_cyto_glycoa,
+		:flow_cyto_cd16,
+		:flow_cyto_cd56,
+		:flow_cyto_cd57,
+		:flow_cyto_cd9,
+		:flow_cyto_cd25,
+		:flow_cyto_cd38,
+		:flow_cyto_cd45,
+		:flow_cyto_cd71,
+		:flow_cyto_tdt,
+		:flow_cyto_hladr,
+		:response_hladr_day_7,
+		:response_hladr_day_14,
+			:maximum => 10 )
+
+	assert_should_require_length( 
+		:response_blasts_units_day_7,
+		:response_blasts_units_day_14,
+		:response_blasts_units_day_28,
+		:other_dna_measure,
+		:response_fab_subtype,
+			:maximum => 15 )
+
+	assert_should_require_length( 
+		:flow_cyto_other_marker_1_name,
+		:flow_cyto_other_marker_2_name,
+		:flow_cyto_other_marker_3_name,
+		:flow_cyto_other_marker_4_name,
+		:flow_cyto_other_marker_5_name,
+			:maximum => 20 )
+
+	assert_should_require_length( 
+		:response_other1_name_day_7,
+		:response_other1_name_day_14,
+		:response_other2_name_day_7,
+		:response_other2_name_day_14,
+		:response_other3_name_day_14,
+		:response_other4_name_day_14,
+		:response_other5_name_day_14,
+			:maximum => 25 )
+
+	assert_should_require_length( 
+		:cytogen_other_trans_1,
+		:cytogen_other_trans_2,
+		:cytogen_other_trans_3,
+		:cytogen_other_trans_4,
+		:cytogen_other_trans_5,
+		:cytogen_other_trans_6,
+		:cytogen_other_trans_7,
+		:cytogen_other_trans_8,
+		:cytogen_other_trans_9,
+		:cytogen_other_trans_10,
+			:maximum => 35 )
+
+	assert_should_require_length( 
+		:flow_cyto_igm_text,
+		:flow_cyto_bm_kappa_text,
+		:flow_cyto_bm_lambda_text,
+		:flow_cyto_cd10_text,
+		:flow_cyto_cd19_text,
+		:flow_cyto_cd10_19_text,
+		:flow_cyto_cd20_text,
+		:flow_cyto_cd21_text,
+		:flow_cyto_cd22_text,
+		:flow_cyto_cd23_text,
+		:flow_cyto_cd24_text,
+		:flow_cyto_cd40_text,
+		:flow_cyto_surface_ig_text,
+		:flow_cyto_cd1a_text,
+		:flow_cyto_cd2_text,
+		:flow_cyto_cd3_text,
+		:flow_cyto_cd4_text,
+		:flow_cyto_cd5_text,
+		:flow_cyto_cd7_text,
+		:flow_cyto_cd8_text,
+		:flow_cyto_cd3_cd4_text,
+		:flow_cyto_cd3_cd8_text,
+		:flow_cyto_cd11b_text,
+		:flow_cyto_cd11c_text,
+		:flow_cyto_cd13_text,
+		:flow_cyto_cd15_text,
+		:flow_cyto_cd33_text,
+		:flow_cyto_cd41_text,
+		:flow_cyto_cdw65_text,
+		:flow_cyto_cd34_text,
+		:flow_cyto_cd61_text,
+		:flow_cyto_cd14_text,
+		:flow_cyto_glycoa_text,
+		:flow_cyto_cd16_text,
+		:flow_cyto_cd56_text,
+		:flow_cyto_cd57_text,
+		:flow_cyto_cd9_text,
+		:flow_cyto_cd25_text,
+		:flow_cyto_cd38_text,
+		:flow_cyto_cd45_text,
+		:flow_cyto_cd71_text,
+		:flow_cyto_tdt_text,
+		:flow_cyto_hladr_text,
+		:flow_cyto_other_marker_1_text,
+		:flow_cyto_other_marker_2_text,
+		:flow_cyto_other_marker_3_text,
+		:flow_cyto_other_marker_4_text,
+		:flow_cyto_other_marker_5_text,
+		:ucb_fish_results,
+		:fab_classification,
+		:diagnosis_icdo_number,
+		:cytogen_t922,
+			:maximum => 50 )
+
+	assert_should_require_length( 
+		:diagnosis_icdo_description, 
+			:maximum => 55 )
+
+	assert_should_require_length( 
+		:ploidy_comment, 
+			:maximum => 100 )
+
+	assert_should_require_length( 
+		:csf_red_blood_count_text,
+		:blasts_are_present,
+		:peripheral_blood_in_csf,
+		:chemo_protocol_name,
+		:conventional_karyotype_results,
+		:hospital_fish_results,
+		:hyperdiploidy_by,
+			:maximum => 250 )
+
+	assert_should_require_length( 
+		:marrow_biopsy_diagnosis,
+		:marrow_aspirate_diagnosis,
+		:csf_white_blood_count_text,
+		:csf_comment,
+		:chemo_protocol_agent_description,
+		:chest_imaging_comment,
+		:cytogen_comment,
+		:discharge_summary,
+		:flow_cyto_remarks,
+		:response_comment_day_7,
+		:response_comment_day_14,
+		:histo_report_results,
+		:response_comment,
+			:maximum => 65000 )
+
 
 	test "should not convert weight if weight_units is null" do
 		abstract = Factory(:abstract,:weight_at_diagnosis => 100)

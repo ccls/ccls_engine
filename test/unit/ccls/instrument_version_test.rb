@@ -5,26 +5,20 @@ class Ccls::InstrumentVersionTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many( :interviews )
-	assert_should_belong_to( :language )
-	assert_should_belong_to( :instrument )
+	assert_should_belong_to( :language, :instrument )
 	assert_should_initially_belong_to( :instrument_type )
-	assert_should_require_attributes( :code )
-	assert_should_require_attributes( :description )
-	assert_should_require_attributes( :instrument_type_id )
-	assert_should_require_unique_attributes( :code )
-	assert_should_require_unique_attributes( :description )
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :language_id )
-	assert_should_not_require_attributes( :began_use_on )
-	assert_should_not_require_attributes( :ended_use_on )
-	assert_should_not_require_attributes( :instrument_id )
+	assert_should_require_attributes( :code, :description, :instrument_type_id )
+	assert_should_require_unique_attributes( :code, :description )
+	assert_should_not_require_attributes( 
+		:position,
+		:language_id,
+		:began_use_on,
+		:ended_use_on,
+		:instrument_id )
 
-	assert_requires_complete_date( :began_use_on )
-	assert_requires_complete_date( :ended_use_on )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :code )
-		o.assert_should_require_attribute_length( :description, :minimum => 4 )
-	end
+	assert_requires_complete_date( :began_use_on, :ended_use_on )
+	assert_should_require_attribute_length( :code, :maximum => 250 )
+	assert_should_require_attribute_length( :description, :in => 4..250 )
 
 
 	test "should return description as to_s" do

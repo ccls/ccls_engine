@@ -8,24 +8,17 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 	assert_should_belong_to(:interview_method)
 	assert_should_initially_belong_to(:project)
 #	assert_requires_valid_association(:project)
-	assert_should_require_attributes( :code )
-	assert_should_require_attributes( :name )
-	assert_should_require_attributes( :project_id )
-	assert_should_require_attributes( :description)
-	assert_should_require_unique_attributes( :code )
-	assert_should_require_unique_attributes( :description )
-	assert_should_not_require_attributes( :position )
-	assert_should_not_require_attributes( :results_table_id )
-	assert_should_not_require_attributes( :interview_method_id )
-	assert_should_not_require_attributes( :began_use_on )
-	assert_should_not_require_attributes( :ended_use_on )
-	with_options :maximum => 250 do |o|
-		o.assert_should_require_attribute_length( :code )
-		o.assert_should_require_attribute_length( :name )
-		o.assert_should_require_attribute_length( :description, :minimum => 4 )
-	end
-	assert_requires_complete_date( :began_use_on )
-	assert_requires_complete_date( :ended_use_on )
+	assert_should_require_attributes( :code, :name, :project_id, :description )
+	assert_should_require_unique_attributes( :code, :description )
+	assert_should_not_require_attributes( :position,
+		:results_table_id,
+		:interview_method_id,
+		:began_use_on,
+		:ended_use_on )
+	assert_should_require_attribute_length( :code, :name, 
+		:maximum => 250 )
+	assert_should_require_attribute_length( :description, :in => 4..250 )
+	assert_requires_complete_date( :began_use_on, :ended_use_on )
 
 	#	unfortunately name is NOT unique so should change this
 	test "should return name as to_s" do

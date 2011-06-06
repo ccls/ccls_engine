@@ -2,13 +2,19 @@ require 'test_helper'
 
 class Ccls::RoleTest < ActiveSupport::TestCase
 
-	assert_should_act_as_list(:model => 'Role')
-	assert_should_require(:name,
-		:model => 'Role')
-	assert_should_require_unique(:name,
-		:model => 'Role')
-	assert_should_habtm(:users,
-		:model => 'Role')
+#	can't remember why I specified the :model
+#	I'll leave commented out for a while
+#	and perhaps something will remind me. (110606)
+	assert_should_act_as_list	#(:model => 'Role')
+	assert_should_require(:name)
+#	assert_should_require(:name,
+#		:model => 'Role')
+	assert_should_require_unique(:name)
+#	assert_should_require_unique(:name,
+#		:model => 'Role')
+	assert_should_habtm(:users)
+#	assert_should_habtm(:users,
+#		:model => 'Role')
 
 	test "should create role" do
 		assert_difference('Role.count',1) do
@@ -20,10 +26,10 @@ class Ccls::RoleTest < ActiveSupport::TestCase
 
 protected
 
-	def create_object(options = {})
-		record = Factory.build(:role,options)
-		record.save
-		record
-	end
+#	def create_object(options = {})
+#		record = Factory.build(:role,options)
+#		record.save
+#		record
+#	end
 
 end
