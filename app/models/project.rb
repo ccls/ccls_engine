@@ -13,20 +13,14 @@ class Project < Shared
 	has_many :subjects, :through => :enrollments, :foreign_key => 'study_subject_id'
 	has_many :instruments
 
-	validates_presence_of   :code
-	validates_uniqueness_of :code
-	validates_length_of     :description, :minimum => 4
-	validates_uniqueness_of :description
-#	TODO simplify all this
-	with_options :allow_nil => true do |o|
-		o.validates_complete_date_for :began_on
-		o.validates_complete_date_for :ended_on
-	end
+	validates_presence_of   :code, :description
+	validates_uniqueness_of :code, :description
+	validates_length_of     :code,        :maximum => 250
+	validates_length_of     :description, :in => 4..250
 
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :code
-		o.validates_length_of :description
-	end
+	validates_complete_date_for :began_on, :allow_nil => true
+	validates_complete_date_for :ended_on, :allow_nil => true
+
 
 #	TODO perhaps move this into subject where is clearly belongs
 	#	Returns all projects for which the subject

@@ -1,10 +1,8 @@
 # A kit is 2 packages used for retrieving samples.
 class SampleKit < Shared
 	belongs_to :sample
-	with_options :class_name => 'Package' do |o|
-		o.belongs_to :kit_package
-		o.belongs_to :sample_package
-	end
+	belongs_to :kit_package,    :class_name => 'Package'
+	belongs_to :sample_package, :class_name => 'Package'
 
 	delegate :subject,     :to => :sample
 	delegate :sent_on,     :to => :kit_package

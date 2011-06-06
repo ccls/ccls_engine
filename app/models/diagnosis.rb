@@ -6,9 +6,8 @@ class Diagnosis < Shared
 #	has_many :subjects
 
 	validates_presence_of   :code
-	validates_uniqueness_of :code
+	validates_uniqueness_of :code, :description
 	validates_length_of     :description, :in => 3..250
-	validates_uniqueness_of :description
 
 	#	Return description
 	def to_s

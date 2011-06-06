@@ -63,13 +63,11 @@ class Sample < Shared
 		sample_type.parent
 	end
 
-	with_options :to => :sample_kit, :allow_nil => true do |o|
-		o.delegate :kit_package
-		o.delegate :sample_package
-	end
+	delegate :kit_package,    :to => :sample_kit, :allow_nil => true
+	delegate :sample_package, :to => :sample_kit, :allow_nil => true
 
 #
-#	TODO can I delegate these
+#	TODO can I delegate these? Delegate to something that is delegated?
 #
 	#	Returns tracking number of the kit package
 	def kit_tracking_number
@@ -106,36 +104,51 @@ class Sample < Shared
 protected
 
 	def tracking_numbers_are_different
-		errors.add(:base, "Tracking numbers MUST be different.") if
-			( kit_tracking_number == sample_tracking_number ) &&
-			( !kit_tracking_number.blank? || !sample_tracking_number.blank? )
+		errors.add(:base, "Tracking numbers MUST be different."
+			) if tracking_numbers_are_the_same?
+	end
+
+	def tracking_numbers_are_the_same?
+		(( kit_tracking_number == sample_tracking_number ) &&
+			( !kit_tracking_number.blank? || !sample_tracking_number.blank? ))
 	end
 
 	def date_chronology
-		errors.add(:collected_on,
-			"must be after sent_to_subject_on") if
-			( sent_to_subject_on && collected_on ) &&
-			( sent_to_subject_on >  collected_on )
+		errors.add(:collected_on,        "must be after sent_to_subject_on"
+			) if collected_on_is_before_sent_to_subject_on?
+		errors.add(:received_by_ccls_on, "must be after collected_on"
+			) if received_by_ccls_on_is_before_collected_on?
+		errors.add(:sent_to_lab_on,      "must be after received_by_ccls_on"
+			) if sent_to_lab_on_is_before_received_by_ccls_on?
+		errors.add(:received_by_lab_on,  "must be after sent_to_lab_on"
+			) if received_by_lab_on_is_before_sent_to_lab_on?
+		errors.add(:aliquotted_on,       "must be after received_by_lab_on"
+			) if aliquotted_on_is_before_received_by_lab_on?
+	end
 
-		errors.add(:received_by_ccls_on,
-			"must be after collected_on") if
-			( collected_on && received_by_ccls_on ) &&
-			( collected_on >  received_by_ccls_on )
+	def collected_on_is_before_sent_to_subject_on?
+		(( sent_to_subject_on && collected_on ) &&
+			( sent_to_subject_on >  collected_on ))
+	end
 
-		errors.add(:sent_to_lab_on,
-			"must be after received_by_ccls_on") if
-			( received_by_ccls_on && sent_to_lab_on ) &&
-			( received_by_ccls_on >  sent_to_lab_on )
+	def received_by_ccls_on_is_before_collected_on?
+		(( collected_on && received_by_ccls_on ) &&
+			( collected_on >  received_by_ccls_on ))
+	end
 
-		errors.add(:received_by_lab_on,
-			"must be after sent_to_lab_on") if
-			( sent_to_lab_on && received_by_lab_on ) &&
-			( sent_to_lab_on >  received_by_lab_on )
+	def sent_to_lab_on_is_before_received_by_ccls_on?
+		(( received_by_ccls_on && sent_to_lab_on ) &&
+			( received_by_ccls_on >  sent_to_lab_on ))
+	end
 
-		errors.add(:aliquotted_on,
-			"must be after received_by_lab_on") if
-			( received_by_lab_on && aliquotted_on ) &&
-			( received_by_lab_on >  aliquotted_on )
+	def received_by_lab_on_is_before_sent_to_lab_on?
+		(( sent_to_lab_on && received_by_lab_on ) &&
+			( sent_to_lab_on >  received_by_lab_on ))
+	end
+
+	def aliquotted_on_is_before_received_by_lab_on?
+		(( received_by_lab_on && aliquotted_on ) &&
+			( received_by_lab_on >  aliquotted_on ))
 	end
 
 	def update_sample_outcome

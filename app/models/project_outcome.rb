@@ -3,17 +3,9 @@ class ProjectOutcome < Shared
 	default_scope :order => :position
 	has_many :enrollments
 
-	validates_presence_of   :code
-	validates_uniqueness_of :code
-	validates_presence_of   :description
-	validates_uniqueness_of :description
-
-#	TODO compress this
-
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :code
-		o.validates_length_of :description
-	end
+	validates_presence_of   :code, :description
+	validates_uniqueness_of :code, :description
+	validates_length_of     :code, :description, :maximum => 250
 
 	#	Returns description
 	def to_s
