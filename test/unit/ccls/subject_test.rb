@@ -991,25 +991,6 @@ pending
 		assert_nil     other.reload.reference_date
 	end
 
-#
-#	This works like all subjects exist and when the patient updates the admit_date
-#	then all the matchingid subjects update their reference_date.  This is incomplete.
-#
-#	What about if the patient with admit_date exists when a 
-#		non-patient with matchingid is created? (triggered by identifier#after_save)
-#	What about if the patient with admit_date exists when a
-#		non-patient's matchingid is changed? (triggered by identifier#after_save)
-#	What if the patient's matchingid is changed?
-#		update those that matched the old? (they shouldn't match another patient, yet, as is unique so
-#			could only be nullified)
-#		update those that match   the new? (nothing special about this)
-#
-#	What if matchingid AND admit_date change?  This'll run twice (not a big problem)
-#
-#	There is much work to do.
-#
-
-
 protected
 
 	#	Used more than once so ...

@@ -324,58 +324,9 @@ class Ccls::Subject < Shared
 		true
 	end
 
-#	TODO
-#	Move this functionality into Subject
-#		Trigger from patient#after_save if admit_date changed?
-#		Trigger from identifier#after_save if matchingid changed for was* and current?
-#
-#	I'll need to accept some args as they are not dirty when they get here,
-#		but they are in the models themselves
-#
-
 	##
 	#	
-	#	options (SOON) can contain admit_date, matchingid and matchingid_was
-#	NO
-#		Instead, have the option to pass matchingids (matchingid,matchingid_was)
-#			from Identifier
-#		or nothing from Patient
 	def update_subjects_reference_date_matching(*matchingids)
-#	def update_matching_subjects_reference_date(options={})
-
-#
-#	This works like all subjects exist and when the patient updates the admit_date
-#	then all the matchingid subjects update their reference_date.  This is incomplete.
-#
-#	What about if the patient with admit_date exists when a 
-#		non-patient with matchingid is created? (triggered by identifier#after_save)
-#	What about if the patient with admit_date exists when a
-#		non-patient's matchingid is changed? (triggered by identifier#after_save)
-#	What if the patient's matchingid is changed?
-#		update those that matched the old? (they shouldn't match another patient, yet, as is unique so
-#			could only be nullified)
-#		update those that match   the new? (nothing special about this)
-#
-#	What if matchingid AND admit_date change?  This'll run twice (not a big problem)
-#
-#	There is much work to do.
-#
-
-#	puts "In update_matching_subjects_reference_date"
-#	puts matchingids.join(',')
-#	compact! : Removes nil elements from array. Returns nil if no changes were made. 
-#	f'ing stupid!  Why not just return self like every other ! method?
-#		I suppose this isn't the only one the returns 2 completely different classes
-#		depending on what it was and does?  This effectively means that the compact!
-#		command cannot be used inline.
-#	puts matchingids.compact!.join(',')
-#	puts (matchingids = matchingids.compact).join(',')
-#	puts matchingids.join(',')
-#
-#	puts patient.inspect
-#	puts identifier.inspect
-#	puts identifier.matchingid
-#	puts identifier.try(:matchingid)
 
 #	if matchingids ~ [nil,12345]
 #		identifier was either just created or matchingid added (compact as nil not needed)
@@ -387,37 +338,31 @@ class Ccls::Subject < Shared
 #		trigger came from Patient so need to find matchingid
 #		
 		matchingids.compact.push(identifier.try(:matchingid)).uniq.each do |matchingid|
-#puts "Processing matchingid:#{matchingid}"
-#		loop over matchingid and matchingid_was if both passed
-#	(matchingids||[identifier.try(:matchingid)]).each do |matchingid|
 			subject_ids = if( !matchingid.nil? )
-#		subject_ids = if( !(matchingid = identifier.try(:matchingid)).nil? )
 				Identifier.find_all_by_matchingid(matchingid
 					).collect(&:study_subject_id)
 			else
 				[id]
 			end
-#puts "Subject ids:#{subject_ids.join(',')}"
 
 			#	SHOULD only ever be 1 patient found amongst the subject_ids although there is
 			#		currently no validation applied to the uniqueness of matchingid
 			#	If there is more than one patient for a given matchingid, this'll just be wrong.
-#		matching_patient = patient || Patient.find_by_study_subject_id(subject_ids)
-#	if updated patient's matchingid, 
+
 			matching_patient = Patient.find_by_study_subject_id(subject_ids)
 			admit_date = matching_patient.try(:admit_date)
 
 			Subject.update_subjects_reference_date( subject_ids, admit_date )
 		end
+		true
 	end
 
 protected
 
 	def self.update_subjects_reference_date(subject_ids,new_reference_date)
-# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
-# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
-		if !subject_ids.empty? #and new_reference_date
-#puts "Updating #{subject_ids.join(',')} to #{new_reference_date}"
+		# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
+		# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
+		if !subject_ids.empty?
 			Subject.update_all(
 				{:reference_date => new_reference_date },
 				{ :id => subject_ids })
