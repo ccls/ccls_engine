@@ -1,4 +1,5 @@
 class County < Shared
+	default_scope :order => :name
 	has_many :zip_codes
 
 	validates_presence_of( :name )
