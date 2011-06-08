@@ -1,5 +1,5 @@
 class ZipCode < Shared
-	default_scope :order => :zip_code
+	default_scope :order => :zip_code, :limit => 10
 	belongs_to :county
 
 #	validates_presence_of :latitude

@@ -7,11 +7,13 @@ class ZipCodesController < ApplicationController
 
 	def index
 		@zip_codes = ZipCode.find(:all,
-			:limit => 10 )
-#	may want to require AT LEAST 1 digit.  There are over 40000 zip codes in the db.
-#		@zip_codes = ZipCode.find(:all,:conditions => [
-#			'zip_code LIKE ?', "#{params[:q]}%" ])
-#			'zip_code LIKE ?', params[:q] << "%" ])
+			:select => "city, state, zip_code, counties.name as county_name",
+			:joins => "LEFT JOIN counties ON zip_codes.county_id = counties.id",
+			:conditions => [ 'zip_code LIKE ?', "#{params[:q]}%" ])
+		respond_to do |format|
+			format.html	#	for testing only
+			format.json { render :json => @zip_codes }
+		end
 	end
 
 end
