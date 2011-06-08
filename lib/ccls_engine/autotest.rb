@@ -30,7 +30,13 @@ class Autotest::Rails
 		#	Could have renamed the dir, I suppose.
 		#
 		Dir[File.join(File.dirname(__FILE__),'/../../test/unit/**/*rb')].each do |f|
+#	the condition isn't as important as grabbing "ccls/test_file_name.rb" for camelcasing
 			if f =~ /test\/unit\/(ccls\/.*)\.rb/
+				self.extra_class_map[$1.camelcase] = File.expand_path(f)
+			end
+		end
+		Dir[File.join(File.dirname(__FILE__),'/../../test/functional/**/*rb')].each do |f|
+			if f =~ /test\/functional\/(ccls\/.*)\.rb/
 				self.extra_class_map[$1.camelcase] = File.expand_path(f)
 			end
 		end
