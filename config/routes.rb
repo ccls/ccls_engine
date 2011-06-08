@@ -20,5 +20,6 @@ ActionController::Routing::Routes.draw do |map|
 	map.resources :people
 	map.resources :refusal_reasons
 	map.resources :ineligible_reasons
+	map.resources :zip_codes, :only => [ :index ]
 
 end

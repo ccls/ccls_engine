@@ -1,4 +1,5 @@
 class ZipCode < Shared
+	default_scope :order => :zip_code
 	belongs_to :county
 
 #	validates_presence_of :latitude
@@ -16,5 +17,13 @@ class ZipCode < Shared
 	def self.[](zip_code)
 		find_by_zip_code(zip_code.to_s) #|| raise(NotFound)
 	end
+
+	def to_s
+		"#{city}, #{state} #{zip_code}"
+	end
+
+#	def zip
+#		zip_code
+#	end
 
 end

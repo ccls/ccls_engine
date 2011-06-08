@@ -13,10 +13,10 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :city, :state, :zip_class,
 		:maximum => 250 )
 
-#	test "should return name as to_s" do
-#		object = create_object
-#		assert_equal object.name, "#{object}"
-#	end
+	test "should return city, state zip as to_s" do
+		object = create_object
+		assert_equal "#{object.city}, #{object.state} #{object.zip_code}", "#{object}"
+	end
 
 	test "should not find non-existant zip code with ['string']" do
 		assert_nil ZipCode['94700']
