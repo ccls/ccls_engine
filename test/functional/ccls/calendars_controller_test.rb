@@ -5,13 +5,9 @@ class Ccls::CalendarsControllerTest < ActionController::TestCase
 
 	ASSERT_ACCESS_OPTIONS = { :actions => [:show] }
 
-	assert_access_with_login({
-		:logins => [:superuser,:admin,:editor,:interviewer,:reader] })
-	assert_no_access_with_login({
-		:logins => [:active_user] })
+	assert_access_with_login(    :logins => site_readers )
+	assert_no_access_with_login( :logins => non_site_readers )
 	assert_no_access_without_login
-
 	assert_access_with_https
 	assert_no_access_with_http
-
 end

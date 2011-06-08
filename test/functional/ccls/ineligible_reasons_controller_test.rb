@@ -13,12 +13,9 @@ class Ccls::IneligibleReasonsControllerTest < ActionController::TestCase
 		Factory.attributes_for(:ineligible_reason,options)
 	end
 
-	assert_access_with_login({ 
-		:logins => [:superuser,:admin] })
-	assert_no_access_with_login({ 
-		:logins => [:editor,:interviewer,:reader,:active_user] })
+	assert_access_with_login(    :logins => site_administrators )
+	assert_no_access_with_login( :logins => non_site_administrators )
 	assert_no_access_without_login
-
 	assert_access_with_https
 	assert_no_access_with_http
 
@@ -35,60 +32,60 @@ class Ccls::IneligibleReasonsControllerTest < ActionController::TestCase
 		:destroy => { :id => 0 }
 	)
 
-%w( superuser admin ).each do |cu|
+	site_administrators.each do |cu|
 
-	test "should NOT create new ineligible_reason with #{cu} login when create fails" do
-		IneligibleReason.any_instance.stubs(:create_or_update).returns(false)
-		login_as send(cu)
-		assert_difference('IneligibleReason.count',0) do
-			post :create, :ineligible_reason => factory_attributes
+		test "should NOT create new ineligible_reason with #{cu} login when create fails" do
+			IneligibleReason.any_instance.stubs(:create_or_update).returns(false)
+			login_as send(cu)
+			assert_difference('IneligibleReason.count',0) do
+				post :create, :ineligible_reason => factory_attributes
+			end
+			assert assigns(:ineligible_reason)
+			assert_response :success
+			assert_template 'new'
+			assert_not_nil flash[:error]
 		end
-		assert assigns(:ineligible_reason)
-		assert_response :success
-		assert_template 'new'
-		assert_not_nil flash[:error]
-	end
 
-	test "should NOT create new ineligible_reason with #{cu} login and invalid ineligible_reason" do
-		IneligibleReason.any_instance.stubs(:valid?).returns(false)
-		login_as send(cu)
-		assert_difference('IneligibleReason.count',0) do
-			post :create, :ineligible_reason => factory_attributes
+		test "should NOT create new ineligible_reason with #{cu} login and invalid ineligible_reason" do
+			IneligibleReason.any_instance.stubs(:valid?).returns(false)
+			login_as send(cu)
+			assert_difference('IneligibleReason.count',0) do
+				post :create, :ineligible_reason => factory_attributes
+			end
+			assert assigns(:ineligible_reason)
+			assert_response :success
+			assert_template 'new'
+			assert_not_nil flash[:error]
 		end
-		assert assigns(:ineligible_reason)
-		assert_response :success
-		assert_template 'new'
-		assert_not_nil flash[:error]
-	end
 
-	test "should NOT update ineligible_reason with #{cu} login when update fails" do
-		ineligible_reason = create_ineligible_reason(:updated_at => Chronic.parse('yesterday'))
-		IneligibleReason.any_instance.stubs(:create_or_update).returns(false)
-		login_as send(cu)
-		deny_changes("IneligibleReason.find(#{ineligible_reason.id}).updated_at") {
-			put :update, :id => ineligible_reason.id,
-				:ineligible_reason => factory_attributes
-		}
-		assert assigns(:ineligible_reason)
-		assert_response :success
-		assert_template 'edit'
-		assert_not_nil flash[:error]
-	end
+		test "should NOT update ineligible_reason with #{cu} login when update fails" do
+			ineligible_reason = create_ineligible_reason(:updated_at => Chronic.parse('yesterday'))
+			IneligibleReason.any_instance.stubs(:create_or_update).returns(false)
+			login_as send(cu)
+			deny_changes("IneligibleReason.find(#{ineligible_reason.id}).updated_at") {
+				put :update, :id => ineligible_reason.id,
+					:ineligible_reason => factory_attributes
+			}
+			assert assigns(:ineligible_reason)
+			assert_response :success
+			assert_template 'edit'
+			assert_not_nil flash[:error]
+		end
 
-	test "should NOT update ineligible_reason with #{cu} login and invalid ineligible_reason" do
-		ineligible_reason = create_ineligible_reason(:updated_at => Chronic.parse('yesterday'))
-		IneligibleReason.any_instance.stubs(:valid?).returns(false)
-		login_as send(cu)
-		deny_changes("IneligibleReason.find(#{ineligible_reason.id}).updated_at") {
-			put :update, :id => ineligible_reason.id,
-				:ineligible_reason => factory_attributes
-		}
-		assert assigns(:ineligible_reason)
-		assert_response :success
-		assert_template 'edit'
-		assert_not_nil flash[:error]
-	end
+		test "should NOT update ineligible_reason with #{cu} login and invalid ineligible_reason" do
+			ineligible_reason = create_ineligible_reason(:updated_at => Chronic.parse('yesterday'))
+			IneligibleReason.any_instance.stubs(:valid?).returns(false)
+			login_as send(cu)
+			deny_changes("IneligibleReason.find(#{ineligible_reason.id}).updated_at") {
+				put :update, :id => ineligible_reason.id,
+					:ineligible_reason => factory_attributes
+			}
+			assert assigns(:ineligible_reason)
+			assert_response :success
+			assert_template 'edit'
+			assert_not_nil flash[:error]
+		end
 
-end
+	end
 
 end
