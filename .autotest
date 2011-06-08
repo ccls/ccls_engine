@@ -16,6 +16,7 @@ class Autotest::Rails
 		#	MUST match with ==
 		#	remove_mapping( %r{^app/models/.*\.rb$} )
 		remove_mapping( %r%^app/models/(.*)\.rb$% )
+		remove_mapping( %r%^app/controllers/(.*)\.rb$% )
 
 		#	autotest-rails-4.1.0/lib/autotest/rails.rb:30
 		#
@@ -26,6 +27,11 @@ class Autotest::Rails
 			# "test/unit/ccls/#{m[1]}_test.rb"
 			#	get with or without the ccls namespace (just in case)
 			files_matching %r%^test/unit/.*/#{m[1]}.*_test\.rb$%
+		end
+		add_mapping %r%^app/controllers/(.*)\.rb$% do |_, m|
+			# "test/functional/ccls/#{m[1]}_test.rb"
+			#	get with or without the ccls namespace (just in case)
+			files_matching %r%^test/functional/.*/#{m[1]}.*_test\.rb$%
 		end
 
 		##
@@ -47,6 +53,11 @@ class Autotest::Rails
 		#
 		Dir["test/unit/**/*rb"].each do |f|
 			if f =~ /test\/unit\/(ccls\/.*)\.rb/
+				self.extra_class_map[$1.camelcase] = f
+			end
+		end
+		Dir["test/functional/**/*rb"].each do |f|
+			if f =~ /test\/functional\/(ccls\/.*)\.rb/
 				self.extra_class_map[$1.camelcase] = f
 			end
 		end
