@@ -58,18 +58,18 @@ if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@co
 #		running a rake task
 end
 
-silence_warnings {
-	#	This will complain that the constant is already defined.
-	#	Doing this to remove rails default of prototype/scriptaculous,
-	#		but I'm going to stop using :defaults and use :ccls
-	ActionView::Helpers::AssetTagHelper::JAVASCRIPT_DEFAULT_SOURCES = [
-		'jquery','jquery-ui','jrails']
-}
-ActionView::Helpers::AssetTagHelper::reset_javascript_include_default
-ActionView::Helpers::AssetTagHelper.register_javascript_include_default(
-	'ucb_ccls_engine.js')
-ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
-	:defaults => ['scaffold','application'] )
+#silence_warnings {
+#	#	This will complain that the constant is already defined.
+#	#	Doing this to remove rails default of prototype/scriptaculous,
+#	#		but I'm going to stop using :defaults and use :ccls
+#	ActionView::Helpers::AssetTagHelper::JAVASCRIPT_DEFAULT_SOURCES = [
+#		'jquery','jquery-ui','jrails']
+#}
+#ActionView::Helpers::AssetTagHelper::reset_javascript_include_default
+#ActionView::Helpers::AssetTagHelper.register_javascript_include_default(
+#	'ucb_ccls_engine.js')
+#ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
+#	:defaults => ['scaffold','application'] )
 
 
 ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
