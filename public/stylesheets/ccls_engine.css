@@ -67,6 +67,7 @@ table {
 	border-collapse:collapse;
 	width: 100%;
 }
+thead tr th,
 tr.row td {
 	padding: 6px;
 }
@@ -138,7 +139,10 @@ input.small  { width: 10em; }
 input.medium { width: 20em; }
 
 div.table {
+	clear:both;
+	/* this holds the table-row open, otherwise shrinks to whatever */
 	display:table;
+	width:100%;
 }
 div.table .row {
 	display:table-row;
