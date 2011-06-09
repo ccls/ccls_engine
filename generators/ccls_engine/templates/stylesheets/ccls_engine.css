@@ -150,3 +150,16 @@ div.table .row {
 div.table .row .cell {
 	display:table-cell;
 }
+
+.center {
+	text-align: center;
+}
+.right {
+	float: right;
+}
+.left {
+	float: left;
+}
+.superscript { font-size:x-small; vertical-align:top; }
+.subscript   { font-size:x-small; vertical-align:bottom; }
+
