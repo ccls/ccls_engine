@@ -14,7 +14,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_belong_to( :organization, :diagnosis )
 
 	assert_should_not_require_attributes( :admit_date, :diagnosis_date,
-		:diagnosis_id, :organization_id, :raf_zip, :raf_county_id )
+		:diagnosis_id, :organization_id, :raf_zip, :raf_county )
 
 	assert_requires_complete_date( :admit_date, :diagnosis_date )
 	assert_requires_past_date( :admit_date, :diagnosis_date )
