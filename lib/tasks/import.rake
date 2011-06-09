@@ -1,7 +1,8 @@
 require 'fastercsv'
 require 'chronic'
 
-BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/Database/DataLists/jake/"
+#BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/Database/DataLists/jake/"
+BASEDIR = "/Volumes/BUF-Fileshare/RestrictedData/StaffFolders/WendtJake/HomeExposuresImport_20110504/"
 
 namespace :destroy do
 

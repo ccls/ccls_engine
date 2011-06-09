@@ -60,6 +60,8 @@ end
 
 silence_warnings {
 	#	This will complain that the constant is already defined.
+	#	Doing this to remove rails default of prototype/scriptaculous,
+	#		but I'm going to stop using :defaults and use :ccls
 	ActionView::Helpers::AssetTagHelper::JAVASCRIPT_DEFAULT_SOURCES = [
 		'jquery','jquery-ui','jrails']
 }
@@ -68,6 +70,13 @@ ActionView::Helpers::AssetTagHelper.register_javascript_include_default(
 	'ucb_ccls_engine.js')
 ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
 	:defaults => ['scaffold','application'] )
+
+
+ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
+	:ccls => ['scaffold','ccls_engine','application'] )
+ActionView::Helpers::AssetTagHelper.register_javascript_expansion( 
+	:ccls => ['jquery','jquery-ui','jrails','application'] )
+
 
 ActionController::Routing::Routes.add_configuration_file(
 	File.expand_path(
