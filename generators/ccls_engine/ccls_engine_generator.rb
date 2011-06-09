@@ -1,4 +1,10 @@
-class CclsEngineGenerator < Rails::Generator::NamedBase
+#class CclsEngineGenerator < Rails::Generator::NamedBase
+#	Using NamedBase required a user model parameter like so ...
+#	script/generate ccls_engine User
+#	which created a variable called "class_name" available to the templates.
+#	As it is no longer used, changing to just Base so it can be used like so ...
+#	script/generate ccls_engine
+class CclsEngineGenerator < Rails::Generator::Base
 
 	def manifest
 		#	See Rails::Generator::Commands::Create
@@ -12,10 +18,13 @@ class CclsEngineGenerator < Rails::Generator::NamedBase
 
 #	no longer seems to be needed, but keeping for now
 #	until included calnet_authentication
-			m.directory('config/initializers')
-			m.template('initializer.rb', 'config/initializers/ccls_engine.rb')
+#	it is entirely commented out now so
+#			m.directory('config/initializers')
+#			m.template('initializer.rb', 'config/initializers/ccls_engine.rb')
 
-			%w( create_users create_user_invitations ).each do |migration|
+#			%w( create_users create_user_invitations ).each do |migration|
+#	UserInvitations are NOT used for any app which uses the ccls engine.
+			%w( create_users ).each do |migration|
 				m.migration_template "migrations/#{migration}.rb",
 					'db/migrate', :migration_file_name => migration
 			end

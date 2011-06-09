@@ -8,10 +8,10 @@
 
 
 # no longer necessary?
-unless Gem.source_index.find_name('ccls-ccls_engine').empty?
-	gem 'ccls-ccls_engine'
-	require '<%=class_name.underscore-%>' unless defined?(<%=class_name-%>)
-end
+#unless Gem.source_index.find_name('ccls-ccls_engine').empty?
+#	gem 'ccls-ccls_engine'
+#	require '<%#=class_name.underscore-%>' unless defined?(<%#=class_name-%>)
+#end
 
 
 #require 'user' unless defined?(User)
@@ -20,7 +20,7 @@ end
 #if Gem.searcher.find('ccls_engine') && RAILS_ENV == 'development'
 #require 'ccls_engine'	#	without this, rake has problems ...
 #undefined local variable or method `ucb_authenticated' for #<Class:0x1059408d0>
-#require '<%=class_name.underscore-%>' unless defined?(<%=class_name-%>)
+#require '<%#=class_name.underscore-%>' unless defined?(<%#=class_name-%>)
 #require 'role' unless defined?(Role)
 #end
 #	Actually, this is probably only needed in development,
