@@ -43,9 +43,14 @@ In your config/environment.rb
 
  config.gem 'ccls-ccls_engine'
 
+
 Generate an initializer and copy in some files.
 
- script/generate ccls_engine User
+ script/generate ccls_engine
+
+( why don't I copy in these files, or at least their examples? )
+
+
 
 Also need to manually add a shared_database.yml with matching configuration.
 
