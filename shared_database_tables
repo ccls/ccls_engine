@@ -1095,7 +1095,7 @@ Table: patients
 | was_previously_treated       | tinyint(1)   | YES  |     | 0       |                |
 | was_under_15_at_dx           | tinyint(1)   | YES  |     | 1       |                |
 | raf_zip                      | varchar(10)  | YES  |     | NULL    |                |
-| raf_county_id                | int(11)      | YES  |     | NULL    |                |
+| raf_county                   | varchar(255) | YES  |     | NULL    |                |
 +------------------------------+--------------+------+-----+---------+----------------+
 
 Table: people
