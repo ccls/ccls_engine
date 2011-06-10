@@ -219,7 +219,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert  subject.patient.reload.was_under_15_at_dx
 	end
 
-	test "should require 5 or 9 digit zip" do
+	test "should require 5 or 9 digit raf_zip" do
 		%w( asdf 1234 123456 1234Q ).each do |bad_zip|
 			assert_difference( "#{model_name}.count", 0 ) do
 				object = create_object( :raf_zip => bad_zip )
@@ -230,7 +230,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			assert_difference( "#{model_name}.count", 1 ) do
 				object = create_object( :raf_zip => good_zip )
 				assert !object.errors.on(:raf_zip)
-				assert object.zip =~ /\A\d{5}(-)?(\d{4})?\z/
+				assert object.raf_zip =~ /\A\d{5}(-)?(\d{4})?\z/
 			end
 		end
 	end
