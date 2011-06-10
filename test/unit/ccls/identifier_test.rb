@@ -198,15 +198,28 @@ pending
 
 #	patid and childid should be protected as they are generated values
 
-	test "studyid should be patid, case_control_type and orderno" do
+	test "should set studyid with patid, case_control_type and orderno for" <<
+			" case_control_type c" do
 		identifier = Factory(:identifier, 
-			:case_control_type => 'A',
+			:case_control_type => 'c',
+			:patid   => '123',
+			:orderno => '4'		#	for a case, this should always be 0
+		).reload
+		assert_equal "0123-C-4", identifier.studyid
+		assert_equal "0123C4",   identifier.studyid_nohyphen
+		assert_equal "012304",   identifier.studyid_intonly_nohyphen
+	end
+
+	test "should set studyid with patid, case_control_type and orderno for" <<
+			" case_control_type 4" do
+		identifier = Factory(:identifier, 
+			:case_control_type => '4',
 			:patid   => '123',
 			:orderno => '4'
 		).reload
-		assert_equal "0123-A-4", identifier.studyid
-		assert_equal "0123A4",   identifier.studyid_nohyphen
-		assert_equal "012304",   identifier.studyid_intonly_nohyphen
+		assert_equal "0123-4-4", identifier.studyid
+		assert_equal "012344",   identifier.studyid_nohyphen
+		assert_equal "012344",   identifier.studyid_intonly_nohyphen
 	end
 
 #	test "should touch subject after save" do

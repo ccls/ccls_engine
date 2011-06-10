@@ -133,11 +133,13 @@ protected
 	end
 
 	def set_studyids
+		self.case_control_type.upcase!
 		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
 		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
 		#	replace case_control_type with 0
 		#		0 may only be for C, so this may need updated
-		self.studyid_intonly_nohyphen = "#{patid}0#{orderno}"
+		self.studyid_intonly_nohyphen = "#{patid}" <<
+			"#{(case_control_type == 'C') ? 0 : case_control_type}#{orderno}"
 	end
 
 	#	Strips out all non-numeric characters
