@@ -96,6 +96,7 @@ begin
 		gem.add_dependency('activesupport', '~> 2')
 		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')	# hopefully, can drop soon, don't know if I use it
+		gem.add_dependency('ccls-calnet_authenticated','>= 1.2.0')
 #		gem.add_dependency('jakewendt-simply_helpful')
 		gem.add_dependency('jakewendt-ruby_extension')
 		gem.add_dependency('jakewendt-simply_authorized')

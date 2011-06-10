@@ -48,7 +48,7 @@ Generate an initializer and copy in some files.
 
  script/generate ccls_engine
 
-( why don't I copy in these files, or at least their examples? )
+( why don't I copy in these yml files, or at least their examples? )
 
 
 

@@ -31,6 +31,7 @@ Rails::Initializer.run do |config|
 		config.gem "sqlite3"
 	end
 
+	config.gem 'ccls-calnet_authenticated', :version => '>= 1.2.0'
 	config.gem "jakewendt-use_db"
 	config.gem 'jakewendt-simply_trackable'
 	config.gem 'jakewendt-simply_authorized'
@@ -48,6 +49,6 @@ Rails::Initializer.run do |config|
 	config.gem 'paperclip'
 
 	config.after_initialize do
-		load File.expand_path(File.join(File.dirname(__FILE__),'../lib','ccls_engine.rb'))
+		load File.expand_path(File.join(File.dirname(__FILE__),'../lib/ccls_engine.rb'))
 	end
 end

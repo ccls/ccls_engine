@@ -4,8 +4,12 @@ require 'active_record'
 require 'active_support'
 require 'action_controller'
 
+gem 'jakewendt-ruby_extension'
 require 'ruby_extension'
+gem 'jakewendt-simply_helpful'
 require 'simply_helpful'
+gem 'ccls-calnet_authenticated', '>= 1.1.4'
+require 'ccls-calnet_authenticated'
 require 'gravatar'
 
 gem 'rubycas-client', '>= 2.2.1'
@@ -15,17 +19,18 @@ require 'casclient/frameworks/rails/filter'
 gem 'ucb_ldap', '>= 1.4.2'
 require 'ucb_ldap'
 
+gem 'jakewendt-simply_authorized'
 require 'simply_authorized'
+gem 'ryanb-acts-as-list'
 require 'acts_as_list'
+gem 'jakewendt-simply_pages'
 require 'simply_pages'
 
+gem 'jakewendt-rails_extension'
 require 'jakewendt-rails_extension'
 module Ccls
 #	predefine namespace
 end
-#module CclsEngine
-#	predefine namespace
-#end
 
 #	This doesn't seem necessary
 %w{models controllers}.each do |dir|
@@ -44,18 +49,14 @@ require 'ccls_engine/shared'
 require 'ccls_engine/ccls_user'
 require 'ccls_engine/ccls_subject'
 require 'ccls_engine/helper'
-require 'ccls_engine/controller'
 
 if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")
 	require 'active_support/test_case'
-	require 'ccls_engine/test_helper'
 	require 'ccls_engine/factory_test_helper'
 	require 'ccls_engine/package_test_helper'
 	require 'ccls_engine/assertions'
 	require 'factory_girl'
 	require 'ccls_engine/factories'
-#	else
-#		running a rake task
 end
 
 #silence_warnings {
