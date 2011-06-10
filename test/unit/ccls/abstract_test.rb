@@ -521,22 +521,44 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		}
 	end
 
-	test "should return abstract sections" do
-#	sometimes, it is defined?  sometimes?
-#		assert !Abstract.class_variable_defined?("@@sections")
+	test "should return abstract sections for class" do
 		sections = Abstract.sections
 		assert  Abstract.class_variable_defined?("@@sections")
 		assert sections.is_a?(Array)
 		assert sections.length >= 15
+		assert sections.first.is_a?(Hash)
 	end
 
-	test "should return abstract fields" do
-#	sometimes, it is defined?  sometimes?
-#		assert !Abstract.class_variable_defined?("@@fields")
+	test "should return abstract fields for class" do
 		fields = Abstract.fields
 		assert  Abstract.class_variable_defined?("@@fields")
 		assert fields.is_a?(Array)
 		assert fields.length >= 15
+		assert fields.first.is_a?(Hash)
+	end
+
+	test "should return abstract fields for instance" do
+		fields = Abstract.new.fields
+		assert  Abstract.class_variable_defined?("@@fields")
+		assert fields.is_a?(Array)
+		assert fields.length >= 15
+		assert fields.first.is_a?(Hash)
+	end
+
+	test "should return abstract db_fields for class" do
+		db_fields = Abstract.db_fields
+		assert  Abstract.class_variable_defined?("@@fields")
+		assert db_fields.is_a?(Array)
+		assert db_fields.length >= 15
+		assert db_fields.first.is_a?(String)
+	end
+
+	test "should return abstract db_fields for instance" do
+		db_fields = Abstract.new.db_fields
+		assert  Abstract.class_variable_defined?("@@fields")
+		assert db_fields.is_a?(Array)
+		assert db_fields.length >= 15
+		assert db_fields.first.is_a?(String)
 	end
 
 end

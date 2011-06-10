@@ -989,6 +989,16 @@ pending
 		assert_nil     other.reload.reference_date
 	end
 
+	test "should create_home_exposure_with_subject" do
+		subject = create_home_exposure_with_subject
+		assert subject.is_a?(Subject)
+	end
+
+	test "should create_home_exposure_with_subject with patient" do
+		subject = create_home_exposure_with_subject(:patient => true)
+		assert subject.is_a?(Subject)
+	end
+
 protected
 
 	def create_subject_with_matchingid(matchingid='12345')
