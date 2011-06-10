@@ -34,6 +34,16 @@ class Patient < Shared
 	validates_complete_date_for :diagnosis_date,
 		:allow_nil => true
 
+	validates_length_of :raf_zip, :maximum => 10, :allow_blank => true
+
+#	TODO again, perhaps replace the inline regex with a method that returns it
+	validates_format_of :raf_zip,
+		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
+		:message => "should be 12345 or 12345-1234"
+
+	#	TODO it would probably be better to do this before_validation
+	before_save :format_zip
+
 	after_save :trigger_update_matching_subjects_reference_date,
 		:if => :admit_date_changed?
 
@@ -41,6 +51,12 @@ class Patient < Shared
 		:if => :admit_date_changed?
 
 protected
+
+	#	Simply squish the zip removing leading and trailing spaces.
+	def format_zip
+		#	zip was nil during import and skipping validations
+		self.raf_zip.squish! unless raf_zip.nil?
+	end
 
 	def trigger_setting_was_under_15_at_dx
 		subject.update_patient_was_under_15_at_dx

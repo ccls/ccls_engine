@@ -15,6 +15,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	assert_should_not_require_attributes( :admit_date, :diagnosis_date,
 		:diagnosis_id, :organization_id, :raf_zip, :raf_county )
+	assert_should_require_attribute_length( :raf_zip, :maximum => 10 )
 
 	assert_requires_complete_date( :admit_date, :diagnosis_date )
 	assert_requires_past_date( :admit_date, :diagnosis_date )
@@ -216,6 +217,22 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert !subject.patient.was_under_15_at_dx
 		subject.patient.update_attribute(:admit_date, 10.years.ago.to_date)
 		assert  subject.patient.reload.was_under_15_at_dx
+	end
+
+	test "should require 5 or 9 digit zip" do
+		%w( asdf 1234 123456 1234Q ).each do |bad_zip|
+			assert_difference( "#{model_name}.count", 0 ) do
+				object = create_object( :raf_zip => bad_zip )
+				assert object.errors.on(:raf_zip)
+			end
+		end
+		%w( 12345 12345-6789 123456789 ).each do |good_zip|
+			assert_difference( "#{model_name}.count", 1 ) do
+				object = create_object( :raf_zip => good_zip )
+				assert !object.errors.on(:raf_zip)
+				assert object.zip =~ /\A\d{5}(-)?(\d{4})?\z/
+			end
+		end
 	end
 
 end

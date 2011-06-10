@@ -26,6 +26,7 @@ class Address < Shared
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
 		:message => "should be 12345 or 12345-1234"
 
+	# TODO it would probably be better to do this before_validation
 	before_save :format_zip
 
 	#	Returns a string with the city, state and zip
