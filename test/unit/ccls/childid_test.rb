@@ -9,4 +9,10 @@ class Ccls::ChildidTest < ActiveSupport::TestCase
 		} }
 	end
 
+	test "should be able to stub id" do
+		Childid.any_instance.stubs(:id).returns(123)
+		c = Childid.create
+		assert_equal 123, c.id
+	end
+
 end

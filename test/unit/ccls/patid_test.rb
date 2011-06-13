@@ -9,4 +9,10 @@ class Ccls::PatidTest < ActiveSupport::TestCase
 		} }
 	end
 
+	test "should be able to stub id" do
+		Patid.any_instance.stubs(:id).returns(123)
+		p = Patid.create
+		assert_equal 123, p.id
+	end
+
 end
