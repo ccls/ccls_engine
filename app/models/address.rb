@@ -13,12 +13,9 @@ class Address < Shared
 	validate :address_type_matches_line
 
 	validates_presence_of :line_1, :city, :state, :zip
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :line_1
-		o.validates_length_of :line_2
-		o.validates_length_of :city
-		o.validates_length_of :state
-	end
+	validates_length_of   :line_1, :line_2, :unit, :city, :state,
+			:maximum => 250, :allow_blank => true
+
 	validates_length_of :zip, :maximum => 10
 
 #	TODO again, perhaps replace the inline regex with a method that returns it

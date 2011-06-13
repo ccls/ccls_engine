@@ -379,6 +379,7 @@ Table: addresses
 | created_at          | datetime     | YES  |     | NULL    |                |
 | updated_at          | datetime     | YES  |     | NULL    |                |
 | county              | varchar(255) | YES  |     | NULL    |                |
+| unit                | varchar(255) | YES  |     | NULL    |                |
 +---------------------+--------------+------+-----+---------+----------------+
 
 Table: addressings
