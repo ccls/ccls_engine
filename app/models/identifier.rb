@@ -48,7 +48,12 @@ class Identifier < Shared
 
 
 #	TODO : add a validation for contents of orderno
-#	TODO : add a validation for contents of case_control_type
+
+	validates_inclusion_of :case_control_type, :in => ['C',*(1..9).collect(&:to_s) ]
+		#	case_control_type is only 1 digit!  can only be 'C' or integers
+		#>> ['C', *(1..9).collect(&:to_s) ]
+		#=> ["C", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+		#	can't be 0 as case is 0 in studyid_intonly_nohyphen
 
 #
 #	TODO : simplify with with_options block
@@ -58,7 +63,7 @@ class Identifier < Shared
 	validates_uniqueness_of :ssn, :allow_nil => true
 #	validates_format_of     :ssn, :with => /\A\d{9}\z/
 
-#	TODO I believe that subjectid is a required field
+#	TODO I believe that subjectid is, or will be, a required field
 #	validates_presence_of   :subjectid
 	validates_uniqueness_of :subjectid, :allow_nil => true
 
@@ -70,12 +75,12 @@ class Identifier < Shared
 	with_options :allow_blank => true do |blank|
 		blank.with_options :maximum => 250 do |o|
 			o.validates_length_of :state_id_no
-			o.validates_length_of :case_control_type
 			o.validates_length_of :lab_no
 			o.validates_length_of :related_childid
 			o.validates_length_of :related_case_childid
 			o.validates_length_of :ssn
 		end
+		blank.validates_length_of :case_control_type, :maximum => 1
 		blank.validates_length_of :childidwho, :maximum => 10
 		blank.validates_length_of :studyid, :maximum => 14
 		blank.validates_length_of :newid, :maximum => 6
@@ -92,22 +97,26 @@ class Identifier < Shared
 #
 #	TODO why before_validation and not just before_save?
 #			I don't think that any of these fields are really validated
+#		wrong, subjectid is unique
+#			patid is currently contextually unique
+#			matchingid will be contextually unique
 #
 	before_validation :pad_zeros_to_patid
 	before_validation :pad_zeros_to_subjectid
 	before_validation :pad_zeros_to_matchingid
-	before_validation :format_ssn
-#
-#	TODO actually the nullify fields NEED to be before validation as they are unique
-#
-	before_validation :nullify_subjectid
-	before_validation :nullify_ssn
-	before_validation :nullify_state_id_no
+
+#	doesn't just validate on create....
+#	before_validation :prepare_fields_for_validation_on_create, :on => :create
+#	calls AFTER normal before_validation????
+#	before_validation_on_create :prepare_fields_for_validation_on_create
+	before_validation :prepare_fields_for_validation
+	before_create     :prepare_fields_for_creation
+	before_update     :prepare_fields_for_updation	#	updation?
 
 #
 #	TODO perhaps just a before_save :set_computed_fields and include those above
 #
-	before_save :set_studyids
+#	before_save :set_studyids
 
 	after_save :trigger_update_matching_subjects_reference_date, 
 		:if => :matchingid_changed?
@@ -145,8 +154,23 @@ protected
 		end
 	end
 
-	def set_studyids
-		self.case_control_type.upcase!
+#	def prepare_fields_for_validation_on_create
+#puts "in prepare_fields_for_validation_on_create"
+#	end
+
+	def prepare_fields_for_validation
+#puts "in prepare_fields_for_validation"
+		self.case_control_type = case_control_type.try(:upcase)
+#	TODO will this ever be blank?
+		self.subjectid = nil if subjectid.blank?
+		self.ssn = ( ( ssn.blank? ) ? nil : ssn.to_s.gsub(/\D/,'') )
+		self.state_id_no = nil if state_id_no.blank?
+	end
+
+	def prepare_fields_for_creation
+#	TODO orderno will probably be computed
+#	TODO move set_studyids content here?
+#	TODO create subjectid, patid and childid stuff here
 		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
 		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
 		#	replace case_control_type with 0
@@ -155,37 +179,32 @@ protected
 			"#{(case_control_type == 'C') ? 0 : case_control_type}#{orderno}"
 	end
 
-	#	Strips out all non-numeric characters
-	def format_ssn
-#
-#	TODO this shouldn't work but seems to.  The gsub! shouldn't be 
-#		updating the ssn due to the to_s method in between
-#	TODO add more tests for this (try with valid? method)
-#
-#		self.ssn.to_s.gsub!(/\D/,'')
-#		self.ssn = ssn.to_s.gsub!(/\D/,'')
-		self.ssn = ssn.to_s.gsub(/\D/,'')
+	def prepare_fields_for_updation
 	end
+
+#	def set_studyids
+##	TODO will these ever change? only on create?
+##	TODO 
+#		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
+#		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
+#		#	replace case_control_type with 0
+#		#		0 may only be for C, so this may need updated
+#		self.studyid_intonly_nohyphen = "#{patid}" <<
+#			"#{(case_control_type == 'C') ? 0 : case_control_type}#{orderno}"
+#	end
 
 	#	Pad leading zeroes to subjectid
 	def pad_zeros_to_subjectid
+		#	CANNOT have leading 0' as it thinks its octal and converts
 		#>> sprintf("%06d","0001234")
 		#=> "000668"
-		#>> sprintf("%06d","0001239")
-		#ArgumentError: invalid value for Integer: "0001239"
-		# from (irb):22:in `sprintf'
-		# from (irb):22
-		#>> sprintf("%06d","0001238")
-		#ArgumentError: invalid value for Integer: "0001238"
-		# from (irb):23:in `sprintf'
-		# from (irb):23
+		#
+		# CANNOT have leading 0's and include and 8 or 9 as it thinks its octal
+		# so convert back to Integer first
 		#>> sprintf("%06d","0001280")
 		#ArgumentError: invalid value for Integer: "0001280"
 		# from (irb):24:in `sprintf'
 		# from (irb):24
-		#	 
-		# CANNOT have leading 0's and include and 8 or 9 as it thinks its octal
-		# so convert back to Integer first
 		subjectid.try(:gsub!,/\D/,'')
 #	TODO add more tests for this (try with valid? method)
 		self.subjectid = sprintf("%06d",subjectid.to_i) unless subjectid.blank?
@@ -214,27 +233,6 @@ protected
 #		self.familyid = sprintf("%06d",familyid.to_i) unless familyid.blank?
 #	end 
 
-	def nullify_subjectid
-		#	mysql allows multiple NULLs in unique column
-		#	but NOT multiple blanks
-#	TODO add more tests for this (try with valid? method)
-		self.subjectid = nil if subjectid.blank?
-	end
-
-	def nullify_ssn
-		#	mysql allows multiple NULLs in unique column
-		#	but NOT multiple blanks
-#	TODO add more tests for this (try with valid? method)
-		self.ssn = nil if ssn.blank?
-	end
-
-	def nullify_state_id_no
-		#	mysql allows multiple NULLs in unique column
-		#	but NOT multiple blanks
-#	TODO add more tests for this (try with valid? method)
-		self.state_id_no = nil if state_id_no.blank?
-	end
-
 #	TODO comment out 'til ready to use 'em
 #
 #	some of these are going to be autogenerated.
@@ -243,19 +241,22 @@ protected
 #		:case_control_type, :orderno
 #
 #	#	Use the ! so that an exception is raised on failure
-#	def generate_next_patid
+#	def find_or_generate_next_patid
+#		#	cases get a new patid (i think)
 #		should be able to stub Patid.id to return number so can test
 #		Patid.create!.destroy.id
 #	end
 #
 #	#	Use the ! so that an exception is raised on failure
-#	def generate_next_childid
+#	def find_or_generate_next_childid
+#		#	cases get a new childid (i think)
 #		should be able to stub Childid.id to return number so can test
 #		Childid.create!.destroy.id
 #	end
 #
 #	def find_or_generate_subjectid
-#		apparently expected to be randomly generated AND unique
+#		apparently expected to be randomly generated AND unique (not sequential)
+#		this will be challenging
 #	end
 #
 #	def find_or_generate_matchingid

@@ -111,15 +111,25 @@ Factory.define :identifier do |f|
 	f.sequence(:childid) { |n| "#{n}" }
 	f.sequence(:ssn){|n| sprintf("%09d",n) }
 	f.sequence(:patid){|n| "#{n}"}
-#	f.sequence(:orderno){|n| "#{n}"}
+
+	f.sequence(:orderno){|n| "#{n}"}
 #	This is just one digit so looping through all.
 #	This is potentially a problem causer in testing.
-	f.sequence(:orderno){|n| '0123456789'.split('')[n%10] }
+#	orderno is NOT just one digit
+#	f.sequence(:orderno){|n| '0123456789'.split('')[n%10] }
+
 #	f.sequence(:stype){|n| "#{n}"}
 #	This is just one character so looping through known unused chars.
 #	This is potentially a problem causer in testing.
-	f.sequence(:case_control_type){|n|
-		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n%36] }
+
+#	So 'C' is the only possible letter value for case_control_type? All others are integers?
+#	That's correct.
+#	f.sequence(:case_control_type){|n| 
+#		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n%36] }
+#	f.sequence(:case_control_type){|n| "#{n}" }
+#	This is just one char/digit so looping through all.
+#	This is potentially a problem causer in testing.
+	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
 	f.sequence(:subjectid){|n| "#{n}"}
 	f.sequence(:state_id_no){|n| "#{n}"}
 	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE

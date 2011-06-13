@@ -39,7 +39,9 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_require_attribute_length( 
 		:state_id_no,
-		:case_control_type,
+#	can't do this with case_control_type as is modified in before_validation
+#	which will cause the test to fail and equality test
+#		:case_control_type,
 		:lab_no,
 		:related_childid,
 		:related_case_childid,
@@ -221,6 +223,19 @@ pending
 		assert_equal "012344",   identifier.studyid_nohyphen
 		assert_equal "012344",   identifier.studyid_intonly_nohyphen
 	end
+
+
+#	test "should validate on create" do
+#		puts "Creating"
+#		identifier = Factory(:identifier)
+#		puts "Saving again"
+#		identifier.save
+#Creating
+#in prepare_fields_for_validation
+#in prepare_fields_for_validation_on_create
+#Saving again
+#in prepare_fields_for_validation
+#	end
 
 #	test "should touch subject after save" do
 #		object = create_object
