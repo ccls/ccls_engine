@@ -38,6 +38,10 @@ class Identifier < Shared
 	validates_presence_of   :case_control_type
 	validates_uniqueness_of :patid, :scope => [:orderno,:case_control_type]
 
+
+#	TODO : add a validation for contents of orderno
+#	TODO : add a validation for contents of case_control_type
+
 #
 #	TODO : simplify with with_options block
 #
