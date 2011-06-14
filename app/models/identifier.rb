@@ -5,6 +5,13 @@
 class Identifier < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 
+	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen
+
+
+#
+#	TODO - Don't validate anything that the creating user can't do anything about.
+#
+
 	##	TODO - find a way to do this
 	#	because subject accepts_nested_attributes for pii 
 	#	we can't require study_subject_id on create
@@ -101,6 +108,8 @@ class Identifier < Shared
 #			patid is currently contextually unique
 #			matchingid will be contextually unique
 #
+#	These values will be found or computed, so this may get weird
+#
 	before_validation :pad_zeros_to_patid
 	before_validation :pad_zeros_to_subjectid
 	before_validation :pad_zeros_to_matchingid
@@ -112,11 +121,6 @@ class Identifier < Shared
 	before_validation :prepare_fields_for_validation
 	before_create     :prepare_fields_for_creation
 	before_update     :prepare_fields_for_updation	#	updation?
-
-#
-#	TODO perhaps just a before_save :set_computed_fields and include those above
-#
-#	before_save :set_studyids
 
 	after_save :trigger_update_matching_subjects_reference_date, 
 		:if => :matchingid_changed?
@@ -181,17 +185,6 @@ protected
 
 	def prepare_fields_for_updation
 	end
-
-#	def set_studyids
-##	TODO will these ever change? only on create?
-##	TODO 
-#		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
-#		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
-#		#	replace case_control_type with 0
-#		#		0 may only be for C, so this may need updated
-#		self.studyid_intonly_nohyphen = "#{patid}" <<
-#			"#{(case_control_type == 'C') ? 0 : case_control_type}#{orderno}"
-#	end
 
 	#	Pad leading zeroes to subjectid
 	def pad_zeros_to_subjectid

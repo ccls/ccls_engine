@@ -57,10 +57,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length :accession_no, :maximum => 25
 	assert_should_require_attribute_length :icf_master_id, :maximum => 9
 
-#	computed fields so won't test correctly like this
-#	assert_should_require_attribute_length :studyid, :maximum => 14
-#	assert_should_require_attribute_length :studyid_nohyphen, :maximum => 12
-#	assert_should_require_attribute_length :studyid_intonly_nohyphen, :maximum => 12
+	assert_should_protect_attributes(:studyid,:studyid_nohyphen,:studyid_intonly_nohyphen)
 
 #	assert_should_protect_attributes(:subjectid)
 
