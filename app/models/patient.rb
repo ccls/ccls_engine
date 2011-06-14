@@ -6,6 +6,11 @@ class Patient < Shared
 	belongs_to :organization
 	belongs_to :diagnosis
 
+
+#
+#	TODO - Don't validate anything that the creating user can't do anything about.
+#
+
 	##	TODO - find a way to do this
 	# because subject accepts_nested_attributes for pii 
 	# we can't require study_subject_id on create
@@ -36,7 +41,6 @@ class Patient < Shared
 
 	validates_length_of :raf_zip, :maximum => 10, :allow_blank => true
 
-#	TODO again, perhaps replace the inline regex with a method that returns it
 	validates_format_of :raf_zip,
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
 		:message => "should be 12345 or 12345-1234",
@@ -116,28 +120,10 @@ protected
 	#	the subject has not been resolved yet, unless this is an update.
 	#	This results in a similar validation in Subject.
 	def subject_is_case
-		if subject and subject.subject_type.code != 'Case'
+#		if subject and subject.subject_type.code != 'Case'
+		if subject and !subject.is_case?
 			errors.add(:subject,"must be case to have patient info")
 		end
 	end
-
-#	#	TODO
-#	#	Move this functionality into Subject
-#	#		Trigger from patient#after_save if admit_date changed?
-#	#		Trigger from identifier#after_save if matchingid changed for was* and current?
-#	#
-#		def update_matching_subjects_reference_date
-#	#	TODO doubt that this really works since subject probably hasn't been resolved yet
-#	#			if using nested_attributes
-#			#	puts "update_matching_subjects_reference_date"
-#			#	puts "admit_date was:#{admit_date}"
-#			#	puts "admit_date is:#{admit_date}"
-#			#	puts "matchingid is blank (FYI)" if subject.try(:identifier).try(:matchingid).blank?
-#			unless subject.try(:identifier).try(:matchingid).blank?
-#				Subject.ccls_update_all({:reference_date => admit_date },
-#					['identifiers.matchingid = ?',subject.identifier.matchingid],
-#					{ :joins => :identifier })
-#			end
-#		end
 
 end
