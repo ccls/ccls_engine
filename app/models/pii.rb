@@ -5,6 +5,11 @@ class Pii < Shared
 	belongs_to :subject, :foreign_key => 'study_subject_id'
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
+
+#
+#	TODO - Don't validate anything that the creating user can't do anything about.
+#
+
 	##	TODO - find a way to do this
 	#	because subject accepts_nested_attributes for pii 
 	#	we can't require study_subject_id on create
@@ -78,7 +83,7 @@ class Pii < Shared
 	#	commented out 20101014
 	#	uncommented 20101014
 	def dob	#	overwrite default dob method for formatting
-		#	added to_date to fix sqlite3 quirk which doesn't
+		#	added to_date to fix sqlite3 quirk which doesn't	(why am I using sqlite3?)  old comment?
 		#	differentiate between times and dates.
 		read_attribute(:dob).try(:to_s,:dob).try(:to_date)
 	end
