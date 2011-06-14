@@ -89,14 +89,14 @@ class Identifier < Shared
 		end
 		blank.validates_length_of :case_control_type, :maximum => 1
 		blank.validates_length_of :childidwho, :maximum => 10
-		blank.validates_length_of :studyid, :maximum => 14
+#		blank.validates_length_of :studyid, :maximum => 14
 		blank.validates_length_of :newid, :maximum => 6
 		blank.validates_length_of :gbid, :maximum => 26
 		blank.validates_length_of :lab_no_wiemels, :maximum => 25
 		blank.validates_length_of :idno_wiemels, :maximum => 10
 		blank.validates_length_of :accession_no, :maximum => 25
-		blank.validates_length_of :studyid_nohyphen, :maximum => 12
-		blank.validates_length_of :studyid_intonly_nohyphen, :maximum => 12
+#		blank.validates_length_of :studyid_nohyphen, :maximum => 12
+#		blank.validates_length_of :studyid_intonly_nohyphen, :maximum => 12
 		blank.validates_length_of :icf_master_id, :maximum => 9
 	end
 
@@ -173,7 +173,6 @@ protected
 
 	def prepare_fields_for_creation
 #	TODO orderno will probably be computed
-#	TODO move set_studyids content here?
 #	TODO create subjectid, patid and childid stuff here
 		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
 		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
