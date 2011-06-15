@@ -110,9 +110,9 @@ Factory.define :identifier do |f|
 	f.association :subject
 #	f.sequence(:childid) { |n| "#{n}" }
 	f.sequence(:ssn){|n| sprintf("%09d",n) }
-	f.sequence(:patid){|n| "#{n}"}
+#	f.sequence(:patid){|n| "#{n}"}
 
-	f.sequence(:orderno){|n| "#{n}"}
+#	f.sequence(:orderno){|n| "#{n}"}
 #	This is just one digit so looping through all.
 #	This is potentially a problem causer in testing.
 #	orderno is NOT just one digit

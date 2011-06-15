@@ -304,24 +304,23 @@ pending
 		assert_difference( 'Identifier.count', 0) {
 		assert_difference( 'Subject.count', 0) {
 			subject = create_subject( :identifier_attributes => {} )
-			assert subject.errors.on_attr_and_type('identifier.orderno',:blank)
-			assert subject.errors.on_attr_and_type('identifier.patid',:blank)
+#			assert subject.errors.on_attr_and_type('identifier.orderno',:blank)
+#			assert subject.errors.on_attr_and_type('identifier.patid',:blank)
 			assert subject.errors.on_attr_and_type('identifier.case_control_type',:blank)
 #			assert subject.errors.on_attr_and_type('identifier.childid',:blank)
 		} }
 	end
 
 	test "studyid should be patid, case_control_type and orderno" do
+		Identifier.any_instance.stubs(:get_next_patid).returns('123')
 		subject = create_subject(
 			:identifier_attributes => Factory.attributes_for(:identifier, 
-#				:case_control_type => 'A',	#	what are valid case_control_types? C, 0.. ?
-				:case_control_type => 'c',	#	what are valid case_control_types? C, 0.. ?
-				:patid   => '123',					#	should eventually be protected
-				:orderno => '4'							#	what are valid orderno? non-negative integers only?
-		))
-		assert_equal "0123-C-4", subject.reload.studyid
-		assert_equal "0123C4",   subject.identifier.studyid_nohyphen
-		assert_equal "012304",   subject.identifier.studyid_intonly_nohyphen
+				:case_control_type => 'c'
+		)).reload
+		Identifier.any_instance.unstub(:get_next_patid)
+		assert_equal "0123-C-0", subject.studyid
+		assert_equal "0123C0",   subject.identifier.studyid_nohyphen
+		assert_equal "012300",   subject.identifier.studyid_intonly_nohyphen
 	end
 
 	test "should belong to vital_status" do
@@ -446,7 +445,11 @@ pending
 	end
 
 #	%w( ssn childid patid orderno studyid state_id_no ).each do |method_name|
-	%w( ssn patid orderno studyid state_id_no ).each do |method_name|
+#	patid will be nil for non-case until assigned
+#	%w( ssn patid orderno studyid state_id_no ).each do |method_name|
+#	orderno is generated
+#	%w( ssn childid orderno studyid state_id_no ).each do |method_name|
+	%w( ssn childid studyid state_id_no ).each do |method_name|
 
 		test "should return nil #{method_name} without identifier" do
 			subject = create_subject

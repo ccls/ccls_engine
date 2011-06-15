@@ -4,11 +4,11 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
-	assert_should_require_attributes( 
-		:case_control_type,
+	assert_should_require_attributes( :case_control_type )
+#		:case_control_type,
 #		:childid,
-		:orderno,
-		:patid )
+#		:orderno	)#,
+#		:patid )
 
 	assert_should_require_unique_attribute( 
 #		:childid,
@@ -16,8 +16,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 #		:subjectid,
 		:state_id_no,
 		:icf_master_id )
-	assert_should_require_unique_attribute( :patid, 
-		:scope => [:orderno,:case_control_type] )
+#	assert_should_require_unique_attribute( :patid, 
+#		:scope => [:orderno,:case_control_type] )
 
 	assert_should_initially_belong_to( :subject )
 	assert_should_not_require_attributes( :study_subject_id )
@@ -58,7 +58,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length :icf_master_id, :maximum => 9
 
 	assert_should_protect_attributes(:studyid,:studyid_nohyphen,:studyid_intonly_nohyphen,
-		:familyid, :childid, :subjectid)	#, :matchingid, :patid
+		:familyid, :childid, :subjectid, :patid)	#, :matchingid
 
 #	assert_should_protect_attributes(:subjectid)
 
@@ -135,14 +135,14 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_equal '000123', identifier.matchingid
 	end 
 
-	test "should pad patid with leading zeros before validation" do
-		identifier = Factory.build(:identifier,{ :patid => '123' })
-		assert identifier.patid.length < 4
-		assert_equal '123', identifier.patid
-		identifier.valid?	#save
-		assert identifier.patid.length == 4
-		assert_equal '0123', identifier.patid
-	end 
+#	test "should pad patid with leading zeros before validation" do
+#		identifier = Factory.build(:identifier,{ :patid => '123' })
+#		assert identifier.patid.length < 4
+#		assert_equal '123', identifier.patid
+#		identifier.valid?	#save
+#		assert identifier.patid.length == 4
+#		assert_equal '0123', identifier.patid
+#	end 
 
 	test "should create with all numeric ssn" do
 		assert_difference( "#{model_name}.count", 1 ) do
@@ -198,29 +198,35 @@ pending
 
 #	patid and childid should be protected as they are generated values
 
-	test "should set studyid with patid, case_control_type and orderno for" <<
-			" case_control_type c" do
+	test "should generate orderno = 0 for case_control_type == 'c'" do
 		identifier = Factory(:identifier, 
-			:case_control_type => 'c',
-			:patid   => '123',
-			:orderno => '4'		#	for a case, this should always be 0
-		).reload
-		assert_equal "0123-C-4", identifier.studyid
-		assert_equal "0123C4",   identifier.studyid_nohyphen
-		assert_equal "012304",   identifier.studyid_intonly_nohyphen
+			:case_control_type => 'c').reload
+		assert_equal 0, identifier.orderno
 	end
 
 	test "should set studyid with patid, case_control_type and orderno for" <<
-			" case_control_type 4" do
+			" case_control_type c" do
+		Identifier.any_instance.stubs(:get_next_patid).returns('123')
 		identifier = Factory(:identifier, 
-			:case_control_type => '4',
-			:patid   => '123',
-			:orderno => '4'
+			:case_control_type => 'c'
 		).reload
-		assert_equal "0123-4-4", identifier.studyid
-		assert_equal "012344",   identifier.studyid_nohyphen
-		assert_equal "012344",   identifier.studyid_intonly_nohyphen
+		assert_equal "0123-C-0", identifier.studyid
+		assert_equal "0123C0",   identifier.studyid_nohyphen
+		assert_equal "012300",   identifier.studyid_intonly_nohyphen
 	end
+
+#	test "should set studyid with patid, case_control_type and orderno for" <<
+#			" case_control_type 4" do
+#		Identifier.any_instance.stubs(:get_next_patid).returns('123')
+#		identifier = Factory(:identifier, 
+#			:case_control_type => '4',
+##			:patid   => '123',
+#			:orderno => '4'
+#		).reload
+#		assert_equal "0123-4-4", identifier.studyid
+#		assert_equal "012344",   identifier.studyid_nohyphen
+#		assert_equal "012344",   identifier.studyid_intonly_nohyphen
+#	end
 
 	test "should generate subjectid on creation for any subject" do
 		identifier = Factory(:identifier)
@@ -254,13 +260,13 @@ pending
 pending
 	end
 
-#	test "should generate matchingid == subjectid on creation of case" do
-#		identifier = Factory(:identifier, :case_control_type => 'c')
-#		assert_not_nil identifier.subjectid
-#		assert_not_nil identifier.matchingid
-#		assert_equal   identifier.subjectid, identifier.matchingid
-#	end
-#
+	test "should generate matchingid == subjectid on creation of case" do
+		identifier = Factory(:identifier, :case_control_type => 'c')
+		assert_not_nil identifier.subjectid
+		assert_not_nil identifier.matchingid
+		assert_equal   identifier.subjectid, identifier.matchingid
+	end
+
 #	%w( b f 4 5 6 ).each do |cct|
 #		test "should generate matchingid == case's subjectid on creation of " <<
 #				"control case_control_type #{cct}" do
