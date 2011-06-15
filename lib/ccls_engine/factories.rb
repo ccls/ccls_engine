@@ -108,7 +108,7 @@ end
 
 Factory.define :identifier do |f|
 	f.association :subject
-	f.sequence(:childid) { |n| "#{n}" }
+#	f.sequence(:childid) { |n| "#{n}" }
 	f.sequence(:ssn){|n| sprintf("%09d",n) }
 	f.sequence(:patid){|n| "#{n}"}
 
@@ -130,7 +130,7 @@ Factory.define :identifier do |f|
 #	This is just one char/digit so looping through all.
 #	This is potentially a problem causer in testing.
 	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
-	f.sequence(:subjectid){|n| "#{n}"}
+#	f.sequence(:subjectid){|n| "#{n}"}
 	f.sequence(:state_id_no){|n| "#{n}"}
 	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
 end

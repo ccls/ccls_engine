@@ -6,14 +6,14 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_require_attributes( 
 		:case_control_type,
-		:childid,
+#		:childid,
 		:orderno,
 		:patid )
 
 	assert_should_require_unique_attribute( 
-		:childid,
+#		:childid,
 		:ssn,
-		:subjectid,
+#		:subjectid,
 		:state_id_no,
 		:icf_master_id )
 	assert_should_require_unique_attribute( :patid, 
@@ -57,7 +57,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length :accession_no, :maximum => 25
 	assert_should_require_attribute_length :icf_master_id, :maximum => 9
 
-	assert_should_protect_attributes(:studyid,:studyid_nohyphen,:studyid_intonly_nohyphen)
+	assert_should_protect_attributes(:studyid,:studyid_nohyphen,:studyid_intonly_nohyphen,
+		:familyid, :childid, :subjectid)	#, :matchingid, :patid
 
 #	assert_should_protect_attributes(:subjectid)
 
@@ -91,14 +92,14 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should nullify blank subjectid before validation" do
-		identifier = Factory.build(:identifier, :subjectid => '')
-		assert  identifier.subjectid.blank?
-		assert !identifier.subjectid.nil?
-		identifier.valid?
-		assert  identifier.subjectid.blank?
-		assert  identifier.subjectid.nil?
-	end 
+#	test "should nullify blank subjectid before validation" do
+#		identifier = Factory.build(:identifier, :subjectid => '')
+#		assert  identifier.subjectid.blank?
+#		assert !identifier.subjectid.nil?
+#		identifier.valid?
+#		assert  identifier.subjectid.blank?
+#		assert  identifier.subjectid.nil?
+#	end 
 
 	test "should nullify blank ssn before validation" do
 		identifier = Factory.build(:identifier, :ssn => '')
@@ -118,12 +119,12 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert  identifier.state_id_no.nil?
 	end 
 
-	test "should pad subjectid with leading zeros before validation" do
-		identifier = Factory.build(:identifier)
-		assert identifier.subjectid.length < 6 
-		identifier.valid?	#save
-		assert identifier.subjectid.length == 6
-	end 
+#	test "should pad subjectid with leading zeros before validation" do
+#		identifier = Factory.build(:identifier)
+#		assert identifier.subjectid.length < 6 
+#		identifier.valid?	#save
+#		assert identifier.subjectid.length == 6
+#	end 
 
 	test "should pad matchingid with leading zeros before validation" do
 		identifier = Factory.build(:identifier,{ :matchingid => '123' })
@@ -220,6 +221,57 @@ pending
 		assert_equal "012344",   identifier.studyid_nohyphen
 		assert_equal "012344",   identifier.studyid_intonly_nohyphen
 	end
+
+	test "should generate subjectid on creation for any subject" do
+		identifier = Factory(:identifier)
+		assert_not_nil identifier.subjectid
+		assert identifier.subjectid.length == 6
+	end
+
+	%w( c b f 4 5 6 ).each do |cct|
+
+		test "should generate childid on creation of case_control_type #{cct}" do
+			assert_difference('Childid.next_id', 1) {
+				identifier = Factory(:identifier, :case_control_type => cct )
+				assert_not_nil identifier.childid
+			}
+		end
+
+		test "should generate familyid == subjectid on creation of case_control_type #{cct}" do
+			identifier = Factory(:identifier, :case_control_type => cct )
+			assert_not_nil identifier.subjectid
+			assert_not_nil identifier.familyid
+			assert_equal   identifier.subjectid, identifier.familyid
+		end
+
+	end
+
+	test "should generate familyid == child's subjectid on creation of mother" do
+		identifier = Factory(:identifier, :case_control_type => 'm' )
+		assert_not_nil identifier.subjectid
+#		assert_not_nil identifier.familyid
+#		assert_equal   identifier.subjectid, identifier.familyid
+pending
+	end
+
+#	test "should generate matchingid == subjectid on creation of case" do
+#		identifier = Factory(:identifier, :case_control_type => 'c')
+#		assert_not_nil identifier.subjectid
+#		assert_not_nil identifier.matchingid
+#		assert_equal   identifier.subjectid, identifier.matchingid
+#	end
+#
+#	%w( b f 4 5 6 ).each do |cct|
+#		test "should generate matchingid == case's subjectid on creation of " <<
+#				"control case_control_type #{cct}" do
+#			identifier = Factory(:identifier, :case_control_type => cct )
+##			assert_not_nil identifier.subjectid
+##			assert_not_nil identifier.matchingid
+##			assert_equal   identifier.subjectid, identifier.familyid
+#		end
+#	end
+
+
 
 
 #	test "should validate on create" do

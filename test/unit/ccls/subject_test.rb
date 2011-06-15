@@ -307,7 +307,7 @@ pending
 			assert subject.errors.on_attr_and_type('identifier.orderno',:blank)
 			assert subject.errors.on_attr_and_type('identifier.patid',:blank)
 			assert subject.errors.on_attr_and_type('identifier.case_control_type',:blank)
-			assert subject.errors.on_attr_and_type('identifier.childid',:blank)
+#			assert subject.errors.on_attr_and_type('identifier.childid',:blank)
 		} }
 	end
 
@@ -445,7 +445,8 @@ pending
 
 	end
 
-	%w( ssn childid patid orderno studyid state_id_no ).each do |method_name|
+#	%w( ssn childid patid orderno studyid state_id_no ).each do |method_name|
+	%w( ssn patid orderno studyid state_id_no ).each do |method_name|
 
 		test "should return nil #{method_name} without identifier" do
 			subject = create_subject

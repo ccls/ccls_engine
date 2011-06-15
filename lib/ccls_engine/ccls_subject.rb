@@ -9,6 +9,11 @@ class Ccls::Subject < Shared
 	belongs_to :subject_type
 	belongs_to :vital_status
 
+
+#
+#	TODO - Don't validate anything that the creating user can't do anything about.
+#
+
 	with_options :foreign_key => 'study_subject_id' do |f|
 		f.has_many :subject_races
 		f.has_many :subject_languages
@@ -155,6 +160,7 @@ class Ccls::Subject < Shared
 
 	def to_s
 		load 'pii.rb' if RAILS_ENV == 'development'	#	forgets
+		#	interesting that I don't have to load 'identifier.rb' ???
 		[childid,'(',studyid,full_name,')'].compact.join(' ')
 	end
 
