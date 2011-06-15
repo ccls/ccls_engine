@@ -195,6 +195,41 @@ pending
 
 
 
+	test "should increment Childid.next_id on get_next_childid" do
+		assert_difference('Childid.next_id', 1) {
+			#	use send as is protected
+			Identifier.new.send(:get_next_childid)
+		}
+	end
+
+	test "should increment Patid.next_id on get_next_patid" do
+		assert_difference('Patid.next_id', 1) {
+			#	use send as is protected
+			Identifier.new.send(:get_next_patid)
+		}
+	end
+
+	test "should be case with case_control_type == 'C'" do
+		identifier = Identifier.new(:case_control_type => 'C')
+		assert identifier.is_case?
+	end
+
+	test "should be mother with case_control_type == 'M'" do
+		identifier = Identifier.new(:case_control_type => 'M')
+		assert identifier.is_mother?
+	end
+
+	test "should be mother with case_control_type == nil" do
+		identifier = Identifier.new(:case_control_type => nil )
+		assert identifier.is_mother?
+	end
+
+	%w( B F 4 5 6 ).each do |cct|
+		test "should be control with case_control_type == '#{cct}'" do
+			identifier = Identifier.new(:case_control_type => cct )
+			assert identifier.is_control?
+		end
+	end
 
 #	patid and childid should be protected as they are generated values
 

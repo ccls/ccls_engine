@@ -105,6 +105,18 @@ class Identifier < Shared
 	after_save :trigger_update_matching_subjects_reference_date, 
 		:if => :matchingid_changed?
 
+	def is_mother?
+		case_control_type.blank? or case_control_type == 'M'
+	end
+
+	def is_case?
+		case_control_type == 'C'
+	end
+
+	def is_control?
+		!is_case? and !is_mother?
+	end
+
 protected
 
 	def trigger_update_matching_subjects_reference_date
@@ -247,23 +259,11 @@ protected
 #puts "Matchingid after before validation:#{matchingid}"
 	end 
 
-	#	Pad leading zeroes to patid
-	def pad_zeros_to_patid
-		patid.try(:gsub!,/\D/,'') #unless patid.nil?
-#	TODO add more tests for this (try with valid? method)
-		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
-	end 
-
-	def is_mother?
-		case_control_type.blank? or case_control_type == 'M'
-	end
-
-	def is_case?
-		case_control_type == 'C'
-	end
-
-	def is_control?
-		!is_case? and !is_mother?
-	end
+#	#	Pad leading zeroes to patid
+#	def pad_zeros_to_patid
+#		patid.try(:gsub!,/\D/,'') #unless patid.nil?
+##	TODO add more tests for this (try with valid? method)
+#		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
+#	end 
 
 end
