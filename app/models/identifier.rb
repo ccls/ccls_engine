@@ -149,10 +149,7 @@ protected
 
 	#	fields made from fields that WON'T change go here
 	def prepare_fields_for_creation
-#puts "In prepare_fields_for_creation"
 
-		#	The only subjects that don't get a childID are mother subjects.
-		#	mother's will with have null or 'M' as case_control_type
 		self.childid = get_next_childid unless is_mother?
 
 		self.patid = sprintf("%04d",get_next_patid.to_i) if is_case?
@@ -169,7 +166,8 @@ protected
 #	how to get child?  given?
 #		self.familyid  = subjectid						#	TODO : this won't be true for mother's
 #	this won't work here unless passed child's subjectid
-		self.familyid  = ( ( is_mother? ) ? nil : subjectid )
+#		self.familyid  = ( ( is_mother? ) ? nil : subjectid )
+		self.familyid  = subjectid unless is_mother?
 #		self.familyid  = if is_mother?
 #			nil
 #		else

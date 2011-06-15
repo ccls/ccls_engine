@@ -234,6 +234,13 @@ pending
 		assert identifier.subjectid.length == 6
 	end
 
+	test "should generate patid on creation of case_control_type == 'c'" do
+		assert_difference('Patid.next_id', 1) {
+			identifier = Factory(:identifier, :case_control_type => 'c' )
+			assert_not_nil identifier.patid
+		}
+	end
+
 	%w( c b f 4 5 6 ).each do |cct|
 
 		test "should generate childid on creation of case_control_type #{cct}" do
