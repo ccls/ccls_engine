@@ -308,8 +308,11 @@ class Ccls::Subject < Shared
 	##
 	#	triggered from patient and eventually from pii
 	def update_patient_was_under_15_at_dx
-		reload	#	reload subject so associations resolved.  I don't like that I have to do this.
-		if dob and patient and patient.admit_date
+		#	due to the high probability that self, pii and patient will not
+		#		yet be resolved, we have to get the associations manually.
+		my_pii     = Pii.find_by_study_subject_id(self.attributes['id'])
+		my_patient = Patient.find_by_study_subject_id(self.attributes['id'])
+		if my_pii and my_pii.dob and my_patient and my_patient.admit_date
 			#
 			#	update_all(updates, conditions = nil, options = {})
 			#
@@ -321,8 +324,8 @@ class Ccls::Subject < Shared
 			#
 			Patient.update_all({
 				:was_under_15_at_dx => (((
-					patient.admit_date.to_date - dob.to_date 
-					) / 365 ) < 15 )}, { :id => patient.id })
+					my_patient.admit_date.to_date - my_pii.dob.to_date 
+					) / 365 ) < 15 )}, { :id => my_patient.id })
 				#	crude and probably off by a couple days
 				#	would be better to compare year, month then day
 		end
@@ -333,7 +336,6 @@ class Ccls::Subject < Shared
 	##
 	#	
 	def update_subjects_reference_date_matching(*matchingids)
-
 #	if matchingids ~ [nil,12345]
 #		identifier was either just created or matchingid added (compact as nil not needed)
 #	if matchingids ~ [12345,nil]
@@ -342,8 +344,11 @@ class Ccls::Subject < Shared
 #		matchingid was just changed
 #	if matchingids ~ []
 #		trigger came from Patient so need to find matchingid
-#		
-		matchingids.compact.push(identifier.try(:matchingid)).uniq.each do |matchingid|
+
+		#	due to the high probability that self and identifier will not
+		#		yet be resolved, we have to get the associations manually.
+		my_identifier = Identifier.find_by_study_subject_id(self.attributes['id'])
+		matchingids.compact.push(my_identifier.try(:matchingid)).uniq.each do |matchingid|
 			subject_ids = if( !matchingid.nil? )
 				Identifier.find_all_by_matchingid(matchingid
 					).collect(&:study_subject_id)
@@ -368,7 +373,7 @@ protected
 	def self.update_subjects_reference_date(subject_ids,new_reference_date)
 		# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
 		# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
-		if !subject_ids.empty?
+		unless subject_ids.empty?
 			Subject.update_all(
 				{:reference_date => new_reference_date },
 				{ :id => subject_ids })
