@@ -229,6 +229,13 @@ pending
 			identifier = Identifier.new(:case_control_type => cct )
 			assert identifier.is_control?
 		end
+
+		test "should NOT generate patid on creation of case_control_type == '#{cct}'" do
+			assert_difference('Patid.next_id', 0) {
+				identifier = Factory(:identifier, :case_control_type => cct )
+				assert_nil identifier.patid
+			}
+		end
 	end
 
 #	patid and childid should be protected as they are generated values
