@@ -238,6 +238,21 @@ pending
 		end
 	end
 
+	test "should NOT generate patid on creation of case_control_type == nil" do
+#		assert_difference('Patid.next_id', 0) {
+#			identifier = Factory(:identifier, :case_control_type => nil )
+#			assert_nil identifier.patid
+#		}
+pending
+	end
+
+	test "should NOT generate patid on creation of case_control_type == 'M'" do
+		assert_difference('Patid.next_id', 0) {
+			identifier = Factory(:identifier, :case_control_type => 'M' )
+			assert_nil identifier.patid
+		}
+	end
+
 #	patid and childid should be protected as they are generated values
 
 	test "should generate orderno = 0 for case_control_type == 'c'" do
