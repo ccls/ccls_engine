@@ -8,7 +8,17 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
 	assert_should_initially_belong_to( :subject, :sample_type )
 	assert_should_habtm( :projects )
-	assert_should_require_attributes( :sample_type_id, :study_subject_id )
+	assert_should_require_attributes( :sample_type_id )
+
+#	not working
+#	assert_should_require_attributes( :sample_type_id, :study_subject_id )
+
+	test "should require study_subject_id" do
+		assert_no_difference "Sample.count" do
+			object = create_object(:subject => nil)
+			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
+		end
+	end
 
 	assert_should_not_require_attributes( :position,
 		:aliquot_sample_format_id,

@@ -4,7 +4,17 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_initially_belong_to(:subject)
-	assert_should_require_unique_attribute(:study_subject_id)
+
+#	not working
+#	assert_should_require_unique_attribute(:study_subject_id)
+
+	test "should require unique study_subject_id" do
+		o = create_object
+		assert_no_difference "HomeExposureResponse.count" do
+			object = create_object(:subject => o.subject)
+			assert object.errors.on_attr_and_type(:study_subject_id, :taken)
+		end
+	end
 
 	test "should return array of fields" do
 		fields = HomeExposureResponse.fields

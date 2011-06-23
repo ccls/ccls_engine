@@ -2,7 +2,19 @@ require 'test_helper'
 
 class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	assert_should_create_default_object
-	assert_should_require_unique_attribute(:project_id, :scope => :study_subject_id)
+
+#	TODO doesn't actually generate an error any more in the factory
+#	i think that it is the non-standard name
+#	assert_should_require_unique_attribute(:project_id, :scope => :study_subject_id)
+
+	test "should require unique project_id scope study_subject_id" do
+		o = create_object
+		assert_no_difference "Enrollment.count" do
+			object = create_object(:project => o.project,:subject => o.subject)
+			assert object.errors.on_attr_and_type(:project_id, :taken)
+		end
+	end
+
 	assert_should_not_require_attributes( :position,
 		:recruitment_priority,
 		:able_to_locate,
