@@ -24,7 +24,7 @@ class CclsEngineGenerator < Rails::Generator::Base
 
 #			%w( create_users create_user_invitations ).each do |migration|
 #	UserInvitations are NOT used for any app which uses the ccls engine.
-			%w( create_users ).each do |migration|
+			%w( create_users create_user_invitations drop_user_invitations ).each do |migration|
 				m.migration_template "migrations/#{migration}.rb",
 					'db/migrate', :migration_file_name => migration
 			end
