@@ -408,10 +408,10 @@ Factory.define :subject_type do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
-Factory.define :survey_invitation do |f|
-	f.association :survey
-	f.association :subject
-end
+#Factory.define :survey_invitation do |f|
+#	f.association :survey
+#	f.association :subject
+#end
 
 
 #Factory.define :track do |f|
