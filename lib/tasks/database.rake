@@ -26,7 +26,13 @@ namespace :db do
 		SampleKit.destroy_all
 		Package.destroy_all
 		HomexOutcome.destroy_all
+		InterviewOutcome.destroy_all
 		HomeExposureResponse.destroy_all
+		OperationalEvent.destroy_all
+		ProjectOutcome.destroy_all
+		SampleOutcome.destroy_all
+		Track.destroy_all
+		Transfer.destroy_all
 #		SurveyInvitation.destroy_all
 	end
 
