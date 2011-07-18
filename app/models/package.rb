@@ -20,7 +20,8 @@ class Package < Shared
 	end
 
 	@@fedex = FedEx.new(YAML::load(ERB.new(
-		IO.read('config/fed_ex.yml')).result)[::RAILS_ENV])
+		IO.read( File.join(Rails.root,'config/fed_ex.yml') )).result)[::RAILS_ENV])
+#		IO.read('config/fed_ex.yml')).result)[::RAILS_ENV])
 	cattr_accessor :fedex
 
 	#	Returns the name of the file used to store the
