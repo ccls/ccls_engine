@@ -1020,7 +1020,6 @@ Table: operational_event_types
 +----------------+--------------+------+-----+---------+----------------+
 | id             | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position       | int(11)      | YES  |     | NULL    |                |
-| project_id     | int(11)      | YES  |     | NULL    |                |
 | code           | varchar(255) | NO   | UNI | NULL    |                |
 | description    | varchar(255) | YES  | UNI | NULL    |                |
 | event_category | varchar(255) | YES  |     | NULL    |                |

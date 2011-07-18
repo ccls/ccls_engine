@@ -4,9 +4,6 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
-#	TODO
-#	assert_should_have_many( :operational_event_types )
-
 	assert_should_have_many( :instrument_types, :enrollments, :instruments, :gift_cards )
 	assert_should_require_attributes( :code, :description )
 	assert_should_require_unique_attributes( :code, :description )
