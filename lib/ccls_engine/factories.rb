@@ -106,6 +106,9 @@ Factory.define :analysis do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
+Factory.define :bc_request do |f|
+end
+
 Factory.define :identifier do |f|
 	f.association :subject
 #	f.sequence(:childid) { |n| "#{n}" }

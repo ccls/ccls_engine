@@ -1,0 +1,2 @@
+class BcRequest < Shared
+end
