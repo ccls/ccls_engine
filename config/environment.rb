@@ -41,8 +41,8 @@ Rails::Initializer.run do |config|
 	config.gem 'jakewendt-rdoc_rails', :lib => false
 
 	config.gem 'haml'      # Needed for Surveyor
-	#	Keep chronic here
-	config.gem "chronic"   #		http://chronic.rubyforge.org/
+	#		http://chronic.rubyforge.org/
+	config.gem "chronic", :version => '= 0.5.0'
 	config.gem 'active_shipping'
 	config.gem 'will_paginate'
 	config.gem 'fastercsv'
