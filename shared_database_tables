@@ -461,6 +461,19 @@ Table: analyses_subjects
 | study_subject_id | int(11) | YES  | MUL | NULL    |       |
 +------------------+---------+------+-----+---------+-------+
 
+Table: bc_requests
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| id               | int(11)      | NO   | PRI | NULL    | auto_increment |
+| study_subject_id | int(11)      | YES  |     | NULL    |                |
+| sent_on          | date         | YES  |     | NULL    |                |
+| status           | varchar(255) | YES  |     | NULL    |                |
+| notes            | text         | YES  |     | NULL    |                |
+| created_at       | datetime     | YES  |     | NULL    |                |
+| updated_at       | datetime     | YES  |     | NULL    |                |
++------------------+--------------+------+-----+---------+----------------+
+
 Table: bdrb_job_queues
 +----------------+--------------+------+-----+---------+----------------+
 | Field          | Type         | Null | Key | Default | Extra          |
@@ -484,6 +497,36 @@ Table: bdrb_job_queues
 | worker_key     | varchar(255) | YES  |     | NULL    |                |
 | scheduled_at   | datetime     | YES  |     | NULL    |                |
 +----------------+--------------+------+-----+---------+----------------+
+
+Table: candidate_controls
++--------------------+--------------+------+-----+---------+----------------+
+| Field              | Type         | Null | Key | Default | Extra          |
++--------------------+--------------+------+-----+---------+----------------+
+| id                 | int(11)      | NO   | PRI | NULL    | auto_increment |
+| icf_master_id      | int(11)      | YES  |     | NULL    |                |
+| related_patid      | varchar(5)   | YES  |     | NULL    |                |
+| study_subject_id   | int(11)      | YES  |     | NULL    |                |
+| first_name         | varchar(255) | YES  |     | NULL    |                |
+| middle_name        | varchar(255) | YES  |     | NULL    |                |
+| last_name          | varchar(255) | YES  |     | NULL    |                |
+| dob                | date         | YES  |     | NULL    |                |
+| state_registrar_no | varchar(25)  | YES  |     | NULL    |                |
+| local_registrar_no | varchar(25)  | YES  |     | NULL    |                |
+| sex                | varchar(255) | YES  |     | NULL    |                |
+| county_of_birth    | varchar(255) | YES  |     | NULL    |                |
+| assigned_on        | date         | YES  |     | NULL    |                |
+| mother_race_id     | int(11)      | YES  |     | NULL    |                |
+| mother_hisp_id     | int(11)      | YES  |     | NULL    |                |
+| father_race_id     | int(11)      | YES  |     | NULL    |                |
+| birth_type         | varchar(255) | YES  |     | NULL    |                |
+| mother_maiden_name | varchar(255) | YES  |     | NULL    |                |
+| mother_yrs_educ    | int(11)      | YES  |     | NULL    |                |
+| father_yrs_educ    | int(11)      | YES  |     | NULL    |                |
+| reject_candidate   | tinyint(1)   | NO   |     | 0       |                |
+| rejection_reason   | varchar(255) | YES  |     | NULL    |                |
+| created_at         | datetime     | YES  |     | NULL    |                |
+| updated_at         | datetime     | YES  |     | NULL    |                |
++--------------------+--------------+------+-----+---------+----------------+
 
 Table: childids
 +------------+----------+------+-----+---------+----------------+

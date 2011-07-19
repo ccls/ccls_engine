@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class BcRequestTest < ActiveSupport::TestCase
+class Ccls::BcRequestTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 
 	test "statuses should return an array of strings" do

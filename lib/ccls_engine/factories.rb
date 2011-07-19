@@ -108,6 +108,9 @@ end
 
 Factory.define :bc_request do |f|
 end
+Factory.define :candidate_control do |f|
+	f.reject_candidate false
+end
 
 Factory.define :identifier do |f|
 	f.association :subject
