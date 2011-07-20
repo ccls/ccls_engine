@@ -93,6 +93,8 @@ div.pagination {
 .columns > div {
 	/* and this seems to alleviate the need for floating */
 	display:table-cell;
+	/* stop one column from pushing another down */
+	vertical-align: top;
 }
 
 
