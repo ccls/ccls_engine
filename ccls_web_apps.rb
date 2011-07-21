@@ -57,7 +57,7 @@ case command
 	when /^sto.*/
 		apps.each { |app| app.stop }
 	when /^stat.*/ 
-		printf "%-15s %-15s %10s\n", 'Name', 'Status', 'PID'
+		printf "%-15s %-15s %10s\n", 'NAME', 'STATUS', 'PID'
 		apps.each { |app| printf "%-15s %-15s %10s\n", app.name, app.status, app.pid }
 	when /^r.*/
 #	loop through each app
