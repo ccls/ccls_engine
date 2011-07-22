@@ -91,8 +91,8 @@ class Identifier < Shared
 #
 #	These values will be found or computed, so this may get weird
 
-	before_validation :pad_zeros_to_patid
-	before_validation :pad_zeros_to_matchingid
+#	before_validation :pad_zeros_to_patid
+#	before_validation :pad_zeros_to_matchingid
 
 	#	FYI: before_validation will be called before before_validation_on_create
 #	before_validation_on_create :prepare_fields_for_validation_on_create
@@ -147,6 +147,12 @@ protected
 		self.case_control_type = case_control_type.to_s.upcase
 		self.ssn = ( ( ssn.blank? ) ? nil : ssn.to_s.gsub(/\D/,'') )
 		self.state_id_no = nil if state_id_no.blank?
+		patid.try(:gsub!,/\D/,'') #unless patid.nil?
+		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
+		matchingid.try(:gsub!,/\D/,'')
+#	TODO add more tests for this (try with valid? method)
+#puts "Matchingid before before validation:#{matchingid}"
+		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
 	end
 
 	#	made separate method so can be stubbed
