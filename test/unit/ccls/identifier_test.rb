@@ -135,14 +135,15 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_equal '000123', identifier.matchingid
 	end 
 
-#	test "should pad patid with leading zeros before validation" do
-#		identifier = Factory.build(:identifier,{ :patid => '123' })
-#		assert identifier.patid.length < 4
-#		assert_equal '123', identifier.patid
-#		identifier.valid?	#save
-#		assert identifier.patid.length == 4
-#		assert_equal '0123', identifier.patid
-#	end 
+	test "should pad patid with leading zeros before validation" do
+		identifier = Factory.build(:identifier)
+		identifier.patid = '123'
+		assert identifier.patid.length < 4
+		assert_equal '123', identifier.patid
+		identifier.valid?	#save
+		assert identifier.patid.length == 4
+		assert_equal '0123', identifier.patid
+	end 
 
 	test "should create with all numeric ssn" do
 		assert_difference( "#{model_name}.count", 1 ) do
@@ -180,8 +181,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert '123456789' == identifier.ssn
 	end 
 
-
-
+	#	TODO "should require 9 digits in ssn" do
 	test "should require 9 digits in ssn" do
 pending
 #		%w( 12345678X 12345678 1-34-56-789 ).each do |invalid_ssn|
@@ -238,6 +238,7 @@ pending
 		end
 	end
 
+	#	TODO "should NOT generate patid on creation of case_control_type == nil" do
 	test "should NOT generate patid on creation of case_control_type == nil" do
 #		assert_difference('Patid.next_id', 0) {
 #			identifier = Factory(:identifier, :case_control_type => nil )
@@ -316,6 +317,7 @@ pending
 
 	end
 
+	#	TODO "should generate familyid == child's subjectid on creation of mother" do
 	test "should generate familyid == child's subjectid on creation of mother" do
 		identifier = Factory(:identifier, :case_control_type => 'm' )
 		assert_not_nil identifier.subjectid
@@ -340,6 +342,57 @@ pending
 ##			assert_equal   identifier.subjectid, identifier.familyid
 #		end
 #	end
+
+
+
+	test "should not generate new patid for case if given" do
+		#	existing data import
+		assert_difference( "Patid.next_id", 0 ) {
+		assert_difference( "Patid.count", 0 ) {
+		assert_difference( "#{model_name}.count", 1 ) {
+			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier.patid = '123'
+			identifier.save
+			identifier.reload
+			assert_equal "0123-C-0", identifier.studyid
+			assert_equal "0123C0",   identifier.studyid_nohyphen
+			assert_equal "012300",   identifier.studyid_intonly_nohyphen
+			assert_equal "0123",     identifier.patid
+		} } }
+	end
+
+	test "should not generate new childid if given" do
+		#	existing data import
+		assert_difference( "Childid.next_id", 0 ) {
+		assert_difference( "Childid.count", 0 ) {
+		assert_difference( "#{model_name}.count", 1 ) {
+			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier.childid = '123'
+			identifier.save
+			identifier.reload
+			assert_equal 123, identifier.childid
+		} } }
+	end
+
+	test "should not generate new orderno if given" do
+		#	existing data import
+pending
+	end
+
+	test "should not generate new subjectid if given" do
+		#	existing data import
+pending
+	end
+
+	test "should not generate new familyid if given" do
+		#	existing data import
+pending
+	end
+
+	test "should not generate new matchingid if given" do
+		#	existing data import
+pending
+	end
 
 
 
