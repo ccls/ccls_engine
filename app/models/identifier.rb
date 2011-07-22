@@ -162,8 +162,8 @@ protected
 	#	fields made from fields that WON'T change go here
 	def prepare_fields_for_creation
 
-#	TODO don't assign if given (childid is currently protected)
-		self.childid = get_next_childid unless is_mother?
+		#	don't assign if given (childid is currently protected)
+		self.childid = get_next_childid if !is_mother? and childid.blank?
 
 		#	don't assign if given (patid is currently protected)
 		self.patid = sprintf("%04d",get_next_patid.to_i) if is_case? and patid.blank?

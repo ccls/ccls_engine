@@ -347,20 +347,31 @@ pending
 
 	test "should not generate new patid for case if given" do
 		#	existing data import
+		assert_difference( "Patid.next_id", 0 ) {
 		assert_difference( "Patid.count", 0 ) {
 		assert_difference( "#{model_name}.count", 1 ) {
 			identifier = Factory.build(:identifier, :case_control_type => 'c')
 			identifier.patid = '123'
 			identifier.save
+			identifier.reload
 			assert_equal "0123-C-0", identifier.studyid
 			assert_equal "0123C0",   identifier.studyid_nohyphen
 			assert_equal "012300",   identifier.studyid_intonly_nohyphen
-		} }
+			assert_equal "0123",     identifier.patid
+		} } }
 	end
 
 	test "should not generate new childid if given" do
 		#	existing data import
-pending
+		assert_difference( "Childid.next_id", 0 ) {
+		assert_difference( "Childid.count", 0 ) {
+		assert_difference( "#{model_name}.count", 1 ) {
+			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier.childid = '123'
+			identifier.save
+			identifier.reload
+			assert_equal 123, identifier.childid
+		} } }
 	end
 
 	test "should not generate new orderno if given" do
