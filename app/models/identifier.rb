@@ -90,8 +90,8 @@ class Identifier < Shared
 #			matchingid will be contextually unique
 #
 #	These values will be found or computed, so this may get weird
-#
-#	before_validation :pad_zeros_to_patid
+
+	before_validation :pad_zeros_to_patid
 	before_validation :pad_zeros_to_matchingid
 
 	#	FYI: before_validation will be called before before_validation_on_create
@@ -162,14 +162,18 @@ protected
 	#	fields made from fields that WON'T change go here
 	def prepare_fields_for_creation
 
+#	TODO don't assign if given (childid is currently protected)
 		self.childid = get_next_childid unless is_mother?
 
-		self.patid = sprintf("%04d",get_next_patid.to_i) if is_case?
+		#	don't assign if given (patid is currently protected)
+		self.patid = sprintf("%04d",get_next_patid.to_i) if is_case? and patid.blank?
 
+#	TODO don't assign if given (orderno is currently protected)
 		self.orderno = 0 if is_case?
 
 		#	perhaps put in an after_save with an update_attribute(s)
 		#	and simply generate a new one until all is well
+#	TODO don't assign if given (subjectid is currently protected)
 		self.subjectid = generate_subjectid
 
 		#	cases and controls: their own subjectID is also their familyID.
@@ -179,6 +183,7 @@ protected
 #		self.familyid  = subjectid						#	TODO : this won't be true for mother's
 #	this won't work here unless passed child's subjectid
 #		self.familyid  = ( ( is_mother? ) ? nil : subjectid )
+#	TODO don't assign if given (familyid is currently protected)
 		self.familyid  = subjectid unless is_mother?
 #		self.familyid  = if is_mother?
 #			nil
@@ -193,6 +198,7 @@ protected
 		#			That is, a mother's matchingID is the same as their child's. This 
 		#			will become clearer when I provide specs for mother subject creation.
 #	matchingid is manually set in some tests.  will need to setup for stubbing this.
+#	TODO don't assign if given (matchingid is currently NOT protected)
 		self.matchingid = subjectid if is_case?
 #		self.matchingid = case case_control_type
 #			when 'C' then subjectid
@@ -259,11 +265,10 @@ protected
 #puts "Matchingid after before validation:#{matchingid}"
 	end 
 
-#	#	Pad leading zeroes to patid
-#	def pad_zeros_to_patid
-#		patid.try(:gsub!,/\D/,'') #unless patid.nil?
-##	TODO add more tests for this (try with valid? method)
-#		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
-#	end 
+	#	Pad leading zeroes to patid
+	def pad_zeros_to_patid
+		patid.try(:gsub!,/\D/,'') #unless patid.nil?
+		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
+	end 
 
 end
