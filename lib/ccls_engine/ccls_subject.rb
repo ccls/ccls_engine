@@ -26,6 +26,7 @@ class Ccls::Subject < Shared
 		f.has_many :interviews
 		f.has_one :home_exposure_response
 		f.has_one :homex_outcome
+		f.has_one :bc_request
 
 ##########
 #

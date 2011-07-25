@@ -2,6 +2,7 @@ require 'test_helper'
 
 class Ccls::BcRequestTest < ActiveSupport::TestCase
 	assert_should_create_default_object
+	assert_should_belong_to( :subject )
 
 	test "statuses should return an array of strings" do
 		statuses = BcRequest.statuses

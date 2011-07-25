@@ -7,7 +7,7 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 		:gift_cards, :phone_numbers, :samples, :interviews )
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome,
-		:identifier, :pii )
+		:identifier, :pii, :bc_request )
 	assert_should_habtm(:analyses)
 	assert_requires_complete_date( :reference_date )
 	assert_should_require_attributes_not_nil( :do_not_contact )
