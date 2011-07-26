@@ -107,6 +107,7 @@ Factory.define :analysis do |f|
 end
 
 Factory.define :bc_request do |f|
+	f.sequence(:notes) { |n| "Notes#{n}" }	#	forces an update
 end
 Factory.define :candidate_control do |f|
 	f.reject_candidate false
