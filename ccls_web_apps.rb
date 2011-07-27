@@ -14,7 +14,8 @@ class App
 			puts "Skipping #{name} start as is already running."
 		else
 			puts "Starting #{name}"
-			puts `cd /my/ruby/#{name}; script/server -d -e development -p #{port}`
+#			puts `cd /my/ruby/#{name}; script/server -d -e development -p #{port}`
+			puts `cd /my/ruby/#{name}; script/server -d -e production -p #{port}`
 			#	script/server --daemon --environment=production --port=########
 			#		OR
 			#	script/server -d -e production -p ########
@@ -24,6 +25,8 @@ class App
 		if running?
 			puts "Stopping #{name}"
 			Process.kill(9,pid.to_i) 
+			self.pid = nil
+			self.status = 'Not Running'
 		else
 			puts "Skipping #{name} stop as is not running."
 		end
