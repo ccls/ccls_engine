@@ -66,6 +66,19 @@ protected
 	end
 end
 
+##################################################
+
+
+#	add option parsing so user can pass ...
+#		rails environment 
+#		dry run
+#		...
+
+
+
+
+
+
 all_apps = %w( abstracts homex odms )
 command = ARGV.shift
 
@@ -88,4 +101,43 @@ case command
 		apps.each { |app| app.restart }
 	else puts "Confused? #{command}? Expected {start|stop|restart|status}"
 end
+
+__END__
+
+from /usr/lib/ruby/user-gems/1.8/gems/rails-2.3.12/lib/commands/server.rb
+
+
+require 'optparse'
+
+options = {
+  :Port        => 3000,
+  :Host        => "0.0.0.0",
+  :environment => (ENV['RAILS_ENV'] || "development").dup,
+  :config      => RAILS_ROOT + "/config.ru",
+  :detach      => false,
+  :debugger    => false,
+  :path        => nil
+}
+
+ARGV.clone.options do |opts|
+  opts.on("-p", "--port=port", Integer,
+          "Runs Rails on the specified port.", "Default: 3000") { |v| options[:Port] = v }
+  opts.on("-b", "--binding=ip", String,
+          "Binds Rails to the specified ip.", "Default: 0.0.0.0") { |v| options[:Host] = v }
+  opts.on("-c", "--config=file", String,
+          "Use custom rackup configuration file") { |v| options[:config] = v }
+  opts.on("-d", "--daemon", "Make server run as a Daemon.") { options[:detach] = true }
+  opts.on("-u", "--debugger", "Enable ruby-debugging for the server.") { options[:debugger] = true }
+  opts.on("-e", "--environment=name", String,
+          "Specifies the environment to run this server under (test/development/production).",
+          "Default: development") { |v| options[:environment] = v }
+  opts.on("-P", "--path=/path", String, "Runs Rails app mounted at a specific path.", "Default: /") { |v| options[:path] = v }
+
+  opts.separator ""
+
+  opts.on("-h", "--help", "Show this help message.") { puts opts; exit }
+
+  opts.parse!
+end
+
 
