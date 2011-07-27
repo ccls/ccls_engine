@@ -262,19 +262,19 @@ protected
 	end
 
 
-	#	Pad leading zeroes to matchingid
-	def pad_zeros_to_matchingid
-		matchingid.try(:gsub!,/\D/,'')
-#	TODO add more tests for this (try with valid? method)
-#puts "Matchingid before before validation:#{matchingid}"
-		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
-#puts "Matchingid after before validation:#{matchingid}"
-	end 
-
-	#	Pad leading zeroes to patid
-	def pad_zeros_to_patid
-		patid.try(:gsub!,/\D/,'') #unless patid.nil?
-		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
-	end 
+#	#	Pad leading zeroes to matchingid
+#	def pad_zeros_to_matchingid
+#		matchingid.try(:gsub!,/\D/,'')
+##	TODO add more tests for this (try with valid? method)
+##puts "Matchingid before before validation:#{matchingid}"
+#		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
+##puts "Matchingid after before validation:#{matchingid}"
+#	end 
+#
+#	#	Pad leading zeroes to patid
+#	def pad_zeros_to_patid
+#		patid.try(:gsub!,/\D/,'') #unless patid.nil?
+#		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
+#	end 
 
 end
