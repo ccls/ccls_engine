@@ -1,11 +1,26 @@
-#namespace :app do
 namespace :ccls do
 
-#	task :args_as_array do
-#		args = $*.dup.slice(1..-1)
-#		puts args.collect {|arg| "X:" << arg }.join("\n")
-#		exit
-#	end
+	task :sync_subject_type => :environment do
+		abort("Don't do this in production! Not unless you know exactly what you're doing anyway."
+			) if Rails.env == 'production'
+		Identifier.find(:all).each_with_index do |identifier,index|
+			puts "Processing #{index}"
+			subject = identifier.subject
+			if subject.nil?
+				puts "No subject on this identifier" 
+				next
+			end
+			puts "case_control_type #{identifier.case_control_type}"
+			puts "subject_type #{subject.subject_type}"
+			if subject.subject_type.to_s == 'Case' and identifier.case_control_type != 'C'
+				puts "subject_type == 'Case' and case_control_type != 'C'"
+				subject.patient.destroy unless subject.patient.nil?
+				subject.reload.subject_type = SubjectType['Control']
+				subject.save!
+				puts "NEW subject_type #{subject.reload.subject_type}"
+			end
+		end
+	end
 
 	desc "Load some fixtures to database for application"
 	task :update => :environment do
@@ -115,3 +130,49 @@ namespace :ccls do
 	end
 
 end
+
+
+__END__
+
+#	task :args_as_array do
+#		args = $*.dup.slice(1..-1)
+#		puts args.collect {|arg| "X:" << arg }.join("\n")
+#		exit
+#	end
+
+
+Another way to pass arguments to rake task as demonstrated by one of the sunspot gem's tasks
+...
+  # This task depends on the standard Rails file naming \
+  # conventions, in that the file name matches the defined class name. \
+  # By default the indexing system works in batches of 50 records, you can \
+  # set your own value for this by using the batch_size argument. You can \
+  # also optionally define a list of models to separated by a forward slash '/'
+  # 
+  # $ rake sunspot:reindex                # reindex all models
+  # $ rake sunspot:reindex[1000]          # reindex in batches of 1000
+  # $ rake sunspot:reindex[false]         # reindex without batching
+  # $ rake sunspot:reindex[,Post]         # reindex only the Post model
+  # $ rake sunspot:reindex[1000,Post]     # reindex only the Post model in
+  #                                       # batchs of 1000
+  # $ rake sunspot:reindex[,Post+Author]  # reindex Post and Author model
+  task :reindex, :batch_size, :models, :needs => :environment do |t, args|
+    reindex_options = {:batch_commit => false}
+    case args[:batch_size]
+    when 'false'
+      reindex_options[:batch_size] = nil
+    when /^\d+$/ 
+      reindex_options[:batch_size] = args[:batch_size].to_i if args[:batch_size].to_i > 0
+    end
+    unless args[:models]
+      all_files = Dir.glob(Rails.root.join('app', 'models', '*.rb'))
+      all_models = all_files.map { |path| File.basename(path, '.rb').camelize.constantize }
+      sunspot_models = all_models.select { |m| m < ActiveRecord::Base and m.searchable? }
+    else
+      sunspot_models = args[:models].split('+').map{|m| m.constantize}
+    end
+    sunspot_models.each do |model|
+      model.solr_reindex reindex_options
+    end
+  end
+
