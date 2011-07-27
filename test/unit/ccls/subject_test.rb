@@ -4,10 +4,10 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_have_many( :abstracts, :addressings, :enrollments,
-		:gift_cards, :phone_numbers, :samples, :interviews )
+		:gift_cards, :phone_numbers, :samples, :interviews, :bc_requests )
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome,
-		:identifier, :pii, :bc_request )
+		:identifier, :pii )
 	assert_should_habtm(:analyses)
 	assert_requires_complete_date( :reference_date )
 	assert_should_require_attributes_not_nil( :do_not_contact )
