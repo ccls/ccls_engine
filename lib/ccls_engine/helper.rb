@@ -1,4 +1,3 @@
-#module CclsEngine::Helper
 module Ccls::Helper
 
 	#	&uarr; and &darr;
@@ -45,6 +44,42 @@ module Ccls::Helper
 		s
 	end
 
+	#	Used to replace the _id_bar partial
+	def subject_id_bar(subject,&block)
+		stylesheets('subject_id_bar')
+		content_for :main do
+			"<div id='id_bar'>\n" <<
+			"<div class='childid'>\n" <<
+			"<span>ChildID:</span>\n" <<
+			"<span>#{subject.try(:childid)}</span>\n" <<
+			"</div><!-- class='childid' -->\n" <<
+			"<div class='studyid'>\n" <<
+			"<span>StudyID:</span>\n" <<
+			"<span>#{subject.try(:studyid)}</span>\n" <<
+			"</div><!-- class='studyid' -->\n" <<
+			"<div class='full_name'>\n" <<
+			"<span>#{subject.try(:full_name)}</span>\n" <<
+			"</div><!-- class='full_name' -->\n" <<
+			"<div class='controls'>\n" <<
+			@content_for_id_bar.to_s <<
+			((block_given?)?yield: '') <<
+			"</div><!-- class='controls' -->\n" <<
+			"</div><!-- id='id_bar' -->\n"
+		end
+
+		content_for :main do
+			"<div id='do_not_contact'>\n" <<
+			"Subject requests no further contact with Study.\n" <<
+			"</div>\n" 
+		end if subject.try(:do_not_contact?)
+	end	#	id_bar_for
+
+	#	Just a simple method to wrap the passed text in a span
+	#	with class='required'
+	def required(text)
+		"<span class='required'>#{text}</span>"
+	end
+	alias_method :req, :required
+
 end
-#ActionView::Base.send(:include, CclsEngine::Helper)
 ActionView::Base.send(:include, Ccls::Helper)

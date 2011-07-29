@@ -1,6 +1,5 @@
 require 'test_helper'
 
-#class CclsEngine::HelperTest < ActionView::TestCase
 class Ccls::HelperTest < ActionView::TestCase
 
 #	user_roles
@@ -64,11 +63,46 @@ class Ccls::HelperTest < ActionView::TestCase
 		end
 	end
 
+#	subject_id_bar
+
+	test "subject_id_bar should return subject_id_bar" do
+		subject = create_subject
+		assert subject.is_a?(Subject)
+		assert_nil subject_id_bar(subject)	#	sets content_for :main
+		response = HTML::Document.new(@content_for_main).root
+		assert_select response, 'div#id_bar' do
+			assert_select 'div.childid'
+			assert_select 'div.studyid'
+			assert_select 'div.full_name'
+			assert_select 'div.controls'
+		end
+	end
+
+#	required
+
+	test "required(text) should" do
+		response = HTML::Document.new(required('something')).root
+		#"<span class='required'>something</span>"
+		assert_select response, 'span.required', 'something', 1
+	end
+
+#	req
+
+	test "req(text) should" do
+		response = HTML::Document.new(req('something')).root
+		#"<span class='required'>something</span>"
+		assert_select response, 'span.required', 'something', 1
+	end
+
 private 
 	def params
 		@params || {}
 	end
 	def params=(new_params)
 		@params = new_params
+	end
+	def stylesheets(*args)
+		#	placeholder so can call subject_id_bar and avoid
+		#		NoMethodError: undefined method `stylesheets' for #<Ccls::HelperTest:0x109e8ef90>
 	end
 end
