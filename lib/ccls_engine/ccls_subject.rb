@@ -85,6 +85,7 @@ class Ccls::Subject < Shared
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
 		n.with_options :to => :pii do |o|
+			o.delegate :initials
 			o.delegate :full_name
 			o.delegate :email
 			o.delegate :last_name

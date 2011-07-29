@@ -110,6 +110,20 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should return join of subject's initials" do
+		object = create_object(
+			:first_name => "John",
+			:last_name  => "Smith" )
+		assert_equal 'JS', object.initials 
+	end
+
+	test "should return join of subject's name" do
+		object = create_object(
+			:first_name => "John",
+			:last_name  => "Smith" )
+		assert_equal 'John Smith', object.full_name 
+	end
+
 	test "should return join of father's name" do
 		object = create_object(
 			:father_first_name => "Santa",

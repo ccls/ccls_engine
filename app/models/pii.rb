@@ -56,6 +56,11 @@ class Pii < Shared
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
 			:maximum => 250, :allow_blank => true
 
+	#	Returns string containing subject's first, middle and last initials
+	def initials
+		[first_name, middle_name, last_name].compact.collect{|s|s.chars.first}.join()
+	end
+
 	#	Returns string containing subject's first, middle and last name
 	def full_name
 		[first_name, middle_name, last_name].compact.join(' ')

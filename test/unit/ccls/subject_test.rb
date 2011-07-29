@@ -431,7 +431,7 @@ pending
 		} }
 	end
 
-	%w( full_name first_name last_name fathers_name 
+	%w( initials full_name first_name last_name fathers_name 
 			mothers_name mother_maiden_name email dob state_id_no
 			ssn childid patid orderno studyid 
 			interview_outcome interview_outcome_on 
@@ -464,7 +464,7 @@ pending
 
 	end
 
-	%w( full_name first_name last_name fathers_name 
+	%w( initials full_name first_name last_name fathers_name 
 			mothers_name email dob ).each do |method_name|
 
 		test "should return nil #{method_name} without pii" do
