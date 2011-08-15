@@ -172,6 +172,9 @@ class Ccls::Subject < Shared
 	#	Returns boolean of comparison
 	#	true only if type is Case
 	def is_case?
+#	TODO would really like to drop the SubjectType model
+#		and make this use identifier's case_control_type instead
+#		identifier.try(:is_case?)
 		subject_type.try(:code) == 'Case'
 	end
 
