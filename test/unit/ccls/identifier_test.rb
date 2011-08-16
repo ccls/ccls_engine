@@ -433,7 +433,13 @@ pending
 
 	test "should not generate new matchingid if given" do
 		#	existing data import
-pending
+		assert_difference( "#{model_name}.count", 1 ) {
+			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier.matchingid = "123456"	#	NOTE converted to integer in validation, so make numeric so can compare value
+			identifier.save
+			identifier.reload
+			assert_equal "123456", identifier.matchingid
+		}
 	end
 
 

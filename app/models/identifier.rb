@@ -210,8 +210,8 @@ protected
 		#			That is, a mother's matchingID is the same as their child's. This 
 		#			will become clearer when I provide specs for mother subject creation.
 #	matchingid is manually set in some tests.  will need to setup for stubbing this.
-#	TODO don't assign if given (matchingid is currently NOT protected)
-		self.matchingid = subjectid if is_case?
+		#	don't assign if given (matchingid is currently NOT protected)
+		self.matchingid = subjectid if is_case? and matchingid.blank?
 #		self.matchingid = case case_control_type
 #			when 'C' then subjectid
 #			else nil
