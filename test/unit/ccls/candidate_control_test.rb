@@ -20,8 +20,9 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:county_of_birth,
 		:assigned_on,
 		:mother_race_id,
-		:mother_hisp_id,
+		:mother_hispanicity_id,
 		:father_race_id,
+		:father_hispanicity_id,
 		:birth_type,
 		:mother_maiden_name,
 		:mother_yrs_educ,
@@ -42,26 +43,4 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:rejection_reason,
 			:maximum => 250 )
 
-
-#			t.integer :icf_master_id
-#			t.string  :related_patid, :limit => 5
-#			t.integer :study_subject_id
-#			t.string  :first_name
-#			t.string  :middle_name
-#			t.string  :last_name
-#			t.date    :dob
-#			t.string  :state_registrar_no, :limit => 25
-#			t.string  :local_registrar_no, :limit => 25
-#			t.string  :sex
-#			t.string  :county_of_birth
-#			t.date    :assigned_on
-#			t.integer :mother_race_id
-#			t.integer :mother_hisp_id
-#			t.integer :father_race_id
-#			t.string  :birth_type
-#			t.string  :mother_maiden_name
-#			t.integer :mother_yrs_educ
-#			t.integer :father_yrs_educ
-#			t.boolean :reject_candidate, :null => false, :default => false
-#			t.string  :rejection_reason
 end
