@@ -12,7 +12,8 @@ class Ccls::SubjectTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :reference_date )
 	assert_should_require_attributes_not_nil( :do_not_contact )
 	assert_should_not_require_attributes( :vital_status_id, :hispanicity_id, 
-		:reference_date, :response_sets_count, :sex )
+		:reference_date, :response_sets_count, :sex,
+		:mother_yrs_educ, :father_yrs_educ, :birth_type )
 
 	test "create_control_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
