@@ -472,6 +472,7 @@ Table: bc_requests
 | notes            | text         | YES  |     | NULL    |                |
 | created_at       | datetime     | YES  |     | NULL    |                |
 | updated_at       | datetime     | YES  |     | NULL    |                |
+| request_type     | varchar(255) | YES  |     | NULL    |                |
 +------------------+--------------+------+-----+---------+----------------+
 
 Table: bdrb_job_queues
