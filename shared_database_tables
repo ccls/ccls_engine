@@ -1433,6 +1433,8 @@ Table: subjects
 | created_at          | datetime     | YES  |     | NULL    |                |
 | updated_at          | datetime     | YES  |     | NULL    |                |
 | abstracts_count     | int(11)      | YES  |     | 0       |                |
+| mother_yrs_educ     | int(11)      | YES  |     | NULL    |                |
+| father_yrs_educ     | int(11)      | YES  |     | NULL    |                |
 +---------------------+--------------+------+-----+---------+----------------+
 
 Table: tracks
