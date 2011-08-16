@@ -15,6 +15,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:ssn,
 #		:subjectid,
 		:state_id_no,
+		:state_registrar_no,
+		:local_registrar_no,
 		:icf_master_id )
 #	assert_should_require_unique_attribute( :patid, 
 #		:scope => [:orderno,:case_control_type] )
@@ -34,11 +36,15 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:related_case_childid,
 		:hospital_no,
 		:state_id_no,
+		:state_registrar_no,
+		:local_registrar_no,
 		:matchingid,
 		:familyid )
 
 	assert_should_require_attribute_length( 
 		:state_id_no,
+		:state_registrar_no,
+		:local_registrar_no,
 #	can't do this with case_control_type as is modified in before_validation
 #	which will cause the test to fail and equality test
 #		:case_control_type,
@@ -117,6 +123,24 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		identifier.valid?
 		assert  identifier.state_id_no.blank?
 		assert  identifier.state_id_no.nil?
+	end 
+
+	test "should nullify blank state_registrar_no before validation" do
+		identifier = Factory.build(:identifier, :state_registrar_no => '')
+		assert  identifier.state_registrar_no.blank?
+		assert !identifier.state_registrar_no.nil?
+		identifier.valid?
+		assert  identifier.state_registrar_no.blank?
+		assert  identifier.state_registrar_no.nil?
+	end 
+
+	test "should nullify blank local_registrar_no before validation" do
+		identifier = Factory.build(:identifier, :local_registrar_no => '')
+		assert  identifier.local_registrar_no.blank?
+		assert !identifier.local_registrar_no.nil?
+		identifier.valid?
+		assert  identifier.local_registrar_no.blank?
+		assert  identifier.local_registrar_no.nil?
 	end 
 
 #	test "should pad subjectid with leading zeros before validation" do

@@ -890,6 +890,8 @@ Table: identifiers
 | studyid_nohyphen         | varchar(12)  | YES  |     | NULL    |                |
 | studyid_intonly_nohyphen | varchar(12)  | YES  |     | NULL    |                |
 | icf_master_id            | varchar(9)   | YES  | UNI | NULL    |                |
+| state_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |
+| local_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |
 +--------------------------+--------------+------+-----+---------+----------------+
 
 Table: imports

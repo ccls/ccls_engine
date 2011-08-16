@@ -63,10 +63,14 @@ class Identifier < Shared
 
 #	validates_presence_of   :state_id_no
 	validates_uniqueness_of :state_id_no, :allow_nil => true
+	validates_uniqueness_of :state_registrar_no, :allow_nil => true
+	validates_uniqueness_of :local_registrar_no, :allow_nil => true
 
 	with_options :allow_blank => true do |blank|
 		blank.with_options :maximum => 250 do |o|
 			o.validates_length_of :state_id_no
+			o.validates_length_of :state_registrar_no
+			o.validates_length_of :local_registrar_no
 			o.validates_length_of :lab_no
 			o.validates_length_of :related_childid
 			o.validates_length_of :related_case_childid
@@ -147,6 +151,8 @@ protected
 		self.case_control_type = case_control_type.to_s.upcase
 		self.ssn = ( ( ssn.blank? ) ? nil : ssn.to_s.gsub(/\D/,'') )
 		self.state_id_no = nil if state_id_no.blank?
+		self.state_registrar_no = nil if state_registrar_no.blank?
+		self.local_registrar_no = nil if local_registrar_no.blank?
 		patid.try(:gsub!,/\D/,'') #unless patid.nil?
 		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
 		matchingid.try(:gsub!,/\D/,'')

@@ -139,6 +139,8 @@ Factory.define :identifier do |f|
 	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
 #	f.sequence(:subjectid){|n| "#{n}"}
 	f.sequence(:state_id_no){|n| "#{n}"}
+	f.sequence(:state_registrar_no){|n| "#{n}"}
+	f.sequence(:local_registrar_no){|n| "#{n}"}
 	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
 end
 
