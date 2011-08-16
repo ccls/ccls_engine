@@ -185,8 +185,8 @@ protected
 
 		#	perhaps put in an after_save with an update_attribute(s)
 		#	and simply generate a new one until all is well
-#	TODO don't assign if given (subjectid is currently protected)
-		self.subjectid = generate_subjectid
+		#	don't assign if given (subjectid is currently protected)
+		self.subjectid = generate_subjectid if subjectid.blank?
 
 		#	cases and controls: their own subjectID is also their familyID.
 		#	mothers: their child's subjectID is their familyID. That is, 

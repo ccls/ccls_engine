@@ -411,7 +411,13 @@ pending
 
 	test "should not generate new subjectid if given" do
 		#	existing data import
-pending
+		assert_difference( "#{model_name}.count", 1 ) {
+			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier.subjectid = "ABCDEF"
+			identifier.save
+			identifier.reload
+			assert_equal "ABCDEF", identifier.subjectid
+		}
 	end
 
 	test "should not generate new familyid if given" do
