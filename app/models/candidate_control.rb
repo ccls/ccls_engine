@@ -11,7 +11,7 @@ class CandidateControl < Shared
 	#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
 
 	validates_length_of     :first_name, :middle_name, :last_name,
-		:sex, :county_of_birth, :birth_type, :mother_maiden_name,
+		:sex, :birth_county, :birth_type, :mother_maiden_name,
 		:rejection_reason, :maximum => 250, :allow_blank => true
 	#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
 
@@ -25,10 +25,11 @@ class CandidateControl < Shared
 #			t.string  :state_registrar_no, :limit => 25
 #			t.string  :local_registrar_no, :limit => 25
 #			t.string  :sex
-#			t.string  :county_of_birth
+#			t.string  :birth_county
 #			t.date    :assigned_on
 #			t.integer :mother_race_id
-#			t.integer :mother_hisp_id
+#			t.integer :mother_hispanicity_id
+#			t.integer :father_hispanicity_id
 #			t.integer :father_race_id
 #			t.string  :birth_type
 #			t.string  :mother_maiden_name

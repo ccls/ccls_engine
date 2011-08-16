@@ -513,7 +513,7 @@ Table: candidate_controls
 | state_registrar_no    | varchar(25)  | YES  |     | NULL    |                |
 | local_registrar_no    | varchar(25)  | YES  |     | NULL    |                |
 | sex                   | varchar(255) | YES  |     | NULL    |                |
-| county_of_birth       | varchar(255) | YES  |     | NULL    |                |
+| birth_county          | varchar(255) | YES  |     | NULL    |                |
 | assigned_on           | date         | YES  |     | NULL    |                |
 | mother_race_id        | int(11)      | YES  |     | NULL    |                |
 | mother_hispanicity_id | int(11)      | YES  |     | NULL    |                |
