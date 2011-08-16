@@ -180,8 +180,8 @@ protected
 		#	don't assign if given (patid is currently protected)
 		self.patid = sprintf("%04d",get_next_patid.to_i) if is_case? and patid.blank?
 
-#	TODO don't assign if given (orderno is currently protected)
-		self.orderno = 0 if is_case?
+		#	don't assign if given (orderno is currently protected)
+		self.orderno = 0 if is_case? and orderno.blank?
 
 		#	perhaps put in an after_save with an update_attribute(s)
 		#	and simply generate a new one until all is well

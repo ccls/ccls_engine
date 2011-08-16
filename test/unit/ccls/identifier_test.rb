@@ -400,7 +400,13 @@ pending
 
 	test "should not generate new orderno if given" do
 		#	existing data import
-pending
+		assert_difference( "#{model_name}.count", 1 ) {
+			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier.orderno = 9
+			identifier.save
+			identifier.reload
+			assert_equal 9, identifier.orderno
+		}
 	end
 
 	test "should not generate new subjectid if given" do
