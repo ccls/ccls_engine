@@ -1429,7 +1429,6 @@ Table: subjects
 | vital_status_id       | int(11)      | YES  |     | NULL    |                |
 | hispanicity_id        | int(11)      | YES  |     | NULL    |                |
 | reference_date        | date         | YES  |     | NULL    |                |
-| response_sets_count   | int(11)      | YES  |     | 0       |                |
 | sex                   | varchar(255) | YES  |     | NULL    |                |
 | do_not_contact        | tinyint(1)   | NO   |     | 0       |                |
 | created_at            | datetime     | YES  |     | NULL    |                |
