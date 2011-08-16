@@ -1217,6 +1217,8 @@ Table: piis
 | guardian_last_name          | varchar(255) | YES  |     | NULL    |                |
 | guardian_relationship_id    | int(11)      | YES  |     | NULL    |                |
 | guardian_relationship_other | varchar(255) | YES  |     | NULL    |                |
+| mother_race_id              | int(11)      | YES  |     | NULL    |                |
+| father_race_id              | int(11)      | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: project_outcomes
