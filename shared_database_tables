@@ -1439,6 +1439,7 @@ Table: subjects
 | birth_type            | varchar(255) | YES  |     | NULL    |                |
 | mother_hispanicity_id | int(11)      | YES  |     | NULL    |                |
 | father_hispanicity_id | int(11)      | YES  |     | NULL    |                |
+| birth_county          | varchar(255) | YES  |     | NULL    |                |
 +-----------------------+--------------+------+-----+---------+----------------+
 
 Table: tracks
