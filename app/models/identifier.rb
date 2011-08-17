@@ -10,7 +10,6 @@ class Identifier < Shared
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
 
-
 #
 #	TODO - Don't validate anything that the creating user can't do anything about.
 #
@@ -33,11 +32,8 @@ class Identifier < Shared
 	#	the subject creation too if using nested attributes.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
 
-#	validates_presence_of   :orderno
-#	validates_presence_of   :patid
-	validates_presence_of   :case_control_type		#	apparently could be null for mother's
+	validates_presence_of   :case_control_type		#	TODO apparently could be null for mother's
 	validates_length_of     :case_control_type, :is => 1
-#	validates_uniqueness_of :patid, :scope => [:orderno,:case_control_type]
 
 
 #	TODO : add a validation for contents of orderno
@@ -52,19 +48,24 @@ class Identifier < Shared
 		#	can't be 0 as case is 0 in studyid_intonly_nohyphen
 
 #	validates_presence_of   :ssn
-	validates_uniqueness_of :ssn, :allow_nil => true
 #	validates_format_of     :ssn, :with => /\A\d{9}\z/
 
 #	TODO I believe that subjectid is, or will be, a required field
 #	validates_presence_of   :subjectid
 #	validates_uniqueness_of :subjectid, :allow_nil => true
 
-	validates_uniqueness_of :icf_master_id, :allow_nil => true
-
-#	validates_presence_of   :state_id_no
-	validates_uniqueness_of :state_id_no, :allow_nil => true
-	validates_uniqueness_of :state_registrar_no, :allow_nil => true
-	validates_uniqueness_of :local_registrar_no, :allow_nil => true
+	with_options :allow_nil => true do |n|
+		n.validates_uniqueness_of :ssn
+		n.validates_uniqueness_of :icf_master_id
+		n.validates_uniqueness_of :state_id_no
+		n.validates_uniqueness_of :state_registrar_no
+		n.validates_uniqueness_of :local_registrar_no
+		n.validates_uniqueness_of	:gbid
+		n.validates_uniqueness_of	:lab_no_wiemels
+		n.validates_uniqueness_of	:accession_no
+		n.validates_uniqueness_of	:hospital_no
+		n.validates_uniqueness_of	:idno_wiemels
+	end
 
 	with_options :allow_blank => true do |blank|
 		blank.with_options :maximum => 250 do |o|
@@ -121,6 +122,19 @@ class Identifier < Shared
 		!is_case? and !is_mother?
 	end
 
+	def studyid
+		@studyid || "#{patid}-#{case_control_type}-#{orderno}"
+	end
+
+	def studyid_nohyphen
+		@studyid_nohyphen || "#{patid}#{case_control_type}#{orderno}"
+	end
+
+	def studyid_intonly_nohyphen
+		@studyid_intonly_nohyphen || "#{patid}" <<
+			"#{(is_case?) ? 0 : case_control_type}#{orderno}"
+	end
+
 protected
 
 	def trigger_update_matching_subjects_reference_date
@@ -150,9 +164,19 @@ protected
 	def prepare_fields_for_validation
 		self.case_control_type = case_control_type.to_s.upcase
 		self.ssn = ( ( ssn.blank? ) ? nil : ssn.to_s.gsub(/\D/,'') )
+		#	ANY field that has a unique index in the database NEEDS
+		#	to NOT be blank.  Multiple nils are acceptable in index,
+		#	but multiple blanks are NOT.  Nilify ALL fields with
+		#	unique indexes in the database.
 		self.state_id_no = nil if state_id_no.blank?
 		self.state_registrar_no = nil if state_registrar_no.blank?
 		self.local_registrar_no = nil if local_registrar_no.blank?
+		self.gbid = nil if gbid.blank?
+		self.lab_no_wiemels = nil if lab_no_wiemels.blank?
+		self.accession_no = nil if accession_no.blank?
+		self.hospital_no = nil if hospital_no.blank?
+		self.idno_wiemels = nil if idno_wiemels.blank?
+
 		patid.try(:gsub!,/\D/,'') #unless patid.nil?
 		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
 		matchingid.try(:gsub!,/\D/,'')

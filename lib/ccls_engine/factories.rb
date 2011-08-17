@@ -141,6 +141,11 @@ Factory.define :identifier do |f|
 	f.sequence(:state_id_no){|n| "#{n}"}
 	f.sequence(:state_registrar_no){|n| "#{n}"}
 	f.sequence(:local_registrar_no){|n| "#{n}"}
+	f.sequence(:gbid){|n| "#{n}"}
+	f.sequence(:accession_no){|n| "#{n}"}
+	f.sequence(:lab_no_wiemels){|n| "#{n}"}
+	f.sequence(:idno_wiemels){|n| "#{n}"}
+	f.sequence(:hospital_no){|n| "#{n}"}
 	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
 end
 

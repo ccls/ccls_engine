@@ -867,7 +867,7 @@ Table: identifiers
 +--------------------------+--------------+------+-----+---------+----------------+
 | id                       | int(11)      | NO   | PRI | NULL    | auto_increment |
 | study_subject_id         | int(11)      | YES  | UNI | NULL    |                |
-| childid                  | int(11)      | YES  |     | NULL    |                |
+| childid                  | int(11)      | YES  | UNI | NULL    |                |
 | patid                    | varchar(4)   | YES  | MUL | NULL    |                |
 | case_control_type        | varchar(1)   | YES  |     | NULL    |                |
 | orderno                  | int(11)      | YES  |     | NULL    |                |
@@ -881,16 +881,16 @@ Table: identifiers
 | matchingid               | varchar(6)   | YES  |     | NULL    |                |
 | familyid                 | varchar(6)   | YES  |     | NULL    |                |
 | state_id_no              | varchar(255) | YES  | UNI | NULL    |                |
-| hospital_no              | varchar(25)  | YES  |     | NULL    |                |
+| hospital_no              | varchar(25)  | YES  | UNI | NULL    |                |
 | childidwho               | varchar(10)  | YES  |     | NULL    |                |
-| studyid                  | varchar(14)  | YES  |     | NULL    |                |
+| studyid                  | varchar(14)  | YES  | UNI | NULL    |                |
 | newid                    | varchar(6)   | YES  |     | NULL    |                |
-| gbid                     | varchar(26)  | YES  |     | NULL    |                |
-| lab_no_wiemels           | varchar(25)  | YES  |     | NULL    |                |
-| idno_wiemels             | varchar(10)  | YES  |     | NULL    |                |
-| accession_no             | varchar(25)  | YES  |     | NULL    |                |
-| studyid_nohyphen         | varchar(12)  | YES  |     | NULL    |                |
-| studyid_intonly_nohyphen | varchar(12)  | YES  |     | NULL    |                |
+| gbid                     | varchar(26)  | YES  | UNI | NULL    |                |
+| lab_no_wiemels           | varchar(25)  | YES  | UNI | NULL    |                |
+| idno_wiemels             | varchar(10)  | YES  | UNI | NULL    |                |
+| accession_no             | varchar(25)  | YES  | UNI | NULL    |                |
+| studyid_nohyphen         | varchar(12)  | YES  | UNI | NULL    |                |
+| studyid_intonly_nohyphen | varchar(12)  | YES  | UNI | NULL    |                |
 | icf_master_id            | varchar(9)   | YES  | UNI | NULL    |                |
 | state_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |
 | local_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |

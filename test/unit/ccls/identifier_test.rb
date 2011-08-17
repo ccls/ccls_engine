@@ -11,12 +11,17 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 #		:patid )
 
 	assert_should_require_unique_attribute( 
-#		:childid,
+#		:childid,	#	NOTE can't as is calculated and protected
 		:ssn,
-#		:subjectid,
+#		:subjectid,	#	NOTE can't as is calculated and protected
 		:state_id_no,
 		:state_registrar_no,
 		:local_registrar_no,
+		:hospital_no,
+		:gbid,
+		:lab_no_wiemels,
+		:accession_no,
+		:idno_wiemels,
 		:icf_master_id )
 #	assert_should_require_unique_attribute( :patid, 
 #		:scope => [:orderno,:case_control_type] )
@@ -39,6 +44,10 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:state_registrar_no,
 		:local_registrar_no,
 		:matchingid,
+		:gbid,
+		:lab_no_wiemels,
+		:accession_no,
+		:idno_wiemels,
 		:familyid )
 
 	assert_should_require_attribute_length( 
@@ -292,12 +301,10 @@ pending
 		identifier = Factory(:identifier, 
 			:case_control_type => 'c'
 		).reload
-#		assert_equal "0123-C-0", identifier.studyid
-#		assert_equal "0123C0",   identifier.studyid_nohyphen
-#		assert_equal "012300",   identifier.studyid_intonly_nohyphen
-		assert_nil identifier.studyid
-		assert_nil identifier.studyid_nohyphen
-		assert_nil identifier.studyid_intonly_nohyphen
+		assert_equal "0123", identifier.patid
+		assert_equal "0123-C-0", identifier.studyid
+		assert_equal "0123C0",   identifier.studyid_nohyphen
+		assert_equal "012300",   identifier.studyid_intonly_nohyphen
 	end
 
 	test "should generate subjectid on creation for any subject" do
@@ -368,12 +375,9 @@ pending
 			identifier.patid = '123'
 			identifier.save
 			identifier.reload
-#			assert_equal "0123-C-0", identifier.studyid
-#			assert_equal "0123C0",   identifier.studyid_nohyphen
-#			assert_equal "012300",   identifier.studyid_intonly_nohyphen
-			assert_nil identifier.studyid
-			assert_nil identifier.studyid_nohyphen
-			assert_nil identifier.studyid_intonly_nohyphen
+			assert_equal "0123-C-0", identifier.studyid
+			assert_equal "0123C0",   identifier.studyid_nohyphen
+			assert_equal "012300",   identifier.studyid_intonly_nohyphen
 			assert_equal "0123",     identifier.patid
 		} } }
 	end
