@@ -286,29 +286,19 @@ pending
 		assert_equal 0, identifier.orderno
 	end
 
-	test "should set studyid with patid, case_control_type and orderno for" <<
+	test "should NOT set studyid with patid, case_control_type and orderno for" <<
 			" case_control_type c" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
 		identifier = Factory(:identifier, 
 			:case_control_type => 'c'
 		).reload
-		assert_equal "0123-C-0", identifier.studyid
-		assert_equal "0123C0",   identifier.studyid_nohyphen
-		assert_equal "012300",   identifier.studyid_intonly_nohyphen
+#		assert_equal "0123-C-0", identifier.studyid
+#		assert_equal "0123C0",   identifier.studyid_nohyphen
+#		assert_equal "012300",   identifier.studyid_intonly_nohyphen
+		assert_nil identifier.studyid
+		assert_nil identifier.studyid_nohyphen
+		assert_nil identifier.studyid_intonly_nohyphen
 	end
-
-#	test "should set studyid with patid, case_control_type and orderno for" <<
-#			" case_control_type 4" do
-#		Identifier.any_instance.stubs(:get_next_patid).returns('123')
-#		identifier = Factory(:identifier, 
-#			:case_control_type => '4',
-##			:patid   => '123',
-#			:orderno => '4'
-#		).reload
-#		assert_equal "0123-4-4", identifier.studyid
-#		assert_equal "012344",   identifier.studyid_nohyphen
-#		assert_equal "012344",   identifier.studyid_intonly_nohyphen
-#	end
 
 	test "should generate subjectid on creation for any subject" do
 		identifier = Factory(:identifier)
@@ -378,9 +368,12 @@ pending
 			identifier.patid = '123'
 			identifier.save
 			identifier.reload
-			assert_equal "0123-C-0", identifier.studyid
-			assert_equal "0123C0",   identifier.studyid_nohyphen
-			assert_equal "012300",   identifier.studyid_intonly_nohyphen
+#			assert_equal "0123-C-0", identifier.studyid
+#			assert_equal "0123C0",   identifier.studyid_nohyphen
+#			assert_equal "012300",   identifier.studyid_intonly_nohyphen
+			assert_nil identifier.studyid
+			assert_nil identifier.studyid_nohyphen
+			assert_nil identifier.studyid_intonly_nohyphen
 			assert_equal "0123",     identifier.patid
 		} } }
 	end

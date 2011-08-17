@@ -230,12 +230,12 @@ protected
 #	for controls, these values won't be known at creation
 #	so we need to continue to update them
 
-		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
-		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
-		#	replace case_control_type with 0
-		#		0 may only be for C, so this may need updated
-		self.studyid_intonly_nohyphen = "#{patid}" <<
-			"#{(is_case?) ? 0 : case_control_type}#{orderno}"
+#		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
+#		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
+#		#	replace case_control_type with 0
+#		#		0 may only be for C, so this may need updated
+#		self.studyid_intonly_nohyphen = "#{patid}" <<
+#			"#{(is_case?) ? 0 : case_control_type}#{orderno}"
 
 	end
 
@@ -266,21 +266,5 @@ protected
 		# from (irb):24
 		sprintf("%06d",subjectids[rand(subjectids.length)].to_i)
 	end
-
-
-#	#	Pad leading zeroes to matchingid
-#	def pad_zeros_to_matchingid
-#		matchingid.try(:gsub!,/\D/,'')
-##	TODO add more tests for this (try with valid? method)
-##puts "Matchingid before before validation:#{matchingid}"
-#		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
-##puts "Matchingid after before validation:#{matchingid}"
-#	end 
-#
-#	#	Pad leading zeroes to patid
-#	def pad_zeros_to_patid
-#		patid.try(:gsub!,/\D/,'') #unless patid.nil?
-#		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
-#	end 
 
 end
