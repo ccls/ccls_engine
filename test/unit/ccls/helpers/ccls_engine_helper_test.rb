@@ -68,6 +68,7 @@ class Ccls::HelperTest < ActionView::TestCase
 	test "subject_id_bar should return subject_id_bar" do
 		subject = create_subject
 		assert subject.is_a?(Subject)
+		assert !subject.do_not_contact?
 		assert_nil subject_id_bar(subject)	#	sets content_for :main
 		response = HTML::Document.new(@content_for_main).root
 		assert_select response, 'div#id_bar' do
@@ -76,6 +77,22 @@ class Ccls::HelperTest < ActionView::TestCase
 			assert_select 'div.full_name'
 			assert_select 'div.controls'
 		end
+		assert_select response, 'div#do_not_contact', 0
+	end
+
+	test "subject_id_bar should return subject_id_bar with do not contact" do
+		subject = create_subject(:do_not_contact => true)
+		assert subject.is_a?(Subject)
+		assert subject.do_not_contact?
+		assert_nil subject_id_bar(subject)	#	sets content_for :main
+		response = HTML::Document.new(@content_for_main).root
+		assert_select response, 'div#id_bar' do
+			assert_select 'div.childid'
+			assert_select 'div.studyid'
+			assert_select 'div.full_name'
+			assert_select 'div.controls'
+		end
+		assert_select response, 'div#do_not_contact'
 	end
 
 #	required
