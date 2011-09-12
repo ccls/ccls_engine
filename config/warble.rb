@@ -1,3 +1,11 @@
+
+
+#	As the production server is no longer jruby, warble is no longer used.
+#	I am leaving this file and it contents here, just in case we have
+#	to return to it.
+
+
+
 # Disable automatic framework detection by uncommenting/setting to false
 # Warbler.framework_detection = false
 

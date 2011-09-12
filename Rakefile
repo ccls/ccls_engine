@@ -61,6 +61,7 @@ begin
 		gem.files -= FileList['**/versions/*']
 		gem.files -= FileList['app/controllers/application_controller.rb']
 		gem.files -= FileList['app/views/layouts/application.html.erb']
+		gem.files -= FileList['lib/ccls_engine/warble.rb']
 #   
 #		I'm not quite sure if it matters whether these files
 #		are included as 'files' or 'test_files', but

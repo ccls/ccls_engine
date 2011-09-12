@@ -1,3 +1,11 @@
+
+
+#	As the production server is no longer jruby, warble is no longer used.
+#	I am leaving this file and it contents here, just in case we have
+#	to return to it.
+
+
+
 #		RAILS_GEM_VERSION to use the latest version installed.
 gem 'activesupport', '~>2.3'
 
