@@ -340,7 +340,7 @@ class Ccls::StudySubject < Shared
 
 	##
 	#	
-	def update_subjects_reference_date_matching(*matchingids)
+	def update_study_subjects_reference_date_matching(*matchingids)
 #	if matchingids ~ [nil,12345]
 #		identifier was either just created or matchingid added (compact as nil not needed)
 #	if matchingids ~ [12345,nil]
@@ -354,30 +354,30 @@ class Ccls::StudySubject < Shared
 		#		yet be resolved, we have to get the associations manually.
 		my_identifier = Identifier.find_by_study_subject_id(self.attributes['id'])
 		matchingids.compact.push(my_identifier.try(:matchingid)).uniq.each do |matchingid|
-			subject_ids = if( !matchingid.nil? )
+			study_subject_ids = if( !matchingid.nil? )
 				Identifier.find_all_by_matchingid(matchingid
 					).collect(&:study_subject_id)
 			else
 				[id]
 			end
 
-			#	SHOULD only ever be 1 patient found amongst the subject_ids although there is
+			#	SHOULD only ever be 1 patient found amongst the study_subject_ids although there is
 			#		currently no validation applied to the uniqueness of matchingid
 			#	If there is more than one patient for a given matchingid, this'll just be wrong.
 
-			matching_patient = Patient.find_by_study_subject_id(subject_ids)
+			matching_patient = Patient.find_by_study_subject_id(study_subject_ids)
 			admit_date = matching_patient.try(:admit_date)
 
-			StudySubject.update_subjects_reference_date( subject_ids, admit_date )
+			StudySubject.update_study_subjects_reference_date( study_subject_ids, admit_date )
 		end
 		true
 	end
-	alias_method :update_study_subjects_reference_date_matching, 
-		:update_subjects_reference_date_matching
+	alias_method :update_subjects_reference_date_matching, 
+		:update_study_subjects_reference_date_matching
 
 protected
 
-	def self.update_subjects_reference_date(study_subject_ids,new_reference_date)
+	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)
 		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
 		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
 		unless study_subject_ids.empty?
@@ -387,8 +387,8 @@ protected
 		end
 	end
 	class << self
-		alias_method :update_study_subjects_reference_date, 
-			:update_subjects_reference_date
+		alias_method :update_subjects_reference_date, 
+			:update_study_subjects_reference_date
 	end
 
 	#	This is a duplication of a patient validation that won't

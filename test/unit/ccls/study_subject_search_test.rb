@@ -7,29 +7,29 @@ class Ccls::StudySubjectSearchTest < ActiveSupport::TestCase
 	end 
 
 	test "should respond to search" do
-		assert StudyStudySubject.respond_to?(:search)
+		assert StudySubject.respond_to?(:search)
 	end
 
 	test "should return Array" do
-		study_subjects = StudyStudySubject.search()
+		study_subjects = StudySubject.search()
 		assert study_subjects.is_a?(Array)
 	end
 
 	test "should include study_subject" do
 		study_subject = create_study_subject
-		study_subjects = StudyStudySubject.search()
+		study_subjects = StudySubject.search()
 		assert study_subjects.include?(study_subject)
 	end
 
 	test "should include study_subject without pagination" do
 		study_subject = create_study_subject
-		study_subjects = StudyStudySubject.search(:paginate => false)
+		study_subjects = StudySubject.search(:paginate => false)
 		assert study_subjects.include?(study_subject)
 	end
 
 	test "should include study_subject by subject_types" do
 		s1,s2,s3 = create_study_subjects(3)
-		study_subjects = StudyStudySubject.search(
+		study_subjects = StudySubject.search(
 			:types => [s1,s2].collect{|s|s.subject_type.description})
 		assert  study_subjects.include?(s1)
 		assert  study_subjects.include?(s2)
@@ -38,10 +38,10 @@ class Ccls::StudySubjectSearchTest < ActiveSupport::TestCase
 
 	test "should include study_subject by races" do
 		s1,s2,s3 = nil
-		assert_difference('StudyStudySubject.count',3) do
+		assert_difference('StudySubject.count',3) do
 			s1,s2,s3 = create_study_subjects_with_races(3)
 		end
-		study_subjects = StudyStudySubject.search(
+		study_subjects = StudySubject.search(
 			:races => [s1,s2].collect{|s|s.races.first.name})
 		assert  study_subjects.include?(s1)
 		assert  study_subjects.include?(s2)
@@ -51,7 +51,7 @@ class Ccls::StudySubjectSearchTest < ActiveSupport::TestCase
 	test "should include study_subject by hispanicity" do
 		s1,s2,s3 = create_study_subjects(3)
 pending
-#		study_subjects = StudyStudySubject.search(
+#		study_subjects = StudySubject.search(
 #			:races => [s1,s2].collect{|s|s.race.name})
 #		assert  study_subjects.include?(s1)
 #		assert  study_subjects.include?(s2)
@@ -60,7 +60,7 @@ pending
 
 	test "should include study_subject by vital_statuses" do
 		s1,s2,s3 = create_study_subjects(3)
-		study_subjects = StudyStudySubject.search(
+		study_subjects = StudySubject.search(
 			:vital_statuses => [s1,s2].collect{|s|s.vital_status.code})
 		assert  study_subjects.include?(s1)
 		assert  study_subjects.include?(s2)
@@ -71,7 +71,7 @@ pending
 #		subject1 = create_study_subject
 #		dust_kit = create_dust_kit(:study_subject_id => subject1.id)
 #		subject2 = create_study_subject
-#		study_subjects = StudyStudySubject.search(:dust_kit => 'ignore')
+#		study_subjects = StudySubject.search(:dust_kit => 'ignore')
 #		assert study_subjects.include?(subject1)
 #		assert study_subjects.include?(subject2)
 #	end
@@ -80,7 +80,7 @@ pending
 #		subject1 = create_study_subject
 #		dust_kit = create_dust_kit(:study_subject_id => subject1.id)
 #		subject2 = create_study_subject
-#		study_subjects = StudyStudySubject.search(:dust_kit => 'none')
+#		study_subjects = StudySubject.search(:dust_kit => 'none')
 #		assert  study_subjects.include?(subject2)
 #		assert !study_subjects.include?(subject1)
 #	end
@@ -89,7 +89,7 @@ pending
 #		subject1 = create_study_subject
 #		dust_kit = create_dust_kit(:study_subject_id => subject1.id)
 #		subject2 = create_study_subject
-#		study_subjects = StudyStudySubject.search(:dust_kit => 'shipped')
+#		study_subjects = StudySubject.search(:dust_kit => 'shipped')
 #		assert  study_subjects.include?(subject1)
 #		assert !study_subjects.include?(subject2)
 #	end
@@ -100,7 +100,7 @@ pending
 #		dust_kit.kit_package.update_attributes(:status => 'Delivered')
 #		subject2 = create_study_subject
 #		create_dust_kit(:study_subject_id => subject2.id)
-#		study_subjects = StudyStudySubject.search(:dust_kit => 'delivered')
+#		study_subjects = StudySubject.search(:dust_kit => 'delivered')
 #		assert  study_subjects.include?(subject1)
 #		assert !study_subjects.include?(subject2)
 #	end
@@ -111,7 +111,7 @@ pending
 #		dust_kit.dust_package.update_attributes(:status => 'Transit')
 #		subject2 = create_study_subject
 #		create_dust_kit(:study_subject_id => subject2.id)
-#		study_subjects = StudyStudySubject.search(:dust_kit => 'returned')
+#		study_subjects = StudySubject.search(:dust_kit => 'returned')
 #		assert  study_subjects.include?(subject1)
 #		assert !study_subjects.include?(subject2)
 #	end
@@ -122,7 +122,7 @@ pending
 #		dust_kit.dust_package.update_attributes(:status => 'Delivered')
 #		subject2 = create_study_subject
 #		create_dust_kit(:study_subject_id => subject2.id)
-#		study_subjects = StudyStudySubject.search(:dust_kit => 'received')
+#		study_subjects = StudySubject.search(:dust_kit => 'received')
 #		assert  study_subjects.include?(subject1)
 #		assert !study_subjects.include?(subject2)
 #	end
@@ -135,7 +135,7 @@ pending
 #		subject1 = create_study_subject
 #		dust_kit = create_dust_kit(:study_subject_id => subject1.id)
 #		subject2 = create_study_subject
-#		study_subjects = StudyStudySubject.search(:dust_kit => 'none', 
+#		study_subjects = StudySubject.search(:dust_kit => 'none', 
 #			:races => [subject2.race.name] )
 #		assert  study_subjects.include?(subject2)
 #		assert !study_subjects.include?(subject1)
@@ -144,7 +144,7 @@ pending
 	test "should include study_subject by having project" do
 		e1 = Factory(:enrollment)
 		e2 = Factory(:enrollment)
-		study_subjects = StudyStudySubject.search(
+		study_subjects = StudySubject.search(
 			:projects => {e1.project.id => ''})
 		assert  study_subjects.include?(e1.study_subject)
 		assert !study_subjects.include?(e2.study_subject)

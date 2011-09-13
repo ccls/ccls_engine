@@ -33,8 +33,8 @@ module Ccls::FactoryTestHelper
 	end
 	alias_method :create_hx_study_subject, :create_home_exposure_with_study_subject
 
-alias_method :create_home_exposure_with_subject, :create_home_exposure_with_study_subject
-alias_method :create_hx_subject,                 :create_hx_study_subject
+# alias_method :create_home_exposure_with_subject, :create_home_exposure_with_study_subject
+# alias_method :create_hx_subject,                 :create_hx_study_subject
 
 	def create_eligible_hx_study_subject()
 		study_subject = nil
@@ -48,7 +48,7 @@ alias_method :create_hx_subject,                 :create_hx_study_subject
 		assert_study_subject_is_eligible(study_subject)
 		study_subject
 	end
-alias_method :create_eligible_hx_subject, :create_eligible_hx_study_subject
+# alias_method :create_eligible_hx_subject, :create_eligible_hx_study_subject
 
 	def create_hx_interview_study_subject(options={})
 		study_subject = create_hx_study_subject
@@ -61,7 +61,7 @@ alias_method :create_eligible_hx_subject, :create_eligible_hx_study_subject
 			:instrument_version => instrument_version)
 		study_subject
 	end
-alias_method :create_hx_interview_subject, :create_hx_interview_study_subject
+# alias_method :create_hx_interview_subject, :create_hx_interview_study_subject
 
 	def create_study_subject(options = {})
 		#	May contain options for testing failing so can't assert
@@ -70,14 +70,14 @@ alias_method :create_hx_interview_subject, :create_hx_interview_study_subject
 		record.save
 		record
 	end
-alias_method :create_subject, :create_study_subject
+# alias_method :create_subject, :create_study_subject
 
 	def create_study_subjects(count=0,options={})
 		study_subjects = []
 		count.times{ study_subjects.push(create_study_subject(options)) }
-		return subjects
+		return study_subjects
 	end
-alias_method :create_subjects, :create_study_subjects
+# alias_method :create_subjects, :create_study_subjects
 
 	def create_study_subjects_with_recruitment_priorities(*priorities)
 		project = nil
@@ -98,7 +98,7 @@ alias_method :create_subjects, :create_study_subjects
 		end
 		return [project,*study_subjects]
 	end
-alias_method :create_subjects_with_recruitment_priorities, :create_study_subjects_with_recruitment_priorities
+# alias_method :create_subjects_with_recruitment_priorities, :create_study_subjects_with_recruitment_priorities
 
 	def create_study_subject_with_gift_card_number(gift_card_number)
 		study_subject = create_study_subject
@@ -107,14 +107,14 @@ alias_method :create_subjects_with_recruitment_priorities, :create_study_subject
 			:number  => gift_card_number )
 		study_subject
 	end
-alias_method :create_subject_with_gift_card_number, :create_study_subject_with_gift_card_number
+# alias_method :create_subject_with_gift_card_number, :create_study_subject_with_gift_card_number
 
 	def create_study_subjects_with_races(count=0,options={})
 		study_subjects = create_study_subjects(count)
 		study_subjects.each{|s|s.races << Factory(:race)}
 		study_subjects
 	end
-alias_method :create_subjects_with_races, :create_study_subjects_with_races
+# alias_method :create_subjects_with_races, :create_study_subjects_with_races
 
 	def create_study_subject_with_childid(childid)
 #		study_subject = create_study_subject
@@ -134,12 +134,12 @@ alias_method :create_subjects_with_races, :create_study_subjects_with_races
 #		identifier.update_attribute(:childid, childid)
 		identifier.study_subject
 	end
-alias_method :create_subject_with_childid, :create_study_subject_with_childid
+# alias_method :create_subject_with_childid, :create_study_subject_with_childid
 
 	def three_study_subjects_with_childid
 		create_study_subjects_with_childids(9,3,6)
 	end
-alias_method :three_subjects_with_childid, :three_study_subjects_with_childid
+# alias_method :three_subjects_with_childid, :three_study_subjects_with_childid
 
 	def create_study_subject_with_patid(patid)
 #		Identifier.any_instance.stubs(:get_next_patid).returns(patid)
@@ -156,52 +156,52 @@ alias_method :three_subjects_with_childid, :three_study_subjects_with_childid
 		identifier.study_subject
 	end
 	alias_method :create_study_subject_with_studyid, :create_study_subject_with_patid
-alias_method :create_subject_with_patid,   :create_study_subject_with_patid
-alias_method :create_subject_with_studyid, :create_study_subject_with_studyid
+# alias_method :create_subject_with_patid,   :create_study_subject_with_patid
+# alias_method :create_subject_with_studyid, :create_study_subject_with_studyid
 
 	def three_study_subjects_with_patid
 		create_study_subjects_with_patids(9,3,6)
 	end
 	alias_method :three_study_subjects_with_studyid,       :three_study_subjects_with_patid
-alias_method :three_subjects_with_patid, :three_study_subjects_with_patid
-alias_method :three_subjects_with_studyid, :three_study_subjects_with_studyid
+# alias_method :three_subjects_with_patid, :three_study_subjects_with_patid
+# alias_method :three_subjects_with_studyid, :three_study_subjects_with_studyid
 
 	def create_study_subject_with_last_name(last_name)
 		create_study_subject(
 			:pii_attributes => Factory.attributes_for(:pii, 
 				:last_name => last_name ))
 	end
-alias_method :create_subject_with_last_name, :create_study_subject_with_last_name
+# alias_method :create_subject_with_last_name, :create_study_subject_with_last_name
 	
 	def three_study_subjects_with_last_name
 		create_study_subjects_with_last_names('9','3','6')
 	end
-alias_method :three_subjects_with_last_name, :three_study_subjects_with_last_name
+# alias_method :three_subjects_with_last_name, :three_study_subjects_with_last_name
 
 	def create_study_subject_with_first_name(first_name)
 		create_study_subject(
 			:pii_attributes => Factory.attributes_for(:pii, 
 				:first_name => first_name ))
 	end
-alias_method :create_subject_with_first_name, :create_study_subject_with_first_name
+# alias_method :create_subject_with_first_name, :create_study_subject_with_first_name
 	
 	def three_study_subjects_with_first_name
 		create_study_subjects_with_first_names('9','3','6')
 	end
-alias_method :three_subjects_with_first_name, :three_study_subjects_with_first_name
+# alias_method :three_subjects_with_first_name, :three_study_subjects_with_first_name
 
 	def create_study_subject_with_dob(dob)
 		create_study_subject(
 			:pii_attributes => Factory.attributes_for(:pii, 
 				:dob => Time.parse(dob) ))
 	end
-alias_method :create_subject_with_dob, :create_study_subject_with_dob
+# alias_method :create_subject_with_dob, :create_study_subject_with_dob
 
 	def three_study_subjects_with_dob
 		create_study_subjects_with_dobs(
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
-alias_method :three_subjects_with_dob, :three_study_subjects_with_dob
+# alias_method :three_subjects_with_dob, :three_study_subjects_with_dob
 
 	def create_study_subject_with_sample_outcome_on(date)
 		s = create_hx_study_subject
@@ -210,13 +210,13 @@ alias_method :three_subjects_with_dob, :three_study_subjects_with_dob
 				:sample_outcome_on => date) )
 		s
 	end
-alias_method :create_subject_with_sample_outcome_on, :create_study_subject_with_sample_outcome_on
+# alias_method :create_subject_with_sample_outcome_on, :create_study_subject_with_sample_outcome_on
 
 	def three_study_subjects_with_sample_outcome_on
 		create_study_subjects_with_sample_outcome_ons(
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
-alias_method :three_subjects_with_sample_outcome_on, :three_study_subjects_with_sample_outcome_on
+# alias_method :three_subjects_with_sample_outcome_on, :three_study_subjects_with_sample_outcome_on
 
 	def create_study_subject_with_sample_outcome(outcome)
 		s = create_hx_study_subject
@@ -225,25 +225,25 @@ alias_method :three_subjects_with_sample_outcome_on, :three_study_subjects_with_
 				:sample_outcome_id => outcome) )
 		s
 	end
-alias_method :create_subject_with_sample_outcome, :create_study_subject_with_sample_outcome
+# alias_method :create_subject_with_sample_outcome, :create_study_subject_with_sample_outcome
 
 	def three_study_subjects_with_sample_outcome
 		create_study_subjects_with_sample_outcomes('9','3','6')
 	end
-alias_method :three_subjects_with_sample_outcome, :three_study_subjects_with_sample_outcome
+# alias_method :three_subjects_with_sample_outcome, :three_study_subjects_with_sample_outcome
 
 	def create_study_subject_with_interview_outcome_on(date)
 		create_hx_study_subject(:study_subject => {
 			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
 				:interview_outcome_on => date ) })
 	end
-alias_method :create_subject_with_interview_outcome_on, :create_study_subject_with_interview_outcome_on
+# alias_method :create_subject_with_interview_outcome_on, :create_study_subject_with_interview_outcome_on
 
 	def three_study_subjects_with_interview_outcome_on
 		create_study_subjects_with_interview_outcome_ons(
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
-alias_method :three_subjects_with_interview_outcome_on, :three_study_subjects_with_interview_outcome_on
+# alias_method :three_subjects_with_interview_outcome_on, :three_study_subjects_with_interview_outcome_on
 
 	def create_study_subject_with_sent_to_subject_on(date)
 		study_subject = create_hx_study_subject
@@ -253,13 +253,13 @@ alias_method :three_subjects_with_interview_outcome_on, :three_study_subjects_wi
 		)
 		study_subject
 	end
-alias_method :create_subject_with_sent_to_subject_on, :create_study_subject_with_sent_to_subject_on
+# alias_method :create_subject_with_sent_to_subject_on, :create_study_subject_with_sent_to_subject_on
 
 	def three_study_subjects_with_sent_to_subject_on
 		create_study_subjects_with_sent_to_subject_on(
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
-alias_method :three_subjects_with_sent_to_subject_on, :three_study_subjects_with_sent_to_subject_on
+# alias_method :three_subjects_with_sent_to_subject_on, :three_study_subjects_with_sent_to_subject_on
 
 	def create_study_subject_with_received_by_ccls_on(date)
 		study_subject = create_hx_study_subject
@@ -271,13 +271,13 @@ alias_method :three_subjects_with_sent_to_subject_on, :three_study_subjects_with
 		)
 		study_subject
 	end
-alias_method :create_subject_with_received_by_ccls_on, :create_study_subject_with_received_by_ccls_on
+# alias_method :create_subject_with_received_by_ccls_on, :create_study_subject_with_received_by_ccls_on
 
 	def three_study_subjects_with_received_by_ccls_on
 		create_study_subjects_with_received_by_ccls_on(
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
-alias_method :three_subjects_with_received_by_ccls_on, :three_study_subjects_with_received_by_ccls_on
+# alias_method :three_subjects_with_received_by_ccls_on, :three_study_subjects_with_received_by_ccls_on
 
 
 	def create_gift_cards(count=0,options={})
