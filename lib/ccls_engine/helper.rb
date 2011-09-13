@@ -46,7 +46,7 @@ module Ccls::Helper
 
 	#	Used to replace the _id_bar partial
 	def subject_id_bar(study_subject,&block)
-		stylesheets('subject_id_bar')
+		stylesheets('study_subject_id_bar')
 		content_for :main do
 			"<div id='id_bar'>\n" <<
 			"<div class='childid'>\n" <<
