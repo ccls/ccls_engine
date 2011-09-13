@@ -287,8 +287,8 @@ Factory.define :package do |f|
 end
 
 Factory.define :patient do |f|
-	#	really don't see the point of a patient w/o a subject
-	f.association :study_subject, :factory => :case_subject
+	#	really don't see the point of a patient w/o a study_subject
+	f.association :study_subject, :factory => :case_study_subject
 end
 
 Factory.define :person do |f|
@@ -297,7 +297,7 @@ Factory.define :person do |f|
 end
 
 Factory.define :pii do |f|
-	#	really don't see the point of a PII w/o a subject
+	#	really don't see the point of a PII w/o a study_subject
 	#	but ...
 	f.association :study_subject
 	f.first_name "First"
@@ -395,10 +395,10 @@ end
 #	f.subject_type { SubjectType.find(:first,:conditions => {
 #			:code => 'Case'
 #		}) }
-Factory.define :case_subject, :parent => :study_subject do |f|
+Factory.define :case_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
 end
-Factory.define :control_subject, :parent => :study_subject do |f|
+Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
 end
 

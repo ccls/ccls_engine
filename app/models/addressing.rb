@@ -13,7 +13,7 @@ class Addressing < Shared
 	validates_presence_of :address, :on => :update
 
 	##	TODO - find a way to do this
-	# because subject now accepts_nested_attributes for addressings
+	# because study_subject now accepts_nested_attributes for addressings
 	# we can't require study_subject_id on create
 	#
 	#	study_subject_id is not known until before_save

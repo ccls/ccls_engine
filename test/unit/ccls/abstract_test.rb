@@ -436,7 +436,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	test "should create first abstract for study_subject with current_user" do
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
-			@study_subject = create_case_subject_with_patid(1234)
+			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
 		} }
 		@current_user = Factory(:user)
@@ -452,7 +452,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	test "should create second abstract for study_subject with current_user" do
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
-			@study_subject = create_case_subject_with_patid(1234)
+			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
 		} }
 		@current_user = Factory(:user)
@@ -471,7 +471,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 			"without merging flag" do
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
-			@study_subject = create_case_subject_with_patid(1234)
+			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
 		} }
 		@current_user = Factory(:user)
@@ -490,7 +490,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 			"with merging flag" do
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
-			@study_subject = create_case_subject_with_patid(1234)
+			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
 		} }
 		@current_user = Factory(:user)
@@ -508,7 +508,7 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	end
 
 	test "should NOT create merged abstract if study_subject already has one" do
-		study_subject = create_case_subject_with_patid(1234)
+		study_subject = create_case_study_subject_with_patid(1234)
 		a1 = create_abstract(:study_subject => study_subject)
 		a1.merged_by = Factory(:user)
 		a1.save

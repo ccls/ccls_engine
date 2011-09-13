@@ -145,27 +145,27 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 
 	test "should make study_subject ineligible "<<
 			"on create if state NOT 'CA' and address is ONLY residence" do
-		study_subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_study_subject
 		assert_difference('OperationalEvent.count',1) {
 		assert_difference('Addressing.count',1) {
 		assert_difference('Address.count',1) {
 			create_az_addressing(study_subject)
 		} } }
-		assert_subject_is_not_eligible(study_subject)
+		assert_study_subject_is_not_eligible(study_subject)
 		assert_equal   study_subject.hx_enrollment.ineligible_reason,
 			IneligibleReason['newnonCA']
 	end
 
 	test "should make study_subject ineligible "<<
 			"on create if state NOT 'CA' and address is ANOTHER residence" do
-		study_subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_study_subject
 		assert_difference('OperationalEvent.count',1) {
 		assert_difference('Address.count',2) {
 		assert_difference( "#{model_name}.count", 2 ) {
 			create_ca_addressing(study_subject)
 			create_az_addressing(study_subject)
 		} } }
-		assert_subject_is_not_eligible(study_subject)
+		assert_study_subject_is_not_eligible(study_subject)
 		assert_equal   study_subject.hx_enrollment.ineligible_reason,
 			IneligibleReason['moved']
 	end
@@ -173,7 +173,7 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 	test "should NOT make study_subject ineligible "<<
 			"on create if OET is missing" do
 		OperationalEventType['ineligible'].destroy
-		study_subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_study_subject
 		assert_difference('OperationalEvent.count',0) {
 		assert_difference('Address.count',1) {
 		assert_difference( "#{model_name}.count", 1 ) {
@@ -182,30 +182,30 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 				create_az_addressing(study_subject)
 		} } } }
 		study_subject.hx_enrollment.reload	#	NEEDED
-		assert_subject_is_eligible(study_subject)
+		assert_study_subject_is_eligible(study_subject)
 	end
 
 	test "should NOT make study_subject ineligible "<<
 			"on create if state NOT 'CA' and address is NOT residence" do
-		study_subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_study_subject
 		assert_difference('OperationalEvent.count',0) {
 		assert_difference('Address.count',1) {
 		assert_difference( "#{model_name}.count", 1 ) {
 			create_az_addressing(study_subject,
 				:address => { :address_type => AddressType['mailing'] })
 		} } }
-		assert_subject_is_eligible(study_subject)
+		assert_study_subject_is_eligible(study_subject)
 	end
 
 	test "should NOT make study_subject ineligible "<<
 			"on create if state 'CA' and address is residence" do
-		study_subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_study_subject
 		assert_difference('OperationalEvent.count',0) {
 		assert_difference('Address.count',1) {
 		assert_difference( "#{model_name}.count", 1 ) {
 			create_ca_addressing(study_subject)
 		} } }
-		assert_subject_is_eligible(study_subject)
+		assert_study_subject_is_eligible(study_subject)
 	end
 
 	%w( address_type address_type_id

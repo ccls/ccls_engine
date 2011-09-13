@@ -51,7 +51,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should require unique study_subject_id" do
-		study_subject = Factory(:case_subject)
+		study_subject = Factory(:case_study_subject)
 		create_object(:study_subject => study_subject)
 		assert_difference( "#{model_name}.count", 0 ) do
 			object = create_object(:study_subject => study_subject)
@@ -59,7 +59,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should require Case subject" do
+	test "should require Case study_subject" do
 		assert_difference( "StudySubject.count", 1 ) {
 		assert_difference( "#{model_name}.count", 0 ) {
 			object = create_object(:study_subject => Factory(:study_subject))
@@ -67,7 +67,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should require case subject when using nested attributes" do
+	test "should require case study_subject when using nested attributes" do
 		assert_difference( "StudySubject.count", 0 ) {
 		assert_difference( "#{model_name}.count", 0 ) {
 			study_subject = create_study_subject(
@@ -78,7 +78,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	test "should require admit_date be after DOB" do
 		assert_difference( "#{model_name}.count", 0 ) do
-			study_subject = Factory(:case_subject)
+			study_subject = Factory(:case_study_subject)
 			pii = Factory(:pii,:study_subject => study_subject)
 			object = create_object(
 				:study_subject => study_subject,
@@ -94,7 +94,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_difference( "Pii.count", 0 ) {
 		assert_difference( "StudySubject.count", 0 ) {
 		assert_difference( "#{model_name}.count", 0 ) {
-			study_subject = create_case_subject(
+			study_subject = create_case_study_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
 					# smaller than my factory set dob
@@ -106,7 +106,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	test "should require diagnosis_date be after DOB" do
 		assert_difference( "#{model_name}.count", 0 ) do
-			study_subject = Factory(:case_subject)
+			study_subject = Factory(:case_study_subject)
 			pii = Factory(:pii,:study_subject => study_subject)
 			object = create_object(
 				:study_subject => study_subject,
@@ -122,7 +122,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_difference( "Pii.count", 0 ) {
 		assert_difference( "StudySubject.count", 0 ) {
 		assert_difference( "#{model_name}.count", 0 ) {
-			study_subject = create_case_subject(
+			study_subject = create_case_study_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
 					# smaller than my factory set dob
@@ -139,7 +139,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_difference( "Patient.count", 1 ) {
 			dob        = 14.years.ago.to_date
 			admit_date = 1.year.ago.to_date
-			study_subject = create_case_subject(
+			study_subject = create_case_study_subject(
 				:pii_attributes     => Factory.attributes_for(:pii,{
 					:dob => dob
 				}),
@@ -163,7 +163,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_difference( "Patient.count", 1 ) {
 			dob        = 20.years.ago.to_date
 			admit_date = 1.year.ago.to_date
-			study_subject = create_case_subject(
+			study_subject = create_case_study_subject(
 				:pii_attributes     => Factory.attributes_for(:pii,{
 					:dob => dob
 				}),
@@ -183,7 +183,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_difference( "Patient.count", 1 ) {
 			dob        = 20.years.ago.to_date
 			admit_date = 1.year.ago.to_date
-			study_subject = create_case_subject
+			study_subject = create_case_study_subject
 			pii     = Factory(:pii,{
 				:study_subject => study_subject,
 				:dob     => dob
@@ -201,7 +201,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should set was_under_15_at_dx on dob change" do
-		study_subject = create_case_subject(
+		study_subject = create_case_study_subject(
 			:pii_attributes     => Factory.attributes_for(:pii,{
 				:dob => 20.years.ago.to_date
 			}),
@@ -215,7 +215,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should set was_under_15_at_dx on admit_date change" do
-		study_subject = create_case_subject(
+		study_subject = create_case_study_subject(
 			:pii_attributes     => Factory.attributes_for(:pii,{
 				:dob => 20.years.ago.to_date
 			}),

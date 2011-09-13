@@ -30,7 +30,7 @@ class Ccls::StudySubject < Shared
 ##########
 #
 #	Declaration order does matter.  Because of a patient callback that 
-#	references the subject's dob when using nested attributes, 
+#	references the study_subject's dob when using nested attributes, 
 #	pii NEEDS to be before patient.
 #
 #	identifier should also be before patient
@@ -108,7 +108,7 @@ class Ccls::StudySubject < Shared
 		end
 	end
 
-	#	can lead to multiple piis in db for subject
+	#	can lead to multiple piis in db for study_subject
 	#	if not done correctly
 	#	s.update_attributes({"pii_attributes" => { "ssn" => "123456789", 'state_id_no' => 'x'}})
 	#	s.update_attributes({"pii_attributes" => { "ssn" => "987654321", 'state_id_no' => 'a'}})
@@ -215,7 +215,7 @@ class Ccls::StudySubject < Shared
 		StudySubject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{:chosen=>true}}
 		))
-#		@study_subjects = StudySubjectSearch.new(params).subjects
+#		@study_subjects = StudySubjectSearch.new(params).study_subjects
 #	eventually
 #		@study_subjects = hx.study_subjects.search(params.merge(
 #			:interview_outcome => 'incomplete'
@@ -272,14 +272,14 @@ class Ccls::StudySubject < Shared
 	end
 
 	def self.search(params={})
-		StudySubjectSearch.new(params).subjects
+		StudySubjectSearch.new(params).study_subjects
 	end
 
 #	#	Rails' update_all DOES NOT SUPPORT JOINS despite many requests online.
 #	#	I must admit that it was unbelievably complex.  NOT.
 #	#	All I did was split the first line, and jam the joins in the middle.
 #	#	The sole purpose of all this is for the Patient callback 
-#	#	to update all of the matchingid subjects' reference date.
+#	#	to update all of the matchingid study_subjects' reference date.
 #	#	If this begins to cause problems elsewhere, rename it here
 #	#	and in the Patient model's call.
 #	#	created "ccls_update_all" to avoid problems and ensure
@@ -372,6 +372,8 @@ class Ccls::StudySubject < Shared
 		end
 		true
 	end
+	alias_method :update_study_subjects_reference_date_matching, 
+		:update_subjects_reference_date_matching
 
 protected
 
@@ -383,6 +385,10 @@ protected
 				{:reference_date => new_reference_date },
 				{ :id => study_subject_ids })
 		end
+	end
+	class << self
+		alias_method :update_study_subjects_reference_date, 
+			:update_subjects_reference_date
 	end
 
 	#	This is a duplication of a patient validation that won't
@@ -434,12 +440,12 @@ protected
 		#			autosave_associated_records_for_something I think
 		#
 		#	order of declaration will have some impact on what order some things are called
-#	In subject before_validation
+#	In study_subject before_validation
 #	In patient before_validation
 #	In patient validate
 #	In patient after_validation
-#	In subject validate
-#	In subject after_validation
+#	In study_subject validate
+#	In study_subject after_validation
 		#		
 		if !patient.nil? and !is_case?
 			errors.add(:patient ,"must be case to have patient info")

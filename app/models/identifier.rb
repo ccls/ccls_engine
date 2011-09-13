@@ -107,7 +107,7 @@ class Identifier < Shared
 #	#	FYI: before_save will be called before before_create
 #	before_save       :prepare_fields_for_save
 
-	after_save :trigger_update_matching_subjects_reference_date, 
+	after_save :trigger_update_matching_study_subjects_reference_date, 
 		:if => :matchingid_changed?
 
 	def is_mother?
@@ -137,8 +137,8 @@ class Identifier < Shared
 
 protected
 
-	def trigger_update_matching_subjects_reference_date
-		study_subject.update_subjects_reference_date_matching(matchingid_was,matchingid)
+	def trigger_update_matching_study_subjects_reference_date
+		study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
 	end
 
 	##
@@ -227,12 +227,12 @@ protected
 #			subjectid
 #		end
 
-		#	cases (patients): matchingID is the subject's own subjectID
+		#	cases (patients): matchingID is the study_subject's own subjectID
 		#	controls: matchingID is subjectID of the associated case (like PatID in this respect).
 #	how to get associated case?  given?
 		#	mothers: matchingID is subjectID of their own child's associated case. 
 		#			That is, a mother's matchingID is the same as their child's. This 
-		#			will become clearer when I provide specs for mother subject creation.
+		#			will become clearer when I provide specs for mother study_subject creation.
 #	matchingid is manually set in some tests.  will need to setup for stubbing this.
 		#	don't assign if given (matchingid is currently NOT protected)
 		self.matchingid = subjectid if is_case? and matchingid.blank?
@@ -271,7 +271,7 @@ protected
 	#	made separate method so can stub it in testing
 	#	This only guarantees uniqueness before creation,
 	#		but not at creation. This is NOT scalable.
-	#	Fortunately, we won't be creating tons of subjects
+	#	Fortunately, we won't be creating tons of study_subjects
 	#		at the same time so this should not be an issue.
 	#	How to rescue from ActiveRecord::RecordInvalid here?
 	#		or would it be RecordNotSaved?

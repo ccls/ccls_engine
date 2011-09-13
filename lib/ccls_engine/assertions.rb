@@ -8,11 +8,13 @@ module Ccls::Assertions
 		assert_nil   study_subject.hx_enrollment.ineligible_reason_id
 		assert_equal study_subject.hx_enrollment.is_eligible, YNDK[:yes]
 	end
+	alias_method :assert_study_subject_is_eligible, :assert_subject_is_eligible
 
 	def assert_subject_is_not_eligible(study_subject)
 		assert_not_nil study_subject.hx_enrollment.ineligible_reason_id
 		assert_equal   study_subject.hx_enrollment.is_eligible, YNDK[:no]
 	end
+	alias_method :assert_study_subject_is_not_eligible, :assert_subject_is_not_eligible
 
 	module ClassMethods
 

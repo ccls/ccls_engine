@@ -5,19 +5,19 @@ namespace :ccls do
 			) if Rails.env == 'production'
 		Identifier.find(:all).each_with_index do |identifier,index|
 			puts "Processing #{index}"
-			subject = identifier.subject
-			if subject.nil?
-				puts "No subject on this identifier" 
+			study_subject = identifier.study_subject
+			if study_subject.nil?
+				puts "No study_subject on this identifier" 
 				next
 			end
 			puts "case_control_type #{identifier.case_control_type}"
-			puts "subject_type #{subject.subject_type}"
-			if subject.subject_type.to_s == 'Case' and identifier.case_control_type != 'C'
+			puts "subject_type #{study_subject.subject_type}"
+			if study_subject.subject_type.to_s == 'Case' and identifier.case_control_type != 'C'
 				puts "subject_type == 'Case' and case_control_type != 'C'"
-				subject.patient.destroy unless subject.patient.nil?
-				subject.reload.subject_type = SubjectType['Control']
-				subject.save!
-				puts "NEW subject_type #{subject.reload.subject_type}"
+				study_subject.patient.destroy unless study_subject.patient.nil?
+				study_subject.reload.subject_type = SubjectType['Control']
+				study_subject.save!
+				puts "NEW subject_type #{study_subject.reload.subject_type}"
 			end
 		end
 	end

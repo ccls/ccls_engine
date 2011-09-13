@@ -3,7 +3,7 @@ class Diagnosis < Shared
 	acts_as_list
 	default_scope :order => :position
 
-#	has_many :subjects
+#	has_many :study_subjects
 
 	validates_presence_of   :code
 	validates_uniqueness_of :code, :description

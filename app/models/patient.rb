@@ -1,4 +1,4 @@
-# Patient related subject info.
+# Patient related study_subject info.
 class Patient < Shared
 
 	belongs_to :study_subject
@@ -25,7 +25,7 @@ class Patient < Shared
 	##
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the subject creation too if using nested attributes.
+	#	the study_subject creation too if using nested attributes.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
 
 	validates_past_date_for :admit_date
@@ -49,7 +49,7 @@ class Patient < Shared
 	#	TODO it would probably be better to do this before_validation
 	before_save :format_zip
 
-	after_save :trigger_update_matching_subjects_reference_date,
+	after_save :trigger_update_matching_study_subjects_reference_date,
 		:if => :admit_date_changed?
 
 	after_save :trigger_setting_was_under_15_at_dx,
@@ -67,11 +67,11 @@ protected
 		study_subject.update_patient_was_under_15_at_dx
 	end
 
-	def trigger_update_matching_subjects_reference_date
-#		puts "triggering_update_matching_subjects_reference_date from Patient"
+	def trigger_update_matching_study_subjects_reference_date
+#		puts "triggering_update_matching_study_subjects_reference_date from Patient"
 #		puts "Admit date changed from:#{admit_date_was}:to:#{admit_date}"
-#		study_subject.update_matching_subjects_reference_date
-		study_subject.update_subjects_reference_date_matching
+#		study_subject.update_matching_study_subjects_reference_date
+		study_subject.update_study_subjects_reference_date_matching
 	end
 
 	##

@@ -15,20 +15,20 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:reference_date, :sex,
 		:mother_yrs_educ, :father_yrs_educ, :birth_type, :birth_county, :is_duplicate_of )
 
-	test "create_control_subject should not create a subject type" do
+	test "create_control_study_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
 		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_control_subject
+			study_subject = create_control_study_subject
 			assert !study_subject.is_case?
 			assert !study_subject.new_record?, 
 				"#{study_subject.errors.full_messages.to_sentence}"
 		} }
 	end
 
-	test "create_case_subject should not create a subject type" do
+	test "create_case_study_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
 		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_case_subject
+			study_subject = create_case_study_subject
 			assert study_subject.is_case?
 			assert !study_subject.new_record?, 
 				"#{study_subject.errors.full_messages.to_sentence}"
@@ -203,7 +203,7 @@ pending
 	test "should create case study_subject and accept_nested_attributes_for patient" do
 		assert_difference( 'Patient.count', 1) {
 		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = Factory(:case_subject,
+			study_subject = Factory(:case_study_subject,
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert  study_subject.is_case?
 			assert !study_subject.new_record?, 
@@ -226,7 +226,7 @@ pending
 	test "should create patient for case study_subject" do
 		assert_difference( 'Patient.count', 1) {
 		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = Factory(:case_subject)
+			study_subject = Factory(:case_study_subject)
 			assert study_subject.is_case?
 			assert !study_subject.new_record?, 
 				"#{study_subject.errors.full_messages.to_sentence}"
@@ -254,7 +254,7 @@ pending
 		#	when using accepts_nested_attributes_for
 		assert_difference( 'Patient.count', 1) {
 		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = Factory(:case_subject,
+			study_subject = Factory(:case_study_subject,
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert !study_subject.new_record?, 
 				"#{study_subject.errors.full_messages.to_sentence}"
@@ -367,7 +367,7 @@ pending
 	end
 
 	test "should NOT destroy patient with study_subject" do
-		study_subject = Factory(:case_subject)
+		study_subject = Factory(:case_study_subject)
 		Factory(:patient, :study_subject => study_subject)
 		assert_difference( "StudySubject.count", -1 ) {
 		assert_difference('Patient.count',0) {
@@ -589,7 +589,7 @@ pending
 	end
 
 	test "should case if explicitly told" do
-		study_subject = Factory(:case_subject)
+		study_subject = Factory(:case_study_subject)
 		assert study_subject.is_case?
 	end
 
@@ -928,17 +928,17 @@ pending
 
 
 	test "should set study_subject.reference_date to self.patient.admit_date on create" do
-		create_case_subject_with_patient_and_identifier
+		create_case_study_subject_with_patient_and_identifier
 	end
 
 	test "should update all matching study_subjects' reference date " <<
 			"with updated admit date" do
-		study_subject = create_case_subject(
+		study_subject = create_case_study_subject(
 			:patient_attributes    => Factory.attributes_for(:patient),
 			:identifier_attributes => Factory.attributes_for(:identifier,
 				{ :matchingid => '12345' })).reload
-		other   = create_subject_with_matchingid
-		nobody  = create_subject_with_matchingid('54321')
+		other   = create_study_subject_with_matchingid
+		nobody  = create_study_subject_with_matchingid('54321')
 		assert_nil study_subject.reference_date
 		assert_nil study_subject.patient.admit_date
 		assert_nil other.reference_date
@@ -955,8 +955,8 @@ pending
 
 	test "should set study_subject.reference_date to matching patient.admit_date " <<
 			"on create with patient created first" do
-		study_subject = create_case_subject_with_patient_and_identifier
-		other   = create_subject_with_matchingid
+		study_subject = create_case_study_subject_with_patient_and_identifier
+		other   = create_study_subject_with_matchingid
 		assert_not_nil other.reference_date
 		assert_equal   other.reference_date, study_subject.reference_date
 		assert_equal   other.reference_date, study_subject.patient.admit_date
@@ -964,58 +964,58 @@ pending
 
 	test "should set study_subject.reference_date to matching patient.admit_date " <<
 			"on create with patient created last" do
-		other   = create_subject_with_matchingid
-		study_subject = create_case_subject_with_patient_and_identifier
+		other   = create_study_subject_with_matchingid
+		study_subject = create_case_study_subject_with_patient_and_identifier
 		assert_not_nil other.reload.reference_date
 		assert_equal   other.reference_date, study_subject.reference_date
 		assert_equal   other.reference_date, study_subject.patient.admit_date
 	end
 
 	test "should nullify study_subject.reference_date if matching patient changes matchingid" do
-		other   = create_subject_with_matchingid
-		study_subject = create_case_subject_with_patient_and_identifier
+		other   = create_study_subject_with_matchingid
+		study_subject = create_case_study_subject_with_patient_and_identifier
 		assert_not_nil other.reload.reference_date
 		study_subject.identifier.update_attributes(:matchingid => '12346')
 		assert_nil     other.reload.reference_date
 	end
 
 	test "should nullify study_subject.reference_date if matching patient nullifies matchingid" do
-		other   = create_subject_with_matchingid
-		study_subject = create_case_subject_with_patient_and_identifier
+		other   = create_study_subject_with_matchingid
+		study_subject = create_case_study_subject_with_patient_and_identifier
 		assert_not_nil other.reload.reference_date
 		study_subject.identifier.update_attributes(:matchingid => nil)
 		assert_nil     other.reload.reference_date
 	end
 
 	test "should nullify study_subject.reference_date if matching patient nullifies admit_date" do
-		other   = create_subject_with_matchingid
-		study_subject = create_case_subject_with_patient_and_identifier
+		other   = create_study_subject_with_matchingid
+		study_subject = create_case_study_subject_with_patient_and_identifier
 		assert_not_nil other.reload.reference_date
 		study_subject.patient.update_attributes(:admit_date => nil)
 		assert_nil     other.reload.reference_date
 	end
 
-	test "should create_home_exposure_with_subject" do
-		study_subject = create_home_exposure_with_subject
+	test "should create_home_exposure_with_study_subject" do
+		study_subject = create_home_exposure_with_study_subject
 		assert study_subject.is_a?(StudySubject)
 	end
 
-	test "should create_home_exposure_with_subject with patient" do
-		study_subject = create_home_exposure_with_subject(:patient => true)
+	test "should create_home_exposure_with_study_subject with patient" do
+		study_subject = create_home_exposure_with_study_subject(:patient => true)
 		assert study_subject.is_a?(StudySubject)
 	end
 
 protected
 
-	def create_subject_with_matchingid(matchingid='12345')
+	def create_study_subject_with_matchingid(matchingid='12345')
 		study_subject = create_study_subject( 
 			:identifier_attributes => Factory.attributes_for(:identifier,
 				{ :matchingid => matchingid })).reload
 	end
 
 	#	Used more than once so ...
-	def create_case_subject_with_patient_and_identifier
-		study_subject = create_case_subject( 
+	def create_case_study_subject_with_patient_and_identifier
+		study_subject = create_case_study_subject( 
 			:patient_attributes    => Factory.attributes_for(:patient,
 				{ :admit_date => Chronic.parse('yesterday') }),
 			:identifier_attributes => Factory.attributes_for(:identifier,

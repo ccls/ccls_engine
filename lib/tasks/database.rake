@@ -11,7 +11,7 @@ namespace :db do
 
 	desc "Destroy subject and address data"
 	task :destroy_csv_data => :environment do
-		Subject.destroy_all
+		StudySubject.destroy_all
 		Enrollment.destroy_all
 		Addressing.destroy_all
 		Address.destroy_all
@@ -41,13 +41,13 @@ namespace :db do
 			:code => "HomeExposures",
 			:description => "HomeExposures"
 		})
-		Subject.all.each do |s|
+		StudySubject.all.each do |s|
 			puts s.id
 			#	2440000 is sometime in 1968
 			#	2455000 is sometime in 2009
 
 			options = {
-				:subject => s,
+				:study_subject => s,
 				:project => p,
 				:is_candidate => true,
 				:able_to_locate => true
@@ -166,18 +166,18 @@ namespace :db do
 
 			#	due to padding it with zeros, NEED this to be an Integer
 			#	doesn't work correctly in sqlite so just pad it before search
-			subject = Identifier.find_by_subjectid(
-				sprintf("%06d",line['subjectID'].to_i)).subject
-			raise ActiveRecord::RecordNotFound unless subject
+			study_subject = Identifier.find_by_subjectid(
+				sprintf("%06d",line['subjectID'].to_i)).study_subject
+			raise ActiveRecord::RecordNotFound unless study_subject
 
 #			address_type = AddressType.find(line[1].to_s)
 #			address_type = AddressType.find_by_code(
 #				(line[1].to_s == '1')?'Home':'Mailing')
 #			raise ActiveRecord::RecordNotFound unless address_type
 
-#			subject.addressings << Addressing.create!(
-#				:subject_id  => subject.id,
-			subject.addressings.create!(
+#			study_subject.addressings << Addressing.create!(
+#				:study_subject_id  => study_subject.id,
+			study_subject.addressings.create!(
 				:current_address => 1,		#	Yes
 				:is_valid    => true,
 				:is_verified => false,
@@ -212,7 +212,7 @@ namespace :db do
 			dob = (line['DOB'].blank?)?'':Time.parse(line['DOB'])
 			refdate = (line['RefDate'].blank?)?'':Time.parse(line['RefDate'])
 			interview_date = (line['InterviewDate'].blank?)?'':Time.parse(line['InterviewDate'])
-			subject = Subject.create!({
+			study_subject = StudySubject.create!({
 #				:patient_attributes  => { },										#	TODO (patid)
 				:pii_attributes => {
 					:first_name  => line['First_Name'],
@@ -240,10 +240,10 @@ namespace :db do
 				:sex => line['sex'],
 				:reference_date => refdate
 			})
-			subject.races = [race]
+			study_subject.races = [race]
 
 #			Identifier.create!({
-#					:subject_id        => subject.id,
+#					:study_subject_id        => study_subject.id,
 #					:state_id_no       => sprintf('%09d',line['Childid']),			#	TODO
 #					:subjectid         => line['subjectID'],
 #					:ssn               => sprintf('%09d',line['Childid']),							#	TODO
@@ -255,15 +255,15 @@ namespace :db do
 
 			(19..22).each do |i|
 #				PhoneNumber.create!({
-				subject.phone_numbers.create!({
-#					:subject_id    => subject.id,
+				study_subject.phone_numbers.create!({
+#					:study_subject_id    => study_subject.id,
 					:phone_type_id => 1,
 					:phone_number  => line[i]
 				}) unless line[i].blank?
 			end
 
 			options = {
-#				:identifier_id => subject.identifier.id,
+#				:identifier_id => study_subject.identifier.id,
 				:interview_method => InterviewMethod.random(),
 				:interviewer => Person.random(),
 				:language   => Language.random(),
@@ -277,7 +277,7 @@ namespace :db do
 			end
 			
 #			Interview.create!(options)
-			subject.interviews.create!(options)
+			study_subject.interviews.create!(options)
 			
 #	use Time.parse to parse all dates (better than Date.parse)
 

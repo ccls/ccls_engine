@@ -10,7 +10,7 @@ namespace :destroy do
 	desc "Destroy subject and address data"
 	task :csv_data => :environment do
 		puts "Destroying existing data"
-		Subject.destroy_all
+		StudySubject.destroy_all
 		Enrollment.destroy_all
 		Addressing.destroy_all
 		Address.destroy_all
@@ -128,7 +128,7 @@ namespace :import do
 				:subject_type_id => line['subject_type_id'],
 				:do_not_contact => line['DoNotContact']
 			}
-			subject = Subject.create!(attributes)
+			study_subject = StudySubject.create!(attributes)
 
 #			identifier = Identifier.find_by_childid(line['ChildId'])
 			identifier = Identifier.find_by_subjectid(sprintf("%06d",line['subjectID'].to_i))
@@ -137,7 +137,7 @@ namespace :import do
 				error_file.puts "No identifier found with subjectID = #{line['subjectID']}" 
 				error_file.puts
 			else
-				identifier.subject = subject
+				identifier.study_subject = study_subject
 				identifier.save!
 			end
 
@@ -189,7 +189,7 @@ namespace :import do
 				error_file.puts "No identifier found with subjectID = #{line['subjectID']}" 
 				error_file.puts
 			else
-				pii.subject = identifier.subject
+				pii.study_subject = identifier.study_subject
 				pii.save!
 			end
 
@@ -276,8 +276,8 @@ namespace :import do
 				error_file.puts "Enrollment creation not attempted"
 				error_file.puts
 			else
-				enrollment = identifier.subject.enrollments.create!(attributes)
-#				enrollment = identifier.subject.enrollments.new(attributes)
+				enrollment = identifier.study_subject.enrollments.create!(attributes)
+#				enrollment = identifier.study_subject.enrollments.new(attributes)
 #	many won't be valid, so skip validations
 #				enrollment.save(false)
 			end
@@ -341,8 +341,8 @@ namespace :import do
 				error_file.puts "Addressing creation not attempted"
 				error_file.puts
 			else
-#				addressing = identifier.subject.addressings.create!(attributes)
-				addressing = identifier.subject.addressings.new(attributes)
+#				addressing = identifier.study_subject.addressings.create!(attributes)
+				addressing = identifier.study_subject.addressings.new(attributes)
 #	one won't be valid, so skip validations for all
 				addressing.save(false)
 			end
@@ -391,7 +391,7 @@ namespace :import do
 				error_file.puts "No identifier found with subjectid = #{line['subjectID']}" 
 				error_file.puts
 			else
-				identifier.subject.interviews.create!(attributes)
+				identifier.study_subject.interviews.create!(attributes)
 			end
 		end	#	FasterCSV.open
 		error_file.close
@@ -430,7 +430,7 @@ namespace :import do
 				error_file.puts "No identifier found with subjectid = #{line['subjectid']}" 
 				error_file.puts
 			else
-				identifier.subject.create_homex_outcome(attributes) or raise "homex_outcome create failed"
+				identifier.study_subject.create_homex_outcome(attributes) or raise "homex_outcome create failed"
 			end
 		end	#	FasterCSV.open
 		error_file.close
@@ -523,7 +523,7 @@ namespace :import do
 					:related_childid   => line['relatedChildID']
 				}
 			}
-			Subject.create!(attributes)
+			StudySubject.create!(attributes)
 
 
 		end	#	FasterCSV.open

@@ -45,20 +45,20 @@ module Ccls::Helper
 	end
 
 	#	Used to replace the _id_bar partial
-	def subject_id_bar(subject,&block)
+	def subject_id_bar(study_subject,&block)
 		stylesheets('subject_id_bar')
 		content_for :main do
 			"<div id='id_bar'>\n" <<
 			"<div class='childid'>\n" <<
 			"<span>ChildID:</span>\n" <<
-			"<span>#{subject.try(:childid)}</span>\n" <<
+			"<span>#{study_subject.try(:childid)}</span>\n" <<
 			"</div><!-- class='childid' -->\n" <<
 			"<div class='studyid'>\n" <<
 			"<span>StudyID:</span>\n" <<
-			"<span>#{subject.try(:studyid)}</span>\n" <<
+			"<span>#{study_subject.try(:studyid)}</span>\n" <<
 			"</div><!-- class='studyid' -->\n" <<
 			"<div class='full_name'>\n" <<
-			"<span>#{subject.try(:full_name)}</span>\n" <<
+			"<span>#{study_subject.try(:full_name)}</span>\n" <<
 			"</div><!-- class='full_name' -->\n" <<
 			"<div class='controls'>\n" <<
 			@content_for_id_bar.to_s <<
@@ -69,10 +69,11 @@ module Ccls::Helper
 
 		content_for :main do
 			"<div id='do_not_contact'>\n" <<
-			"Subject requests no further contact with Study.\n" <<
+			"Study Subject requests no further contact with Study.\n" <<
 			"</div>\n" 
-		end if subject.try(:do_not_contact?)
+		end if study_subject.try(:do_not_contact?)
 	end	#	id_bar_for
+	alias_method :study_subject_id_bar, :subject_id_bar
 
 	#	Just a simple method to wrap the passed text in a span
 	#	with class='required'

@@ -65,9 +65,17 @@ class Ccls::HelperTest < ActionView::TestCase
 
 #	subject_id_bar
 
+	test "should respond to subject_id_bar" do
+		assert respond_to?(:subject_id_bar)
+	end
+
+	test "should respond to study_subject_id_bar" do
+		assert respond_to?(:study_subject_id_bar)
+	end
+
 	test "subject_id_bar should return subject_id_bar" do
 		subject = create_subject
-		assert subject.is_a?(Subject)
+		assert subject.is_a?(StudySubject)
 		assert !subject.do_not_contact?
 		assert_nil subject_id_bar(subject)	#	sets content_for :main
 		response = HTML::Document.new(@content_for_main).root
@@ -82,7 +90,7 @@ class Ccls::HelperTest < ActionView::TestCase
 
 	test "subject_id_bar should return subject_id_bar with do not contact" do
 		subject = create_subject(:do_not_contact => true)
-		assert subject.is_a?(Subject)
+		assert subject.is_a?(StudySubject)
 		assert subject.do_not_contact?
 		assert_nil subject_id_bar(subject)	#	sets content_for :main
 		response = HTML::Document.new(@content_for_main).root

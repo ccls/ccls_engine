@@ -38,7 +38,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		assert_difference( "Enrollment.count", 1 ) {
 		assert_difference( "StudySubject.count", 1 ) {
 			create_object(
-				:study_subject => create_hx_subject,
+				:study_subject => create_hx_study_subject,
 				:intro_letter_sent_on => Chronic.parse('yesterday'))
 		} } } }
 		assert_equal OperationalEventType['intro'],
@@ -50,7 +50,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	test "should update intro letter operational event " <<
 			"when intro_letter_sent_on updated" do
 		object = create_object(
-			:study_subject => create_hx_subject,
+			:study_subject => create_hx_study_subject,
 			:intro_letter_sent_on => Chronic.parse('yesterday'))
 		assert_difference( "OperationalEvent.count", 0 ) {
 		assert_difference( "#{model_name}.count", 0 ) {

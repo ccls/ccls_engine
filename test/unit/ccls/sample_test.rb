@@ -224,7 +224,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:study_subject => create_hx_subject() )
+				:study_subject => create_hx_study_subject() )
 		} }
 	end
 
@@ -233,7 +233,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:study_subject => create_hx_subject(),
+				:study_subject => create_hx_study_subject(),
 				:sent_to_subject_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['sent'],
 				object.study_subject.homex_outcome.sample_outcome
@@ -247,7 +247,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:study_subject => create_hx_subject(),
+				:study_subject => create_hx_study_subject(),
 				:sent_to_subject_on => Chronic.parse('3 days ago'),
 				:collected_on => Chronic.parse('2 days ago'),
 				:received_by_ccls_on => Chronic.parse('yesterday') )
@@ -263,7 +263,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:study_subject => create_hx_subject(),
+				:study_subject => create_hx_study_subject(),
 				:organization => Factory(:organization),
 				:sent_to_subject_on => Chronic.parse('4 days ago'),
 				:collected_on => Chronic.parse('3 days ago'),

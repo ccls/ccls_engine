@@ -32,7 +32,7 @@ class StudySubjectSearch < Search
 		:received_by_ccls_on => 'samples.received_by_ccls_on'
 	})
 
-	def subjects
+	def study_subjects
 		require_dependency 'pii.rb'	
 		require_dependency 'identifier.rb'
 		require_dependency 'gift_card.rb'
@@ -53,6 +53,7 @@ class StudySubjectSearch < Search
 			)
 		)
 	end
+	alias_method :subjects, :study_subjects
 
 private	#	THIS IS REQUIRED
 
