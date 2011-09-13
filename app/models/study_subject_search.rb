@@ -1,5 +1,5 @@
 # don't know exactly
-class SubjectSearch < Search
+class StudySubjectSearch < Search
 
 	self.searchable_attributes += [ :races, :types, :vital_statuses, :q,
 		:sample_outcome, :interview_outcome,
@@ -12,7 +12,7 @@ class SubjectSearch < Search
 #	self.valid_orders.merge!({  #	NO!
 #	@valid_orders.merge!({      #	NO!
 	self.valid_orders = self.valid_orders.merge({
-		:id => 'subjects.id',	#	must remove any possible ambiguity
+		:id => 'study_subjects.id',	#	must remove any possible ambiguity
 		:childid => 'identifiers.childid',
 		:last_name => 'piis.last_name',
 		:first_name => 'piis.first_name',
@@ -36,7 +36,7 @@ class SubjectSearch < Search
 		require_dependency 'pii.rb'	
 		require_dependency 'identifier.rb'
 		require_dependency 'gift_card.rb'
-		@subjects ||= Subject.send(
+		@subjects ||= StudySubject.send(
 			(paginate?)?'paginate':'all',{
 				:include => [:pii,:identifier],
 				:select  => select,
@@ -57,13 +57,13 @@ class SubjectSearch < Search
 private	#	THIS IS REQUIRED
 
 	def samples_joins
-		"JOIN samples ON subjects.id " <<
+		"JOIN samples ON study_subjects.id " <<
 			"= samples.study_subject_id" if %w( sent_to_subject_on received_by_ccls_on ).include?(@order)
 	end
 
 	def vital_statuses_joins
 		"INNER JOIN vital_statuses ON vital_statuses.id " <<
-			"= subjects.vital_status_id" unless vital_statuses.blank?
+			"= study_subjects.vital_status_id" unless vital_statuses.blank?
 	end
 
 	def vital_statuses_conditions
@@ -77,19 +77,19 @@ private	#	THIS IS REQUIRED
 
 
 	def races_joins
-#		"INNER JOIN races ON races.id = subjects.race_id" unless races.blank?
-		"LEFT JOIN subject_races ON subjects.id = subject_races.study_subject_id LEFT JOIN races ON races.id = subject_races.race_id" unless races.blank?
+#		"INNER JOIN races ON races.id = study_subjects.race_id" unless races.blank?
+		"LEFT JOIN subject_races ON study_subjects.id = subject_races.study_subject_id LEFT JOIN races ON races.id = subject_races.race_id" unless races.blank?
 	end
 
-#>> subjects = Subject.find(:all, :joins => "left join samples on subjects.id = samples.study_subject_id", :group => 'subjects.id', :having => ["sample_ids LIKE '%?%'",1], :select => "subjects.id, GROUP_CONCAT(samples.id) as sample_ids")
-#=> [#<Subject id: 1>, #<Subject id: 2014>]
+#>> study_subjects = StudySubject.find(:all, :joins => "left join samples on study_subjects.id = samples.study_subject_id", :group => 'study_subjects.id', :having => ["sample_ids LIKE '%?%'",1], :select => "study_subjects.id, GROUP_CONCAT(samples.id) as sample_ids")
+#=> [#<StudySubject id: 1>, #<StudySubject id: 2014>]
 
 	def races_groups
-		'subjects.id' unless races.blank?
+		'study_subjects.id' unless races.blank?
 	end
 	
 	def races_selects
-		"subjects.*, CONCAT('|',GROUP_CONCAT(races.description SEPARATOR '|'),'|') as race_descriptions" unless races.blank?
+		"study_subjects.*, CONCAT('|',GROUP_CONCAT(races.description SEPARATOR '|'),'|') as race_descriptions" unless races.blank?
 	end
 
 	def races_havings
@@ -107,7 +107,7 @@ private	#	THIS IS REQUIRED
 
 	def types_joins
 		"INNER JOIN subject_types ON subject_types.id " <<
-			"= subjects.subject_type_id" unless types.blank?
+			"= study_subjects.subject_type_id" unless types.blank?
 	end
 
 	def types_conditions
@@ -116,8 +116,8 @@ private	#	THIS IS REQUIRED
 	end
 
 	def gift_card_joins
-		#	A subject has many gift cards so this may pose a problem
-		"LEFT JOIN gift_cards ON gift_cards.study_subject_id = subjects.id" if( 
+		#	A study_subject has many gift cards so this may pose a problem
+		"LEFT JOIN gift_cards ON gift_cards.study_subject_id = study_subjects.id" if( 
 			search_gift_cards || %w( number issued_on ).include?(@order))
 	end
 
@@ -152,7 +152,7 @@ private	#	THIS IS REQUIRED
 	#	How?  Added a sort to joins and an "a_" to this
 	def a_homex_outcome_joins
 		"LEFT JOIN homex_outcomes ON homex_outcomes.study_subject_id " <<
-			"= subjects.id" if( !sample_outcome.blank? ||
+			"= study_subjects.id" if( !sample_outcome.blank? ||
 				!interview_outcome.blank? ||
 				[ 'sample_outcome','sample_outcome_on','interview_outcome_on'].include?(@order) )
 	end
@@ -196,7 +196,7 @@ private	#	THIS IS REQUIRED
 		unless projects.blank?
 			s = ''
 			projects.keys.each do |id|
-				s << "JOIN enrollments proj_#{id} ON subjects.id "<<
+				s << "JOIN enrollments proj_#{id} ON study_subjects.id "<<
 						"= proj_#{id}.study_subject_id AND proj_#{id}.project_id = #{id} " 
 			end
 			s

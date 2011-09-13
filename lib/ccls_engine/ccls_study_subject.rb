@@ -1,6 +1,6 @@
 #	==	requires
 #	*	subject_type_id
-class Ccls::Subject < Shared
+class Ccls::StudySubject < Shared
 	self.abstract_class = true
 
 #	class NotTwoResponseSets < StandardError; end
@@ -14,22 +14,18 @@ class Ccls::Subject < Shared
 #	TODO - Don't validate anything that the creating user can't do anything about.
 #
 
-	with_options :foreign_key => 'study_subject_id' do |f|
-		f.has_many :subject_races
-		f.has_many :subject_languages
-		f.has_and_belongs_to_many :analyses
-		f.has_many :addressings
-		f.has_many :enrollments
-		f.has_many :gift_cards
-		f.has_many :phone_numbers
-		f.has_many :samples
-		f.has_many :interviews
-		f.has_one :home_exposure_response
-		f.has_one :homex_outcome
-		f.has_many :bc_requests
-
-
-
+	has_many :subject_races
+	has_many :subject_languages
+	has_and_belongs_to_many :analyses
+	has_many :addressings
+	has_many :enrollments
+	has_many :gift_cards
+	has_many :phone_numbers
+	has_many :samples
+	has_many :interviews
+	has_one :home_exposure_response
+	has_one :homex_outcome
+	has_many :bc_requests
 
 ##########
 #
@@ -39,17 +35,18 @@ class Ccls::Subject < Shared
 #
 #	identifier should also be before patient
 #
-		f.has_one :identifier
-		f.has_one :pii
-		f.has_one :patient
+	has_one :identifier
+	has_one :pii
+	has_one :patient
 #
 ##########
 
-		f.with_options :conditions => ["projects.code = 'HomeExposures'"], :include => :project do |p|
-			p.has_one :hx_enrollment, :class_name => "Enrollment"
-			p.has_one :hx_gift_card,  :class_name => "GiftCard"
-		end
+	with_options :conditions => ["projects.code = 'HomeExposures'"], :include => :project do |p|
+		p.has_one :hx_enrollment, :class_name => "Enrollment"
+		p.has_one :hx_gift_card,  :class_name => "GiftCard"
 	end
+
+
 	has_many :races,     :through => :subject_races
 	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
@@ -203,30 +200,30 @@ class Ccls::Subject < Shared
 	#	NOTE don't forget that deep_merge DOES NOT WORK on HashWithIndifferentAccess
 
 	##
-	#	Subjects with an enrollment in HomeExposures
+	#	StudySubjects with an enrollment in HomeExposures
 	def self.for_hx(params={})
-#		Subject.search(params.deep_merge(
-		Subject.search(params.dup.deep_merge(
+#		StudySubject.search(params.deep_merge(
+		StudySubject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{}}
 		))
 	end
 
 	##
-	#	Subjects with an enrollment in HomeExposures and ...
+	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.for_hx_interview(params={})
-#		Subject.search(params.deep_merge(
-		Subject.search(params.dup.deep_merge(
+#		StudySubject.search(params.deep_merge(
+		StudySubject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{:chosen=>true}}
 		))
-#		@subjects = SubjectSearch.new(params).subjects
+#		@study_subjects = StudySubjectSearch.new(params).subjects
 #	eventually
-#		@subjects = hx.subjects.search(params.merge(
+#		@study_subjects = hx.study_subjects.search(params.merge(
 #			:interview_outcome => 'incomplete'
 #		))
 	end
 
 	##
-	#	Subjects with an enrollment in HomeExposures and ...
+	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.need_gift_card(params={})
 #		for_hx_followup(params.merge({
 		for_hx_followup(params.dup.merge({
@@ -235,7 +232,7 @@ class Ccls::Subject < Shared
 	end
 
 	##
-	#	Subjects with an enrollment in HomeExposures and ...
+	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.for_hx_followup(params={})
 #	Why in 3 statements?
 #		options = params.dup.deep_merge(
@@ -246,8 +243,8 @@ class Ccls::Subject < Shared
 #			:sample_outcome => 'complete',
 #			:interview_outcome => 'complete'
 #		)
-#		Subject.search(options)
-		Subject.search( params.dup.deep_merge(
+#		StudySubject.search(options)
+		StudySubject.search( params.dup.deep_merge(
 			:projects=>{hx_id=>{}},
 			:search_gift_cards => true,
 			:sample_outcome => 'complete',
@@ -256,7 +253,7 @@ class Ccls::Subject < Shared
 	end
 
 	##
-	#	Subjects with an enrollment in HomeExposures and ...
+	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.for_hx_sample(params={})
 #	Why in 3 statements?
 #		options = params.dup.deep_merge(
@@ -266,8 +263,8 @@ class Ccls::Subject < Shared
 ##			:sample_outcome => 'incomplete',
 #			:interview_outcome => 'complete'
 #		)
-#		Subject.search(options)
-		Subject.search(params.dup.deep_merge(
+#		StudySubject.search(options)
+		StudySubject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{}},
 #			:sample_outcome => 'incomplete',
 			:interview_outcome => 'complete'
@@ -275,7 +272,7 @@ class Ccls::Subject < Shared
 	end
 
 	def self.search(params={})
-		SubjectSearch.new(params).subjects
+		StudySubjectSearch.new(params).subjects
 	end
 
 #	#	Rails' update_all DOES NOT SUPPORT JOINS despite many requests online.
@@ -300,14 +297,14 @@ class Ccls::Subject < Shared
 #	end
 
 	def abstracts_the_same?
-		raise Subject::NotTwoAbstracts unless abstracts_count == 2
+		raise StudySubject::NotTwoAbstracts unless abstracts_count == 2
 		#	abstracts.inject(:is_the_same_as?) was nice
 		#	but using inject is ruby >= 1.8.7
 		return abstracts[0].is_the_same_as?(abstracts[1])
 	end
 
 	def abstract_diffs
-		raise Subject::NotTwoAbstracts unless abstracts_count == 2
+		raise StudySubject::NotTwoAbstracts unless abstracts_count == 2
 		#	abstracts.inject(:diff) was nice
 		#	but using inject is ruby >= 1.8.7
 		return abstracts[0].diff(abstracts[1])
@@ -371,20 +368,20 @@ class Ccls::Subject < Shared
 			matching_patient = Patient.find_by_study_subject_id(subject_ids)
 			admit_date = matching_patient.try(:admit_date)
 
-			Subject.update_subjects_reference_date( subject_ids, admit_date )
+			StudySubject.update_subjects_reference_date( subject_ids, admit_date )
 		end
 		true
 	end
 
 protected
 
-	def self.update_subjects_reference_date(subject_ids,new_reference_date)
-		# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
-		# UPDATE `subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
-		unless subject_ids.empty?
-			Subject.update_all(
+	def self.update_subjects_reference_date(study_subject_ids,new_reference_date)
+		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
+		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
+		unless study_subject_ids.empty?
+			StudySubject.update_all(
 				{:reference_date => new_reference_date },
-				{ :id => subject_ids })
+				{ :id => study_subject_ids })
 		end
 	end
 
@@ -393,7 +390,7 @@ protected
 	def patient_admit_date_is_after_dob
 		if !patient.nil? && !patient.admit_date.blank? && 
 			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob
-			errors.add('patient:admit_date', "is before subject's dob.") 
+			errors.add('patient:admit_date', "is before study_subject's dob.") 
 		end
 	end
 
@@ -402,7 +399,7 @@ protected
 	def patient_diagnosis_date_is_after_dob
 		if !patient.nil? && !patient.diagnosis_date.blank? && 
 			!pii.nil? && !pii.dob.blank? && patient.diagnosis_date < pii.dob
-			errors.add('patient:diagnosis_date', "is before subject's dob.") 
+			errors.add('patient:diagnosis_date', "is before study_subject's dob.") 
 		end
 	end
 

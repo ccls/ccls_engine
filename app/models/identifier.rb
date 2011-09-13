@@ -1,12 +1,12 @@
 #	==	requires
 #	*	childid (unique)
-#	*	subject_id (unique)
+#	*	study_subject_id (unique)
 #	*	state_id_no ( unique )
 class Identifier < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 
 	#	Very cool that this doesn't stop factory girl from using them.
-	#	it will stop the subject nested_attribute tests though
+	#	it will stop the study_subject nested_attribute tests though
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
 
@@ -15,21 +15,21 @@ class Identifier < Shared
 #
 
 	##	TODO - find a way to do this
-	#	because subject accepts_nested_attributes for pii 
+	#	because study_subject accepts_nested_attributes for pii 
 	#	we can't require study_subject_id on create
 	#
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
 	attr_protected :study_subject_id
-	validates_presence_of   :subject,          :on => :update
+	validates_presence_of   :study_subject,          :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 #	validates_uniqueness_of :study_subject_id, :on => :update
 
 	##
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the subject creation too if using nested attributes.
+	#	the study_subject creation too if using nested attributes.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
 
 	validates_presence_of   :case_control_type		#	TODO apparently could be null for mother's
@@ -138,13 +138,13 @@ class Identifier < Shared
 protected
 
 	def trigger_update_matching_subjects_reference_date
-		subject.update_subjects_reference_date_matching(matchingid_was,matchingid)
+		study_subject.update_subjects_reference_date_matching(matchingid_was,matchingid)
 	end
 
 	##
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the subject creation too if using nested attributes.
+	#	the study_subject creation too if using nested attributes.
 #	this is probably a bad idea as the user can't do anything about it anyway
 	def ensure_presence_and_uniqueness_of_study_subject_id
 		if study_subject_id.blank?

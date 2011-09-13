@@ -3,7 +3,7 @@ require 'test_helper'
 class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	
 	assert_should_create_default_object
-	assert_should_belong_to( :subject )
+	assert_should_belong_to( :study_subject )
 #	need to add test for this with booleans
 #	assert_should_require_attributes( :reject_candidate )
 ##	assert_should_require_unique_attributes( :key, :code, :description )

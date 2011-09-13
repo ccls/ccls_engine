@@ -1,10 +1,10 @@
 #	==	requires
-#	*	subject_id
+#	*	study_subject_id
 #	*	unit_id
 class Sample < Shared
 	belongs_to :aliquot_sample_format
 	belongs_to :sample_type
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	belongs_to :organization, :foreign_key => 'location_id'
 	belongs_to :unit
 	has_many :aliquots
@@ -21,7 +21,7 @@ class Sample < Shared
 	validates_presence_of :sample_type_id
 	validates_presence_of :sample_type
 	validates_presence_of :study_subject_id
-	validates_presence_of :subject
+	validates_presence_of :study_subject
 
 	validates_presence_of :sent_to_subject_on, 
 		:if => :collected_on
@@ -152,8 +152,8 @@ protected
 	end
 
 	def update_sample_outcome
-		if subject.hx_enrollment
-			ho = subject.homex_outcome || subject.create_homex_outcome
+		if study_subject.hx_enrollment
+			ho = study_subject.homex_outcome || study_subject.create_homex_outcome
 			so,date = if sent_to_lab_on_changed? && !sent_to_lab_on.nil?
 				[SampleOutcome['lab'], sent_to_lab_on ]
 			elsif received_by_ccls_on_changed? && !received_by_ccls_on.nil?

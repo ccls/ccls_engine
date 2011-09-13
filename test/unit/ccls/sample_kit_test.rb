@@ -38,7 +38,7 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 
 	test "should require a unique sample" do
 		assert_difference( "#{model_name}.count", 1 ) {
-#		assert_difference('Subject.count', 1) {
+#		assert_difference('StudySubject.count', 1) {
 		assert_difference('Sample.count', 1) {
 			object = create_object
 			assert_not_nil object.sample

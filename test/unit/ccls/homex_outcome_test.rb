@@ -4,7 +4,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list
-	assert_should_belong_to( :subject, :sample_outcome, :interview_outcome )
+	assert_should_belong_to( :study_subject, :sample_outcome, :interview_outcome )
 	assert_requires_complete_date( :interview_outcome_on, :sample_outcome_on )
 	assert_should_not_require_attributes( 
 		:position,
@@ -19,7 +19,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 #	assert_should_require_unique_attribute(:study_subject_id)
 
 	#
-	#	subject uses accepts_attributes_for :pii
+	#	study_subject uses accepts_attributes_for :pii
 	#	so the pii can't require study_subject_id on create
 	#	or this test fails.
 	#
@@ -27,15 +27,15 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		assert_difference( "#{model_name}.count", 1 ) do
 			object = create_object
 			object.reload.update_attributes(:updated_at => Time.now)
-			assert object.errors.on(:subject)
+			assert object.errors.on(:study_subject)
 		end
 	end
 
 	test "should require unique study_subject_id" do
-		subject = Factory(:subject)
-		create_object(:subject => subject)
+		study_subject = Factory(:study_subject)
+		create_object(:study_subject => study_subject)
 		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object(:subject => subject)
+			object = create_object(:study_subject => study_subject)
 			assert object.errors.on(:study_subject_id)
 		end
 	end
@@ -131,11 +131,11 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 protected
 
 	def create_complete_object(options={})
-		s = Factory(:subject,options[:subject]||{})
+		s = Factory(:study_subject,options[:study_subject]||{})
 		p = Project.find_or_create_by_code('HomeExposures')
-		Factory(:enrollment, :subject => s, :project => p )
+		Factory(:enrollment, :study_subject => s, :project => p )
 		h = create_object(
-			(options[:homex_outcome]||{}).merge(:subject => s,
+			(options[:homex_outcome]||{}).merge(:study_subject => s,
 			:interview_outcome_on => nil,
 			:sample_outcome_on => nil))
 		h

@@ -1,11 +1,11 @@
-#	Address for a subject
+#	Address for a study_subject
 #	Actually, this may be used for things other than subjects
 class Address < Shared
 	default_scope :order => 'created_at DESC'
 
 	has_many :interviews
 	has_one :addressing
-	has_one :subject, :through => :addressing, :foreign_key => 'study_subject_id'
+	has_one :study_subject, :through => :addressing
 	belongs_to :address_type
 	belongs_to :data_source
 

@@ -1,8 +1,8 @@
 # == PII (Personally Identifiable Information)
 #	==	requires
-#	*	subject_id
+#	*	study_subject_id
 class Pii < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
 
@@ -11,21 +11,21 @@ class Pii < Shared
 #
 
 	##	TODO - find a way to do this
-	#	because subject accepts_nested_attributes for pii 
+	#	because study_subject accepts_nested_attributes for pii 
 	#	we can't require study_subject_id on create
 	#
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
 	attr_protected :study_subject_id
-	validates_presence_of   :subject,          :on => :update
+	validates_presence_of   :study_subject,          :on => :update
 #	validates_uniqueness_of :study_subject_id, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
 	##
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the subject creation too if using nested attributes.
+	#	the study_subject creation too if using nested attributes.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
 
 	validates_presence_of       :dob
@@ -56,27 +56,27 @@ class Pii < Shared
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
 			:maximum => 250, :allow_blank => true
 
-	#	Returns string containing subject's first, middle and last initials
+	#	Returns string containing study_subject's first, middle and last initials
 	def initials
 		[first_name, middle_name, last_name].compact.collect{|s|s.chars.first}.join()
 	end
 
-	#	Returns string containing subject's first, middle and last name
+	#	Returns string containing study_subject's first, middle and last name
 	def full_name
 		[first_name, middle_name, last_name].compact.join(' ')
 	end
 
-	#	Returns string containing subject's father's first, middle and last name
+	#	Returns string containing study_subject's father's first, middle and last name
 	def fathers_name
 		[father_first_name, father_middle_name, father_last_name].compact.join(' ')
 	end
 
-	#	Returns string containing subject's mother's first, middle and last name
+	#	Returns string containing study_subject's mother's first, middle and last name
 	def mothers_name
 		[mother_first_name, mother_middle_name, mother_last_name].compact.join(' ')
 	end
 
-	#	Returns string containing subject's guardian's first, middle and last name
+	#	Returns string containing study_subject's guardian's first, middle and last name
 	def guardians_name
 		[guardian_first_name, guardian_middle_name, guardian_last_name].compact.join(' ')
 	end
@@ -96,7 +96,7 @@ class Pii < Shared
 	after_save :trigger_setting_was_under_15_at_dx,
 		:if => :dob_changed?
 	def trigger_setting_was_under_15_at_dx
-		subject.update_patient_was_under_15_at_dx
+		study_subject.update_patient_was_under_15_at_dx
 	end
 
 protected
@@ -104,7 +104,7 @@ protected
 	##
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the subject creation too if using nested attributes.
+	#	the study_subject creation too if using nested attributes.
 	def ensure_presence_and_uniqueness_of_study_subject_id
 		if study_subject_id.blank?
 			errors.add(:study_subject_id, :blank )

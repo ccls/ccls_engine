@@ -10,7 +10,7 @@ class Project < Shared
 	has_many :instrument_types
 	has_many :enrollments
 	has_many :gift_cards
-	has_many :subjects, :through => :enrollments, :foreign_key => 'study_subject_id'
+	has_many :study_subjects, :through => :enrollments
 	has_many :instruments
 
 	validates_presence_of   :code, :description
@@ -22,14 +22,14 @@ class Project < Shared
 	validates_complete_date_for :ended_on, :allow_nil => true
 
 
-#	TODO perhaps move this into subject where is clearly belongs
-	#	Returns all projects for which the subject
+#	TODO perhaps move this into study_subject where is clearly belongs
+	#	Returns all projects for which the study_subject
 	#	does not have an enrollment
-	def self.unenrolled_projects(subject)
+	def self.unenrolled_projects(study_subject)
 		Project.all(
 			:joins => "LEFT JOIN enrollments ON " <<
 				"projects.id = enrollments.project_id AND " <<
-				"enrollments.study_subject_id = #{subject.id}",
+				"enrollments.study_subject_id = #{study_subject.id}",
 			:conditions => [ "enrollments.study_subject_id IS NULL" ])
 	end
 

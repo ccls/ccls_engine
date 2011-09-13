@@ -5,7 +5,7 @@ class Ccls::IneligibleReasonTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_act_as_list
 
-#	only if subject is ineligible
+#	only if study_subject is ineligible
 #	assert_should_have_many(:enrollments)
 
 	assert_should_require_attributes( :code, :description )

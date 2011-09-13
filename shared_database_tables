@@ -4,7 +4,7 @@ Table: abstracts
 | Field                                      | Type          | Null | Key | Default | Extra          |
 +--------------------------------------------+---------------+------+-----+---------+----------------+
 | id                                         | int(11)       | NO   | PRI | NULL    | auto_increment |
-| subject_id                                 | int(11)       | YES  |     | NULL    |                |
+| study_subject_id                           | int(11)       | YES  |     | NULL    |                |
 | response_day14or28_flag                    | int(11)       | YES  |     | NULL    |                |
 | received_bone_marrow_biopsy                | int(11)       | YES  |     | NULL    |                |
 | received_h_and_p                           | int(11)       | YES  |     | NULL    |                |
@@ -1371,6 +1371,29 @@ Table: states
 | updated_at        | datetime     | YES  |     | NULL    |                |
 +-------------------+--------------+------+-----+---------+----------------+
 
+Table: study_subjects
++-----------------------+--------------+------+-----+---------+----------------+
+| Field                 | Type         | Null | Key | Default | Extra          |
++-----------------------+--------------+------+-----+---------+----------------+
+| id                    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| subject_type_id       | int(11)      | YES  |     | NULL    |                |
+| vital_status_id       | int(11)      | YES  |     | NULL    |                |
+| hispanicity_id        | int(11)      | YES  |     | NULL    |                |
+| reference_date        | date         | YES  |     | NULL    |                |
+| sex                   | varchar(255) | YES  |     | NULL    |                |
+| do_not_contact        | tinyint(1)   | NO   |     | 0       |                |
+| created_at            | datetime     | YES  |     | NULL    |                |
+| updated_at            | datetime     | YES  |     | NULL    |                |
+| abstracts_count       | int(11)      | YES  |     | 0       |                |
+| mother_yrs_educ       | int(11)      | YES  |     | NULL    |                |
+| father_yrs_educ       | int(11)      | YES  |     | NULL    |                |
+| birth_type            | varchar(255) | YES  |     | NULL    |                |
+| mother_hispanicity_id | int(11)      | YES  |     | NULL    |                |
+| father_hispanicity_id | int(11)      | YES  |     | NULL    |                |
+| birth_county          | varchar(255) | YES  |     | NULL    |                |
+| is_duplicate_of       | varchar(6)   | YES  |     | NULL    |                |
++-----------------------+--------------+------+-----+---------+----------------+
+
 Table: subject_languages
 +------------------+--------------+------+-----+---------+----------------+
 | Field            | Type         | Null | Key | Default | Extra          |
@@ -1419,29 +1442,6 @@ Table: subject_types
 | created_at                | datetime     | YES  |     | NULL    |                |
 | updated_at                | datetime     | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
-
-Table: subjects
-+-----------------------+--------------+------+-----+---------+----------------+
-| Field                 | Type         | Null | Key | Default | Extra          |
-+-----------------------+--------------+------+-----+---------+----------------+
-| id                    | int(11)      | NO   | PRI | NULL    | auto_increment |
-| subject_type_id       | int(11)      | YES  |     | NULL    |                |
-| vital_status_id       | int(11)      | YES  |     | NULL    |                |
-| hispanicity_id        | int(11)      | YES  |     | NULL    |                |
-| reference_date        | date         | YES  |     | NULL    |                |
-| sex                   | varchar(255) | YES  |     | NULL    |                |
-| do_not_contact        | tinyint(1)   | NO   |     | 0       |                |
-| created_at            | datetime     | YES  |     | NULL    |                |
-| updated_at            | datetime     | YES  |     | NULL    |                |
-| abstracts_count       | int(11)      | YES  |     | 0       |                |
-| mother_yrs_educ       | int(11)      | YES  |     | NULL    |                |
-| father_yrs_educ       | int(11)      | YES  |     | NULL    |                |
-| birth_type            | varchar(255) | YES  |     | NULL    |                |
-| mother_hispanicity_id | int(11)      | YES  |     | NULL    |                |
-| father_hispanicity_id | int(11)      | YES  |     | NULL    |                |
-| birth_county          | varchar(255) | YES  |     | NULL    |                |
-| is_duplicate_of       | varchar(6)   | YES  |     | NULL    |                |
-+-----------------------+--------------+------+-----+---------+----------------+
 
 Table: tracks
 +----------------+--------------+------+-----+---------+----------------+

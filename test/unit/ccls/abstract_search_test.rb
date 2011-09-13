@@ -70,7 +70,7 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 
 	test "should include abstract by q first_name" do
 		a1,a2 = create_abstracts_with_first_names('Michael','Bob')
-		assert_equal 'Michael', a1.subject.first_name
+		assert_equal 'Michael', a1.study_subject.first_name
 		abstracts = Abstract.search(:q => 'mi ch ha')
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
@@ -78,7 +78,7 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 
 	test "should include abstract by q last_name" do
 		a1,a2 = create_abstracts_with_last_names('Michael','Bob')
-		assert_equal 'Michael', a1.subject.last_name
+		assert_equal 'Michael', a1.study_subject.last_name
 		abstracts = Abstract.search(:q => 'cha ael')
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
@@ -86,16 +86,16 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 
 	test "should include abstract by q childid" do
 		a1,a2 = create_abstracts_with_childids(999999,'1')
-		assert_equal 999999, a1.subject.childid
-		abstracts = Abstract.search(:q => a1.subject.identifier.childid)
+		assert_equal 999999, a1.study_subject.childid
+		abstracts = Abstract.search(:q => a1.study_subject.identifier.childid)
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
 	end
 
 	test "should include abstract by q patid" do
 		a1,a2 = create_abstracts_with_patids(9999,'1')
-		assert_equal '9999', a1.subject.patid
-		abstracts = Abstract.search(:q => a1.subject.identifier.patid)
+		assert_equal '9999', a1.study_subject.patid
+		abstracts = Abstract.search(:q => a1.study_subject.identifier.patid)
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
 	end

@@ -3,7 +3,7 @@ class Analysis < Shared
 #
 #	TODO remove the habtm and replace it with hmt SubjectAnalyses ?
 #
-	has_and_belongs_to_many :subjects, :association_foreign_key => 'study_subject_id'
+	has_and_belongs_to_many :study_subjects	#, :association_foreign_key => 'study_subject_id'
 
 	belongs_to :analyst, :class_name => 'Person'
 	belongs_to :analytic_file_creator, :class_name => 'Person'

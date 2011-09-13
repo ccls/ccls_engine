@@ -32,12 +32,12 @@ private	#	THIS IS REQUIRED
 	end
 
 	#	Certainly not the fastest way, but quite possibly the only way
-	#	to search against subjects being in a separate database.
-	def subjects_conditions
+	#	to search against study_subjects being in a separate database.
+	def study_subjects_conditions
 		unless q.blank?
-			subjects = Subject.search(:q => q, :paginate => false)
-			subject_ids = subjects.collect(&:id)
-			['abstracts.subject_id IN (:subject_ids)', { :subject_ids => subject_ids } ]
+			study_subjects = StudySubject.search(:q => q, :paginate => false)
+			study_subject_ids = study_subjects.collect(&:id)
+			['abstracts.study_subject_id IN (:study_subject_ids)', { :study_subject_ids => study_subject_ids } ]
 		end
 	end
 

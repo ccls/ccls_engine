@@ -1,14 +1,14 @@
 #	==	requires
 #	*	address_id
 #	*	interviewer_id
-#	*	subject_id
+#	*	study_subject_id
 class Interview < Shared
 
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 
 	##
 	#	why is this here?	Homex for assigning interview outcome
-	accepts_nested_attributes_for :subject
+	accepts_nested_attributes_for :study_subject
 
 	belongs_to :address
 	belongs_to :interviewer, :class_name => 'Person'
@@ -94,8 +94,8 @@ protected
 
 	def update_intro_operational_event
 		oet = OperationalEventType['intro']
-#		hxe = identifier.subject.hx_enrollment
-		hxe = subject.hx_enrollment
+#		hxe = identifier.study_subject.hx_enrollment
+		hxe = study_subject.hx_enrollment
 		if oet && hxe
 			oe = hxe.operational_events.find(:first,
 				:conditions => { :operational_event_type_id => oet.id } )

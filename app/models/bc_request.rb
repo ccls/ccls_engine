@@ -1,6 +1,6 @@
 class BcRequest < Shared
 
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	attr_protected :study_subject_id
 
 	validates_length_of :request_type, :status, :maximum => 250, :allow_blank => true

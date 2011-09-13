@@ -47,7 +47,7 @@ require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/shared'
 require 'ccls_engine/ccls_user'
-require 'ccls_engine/ccls_subject'
+require 'ccls_engine/ccls_study_subject'
 require 'ccls_engine/helper'
 
 if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")

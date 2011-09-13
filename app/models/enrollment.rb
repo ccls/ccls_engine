@@ -1,9 +1,9 @@
 #	Rich join of Subject and Project
 #	==	requires
-#	*	subject_id
+#	*	study_subject_id
 #	*	project
 class Enrollment < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	belongs_to :ineligible_reason
 	belongs_to :refusal_reason
 	belongs_to :document_version
@@ -17,15 +17,15 @@ class Enrollment < Shared
 
 
 	##	TODO - find a way to do this
-	# because subject now accepts_nested_attributes for enrollments
+	# because study_subject now accepts_nested_attributes for enrollments
 	# we can't require study_subject_id on create
 	#
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	validates_presence_of   :subject, :on => :update
+	validates_presence_of   :study_subject, :on => :update
 #	validates_presence_of :study_subject_id
-#	validates_presence_of :subject
+#	validates_presence_of :study_subject
 
 
 	validates_presence_of :ineligible_reason,

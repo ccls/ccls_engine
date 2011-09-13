@@ -1,5 +1,5 @@
 class CandidateControl < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 
 #	validates_presence_of   :key, :code, :description
 #	validates_presence_of   :reject_candidate	#	fails if value is actually false

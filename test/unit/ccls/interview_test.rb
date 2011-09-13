@@ -3,7 +3,7 @@ require 'test_helper'
 class Ccls::InterviewTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_initially_belong_to(:subject)
+	assert_should_initially_belong_to(:study_subject)
 	assert_should_belong_to( :address,
 		:instrument_version,
 		:interview_method,
@@ -36,9 +36,9 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		assert_difference( "OperationalEvent.count", 1 ) {
 		assert_difference( "#{model_name}.count", 1 ) {
 		assert_difference( "Enrollment.count", 1 ) {
-		assert_difference( "Subject.count", 1 ) {
+		assert_difference( "StudySubject.count", 1 ) {
 			create_object(
-				:subject => create_hx_subject,
+				:study_subject => create_hx_subject,
 				:intro_letter_sent_on => Chronic.parse('yesterday'))
 		} } } }
 		assert_equal OperationalEventType['intro'],
@@ -50,7 +50,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	test "should update intro letter operational event " <<
 			"when intro_letter_sent_on updated" do
 		object = create_object(
-			:subject => create_hx_subject,
+			:study_subject => create_hx_subject,
 			:intro_letter_sent_on => Chronic.parse('yesterday'))
 		assert_difference( "OperationalEvent.count", 0 ) {
 		assert_difference( "#{model_name}.count", 0 ) {

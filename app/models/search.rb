@@ -80,7 +80,7 @@ private
 		subclass.attr_accessors = attr_accessors.dup
 		subclass.valid_orders = valid_orders.dup
 		#	Create 'shortcut'
-		#	SubjectSearch(options) -> SubjectSearch.new(options)
+		#	StudySubjectSearch(options) -> StudySubjectSearch.new(options)
 		Object.class_eval do
 			define_method subclass.to_s do |*args|
 				subclass.send(:new,*args)
@@ -150,8 +150,8 @@ private
 		#	select CANNOT be ''
 		#	ActiveRecord::StatementInvalid: Mysql::Error: You have an error in your SQL syntax; 
 		#		check the manual that corresponds to your MySQL server version for the right 
-		#		syntax to use near 'FROM `subjects`   LIMIT 0, 25' at line 1: 
-		#		SELECT  FROM `subjects`   LIMIT 0, 25
+		#		syntax to use near 'FROM `study_subjects`   LIMIT 0, 25' at line 1: 
+		#		SELECT  FROM `study_subjects`   LIMIT 0, 25
 		#	nil will cause default use of '*', which could also be passed
 		( selects.empty? ) ? nil : selects.join(',')
 	end
@@ -162,7 +162,7 @@ private
 		groups = private_methods(false).grep(/_groups$/).sort.map { |m| send(m) }.compact
 		#	ActiveRecord::StatementInvalid: Mysql::Error: You have an error in your SQL syntax; 
 		#		check the manual that corresponds to your MySQL server version for the right 
-		#		syntax to use near '' at line 1: SELECT * FROM `subjects`  GROUP BY
+		#		syntax to use near '' at line 1: SELECT * FROM `study_subjects`  GROUP BY
 		#	nil will cause group by to not be used
 		( groups.empty? ) ? nil : groups.join(',')
 	end

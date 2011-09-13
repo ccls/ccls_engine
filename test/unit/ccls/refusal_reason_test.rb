@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Ccls::RefusalReasonTest < ActiveSupport::TestCase
 
-#	Only IF subject not consented
+#	Only IF study_subject not consented
 #	assert_should_have_many(:enrollments)
 
 	assert_should_create_default_object

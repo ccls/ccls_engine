@@ -4,14 +4,14 @@ module Ccls::Assertions
 		base.extend(ClassMethods)
 	end
 
-	def assert_subject_is_eligible(subject)
-		assert_nil   subject.hx_enrollment.ineligible_reason_id
-		assert_equal subject.hx_enrollment.is_eligible, YNDK[:yes]
+	def assert_subject_is_eligible(study_subject)
+		assert_nil   study_subject.hx_enrollment.ineligible_reason_id
+		assert_equal study_subject.hx_enrollment.is_eligible, YNDK[:yes]
 	end
 
-	def assert_subject_is_not_eligible(subject)
-		assert_not_nil subject.hx_enrollment.ineligible_reason_id
-		assert_equal   subject.hx_enrollment.is_eligible, YNDK[:no]
+	def assert_subject_is_not_eligible(study_subject)
+		assert_not_nil study_subject.hx_enrollment.ineligible_reason_id
+		assert_equal   study_subject.hx_enrollment.is_eligible, YNDK[:no]
 	end
 
 	module ClassMethods

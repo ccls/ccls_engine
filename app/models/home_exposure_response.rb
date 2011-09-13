@@ -1,9 +1,9 @@
 # Extraction of answers from the survey
 class HomeExposureResponse < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 
 	validates_presence_of   :study_subject_id
-	validates_presence_of   :subject
+	validates_presence_of   :study_subject
 	validates_uniqueness_of :study_subject_id
 
 	def self.fields

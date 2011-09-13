@@ -84,15 +84,15 @@ class Ccls::GiftCardSearchTest < ActiveSupport::TestCase
 
 	test "should include gift_card by q childid" do
 		g1,g2 = create_gift_cards_with_childids(999999,'1')
-		assert_equal 999999, g1.subject.childid
-		gift_cards = GiftCard.search(:q => g1.subject.identifier.childid)
+		assert_equal 999999, g1.study_subject.childid
+		gift_cards = GiftCard.search(:q => g1.study_subject.identifier.childid)
 		assert  gift_cards.include?(g1)
 		assert !gift_cards.include?(g2)
 	end
 
 	test "should include gift_card by q patid" do
 		g1,g2 = create_gift_cards_with_patids(999999,'1')
-		gift_cards = GiftCard.search(:q => g1.subject.identifier.patid)
+		gift_cards = GiftCard.search(:q => g1.study_subject.identifier.patid)
 		assert  gift_cards.include?(g1)
 		assert !gift_cards.include?(g2)
 	end

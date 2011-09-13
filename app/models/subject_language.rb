@@ -1,5 +1,5 @@
 class SubjectLanguage < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	belongs_to :language
 
 	validates_presence_of :other,

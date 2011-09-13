@@ -68,7 +68,7 @@ end	#	parent must be defined first
 
 
 Factory.define :address do |f|
-#	f.association :subject
+#	f.association :study_subject
 #	f.association :addressing
 	f.association :address_type
 	f.sequence(:line_1) { |n| "Box #{n}" }
@@ -79,7 +79,7 @@ end
 
 Factory.define :addressing do |f|
 	f.association :address
-	f.association :subject
+	f.association :study_subject
 	f.is_valid    1
 	f.is_verified 2
 	f.updated_at Time.now	#	to make it dirty
@@ -114,7 +114,7 @@ Factory.define :candidate_control do |f|
 end
 
 Factory.define :identifier do |f|
-	f.association :subject
+	f.association :study_subject
 #	f.sequence(:childid) { |n| "#{n}" }
 	f.sequence(:ssn){|n| sprintf("%09d",n) }
 #	f.sequence(:patid){|n| "#{n}"}
@@ -175,7 +175,7 @@ Factory.define :dust_kit do |f|
 end
 
 Factory.define :enrollment do |f|
-	f.association :subject
+	f.association :study_subject
 	f.association :project
 	f.is_eligible 1	#true
 	f.is_chosen   1	#true
@@ -199,17 +199,17 @@ Factory.define :hospital do |f|
 end
 
 Factory.define :homex_outcome do |f|
-#	f.association :subject
+#	f.association :study_subject
 	f.sample_outcome_on Date.today
 	f.interview_outcome_on Date.today
 end
 
 #Factory.define :home_exposure_event do |f|
-##	f.association :subject
+##	f.association :study_subject
 #end
 
 Factory.define :home_exposure_response do |f|
-	f.association :subject
+	f.association :study_subject
 end
 
 Factory.define :home_page_pic do |f|
@@ -223,7 +223,7 @@ end
 
 Factory.define :interview do |f|
 #	f.association :address
-	f.association :subject
+	f.association :study_subject
 #	f.association :interviewer, :factory => :person
 #	f.association :identifier
 end
@@ -271,7 +271,7 @@ Factory.define :organization do |f|
 end
 
 Factory.define :operational_event do |f|
-#	f.association :subject
+#	f.association :study_subject
 	f.association :operational_event_type
 end
 
@@ -288,7 +288,7 @@ end
 
 Factory.define :patient do |f|
 	#	really don't see the point of a patient w/o a subject
-	f.association :subject, :factory => :case_subject
+	f.association :study_subject, :factory => :case_subject
 end
 
 Factory.define :person do |f|
@@ -299,7 +299,7 @@ end
 Factory.define :pii do |f|
 	#	really don't see the point of a PII w/o a subject
 	#	but ...
-	f.association :subject
+	f.association :study_subject
 	f.first_name "First"
 #	f.middle_name "Middle"
 	f.last_name "Last"
@@ -328,7 +328,7 @@ Factory.define :refusal_reason do |f|
 end
 
 Factory.define :sample do |f|
-	f.association :subject
+	f.association :study_subject
 #	f.association :unit
 	f.association :sample_type
 end
@@ -351,7 +351,7 @@ Factory.define :sample_type_parent, :parent => :sample_type do |f|
 end
 
 Factory.define :phone_number do |f|
-	f.association :subject
+	f.association :study_subject
 	f.association :phone_type
 	f.sequence(:phone_number){|n| sprintf("%010d",n) }
 	f.is_valid    1
@@ -384,7 +384,7 @@ Factory.define :state do |f|
 	f.fips_country_code 'US'
 end
 
-Factory.define :subject do |f|
+Factory.define :study_subject do |f|
 	f.association :subject_type
 #	f.association :subject_race
 	f.association :vital_status
@@ -395,20 +395,20 @@ end
 #	f.subject_type { SubjectType.find(:first,:conditions => {
 #			:code => 'Case'
 #		}) }
-Factory.define :case_subject, :parent => :subject do |f|
+Factory.define :case_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
 end
-Factory.define :control_subject, :parent => :subject do |f|
+Factory.define :control_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
 end
 
 Factory.define :subject_race do |f|
-	f.association :subject
+	f.association :study_subject
 	f.association :race
 end
 
 Factory.define :subject_language do |f|
-	f.association :subject
+	f.association :study_subject
 	f.association :language
 end
 
@@ -424,7 +424,7 @@ end
 
 #Factory.define :survey_invitation do |f|
 #	f.association :survey
-#	f.association :subject
+#	f.association :study_subject
 #end
 
 
@@ -479,7 +479,7 @@ Factory.define :survey_section do |f|
 	f.sequence(:display_order){ |n| n }
 end
 Factory.define :response_set do |f|
-	f.association :subject
+	f.association :study_subject
 	f.association :survey
 end
 Factory.define :response do |f|

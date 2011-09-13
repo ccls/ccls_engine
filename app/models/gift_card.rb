@@ -1,5 +1,5 @@
 class GiftCard < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	belongs_to :project
 	validates_presence_of   :number
 	validates_uniqueness_of :number

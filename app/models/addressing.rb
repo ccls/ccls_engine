@@ -1,6 +1,6 @@
 #	Rich join of Subject and Address
 class Addressing < Shared
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	belongs_to :address
 
 	##	TODO - find a way to do this
@@ -19,7 +19,7 @@ class Addressing < Shared
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	validates_presence_of   :subject, :on => :update
+	validates_presence_of   :study_subject, :on => :update
 #	validates_presence_of :study_subject_id, :subject
 
 	with_options :maximum => 250, :allow_blank => true do |o|
@@ -88,17 +88,17 @@ protected
 	end
 
 	def check_state_for_eligibilty
-		if( state != 'CA' && subject && subject.hx_enrollment &&
+		if( state != 'CA' && study_subject && study_subject.hx_enrollment &&
 			address_type == AddressType['residence'] )
 
 			#	This is an after_save so using 1 NOT 0
-			ineligible_reason = if( subject.residence_addresses_count == 1 )
+			ineligible_reason = if( study_subject.residence_addresses_count == 1 )
 				IneligibleReason['newnonCA']
 			else
 				IneligibleReason['moved']
 			end
 
-			subject.hx_enrollment.update_attributes(
+			study_subject.hx_enrollment.update_attributes(
 				:is_eligible => YNDK[:no],
 				:ineligible_reason => ineligible_reason
 			)
@@ -109,7 +109,7 @@ protected
 				raise ActiveRecord::RecordNotSaved
 			end
 
-			subject.hx_enrollment.operational_events << OperationalEvent.create!(
+			study_subject.hx_enrollment.operational_events << OperationalEvent.create!(
 				:operational_event_type => oet,
 				:occurred_on => Date.today,
 				:description => ineligible_reason.to_s

@@ -3,18 +3,18 @@ class HomexOutcome < Shared
 	acts_as_list
 	default_scope :order => :position
 
-	belongs_to :subject, :foreign_key => 'study_subject_id'
+	belongs_to :study_subject
 	belongs_to :sample_outcome
 	belongs_to :interview_outcome
 
 	##	TODO - find a way to do this
-	# because subject accepts_nested_attributes for homex_outcome
+	# because study_subject accepts_nested_attributes for homex_outcome
 	# we can't require study_subject_id on create
 	#
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	validates_presence_of   :subject, :on => :update
+	validates_presence_of   :study_subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
 	validates_presence_of :sample_outcome_on,
@@ -47,8 +47,8 @@ protected
 			else nil
 		end
 		unless operational_event_type.nil?
-			raise NoHomeExposureEnrollment if subject.hx_enrollment.nil?
-			subject.hx_enrollment.operational_events << OperationalEvent.create!(
+			raise NoHomeExposureEnrollment if study_subject.hx_enrollment.nil?
+			study_subject.hx_enrollment.operational_events << OperationalEvent.create!(
 				:operational_event_type => operational_event_type,
 				:occurred_on => interview_outcome_on
 			)
@@ -67,8 +67,8 @@ protected
 			else nil
 		end
 		unless operational_event_type.nil?
-			raise NoHomeExposureEnrollment if subject.hx_enrollment.nil?
-			subject.hx_enrollment.operational_events << OperationalEvent.create!(
+			raise NoHomeExposureEnrollment if study_subject.hx_enrollment.nil?
+			study_subject.hx_enrollment.operational_events << OperationalEvent.create!(
 				:operational_event_type => operational_event_type,
 				:occurred_on => sample_outcome_on
 			)

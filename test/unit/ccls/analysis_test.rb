@@ -17,6 +17,6 @@ class Ccls::AnalysisTest < ActiveSupport::TestCase
 	assert_should_belong_to( :analytic_file_creator, :analyst,
 		:class_name => 'Person' )
 	assert_should_belong_to( :project )
-	assert_should_habtm( :subjects )
+	assert_should_habtm( :study_subjects )
 
 end

@@ -6,7 +6,7 @@ class Race < Shared
 	default_scope :order => :position
 
 #	Don't think that I ever user this relationship in this direction
-#	has_many :subjects
+#	has_many :study_subjects
 
 	validates_presence_of   :key, :code
 	validates_uniqueness_of :key, :code, :description

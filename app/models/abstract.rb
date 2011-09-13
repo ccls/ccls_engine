@@ -1,7 +1,7 @@
 #	Abstract model
 class Abstract < Shared
 
-	belongs_to :subject, :counter_cache => true
+	belongs_to :study_subject, :counter_cache => true
 
 	with_options :class_name => 'User', :primary_key => 'uid' do |u|
 		u.belongs_to :entry_1_by, :foreign_key => 'entry_1_by_uid'
@@ -256,7 +256,7 @@ class Abstract < Shared
 		end
 	end
 
-	attr_protected :subject_id
+	attr_protected :study_subject_id
 	attr_protected :entry_1_by_uid
 	attr_protected :entry_2_by_uid
 	attr_protected :merged_by_uid
@@ -377,12 +377,12 @@ protected
 
 	#	Set user if given
 	def set_user
-		if subject
+		if study_subject
 			#	because it is possible to create the first, then the second
 			#	and then delete the first, and create another, first and
 			#	second kinda lose their meaning until the merge, so set them
 			#	both as the same until the merge
-			case subject.abstracts_count
+			case study_subject.abstracts_count
 				when 0 
 					self.entry_1_by_uid = current_user.try(:uid)||0
 					self.entry_2_by_uid = current_user.try(:uid)||0
@@ -390,7 +390,7 @@ protected
 					self.entry_1_by_uid = current_user.try(:uid)||0
 					self.entry_2_by_uid = current_user.try(:uid)||0
 				when 2
-					abs = subject.abstracts
+					abs = study_subject.abstracts
 					#	compact just in case a nil crept in
 					self.entry_1_by_uid = [abs[0].entry_1_by_uid,abs[0].entry_2_by_uid].compact.first
 					self.entry_2_by_uid = [abs[1].entry_1_by_uid,abs[1].entry_2_by_uid].compact.first
@@ -400,22 +400,22 @@ protected
 	end
 
 	def delete_unmerged
-		if subject and !merged_by_uid.blank?
+		if study_subject and !merged_by_uid.blank?
 			#	use delete and not destroy to preserve the abstracts_count
-			subject.unmerged_abstracts.each{|a|a.delete}
+			study_subject.unmerged_abstracts.each{|a|a.delete}
 		end
 	end
 
 	def subject_has_less_than_three_abstracts
 		#	because this abstract hasn't been created yet, we're comparing to 2, not 3
-		if subject and subject.abstracts_count >= 2
-			errors.add(:subject_id,"Subject can only have 2 abstracts." ) unless merging
+		if study_subject and study_subject.abstracts_count >= 2
+			errors.add(:study_subject_id,"Study Subject can only have 2 abstracts." ) unless merging
 		end
 	end
 
 	def subject_has_no_merged_abstract
-		if subject and subject.merged_abstract
-			errors.add(:subject_id,"Subject already has a merged abstract." )
+		if study_subject and study_subject.merged_abstract
+			errors.add(:study_subject_id,"Study Subject already has a merged abstract." )
 		end
 	end
 

@@ -6,7 +6,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_have_one( :sample_kit )
 	assert_should_have_many( :aliquots )
 	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
-	assert_should_initially_belong_to( :subject, :sample_type )
+	assert_should_initially_belong_to( :study_subject, :sample_type )
 	assert_should_habtm( :projects )
 	assert_should_require_attributes( :sample_type_id )
 
@@ -15,7 +15,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 
 	test "should require study_subject_id" do
 		assert_no_difference "Sample.count" do
-			object = create_object(:subject => nil)
+			object = create_object(:study_subject => nil)
 			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
 		end
 	end
@@ -224,7 +224,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:subject => create_hx_subject() )
+				:study_subject => create_hx_subject() )
 		} }
 	end
 
@@ -233,12 +233,12 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:subject => create_hx_subject(),
+				:study_subject => create_hx_subject(),
 				:sent_to_subject_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['sent'],
-				object.subject.homex_outcome.sample_outcome
+				object.study_subject.homex_outcome.sample_outcome
 			assert_equal object.sent_to_subject_on,
-				object.subject.homex_outcome.sample_outcome_on
+				object.study_subject.homex_outcome.sample_outcome_on
 		} } }
 	end
 
@@ -247,14 +247,14 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:subject => create_hx_subject(),
+				:study_subject => create_hx_subject(),
 				:sent_to_subject_on => Chronic.parse('3 days ago'),
 				:collected_on => Chronic.parse('2 days ago'),
 				:received_by_ccls_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['received'],
-				object.subject.homex_outcome.sample_outcome
+				object.study_subject.homex_outcome.sample_outcome
 			assert_equal object.received_by_ccls_on,
-				object.subject.homex_outcome.sample_outcome_on
+				object.study_subject.homex_outcome.sample_outcome_on
 		} } }
 	end
 
@@ -263,7 +263,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			object = create_object(
-				:subject => create_hx_subject(),
+				:study_subject => create_hx_subject(),
 				:organization => Factory(:organization),
 				:sent_to_subject_on => Chronic.parse('4 days ago'),
 				:collected_on => Chronic.parse('3 days ago'),
@@ -271,9 +271,9 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 				:sent_to_lab_on => Chronic.parse('yesterday') )
 			assert !object.new_record?, "Object was not created"
 			assert_equal SampleOutcome['lab'],
-				object.subject.homex_outcome.sample_outcome
+				object.study_subject.homex_outcome.sample_outcome
 			assert_equal object.sent_to_lab_on,
-				object.subject.homex_outcome.sample_outcome_on
+				object.study_subject.homex_outcome.sample_outcome_on
 		} } #}
 	end
 

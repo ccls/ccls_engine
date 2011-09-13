@@ -15,7 +15,7 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		:verified_on,
 		:verified_by_id,
 		:data_source_id )
-	assert_should_initially_belong_to( :subject, :address )
+	assert_should_initially_belong_to( :study_subject, :address )
 	assert_should_require_attribute_length( :why_invalid, :how_verified, 
 		:maximum => 250 )
 	assert_requires_complete_date( :valid_from, :valid_to )
@@ -143,69 +143,69 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 
 
 
-	test "should make subject ineligible "<<
+	test "should make study_subject ineligible "<<
 			"on create if state NOT 'CA' and address is ONLY residence" do
-		subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_subject
 		assert_difference('OperationalEvent.count',1) {
 		assert_difference('Addressing.count',1) {
 		assert_difference('Address.count',1) {
-			create_az_addressing(subject)
+			create_az_addressing(study_subject)
 		} } }
-		assert_subject_is_not_eligible(subject)
-		assert_equal   subject.hx_enrollment.ineligible_reason,
+		assert_subject_is_not_eligible(study_subject)
+		assert_equal   study_subject.hx_enrollment.ineligible_reason,
 			IneligibleReason['newnonCA']
 	end
 
-	test "should make subject ineligible "<<
+	test "should make study_subject ineligible "<<
 			"on create if state NOT 'CA' and address is ANOTHER residence" do
-		subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_subject
 		assert_difference('OperationalEvent.count',1) {
 		assert_difference('Address.count',2) {
 		assert_difference( "#{model_name}.count", 2 ) {
-			create_ca_addressing(subject)
-			create_az_addressing(subject)
+			create_ca_addressing(study_subject)
+			create_az_addressing(study_subject)
 		} } }
-		assert_subject_is_not_eligible(subject)
-		assert_equal   subject.hx_enrollment.ineligible_reason,
+		assert_subject_is_not_eligible(study_subject)
+		assert_equal   study_subject.hx_enrollment.ineligible_reason,
 			IneligibleReason['moved']
 	end
 
-	test "should NOT make subject ineligible "<<
+	test "should NOT make study_subject ineligible "<<
 			"on create if OET is missing" do
 		OperationalEventType['ineligible'].destroy
-		subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_subject
 		assert_difference('OperationalEvent.count',0) {
 		assert_difference('Address.count',1) {
 		assert_difference( "#{model_name}.count", 1 ) {
-			create_ca_addressing(subject)
+			create_ca_addressing(study_subject)
 			assert_raise(ActiveRecord::RecordNotSaved){
-				create_az_addressing(subject)
+				create_az_addressing(study_subject)
 		} } } }
-		subject.hx_enrollment.reload	#	NEEDED
-		assert_subject_is_eligible(subject)
+		study_subject.hx_enrollment.reload	#	NEEDED
+		assert_subject_is_eligible(study_subject)
 	end
 
-	test "should NOT make subject ineligible "<<
+	test "should NOT make study_subject ineligible "<<
 			"on create if state NOT 'CA' and address is NOT residence" do
-		subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_subject
 		assert_difference('OperationalEvent.count',0) {
 		assert_difference('Address.count',1) {
 		assert_difference( "#{model_name}.count", 1 ) {
-			create_az_addressing(subject,
+			create_az_addressing(study_subject,
 				:address => { :address_type => AddressType['mailing'] })
 		} } }
-		assert_subject_is_eligible(subject)
+		assert_subject_is_eligible(study_subject)
 	end
 
-	test "should NOT make subject ineligible "<<
+	test "should NOT make study_subject ineligible "<<
 			"on create if state 'CA' and address is residence" do
-		subject = create_eligible_hx_subject
+		study_subject = create_eligible_hx_subject
 		assert_difference('OperationalEvent.count',0) {
 		assert_difference('Address.count',1) {
 		assert_difference( "#{model_name}.count", 1 ) {
-			create_ca_addressing(subject)
+			create_ca_addressing(study_subject)
 		} } }
-		assert_subject_is_eligible(subject)
+		assert_subject_is_eligible(study_subject)
 	end
 
 	%w( address_type address_type_id
@@ -218,10 +218,10 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 	
 protected
 
-	def create_addressing_with_address(subject,options={})
+	def create_addressing_with_address(study_subject,options={})
 #		Factory(:addressing, {
 		create_object({
-			:subject => subject,
+			:study_subject => study_subject,
 #	doesn't work in rcov for some reason
 #			:address => nil,	#	block address_attributes
 			:address_id => nil,	#	block address_attributes
@@ -231,13 +231,13 @@ protected
 		}.merge(options[:addressing]||{}))
 	end
 
-	def create_ca_addressing(subject,options={})
-		create_addressing_with_address(subject,{
+	def create_ca_addressing(study_subject,options={})
+		create_addressing_with_address(study_subject,{
 			:address => {:state => 'CA'}}.merge(options))
 	end
 
-	def create_az_addressing(subject,options={})
-		create_addressing_with_address(subject,{
+	def create_az_addressing(study_subject,options={})
+		create_addressing_with_address(study_subject,{
 			:address => {:state => 'AZ'}}.merge(options))
 	end
 

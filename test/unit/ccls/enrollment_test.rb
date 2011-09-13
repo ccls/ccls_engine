@@ -10,7 +10,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should require unique project_id scope study_subject_id" do
 		o = create_object
 		assert_no_difference "Enrollment.count" do
-			object = create_object(:project => o.project,:subject => o.subject)
+			object = create_object(:project => o.project,:study_subject => o.study_subject)
 			assert object.errors.on_attr_and_type(:project_id, :taken)
 		end
 	end
@@ -49,7 +49,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		:ineligible_reason,
 		:refusal_reason,
 		:document_version )
-	assert_should_initially_belong_to(:subject, :project)
+	assert_should_initially_belong_to(:study_subject, :project)
 	assert_requires_complete_date(:completed_on, :consented_on)
 	assert_requires_past_date(    :completed_on, :consented_on)
 

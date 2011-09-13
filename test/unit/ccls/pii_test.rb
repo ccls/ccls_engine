@@ -4,8 +4,8 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
-#	assert_should_belong_to(:subject)
-	assert_should_initially_belong_to(:subject)
+#	assert_should_belong_to(:study_subject)
+	assert_should_initially_belong_to(:study_subject)
 	assert_should_protect( :study_subject_id )
 	assert_should_not_require_attributes( :study_subject_id )
 #	assert_should_require_attributes( :study_subject_id )
@@ -37,31 +37,31 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :dob, :died_on )
 
 	#
-	#	subject uses accepts_attributes_for :pii
-	#	so the pii can't require subject_id on create
+	#	study_subject uses accepts_attributes_for :pii
+	#	so the pii can't require study_subject_id on create
 	#	or this test fails.
 	#
 #	test "should require study_subject_id on update" do
 #		assert_difference( "#{model_name}.count", 1 ) do
 #			object = create_object
 #			object.reload.update_attributes(:first_name => "New First Name")
-#			assert object.errors.on_attr_and_type(:subject,:blank)
+#			assert object.errors.on_attr_and_type(:study_subject,:blank)
 #		end
 #	end
 
 	test "should require study_subject_id" do
-		assert_difference( "Subject.count", 0 ) {
+		assert_difference( "StudySubject.count", 0 ) {
 		assert_difference( "#{model_name}.count", 0 ) {
-				object = create_object(:subject => nil)
+				object = create_object(:study_subject => nil)
 			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
 		} }
 	end
 
 	test "should require unique study_subject_id" do
-		subject = Factory(:subject)
-		create_object(:subject => subject)
+		study_subject = Factory(:study_subject)
+		create_object(:study_subject => study_subject)
 		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object(:subject => subject)
+			object = create_object(:study_subject => study_subject)
 			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
 		end
 	end
@@ -110,14 +110,14 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should return join of subject's initials" do
+	test "should return join of study_subject's initials" do
 		object = create_object(
 			:first_name => "John",
 			:last_name  => "Smith" )
 		assert_equal 'JS', object.initials 
 	end
 
-	test "should return join of subject's name" do
+	test "should return join of study_subject's name" do
 		object = create_object(
 			:first_name => "John",
 			:last_name  => "Smith" )
@@ -154,11 +154,11 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
-#	test "should touch subject after save" do
+#	test "should touch study_subject after save" do
 #		object = create_object
-#		assert_not_nil object.subject
+#		assert_not_nil object.study_subject
 #		sleep 2
-#		assert_changes("Subject.find(#{object.subject.id}).updated_at") {
+#		assert_changes("StudySubject.find(#{object.study_subject.id}).updated_at") {
 #			object.touch
 #		}
 #	end
