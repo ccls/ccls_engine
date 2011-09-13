@@ -33,6 +33,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 #	NOTE Used to work, but after changing Subject to StudySubject doesn't?  Should it?
 #	assert_should_not_require_attributes( :study_subject_id )
+#	Interesting.  There's actually a counter test that tests its requirement??
+#	I don't understand how it ever would've worked.
 
 
 
