@@ -599,7 +599,7 @@ pending
 	end
 
 	test "should have hx_interview" do
-		study_subject = create_hx_interview_subject
+		study_subject = create_hx_interview_study_subject
 		assert_not_nil study_subject.hx_interview
 	end
 

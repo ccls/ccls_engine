@@ -74,7 +74,7 @@ class Ccls::HelperTest < ActionView::TestCase
 	end
 
 	test "subject_id_bar should return subject_id_bar" do
-		subject = create_subject
+		subject = create_study_subject
 		assert subject.is_a?(StudySubject)
 		assert !subject.do_not_contact?
 		assert_nil subject_id_bar(subject)	#	sets content_for :main
@@ -89,7 +89,7 @@ class Ccls::HelperTest < ActionView::TestCase
 	end
 
 	test "subject_id_bar should return subject_id_bar with do not contact" do
-		subject = create_subject(:do_not_contact => true)
+		subject = create_study_subject(:do_not_contact => true)
 		assert subject.is_a?(StudySubject)
 		assert subject.do_not_contact?
 		assert_nil subject_id_bar(subject)	#	sets content_for :main
