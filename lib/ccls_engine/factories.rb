@@ -148,6 +148,10 @@ Factory.define :identifier do |f|
 	f.sequence(:hospital_no){|n| "#{n}"}
 	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
 end
+Factory.define :case_identifier, :parent => :identifier do |f|
+	f.association :study_subject, :factory => :case_study_subject
+	f.case_control_type 'c'
+end
 
 Factory.define :context do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }

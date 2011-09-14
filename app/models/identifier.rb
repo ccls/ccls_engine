@@ -115,7 +115,11 @@ class Identifier < Shared
 	end
 
 	def is_case?
-		case_control_type == 'C'
+		if study_subject 
+			study_subject.is_case?
+		else
+			case_control_type == 'C'
+		end
 	end
 
 	def is_control?

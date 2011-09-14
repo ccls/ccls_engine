@@ -301,17 +301,14 @@ pending
 #	patid and childid should be protected as they are generated values
 
 	test "should generate orderno = 0 for case_control_type == 'c'" do
-		identifier = Factory(:identifier, 
-			:case_control_type => 'c').reload
+		identifier = Factory(:case_identifier).reload
 		assert_equal 0, identifier.orderno
 	end
 
 	test "should NOT set studyid with patid, case_control_type and orderno for" <<
 			" case_control_type c" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
-		identifier = Factory(:identifier, 
-			:case_control_type => 'c'
-		).reload
+		identifier = Factory(:case_identifier).reload
 		assert_equal "0123", identifier.patid
 		assert_equal "0123-C-0", identifier.studyid
 		assert_equal "0123C0",   identifier.studyid_nohyphen
@@ -326,7 +323,7 @@ pending
 
 	test "should generate patid on creation of case_control_type == 'c'" do
 		assert_difference('Patid.next_id', 1) {
-			identifier = Factory(:identifier, :case_control_type => 'c' )
+			identifier = Factory(:case_identifier).reload
 			assert_not_nil identifier.patid
 		}
 	end
@@ -359,7 +356,7 @@ pending
 	end
 
 	test "should generate matchingid == subjectid on creation of case" do
-		identifier = Factory(:identifier, :case_control_type => 'c')
+		identifier = Factory(:case_identifier).reload
 		assert_not_nil identifier.subjectid
 		assert_not_nil identifier.matchingid
 		assert_equal   identifier.subjectid, identifier.matchingid
@@ -382,7 +379,7 @@ pending
 		assert_difference( "Patid.next_id", 0 ) {
 		assert_difference( "Patid.count", 0 ) {
 		assert_difference( "#{model_name}.count", 1 ) {
-			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier = Factory.build(:case_identifier)
 			identifier.patid = '123'
 			identifier.save
 			identifier.reload
@@ -398,7 +395,7 @@ pending
 		assert_difference( "Childid.next_id", 0 ) {
 		assert_difference( "Childid.count", 0 ) {
 		assert_difference( "#{model_name}.count", 1 ) {
-			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier = Factory.build(:case_identifier)
 			identifier.childid = '123'
 			identifier.save
 			identifier.reload
@@ -409,7 +406,7 @@ pending
 	test "should not generate new orderno if given" do
 		#	existing data import
 		assert_difference( "#{model_name}.count", 1 ) {
-			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier = Factory.build(:case_identifier)
 			identifier.orderno = 9
 			identifier.save
 			identifier.reload
@@ -420,7 +417,7 @@ pending
 	test "should not generate new subjectid if given" do
 		#	existing data import
 		assert_difference( "#{model_name}.count", 1 ) {
-			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier = Factory.build(:case_identifier)
 			identifier.subjectid = "ABCDEF"
 			identifier.save
 			identifier.reload
@@ -431,7 +428,7 @@ pending
 	test "should not generate new familyid if given" do
 		#	existing data import
 		assert_difference( "#{model_name}.count", 1 ) {
-			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier = Factory.build(:case_identifier)
 			identifier.familyid = "ABCDEF"
 			identifier.save
 			identifier.reload
@@ -442,7 +439,7 @@ pending
 	test "should not generate new matchingid if given" do
 		#	existing data import
 		assert_difference( "#{model_name}.count", 1 ) {
-			identifier = Factory.build(:identifier, :case_control_type => 'c')
+			identifier = Factory.build(:case_identifier)
 			identifier.matchingid = "123456"	#	NOTE converted to integer in validation, so make numeric so can compare value
 			identifier.save
 			identifier.reload

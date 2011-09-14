@@ -314,10 +314,11 @@ pending
 
 	test "studyid should be patid, case_control_type and orderno" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
-		study_subject = create_study_subject(
-			:identifier_attributes => Factory.attributes_for(:identifier, 
-				:case_control_type => 'c'
-		)).reload
+#		study_subject = create_study_subject(
+#			:identifier_attributes => Factory.attributes_for(:identifier, 
+#				:case_control_type => 'c'
+#		)).reload
+		study_subject = Factory(:case_identifier).reload.study_subject
 		Identifier.any_instance.unstub(:get_next_patid)
 		assert_equal "0123-C-0", study_subject.studyid
 		assert_equal "0123C0",   study_subject.identifier.studyid_nohyphen
