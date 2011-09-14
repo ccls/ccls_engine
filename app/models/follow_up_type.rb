@@ -5,7 +5,7 @@ class FollowUpType < Shared
 	acts_as_list
 	default_scope :order => :position
 
-#	has_many :operational_events
+	has_many :follow_ups
 
 	validates_presence_of   :code
 	validates_uniqueness_of :code

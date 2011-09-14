@@ -43,6 +43,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		:reason_closed, 
 			:maximum => 250 )
 
+	assert_should_have_many(:follow_ups)
 	assert_should_have_many(:operational_events)
 	assert_should_belong_to( 
 		:project_outcome,

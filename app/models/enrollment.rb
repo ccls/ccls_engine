@@ -10,6 +10,7 @@ class Enrollment < Shared
 	belongs_to :project
 	belongs_to :project_outcome
 	has_many   :operational_events
+	has_many   :follow_ups
 
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id]
 	validates_presence_of :project_id

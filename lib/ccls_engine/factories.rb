@@ -185,6 +185,12 @@ Factory.define :enrollment do |f|
 	f.is_complete 2	#false
 end
 
+Factory.define :follow_up do |f|
+	f.association :section
+	f.association :enrollment
+	f.association :follow_up_type
+end
+
 Factory.define :follow_up_type do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
