@@ -1,21 +1,20 @@
-
-d:
+case:
   id: 1
-  code: Case
-  description: Case
-
-e:
-  id: 2
-  code: Control
-  description: Control
-
-c:
-  id: 3
-  code: Father
-  description: Father
-
-b:
-  id: 4
-  code: Mother
-  description: Mother
-
+  code:  Case
+  description:  Case
+control:
+  id:  2
+  code:  Control
+  description:  Control
+father:
+  id:  3
+  code:  Father
+  description:  Father
+mother:
+  id:  4
+  code:  Mother
+  description:  Mother
+twin:
+  id:  5
+  code:  Twin
+  description:  Twin

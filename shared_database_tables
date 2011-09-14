@@ -453,7 +453,7 @@ Table: analyses
 | updated_at                     | datetime     | YES  |     | NULL    |                |
 +--------------------------------+--------------+------+-----+---------+----------------+
 
-Table: analyses_subjects
+Table: analyses_study_subjects
 +------------------+---------+------+-----+---------+-------+
 | Field            | Type    | Null | Key | Default | Extra |
 +------------------+---------+------+-----+---------+-------+
