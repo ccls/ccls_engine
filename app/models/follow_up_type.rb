@@ -1,7 +1,7 @@
 #	==	requires
 #	*	code ( unique )
 #	*	description ( > 3 chars )
-class FollowUpType < ActiveRecord::Base
+class FollowUpType < Shared
 	acts_as_list
 	default_scope :order => :position
 
