@@ -50,6 +50,7 @@ namespace :ccls do
 			roles
 			sample_outcomes
 			sample_types
+			sections
 			states
 			subject_relationships
 			subject_types

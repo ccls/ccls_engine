@@ -355,6 +355,11 @@ Factory.define :sample_type_parent, :parent => :sample_type do |f|
 	f.parent nil
 end
 
+Factory.define :section do |f|
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
+end
+
 Factory.define :phone_number do |f|
 	f.association :study_subject
 	f.association :phone_type

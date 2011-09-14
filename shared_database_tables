@@ -1369,6 +1369,18 @@ Table: schema_migrations
 | version | varchar(255) | NO   | PRI | NULL    |       |
 +---------+--------------+------+-----+---------+-------+
 
+Table: sections
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position    | int(11)      | YES  |     | NULL    |                |
+| code        | varchar(255) | YES  | UNI | NULL    |                |
+| description | varchar(255) | YES  |     | NULL    |                |
+| created_at  | datetime     | YES  |     | NULL    |                |
+| updated_at  | datetime     | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
 Table: states
 +-------------------+--------------+------+-----+---------+----------------+
 | Field             | Type         | Null | Key | Default | Extra          |
