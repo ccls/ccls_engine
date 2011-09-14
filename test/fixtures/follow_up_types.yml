@@ -1,0 +1,7 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+#	1 = New cases ready for control assignment (section_id = 2)
+#	2 = ICF failed to recruit a control -- needs more controls (section_id = 2)
+#	3 = Out of candidate controls -- request USC send new BCs (section_id = 2)
+#	4 = New cases ready for Birth Certificates (section_id = 2)
+

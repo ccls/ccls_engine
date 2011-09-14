@@ -31,6 +31,7 @@ namespace :ccls do
 			diagnoses
 			document_types
 			document_versions
+			follow_up_types
 			hospitals
 			ineligible_reasons
 			instrument_versions
