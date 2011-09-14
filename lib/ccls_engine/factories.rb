@@ -185,6 +185,11 @@ Factory.define :enrollment do |f|
 	f.is_complete 2	#false
 end
 
+Factory.define :follow_up_type do |f|
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
+end
+
 Factory.define :gift_card do |f|
 	f.sequence(:number){ |n| "#{n}" }
 end
