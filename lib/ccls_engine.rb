@@ -104,6 +104,15 @@ YNDK = HashWithIndifferentAccess.new({
 	:dk    => 999
 }).freeze
 
+YNODK = HashWithIndifferentAccess.new({
+	:yes   => 1,
+	:true  => 1,
+	:no    => 2,
+	:false => 2,
+	:other => 3,
+	:dk    => 999
+}).freeze
+
 require 'simply_trackable'
 Track.use_db :prefix => 'shared_'
 
