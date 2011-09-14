@@ -435,7 +435,7 @@ pending
 
 	%w( initials full_name first_name last_name fathers_name 
 			mothers_name mother_maiden_name email dob state_id_no
-			local_registrar_no
+			local_registrar_no state_registrar_no
 			ssn childid patid orderno studyid 
 			interview_outcome interview_outcome_on 
 			sample_outcome sample_outcome_on ).each do |method_name|

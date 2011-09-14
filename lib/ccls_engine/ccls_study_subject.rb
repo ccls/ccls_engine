@@ -94,6 +94,7 @@ class Ccls::StudySubject < Shared
 		end
 		n.with_options :to => :identifier do |o|
 			o.delegate :state_id_no
+			o.delegate :state_registrar_no
 			o.delegate :local_registrar_no
 			o.delegate :childid
 			o.delegate :ssn
