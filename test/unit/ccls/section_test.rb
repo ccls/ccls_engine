@@ -12,10 +12,10 @@ class Ccls::SectionTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description,    :in => 4..250 )
 #	assert_should_require_attribute_length( :event_category, :in => 4..250 )
 
-#	test "should return event_category as to_s" do
-#		object = create_object
-#		assert_equal object.event_category, "#{object}"
-#	end
+	test "should return description as to_s" do
+		object = create_object
+		assert_equal object.description, "#{object}"
+	end
 
 	test "should find by code with ['string']" do
 		create_object(:code => 'justatest')
