@@ -5,28 +5,30 @@ class Pii < Shared
 	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
-
 #
 #	TODO - Don't validate anything that the creating user can't do anything about.
 #
 
-	##	TODO - find a way to do this
+	##	TODO - find a better way to do this
 	#	because study_subject accepts_nested_attributes for pii 
 	#	we can't require study_subject_id on create
 	#
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	attr_protected :study_subject_id
-	validates_presence_of   :study_subject,          :on => :update
-#	validates_uniqueness_of :study_subject_id, :on => :update
+	attr_protected          :study_subject_id
+	validates_presence_of   :study_subject,    :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
-
-	##
+	#
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
 	#	the study_subject creation too if using nested attributes.
+	#	I don't know that this is ever really an even possible issue
+	#	as there is no way to directly create one.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
+
+
+	before_validation :nullify_blank_email
 
 	validates_presence_of       :dob
 	validates_complete_date_for :dob, :died_on, :allow_nil => true
@@ -35,8 +37,6 @@ class Pii < Shared
 	validates_format_of :email,
 	  :with => /\A([-a-z0-9!\#$%&'*+\/=?^_`{|}~]+\.)*[-a-z0-9!\#$%&'*+\/=?^_`{|}~]+@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, 
 		:allow_blank => true
-
-	before_validation :nullify_blank_email
 
 #
 #	TODO don't like the messaging here
@@ -105,6 +105,7 @@ protected
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
 	#	the study_subject creation too if using nested attributes.
+#	there is no uniqueness check anymore
 	def ensure_presence_and_uniqueness_of_study_subject_id
 		if study_subject_id.blank?
 			errors.add(:study_subject_id, :blank )

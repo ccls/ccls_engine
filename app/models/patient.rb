@@ -1,8 +1,6 @@
 # Patient related study_subject info.
 class Patient < Shared
-
 	belongs_to :study_subject
-
 	belongs_to :organization
 	belongs_to :diagnosis
 
@@ -11,22 +9,24 @@ class Patient < Shared
 #	TODO - Don't validate anything that the creating user can't do anything about.
 #
 
-	##	TODO - find a way to do this
-	# because study_subject accepts_nested_attributes for pii 
+	##	TODO - find a better way to do this
+	# because study_subject accepts_nested_attributes for patient
 	# we can't require study_subject_id on create
 	#
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	attr_protected :study_subject_id
-	validates_presence_of   :study_subject,          :on => :update
+	attr_protected          :study_subject_id
+	validates_presence_of   :study_subject,    :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
-
-	##
+	#
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
 	#	the study_subject creation too if using nested attributes.
+	#	I don't know that this is ever really an even possible issue
+	#	as there is no way to directly create one.
 	before_create :ensure_presence_and_uniqueness_of_study_subject_id
+
 
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
@@ -78,6 +78,7 @@ protected
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 
 	#	the study_subject creation too if using nested attributes.
+#	there is no uniqueness check anymore
 	def ensure_presence_and_uniqueness_of_study_subject_id
 		if study_subject_id.blank?
 			errors.add(:study_subject_id, :blank )
