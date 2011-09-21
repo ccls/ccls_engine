@@ -37,4 +37,7 @@ class CandidateControl < Shared
 #			t.integer :father_yrs_educ
 #			t.boolean :reject_candidate, :null => false, :default => false
 #			t.string  :rejection_reason
+
+	validates_presence_of :rejection_reason, :if => :reject_candidate
+
 end

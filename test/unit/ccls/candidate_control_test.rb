@@ -43,4 +43,28 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:rejection_reason,
 			:maximum => 250 )
 
+	test "should require rejection_reason if reject_candidate is true" do
+		assert_difference("#{model_name}.count",0) {
+			object = create_object(
+				:reject_candidate => true,
+				:rejection_reason => nil)
+			assert object.errors.on_attr_and_type(:rejection_reason,:blank)
+		}
+	end
+
+	test "should not require rejection_reason if reject_candidate is false" do
+		assert_difference("#{model_name}.count",1) {
+			object = create_object(
+				:reject_candidate => false,
+				:rejection_reason => nil)
+		}
+	end
+
+	test "should require reject_candidate is not nil" do
+		assert_difference("#{model_name}.count",0) {
+			object = create_object(:reject_candidate => nil)
+			assert object.errors.on_attr_and_type(:reject_candidate,:inclusion)
+		}
+	end
+
 end
