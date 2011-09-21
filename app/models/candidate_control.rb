@@ -5,7 +5,11 @@ class CandidateControl < Shared
 #	validates_presence_of   :reject_candidate	#	fails if value is actually false
 	validates_inclusion_of  :reject_candidate, :in => [true, false]
 #	validates_uniqueness_of :key, :code, :description
-	validates_length_of     :related_patid, :is => 5, :allow_blank => true
+
+#	Why is this 5?  It should be 4.
+#	validates_length_of     :related_patid, :is => 5, :allow_blank => true
+	validates_length_of     :related_patid, :is => 4, :allow_blank => true
+
 	validates_length_of     :state_registrar_no, :local_registrar_no, 
 		:maximum => 25, :allow_blank => true
 	#	NEED :allow_blank => true or fails validation and says it too long (even when blank)

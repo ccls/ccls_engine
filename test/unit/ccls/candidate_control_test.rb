@@ -29,7 +29,10 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:father_yrs_educ,
 		:rejection_reason )
 
-	assert_should_require_attribute_length( :related_patid, :is => 5 )
+#	Why 5?
+#	assert_should_require_attribute_length( :related_patid, :is => 5 )
+	assert_should_require_attribute_length( :related_patid, :is => 4 )
+
 	assert_should_require_attribute_length( :state_registrar_no, :maximum => 25 )
 	assert_should_require_attribute_length( :local_registrar_no, :maximum => 25 )
 	assert_should_require_attribute_length( 
