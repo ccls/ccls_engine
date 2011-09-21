@@ -62,7 +62,7 @@ Also need to manually add a shared_database.yml with matching configuration.
 
  git pull
  bundle update
- rake db:migrate
+ rake db:migrate RAILS_ENV=production
 
 
 == Testing (as an app)

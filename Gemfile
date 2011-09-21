@@ -20,7 +20,7 @@ source "http://gems.github.com"
 #
 gem "rake", '=0.8.7'
 gem "rails", "~>2"
-gem "test-unit"
+#gem "test-unit"
 gem "mongrel"
 gem "active_shipping"
 gem "RedCloth", '<4.2.8'
