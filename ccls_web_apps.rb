@@ -1,5 +1,28 @@
 #!/usr/bin/env ruby
 
+module System
+	class << self
+		#	determine if running on genepi or dev.sph or ....
+		#	genepi1 is 'n1'
+		def current
+			`hostname`.chomp
+		end
+		def apps_root
+			case System.current
+				when 'n1'
+					'/my/ruby'
+				when 'dev.sph.berkeley.edu'
+					'/Users/jakewendt/github_repo/ccls'
+				else 
+					raise "I don't know which system that I am on and cannot continue."
+			end
+		end
+		def environment
+			ENV['RAILS_ENV'] ||= 'production'
+		end
+	end
+end
+
 
 class App
 	attr_accessor :name, :pid, :status, :port
@@ -14,8 +37,10 @@ class App
 			puts "Skipping #{name} start as is already running."
 		else
 			puts "Starting #{name}"
-#			puts `cd /my/ruby/#{name}; script/server -d -e development -p #{port}`
-			puts `cd /my/ruby/#{name}; script/server -d -e production -p #{port}`
+			puts `cd #{System.apps_root}/#{name}; script/server -d -e #{System.environment} -p #{port}`
+#			puts "cd #{System.apps_root}/#{name}; script/server -d -e #{System.environment} -p #{port}"
+
+#			puts `cd /my/ruby/#{name}; script/server -d -e production -p #{port}`
 			#	script/server --daemon --environment=production --port=########
 			#		OR
 			#	script/server -d -e production -p ########
@@ -27,6 +52,7 @@ class App
 			Process.kill(9,pid.to_i) 
 			self.pid = nil
 			self.status = 'Not Running'
+			File.delete(pid_file)
 		else
 			puts "Skipping #{name} stop as is not running."
 		end
@@ -40,9 +66,12 @@ class App
 		status == 'Running'
 	end
 protected
+	def pid_file
+		"#{System.apps_root}/#{name}/tmp/pids/server.pid"
+	end
 	def get_pid
-		self.pid = if File.exists?("#{name}/tmp/pids/server.pid")
-			IO.read("#{name}/tmp/pids/server.pid")
+		self.pid = if File.exists?(pid_file)
+			IO.read(pid_file)
 		else
 			nil
 		end
@@ -95,6 +124,8 @@ case command
 	when /^sto.*/
 		apps.each { |app| app.stop }
 	when /^stat.*/ 
+		puts "System:   #{System.current}"
+		puts "AppsRoot: #{System.apps_root}"
 		printf "%-15s %-15s %10s %6s\n", 'NAME', 'STATUS', 'PID', 'PORT'
 		apps.each { |app| printf "%-15s %-15s %10s %6s\n", app.name, app.status, app.pid, app.port }
 	when /^r.*/
