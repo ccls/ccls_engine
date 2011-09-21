@@ -54,6 +54,17 @@ Also need to manually add a shared_database.yml with matching configuration.
 
  cp config/shared_database.yml.example config/shared_database.yml
 
+
+== Production Installation
+
+
+== Production Updating
+
+ git pull
+ bundle update
+ rake db:migrate
+
+
 == Testing (as an app)
 
  rake db:migrate

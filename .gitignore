@@ -29,3 +29,5 @@ misc/
 *_errors.txt
 *.swp
 /config/initializers/session_store.rb
+Gemfile.lock
+
