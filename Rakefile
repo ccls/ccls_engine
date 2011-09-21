@@ -34,6 +34,22 @@ end
 begin
 	require 'jeweler'
 	Jeweler::Tasks.new do |gem|
+
+
+#	TODO jeweler will actually use my Gemfile and I DO NOT WANT IT TO
+#		as this Gemfile isn't for that.  It ends up requiring itself
+#		which ends badly for apps that require this gem.
+#
+#	I may have to rename Gemfile before and back after, as I'd really like to keep it
+#
+#		File.rename('Gemfile','Gemfile.tmp')
+#
+#	Nope.  Doesn't work in this context.  Still end up with ALL the gems
+#	in the gemspec
+#
+#	Looks like I'm gonna have to remove Gemfile.
+
+
 		gem.name = "ccls-ccls_engine"
 		gem.summary = %Q{one-line summary of your gem}
 		gem.description = %Q{longer description of your gem}
