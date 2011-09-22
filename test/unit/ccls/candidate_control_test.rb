@@ -70,4 +70,176 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		}
 	end
 
+
+
+
+	test "should create study_subjects from attributes" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		assert_not_nil object.assigned_on
+		assert_not_nil object.study_subject_id
+	end
+
+	test "should create control from attributes" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		assert_nil     object.study_subject.reference_date
+	end
+
+	test "should create control from attributes and copy case patid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		control_subject = object.study_subject
+		assert_not_nil control_subject.patid
+		assert_equal   control_subject.patid, case_study_subject.patid
+	end
+
+	test "should create control from attributes with patient" do
+		case_study_subject = create_case_identifier.study_subject
+		create_patient_for_subject(case_study_subject)
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+	end
+
+	test "should create control from attributes with patient and copy case admit_date" do
+		case_study_subject = create_case_identifier.study_subject
+		create_patient_for_subject(case_study_subject)
+		case_study_subject.reload
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		control_subject = object.study_subject
+		assert_not_nil control_subject.reference_date
+		assert_equal   control_subject.reference_date, case_study_subject.patient.admit_date
+	end
+
+	test "should create control from attributes and add subjectid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		assert_not_nil object.study_subject.identifier.subjectid
+		assert_equal   object.study_subject.identifier.subjectid.length, 6
+#		puts object.study_subject.identifier.subjectid
+	end
+
+	test "should create control from attributes and add familyid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		assert_not_nil object.study_subject.identifier.familyid
+		assert_equal   object.study_subject.identifier.familyid.length, 6
+#		puts object.study_subject.identifier.familyid
+	end
+
+	test "should create control from attributes and subjectid should equal familyid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		assert_equal   object.study_subject.identifier.familyid, 
+										object.study_subject.identifier.subjectid
+	end
+
+	test "should create control from attributes and copy case matchingid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		assert_not_nil object.study_subject.identifier.matchingid
+		assert_equal   object.study_subject.identifier.matchingid, 
+									case_study_subject.identifier.matchingid
+	end
+
+	test "should create control from attributes and add orderno" do
+pending	#	TODO
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+#puts object.study_subject.identifier.orderno
+#		assert_not_nil object.study_subject.identifier.orderno
+	end
+
+	test "should create control from attributes and add studyid" do
+pending	#	TODO
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+#puts object.study_subject.identifier.studyid
+#	TODO generated on the fly, NOT in the db (still missing orderno)
+		assert_not_nil object.study_subject.identifier.studyid		
+	end
+
+	test "should create control from attributes and add icf_master_id" do
+pending	#	TODO
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+#puts object.study_subject.identifier.icf_master_id
+#		assert_not_nil object.study_subject.identifier.icf_master_id
+	end
+
+	test "should create mother from attributes" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		assert_not_nil object.study_subject.mother
+	end
+
+	test "should create mother from attributes and NOT copy case patid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		mother = object.study_subject.mother
+		assert_nil mother.patid
+	end
+
+	test "should create mother from attributes with patient and copy case admit_date" do
+		case_study_subject = create_case_identifier.study_subject
+		create_patient_for_subject(case_study_subject)
+		case_study_subject.reload
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		mother = object.study_subject.mother
+		assert_not_nil mother.reference_date
+		assert_equal   mother.reference_date, case_study_subject.patient.admit_date
+	end
+
+	test "should create mother from attributes and copy case matchingid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		mother = object.study_subject.mother
+		assert_not_nil mother.identifier.matchingid
+		assert_equal   mother.identifier.matchingid, 
+									case_study_subject.identifier.matchingid
+	end
+
+	test "should create mother from attributes and copy child familyid" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		mother = object.study_subject.mother
+		assert_not_nil mother.identifier.familyid
+		assert_equal   object.study_subject.identifier.familyid, 
+										mother.identifier.familyid
+	end
+
+
+protected
+
+	def create_study_subjects_for_candidate_control(candidate,case_subject)
+		assert_difference('Enrollment.count',1) {
+		assert_difference('Identifier.count',2) {
+		assert_difference('Pii.count',2) {
+		assert_difference('StudySubject.count',2) {
+			candidate.create_study_subjects(case_subject)
+		} } } }
+	end
+
+	def create_patient_for_subject(subject)
+		patient = Factory(:patient, :study_subject => subject,
+			:admit_date => 5.years.ago )
+		assert_not_nil patient.admit_date
+	end
+
 end

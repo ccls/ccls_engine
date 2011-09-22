@@ -269,11 +269,6 @@ protected
 
 	end
 
-#	FYI: before_save is called before before_create
-#	def prepare_fields_for_save
-#puts "In prepare_fields_for_save"
-#	end
-
 	#	made separate method so can stub it in testing
 	#	This only guarantees uniqueness before creation,
 	#		but not at creation. This is NOT scalable.

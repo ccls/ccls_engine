@@ -3,12 +3,10 @@
 class Ccls::StudySubject < Shared
 	self.abstract_class = true
 
-#	class NotTwoResponseSets < StandardError; end
 	class NotTwoAbstracts < StandardError; end
 
 	belongs_to :subject_type
 	belongs_to :vital_status
-
 
 #
 #	TODO - Don't validate anything that the creating user can't do anything about.
@@ -149,16 +147,20 @@ class Ccls::StudySubject < Shared
 
 
 
-
+	def mother
+		StudySubject.find(:first,
+			:joins => :identifier,
+			:conditions => { 
+				'identifiers.familyid' => identifier.familyid,
+				:subject_type_id       => SubjectType['Mother'].id
+			}
+		)
+	end
 
 
 	#	Returns number of addresses with 
 	#	address_type.code == 'residence'
 	def residence_addresses_count
-#		addresses.count(
-#			:joins => :address_type,
-#			:conditions => "address_types.code = 'residence'"
-#		)
 		addresses.count(:conditions => { :address_type_id => AddressType['residence'].id })
 	end
 
@@ -174,7 +176,8 @@ class Ccls::StudySubject < Shared
 #	TODO would really like to drop the SubjectType model
 #		and make this use identifier's case_control_type instead
 #		identifier.try(:is_case?)
-		subject_type.try(:code) == 'Case'
+#		subject_type.try(:code) == 'Case'
+		subject_type == SubjectType['Case']
 	end
 
 	def race_names
@@ -183,11 +186,9 @@ class Ccls::StudySubject < Shared
 
 	#	Returns home exposures interview
 	def hx_interview
-#		identifier.interviews.find(:first,
 		interviews.find(:first,
 			:conditions => "projects.code = 'HomeExposures'",
 			:joins => [:instrument_version => [:instrument => :project]]
-#		) unless identifier.nil?
 		)
 	end
 
@@ -195,16 +196,11 @@ class Ccls::StudySubject < Shared
 		!self.email.blank?
 	end
 
-#	def dust_kit_status
-#		dust_kit.try(:status) || 'None'
-#	end
-
 	#	NOTE don't forget that deep_merge DOES NOT WORK on HashWithIndifferentAccess
 
 	##
 	#	StudySubjects with an enrollment in HomeExposures
 	def self.for_hx(params={})
-#		StudySubject.search(params.deep_merge(
 		StudySubject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{}}
 		))
@@ -213,21 +209,14 @@ class Ccls::StudySubject < Shared
 	##
 	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.for_hx_interview(params={})
-#		StudySubject.search(params.deep_merge(
 		StudySubject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{:chosen=>true}}
 		))
-#		@study_subjects = StudySubjectSearch.new(params).study_subjects
-#	eventually
-#		@study_subjects = hx.study_subjects.search(params.merge(
-#			:interview_outcome => 'incomplete'
-#		))
 	end
 
 	##
 	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.need_gift_card(params={})
-#		for_hx_followup(params.merge({
 		for_hx_followup(params.dup.merge({
 			:has_gift_card => false
 		}))
@@ -236,16 +225,6 @@ class Ccls::StudySubject < Shared
 	##
 	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.for_hx_followup(params={})
-#	Why in 3 statements?
-#		options = params.dup.deep_merge(
-#			:projects=>{hx_id=>{}}
-#		)
-#		options.merge!(
-#			:search_gift_cards => true,
-#			:sample_outcome => 'complete',
-#			:interview_outcome => 'complete'
-#		)
-#		StudySubject.search(options)
 		StudySubject.search( params.dup.deep_merge(
 			:projects=>{hx_id=>{}},
 			:search_gift_cards => true,
@@ -257,15 +236,6 @@ class Ccls::StudySubject < Shared
 	##
 	#	StudySubjects with an enrollment in HomeExposures and ...
 	def self.for_hx_sample(params={})
-#	Why in 3 statements?
-#		options = params.dup.deep_merge(
-#			:projects=>{hx_id=>{}}
-#		)
-#		options.merge!(
-##			:sample_outcome => 'incomplete',
-#			:interview_outcome => 'complete'
-#		)
-#		StudySubject.search(options)
 		StudySubject.search(params.dup.deep_merge(
 			:projects=>{hx_id=>{}},
 #			:sample_outcome => 'incomplete',
@@ -276,27 +246,6 @@ class Ccls::StudySubject < Shared
 	def self.search(params={})
 		StudySubjectSearch.new(params).study_subjects
 	end
-
-#	#	Rails' update_all DOES NOT SUPPORT JOINS despite many requests online.
-#	#	I must admit that it was unbelievably complex.  NOT.
-#	#	All I did was split the first line, and jam the joins in the middle.
-#	#	The sole purpose of all this is for the Patient callback 
-#	#	to update all of the matchingid study_subjects' reference date.
-#	#	If this begins to cause problems elsewhere, rename it here
-#	#	and in the Patient model's call.
-#	#	created "ccls_update_all" to avoid problems and ensure
-#	#		rcov gets 100% coverage
-#	def self.ccls_update_all(updates, conditions = nil, options = {})
-#		sql  = "UPDATE #{quoted_table_name} "
-#		scope = scope(:find)
-#		select_sql = ""
-#		add_joins!(select_sql, options[:joins], scope) if options.has_key?(:joins)
-#		select_sql.concat "SET #{sanitize_sql_for_assignment(updates)} "
-#		add_conditions!(select_sql, conditions, scope)
-#		add_order!(select_sql, options[:order], nil)
-#		sql.concat(select_sql)
-#		connection.update(sql, "#{name} Update")
-#	end
 
 	def abstracts_the_same?
 		raise StudySubject::NotTwoAbstracts unless abstracts_count == 2
@@ -417,38 +366,6 @@ protected
 	end
 
 	def must_be_case_if_patient
-		#	Notes on accepts_nested_attributes_for :something when creating ...
-		#		immediately builds association via build_something with something_attributes
-		#		uses autosave to set
-		#			validate to validate_associated_records_for_something
-		#			after_save to autosave_associated_records_for_something
-		#
-		#			build_something called as soon as the params are passed to new()
-		#				before the save chain even begins.  Because of that, patient
-		#				will exist at validation time.
-		# * (-) <tt>save</tt>
-		# * (-) <tt>valid</tt>
-		# * (1) <tt>before_validation</tt>
-		# * (2) <tt>before_validation_on_create</tt>
-		# * (-) <tt>validate</tt>
-		#			validate_associated_records_for_something I think
-		# * (-) <tt>validate_on_create</tt>
-		# * (3) <tt>after_validation</tt>
-		# * (5) <tt>before_save</tt>
-		# * (6) <tt>before_create</tt>
-		# * (-) <tt>create</tt>					#	id of self not known 'til now
-		# * (7) <tt>after_create</tt>
-		# * (8) <tt>after_save</tt>
-		#			autosave_associated_records_for_something I think
-		#
-		#	order of declaration will have some impact on what order some things are called
-#	In study_subject before_validation
-#	In patient before_validation
-#	In patient validate
-#	In patient after_validation
-#	In study_subject validate
-#	In study_subject after_validation
-		#		
 		if !patient.nil? and !is_case?
 			errors.add(:patient ,"must be case to have patient info")
 		end
