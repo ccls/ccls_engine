@@ -179,13 +179,22 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 									case_study_subject.identifier.matchingid
 	end
 
-	test "should create control from attributes and add orderno" do
-pending	#	TODO
+	test "should create control from attributes and add orderno = 1" do
 		case_study_subject = create_case_identifier.study_subject
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
-#puts object.study_subject.identifier.orderno
-#		assert_not_nil object.study_subject.identifier.orderno
+		assert_not_nil object.study_subject.identifier.orderno
+		assert_equal   object.study_subject.identifier.orderno, 1		#	As this will be the first control here
+	end
+
+	test "should create second control from attributes and add orderno = 2" do
+		case_study_subject = create_case_identifier.study_subject
+		object1 = create_object
+		create_study_subjects_for_candidate_control(object1,case_study_subject)
+		object2 = create_object
+		create_study_subjects_for_candidate_control(object2,case_study_subject)
+		assert_not_nil object2.study_subject.identifier.orderno
+		assert_equal   object2.study_subject.identifier.orderno, 2		#	As this will be the second control here
 	end
 
 	test "should create control from attributes and add studyid" do

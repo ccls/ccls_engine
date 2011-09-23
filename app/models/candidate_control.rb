@@ -44,12 +44,20 @@ class CandidateControl < Shared
 	end
 
 	def create_study_subjects(case_subject)
+		last_control = Identifier.find(:first,
+			:order => 'orderno DESC',
+			:conditions => {
+				:matchingid => case_subject.identifier.subjectid
+			}
+		)
+		next_orderno = ( last_control.orderno || 0 ) + 1
+
 		#	Use a block so can assign all attributes without concern for attr_protected
 		child_identifier = Identifier.new do |i|
 			i.case_control_type  = '6'
 			i.state_registrar_no = state_registrar_no
 			i.local_registrar_no = local_registrar_no
-			i.orderno            = nil                #	TODO
+			i.orderno            = next_orderno
 			i.matchingid         = case_subject.identifier.subjectid
 			i.icf_master_id      = nil                #	TODO
 			i.patid              = case_subject.patid
