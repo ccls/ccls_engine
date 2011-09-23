@@ -292,6 +292,8 @@ class Ccls::StudySubject < Shared
 	##
 	#	
 	def update_study_subjects_reference_date_matching(*matchingids)
+		logger.debug "DEBUG: In update_study_subjects_reference_date_matching(*matchingids)"
+		logger.debug "DEBUG: update_study_subjects_reference_date_matching(#{matchingids.join(',')})"
 #	if matchingids ~ [nil,12345]
 #		identifier was either just created or matchingid added (compact as nil not needed)
 #	if matchingids ~ [12345,nil]
@@ -319,16 +321,19 @@ class Ccls::StudySubject < Shared
 			matching_patient = Patient.find_by_study_subject_id(study_subject_ids)
 			admit_date = matching_patient.try(:admit_date)
 
+			logger.debug "DEBUG: calling StudySubject.update_study_subjects_reference_date(#{study_subject_ids.join(',')},#{admit_date})"
 			StudySubject.update_study_subjects_reference_date( study_subject_ids, admit_date )
 		end
 		true
 	end
-	alias_method :update_subjects_reference_date_matching, 
-		:update_study_subjects_reference_date_matching
+#	alias_method :update_subjects_reference_date_matching, 
+#		:update_study_subjects_reference_date_matching
 
 protected
 
 	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)
+		logger.debug "DEBUG: In StudySubject.update_study_subjects_reference_date"
+		logger.debug "DEBUG: update_study_subjects_reference_date(#{study_subject_ids.join(',')},#{new_reference_date})"
 		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
 		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
 		unless study_subject_ids.empty?
@@ -337,10 +342,10 @@ protected
 				{ :id => study_subject_ids })
 		end
 	end
-	class << self
-		alias_method :update_subjects_reference_date, 
-			:update_study_subjects_reference_date
-	end
+#	class << self
+#		alias_method :update_subjects_reference_date, 
+#			:update_study_subjects_reference_date
+#	end
 
 	#	This is a duplication of a patient validation that won't
 	#	work if using nested attributes.  Don't like doing this.

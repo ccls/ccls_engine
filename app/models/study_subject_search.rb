@@ -33,9 +33,9 @@ class StudySubjectSearch < Search
 	})
 
 	def study_subjects
-		require_dependency 'pii.rb'	
-		require_dependency 'identifier.rb'
-		require_dependency 'gift_card.rb'
+		require_dependency 'pii.rb'	unless Pii
+		require_dependency 'identifier.rb' unless Identifier
+		require_dependency 'gift_card.rb' unless GiftCard
 		@subjects ||= StudySubject.send(
 			(paginate?)?'paginate':'all',{
 				:include => [:pii,:identifier],

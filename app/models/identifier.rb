@@ -124,6 +124,9 @@ class Identifier < Shared
 protected
 
 	def trigger_update_matching_study_subjects_reference_date
+		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from Identifier:#{self.attributes['id']}"
+		logger.debug "DEBUG: matchingid changed from:#{matchingid_was}:to:#{matchingid}"
+		logger.debug "DEBUG: study_subject:#{study_subject.id}"
 		study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
 	end
 
