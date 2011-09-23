@@ -67,7 +67,7 @@ class CandidateControl < Shared
 			:mother_yrs_educ       => mother_yrs_educ,
 			:father_yrs_educ       => father_yrs_educ,
 			:birth_county          => birth_county,
-			:hispanicity_id        => 0,              #	TODO
+			:hispanicity_id        => ( ( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
 			:pii_attributes => {
 				:first_name         => first_name,
 				:middle_name        => middle_name,

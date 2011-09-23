@@ -100,6 +100,32 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		assert_equal   control_subject.patid, case_study_subject.patid
 	end
 
+	test "should create control from attributes and set hispanicity_id nil" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		control_subject = object.study_subject
+		assert_nil control_subject.hispanicity_id
+	end
+
+	test "should create control from attributes and set hispanicity_id if father_hispanicity" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object( :father_hispanicity_id => 1 )
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		control_subject = object.study_subject
+		assert_not_nil control_subject.hispanicity_id
+		assert_equal   control_subject.hispanicity_id, 1
+	end
+
+	test "should create control from attributes and set hispanicity_id if mother_hispanicity" do
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object( :mother_hispanicity_id => 1 )
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+		control_subject = object.study_subject
+		assert_not_nil control_subject.hispanicity_id
+		assert_equal   control_subject.hispanicity_id, 1
+	end
+
 	test "should create control from attributes with patient" do
 		case_study_subject = create_case_identifier.study_subject
 		create_patient_for_subject(case_study_subject)
@@ -244,7 +270,6 @@ pending	#	TODO
 #	TODO mothers' orderno?
 #	TODO calculate studyid and store in db or just do on the fly?
 #	TODO assign icf_master_ids
-#	TODO modify case_control_type validation as can be null
 
 	#
 	#	END: MANY subject creation tests
