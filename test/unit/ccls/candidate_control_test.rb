@@ -64,6 +64,13 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		}
 	end
 
+	test "should return join of candidate's name" do
+		object = create_object(
+			:first_name => "John",
+			:last_name  => "Smith" )
+		assert_equal 'John Smith', object.full_name 
+	end
+
 	################################################################################
 	#
 	#	BEGIN: MANY subject creation tests

@@ -38,7 +38,10 @@ class CandidateControl < Shared
 #			t.boolean :reject_candidate, :null => false, :default => false
 #			t.string  :rejection_reason
 
-
+	#	Returns string containing candidates's first, middle and last name
+	def full_name
+		[first_name, middle_name, last_name].compact.join(' ')
+	end
 
 	def create_study_subjects(case_subject)
 		#	Use a block so can assign all attributes without concern for attr_protected
