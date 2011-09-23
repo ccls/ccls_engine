@@ -301,16 +301,17 @@ pending
 		} }
 	end
 
-	test "should NOT create study_subject with empty identifier" do
-		assert_difference( 'Identifier.count', 0) {
-		assert_difference( 'StudySubject.count', 0) {
-			study_subject = create_study_subject( :identifier_attributes => {} )
-#			assert study_subject.errors.on_attr_and_type('identifier.orderno',:blank)
-#			assert study_subject.errors.on_attr_and_type('identifier.patid',:blank)
-			assert study_subject.errors.on_attr_and_type('identifier.case_control_type',:blank)
-#			assert study_subject.errors.on_attr_and_type('identifier.childid',:blank)
-		} }
-	end
+#	nothing is required any longer, so this can happen
+#		test "should NOT create study_subject with empty identifier" do
+#			assert_difference( 'Identifier.count', 0) {
+#			assert_difference( 'StudySubject.count', 0) {
+#				study_subject = create_study_subject( :identifier_attributes => {} )
+#	#			assert study_subject.errors.on_attr_and_type('identifier.orderno',:blank)
+#	#			assert study_subject.errors.on_attr_and_type('identifier.patid',:blank)
+#				assert study_subject.errors.on_attr_and_type('identifier.case_control_type',:blank)
+#	#			assert study_subject.errors.on_attr_and_type('identifier.childid',:blank)
+#			} }
+#		end
 
 	test "studyid should be patid, case_control_type and orderno" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
