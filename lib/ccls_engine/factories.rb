@@ -141,8 +141,8 @@ Factory.define :identifier do |f|
 #	This is potentially a problem causer in testing.
 
 
-
-#	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
+#	technically, this makes this a control identifier
+	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
 
 
 
@@ -160,6 +160,13 @@ end
 Factory.define :case_identifier, :parent => :identifier do |f|
 	f.association :study_subject, :factory => :case_study_subject
 	f.case_control_type 'c'
+end
+Factory.define :control_identifier, :parent => :identifier do |f|
+	f.association :study_subject, :factory => :control_study_subject
+end
+Factory.define :mother_identifier, :parent => :identifier do |f|
+	f.association :study_subject, :factory => :mother_study_subject
+	f.case_control_type 'm'
 end
 
 Factory.define :context do |f|
@@ -429,6 +436,9 @@ Factory.define :case_study_subject, :parent => :study_subject do |f|
 end
 Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
+end
+Factory.define :mother_study_subject, :parent => :study_subject do |f|
+	f.subject_type { SubjectType['Mother'] }
 end
 
 Factory.define :subject_race do |f|
