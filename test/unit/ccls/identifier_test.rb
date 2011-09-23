@@ -3,17 +3,9 @@ require 'test_helper'
 class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-
-	assert_should_require_attributes( :case_control_type )
-#		:case_control_type,
-#		:childid,
-#		:orderno	)#,
-#		:patid )
-
+	assert_should_not_require_attributes( :case_control_type )
 	assert_should_require_unique_attribute( 
-#		:childid,	#	NOTE can't as is calculated and protected
 		:ssn,
-#		:subjectid,	#	NOTE can't as is calculated and protected
 		:state_id_no,
 		:state_registrar_no,
 		:local_registrar_no,
@@ -23,27 +15,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:accession_no,
 		:idno_wiemels,
 		:icf_master_id )
-#	assert_should_require_unique_attribute( :patid, 
-#		:scope => [:orderno,:case_control_type] )
-
 	assert_should_initially_belong_to( :study_subject )
-
-
-
-
-#	NOTE Used to work, but after changing Subject to StudySubject doesn't?  Should it?
-#	assert_should_not_require_attributes( :study_subject_id )
-#	Interesting.  There's actually a counter test that tests its requirement??
-#	I don't understand how it ever would've worked.
-
-
-
-
 	assert_should_protect( :study_subject_id )
-#	assert_should_require_attributes( :study_subject_id )
-#	assert_should_require_unique_attributes( :study_subject_id )
-#	assert_should_belong_to( :study_subject )
-
 	assert_should_not_require_attributes( 
 		:ssn,
 		:subjectid,
@@ -60,21 +33,14 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:accession_no,
 		:idno_wiemels,
 		:familyid )
-
 	assert_should_require_attribute_length( 
 		:state_id_no,
 		:state_registrar_no,
 		:local_registrar_no,
-#	can't do this with case_control_type as is modified in before_validation
-#	which will cause the test to fail and equality test
-#		:case_control_type,
 		:lab_no,
 		:related_childid,
 		:related_case_childid,
 			:maximum => 250 )
-
-#	can't do this due to before_validation modification
-#	assert_should_require_attribute_length :patid, :maximum => 4
 	assert_should_require_attribute_length :childidwho, :maximum => 10
 	assert_should_require_attribute_length :newid, :maximum => 6
 	assert_should_require_attribute_length :gbid, :maximum => 26
@@ -82,24 +48,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length :idno_wiemels, :maximum => 10
 	assert_should_require_attribute_length :accession_no, :maximum => 25
 	assert_should_require_attribute_length :icf_master_id, :maximum => 9
-
 	assert_should_protect_attributes(:studyid,:studyid_nohyphen,:studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid)	#, :matchingid
-
-#	assert_should_protect_attributes(:subjectid)
-
-	#
-	#	study_subject uses accepts_attributes_for :pii
-	#	so the pii can't require study_subject_id on create
-	#	or this test fails.
-	#
-#	test "should require study_subject_id on update" do
-#		assert_difference( "#{model_name}.count", 1 ) do
-#			object = create_object
-#			object.reload.update_attributes(:orderno => "New Order No")
-#			assert object.errors.on(:study_subject)
-#		end
-#	end
 
 	test "should require study_subject_id" do
 		assert_difference( "StudySubject.count", 0 ) {
@@ -236,9 +186,6 @@ pending
 #		end
 	end
 
-
-
-
 	test "should increment Childid.next_id on get_next_childid" do
 		assert_difference('Childid.next_id', 1) {
 			#	use send as is protected
@@ -282,13 +229,11 @@ pending
 		end
 	end
 
-	#	TODO "should NOT generate patid on creation of case_control_type == nil" do
 	test "should NOT generate patid on creation of case_control_type == nil" do
-#		assert_difference('Patid.next_id', 0) {
-#			identifier = Factory(:identifier, :case_control_type => nil )
-#			assert_nil identifier.patid
-#		}
-pending
+		assert_difference('Patid.next_id', 0) {
+			identifier = Factory(:identifier, :case_control_type => nil )
+			assert_nil identifier.patid
+		}
 	end
 
 	test "should NOT generate patid on creation of case_control_type == 'M'" do
@@ -350,6 +295,7 @@ pending
 	test "should generate familyid == child's subjectid on creation of mother" do
 		identifier = Factory(:identifier, :case_control_type => 'm' )
 		assert_not_nil identifier.subjectid
+#	TODO subject could be mother, but child may not be in database?
 #		assert_not_nil identifier.familyid
 #		assert_equal   identifier.subjectid, identifier.familyid
 pending
@@ -371,8 +317,6 @@ pending
 ##			assert_equal   identifier.subjectid, identifier.familyid
 #		end
 #	end
-
-
 
 	test "should not generate new patid for case if given" do
 		#	existing data import
@@ -446,38 +390,5 @@ pending
 			assert_equal "123456", identifier.matchingid
 		}
 	end
-
-
-
-
-#	test "should validate on create" do
-#		puts "Creating"
-#		identifier = Factory(:identifier)
-#		puts "Saving again"
-#		identifier.save
-#Creating
-#in prepare_fields_for_validation
-#in prepare_fields_for_validation_on_create
-#Saving again
-#in prepare_fields_for_validation
-#	end
-
-#	test "should touch study_subject after save" do
-#		object = create_object
-#		assert_not_nil object.study_subject
-#		sleep 2
-#		assert_changes("StudySubject.find(#{object.study_subject.id}).updated_at") {
-#			object.touch
-#		}
-#	end
-
-#protected
-#
-#	def create_object(options={})
-#		record = Factory.build(:identifier,options)
-#		record.attributes=options	#	can't remember why I did this, but doesn't seem needed now?
-#		record.save
-#		record
-#	end
 
 end

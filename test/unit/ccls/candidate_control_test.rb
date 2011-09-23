@@ -4,16 +4,14 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	
 	assert_should_create_default_object
 	assert_should_belong_to( :study_subject )
-#	need to add test for this with booleans
-#	assert_should_require_attributes( :reject_candidate )
-##	assert_should_require_unique_attributes( :key, :code, :description )
+	assert_should_require_attributes( 
+		:first_name,
+		:last_name,
+		:dob )
 	assert_should_not_require_attributes( 
 		:icf_master_id,
 		:related_patid,
-		:first_name,
 		:middle_name,
-		:last_name,
-		:dob,
 		:state_registrar_no,
 		:local_registrar_no,
 		:sex,
@@ -28,11 +26,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:mother_yrs_educ,
 		:father_yrs_educ,
 		:rejection_reason )
-
-#	Why 5?
-#	assert_should_require_attribute_length( :related_patid, :is => 5 )
 	assert_should_require_attribute_length( :related_patid, :is => 4 )
-
 	assert_should_require_attribute_length( :state_registrar_no, :maximum => 25 )
 	assert_should_require_attribute_length( :local_registrar_no, :maximum => 25 )
 	assert_should_require_attribute_length( 
@@ -70,8 +64,10 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		}
 	end
 
-
-
+	################################################################################
+	#
+	#	BEGIN: MANY subject creation tests
+	#
 
 	test "should create study_subjects from attributes" do
 		case_study_subject = create_case_identifier.study_subject
@@ -169,6 +165,7 @@ pending	#	TODO
 		assert_not_nil object.study_subject.identifier.studyid		
 	end
 
+	#	icf_master_id isn't required as may not have any
 	test "should create control from attributes and add icf_master_id" do
 pending	#	TODO
 		case_study_subject = create_case_identifier.study_subject
@@ -183,6 +180,8 @@ pending	#	TODO
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
 		assert_not_nil object.study_subject.mother
+		mother = object.study_subject.mother
+		assert_nil mother.identifier.case_control_type
 	end
 
 	test "should create mother from attributes and NOT copy case patid" do
@@ -224,13 +223,34 @@ pending	#	TODO
 										mother.identifier.familyid
 	end
 
+	#	icf_master_id isn't required as may not have any
+	test "should create mother from attributes and add icf_master_id" do
+pending	#	TODO
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+#puts object.study_subject.mother.identifier.icf_master_id
+#		assert_not_nil object.study_subject.mother.identifier.icf_master_id
+	end
+
+#	TODO mother's pii info not in candidate_control
+#	TODO mothers' orderno?
+#	TODO calculate studyid and store in db or just do on the fly?
+#	TODO assign icf_master_ids
+#	TODO modify case_control_type validation as can be null
+
+	#
+	#	END: MANY subject creation tests
+	#
+	################################################################################
 
 protected
 
 	def create_study_subjects_for_candidate_control(candidate,case_subject)
 		assert_difference('Enrollment.count',1) {
 		assert_difference('Identifier.count',2) {
-		assert_difference('Pii.count',2) {
+#		assert_difference('Pii.count',2) {	#	don't have enough info for mother's pii
+		assert_difference('Pii.count',1) {
 		assert_difference('StudySubject.count',2) {
 			candidate.create_study_subjects(case_subject)
 		} } } }

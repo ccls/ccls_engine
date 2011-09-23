@@ -25,7 +25,7 @@ class Patient < Shared
 	#	the study_subject creation too if using nested attributes.
 	#	I don't know that this is ever really an even possible issue
 	#	as there is no way to directly create one.
-	before_create :ensure_presence_and_uniqueness_of_study_subject_id
+	before_create :ensure_presence_of_study_subject_id
 
 
 	validates_past_date_for :admit_date
@@ -79,7 +79,7 @@ protected
 	#	study_subject_id, do it before_save.  This'll rollback 
 	#	the study_subject creation too if using nested attributes.
 #	there is no uniqueness check anymore
-	def ensure_presence_and_uniqueness_of_study_subject_id
+	def ensure_presence_of_study_subject_id
 		if study_subject_id.blank?
 			errors.add(:study_subject_id, :blank )
 			return false

@@ -110,6 +110,9 @@ Factory.define :bc_request do |f|
 	f.sequence(:notes) { |n| "Notes#{n}" }	#	forces an update
 end
 Factory.define :candidate_control do |f|
+	f.first_name "First"
+	f.last_name  "Last"
+	f.dob Date.jd(2440000+rand(15000))
 	f.reject_candidate false
 end
 
@@ -136,7 +139,13 @@ Factory.define :identifier do |f|
 #	f.sequence(:case_control_type){|n| "#{n}" }
 #	This is just one char/digit so looping through all.
 #	This is potentially a problem causer in testing.
-	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
+
+
+
+#	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
+
+
+
 #	f.sequence(:subjectid){|n| "#{n}"}
 	f.sequence(:state_id_no){|n| "#{n}"}
 	f.sequence(:state_registrar_no){|n| "#{n}"}

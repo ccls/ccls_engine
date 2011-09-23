@@ -30,26 +30,14 @@ class Identifier < Shared
 	#	the study_subject creation too if using nested attributes.
 	#	I don't know that this is ever really an even possible issue
 	#	as there is no way to directly create one.
-	before_create :ensure_presence_and_uniqueness_of_study_subject_id
+	before_create :ensure_presence_of_study_subject_id
 
 
-	validates_presence_of   :case_control_type		#	TODO apparently could be null for mother's
-	validates_length_of     :case_control_type, :is => 1
+	validates_length_of     :case_control_type, :is => 1, :allow_nil => true
 
 
 #	TODO : add a validation for contents of orderno
 #		won't have at creation
-
-#	actually, it can also be F, B, T and possibly M
-#	and the integers will probably only be 4, 5 or 6
-#	validates_inclusion_of :case_control_type, :in => ['C',*(1..9).collect(&:to_s) ]
-		#	case_control_type is only 1 digit!  can only be 'C' or integers
-		#>> ['C', *(1..9).collect(&:to_s) ]
-		#=> ["C", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-		#	can't be 0 as case is 0 in studyid_intonly_nohyphen
-
-#	validates_presence_of   :ssn
-#	validates_format_of     :ssn, :with => /\A\d{9}\z/
 
 #	TODO I believe that subjectid is, or will be, a required field
 #	validates_presence_of   :subjectid
@@ -97,16 +85,9 @@ class Identifier < Shared
 #
 #	These values will be found or computed, so this may get weird
 
-#	before_validation :pad_zeros_to_patid
-#	before_validation :pad_zeros_to_matchingid
-
-	#	FYI: before_validation will be called before before_validation_on_create
-#	before_validation_on_create :prepare_fields_for_validation_on_create
 	before_validation :prepare_fields_for_validation
 	before_create     :prepare_fields_for_creation
 	before_update     :prepare_fields_for_updation
-#	#	FYI: before_save will be called before before_create
-#	before_save       :prepare_fields_for_save
 
 	after_save :trigger_update_matching_study_subjects_reference_date, 
 		:if => :matchingid_changed?
@@ -151,8 +132,7 @@ protected
 	#	study_subject_id, do it before_save.  This'll rollback 
 	#	the study_subject creation too if using nested attributes.
 #	this is probably a bad idea as the user can't do anything about it anyway
-#	there is no uniqueness check anymore
-	def ensure_presence_and_uniqueness_of_study_subject_id
+	def ensure_presence_of_study_subject_id
 		if study_subject_id.blank?
 			errors.add(:study_subject_id, :blank )
 			return false
@@ -162,13 +142,8 @@ protected
 		end
 	end
 
-#	#	before_validation_on_create is AFTER before_validation
-#	def prepare_fields_for_validation_on_create
-#		self.patid = Patid.create!.destroy.id if patid.blank?
-#	end
-
 	def prepare_fields_for_validation
-		self.case_control_type = case_control_type.to_s.upcase
+		self.case_control_type = ( ( case_control_type.blank? ) ? nil : case_control_type.to_s.upcase )
 		self.ssn = ( ( ssn.blank? ) ? nil : ssn.to_s.gsub(/\D/,'') )
 		#	ANY field that has a unique index in the database NEEDS
 		#	to NOT be blank.  Multiple nils are acceptable in index,
@@ -221,6 +196,7 @@ protected
 		#	cases and controls: their own subjectID is also their familyID.
 		#	mothers: their child's subjectID is their familyID. That is, 
 		#					a mother and her child have identical familyIDs.
+#	TODO auto copying of familyid and matchingid???
 #	how to get child?  given?
 #		self.familyid  = subjectid						#	TODO : this won't be true for mother's
 #	this won't work here unless passed child's subjectid

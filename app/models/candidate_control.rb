@@ -3,23 +3,17 @@ class CandidateControl < Shared
 
 	attr_protected :study_subject_id
 
-#	validates_presence_of   :key, :code, :description
-#	validates_presence_of   :reject_candidate	#	fails if value is actually false
+	validates_presence_of   :first_name, :last_name, :dob
 	validates_inclusion_of  :reject_candidate, :in => [true, false]
-#	validates_uniqueness_of :key, :code, :description
-
-#	Why is this 5?  It should be 4.
-#	validates_length_of     :related_patid, :is => 5, :allow_blank => true
+	validates_presence_of   :rejection_reason, :if => :reject_candidate
 	validates_length_of     :related_patid, :is => 4, :allow_blank => true
-
 	validates_length_of     :state_registrar_no, :local_registrar_no, 
 		:maximum => 25, :allow_blank => true
-	#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
-
+		#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
 	validates_length_of     :first_name, :middle_name, :last_name,
 		:sex, :birth_county, :birth_type, :mother_maiden_name,
 		:rejection_reason, :maximum => 250, :allow_blank => true
-	#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
+		#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
 
 #			t.integer :icf_master_id
 #			t.string  :related_patid, :limit => 5
@@ -44,21 +38,22 @@ class CandidateControl < Shared
 #			t.boolean :reject_candidate, :null => false, :default => false
 #			t.string  :rejection_reason
 
-	validates_presence_of :rejection_reason, :if => :reject_candidate
 
 
 	def create_study_subjects(case_subject)
-		#	do it this way so can set protected attributes
-		child_identifier = Identifier.new({
-			:case_control_type  => '6',
-			:state_registrar_no => state_registrar_no,
-			:local_registrar_no => local_registrar_no,
-			:orderno            => nil,                #	TODO	attr_protected
-			:matchingid         => case_subject.identifier.subjectid,
-			:studyid            => nil,                #	TODO	attr_protected
-			:icf_master_id      => nil                 #	TODO	attr_protected
-		})
-		child_identifier.patid = case_subject.patid
+		#	Use a block so can assign all attributes without concern for attr_protected
+		child_identifier = Identifier.new do |i|
+			i.case_control_type  = '6'
+			i.state_registrar_no = state_registrar_no
+			i.local_registrar_no = local_registrar_no
+			i.orderno            = nil                #	TODO
+			i.matchingid         = case_subject.identifier.subjectid
+			i.icf_master_id      = nil                #	TODO
+			i.patid              = case_subject.patid
+		end
+#	can't assign the studyid as don't have the orderno YET
+#	don't know if I should add it here or put it back in the Identifier model
+#			i.studyid            = nil                #	TODO
 
 		child = StudySubject.create!({
 			:subject_type => SubjectType['Control'],
@@ -71,10 +66,10 @@ class CandidateControl < Shared
 			:birth_county          => birth_county,
 			:hispanicity_id        => 0,              #	TODO
 			:pii_attributes => {
-				:first_name  => ( first_name  || 'TEST' ),
-				:middle_name => ( middle_name || 'TEST' ),
-				:last_name   => ( last_name   || 'TEST' ),
-				:dob         => ( dob         || Date.today ),
+				:first_name         => first_name,
+				:middle_name        => middle_name,
+				:last_name          => last_name,
+				:dob                => dob,
 				:mother_maiden_name => mother_maiden_name,
 				:mother_race_id     => mother_race_id,
 				:father_race_id     => father_race_id
@@ -85,26 +80,27 @@ class CandidateControl < Shared
 			}]
 		})
 
-		#	do it this way so can set protected attributes
-		mother_identifier = Identifier.new({
-			:case_control_type => 'M',				#	NOTE Can't really do this.  Need to allow nil
-			:matchingid        => case_subject.identifier.subjectid,
-#			:studyid           => nil,                #	TODO	attr_protected
-			:icf_master_id     => nil                 #	TODO	attr_protected
-		})
-		mother_identifier.familyid = child.identifier.familyid
+		#	Use a block so can assign all attributes without concern for attr_protected
+		mother_identifier = Identifier.new do |i|
+			i.matchingid    = case_subject.identifier.subjectid
+			i.icf_master_id = nil                #	TODO
+			i.familyid      = child.identifier.familyid
+		end
+#			i.studyid           = nil                #	TODO	#	mother's don't really have a valid studyid
+#			i.case_control_type = 'M'				#	NOTE Can't really do this.  Need to allow nil
+
 		mother = StudySubject.create!({
 			:subject_type => SubjectType['Mother'],
 			:vital_status => VitalStatus['living'],
 			:sex => 'F',			#	TODO M/F or male/female? have to check.
 			:hispanicity_id => mother_hispanicity_id,
-			:pii_attributes => {
-				:first_name  => 'TEST',
-				:middle_name => 'TEST',
-				:last_name   => 'TEST',
-				:mother_maiden_name => mother_maiden_name,	#	NOTE this is a misnomer as this is the mother
-				:dob         => Date.today
-			},
+#			:pii_attributes => {
+#				:first_name  => 'TEST',
+#				:middle_name => 'TEST',
+#				:last_name   => 'TEST',
+#				:mother_maiden_name => mother_maiden_name,	#	NOTE this is a misnomer as this is the mother
+#				:dob         => Date.today
+#			},
 			:identifier => mother_identifier
 		})
 		self.study_subject_id = child.id
