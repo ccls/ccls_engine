@@ -44,13 +44,33 @@ class CandidateControl < Shared
 	end
 
 	def create_study_subjects(case_subject)
-		last_control = Identifier.find(:first,
-			:order => 'orderno DESC',
-			:conditions => {
-				:matchingid => case_subject.identifier.subjectid
+#
+#	TODO this isn't 100% correct.  These need to just be controls. ( SubjectType['Control'] )
+#
+#		last_control = Identifier.find(:first,
+#			:order => 'orderno DESC',
+#			:conditions => {
+#				:matchingid => case_subject.identifier.subjectid
+#			}
+#		)
+#		last_control = StudySubject.find(:first, 
+#			:joins => :identifier, 
+#			:order => 'identifiers.orderno DESC', 
+#			:conditions => { 
+#				:subject_type_id         => SubjectType['Control'].id, 	#	avoids a join by doing it this way
+#				'identifiers.matchingid' => case_subject.identifier.subjectid
+#			}
+#		)
+#	either way works
+		last_control = SubjectType['Control'].study_subjects.find(:first, 
+			:joins => :identifier, 
+			:order => 'identifiers.orderno DESC', 
+			:conditions => { 
+				'identifiers.matchingid' => case_subject.identifier.subjectid
 			}
 		)
-		next_orderno = ( last_control.orderno || 0 ) + 1
+		#	identifier.orderno is delegated to subject to simplicity
+		next_orderno = ( last_control.try(:orderno) || 0 ) + 1
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		child_identifier = Identifier.new do |i|
