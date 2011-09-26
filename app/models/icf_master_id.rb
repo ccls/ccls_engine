@@ -19,4 +19,11 @@ class IcfMasterId < Shared
 		icf_master_id
 	end
 
+#	a named scope would be nice but
+	def self.next_unused
+		find(:first,
+			:conditions => ['study_subject_id IS NULL']
+		)
+	end
+
 end

@@ -214,7 +214,9 @@ pending	#	TODO
 		assert_not_nil object.study_subject.identifier.icf_master_id
 		assert_equal   object.study_subject.identifier.icf_master_id, '123456789'
 		assert_not_nil imi.reload.study_subject
-		assert_equal   imi.reload.study_subject, object.study_subject
+		assert_equal   imi.study_subject, object.study_subject
+		assert_not_nil imi.assigned_on
+		assert_equal   imi.assigned_on, Date.today
 	end
 
 	test "should create mother from attributes" do
@@ -276,7 +278,9 @@ pending	#	TODO
 		assert_not_nil object.study_subject.mother.identifier.icf_master_id
 		assert_equal   object.study_subject.mother.identifier.icf_master_id, '123456789'
 		assert_not_nil imi.reload.study_subject
-		assert_equal   imi.reload.study_subject, object.study_subject.mother
+		assert_equal   imi.study_subject, object.study_subject.mother
+		assert_not_nil imi.assigned_on
+		assert_equal   imi.assigned_on, Date.today
 	end
 
 	#

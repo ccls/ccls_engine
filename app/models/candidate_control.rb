@@ -46,18 +46,8 @@ class CandidateControl < Shared
 	#	This method has gotten HUGE!  It should be refactored for clarity
 	#	once fully tested and functional
 	def create_study_subjects(case_subject)
-		last_control = SubjectType['Control'].study_subjects.find(:first, 
-			:joins => :identifier, 
-			:order => 'identifiers.orderno DESC', 
-			:conditions => { 
-				'identifiers.matchingid' => case_subject.identifier.subjectid
-			}
-		)
-		#	identifier.orderno is delegated to subject to simplicity
-		next_orderno = ( last_control.try(:orderno) || 0 ) + 1
-		next_icf_master_id = IcfMasterId.find(:first,
-			:conditions => ['study_subject_id IS NULL']
-		)
+		next_orderno = next_control_orderno_for_subject(case_subject)
+		next_icf_master_id = IcfMasterId.next_unused
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		child_identifier = Identifier.new do |i|
@@ -82,7 +72,8 @@ class CandidateControl < Shared
 			:mother_yrs_educ       => mother_yrs_educ,
 			:father_yrs_educ       => father_yrs_educ,
 			:birth_county          => birth_county,
-			:hispanicity_id        => ( ( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
+			:hispanicity_id        => ( 
+				( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
 			:pii_attributes => {
 				:first_name         => first_name,
 				:middle_name        => middle_name,
@@ -99,12 +90,11 @@ class CandidateControl < Shared
 		})
 		if next_icf_master_id
 			next_icf_master_id.study_subject = child
+			next_icf_master_id.assigned_on   = Date.today
 			next_icf_master_id.save!
 		end
 
-		next_icf_master_id = IcfMasterId.find(:first,
-			:conditions => ['study_subject_id IS NULL']
-		)
+		next_icf_master_id = IcfMasterId.next_unused
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		mother_identifier = Identifier.new do |i|
@@ -131,11 +121,26 @@ class CandidateControl < Shared
 		})
 		if next_icf_master_id
 			next_icf_master_id.study_subject = mother
+			next_icf_master_id.assigned_on   = Date.today
 			next_icf_master_id.save!
 		end
 		self.study_subject_id = child.id
 		self.assigned_on = Date.today
 		self
+	end
+
+protected
+
+	def next_control_orderno_for_subject(case_subject)
+		last_control = SubjectType['Control'].study_subjects.find(:first, 
+			:joins => :identifier, 
+			:order => 'identifiers.orderno DESC', 
+			:conditions => { 
+				'identifiers.matchingid' => case_subject.identifier.subjectid
+			}
+		)
+		#	identifier.orderno is delegated to subject for simplicity
+		( last_control.try(:orderno) || 0 ) + 1
 	end
 
 end
