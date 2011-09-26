@@ -74,6 +74,7 @@ namespace :ccls do
 		fixtures = %w(
 			zip_codes
 			counties
+			icf_master_ids
 		)
 		ENV['FIXTURES'] = fixtures.join(',')
 		ENV['FIXTURES_PATH'] = 'production/fixtures'
