@@ -688,6 +688,20 @@ Table: follow_up_types
 | updated_at  | datetime     | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 
+Table: follow_ups
++-------------------+--------------+------+-----+---------+----------------+
+| Field             | Type         | Null | Key | Default | Extra          |
++-------------------+--------------+------+-----+---------+----------------+
+| id                | int(11)      | NO   | PRI | NULL    | auto_increment |
+| section_id        | int(11)      | NO   |     | NULL    |                |
+| enrollment_id     | int(11)      | NO   |     | NULL    |                |
+| follow_up_type_id | int(11)      | NO   |     | NULL    |                |
+| completed_on      | date         | YES  |     | NULL    |                |
+| completed_by_uid  | varchar(255) | YES  |     | NULL    |                |
+| created_at        | datetime     | YES  |     | NULL    |                |
+| updated_at        | datetime     | YES  |     | NULL    |                |
++-------------------+--------------+------+-----+---------+----------------+
+
 Table: gift_cards
 +------------------+--------------+------+-----+---------+----------------+
 | Field            | Type         | Null | Key | Default | Extra          |
@@ -1233,6 +1247,7 @@ Table: piis
 | guardian_relationship_other | varchar(255) | YES  |     | NULL    |                |
 | mother_race_id              | int(11)      | YES  |     | NULL    |                |
 | father_race_id              | int(11)      | YES  |     | NULL    |                |
+| maiden_name                 | varchar(255) | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: project_outcomes

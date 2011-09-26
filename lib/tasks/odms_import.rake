@@ -51,16 +51,30 @@ namespace :odms_import do
 			puts "Processing line #{f.lineno}"
 			puts line
 
-#			patient = Patient.new do |m|
-#			end
+#	subjectID,subjectType_id,vital_status_id,do_not_contact,sex,refdate,ChildId,icf_master_id,matchingID,familyID,PatID,case_control_type,OrderNo,newID,studyID,related_case_childID,state_id_no,subject_type_id,admit_date,diagnosis_id,organization_id,ODMS_Patients_092611.created_at,was_previously_treated,was_under_15_at_dx,Zipcode,County,first_name,middle_name,last_name,maiden_name,dob,died_on,mother_first_name,mother_maiden_name,mother_last_name,father_first_name,father_last_name,ODMS_Identifiers_092611.created_at
+
 #			pii = Pii.new do |m|
 #			end
-#			identifer = Identifier.new do |m|
+#			identifier = Identifier.new do |m|
 #			end
-#			Subject.create!()
+#			attributes = {
+#				:subject_type_id => 
+#				:vital_status_id => 
+#				:pii => pii,
+#				:identifier => identifier
+#			}
+#
+#			if is a patient build patient attributes
+#
+#			StudySubject.create!(attributes)
 
 		end	#	FasterCSV.open
 		error_file.close
+
+		printf "%-19s %5d\n", "StudySubject.count:", StudySubject.count
+		printf "%-19s %5d\n", "Identifier.count:", Identifier.count
+		printf "%-19s %5d\n", "Pii.count:", Pii.count
+		printf "%-19s %5d\n", "Patient.count:", Patient.count
 	end		#	task :subjects => :environment do
 
 
