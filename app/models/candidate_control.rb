@@ -114,7 +114,7 @@ class CandidateControl < Shared
 #				:first_name  => 'TEST',
 #				:middle_name => 'TEST',
 #				:last_name   => 'TEST',
-#				:mother_maiden_name => mother_maiden_name,	#	NOTE this is a misnomer as this is the mother
+#				:maiden_name => mother_maiden_name,
 #				:dob         => Date.today
 #			},
 			:identifier => mother_identifier
