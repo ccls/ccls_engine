@@ -25,7 +25,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 #	assert_should_not_require_attributes( :first_name )
 	assert_should_require_attributes( :first_name )
 	assert_should_not_require_attributes( :middle_name )
-#	assert_should_not_require_attributes( :last_name )
+	assert_should_not_require_attributes( :maiden_name )
 	assert_should_require_attributes( :last_name )
 
 	assert_should_not_require_attributes( :died_on, 
@@ -35,7 +35,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		:guardian_relationship_other, :email )
 
 	assert_should_require_attribute_length( 
-		:first_name, :middle_name, :last_name,
+		:first_name, :middle_name, :maiden_name, :last_name,
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
 		:father_first_name, :father_middle_name, :father_last_name,
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,

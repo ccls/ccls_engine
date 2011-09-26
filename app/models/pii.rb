@@ -50,7 +50,7 @@ class Pii < Shared
 #
 	validates_presence_of :first_name, :last_name
 	validates_length_of :first_name, :last_name, :maximum => 250
-	validates_length_of :middle_name, :guardian_relationship_other,
+	validates_length_of :middle_name, :maiden_name, :guardian_relationship_other,
 		:father_first_name, :father_middle_name, :father_last_name,
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
@@ -62,6 +62,7 @@ class Pii < Shared
 	end
 
 	#	Returns string containing study_subject's first, middle and last name
+	#	TODO include maiden_name just in case is mother???
 	def full_name
 		[first_name, middle_name, last_name].compact.join(' ')
 	end
