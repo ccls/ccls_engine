@@ -247,6 +247,9 @@ Factory.define :home_page_pic do |f|
 	f.sequence(:title){ |n| "Title #{n}" }
 end
 
+Factory.define :icf_master_id do |f|
+end
+
 Factory.define :ineligible_reason do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }

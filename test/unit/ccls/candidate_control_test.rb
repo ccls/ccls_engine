@@ -150,7 +150,6 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(object,case_study_subject)
 		assert_not_nil object.study_subject.identifier.subjectid
 		assert_equal   object.study_subject.identifier.subjectid.length, 6
-#		puts object.study_subject.identifier.subjectid
 	end
 
 	test "should create control from attributes and add familyid" do
@@ -159,7 +158,6 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(object,case_study_subject)
 		assert_not_nil object.study_subject.identifier.familyid
 		assert_equal   object.study_subject.identifier.familyid.length, 6
-#		puts object.study_subject.identifier.familyid
 	end
 
 	test "should create control from attributes and subjectid should equal familyid" do
@@ -203,18 +201,20 @@ pending	#	TODO
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
 #puts object.study_subject.identifier.studyid
-#	TODO generated on the fly, NOT in the db (still missing orderno)
+#	TODO generated on the fly, NOT in the db
 		assert_not_nil object.study_subject.identifier.studyid		
 	end
 
 	#	icf_master_id isn't required as may not have any
-	test "should create control from attributes and add icf_master_id" do
-pending	#	TODO
+	test "should create control from attributes and add icf_master_id if any" do
+		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
 		case_study_subject = create_case_identifier.study_subject
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
-#puts object.study_subject.identifier.icf_master_id
-#		assert_not_nil object.study_subject.identifier.icf_master_id
+		assert_not_nil object.study_subject.identifier.icf_master_id
+		assert_equal   object.study_subject.identifier.icf_master_id, '123456789'
+		assert_not_nil imi.reload.study_subject
+		assert_equal   imi.reload.study_subject, object.study_subject
 	end
 
 	test "should create mother from attributes" do
@@ -224,6 +224,7 @@ pending	#	TODO
 		assert_not_nil object.study_subject.mother
 		mother = object.study_subject.mother
 		assert_nil mother.identifier.case_control_type
+		assert_nil mother.identifier.orderno
 	end
 
 	test "should create mother from attributes and NOT copy case patid" do
@@ -266,19 +267,17 @@ pending	#	TODO
 	end
 
 	#	icf_master_id isn't required as may not have any
-	test "should create mother from attributes and add icf_master_id" do
-pending	#	TODO
+	test "should create mother from attributes and add icf_master_id if any" do
+		Factory(:icf_master_id,:icf_master_id => 'child')
+		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
 		case_study_subject = create_case_identifier.study_subject
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
-#puts object.study_subject.mother.identifier.icf_master_id
-#		assert_not_nil object.study_subject.mother.identifier.icf_master_id
+		assert_not_nil object.study_subject.mother.identifier.icf_master_id
+		assert_equal   object.study_subject.mother.identifier.icf_master_id, '123456789'
+		assert_not_nil imi.reload.study_subject
+		assert_equal   imi.reload.study_subject, object.study_subject.mother
 	end
-
-#	TODO mother's pii info not in candidate_control
-#	TODO mothers' orderno?
-#	TODO calculate studyid and store in db or just do on the fly?
-#	TODO assign icf_master_ids
 
 	#
 	#	END: MANY subject creation tests
@@ -288,13 +287,14 @@ pending	#	TODO
 protected
 
 	def create_study_subjects_for_candidate_control(candidate,case_subject)
+#	TODO mother's pii info not in candidate_control
 		assert_difference('Enrollment.count',1) {
 		assert_difference('Identifier.count',2) {
 #		assert_difference('Pii.count',2) {	#	don't have enough info for mother's pii
 		assert_difference('Pii.count',1) {
 		assert_difference('StudySubject.count',2) {
 			candidate.create_study_subjects(case_subject)
-		} } } }
+		} } } } #}
 	end
 
 	def create_patient_for_subject(subject)

@@ -43,25 +43,9 @@ class CandidateControl < Shared
 		[first_name, middle_name, last_name].compact.join(' ')
 	end
 
+	#	This method has gotten HUGE!  It should be refactored for clarity
+	#	once fully tested and functional
 	def create_study_subjects(case_subject)
-#
-#	TODO this isn't 100% correct.  These need to just be controls. ( SubjectType['Control'] )
-#
-#		last_control = Identifier.find(:first,
-#			:order => 'orderno DESC',
-#			:conditions => {
-#				:matchingid => case_subject.identifier.subjectid
-#			}
-#		)
-#		last_control = StudySubject.find(:first, 
-#			:joins => :identifier, 
-#			:order => 'identifiers.orderno DESC', 
-#			:conditions => { 
-#				:subject_type_id         => SubjectType['Control'].id, 	#	avoids a join by doing it this way
-#				'identifiers.matchingid' => case_subject.identifier.subjectid
-#			}
-#		)
-#	either way works
 		last_control = SubjectType['Control'].study_subjects.find(:first, 
 			:joins => :identifier, 
 			:order => 'identifiers.orderno DESC', 
@@ -71,6 +55,9 @@ class CandidateControl < Shared
 		)
 		#	identifier.orderno is delegated to subject to simplicity
 		next_orderno = ( last_control.try(:orderno) || 0 ) + 1
+		next_icf_master_id = IcfMasterId.find(:first,
+			:conditions => ['study_subject_id IS NULL']
+		)
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		child_identifier = Identifier.new do |i|
@@ -79,10 +66,10 @@ class CandidateControl < Shared
 			i.local_registrar_no = local_registrar_no
 			i.orderno            = next_orderno
 			i.matchingid         = case_subject.identifier.subjectid
-			i.icf_master_id      = nil                #	TODO
+			i.icf_master_id      = next_icf_master_id.try(:icf_master_id)
 			i.patid              = case_subject.patid
 		end
-#	can't assign the studyid as don't have the orderno YET
+
 #	don't know if I should add it here or put it back in the Identifier model
 #			i.studyid            = nil                #	TODO
 
@@ -110,11 +97,19 @@ class CandidateControl < Shared
 				:project => Project['phase5']
 			}]
 		})
+		if next_icf_master_id
+			next_icf_master_id.study_subject = child
+			next_icf_master_id.save!
+		end
+
+		next_icf_master_id = IcfMasterId.find(:first,
+			:conditions => ['study_subject_id IS NULL']
+		)
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		mother_identifier = Identifier.new do |i|
 			i.matchingid    = case_subject.identifier.subjectid
-			i.icf_master_id = nil                #	TODO
+			i.icf_master_id = next_icf_master_id.try(:icf_master_id)
 			i.familyid      = child.identifier.familyid
 		end
 #			i.studyid           = nil                #	TODO	#	mother's don't really have a valid studyid
@@ -134,6 +129,10 @@ class CandidateControl < Shared
 #			},
 			:identifier => mother_identifier
 		})
+		if next_icf_master_id
+			next_icf_master_id.study_subject = mother
+			next_icf_master_id.save!
+		end
 		self.study_subject_id = child.id
 		self.assigned_on = Date.today
 		self
