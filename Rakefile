@@ -34,22 +34,6 @@ end
 begin
 	require 'jeweler'
 	Jeweler::Tasks.new do |gem|
-
-
-#	TODO jeweler will actually use my Gemfile and I DO NOT WANT IT TO
-#		as this Gemfile isn't for that.  It ends up requiring itself
-#		which ends badly for apps that require this gem.
-#
-#	I may have to rename Gemfile before and back after, as I'd really like to keep it
-#
-#		File.rename('Gemfile','Gemfile.tmp')
-#
-#	Nope.  Doesn't work in this context.  Still end up with ALL the gems
-#	in the gemspec
-#
-#	Looks like I'm gonna have to remove Gemfile.
-
-
 		gem.name = "ccls-ccls_engine"
 		gem.summary = %Q{one-line summary of your gem}
 		gem.description = %Q{longer description of your gem}
@@ -78,34 +62,11 @@ begin
 		gem.files -= FileList['app/controllers/application_controller.rb']
 		gem.files -= FileList['app/views/layouts/application.html.erb']
 		gem.files -= FileList['lib/ccls_engine/warble.rb']
-#   
-#		I'm not quite sure if it matters whether these files
-#		are included as 'files' or 'test_files', but
-#		they need to be included if I'm gonna use'em.
-#
+
 		gem.test_files = FileList['test/**/*.rb']
-#	DO NOT INCLUDE test_helper.rb
+		#	DO NOT INCLUDE test_helper.rb
 		gem.test_files -= FileList['test/test_helper.rb']
 
-#
-#	It would be really nice if there was a way to
-#	add a source here as ryanb-acts-as-list is on
-#	http://gems.github.com which is rare now.
-#	
-#	Something like ...
-#
-#		gem.add_source('http://gems.github.com')
-#
-#	or
-#
-#		gem.add_dependency('ryanb-acts-as-list',
-#			:source => 'http://gems.github.com')
-#
-#	Perhaps I can just jam this in somewhere!
-#
-#		Gem.sources << 'http://gems.github.com'
-#		Gem.configuration.write
-#
 		gem.add_dependency('rails', '~> 2')
 #	had to explicitly add rails components as greater
 #	versions were being loaded 
@@ -115,30 +76,29 @@ begin
 		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')	# hopefully, can drop soon, don't know if I use it
 		gem.add_dependency('ccls-calnet_authenticated','>= 1.2.0')
-#		gem.add_dependency('jakewendt-simply_helpful')
-		gem.add_dependency('jakewendt-ruby_extension')
-		gem.add_dependency('jakewendt-simply_authorized')
+#		gem.add_dependency('ccls-common_lib')	#	TODO add me
+#		gem.add_dependency('jakewendt-simply_helpful')	#	TODO remove me
+		gem.add_dependency('jakewendt-ruby_extension')	#	TODO remove me
+		gem.add_dependency('jakewendt-simply_authorized')	#	TODO remove me
 		gem.add_dependency('chronic')
 		gem.add_dependency('ssl_requirement')
 		gem.add_dependency('ryanb-acts-as-list')
-		gem.add_dependency('gravatar')	#	hopefully, can drop soon, don't use it, but simply pages requires it
+		gem.add_dependency('gravatar')	#	hopefully, can drop soon, don't use it, but simply pages requires it	#	TODO remove me
 		gem.add_dependency('paperclip')	#	not all apps use, but should be there
 		gem.add_dependency('thoughtbot-factory_girl')
 		gem.add_dependency('ucb_ldap', '>= 1.4.2')
 		gem.add_dependency('rubycas-client', '>= 2.2.1')
-		gem.add_dependency('jakewendt-simply_pages')
-		gem.add_dependency('jakewendt-use_db')
-		gem.add_dependency('ccls-surveyor')
-		gem.add_dependency('jakewendt-simply_trackable')
-		gem.add_dependency('jakewendt-rails_extension')
+		gem.add_dependency('jakewendt-simply_pages')	#	TODO remove me
+		gem.add_dependency('jakewendt-use_db')	#	TODO remove me (maybe)
+#		gem.add_dependency('ccls-surveyor')	#	TODO remove me
+		gem.add_dependency('jakewendt-simply_trackable')	#	TODO remove me (maybe)
+		gem.add_dependency('jakewendt-rails_extension')	#	TODO remove me
 		gem.add_dependency('RedCloth','!= 4.2.6')	#	hopefully, can drop soon, don't use it, but simply pages requires it
 	end
 	Jeweler::GemcutterTasks.new
 rescue LoadError
 	puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
-
-#require 'lib/surveyor/survey_extensions'
 
 #	This is an array of Regexs excluded from test coverage report.
 RCOV_EXCLUDES = ['lib/ccls_engine.rb','lib/ccls_engine/shared_database.rb',
