@@ -96,6 +96,9 @@ else
 	ActiveRecord::Base.send(:include, ::Paperclip)
 end
 
+#	While a HWIA does not differentiate strings and symbols,
+#	it does not differentiate between strings and numbers.
+
 YNDK = HashWithIndifferentAccess.new({
 	:yes   => 1,
 	:true  => 1,
@@ -103,11 +106,11 @@ YNDK = HashWithIndifferentAccess.new({
 	:false => 2,
 	:dk    => 999,
 	'1'    => 'Yes',
-  '2'    => 'No',
-  '999'  => "Don't Know",
+	'2'    => 'No',
+	'999'  => "Don't Know",
 	1      => 'Yes',
-  2      => 'No',
-  999    => "Don't Know"
+	2      => 'No',
+	999    => "Don't Know"
 }).freeze
 
 YNODK = HashWithIndifferentAccess.new({
@@ -118,13 +121,13 @@ YNODK = HashWithIndifferentAccess.new({
 	:other => 3,
 	:dk    => 999,
 	'1'    => 'Yes',
-  '2'    => 'No',
-  '3'    => 'Other',
-  '999'  => "Don't Know",
+	'2'    => 'No',
+	'3'    => 'Other',
+	'999'  => "Don't Know",
 	1      => 'Yes',
-  2      => 'No',
-  3      => 'Other',
-  999    => "Don't Know"
+	2      => 'No',
+	3      => 'Other',
+	999    => "Don't Know"
 }).freeze
 
 require 'simply_trackable'
