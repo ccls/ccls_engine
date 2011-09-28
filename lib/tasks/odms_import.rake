@@ -165,7 +165,7 @@ namespace :odms_import do
 			end
 
 			state_id_no = line['state_id_no']
-			if Identifier.exists?(:state_id_no => state_id_no)
+			if !state_id_no.blank? && Identifier.exists?(:state_id_no => state_id_no)
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: " <<
 					"state_id_no is a duplicate:#{line['state_id_no']}:"
