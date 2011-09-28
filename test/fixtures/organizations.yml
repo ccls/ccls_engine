@@ -37,13 +37,13 @@ CSMC:
 KPNC:
   id:  7
   position:  7
-  code:  KPNC
+  code:  KPMGNC
   name:  Kaiser Permanente Medical Group (Northern California)
   person_id:  10
 KPSC:
   id:  8
   position:  8
-  code:  KPSC
+  code:  KPMGSC
   name:  Kaiser Permanente Medical Group (Southern California)
   person_id:  2
 LPCH:
