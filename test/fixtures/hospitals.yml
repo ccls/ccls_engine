@@ -1,61 +1,75 @@
 CPMC:
   id:  1
-  position:  1
   organization_id:  1
 CHCC:
   id:  2
-  position:  2
   organization_id:  2
 CHLA:
   id:  3
-  position:  3
   organization_id:  3
 CHOC:
   id:  4
-  position:  4
   organization_id:  4
 CHOK:
   id:  5
-  position:  5
   organization_id:  5
 CSMC:
   id:  6
-  position:  6
   organization_id:  6
-KPNC:
-  id:  7
-  position:  7
-  organization_id:  7
-KPSC:
-  id:  8
-  position:  8
-  organization_id:  8
 LPCH:
   id:  9
-  position:  9
   organization_id:  9
 MCHO:
   id:  10
-  position:  10
   organization_id:  10
- 
 RCSD:
   id:  11
-  position:  11
   organization_id:  11
 SUMH:
   id:  12
-  position:  12
   organization_id:  12
 UCDV:
   id:  13
-  position:  13
   organization_id:  13
 UCLA:
   id:  14
-  position:  14
   organization_id:  14
 UCSF:
   id:  15
-  position:  15
   organization_id:  15
+COTH:
+  id:  16
+  organization_id:  21
+KPAN:
+  id:  17
+  organization_id:  22
+KPDO:
+  id:  18
+  organization_id:  23
+KPFO:
+  id:  19
+  organization_id:  24
+KPLA:
+  id:  20
+  organization_id:  25
+KPOA:
+  id:  21
+  organization_id:  26
+KPRO:
+  id:  22
+  organization_id:  27
+KPSA:
+  id:  23
+  organization_id:  28
+KPSD:
+  id:  24
+  organization_id:  29
+KPSF:
+  id:  25
+  organization_id:  30
+KPSC:
+  id:  7
+  organization_id:  31
+LOMA:
+  id:  8
+  organization_id:  32

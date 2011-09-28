@@ -110,3 +110,51 @@ CDC:
   id: 20
   code: CDC
   name:  United States Center for Disease Control
+Cottage:
+  id: 21
+  code: COT
+  name:  Cottage Hospital
+Anaheim:
+  id: 22
+  code: KPAna
+  name:  Kaiser Anaheim
+Downey:
+  id: 23
+  code: KPDow
+  name:  Kaiser Downey
+Fontana:
+  id: 24
+  code: KPFon
+  name:  Kaiser Fontana
+KPLA:
+  id: 25
+  code: KPLA
+  name:  Kaiser Los Angeles
+KPOak:
+  id: 26
+  code: KPOak
+  name:  Kaiser Oakland
+Roseville:
+  id: 27
+  code: KPRos
+  name:  Kaiser Roseville
+Sacramento:
+  id: 28
+  code: KPSac
+  name:  Kaiser Sacramento
+SanDiego:
+  id: 29
+  code: KPSD
+  name:  Kaiser San Diego
+SanFran:
+  id: 30
+  code: KPSF
+  name:  Kaiser San Francisco
+SantaClara:
+  id: 31
+  code: KPSC
+  name:  Kaiser Santa Clara
+LomaLinda:
+  id: 32
+  code: Loma
+  name:  Loma Linda Hospital
