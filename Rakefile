@@ -60,6 +60,7 @@ begin
 		gem.files += FileList['generators/**/*']
 		gem.files -= FileList['**/versions/*']
 		gem.files -= FileList['app/controllers/application_controller.rb']
+		gem.files -= FileList['app/views/pages/*.html.erb']	#	why are they even here anymore?
 		gem.files -= FileList['app/views/layouts/application.html.erb']
 		gem.files -= FileList['lib/ccls_engine/warble.rb']
 
@@ -76,24 +77,24 @@ begin
 		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')	# hopefully, can drop soon, don't know if I use it
 		gem.add_dependency('ccls-calnet_authenticated','>= 1.2.0')
-#		gem.add_dependency('ccls-common_lib')	#	TODO add me
+#		gem.add_dependency('ccls-common_lib')	#	TODO add me (maybe)
 #		gem.add_dependency('jakewendt-simply_helpful')	#	TODO remove me
 		gem.add_dependency('jakewendt-ruby_extension')	#	TODO remove me
 		gem.add_dependency('jakewendt-simply_authorized')	#	TODO remove me
 		gem.add_dependency('chronic')
 		gem.add_dependency('ssl_requirement')
 		gem.add_dependency('ryanb-acts-as-list')
-		gem.add_dependency('gravatar')	#	hopefully, can drop soon, don't use it, but simply pages requires it	#	TODO remove me
-		gem.add_dependency('paperclip')	#	not all apps use, but should be there
+#		gem.add_dependency('gravatar')	#	hopefully, can drop soon, don't use it, but simply pages requires it	#	TODO remove me
+#		gem.add_dependency('paperclip')	#	not all apps use, but should be there
 		gem.add_dependency('thoughtbot-factory_girl')
 		gem.add_dependency('ucb_ldap', '>= 1.4.2')
 		gem.add_dependency('rubycas-client', '>= 2.2.1')
-		gem.add_dependency('jakewendt-simply_pages')	#	TODO remove me
+#		gem.add_dependency('jakewendt-simply_pages')	#	TODO remove me
 		gem.add_dependency('jakewendt-use_db')	#	TODO remove me (maybe)
 #		gem.add_dependency('ccls-surveyor')	#	TODO remove me
 		gem.add_dependency('jakewendt-simply_trackable')	#	TODO remove me (maybe)
 		gem.add_dependency('jakewendt-rails_extension')	#	TODO remove me
-		gem.add_dependency('RedCloth','!= 4.2.6')	#	hopefully, can drop soon, don't use it, but simply pages requires it
+#		gem.add_dependency('RedCloth','!= 4.2.6')	#	hopefully, can drop soon, don't use it, but simply pages requires it
 	end
 	Jeweler::GemcutterTasks.new
 rescue LoadError

@@ -38,10 +38,11 @@ Rails::Initializer.run do |config|
 	config.gem "jakewendt-use_db"
 	config.gem 'jakewendt-simply_trackable'
 	config.gem 'jakewendt-simply_authorized'
-	config.gem 'jakewendt-simply_pages'
+	config.gem 'jakewendt-simply_pages'	#	TODO remove me
 	config.gem 'jakewendt-simply_helpful'
 	#	require it, but don't load it
-	config.gem 'jakewendt-rdoc_rails', :lib => false
+#	config.gem 'jakewendt-rdoc_rails', :lib => false
+	config.gem 'jrails'
 
 	config.gem 'haml'      # Needed for Surveyor
 	#		http://chronic.rubyforge.org/
@@ -49,7 +50,7 @@ Rails::Initializer.run do |config|
 	config.gem 'active_shipping'
 	config.gem 'will_paginate'
 	config.gem 'fastercsv'
-	config.gem 'paperclip'
+#	config.gem 'paperclip'
 
 	config.after_initialize do
 		load File.expand_path(File.join(File.dirname(__FILE__),'../lib/ccls_engine.rb'))
