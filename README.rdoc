@@ -22,13 +22,11 @@ views and routes to the aforementioned resources.
 * aws-s3
 * ssl_requirement
 * ryanb-acts-as-list
-* gravatar
 * RedCloth
 * paperclip
 * {jakewendt-simply_helpful}[http://github.com/jakewendt/simply_helpful]
 * {ccls-calnet_authenticated}[http://github.com/ccls/calnet_authenticated]
 * {jakewendt-simply_authorized}[http://github.com/jakewendt/simply_authorized]
-* {jakewendt-simply_pages}[http://github.com/jakewendt/simply_pages]
 * {jakewendt-use_db}[http://github.com/jakewendt/use_db]
 * {jakewendt-rails_extension}[http://github.com/jakewendt/rails_extension]
 

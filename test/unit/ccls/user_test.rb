@@ -134,10 +134,10 @@ class Ccls::UserTest < ActiveSupport::TestCase
 		assert_not_nil user.mail
 	end
 
-	test "should return non-nil gravatar_url" do
-		user = create_object
-		assert_not_nil user.gravatar_url
-	end
+#	test "should return non-nil gravatar_url" do
+#		user = create_object
+#		assert_not_nil user.gravatar_url
+#	end
 
 	test "should respond to roles" do
 		user = create_object
