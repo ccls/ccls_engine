@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.9.1"
+  s.version = "3.9.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-09-28}
+  s.date = %q{2011-09-30}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -108,8 +108,6 @@ Gem::Specification.new do |s|
     "app/views/languages/index.html.erb",
     "app/views/languages/new.html.erb",
     "app/views/languages/show.html.erb",
-    "app/views/pages/_form.html.erb",
-    "app/views/pages/show.html.erb",
     "app/views/people/_form.html.erb",
     "app/views/people/_person.html.erb",
     "app/views/people/edit.html.erb",
@@ -191,7 +189,6 @@ Gem::Specification.new do |s|
     "lib/tasks/odms_import.rake",
     "lib/tasks/simply_authorized.rake",
     "lib/tasks/simply_helpful.rake",
-    "lib/tasks/simply_pages.rake",
     "lib/tasks/simply_trackable.rake",
     "lib/tasks/ucb_ccls_engine_tasks.rake",
     "lib/tasks/use_db.rake",
@@ -219,17 +216,12 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<chronic>, [">= 0"])
       s.add_runtime_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_runtime_dependency(%q<ryanb-acts-as-list>, [">= 0"])
-      s.add_runtime_dependency(%q<gravatar>, [">= 0"])
-      s.add_runtime_dependency(%q<paperclip>, [">= 0"])
       s.add_runtime_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_runtime_dependency(%q<ucb_ldap>, [">= 1.4.2"])
       s.add_runtime_dependency(%q<rubycas-client>, [">= 2.2.1"])
-      s.add_runtime_dependency(%q<jakewendt-simply_pages>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-use_db>, [">= 0"])
-      s.add_runtime_dependency(%q<ccls-surveyor>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-simply_trackable>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-rails_extension>, [">= 0"])
-      s.add_runtime_dependency(%q<RedCloth>, ["!= 4.2.6"])
     else
       s.add_dependency(%q<rails>, ["~> 2"])
       s.add_dependency(%q<activerecord>, ["~> 2"])
@@ -243,17 +235,12 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<chronic>, [">= 0"])
       s.add_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
-      s.add_dependency(%q<gravatar>, [">= 0"])
-      s.add_dependency(%q<paperclip>, [">= 0"])
       s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
       s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
-      s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
       s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
-      s.add_dependency(%q<ccls-surveyor>, [">= 0"])
       s.add_dependency(%q<jakewendt-simply_trackable>, [">= 0"])
       s.add_dependency(%q<jakewendt-rails_extension>, [">= 0"])
-      s.add_dependency(%q<RedCloth>, ["!= 4.2.6"])
     end
   else
     s.add_dependency(%q<rails>, ["~> 2"])
@@ -268,17 +255,12 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<chronic>, [">= 0"])
     s.add_dependency(%q<ssl_requirement>, [">= 0"])
     s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
-    s.add_dependency(%q<gravatar>, [">= 0"])
-    s.add_dependency(%q<paperclip>, [">= 0"])
     s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
     s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
     s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
-    s.add_dependency(%q<jakewendt-simply_pages>, [">= 0"])
     s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
-    s.add_dependency(%q<ccls-surveyor>, [">= 0"])
     s.add_dependency(%q<jakewendt-simply_trackable>, [">= 0"])
     s.add_dependency(%q<jakewendt-rails_extension>, [">= 0"])
-    s.add_dependency(%q<RedCloth>, ["!= 4.2.6"])
   end
 end
 
