@@ -25,6 +25,8 @@ namespace :odms_destroy do
 		Package.destroy_all
 		HomexOutcome.destroy_all
 		HomeExposureResponse.destroy_all
+#		BcRequest.destroy_all
+#		CandidateControl.destroy_all
 	end
 
 end
@@ -97,11 +99,93 @@ namespace :odms_import do
 		end
 	end
 
-	desc "Import subject and address data from CSV files"
+	desc "Import subject data from CSV files"
 	task :csv_data => [
 		'odms_destroy:csv_data',
-		'odms_import:subjects'
+		'odms_import:subjects',
+		'odms_import:icf_master_ids',
+		'odms_import:create_dummy_candidate_controls'
 	]
+
+	task :icf_master_ids => :environment do 
+		puts "Destroying icf_master_ids"
+		IcfMasterId.destroy_all
+		puts "Importing icf_master_ids"
+
+		error_file = File.open('subjects_errors.txt','w')
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open("./export_ODMS_ICF_Master_IDs.csv", 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+			attributes = {
+				:icf_master_id => line['icf_master_id']
+			}
+
+			if line['subjectid'] and !line['subjectid'].blank?
+				identifiers = Identifier.find(:all,
+					:conditions => { :subjectid => line['subjectid'] } )
+				case 
+					when identifiers.length > 1
+						raise "More than one identifier found matching subjectid:#{line['subjectid']}:"
+					when identifiers.length == 0
+						raise "No identifier found matching subjectid:#{line['subjectid']}:"
+					else
+						puts "Found identifier matching subjectid:#{line['subjectid']}:"
+				end
+				attributes[:study_subject_id] = identifiers.first.study_subject_id
+				attributes[:assigned_on] = Time.parse(line['assigned_on'])
+			else
+				#	I just noticed that some of the icf_master_ids are actually
+				#	assigned in the subject data, but not marked as being
+				#	assigned in the icf_master_id list.  So, search for them.
+				identifiers = Identifier.find(:all,
+					:conditions => { :icf_master_id => line['icf_master_id'] } )
+				case 
+					when identifiers.length > 1
+						raise "More than one identifier found matching icf_master_id:#{line['icf_master_id']}:"
+#					when identifiers.length == 0
+#						raise "No identifier found matching icf_master_id:#{line['icf_master_id']}:"
+					when identifiers.length == 1
+						puts "Found identifier matching icf_master_id:#{line['icf_master_id']}:"
+						attributes[:study_subject_id] = identifiers.first.study_subject_id
+						attributes[:assigned_on] = Date.today
+				end
+			end
+
+			IcfMasterId.create!(attributes)
+		end
+
+	end
+
+
+	task :create_dummy_candidate_controls => :environment do
+		puts "Destroying candidate controls"
+		CandidateControl.destroy_all
+		puts "Importing candidate controls"
+#Factory.define :candidate_control do |f|
+#	f.first_name "First"
+#	f.last_name  "Last"
+#	f.dob Date.jd(2440000+rand(15000))
+#	f.reject_candidate false
+#end
+
+		SubjectType['Case'].study_subjects.each do |s|
+			rand(5).times do |i|
+				puts "Creating candidate control for study_subject_id:#{s.id}"
+				CandidateControl.create!({
+					:related_patid => s.patid,
+					:first_name => "First#{i}",
+					:last_name  => "Last#{s.id}",
+					:dob        => Date.jd(2440000+rand(15000))
+				})
+			end
+		end
+		
+		printf "%-19s %5d\n", "CandidateControl.count:", CandidateControl.count
+	end
 
 	desc "Import data from subjects.csv file"
 	task :subjects => :environment do
@@ -235,26 +319,6 @@ namespace :odms_import do
 			end
 
 			s = StudySubject.create!(attributes)
-#
-#	I think that I should actually look for the state id before creation.
-#	Then modify it.
-#	TODO I'll do that in the morning
-#
-#			if s.new_record?
-#				if s.errors.on_attr_and_type("identifier.state_id_no",:taken)
-#					error_file.puts 
-#					error_file.puts "Line #:#{f.lineno}: " <<
-#						"state_id_no is a duplicate:#{line['state_id_no']}:"
-#					error_file.puts line
-#					attributes[:identifier].state_id_no = nil
-#					s = StudySubject.create!(attributes)
-#				else
-#					puts "Something failed other that expected"
-#					puts s.errors.inspect
-#					raise
-#				end 
-#			end
-
 		end	#	FasterCSV.open
 		error_file.close
 
