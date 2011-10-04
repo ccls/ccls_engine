@@ -1,6 +1,13 @@
 class Patid < Shared
 #	TODO add some documentation here explaining what an empty model is for
 
+
+#	This stuff is used just for testing as these are created and destroyed
+#	so in order to test that one was taken, I need to check the next_id.
+#	This can all be removed if and when this technique is replaced
+#	with something that does not destroy.  The tests will also need
+#	modified to check the count.
+
 	class << self
 		#This is MySQL specific and therefore not explicitly tested.
 		def table_status
