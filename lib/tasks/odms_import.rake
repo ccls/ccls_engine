@@ -115,7 +115,7 @@ namespace :odms_import do
 		error_file = File.open('subjects_errors.txt','w')
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("./export_ODMS_ICF_Master_IDs.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/export_ODMS_ICF_Master_IDs.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
