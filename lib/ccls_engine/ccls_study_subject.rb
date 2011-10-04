@@ -165,7 +165,8 @@ class Ccls::StudySubject < Shared
 	end
 
 	def to_s
-		load 'pii.rb' if RAILS_ENV == 'development'	#	forgets
+#		load 'pii.rb' if RAILS_ENV == 'development'	#	forgets
+		require_dependency 'pii.rb' unless Pii
 		#	interesting that I don't have to load 'identifier.rb' ???
 		[childid,'(',studyid,full_name,')'].compact.join(' ')
 	end
