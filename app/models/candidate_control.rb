@@ -45,13 +45,13 @@ class CandidateControl < Shared
 
 	#	This method has gotten HUGE!  It should be refactored for clarity
 	#	once fully tested and functional
-	def create_study_subjects(case_subject)
-		next_orderno = next_control_orderno_for_subject(case_subject)
+	def create_study_subjects(case_subject,grouping = '6')
+		next_orderno = next_control_orderno_for_subject(case_subject,grouping)
 		next_icf_master_id = IcfMasterId.next_unused
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		child_identifier = Identifier.new do |i|
-			i.case_control_type  = '6'
+			i.case_control_type  = grouping
 			i.state_registrar_no = state_registrar_no
 			i.local_registrar_no = local_registrar_no
 			i.orderno            = next_orderno
@@ -136,7 +136,7 @@ protected
 #		not the correct one.  It does not take into account the case_control_type
 #
 
-	def next_control_orderno_for_subject(case_subject)
+	def next_control_orderno_for_subject(case_subject,grouping = '6')
 		require_dependency 'identifier.rb' unless Identifier
 #		last_control = SubjectType['Control'].study_subjects.find(:first, 
 		last_control = StudySubject.find(:first, 
@@ -144,7 +144,7 @@ protected
 			:order => 'identifiers.orderno DESC', 
 			:conditions => { 
 				:subject_type_id => SubjectType['Control'].id,
-				'identifiers.case_control_type' => '6',		#	NOTE hard coding this for now
+				'identifiers.case_control_type' => grouping,
 				'identifiers.matchingid' => case_subject.identifier.subjectid
 			}
 		)
