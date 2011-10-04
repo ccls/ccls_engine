@@ -10,7 +10,7 @@ gem 'jakewendt-simply_helpful'
 require 'simply_helpful'
 gem 'ccls-calnet_authenticated', '>= 1.1.4'
 require 'ccls-calnet_authenticated'
-require 'gravatar'
+#require 'gravatar'
 
 gem 'rubycas-client', '>= 2.2.1'
 require 'rubycas-client'
