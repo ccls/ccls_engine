@@ -131,11 +131,20 @@ class CandidateControl < Shared
 
 protected
 
+#
+#	TODO This is incorrect.  It will return the next orderno, but
+#		not the correct one.  It does not take into account the case_control_type
+#
+
 	def next_control_orderno_for_subject(case_subject)
-		last_control = SubjectType['Control'].study_subjects.find(:first, 
+		require_dependency 'identifier.rb' unless Identifier
+#		last_control = SubjectType['Control'].study_subjects.find(:first, 
+		last_control = StudySubject.find(:first, 
 			:joins => :identifier, 
 			:order => 'identifiers.orderno DESC', 
 			:conditions => { 
+				:subject_type_id => SubjectType['Control'].id,
+				'identifiers.case_control_type' => '6',		#	NOTE hard coding this for now
 				'identifiers.matchingid' => case_subject.identifier.subjectid
 			}
 		)
