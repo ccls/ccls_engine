@@ -40,6 +40,8 @@ class Identifier < Shared
 #		won't have at creation
 
 #	TODO I believe that subjectid is, or will be, a required field
+#		it is auto-assigned so adding a validation that the user 
+#		can't do anything about is a bad idea
 #	validates_presence_of   :subjectid
 #	validates_uniqueness_of :subjectid, :allow_nil => true
 
@@ -87,7 +89,6 @@ class Identifier < Shared
 
 	before_validation :prepare_fields_for_validation
 	before_create     :prepare_fields_for_creation
-	before_update     :prepare_fields_for_updation
 
 	after_save :trigger_update_matching_study_subjects_reference_date, 
 		:if => :matchingid_changed?
@@ -98,9 +99,9 @@ class Identifier < Shared
 
 	def is_case?
 		if study_subject 
-			study_subject.is_case?
+			study_subject.is_case?   # primary check
 		else
-			case_control_type == 'C'
+			case_control_type == 'C' # secondary check
 		end
 	end
 
@@ -139,16 +140,15 @@ protected
 		if study_subject_id.blank?
 			errors.add(:study_subject_id, :blank )
 			return false
-#		elsif Identifier.exists?(:study_subject_id => study_subject_id)
-#			errors.add(:study_subject_id, :taken )
-#			return false
 		end
 	end
 
 	def prepare_fields_for_validation
-		self.case_control_type = ( ( case_control_type.blank? ) ? nil : case_control_type.to_s.upcase )
+		self.case_control_type = ( ( case_control_type.blank? 
+			) ? nil : case_control_type.to_s.upcase )
 		self.ssn = ( ( ssn.blank? ) ? nil : ssn.to_s.gsub(/\D/,'') )
-		#	ANY field that has a unique index in the database NEEDS
+
+		#	NOTE ANY field that has a unique index in the database NEEDS
 		#	to NOT be blank.  Multiple nils are acceptable in index,
 		#	but multiple blanks are NOT.  Nilify ALL fields with
 		#	unique indexes in the database.
@@ -168,6 +168,22 @@ protected
 #puts "Matchingid before before validation:#{matchingid}"
 		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
 	end
+
+#	TODO
+#	The techniques for generating childid and patid are just not
+#	sustainable.  I do not have any immediate idea for a better
+#	approach, but I can already see that this will cause problems
+#	unless ALL of the data is imported and the correct initial
+#	AUTO_INCREMENT value is set.  This will make the application
+#	database dependent, which I think is a bad idea.
+#	Right now, the demo won't work because the data has higher
+#	values than expected so the created ids already exists.
+#	I suppose that this failure is good as it forces the uniqueness
+#	however, it raises a DATABASE error that the user can do nothing
+#	about.
+#	The imported data has a 14707 childid and 2375 patid while
+#	the database was expecting less than 12000 and 2000.
+#	
 
 	#	made separate method so can be stubbed
 	def get_next_childid
@@ -214,7 +230,7 @@ protected
 
 		#	cases (patients): matchingID is the study_subject's own subjectID
 		#	controls: matchingID is subjectID of the associated case (like PatID in this respect).
-#	how to get associated case?  given?
+# TODO	how to get associated case?  given?
 		#	mothers: matchingID is subjectID of their own child's associated case. 
 		#			That is, a mother's matchingID is the same as their child's. This 
 		#			will become clearer when I provide specs for mother study_subject creation.
@@ -225,26 +241,6 @@ protected
 #			when 'C' then subjectid
 #			else nil
 #		end
-
-		prepare_fields_for_updation
-	end
-
-	def prepare_fields_for_updation
-#puts "In prepare_fields_for_updation"
-
-#	TODO orderno will be computed
-#	need patid before can create studyid
-#	need orderno before can create studyid
-
-#	for controls, these values won't be known at creation
-#	so we need to continue to update them
-
-#		self.studyid = "#{patid}-#{case_control_type}-#{orderno}"
-#		self.studyid_nohyphen = "#{patid}#{case_control_type}#{orderno}"
-#		#	replace case_control_type with 0
-#		#		0 may only be for C, so this may need updated
-#		self.studyid_intonly_nohyphen = "#{patid}" <<
-#			"#{(is_case?) ? 0 : case_control_type}#{orderno}"
 
 	end
 
