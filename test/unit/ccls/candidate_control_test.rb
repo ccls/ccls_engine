@@ -80,6 +80,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		case_study_subject = create_case_identifier.study_subject
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
+		object.reload	# ensure that it is saved in the db!
 		assert_not_nil object.assigned_on
 		assert_not_nil object.study_subject_id
 	end
@@ -283,6 +284,25 @@ pending	#	TODO
 		assert_equal   imi.assigned_on, Date.today
 	end
 
+	test "should rollback study subject creation of icf_master_id save fails" do
+pending #	TODO wrap in transaction.  Don't want this partially done.
+		Factory(:icf_master_id,:icf_master_id => 'child')
+		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
+		case_study_subject = create_case_identifier.study_subject
+		object = create_object
+		create_study_subjects_for_candidate_control(object,case_study_subject)
+#	none of these are actually stopping this!
+#		IcfMasterId.any_instance.stubs(:create_or_update).returns(false)
+#		IcfMasterId.any_instance.stubs(:valid?).returns(false)
+#		IcfMasterId.any_instance.stubs(:save!).raises(ActiveRecord::RecordNotSaved)
+		assert_difference('Enrollment.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('Pii.count',0) {
+		assert_difference('StudySubject.count',0) {
+#			object.create_study_subjects(case_study_subject)
+		} } } }
+	end
+
 	#
 	#	END: MANY subject creation tests
 	#
@@ -291,14 +311,14 @@ pending	#	TODO
 protected
 
 	def create_study_subjects_for_candidate_control(candidate,case_subject)
-#	TODO mother's pii info not in candidate_control
+#	TODO mother's pii info not in candidate_control yet
 		assert_difference('Enrollment.count',1) {
 		assert_difference('Identifier.count',2) {
 #		assert_difference('Pii.count',2) {	#	don't have enough info for mother's pii
 		assert_difference('Pii.count',1) {
 		assert_difference('StudySubject.count',2) {
 			candidate.create_study_subjects(case_subject)
-		} } } } #}
+		} } } }
 	end
 
 	def create_patient_for_subject(subject)

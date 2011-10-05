@@ -63,6 +63,10 @@ class CandidateControl < Shared
 #	don't know if I should add it here or put it back in the Identifier model
 #			i.studyid            = nil                #	TODO
 
+#	TODO might want to consider wrapping this all in a transaction
+
+#transaction do
+
 		child = StudySubject.create!({
 			:subject_type => SubjectType['Control'],
 			:vital_status => VitalStatus['living'],
@@ -102,8 +106,8 @@ class CandidateControl < Shared
 			i.icf_master_id = next_icf_master_id.try(:icf_master_id)
 			i.familyid      = child.identifier.familyid
 		end
-#			i.studyid           = nil                #	TODO	#	mother's don't really have a valid studyid
-#			i.case_control_type = 'M'				#	NOTE Can't really do this.  Need to allow nil
+#			i.studyid           = nil  #	TODO	#	mother's don't really have a valid studyid
+#			i.case_control_type = 'M'  #	NOTE Can't really do this.  Need to allow nil
 
 		mother = StudySubject.create!({
 			:subject_type => SubjectType['Mother'],
@@ -126,19 +130,15 @@ class CandidateControl < Shared
 		end
 		self.study_subject_id = child.id
 		self.assigned_on = Date.today
+		self.save!
+#end
 		self
 	end
 
 protected
 
-#
-#	TODO This is incorrect.  It will return the next orderno, but
-#		not the correct one.  It does not take into account the case_control_type
-#
-
 	def next_control_orderno_for_subject(case_subject,grouping = '6')
 		require_dependency 'identifier.rb' unless Identifier
-#		last_control = SubjectType['Control'].study_subjects.find(:first, 
 		last_control = StudySubject.find(:first, 
 			:joins => :identifier, 
 			:order => 'identifiers.orderno DESC', 
