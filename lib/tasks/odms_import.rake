@@ -179,6 +179,7 @@ namespace :odms_import do
 					:related_patid => s.patid,
 					:first_name => "First#{i}",
 					:last_name  => "Last#{s.id}",
+					:sex        => ['M','F'][rand(2)],
 					:dob        => Date.jd(2440000+rand(15000))
 				})
 			end
