@@ -10,7 +10,6 @@ gem 'jakewendt-simply_helpful'
 require 'simply_helpful'
 gem 'ccls-calnet_authenticated', '>= 1.1.4'
 require 'ccls-calnet_authenticated'
-#require 'gravatar'
 
 gem 'rubycas-client', '>= 2.2.1'
 require 'rubycas-client'
@@ -23,8 +22,6 @@ gem 'jakewendt-simply_authorized'
 require 'simply_authorized'
 gem 'ryanb-acts-as-list'
 require 'acts_as_list'
-#gem 'jakewendt-simply_pages'
-#require 'simply_pages'
 
 gem 'jakewendt-rails_extension'
 require 'jakewendt-rails_extension'
@@ -48,6 +45,12 @@ require 'ccls_engine/core_extension'
 require 'ccls_engine/shared'
 require 'ccls_engine/ccls_user'
 require 'ccls_engine/ccls_study_subject'
+
+#	I don't like that I have to do this, but the associations 
+#	fall apart in development mode if not done.
+require File.join(File.dirname(__FILE__),"../app/models/study_subject")
+require File.join(File.dirname(__FILE__),"../app/models/addressing")
+
 require 'ccls_engine/helper'
 
 if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")
@@ -58,20 +61,6 @@ if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@co
 	require 'factory_girl'
 	require 'ccls_engine/factories'
 end
-
-#silence_warnings {
-#	#	This will complain that the constant is already defined.
-#	#	Doing this to remove rails default of prototype/scriptaculous,
-#	#		but I'm going to stop using :defaults and use :ccls
-#	ActionView::Helpers::AssetTagHelper::JAVASCRIPT_DEFAULT_SOURCES = [
-#		'jquery','jquery-ui','jrails']
-#}
-#ActionView::Helpers::AssetTagHelper::reset_javascript_include_default
-#ActionView::Helpers::AssetTagHelper.register_javascript_include_default(
-#	'ucb_ccls_engine.js')
-#ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
-#	:defaults => ['scaffold','application'] )
-
 
 ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 
 	:ccls => ['scaffold','ccls_engine','application'] )
