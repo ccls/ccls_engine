@@ -92,7 +92,6 @@ Gem::Specification.new do |s|
     "app/models/track.rb",
     "app/models/transfer.rb",
     "app/models/unit.rb",
-    "app/models/user.rb",
     "app/models/vital_status.rb",
     "app/models/zip_code.rb",
     "app/views/calendars/show.html.erb",
