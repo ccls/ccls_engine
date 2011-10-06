@@ -19,11 +19,11 @@ views and routes to the aforementioned resources.
 * jrails
 * chronic
 * ruby-hmac
-* aws-s3
+* aws-s3	#	don't use this anymore
 * ssl_requirement
 * ryanb-acts-as-list
 * RedCloth
-* paperclip
+* paperclip	#	don't use this anymore
 * {jakewendt-simply_helpful}[http://github.com/jakewendt/simply_helpful]
 * {ccls-calnet_authenticated}[http://github.com/ccls/calnet_authenticated]
 * {jakewendt-simply_authorized}[http://github.com/jakewendt/simply_authorized]
@@ -32,6 +32,7 @@ views and routes to the aforementioned resources.
 
 == Installation (as a gem/plugin/engine)
 
+ #	don't use this anymore
  cp config/s3.yml.example config/s3.yml
  # Add your own s3 access keys.  Leave 'test' as it is.
 
@@ -47,7 +48,6 @@ Generate an initializer and copy in some files.
 ( why don't I copy in these yml files, or at least their examples? )
 
 
-
 Also need to manually add a shared_database.yml with matching configuration.
 
  cp config/shared_database.yml.example config/shared_database.yml
@@ -59,7 +59,9 @@ Also need to manually add a shared_database.yml with matching configuration.
 == Production Updating
 
  git pull
- bundle update
+ #	No longer uses the Gemfile as it meddled with the gem creation.
+ #	Should link the Gemfile.tmp to Gemfile in home dir.
+ bundle update	
  rake db:migrate RAILS_ENV=production
 
 
