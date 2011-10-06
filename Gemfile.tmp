@@ -20,7 +20,6 @@ source "http://gems.github.com"
 #
 gem "rake", '=0.8.7'
 gem "rails", "~>2"
-#gem "test-unit"
 gem "mongrel"
 gem "active_shipping"
 gem "RedCloth", '<4.2.8'
@@ -30,7 +29,6 @@ gem "autotest-rails"
 gem "aws-s3"
 gem "aws-sdb"
 gem "chronic",	'>=0.6.2'
-#gem "gravatar"
 gem "haml"
 gem "hpricot"
 gem "i18n"
@@ -51,18 +49,12 @@ gem "will_paginate", "~>2"
 
 gem "ccls-calnet_authenticated"
 gem "ccls-ccls_engine"
-gem "ccls-surveyor"
 gem "jakewendt-html_test"
 gem "jakewendt-rails_extension"
-#gem "jakewendt-rdoc_rails"
 gem "jakewendt-ruby_extension"
 gem "jakewendt-simply_authorized"
-#gem "jakewendt-simply_documents"
 gem "jakewendt-simply_helpful"
-#gem "jakewendt-simply_pages"
-#gem "jakewendt-simply_photos"
 gem "jakewendt-simply_sessions"
-gem "jakewendt-simply_trackable"
 gem "jakewendt-use_db"
 
 gem 'ZenTest', '~>4.5.0'

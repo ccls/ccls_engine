@@ -112,6 +112,7 @@ YNODK = HashWithIndifferentAccess.new({
 	999    => "Don't Know"
 }).freeze
 
-require 'simply_trackable'
-Track.use_db :prefix => 'shared_'
-
+#gem 'jakewendt-simply_trackable'
+#require 'simply_trackable'
+#Track.use_db :prefix => 'shared_'
+#
