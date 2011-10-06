@@ -33,8 +33,6 @@ Rails::Initializer.run do |config|
 
 	config.gem 'ccls-calnet_authenticated', :version => '>= 1.2.0'
 
-#	config.gem 'ccls-common_lib'
-
 	config.gem "jakewendt-use_db"
 	config.gem 'jakewendt-simply_authorized'
 	config.gem 'jakewendt-simply_helpful'
