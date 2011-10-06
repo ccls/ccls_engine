@@ -11,13 +11,11 @@ class Package < Shared
 		
 	include ActiveMerchant::Shipping
 
+	#	This is polymorphic as was part of a gem.
+	#	It doesn't need to be, but would require mods to the db to change.
 	has_many	:tracks, :as => :trackable, :dependent => :destroy
 	#validates_length_of :tracking_number, :minimum => 3
 	validates_uniqueness_of :tracking_number, :allow_blank => true
-
-#	if self.accessible_attributes
-#		attr_accessible :tracking_number
-#	end
 
 	before_validation :nullify_blank_tracking_number
 
