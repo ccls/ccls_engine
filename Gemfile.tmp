@@ -55,7 +55,7 @@ gem "jakewendt-ruby_extension"
 gem "jakewendt-simply_authorized"
 gem "jakewendt-simply_helpful"
 gem "jakewendt-simply_sessions"
-gem "jakewendt-use_db"
+gem "ccls-use_db"
 
 gem 'ZenTest', '~>4.5.0'
 #Fetching: ZenTest-4.6.2.gem (100%)

@@ -39,8 +39,6 @@ begin
 		# gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
 
 		gem.files  = FileList['config/routes.rb']
-#		gem.files += FileList['config/document.yml']
-#		gem.files += FileList['config/photo.yml']
 		gem.files += FileList['config/home_exposure_response_fields.yml']
 		gem.files += FileList['config/abstract_fields.yml']
 		gem.files += FileList['config/abstract_sections.yml']
@@ -81,7 +79,7 @@ begin
 		gem.add_dependency('thoughtbot-factory_girl')
 		gem.add_dependency('ucb_ldap', '>= 1.4.2')
 		gem.add_dependency('rubycas-client', '>= 2.2.1')
-		gem.add_dependency('jakewendt-use_db')	#	TODO remove me (maybe)
+		gem.add_dependency('ccls-use_db')
 		gem.add_dependency('jakewendt-rails_extension')	#	TODO remove me
 	end
 	Jeweler::GemcutterTasks.new

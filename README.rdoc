@@ -1,4 +1,4 @@
-= UCB CCLS Engine
+= CCLS Engine
 
 This is a gem, basic rails app and plugin/engine (GRAPE).
 As a gem, it shares functionality and access to the shared database.
@@ -27,7 +27,7 @@ views and routes to the aforementioned resources.
 * {jakewendt-simply_helpful}[http://github.com/jakewendt/simply_helpful]
 * {ccls-calnet_authenticated}[http://github.com/ccls/calnet_authenticated]
 * {jakewendt-simply_authorized}[http://github.com/jakewendt/simply_authorized]
-* {jakewendt-use_db}[http://github.com/jakewendt/use_db]
+* {ccls-use_db}[http://github.com/ccls/use_db]
 * {jakewendt-rails_extension}[http://github.com/jakewendt/rails_extension]
 
 == Installation (as a gem/plugin/engine)

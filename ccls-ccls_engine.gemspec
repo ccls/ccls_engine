@@ -218,7 +218,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_runtime_dependency(%q<ucb_ldap>, [">= 1.4.2"])
       s.add_runtime_dependency(%q<rubycas-client>, [">= 2.2.1"])
-      s.add_runtime_dependency(%q<jakewendt-use_db>, [">= 0"])
+      s.add_runtime_dependency(%q<ccls-use_db>, [">= 0"])
       s.add_runtime_dependency(%q<jakewendt-rails_extension>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 2"])
@@ -236,7 +236,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
       s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
-      s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
+      s.add_dependency(%q<ccls-use_db>, [">= 0"])
       s.add_dependency(%q<jakewendt-rails_extension>, [">= 0"])
     end
   else
@@ -255,7 +255,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
     s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
     s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
-    s.add_dependency(%q<jakewendt-use_db>, [">= 0"])
+    s.add_dependency(%q<ccls-use_db>, [">= 0"])
     s.add_dependency(%q<jakewendt-rails_extension>, [">= 0"])
   end
 end
