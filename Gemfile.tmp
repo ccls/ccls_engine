@@ -49,7 +49,7 @@ gem "will_paginate", "~>2"
 
 gem "ccls-calnet_authenticated"
 gem "ccls-ccls_engine"
-gem "jakewendt-html_test"
+gem "ccls-html_test"
 gem "jakewendt-rails_extension"
 gem "jakewendt-ruby_extension"
 gem "jakewendt-simply_authorized"

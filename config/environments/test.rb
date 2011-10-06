@@ -40,7 +40,7 @@ config.autoload_paths += [
 
 config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
 
-config.gem 'jakewendt-html_test'
+config.gem 'ccls-html_test'
 
 config.gem "rcov"
 
