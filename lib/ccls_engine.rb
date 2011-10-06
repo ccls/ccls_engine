@@ -44,13 +44,6 @@ require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/shared'
 require 'ccls_engine/ccls_user'
-require 'ccls_engine/ccls_study_subject'
-
-#	I don't like that I have to do this, but the associations 
-#	fall apart in development mode if not done.
-require File.join(File.dirname(__FILE__),"../app/models/study_subject")
-require File.join(File.dirname(__FILE__),"../app/models/addressing")
-
 require 'ccls_engine/helper'
 
 if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")
