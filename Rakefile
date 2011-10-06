@@ -48,6 +48,7 @@ begin
 #		gem.files += FileList['config/shared_database.yml']
 		gem.files += FileList['rails/init.rb']
 		gem.files += FileList['app/**/*.rb']
+		gem.files -= FileList['app/models/user.rb']
 		gem.files += FileList['app/**/*.erb']
 		gem.files += FileList['lib/**/*.rb']
 		gem.files += FileList['lib/**/*.rake']
