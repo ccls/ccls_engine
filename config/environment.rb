@@ -34,8 +34,8 @@ Rails::Initializer.run do |config|
 	config.gem 'ccls-calnet_authenticated', :version => '>= 1.2.0'
 
 	config.gem "ccls-use_db"
-	config.gem 'jakewendt-simply_authorized'
-	config.gem 'jakewendt-simply_helpful'
+	config.gem 'ccls-simply_authorized'
+	config.gem 'ccls-simply_helpful'
 	config.gem 'jrails'
 
 	#		http://chronic.rubyforge.org/

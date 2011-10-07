@@ -20,13 +20,6 @@ end
 
 require 'tasks/rails'
 
-#	Must come after rails as overrides doc:app
-#if g = Gem.source_index.find_name('jakewendt-rdoc_rails').last
-#	gem 'jakewendt-rdoc_rails'
-#	require 'rdoc_rails'
-#	load "#{g.full_gem_path}/lib/tasks/rdoc_rails.rake"
-#end
-
 begin
 	require 'jeweler'
 	Jeweler::Tasks.new do |gem|
@@ -72,8 +65,8 @@ begin
 		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')	# hopefully, can drop soon, don't know if I use it
 		gem.add_dependency('ccls-calnet_authenticated','>= 1.2.0')
-		gem.add_dependency('jakewendt-ruby_extension')	#	TODO remove me
-		gem.add_dependency('jakewendt-simply_authorized')	#	TODO remove me
+		gem.add_dependency('ccls-ruby_extension')
+		gem.add_dependency('ccls-simply_authorized')
 		gem.add_dependency('chronic')
 		gem.add_dependency('ssl_requirement')
 		gem.add_dependency('ryanb-acts-as-list')
@@ -81,7 +74,7 @@ begin
 		gem.add_dependency('ucb_ldap', '>= 1.4.2')
 		gem.add_dependency('rubycas-client', '>= 2.2.1')
 		gem.add_dependency('ccls-use_db')
-		gem.add_dependency('jakewendt-rails_extension')	#	TODO remove me
+		gem.add_dependency('ccls-rails_extension')
 	end
 	Jeweler::GemcutterTasks.new
 rescue LoadError

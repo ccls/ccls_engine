@@ -14,7 +14,7 @@ views and routes to the aforementioned resources.
 
 == Required Gems
 
-* {jakewendt-ruby_extension}[http://github.com/jakewendt/ruby_extension] - modifications, updates and patches for ruby.
+* {ccls-ruby_extension}[http://github.com/ccls/ruby_extension] - modifications, updates and patches for ruby.
 * rails ~> 2
 * jrails
 * chronic
@@ -24,11 +24,11 @@ views and routes to the aforementioned resources.
 * ryanb-acts-as-list
 * RedCloth
 * paperclip	#	don't use this anymore
-* {jakewendt-simply_helpful}[http://github.com/jakewendt/simply_helpful]
+* {ccls-simply_helpful}[http://github.com/ccls/simply_helpful]
 * {ccls-calnet_authenticated}[http://github.com/ccls/calnet_authenticated]
-* {jakewendt-simply_authorized}[http://github.com/jakewendt/simply_authorized]
+* {ccls-simply_authorized}[http://github.com/ccls/simply_authorized]
 * {ccls-use_db}[http://github.com/ccls/use_db]
-* {jakewendt-rails_extension}[http://github.com/jakewendt/rails_extension]
+* {ccls-rails_extension}[http://github.com/ccls/rails_extension]
 
 == Installation (as a gem/plugin/engine)
 
