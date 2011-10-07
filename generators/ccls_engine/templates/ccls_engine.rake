@@ -4,7 +4,7 @@ unless Gem.source_index.find_name('ccls-ccls_engine').empty?
 
 	RAILS_DEFAULT_LOGGER = nil unless defined? RAILS_DEFAULT_LOGGER
 	#	gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:141:in `configure'
-	#	gems/jakewendt-calnet_authenticated-0.4.1/lib/calnet_authenticated/controller.rb:18:in `included'
+	#	gems/ccls-calnet_authenticated-0.4.1/lib/calnet_authenticated/controller.rb:18:in `included'
 
 # jakewendt@dev : homex 1104> rake gems:install RAILS_ENV=test --trace                           (in /Users/jakewendt/github_repo/ccls/homex)
 #	Loading shared database mods.
