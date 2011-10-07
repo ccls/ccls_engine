@@ -34,7 +34,10 @@ gem "hpricot"
 gem "i18n"
 gem "jeweler"
 gem "jrails"
-gem "paperclip"
+
+#	2.4.3 causes a lot of ...
+#	NameError: `@[]' is not allowed as an instance variable name
+gem "paperclip", '=2.4.2'	
 
 #	causes rails 2.3.2 and associated to be installed???
 #gem "rack"	
