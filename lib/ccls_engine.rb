@@ -4,9 +4,9 @@ require 'active_record'
 require 'active_support'
 require 'action_controller'
 
-gem 'jakewendt-ruby_extension'
+gem 'ccls-ruby_extension'
 require 'ruby_extension'
-gem 'jakewendt-simply_helpful'
+gem 'ccls-simply_helpful'
 require 'simply_helpful'
 gem 'ccls-calnet_authenticated', '>= 1.1.4'
 require 'ccls-calnet_authenticated'
@@ -18,13 +18,13 @@ require 'casclient/frameworks/rails/filter'
 gem 'ucb_ldap', '>= 1.4.2'
 require 'ucb_ldap'
 
-gem 'jakewendt-simply_authorized'
+gem 'ccls-simply_authorized'
 require 'simply_authorized'
 gem 'ryanb-acts-as-list'
 require 'acts_as_list'
 
-gem 'jakewendt-rails_extension'
-require 'jakewendt-rails_extension'
+gem 'ccls-rails_extension'
+require 'ccls-rails_extension'
 module Ccls
 #	predefine namespace
 end
