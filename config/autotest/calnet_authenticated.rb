@@ -1,2 +1,3 @@
 #	From `script/generate calnet_authenticated` ...
+gem 'ccls-calnet_authenticated'
 require 'calnet_authenticated/autotest'
