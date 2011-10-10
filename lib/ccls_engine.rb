@@ -6,25 +6,31 @@ require 'action_controller'
 
 gem 'ccls-ruby_extension'
 require 'ruby_extension'
+
 gem 'ccls-simply_helpful'
 require 'simply_helpful'
+
 gem 'ccls-calnet_authenticated', '>= 1.1.4'
 require 'ccls-calnet_authenticated'
 
 gem 'rubycas-client', '>= 2.2.1'
 require 'rubycas-client'
+
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
+
 gem 'ucb_ldap', '>= 1.4.2'
 require 'ucb_ldap'
 
 gem 'ccls-simply_authorized'
 require 'simply_authorized'
+
 gem 'ryanb-acts-as-list'
 require 'acts_as_list'
 
 gem 'ccls-rails_extension'
 require 'ccls-rails_extension'
+
 module Ccls
 #	predefine namespace
 end
