@@ -475,30 +475,6 @@ Table: bc_requests
 | request_type     | varchar(255) | YES  |     | NULL    |                |
 +------------------+--------------+------+-----+---------+----------------+
 
-Table: bdrb_job_queues
-+----------------+--------------+------+-----+---------+----------------+
-| Field          | Type         | Null | Key | Default | Extra          |
-+----------------+--------------+------+-----+---------+----------------+
-| id             | int(11)      | NO   | PRI | NULL    | auto_increment |
-| args           | text         | YES  |     | NULL    |                |
-| worker_name    | varchar(255) | YES  |     | NULL    |                |
-| worker_method  | varchar(255) | YES  |     | NULL    |                |
-| job_key        | varchar(255) | YES  |     | NULL    |                |
-| taken          | int(11)      | YES  |     | NULL    |                |
-| finished       | int(11)      | YES  |     | NULL    |                |
-| timeout        | int(11)      | YES  |     | NULL    |                |
-| priority       | int(11)      | YES  |     | NULL    |                |
-| submitted_at   | datetime     | YES  |     | NULL    |                |
-| started_at     | datetime     | YES  |     | NULL    |                |
-| finished_at    | datetime     | YES  |     | NULL    |                |
-| archived_at    | datetime     | YES  |     | NULL    |                |
-| tag            | varchar(255) | YES  |     | NULL    |                |
-| submitter_info | varchar(255) | YES  |     | NULL    |                |
-| runner_info    | varchar(255) | YES  |     | NULL    |                |
-| worker_key     | varchar(255) | YES  |     | NULL    |                |
-| scheduled_at   | datetime     | YES  |     | NULL    |                |
-+----------------+--------------+------+-----+---------+----------------+
-
 Table: candidate_controls
 +-----------------------+--------------+------+-----+---------+----------------+
 | Field                 | Type         | Null | Key | Default | Extra          |
@@ -647,34 +623,6 @@ Table: enrollments
 | created_at                | datetime     | YES  |     | NULL    |                |
 | updated_at                | datetime     | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
-
-Table: exports
-+--------------------+--------------+------+-----+---------+----------------+
-| Field              | Type         | Null | Key | Default | Extra          |
-+--------------------+--------------+------+-----+---------+----------------+
-| id                 | int(11)      | NO   | PRI | NULL    | auto_increment |
-| childid            | int(11)      | YES  | UNI | NULL    |                |
-| first_name         | varchar(255) | YES  |     | NULL    |                |
-| middle_name        | varchar(255) | YES  |     | NULL    |                |
-| last_name          | varchar(255) | YES  |     | NULL    |                |
-| diagnosis_date     | date         | YES  |     | NULL    |                |
-| patid              | int(11)      | YES  | UNI | NULL    |                |
-| type               | varchar(255) | YES  |     | NULL    |                |
-| orderno            | varchar(255) | YES  |     | NULL    |                |
-| mother_first_name  | varchar(255) | YES  |     | NULL    |                |
-| mother_middle_name | varchar(255) | YES  |     | NULL    |                |
-| mother_last_name   | varchar(255) | YES  |     | NULL    |                |
-| father_first_name  | varchar(255) | YES  |     | NULL    |                |
-| father_middle_name | varchar(255) | YES  |     | NULL    |                |
-| father_last_name   | varchar(255) | YES  |     | NULL    |                |
-| hospital_code      | varchar(255) | YES  |     | NULL    |                |
-| comments           | text         | YES  |     | NULL    |                |
-| is_eligible        | tinyint(1)   | YES  |     | NULL    |                |
-| is_chosen          | tinyint(1)   | YES  |     | NULL    |                |
-| reference_date     | date         | YES  |     | NULL    |                |
-| created_at         | datetime     | YES  |     | NULL    |                |
-| updated_at         | datetime     | YES  |     | NULL    |                |
-+--------------------+--------------+------+-----+---------+----------------+
 
 Table: follow_up_types
 +-------------+--------------+------+-----+---------+----------------+
@@ -921,39 +869,6 @@ Table: identifiers
 | state_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |
 | local_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |
 +--------------------------+--------------+------+-----+---------+----------------+
-
-Table: imports
-+---------------------------+--------------+------+-----+---------+----------------+
-| Field                     | Type         | Null | Key | Default | Extra          |
-+---------------------------+--------------+------+-----+---------+----------------+
-| id                        | int(11)      | NO   | PRI | NULL    | auto_increment |
-| dob                       | date         | YES  |     | NULL    |                |
-| diagnosis_date            | date         | YES  |     | NULL    |                |
-| first_name                | varchar(255) | YES  |     | NULL    |                |
-| middle_name               | varchar(255) | YES  |     | NULL    |                |
-| last_name                 | varchar(255) | YES  |     | NULL    |                |
-| sex                       | varchar(255) | YES  |     | NULL    |                |
-| language_code             | varchar(255) | YES  |     | NULL    |                |
-| is_hispanic               | tinyint(1)   | YES  |     | NULL    |                |
-| race                      | varchar(255) | YES  |     | NULL    |                |
-| primary_phone_number      | varchar(255) | YES  |     | NULL    |                |
-| alternate_phone_number    | varchar(255) | YES  |     | NULL    |                |
-| dust_kit_sent_on          | date         | YES  |     | NULL    |                |
-| completed_interview_on    | date         | YES  |     | NULL    |                |
-| case_assigned_on          | date         | YES  |     | NULL    |                |
-| respondent_type           | varchar(255) | YES  |     | NULL    |                |
-| respondent_first_name     | varchar(255) | YES  |     | NULL    |                |
-| respondent_middle_name    | varchar(255) | YES  |     | NULL    |                |
-| respondent_last_name      | varchar(255) | YES  |     | NULL    |                |
-| last_action_on            | date         | YES  |     | NULL    |                |
-| respondent_address_line_1 | varchar(255) | YES  |     | NULL    |                |
-| respondent_address_line_2 | varchar(255) | YES  |     | NULL    |                |
-| respondent_city           | varchar(255) | YES  |     | NULL    |                |
-| respondent_state          | varchar(255) | YES  |     | NULL    |                |
-| respondent_zip            | varchar(255) | YES  |     | NULL    |                |
-| created_at                | datetime     | YES  |     | NULL    |                |
-| updated_at                | datetime     | YES  |     | NULL    |                |
-+---------------------------+--------------+------+-----+---------+----------------+
 
 Table: ineligible_reasons
 +--------------------+--------------+------+-----+---------+----------------+
