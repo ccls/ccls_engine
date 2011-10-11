@@ -1,7 +1,7 @@
 #	==	requires
 #	*	subject_type_id
 class StudySubject < Shared
-	self.abstract_class = true
+#	self.abstract_class = true
 
 	class NotTwoAbstracts < StandardError; end
 
