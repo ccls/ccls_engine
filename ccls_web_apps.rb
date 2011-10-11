@@ -36,9 +36,9 @@ class App
 		if running?
 			puts "Skipping #{name} start as is already running."
 		else
-			puts "Starting #{name}"
+			puts "Starting #{name} with ..."
+			puts "cd #{System.apps_root}/#{name}; script/server -d -e #{System.environment} -p #{port}"
 			puts `cd #{System.apps_root}/#{name}; script/server -d -e #{System.environment} -p #{port}`
-#			puts "cd #{System.apps_root}/#{name}; script/server -d -e #{System.environment} -p #{port}"
 
 #			puts `cd /my/ruby/#{name}; script/server -d -e production -p #{port}`
 			#	script/server --daemon --environment=production --port=########
