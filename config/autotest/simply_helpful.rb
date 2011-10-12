@@ -1,3 +1,3 @@
 #	From `script/generate simply_helpful` ...
-gem 'ccls-simply_helpful'
-require 'simply_helpful/autotest'
+#gem 'ccls-simply_helpful'
+#require 'simply_helpful/autotest'

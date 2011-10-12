@@ -10,8 +10,8 @@ require 'common_lib'
 #gem 'ccls-ruby_extension'
 #require 'ruby_extension'
 
-gem 'ccls-simply_helpful'
-require 'simply_helpful'
+#gem 'ccls-simply_helpful'
+#require 'simply_helpful'
 
 gem 'ccls-calnet_authenticated', '>= 1.1.4'
 require 'ccls-calnet_authenticated'
