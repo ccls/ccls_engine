@@ -112,8 +112,6 @@ namespace :odms_import do
 		IcfMasterId.destroy_all
 		puts "Importing icf_master_ids"
 
-		error_file = File.open('subjects_errors.txt','w')
-
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
 		(f=FasterCSV.open("#{BASEDIR}/export_ODMS_ICF_Master_IDs.csv", 'rb',{
 			:headers => true })).each do |line|
@@ -209,12 +207,6 @@ namespace :odms_import do
 
 #	BEGIN anticipated errors
 
-			if line['dob'].blank?
-				error_file.puts 
-				error_file.puts "Line #:#{f.lineno}: No dob"
-				error_file.puts line
-			end
-
 			if line['subject_type_id'].blank?
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: No subject_type_id"
@@ -265,9 +257,6 @@ namespace :odms_import do
 				m.middle_name        = line['middle_name']
 				m.last_name          = line['last_name'] || "FIXME"	#	TODO
 				m.maiden_name        = line['maiden_name']
-				m.dob                = (( line['dob'].blank? 
-					) ? Time.parse('01-Jan-1900') : Time.parse(line['dob']) ).to_date			#	TODO
-#					) ? 20.years.ago.to_date : Time.parse(line['dob'])			#	TODO
 				m.died_on            = ( line['died_on'].blank? 
 					) ? nil : Time.parse(line['died_on'])
 				m.mother_first_name  = line['mother_first_name']
@@ -275,6 +264,21 @@ namespace :odms_import do
 				m.mother_last_name   = line['mother_last_name']
 				m.father_first_name  = line['father_first_name']
 				m.father_last_name   = line['father_last_name']
+
+				if line['subject_type_id'].to_i == SubjectType['Mother'].id
+					m.subject_is_mother = true
+					m.dob               = ( line['dob'].blank? 
+						) ? nil : Time.parse(line['dob']).to_date
+				else
+					#	blank dob only a problem if not mother
+					if line['dob'].blank?
+						error_file.puts 
+						error_file.puts "Line #:#{f.lineno}: No dob and not mother"
+						error_file.puts line
+					end
+					m.dob               = (( line['dob'].blank? 
+						) ? Time.parse('01-Jan-1900') : Time.parse(line['dob']) ).to_date
+				end
 			end
 
 			identifier = Identifier.new do |m|
