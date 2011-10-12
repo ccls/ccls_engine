@@ -167,6 +167,20 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should not require dob if subject_is_mother flag is true" do
+		assert_difference('Pii.count',1) do
+			object = create_object( :subject_is_mother => true, :dob => nil )
+			assert object.dob_not_required?
+		end
+	end
+
+	test "should require dob if subject_is_mother flag is false" do
+		assert_difference('Pii.count',0) do
+			object = create_object( :subject_is_mother => false, :dob => nil )
+			assert !object.dob_not_required?
+		end
+	end
+
 #	test "should touch study_subject after save" do
 #		object = create_object
 #		assert_not_nil object.study_subject

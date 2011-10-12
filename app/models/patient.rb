@@ -75,6 +75,9 @@ protected
 		study_subject.update_study_subjects_reference_date_matching
 	end
 
+#	TODO I think that I should just remove these as
+#		it is realistically not possible to do this through
+#		the web app.  Is in Pii, Patient, Identifier.
 	##
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 

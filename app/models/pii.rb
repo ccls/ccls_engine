@@ -5,6 +5,8 @@ class Pii < Shared
 	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
+	attr_accessor :subject_is_mother
+
 #
 #	TODO - Don't validate anything that the creating user can't do anything about.
 #
@@ -27,10 +29,9 @@ class Pii < Shared
 	#	as there is no way to directly create one.
 	before_create :ensure_presence_of_study_subject_id
 
-
 	before_validation :nullify_blank_email
 
-	validates_presence_of       :dob
+	validates_presence_of       :dob, :unless => :dob_not_required?
 	validates_complete_date_for :dob, :died_on, :allow_nil => true
 	validates_uniqueness_of     :email, :allow_nil => true
 
@@ -58,6 +59,14 @@ class Pii < Shared
 
  	validates_length_of :generational_suffix, :father_generational_suffix, 
 		:maximum => 10, :allow_blank => true
+
+
+	#	study_subject is not known at validation on creation
+	#	when using the accepts_nested_attributes feature
+	#	so we must explicitly set a flag.
+	def dob_not_required?
+		subject_is_mother || ( study_subject.try(:subject_type) == SubjectType['Mother'] )
+	end
 
 	#	Returns string containing study_subject's first, middle and last initials
 	def initials
@@ -105,6 +114,9 @@ class Pii < Shared
 
 protected
 
+#	TODO I think that I should just remove these as
+#		it is realistically not possible to do this through
+#		the web app.  Is in Pii, Patient, Identifier.
 	##
 	#	since I can't use the conventional validations to check 
 	#	study_subject_id, do it before_save.  This'll rollback 

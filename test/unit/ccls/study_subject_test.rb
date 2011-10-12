@@ -1008,6 +1008,28 @@ pending
 		assert study_subject.is_a?(StudySubject)
 	end
 
+	test "should not require dob on creation for mother with flag" do
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_type => SubjectType['Mother'],
+				:pii_attributes => Factory.attributes_for(:pii,
+					:subject_is_mother => true,
+					:dob => nil )
+			)
+		}
+		assert_nil @study_subject.reload.dob
+	end
+
+	test "should not require dob on update for mother" do
+		#	flag not necessary as study_subject.subject_type exists
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_type => SubjectType['Mother'],
+				:pii_attributes => Factory.attributes_for(:pii) )
+		}
+		assert_not_nil @study_subject.reload.dob
+		@study_subject.pii.update_attribute(:dob, nil)
+		assert_nil @study_subject.reload.dob
+	end
+
 protected
 
 	def create_study_subject_with_matchingid(matchingid='12345')
