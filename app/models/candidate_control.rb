@@ -64,8 +64,10 @@ class CandidateControl < Shared
 #			i.studyid            = nil                #	TODO
 
 #	TODO might want to consider wrapping this all in a transaction
-
-#transaction do
+#		to avoid partial creation.  May be difficult to test as all 
+#		tests are effectively transactions that rollback after completion.
+#		Some dbs don't do nested transactions.  MySQL should be ok.
+ActiveRecord::Base.transaction do
 
 		child = StudySubject.create!({
 			:subject_type => SubjectType['Control'],
@@ -119,7 +121,8 @@ class CandidateControl < Shared
 #				:middle_name => 'TEST',
 #				:last_name   => 'TEST',
 #				:maiden_name => mother_maiden_name,
-#				:dob         => Date.today
+#				:subject_is_mother => true, #	flag to not require the dob
+###				:dob         => Date.today
 #			},
 			:identifier => mother_identifier
 		})
@@ -131,7 +134,7 @@ class CandidateControl < Shared
 		self.study_subject_id = child.id
 		self.assigned_on = Date.today
 		self.save!
-#end
+end
 		self
 	end
 
