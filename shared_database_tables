@@ -1163,6 +1163,8 @@ Table: piis
 | mother_race_id              | int(11)      | YES  |     | NULL    |                |
 | father_race_id              | int(11)      | YES  |     | NULL    |                |
 | maiden_name                 | varchar(255) | YES  |     | NULL    |                |
+| generational_suffix         | varchar(10)  | YES  |     | NULL    |                |
+| father_generational_suffix  | varchar(10)  | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: project_outcomes

@@ -56,6 +56,9 @@ class Pii < Shared
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
 			:maximum => 250, :allow_blank => true
 
+ 	validates_length_of :generational_suffix, :father_generational_suffix, 
+		:maximum => 10, :allow_blank => true
+
 	#	Returns string containing study_subject's first, middle and last initials
 	def initials
 		[first_name, middle_name, last_name].compact.collect{|s|s.chars.first}.join()
