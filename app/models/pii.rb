@@ -5,6 +5,8 @@ class Pii < Shared
 	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
+	#	Basically, this is only used as a flag during nested creation
+	#	to determine if the dob is required.
 	attr_accessor :subject_is_mother
 
 #
@@ -39,9 +41,12 @@ class Pii < Shared
 	  :with => /\A([-a-z0-9!\#$%&'*+\/=?^_`{|}~]+\.)*[-a-z0-9!\#$%&'*+\/=?^_`{|}~]+@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, 
 		:allow_blank => true
 
-#
-#	TODO don't like the messaging here
-#
+	#
+	#	NOTE I don't like the messaging here, but was requested to have a special
+	#		failed validation message.  Normally, rails will give the attribute name
+	#		followed by the error message.  I wrote some code that looks for the <|X|
+	#		and if it finds it, only displays this message without the attribute.
+	#
 	validates_presence_of :guardian_relationship_other,
 		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
 		:if => :guardian_relationship_is_other?
