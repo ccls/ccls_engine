@@ -20,17 +20,6 @@ class CandidateControl < Shared
 		[first_name, middle_name, last_name].compact.join(' ')
 	end
 
-	#	This method has gotten HUGE!  It should be refactored for clarity
-	#	once fully tested and functional
-#
-#	based on expected modifications for ODMS #18 and #29, 
-#	this should be broken down into the StudySubject model
-#	and called from the controller.
-#	ActiveRecord::Base.transaction do
-#		subject = candidate_control.to_study_subject(case_subject,grouping='6')
-#		mother  = subject.create_mother
-#	end
-#
 	def create_study_subjects(case_subject,grouping = '6')
 #		next_orderno = next_control_orderno_for_subject(case_subject,grouping)
 		next_orderno = case_subject.next_control_orderno(grouping)
@@ -50,99 +39,95 @@ class CandidateControl < Shared
 #	don't know if I should add it here or put it back in the Identifier model
 #			i.studyid            = nil                #	TODO
 
-#	TODO might want to consider wrapping this all in a transaction
-#		to avoid partial creation.  May be difficult to test as all 
-#		tests are effectively transactions that rollback after completion.
-#		Some dbs don't do nested transactions.  MySQL should be ok.
-ActiveRecord::Base.transaction do
+		ActiveRecord::Base.transaction do
 
-		child = StudySubject.create!({
-			:subject_type => SubjectType['Control'],
-			:vital_status => VitalStatus['living'],
-			:mother_hispanicity_id => mother_hispanicity_id,
-			:father_hispanicity_id => father_hispanicity_id,
-			:birth_type            => birth_type,
-			:mother_yrs_educ       => mother_yrs_educ,
-			:father_yrs_educ       => father_yrs_educ,
-			:birth_county          => birth_county,
-			:hispanicity_id        => ( 
-				( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
-			:pii_attributes => {
-				:first_name         => first_name,
-				:middle_name        => middle_name,
-				:last_name          => last_name,
-				:dob                => dob,
-				:mother_maiden_name => mother_maiden_name,
-				:mother_race_id     => mother_race_id,
-				:father_race_id     => father_race_id
-			},
-			:identifier => child_identifier,
-			:enrollments_attributes => [{
-				:project => Project['phase5']
-			}]
-		})
-#		if next_icf_master_id
-#			next_icf_master_id.study_subject = child
-#			next_icf_master_id.assigned_on   = Date.today
-#			next_icf_master_id.save!
-#		end
-		child.add_icf_master_id
-		child.create_mother
-
-#		next_icf_master_id = IcfMasterId.next_unused
-#
-#		#	Use a block so can assign all attributes without concern for attr_protected
-#		mother_identifier = Identifier.new do |i|
-#			i.matchingid    = case_subject.identifier.subjectid
-#			i.icf_master_id = next_icf_master_id.try(:icf_master_id)
-#			i.familyid      = child.identifier.familyid
-#		end
-##			i.studyid           = nil  #	TODO	#	mother's don't really have a valid studyid
-##			i.case_control_type = 'M'  #	NOTE Can't really do this.  Need to allow nil
-#
-#		mother = StudySubject.create!({
-#			:subject_type => SubjectType['Mother'],
-#			:vital_status => VitalStatus['living'],
-#			:sex => 'F',			#	TODO M/F or male/female? have to check.
-#			:hispanicity_id => mother_hispanicity_id,
-##			:pii_attributes => {
-##				:first_name  => 'TEST',
-##				:middle_name => 'TEST',
-##				:last_name   => 'TEST',
-##				:maiden_name => mother_maiden_name,
-##				:subject_is_mother => true, #	flag to not require the dob
-####				:dob         => Date.today
-##			},
-#			:identifier => mother_identifier
-#		})
-#		if next_icf_master_id
-#			next_icf_master_id.study_subject = mother
-#			next_icf_master_id.assigned_on   = Date.today
-#			next_icf_master_id.save!
-#		end
-
-		self.study_subject_id = child.id
-		self.assigned_on = Date.today
-		self.save!
-end
+			child = StudySubject.create!({
+				:subject_type => SubjectType['Control'],
+				:vital_status => VitalStatus['living'],
+				:mother_hispanicity_id => mother_hispanicity_id,
+				:father_hispanicity_id => father_hispanicity_id,
+				:birth_type            => birth_type,
+				:mother_yrs_educ       => mother_yrs_educ,
+				:father_yrs_educ       => father_yrs_educ,
+				:birth_county          => birth_county,
+				:hispanicity_id        => ( 
+					( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
+				:pii_attributes => {
+					:first_name         => first_name,
+					:middle_name        => middle_name,
+					:last_name          => last_name,
+					:dob                => dob,
+					:mother_maiden_name => mother_maiden_name,
+					:mother_race_id     => mother_race_id,
+					:father_race_id     => father_race_id
+				},
+				:identifier => child_identifier,
+				:enrollments_attributes => [{
+					:project => Project['phase5']
+				}]
+			})
+	#		if next_icf_master_id
+	#			next_icf_master_id.study_subject = child
+	#			next_icf_master_id.assigned_on   = Date.today
+	#			next_icf_master_id.save!
+	#		end
+			child.add_icf_master_id
+			child.create_mother
+	
+	#		next_icf_master_id = IcfMasterId.next_unused
+	#
+	#		#	Use a block so can assign all attributes without concern for attr_protected
+	#		mother_identifier = Identifier.new do |i|
+	#			i.matchingid    = case_subject.identifier.subjectid
+	#			i.icf_master_id = next_icf_master_id.try(:icf_master_id)
+	#			i.familyid      = child.identifier.familyid
+	#		end
+	##			i.studyid           = nil  #	TODO	#	mother's don't really have a valid studyid
+	##			i.case_control_type = 'M'  #	NOTE Can't really do this.  Need to allow nil
+	#
+	#		mother = StudySubject.create!({
+	#			:subject_type => SubjectType['Mother'],
+	#			:vital_status => VitalStatus['living'],
+	#			:sex => 'F',			#	TODO M/F or male/female? have to check.
+	#			:hispanicity_id => mother_hispanicity_id,
+	##			:pii_attributes => {
+	##				:first_name  => 'TEST',
+	##				:middle_name => 'TEST',
+	##				:last_name   => 'TEST',
+	##				:maiden_name => mother_maiden_name,
+	##				:subject_is_mother => true, #	flag to not require the dob
+	####				:dob         => Date.today
+	##			},
+	#			:identifier => mother_identifier
+	#		})
+	#		if next_icf_master_id
+	#			next_icf_master_id.study_subject = mother
+	#			next_icf_master_id.assigned_on   = Date.today
+	#			next_icf_master_id.save!
+	#		end
+	
+			self.study_subject_id = child.id
+			self.assigned_on = Date.today
+			self.save!
+		end
 		self
 	end
 
-protected
-
-	def next_control_orderno_for_subject(case_subject,grouping = '6')
-		require_dependency 'identifier.rb' unless Identifier
-		last_control = StudySubject.find(:first, 
-			:joins => :identifier, 
-			:order => 'identifiers.orderno DESC', 
-			:conditions => { 
-				:subject_type_id => SubjectType['Control'].id,
-				'identifiers.case_control_type' => grouping,
-				'identifiers.matchingid' => case_subject.identifier.subjectid
-			}
-		)
-		#	identifier.orderno is delegated to subject for simplicity
-		( last_control.try(:orderno) || 0 ) + 1
-	end
-
+#protected
+#
+#	def next_control_orderno_for_subject(case_subject,grouping = '6')
+#		require_dependency 'identifier.rb' unless Identifier
+#		last_control = StudySubject.find(:first, 
+#			:joins => :identifier, 
+#			:order => 'identifiers.orderno DESC', 
+#			:conditions => { 
+#				:subject_type_id => SubjectType['Control'].id,
+#				'identifiers.case_control_type' => grouping,
+#				'identifiers.matchingid' => case_subject.identifier.subjectid
+#			}
+#		)
+#		#	identifier.orderno is delegated to subject for simplicity
+#		( last_control.try(:orderno) || 0 ) + 1
+#	end
+#
 end

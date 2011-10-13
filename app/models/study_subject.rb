@@ -333,7 +333,7 @@ class StudySubject < Shared
 	def create_mother
 		existing_mother = mother
 		if existing_mother
-puts "Found existing_mother:#{existing_mother.inspect}"
+#puts "Found existing_mother:#{existing_mother.inspect}"
 			existing_mother
 		else
 			#	protected attributes!
@@ -345,7 +345,8 @@ puts "Found existing_mother:#{existing_mother.inspect}"
 				:subject_type => SubjectType['Mother'],
 				:vital_status => VitalStatus['living'],
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
-#				:hispanicity_id => mother_hispanicity_id,
+#				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
+#	TODO where from? 
 #			:pii_attributes => {
 #				:first_name  => 'TEST',
 #				:middle_name => 'TEST',

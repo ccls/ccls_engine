@@ -1051,8 +1051,6 @@ pending
 pending
 	end
 
-#	TODO add study_subject.create_control(options) method
-
 	test "should not add icf_master_id when there are none" do
 		study_subject = create_identifier(:icf_master_id => nil).study_subject
 		study_subject.add_icf_master_id
@@ -1065,6 +1063,11 @@ pending
 		study_subject.add_icf_master_id
 		assert_not_nil study_subject.identifier.icf_master_id
 		assert_equal '123456789', study_subject.identifier.icf_master_id
+		imi.reload
+		assert_not_nil imi.assigned_on
+		assert_equal Date.today, imi.assigned_on
+		assert_not_nil imi.study_subject_id
+		assert_equal imi.study_subject_id, study_subject.id
 	end
 
 	test "should create mother when isn't one" do
