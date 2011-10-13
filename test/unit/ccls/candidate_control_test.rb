@@ -244,7 +244,7 @@ pending	#	TODO
 		case_study_subject.reload
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
-		mother = object.study_subject.mother
+		mother = object.study_subject.reload.mother
 		assert_not_nil mother.reference_date
 		assert_equal   mother.reference_date, case_study_subject.patient.admit_date
 	end

@@ -330,6 +330,65 @@ class StudySubject < Shared
 #	alias_method :update_subjects_reference_date_matching, 
 #		:update_study_subjects_reference_date_matching
 
+	def create_mother
+		existing_mother = mother
+		if existing_mother
+puts "Found existing_mother:#{existing_mother.inspect}"
+			existing_mother
+		else
+			#	protected attributes!
+			mother_identifier = Identifier.new do |i|
+				i.matchingid = identifier.matchingid
+				i.familyid   = identifier.familyid
+			end
+			new_mother = StudySubject.create!({
+				:subject_type => SubjectType['Mother'],
+				:vital_status => VitalStatus['living'],
+				:sex => 'F',			#	TODO M/F or male/female? have to check.
+#				:hispanicity_id => mother_hispanicity_id,
+#			:pii_attributes => {
+#				:first_name  => 'TEST',
+#				:middle_name => 'TEST',
+#				:last_name   => 'TEST',
+#				:maiden_name => mother_maiden_name,
+#				:subject_is_mother => true, #	flag to not require the dob as won't have one
+###				:dob         => Date.today
+#			},
+				:identifier => mother_identifier
+			})
+			new_mother.add_icf_master_id
+			new_mother
+		end
+	end
+
+	def add_icf_master_id
+		next_icf_master_id = IcfMasterId.next_unused
+		if next_icf_master_id
+			self.identifier.update_attribute(:icf_master_id, next_icf_master_id.to_s)
+			next_icf_master_id.study_subject = self
+			next_icf_master_id.assigned_on   = Date.today
+			next_icf_master_id.save!
+		end
+		self
+	end
+
+	def next_control_orderno(grouping='6')
+#		assume that self is a case?
+		#	code from CandidateControl
+		#require_dependency 'identifier.rb' unless Identifier
+		last_control = StudySubject.find(:first, 
+			:joins => :identifier, 
+			:order => 'identifiers.orderno DESC', 
+			:conditions => { 
+				:subject_type_id => SubjectType['Control'].id,
+				'identifiers.case_control_type' => grouping,
+				'identifiers.matchingid' => self.identifier.subjectid
+			}
+		)
+		#	identifier.orderno is delegated to subject for simplicity
+		( last_control.try(:orderno) || 0 ) + 1
+	end
+
 protected
 
 	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)

@@ -1030,6 +1030,84 @@ pending
 		assert_nil @study_subject.reload.dob
 	end
 
+
+	test "should return SOMETHING for next_control_orderno for control" do
+		study_subject = create_identifier.study_subject
+#		assert_equal 1, case_study_subject.next_control_orderno
+pending
+	end
+
+	test "should return 1 for next_control_orderno for case with no controls" do
+		case_study_subject = create_case_identifier.study_subject
+		assert_equal 1, case_study_subject.next_control_orderno
+	end
+
+	test "should return 2 for next_control_orderno for case with one control" do
+		case_study_subject = create_case_identifier.study_subject
+		assert_equal 1, case_study_subject.next_control_orderno
+#		control = case_study_subject.create_control({ })
+#	add a control
+#		assert_equal 2, case_study_subject.next_control_orderno
+pending
+	end
+
+#	TODO add study_subject.create_control(options) method
+
+	test "should not add icf_master_id when there are none" do
+		study_subject = create_identifier(:icf_master_id => nil).study_subject
+		study_subject.add_icf_master_id
+		assert_nil study_subject.identifier.icf_master_id
+	end
+
+	test "should add icf_master_id when there is one" do
+		study_subject = create_identifier(:icf_master_id => nil).study_subject
+		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
+		study_subject.add_icf_master_id
+		assert_not_nil study_subject.identifier.icf_master_id
+		assert_equal '123456789', study_subject.identifier.icf_master_id
+	end
+
+	test "should create mother when isn't one" do
+		study_subject = create_identifier.study_subject
+		assert_nil study_subject.reload.mother
+#		assert_difference('Pii.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			@mother = study_subject.create_mother
+		} } #}
+		assert_equal @mother, study_subject.mother
+pending
+	end
+
+	test "should not create mother when one exists" do
+		study_subject = create_identifier.study_subject
+		mother = study_subject.create_mother
+		assert_difference('Pii.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('StudySubject.count',0) {
+			@mother = study_subject.create_mother
+		} } }
+		assert_equal @mother, mother
+	end
+
+	test "should not create mother for mother" do
+pending
+	end
+
+	test "should assign icf_master_id to mother on creation if one exists" do
+		study_subject = create_identifier(:icf_master_id => nil).study_subject
+		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
+		mother = study_subject.create_mother
+		assert_not_nil mother.reload.identifier.icf_master_id
+		assert_equal '123456789', mother.identifier.icf_master_id
+	end
+
+	test "should not assign icf_master_id to mother on creation if none exist" do
+		study_subject = create_identifier(:icf_master_id => nil).study_subject
+		mother = study_subject.create_mother
+		assert_nil mother.reload.identifier.icf_master_id
+	end
+
 protected
 
 	def create_study_subject_with_matchingid(matchingid='12345')

@@ -15,29 +15,6 @@ class CandidateControl < Shared
 		:rejection_reason, :maximum => 250, :allow_blank => true
 		#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
 
-#			t.integer :icf_master_id
-#			t.string  :related_patid, :limit => 5
-#			t.integer :study_subject_id
-#			t.string  :first_name
-#			t.string  :middle_name
-#			t.string  :last_name
-#			t.date    :dob
-#			t.string  :state_registrar_no, :limit => 25
-#			t.string  :local_registrar_no, :limit => 25
-#			t.string  :sex
-#			t.string  :birth_county
-#			t.date    :assigned_on
-#			t.integer :mother_race_id
-#			t.integer :mother_hispanicity_id
-#			t.integer :father_hispanicity_id
-#			t.integer :father_race_id
-#			t.string  :birth_type
-#			t.string  :mother_maiden_name
-#			t.integer :mother_yrs_educ
-#			t.integer :father_yrs_educ
-#			t.boolean :reject_candidate, :null => false, :default => false
-#			t.string  :rejection_reason
-
 	#	Returns string containing candidates's first, middle and last name
 	def full_name
 		[first_name, middle_name, last_name].compact.join(' ')
@@ -45,9 +22,19 @@ class CandidateControl < Shared
 
 	#	This method has gotten HUGE!  It should be refactored for clarity
 	#	once fully tested and functional
+#
+#	based on expected modifications for ODMS #18 and #29, 
+#	this should be broken down into the StudySubject model
+#	and called from the controller.
+#	ActiveRecord::Base.transaction do
+#		subject = candidate_control.to_study_subject(case_subject,grouping='6')
+#		mother  = subject.create_mother
+#	end
+#
 	def create_study_subjects(case_subject,grouping = '6')
-		next_orderno = next_control_orderno_for_subject(case_subject,grouping)
-		next_icf_master_id = IcfMasterId.next_unused
+#		next_orderno = next_control_orderno_for_subject(case_subject,grouping)
+		next_orderno = case_subject.next_control_orderno(grouping)
+#		next_icf_master_id = IcfMasterId.next_unused
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		child_identifier = Identifier.new do |i|
@@ -56,7 +43,7 @@ class CandidateControl < Shared
 			i.local_registrar_no = local_registrar_no
 			i.orderno            = next_orderno
 			i.matchingid         = case_subject.identifier.subjectid
-			i.icf_master_id      = next_icf_master_id.try(:icf_master_id)
+#			i.icf_master_id      = next_icf_master_id.try(:icf_master_id)
 			i.patid              = case_subject.patid
 		end
 
@@ -94,43 +81,46 @@ ActiveRecord::Base.transaction do
 				:project => Project['phase5']
 			}]
 		})
-		if next_icf_master_id
-			next_icf_master_id.study_subject = child
-			next_icf_master_id.assigned_on   = Date.today
-			next_icf_master_id.save!
-		end
+#		if next_icf_master_id
+#			next_icf_master_id.study_subject = child
+#			next_icf_master_id.assigned_on   = Date.today
+#			next_icf_master_id.save!
+#		end
+		child.add_icf_master_id
+		child.create_mother
 
-		next_icf_master_id = IcfMasterId.next_unused
+#		next_icf_master_id = IcfMasterId.next_unused
+#
+#		#	Use a block so can assign all attributes without concern for attr_protected
+#		mother_identifier = Identifier.new do |i|
+#			i.matchingid    = case_subject.identifier.subjectid
+#			i.icf_master_id = next_icf_master_id.try(:icf_master_id)
+#			i.familyid      = child.identifier.familyid
+#		end
+##			i.studyid           = nil  #	TODO	#	mother's don't really have a valid studyid
+##			i.case_control_type = 'M'  #	NOTE Can't really do this.  Need to allow nil
+#
+#		mother = StudySubject.create!({
+#			:subject_type => SubjectType['Mother'],
+#			:vital_status => VitalStatus['living'],
+#			:sex => 'F',			#	TODO M/F or male/female? have to check.
+#			:hispanicity_id => mother_hispanicity_id,
+##			:pii_attributes => {
+##				:first_name  => 'TEST',
+##				:middle_name => 'TEST',
+##				:last_name   => 'TEST',
+##				:maiden_name => mother_maiden_name,
+##				:subject_is_mother => true, #	flag to not require the dob
+####				:dob         => Date.today
+##			},
+#			:identifier => mother_identifier
+#		})
+#		if next_icf_master_id
+#			next_icf_master_id.study_subject = mother
+#			next_icf_master_id.assigned_on   = Date.today
+#			next_icf_master_id.save!
+#		end
 
-		#	Use a block so can assign all attributes without concern for attr_protected
-		mother_identifier = Identifier.new do |i|
-			i.matchingid    = case_subject.identifier.subjectid
-			i.icf_master_id = next_icf_master_id.try(:icf_master_id)
-			i.familyid      = child.identifier.familyid
-		end
-#			i.studyid           = nil  #	TODO	#	mother's don't really have a valid studyid
-#			i.case_control_type = 'M'  #	NOTE Can't really do this.  Need to allow nil
-
-		mother = StudySubject.create!({
-			:subject_type => SubjectType['Mother'],
-			:vital_status => VitalStatus['living'],
-			:sex => 'F',			#	TODO M/F or male/female? have to check.
-			:hispanicity_id => mother_hispanicity_id,
-#			:pii_attributes => {
-#				:first_name  => 'TEST',
-#				:middle_name => 'TEST',
-#				:last_name   => 'TEST',
-#				:maiden_name => mother_maiden_name,
-#				:subject_is_mother => true, #	flag to not require the dob
-###				:dob         => Date.today
-#			},
-			:identifier => mother_identifier
-		})
-		if next_icf_master_id
-			next_icf_master_id.study_subject = mother
-			next_icf_master_id.assigned_on   = Date.today
-			next_icf_master_id.save!
-		end
 		self.study_subject_id = child.id
 		self.assigned_on = Date.today
 		self.save!
