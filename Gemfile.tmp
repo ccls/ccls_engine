@@ -60,6 +60,10 @@ gem "ccls-simply_authorized"
 #gem "ccls-simply_helpful"
 gem "ccls-use_db"
 
+#	used only by simply_authorized in testing (so I'd actually like to remove)
+gem "ccls-simply_sessions"	
+
+
 gem 'ZenTest', '~>4.5.0'
 #Fetching: ZenTest-4.6.2.gem (100%)
 #ERROR:  Error installing ZenTest:
