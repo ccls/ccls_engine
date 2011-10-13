@@ -54,10 +54,7 @@ gem "ccls-calnet_authenticated"
 gem "ccls-ccls_engine"
 gem "ccls-html_test"
 gem "ccls-common_lib"
-#gem "ccls-rails_extension"
-#gem "ccls-ruby_extension"
 gem "ccls-simply_authorized"
-#gem "ccls-simply_helpful"
 gem "ccls-use_db"
 
 #	used only by simply_authorized in testing (so I'd actually like to remove)
