@@ -1,6 +1,9 @@
 #	Address for a study_subject
 #	Actually, this may be used for things other than subjects
 class Address < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	default_scope :order => 'created_at DESC'
 
 	has_many :interviews

@@ -1,4 +1,7 @@
 class IcfMasterId < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 
 #+------------------+------------+------+-----+---------+----------------+
 #| Field            | Type       | Null | Key | Default | Extra          |

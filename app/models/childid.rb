@@ -1,4 +1,7 @@
 class Childid < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 #	TODO add some documentation here once this is to be used
 
 

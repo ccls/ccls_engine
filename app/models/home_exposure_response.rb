@@ -1,5 +1,8 @@
 # Extraction of answers from the survey
 class HomeExposureResponse < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	belongs_to :study_subject
 
 	validates_presence_of   :study_subject_id

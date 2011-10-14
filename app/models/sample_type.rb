@@ -1,6 +1,9 @@
 #	==	requires
 #	*	description ( unique and > 3 chars )
 class SampleType < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	acts_as_list :scope => :parent_id
 	default_scope :order => :position
 

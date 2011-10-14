@@ -1,4 +1,7 @@
 class GiftCard < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	belongs_to :study_subject
 	belongs_to :project
 	validates_presence_of   :number

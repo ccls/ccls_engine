@@ -3,6 +3,9 @@
 #	*	from_organization_id
 #	*	to_organization_id
 class Transfer < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	belongs_to :aliquot
 	belongs_to :from_organization, :class_name => "Organization"
 	belongs_to :to_organization,   :class_name => "Organization"

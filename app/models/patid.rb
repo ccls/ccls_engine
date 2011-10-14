@@ -1,4 +1,7 @@
 class Patid < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 #	TODO add some documentation here explaining what an empty model is for
 
 

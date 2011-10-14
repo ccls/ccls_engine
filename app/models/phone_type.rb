@@ -1,5 +1,8 @@
 # The type of phone number (home,work,mobile,etc.)
 class PhoneType < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	has_many :phone_numbers
 	acts_as_list
 	validates_presence_of   :code

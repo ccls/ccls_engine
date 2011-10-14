@@ -4,6 +4,9 @@ require 'active_shipping'
 #	*	delivered
 #	*	undelivered
 class Package < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	with_options :class_name => 'SampleKit' do |o|
 		o.has_one :o_sample_kit, :foreign_key => 'kit_package_id'
 		o.has_one :i_sample_kit, :foreign_key => 'sample_package_id'

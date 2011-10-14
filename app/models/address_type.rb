@@ -1,5 +1,8 @@
 #	The type of address (home,work,residence,pobox,etc.)
 class AddressType < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	acts_as_list
 	has_many :addresses
 	validates_presence_of   :code

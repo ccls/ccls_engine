@@ -2,6 +2,9 @@
 #	*	study_subject_id
 #	*	unit_id
 class Sample < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	belongs_to :aliquot_sample_format
 	belongs_to :sample_type
 	belongs_to :study_subject

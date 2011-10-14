@@ -1,5 +1,8 @@
 # A study_subject's phone number
 class PhoneNumber < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	acts_as_list :scope => :study_subject_id
 	belongs_to :study_subject
 	belongs_to :phone_type

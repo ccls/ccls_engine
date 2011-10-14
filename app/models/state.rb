@@ -1,5 +1,8 @@
 # Currently just US states + DC
 class State < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	acts_as_list
 
 	validates_presence_of   :code, :name, :fips_state_code, :fips_country_code

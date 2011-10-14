@@ -1,4 +1,7 @@
 class Track < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	default_scope :order => :time
 	belongs_to :trackable, 
 		:polymorphic => true, 

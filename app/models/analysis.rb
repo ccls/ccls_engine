@@ -1,6 +1,9 @@
 # don't know exactly
 class Analysis < Shared
 #
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
+#
 #	TODO remove the habtm and replace it with hmt SubjectAnalyses ?
 #
 	has_and_belongs_to_many :study_subjects	#, :association_foreign_key => 'study_subject_id'

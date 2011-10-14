@@ -3,6 +3,9 @@
 #	*	interviewer_id
 #	*	study_subject_id
 class Interview < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 
 	belongs_to :study_subject
 

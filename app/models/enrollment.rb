@@ -3,6 +3,9 @@
 #	*	study_subject_id
 #	*	project
 class Enrollment < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	belongs_to :study_subject
 	belongs_to :ineligible_reason
 	belongs_to :refusal_reason

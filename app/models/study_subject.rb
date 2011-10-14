@@ -1,6 +1,9 @@
 #	==	requires
 #	*	subject_type_id
 class StudySubject < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 #	self.abstract_class = true
 
 	class NotTwoAbstracts < StandardError; end

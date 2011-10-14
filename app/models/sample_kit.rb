@@ -1,5 +1,8 @@
 # A kit is 2 packages used for retrieving samples.
 class SampleKit < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	belongs_to :sample
 	belongs_to :kit_package,    :class_name => 'Package'
 	belongs_to :sample_package, :class_name => 'Package'

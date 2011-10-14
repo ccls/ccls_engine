@@ -1,4 +1,7 @@
 class DocumentVersion < Shared
+#
+#	NOTE: Don't validate anything that the creating user can't do anything about.
+#
 	acts_as_list
 	default_scope :order => :position
 	belongs_to :document_type
