@@ -11,10 +11,6 @@ class StudySubject < Shared
 	belongs_to :subject_type
 	belongs_to :vital_status
 
-#
-#	TODO - Don't validate anything that the creating user can't do anything about.
-#
-
 	has_many :subject_races
 	has_many :subject_languages
 	has_and_belongs_to_many :analyses
@@ -32,7 +28,7 @@ class StudySubject < Shared
 #
 #	Declaration order does matter.  Because of a patient callback that 
 #	references the study_subject's dob when using nested attributes, 
-#	pii NEEDS to be before patient.
+#	pii NEEDS to be BEFORE patient.
 #
 #	identifier should also be before patient
 #

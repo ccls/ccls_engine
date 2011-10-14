@@ -24,9 +24,7 @@ class CandidateControl < Shared
 	end
 
 	def create_study_subjects(case_subject,grouping = '6')
-#		next_orderno = next_control_orderno_for_subject(case_subject,grouping)
 		next_orderno = case_subject.next_control_orderno(grouping)
-#		next_icf_master_id = IcfMasterId.next_unused
 
 		#	Use a block so can assign all attributes without concern for attr_protected
 		child_identifier = Identifier.new do |i|
@@ -35,14 +33,16 @@ class CandidateControl < Shared
 			i.local_registrar_no = local_registrar_no
 			i.orderno            = next_orderno
 			i.matchingid         = case_subject.identifier.subjectid
-#			i.icf_master_id      = next_icf_master_id.try(:icf_master_id)
 			i.patid              = case_subject.patid
 		end
 
 #	don't know if I should add it here or put it back in the Identifier model
 #			i.studyid            = nil                #	TODO
 
-		ActiveRecord::Base.transaction do
+#	I think that this may use the standard database transaction
+#		ActiveRecord::Base.transaction do
+#	Nested multi-database transactions probably do not exist.
+		CandidateControl.transaction do
 
 			child = StudySubject.create!({
 				:subject_type => SubjectType['Control'],
@@ -69,45 +69,12 @@ class CandidateControl < Shared
 					:project => Project['phase5']
 				}]
 			})
-	#		if next_icf_master_id
-	#			next_icf_master_id.study_subject = child
-	#			next_icf_master_id.assigned_on   = Date.today
-	#			next_icf_master_id.save!
-	#		end
 			child.assign_icf_master_id
-			child.create_mother
-	
-	#		next_icf_master_id = IcfMasterId.next_unused
-	#
-	#		#	Use a block so can assign all attributes without concern for attr_protected
-	#		mother_identifier = Identifier.new do |i|
-	#			i.matchingid    = case_subject.identifier.subjectid
-	#			i.icf_master_id = next_icf_master_id.try(:icf_master_id)
-	#			i.familyid      = child.identifier.familyid
-	#		end
-	##			i.studyid           = nil  #	TODO	#	mother's don't really have a valid studyid
-	##			i.case_control_type = 'M'  #	NOTE Can't really do this.  Need to allow nil
-	#
-	#		mother = StudySubject.create!({
-	#			:subject_type => SubjectType['Mother'],
-	#			:vital_status => VitalStatus['living'],
-	#			:sex => 'F',			#	TODO M/F or male/female? have to check.
-	#			:hispanicity_id => mother_hispanicity_id,
-	##			:pii_attributes => {
-	##				:first_name  => 'TEST',
-	##				:middle_name => 'TEST',
-	##				:last_name   => 'TEST',
-	##				:maiden_name => mother_maiden_name,
-	##				:subject_is_mother => true, #	flag to not require the dob
-	####				:dob         => Date.today
-	##			},
-	#			:identifier => mother_identifier
-	#		})
-	#		if next_icf_master_id
-	#			next_icf_master_id.study_subject = mother
-	#			next_icf_master_id.assigned_on   = Date.today
-	#			next_icf_master_id.save!
-	#		end
+
+			#	NOTE this may require passing info
+			#	that is in the candidate_control record, but not in the child subject
+			#		mother_hispanicity_id
+			child.create_mother	#	({ .... })
 	
 			self.study_subject_id = child.id
 			self.assigned_on = Date.today
@@ -116,21 +83,4 @@ class CandidateControl < Shared
 		self
 	end
 
-#protected
-#
-#	def next_control_orderno_for_subject(case_subject,grouping = '6')
-#		require_dependency 'identifier.rb' unless Identifier
-#		last_control = StudySubject.find(:first, 
-#			:joins => :identifier, 
-#			:order => 'identifiers.orderno DESC', 
-#			:conditions => { 
-#				:subject_type_id => SubjectType['Control'].id,
-#				'identifiers.case_control_type' => grouping,
-#				'identifiers.matchingid' => case_subject.identifier.subjectid
-#			}
-#		)
-#		#	identifier.orderno is delegated to subject for simplicity
-#		( last_control.try(:orderno) || 0 ) + 1
-#	end
-#
 end
