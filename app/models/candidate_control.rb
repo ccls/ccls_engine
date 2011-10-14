@@ -71,7 +71,7 @@ class CandidateControl < Shared
 	#			next_icf_master_id.assigned_on   = Date.today
 	#			next_icf_master_id.save!
 	#		end
-			child.add_icf_master_id
+			child.assign_icf_master_id
 			child.create_mother
 	
 	#		next_icf_master_id = IcfMasterId.next_unused

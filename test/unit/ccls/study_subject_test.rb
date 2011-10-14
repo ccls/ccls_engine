@@ -1051,16 +1051,25 @@ pending
 pending
 	end
 
-	test "should not add icf_master_id when there are none" do
+	test "should not assign icf_master_id when there are none" do
 		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		study_subject.add_icf_master_id
+		study_subject.assign_icf_master_id
 		assert_nil study_subject.identifier.icf_master_id
 	end
 
-	test "should add icf_master_id when there is one" do
+	test "should not assign icf_master_id if already have one and one exists" do
+		study_subject = create_identifier.study_subject
+		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
+		icf_master_id = study_subject.identifier.reload.icf_master_id
+		assert_not_nil icf_master_id
+		study_subject.assign_icf_master_id
+		assert_equal icf_master_id, study_subject.identifier.reload.icf_master_id
+	end
+
+	test "should assign icf_master_id when there is one" do
 		study_subject = create_identifier(:icf_master_id => nil).study_subject
 		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
-		study_subject.add_icf_master_id
+		study_subject.assign_icf_master_id
 		assert_not_nil study_subject.identifier.icf_master_id
 		assert_equal '123456789', study_subject.identifier.icf_master_id
 		imi.reload

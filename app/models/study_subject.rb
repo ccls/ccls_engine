@@ -357,18 +357,20 @@ class StudySubject < Shared
 #			},
 				:identifier => mother_identifier
 			})
-			new_mother.add_icf_master_id
+			new_mother.assign_icf_master_id
 			new_mother
 		end
 	end
 
-	def add_icf_master_id
-		next_icf_master_id = IcfMasterId.next_unused
-		if next_icf_master_id
-			self.identifier.update_attribute(:icf_master_id, next_icf_master_id.to_s)
-			next_icf_master_id.study_subject = self
-			next_icf_master_id.assigned_on   = Date.today
-			next_icf_master_id.save!
+	def assign_icf_master_id
+		if self.identifier.icf_master_id.blank?
+			next_icf_master_id = IcfMasterId.next_unused
+			if next_icf_master_id
+				self.identifier.update_attribute(:icf_master_id, next_icf_master_id.to_s)
+				next_icf_master_id.study_subject = self
+				next_icf_master_id.assigned_on   = Date.today
+				next_icf_master_id.save!
+			end
 		end
 		self
 	end
