@@ -42,22 +42,22 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 #		end
 #	end
 
-	test "should require study_subject_id" do
-		assert_difference( "StudySubject.count", 0 ) {
-		assert_difference( "#{model_name}.count", 0 ) {
-				object = create_object(:study_subject => nil)
-			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
-		} }
-	end
-
-	test "should require unique study_subject_id" do
-		study_subject = Factory(:case_study_subject)
-		create_object(:study_subject => study_subject)
-		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object(:study_subject => study_subject)
-			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
-		end
-	end
+#	test "should require study_subject_id" do
+#		assert_difference( "StudySubject.count", 0 ) {
+#		assert_difference( "#{model_name}.count", 0 ) {
+#				object = create_object(:study_subject => nil)
+#			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
+#		} }
+#	end
+#
+#	test "should require unique study_subject_id" do
+#		study_subject = Factory(:case_study_subject)
+#		create_object(:study_subject => study_subject)
+#		assert_difference( "#{model_name}.count", 0 ) do
+#			object = create_object(:study_subject => study_subject)
+#			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
+#		end
+#	end
 
 	test "should require Case study_subject" do
 		assert_difference( "StudySubject.count", 1 ) {
