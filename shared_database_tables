@@ -398,7 +398,7 @@ Table: addressings
 | is_verified          | tinyint(1)   | YES  |     | NULL    |                |
 | how_verified         | varchar(255) | YES  |     | NULL    |                |
 | verified_on          | datetime     | YES  |     | NULL    |                |
-| verified_by_id       | int(11)      | YES  |     | NULL    |                |
+| verified_by_uid      | varchar(255) | YES  |     | NULL    |                |
 | data_source_id       | int(11)      | YES  |     | NULL    |                |
 | created_at           | datetime     | YES  |     | NULL    |                |
 | updated_at           | datetime     | YES  |     | NULL    |                |
@@ -855,7 +855,7 @@ Table: identifiers
 | matchingid               | varchar(6)   | YES  |     | NULL    |                |
 | familyid                 | varchar(6)   | YES  |     | NULL    |                |
 | state_id_no              | varchar(255) | YES  | UNI | NULL    |                |
-| hospital_no              | varchar(25)  | YES  | UNI | NULL    |                |
+| hospital_no              | varchar(25)  | YES  |     | NULL    |                |
 | childidwho               | varchar(10)  | YES  |     | NULL    |                |
 | studyid                  | varchar(14)  | YES  | UNI | NULL    |                |
 | newid                    | varchar(6)   | YES  |     | NULL    |                |
@@ -1026,6 +1026,7 @@ Table: operational_events
 | description               | varchar(255) | YES  |     | NULL    |                |
 | created_at                | datetime     | YES  |     | NULL    |                |
 | updated_at                | datetime     | YES  |     | NULL    |                |
+| event_notes               | varchar(255) | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
 
 Table: organizations
@@ -1116,7 +1117,7 @@ Table: phone_numbers
 | is_verified      | tinyint(1)   | YES  |     | NULL    |                |
 | how_verified     | varchar(255) | YES  |     | NULL    |                |
 | verified_on      | datetime     | YES  |     | NULL    |                |
-| verified_by_id   | int(11)      | YES  |     | NULL    |                |
+| verified_by_uid  | varchar(255) | YES  |     | NULL    |                |
 | created_at       | datetime     | YES  |     | NULL    |                |
 | updated_at       | datetime     | YES  |     | NULL    |                |
 | current_phone    | int(11)      | YES  |     | 1       |                |

@@ -58,12 +58,6 @@ class Sample < Shared
 	validates_past_date_for :aliquotted_on
 	validates_past_date_for :receipt_confirmed_on
 
-# TODO change receipt_confirmed_by to use the user's calnet :uid
-#		attribute should be receipt_confirmed_by_uid
-#		association would be receipt_confirmed_by
-#	TODO add virtual attribute :current_user to accept user from controller
-#	attr_accessor :current_user
-
 	validate :tracking_numbers_are_different
 	validate :date_chronology
 

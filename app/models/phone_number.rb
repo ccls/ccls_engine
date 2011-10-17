@@ -64,15 +64,13 @@ protected
 	#	Set verified time and user if given
 	def set_verifier
 		self.verified_on = Time.now
-#	TODO change this to verified_by_uid and use the user's calnet :uid
-		self.verified_by_id = current_user.try(:id)||0
+		self.verified_by_uid = current_user.try(:uid)
 	end
 
 	#	Unset verified time and user
 	def nullify_verifier
 		self.verified_on = nil
-#	TODO change this to verified_by_uid and use the user's calnet :uid
-		self.verified_by_id = nil
+		self.verified_by_uid = nil
 	end
 
 	#	Formats phone numer with () and -
