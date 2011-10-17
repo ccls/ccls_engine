@@ -58,7 +58,7 @@ class Identifier < Shared
 		n.validates_uniqueness_of	:gbid
 		n.validates_uniqueness_of	:lab_no_wiemels
 		n.validates_uniqueness_of	:accession_no
-		n.validates_uniqueness_of	:hospital_no
+#		n.validates_uniqueness_of	:hospital_no
 		n.validates_uniqueness_of	:idno_wiemels
 	end
 

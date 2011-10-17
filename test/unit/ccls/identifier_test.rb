@@ -9,12 +9,12 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:state_id_no,
 		:state_registrar_no,
 		:local_registrar_no,
-		:hospital_no,
 		:gbid,
 		:lab_no_wiemels,
 		:accession_no,
 		:idno_wiemels,
 		:icf_master_id )
+#		:hospital_no,
 	assert_should_initially_belong_to( :study_subject )
 	assert_should_protect( :study_subject_id )
 	assert_should_not_require_attributes( 
