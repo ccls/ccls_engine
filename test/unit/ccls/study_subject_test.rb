@@ -337,13 +337,13 @@ pending
 		assert_not_nil study_subject.vital_status
 	end
 
-	test "should belong to hispanicity" do
-		study_subject = create_study_subject
-pending
+#	test "should belong to hispanicity" do
+#		study_subject = create_study_subject
+#pending	#	TODO apparently hispanicity_id will just be a code
 #		assert_nil study_subject.vital_status
 #		study_subject.vital_status = Factory(:vital_status)
 #		assert_not_nil study_subject.vital_status
-	end
+#	end
 
 #	test "should NOT destroy dust_kit with study_subject" do
 #		study_subject = create_study_subject
@@ -1012,6 +1012,28 @@ pending
 		assert study_subject.is_a?(StudySubject)
 	end
 
+	test "should not require dob on creation for father with flag" do
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
+				:pii_attributes => Factory.attributes_for(:pii,
+					:subject_is_father => true,
+					:dob => nil )
+			)
+		}
+		assert_nil @study_subject.reload.dob
+	end
+
+	test "should not require dob on update for father" do
+		#	flag not necessary as study_subject.subject_type exists
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
+				:pii_attributes => Factory.attributes_for(:pii) )
+		}
+		assert_not_nil @study_subject.reload.dob
+		@study_subject.pii.update_attribute(:dob, nil)
+		assert_nil @study_subject.reload.dob
+	end
+
 	test "should not require dob on creation for mother with flag" do
 		assert_difference( "StudySubject.count", 1 ) {
 			@study_subject = create_study_subject(:subject_type => SubjectType['Mother'],
@@ -1124,20 +1146,60 @@ pending
 		assert_nil mother.reload.identifier.icf_master_id
 	end
 
+	test "should include self in family" do
+		study_subject = create_identifier.study_subject.reload
+		assert_equal 1, study_subject.family.length
+		assert_equal study_subject, study_subject.family.first
+	end
+
+	test "should include self in matching" do
+		study_subject = create_identifier.study_subject.reload
+		assert_equal 1, study_subject.matching.length
+		assert_equal study_subject, study_subject.matching.first
+	end
+
+	test "should include mother in family" do
+		study_subject = create_identifier.study_subject.reload
+		mother = study_subject.create_mother
+		assert_equal      2, study_subject.family.length
+		assert_equal mother, study_subject.family.last
+	end
+
+	test "should include father in family" do
+		study_subject = create_identifier.study_subject.reload
+		father = study_subject.create_father
+		assert_equal      2, study_subject.family.length
+		assert_equal father, study_subject.family.last
+	end
+
+	test "should include mother in matching" do
+		study_subject = create_identifier.study_subject.reload
+		mother = study_subject.create_mother
+		assert_equal      2, study_subject.matching.length
+		assert_equal mother, study_subject.matching.last
+	end
+
+	test "should include father in matching" do
+		study_subject = create_identifier.study_subject.reload
+		father = study_subject.create_father
+		assert_equal      2, study_subject.matching.length
+		assert_equal father, study_subject.matching.last
+	end
+
 	test "should return mother if is one" do
-pending	#	TODO
+		study_subject = create_identifier.study_subject.reload
+		assert_nil study_subject.mother
+		mother = study_subject.create_mother
+		assert_not_nil study_subject.mother
+		assert_equal mother, study_subject.mother
 	end
 
 	test "should return father if is one" do
-pending	#	TODO
-	end
-
-	test "should return family if is any" do
-pending	#	TODO
-	end
-
-	test "should return matching if is any" do
-pending	#	TODO
+		study_subject = create_identifier.study_subject.reload
+		assert_nil study_subject.father
+		father = study_subject.create_father
+		assert_not_nil study_subject.father
+		assert_equal father, study_subject.father
 	end
 
 protected

@@ -10,7 +10,7 @@ class Pii < Shared
 
 	#	Basically, this is only used as a flag during nested creation
 	#	to determine if the dob is required.
-	attr_accessor :subject_is_mother
+	attr_accessor :subject_is_mother, :subject_is_father
 
 #
 #	TODO - Don't validate anything that the creating user can't do anything about.
@@ -74,7 +74,9 @@ class Pii < Shared
 	#	when using the accepts_nested_attributes feature
 	#	so we must explicitly set a flag.
 	def dob_not_required?
-		subject_is_mother || ( study_subject.try(:subject_type) == SubjectType['Mother'] )
+		subject_is_mother || subject_is_father || 
+			( study_subject.try(:subject_type) == SubjectType['Mother'] ) ||
+			( study_subject.try(:subject_type) == SubjectType['Father'] )
 	end
 
 	#	Returns string containing study_subject's first, middle and last initials

@@ -360,7 +360,6 @@ class StudySubject < Shared
 	def create_mother
 		existing_mother = mother
 		if existing_mother
-#puts "Found existing_mother:#{existing_mother.inspect}"
 			existing_mother
 		else
 			#	protected attributes!
@@ -386,6 +385,38 @@ class StudySubject < Shared
 			})
 			new_mother.assign_icf_master_id
 			new_mother
+		end
+	end
+
+	def create_father
+		existing_father = father
+		if existing_father
+			existing_father
+		else
+			#	protected attributes!
+			father_identifier = Identifier.new do |i|
+				i.matchingid = identifier.matchingid
+				i.familyid   = identifier.familyid
+			end
+			new_father = StudySubject.create!({
+				:subject_type => SubjectType['Father'],
+				:vital_status => VitalStatus['living'],
+				:sex => 'M',			#	TODO M/F or male/female? have to check.
+#				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
+#	TODO where from? 
+#			:pii_attributes => {
+#				:first_name  => 'TEST',
+#				:middle_name => 'TEST',
+#				:last_name   => 'TEST',
+#				:maiden_name => mother_maiden_name,
+#		TODO add more generic flag as father probably won't have a dob either
+#				:subject_is_mother => true, #	flag to not require the dob as won't have one
+###				:dob         => Date.today
+#			},
+				:identifier => father_identifier
+			})
+			new_father.assign_icf_master_id
+			new_father
 		end
 	end
 
