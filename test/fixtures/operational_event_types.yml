@@ -93,3 +93,8 @@ ChangeContactInfo:
   code: ChangeContactInfo
   event_category:  operations
   description: The subject's contact info has been changed
+DuplicateCase:
+  id: 20
+  code: DuplicateCase
+  event_category:  ascertainment
+  description: A new RAF was sent for an existing patient
