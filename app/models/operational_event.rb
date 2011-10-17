@@ -14,7 +14,7 @@ class OperationalEvent < Shared
 	validates_complete_date_for :occurred_on, 
 		:allow_nil => true
 
-	validates_length_of :description,
+	validates_length_of :description, :event_notes,
 		:maximum => 250, :allow_blank => true
 
 	#	Returns description
