@@ -12,7 +12,7 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :position, :study_subject_id,
 		:phone_type_id, :data_source_id, :is_primary, :is_valid,
 		:why_invalid, :is_verified, :how_verified,
-		:verified_on, :verified_by_id, :current_phone )
+		:verified_on, :verified_by_uid, :current_phone )
 	assert_should_require_attribute_length( :how_verified, :why_invalid, 
 		:maximum => 250 )
 
@@ -109,34 +109,34 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 		assert_nil object.verified_on
 	end
 
-	test "should NOT set verified_by_id if is_verified NOT changed to true" do
+	test "should NOT set verified_by_uid if is_verified NOT changed to true" do
 		object = create_object(:is_verified => false)
-		assert_nil object.verified_by_id
+		assert_nil object.verified_by_uid
 	end
 
-	test "should set verified_by_id to 0 if is_verified changed to true" do
+	test "should set verified_by_uid to 0 if is_verified changed to true" do
 		object = create_object(:is_verified => true,
 			:how_verified => "not a clue")
-		assert_not_nil object.verified_by_id
-		assert_equal object.verified_by_id, 0
+		assert_not_nil object.verified_by_uid
+		assert_equal object.verified_by_uid, ''
 	end
 
-	test "should set verified_by_id to current_user.id if is_verified " <<
+	test "should set verified_by_uid to current_user.id if is_verified " <<
 		"changed to true if current_user passed" do
 		cu = admin_user
 		object = create_object(:is_verified => true,
 			:current_user => cu,
 			:how_verified => "not a clue")
-		assert_not_nil object.verified_by_id
-		assert_equal object.verified_by_id, cu.id
+		assert_not_nil object.verified_by_uid
+		assert_equal object.verified_by_uid, cu.uid
 	end
 
-	test "should set verified_by_id to NIL if is_verified changed to false" do
+	test "should set verified_by_uid to NIL if is_verified changed to false" do
 		object = create_object(:is_verified => true,
 			:how_verified => "not a clue")
-		assert_not_nil object.verified_by_id
+		assert_not_nil object.verified_by_uid
 		object.update_attributes(:is_verified => false)
-		assert_nil object.verified_by_id
+		assert_nil object.verified_by_uid
 	end
 
 end

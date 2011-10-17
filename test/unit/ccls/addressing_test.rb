@@ -13,7 +13,7 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		:valid_from,
 		:valid_to,
 		:verified_on,
-		:verified_by_id,
+		:verified_by_uid,
 		:data_source_id )
 	assert_should_initially_belong_to( :study_subject, :address )
 	assert_should_require_attribute_length( :why_invalid, :how_verified, 
@@ -88,34 +88,34 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		assert_nil object.verified_on
 	end
 
-	test "should NOT set verified_by_id if is_verified NOT changed to true" do
+	test "should NOT set verified_by_uid if is_verified NOT changed to true" do
 		object = create_object(:is_verified => false)
-		assert_nil object.verified_by_id
+		assert_nil object.verified_by_uid
 	end
 
-	test "should set verified_by_id to 0 if is_verified changed to true" do
+	test "should set verified_by_uid to 0 if is_verified changed to true" do
 		object = create_object(:is_verified => true,
 			:how_verified => "not a clue")
-		assert_not_nil object.verified_by_id
-		assert_equal object.verified_by_id, 0
+		assert_not_nil object.verified_by_uid
+		assert_equal object.verified_by_uid, ''
 	end
 
-	test "should set verified_by_id to current_user.id if is_verified " <<
+	test "should set verified_by_uid to current_user.id if is_verified " <<
 		"changed to true if current_user passed" do
 		cu = admin_user
 		object = create_object(:is_verified => true,
 			:current_user => cu,
 			:how_verified => "not a clue")
-		assert_not_nil object.verified_by_id
-		assert_equal object.verified_by_id, cu.id
+		assert_not_nil object.verified_by_uid
+		assert_equal object.verified_by_uid, cu.uid
 	end
 
-	test "should set verified_by_id to NIL if is_verified changed to false" do
+	test "should set verified_by_uid to NIL if is_verified changed to false" do
 		object = create_object(:is_verified => true,
 			:how_verified => "not a clue")
-		assert_not_nil object.verified_by_id
+		assert_not_nil object.verified_by_uid
 		object.update_attributes(:is_verified => false)
-		assert_nil object.verified_by_id
+		assert_nil object.verified_by_uid
 	end
 
 

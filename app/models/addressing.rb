@@ -81,7 +81,7 @@ protected
 	#	Set verified time and user if given
 	def set_verifier
 		self.verified_on = Time.now
-		self.verified_by_uid = current_user.try(:uid)
+		self.verified_by_uid = current_user.try(:uid)||''
 	end
 
 	#	Unset verified time and user
