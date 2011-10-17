@@ -1124,6 +1124,22 @@ pending
 		assert_nil mother.reload.identifier.icf_master_id
 	end
 
+	test "should return mother if is one" do
+pending	#	TODO
+	end
+
+	test "should return father if is one" do
+pending	#	TODO
+	end
+
+	test "should return family if is any" do
+pending	#	TODO
+	end
+
+	test "should return matching if is any" do
+pending	#	TODO
+	end
+
 protected
 
 	def create_study_subject_with_matchingid(matchingid='12345')

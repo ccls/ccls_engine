@@ -183,7 +183,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		object = create_object
 		create_study_subjects_for_candidate_control(object,case_study_subject)
 		assert_not_nil object.study_subject.identifier.orderno
-		assert_equal   object.study_subject.identifier.orderno, 1		#	As this will be the first control here
+		#	As this will be the first control here ...
+		assert_equal   object.study_subject.identifier.orderno, 1		
 	end
 
 	test "should create second control from attributes and add orderno = 2" do
@@ -193,7 +194,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		object2 = create_object
 		create_study_subjects_for_candidate_control(object2,case_study_subject)
 		assert_not_nil object2.study_subject.identifier.orderno
-		assert_equal   object2.study_subject.identifier.orderno, 2		#	As this will be the second control here
+		#	As this will be the second control here ...
+		assert_equal   object2.study_subject.identifier.orderno, 2		
 	end
 
 	test "should create control from attributes and add studyid" do
@@ -301,6 +303,14 @@ pending #	TODO wrap in transaction.  Don't want this partially done.
 		assert_difference('StudySubject.count',0) {
 #			object.create_study_subjects(case_study_subject)
 		} } } }
+	end
+
+	test "should rollback if create_mother raises error" do
+pending	#	TODO
+	end
+
+	test "should rollback if assign_icf_master_id raises error" do
+pending	#	TODO
 	end
 
 	#

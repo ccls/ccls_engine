@@ -146,12 +146,40 @@ class StudySubject < Shared
 
 
 
+	def father
+		StudySubject.find(:first,
+			:joins => :identifier,
+			:conditions => { 
+				'identifiers.familyid' => identifier.familyid,
+				:subject_type_id       => SubjectType['Father'].id
+			}
+		)
+	end
+
 	def mother
 		StudySubject.find(:first,
 			:joins => :identifier,
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
 				:subject_type_id       => SubjectType['Mother'].id
+			}
+		)
+	end
+
+	def family
+		StudySubject.find(:all,
+			:joins => :identifier,
+			:conditions => { 
+				'identifiers.familyid' => identifier.familyid
+			}
+		)
+	end
+
+	def matching
+		StudySubject.find(:all,
+			:joins => :identifier,
+			:conditions => { 
+				'identifiers.matchingid' => identifier.matchingid
 			}
 		)
 	end
