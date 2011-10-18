@@ -15,6 +15,13 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:reference_date, :sex,
 		:mother_yrs_educ, :father_yrs_educ, :birth_type, :birth_county, :is_duplicate_of )
 
+	test "should default sex to null" do
+		assert_difference( "StudySubject.count", 1 ) {
+			study_subject = create_study_subject
+			assert_nil study_subject.reload.sex
+		} 
+	end 
+
 	test "create_control_study_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
 		assert_difference( "StudySubject.count", 1 ) {

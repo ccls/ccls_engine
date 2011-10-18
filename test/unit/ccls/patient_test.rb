@@ -59,6 +59,27 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 #		end
 #	end
 
+	test "should default was_ca_resident_at_diagnosis to null" do
+		assert_difference( "Patient.count", 1 ) {
+			patient = create_patient
+			assert_nil patient.reload.was_ca_resident_at_diagnosis
+		}
+	end
+
+	test "should default was_previously_treated to null" do
+		assert_difference( "Patient.count", 1 ) {
+			patient = create_patient
+			assert_nil patient.reload.was_previously_treated
+		}
+	end
+
+	test "should default was_under_15_at_dx to null" do
+		assert_difference( "Patient.count", 1 ) {
+			patient = create_patient
+			assert_nil patient.reload.was_under_15_at_dx
+		}
+	end
+
 	test "should require Case study_subject" do
 		assert_difference( "StudySubject.count", 1 ) {
 		assert_difference( "#{model_name}.count", 0 ) {

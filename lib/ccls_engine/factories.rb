@@ -428,8 +428,7 @@ Factory.define :study_subject do |f|
 #	f.association :subject_race
 	f.association :vital_status
 #	f.sequence(:subjectid){|n| "#{n}"}
-	f.sequence(:sex){|n|
-		%w( male female )[n%2] }
+#	f.sequence(:sex){|n| %w( male female )[n%2] }
 end
 #	f.subject_type { SubjectType.find(:first,:conditions => {
 #			:code => 'Case'
@@ -442,6 +441,7 @@ Factory.define :control_study_subject, :parent => :study_subject do |f|
 end
 Factory.define :mother_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Mother'] }
+	f.sex 'F'
 end
 
 Factory.define :subject_race do |f|
