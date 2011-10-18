@@ -36,6 +36,15 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 
 	assert_requires_complete_date( :dob, :died_on )
 
+	%w( email first_name middle_name last_name ).each do |field|
+		test "should nullify blank #{field}" do
+			assert_difference("Pii.count",1) do
+				pii = create_object(field => ' ')
+				assert_nil pii.reload.send(field)
+			end
+		end
+	end
+
 	test "should allow multiple blank email" do
 		create_object(:email => '  ')
 		assert_difference( "#{model_name}.count", 1 ) do
@@ -92,6 +101,11 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 			:first_name => "John",
 			:last_name  => "Smith" )
 		assert_equal 'John Smith', object.full_name 
+	end
+
+	test "should return 'name not available' if study_subject's names are blank" do
+		object = create_object
+		assert_equal '[name not available]', object.full_name 
 	end
 
 	test "should return join of father's name" do

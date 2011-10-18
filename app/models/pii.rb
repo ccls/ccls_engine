@@ -14,7 +14,7 @@ class Pii < Shared
 
 	attr_protected          :study_subject_id
 
-	before_validation :nullify_blank_email
+	before_validation :nullify_blank_fields
 
 	validates_presence_of       :dob, :unless => :dob_not_required?
 	validates_complete_date_for :dob, :died_on, :allow_nil => true
@@ -64,7 +64,8 @@ class Pii < Shared
 	#	Returns string containing study_subject's first, middle and last name
 	#	TODO include maiden_name just in case is mother???
 	def full_name
-		[first_name, middle_name, last_name].compact.join(' ')
+		fullname = [first_name, middle_name, last_name].compact.join(' ')
+		( fullname.blank? ) ? '[name not available]' : fullname
 	end
 
 	#	Returns string containing study_subject's father's first, middle and last name
@@ -102,9 +103,12 @@ class Pii < Shared
 
 protected
 
-	def nullify_blank_email
+	def nullify_blank_fields
 		#	An empty form field is not NULL to MySQL so ...
 		self.email = nil if email.blank?
+		self.first_name = nil if first_name.blank?
+		self.middle_name = nil if middle_name.blank?
+		self.last_name = nil if last_name.blank?
 	end
 
 	def guardian_relationship_is_other?
