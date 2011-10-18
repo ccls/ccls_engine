@@ -7,33 +7,10 @@ class Patient < Shared
 	belongs_to :organization
 	belongs_to :diagnosis
 
+	attr_protected :study_subject_id
 
-#
-#	TODO - Don't validate anything that the creating user can't do anything about.
-#
-
-	##	TODO - find a better way to do this
-	# because study_subject accepts_nested_attributes for patient
-	# we can't require study_subject_id on create
-	#
-	#	study_subject_id is not known until before_save
-	#		so cannot be validated on creation
-	#
-	attr_protected          :study_subject_id
-#	validates_presence_of   :study_subject,    :on => :update
-#	NOTE This requirement is in the database as well.
-#	validates_uniqueness_of :study_subject_id, :allow_nil => true
-	#
-	#	since I can't use the conventional validations to check 
-	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the study_subject creation too if using nested attributes.
-	#	I don't know that this is ever really an even possible issue
-	#	as there is no way to directly create one.
-#	before_create :ensure_presence_of_study_subject_id
-
-
-#	validates_presence_of :admit_date	#	TODO odms#36
-#	validates_presence_of :organization_id	#	TODO odms#36
+	validates_presence_of :admit_date
+	validates_presence_of :organization_id
 
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
@@ -81,25 +58,6 @@ protected
 #		study_subject.update_matching_study_subjects_reference_date
 		study_subject.update_study_subjects_reference_date_matching
 	end
-
-#	TODO I think that I should just remove these as
-#		it is realistically not possible to do this through
-#		the web app.  Is in Pii, Patient, Identifier.
-#	##
-#	#	since I can't use the conventional validations to check 
-#	#	study_subject_id, do it before_save.  This'll rollback 
-#	#	the study_subject creation too if using nested attributes.
-##	there is no uniqueness check anymore
-#	def ensure_presence_of_study_subject_id
-#		if study_subject_id.blank?
-#			errors.add(:study_subject_id, :blank )
-#			return false
-#		#	As this is only on create, we don't need to consider self.id
-##		elsif Patient.exists?(:study_subject_id => study_subject_id)
-##			errors.add(:study_subject_id, :taken )
-##			return false
-#		end
-#	end
 
 	##
 	#	This validation does not work when using nested attributes as 

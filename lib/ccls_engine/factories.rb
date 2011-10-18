@@ -323,6 +323,8 @@ end
 Factory.define :patient do |f|
 	#	really don't see the point of a patient w/o a study_subject
 	f.association :study_subject, :factory => :case_study_subject
+	f.admit_date Date.jd(2440000+rand(15000))
+	f.association :organization
 end
 
 Factory.define :person do |f|

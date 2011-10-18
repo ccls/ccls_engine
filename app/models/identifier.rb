@@ -13,10 +13,9 @@ class Identifier < Shared
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
 
-	attr_protected          :study_subject_id
+	attr_protected :study_subject_id
 
-	validates_length_of     :case_control_type, :is => 1, :allow_nil => true
-
+	validates_length_of:case_control_type, :is => 1, :allow_nil => true
 
 #	TODO : add a validation for contents of orderno
 #		won't have at creation

@@ -2,8 +2,8 @@ require 'test_helper'
 
 class Ccls::PatientTest < ActiveSupport::TestCase
 
-#	assert_should_require :organization_id #	TODO odms#36
-#	assert_should_require :admit_date			 #	TODO odms#36
+	assert_should_require :organization_id
+	assert_should_require :admit_date
 
 	assert_should_create_default_object
 
