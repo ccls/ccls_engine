@@ -414,8 +414,9 @@ pending
 
 	end
 
-	%w( initials full_name first_name last_name fathers_name 
-			mothers_name email dob ).each do |method_name|
+#	%w( initials full_name first_name last_name fathers_name 
+	%w( initials full_name fathers_name mothers_name email dob 
+		).each do |method_name|
 
 		test "should return nil #{method_name} without pii" do
 			study_subject = create_study_subject
