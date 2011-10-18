@@ -337,7 +337,7 @@ Factory.define :pii do |f|
 #	f.first_name "First"
 #	f.middle_name "Middle"
 #	f.last_name "Last"
-	f.sequence(:email){|n| "email#{n}@example.com"}
+	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
 	f.dob Date.jd(2440000+rand(15000))
 end
 
