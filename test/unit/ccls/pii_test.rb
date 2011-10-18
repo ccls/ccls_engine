@@ -10,10 +10,8 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	assert_should_belong_to( :guardian_relationship, :class_name => 'SubjectRelationship' )
 	assert_should_require_attributes( :dob )
 	assert_should_require_unique_attributes( :email )
-	assert_should_not_require_attributes( :first_name )
-	assert_should_not_require_attributes( :last_name )
-
-	assert_should_not_require_attributes( :died_on, 
+	assert_should_not_require_attributes( :first_name, :last_name,
+		:died_on, :birth_year,
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
 		:father_first_name, :father_middle_name, :father_last_name,
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
@@ -32,6 +30,9 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( 
 		:generational_suffix, :father_generational_suffix,
 			:maximum => 10 )
+
+	assert_should_require_attribute_length( 
+		:birth_year, :maximum => 4 )
 
 	assert_requires_complete_date( :dob, :died_on )
 

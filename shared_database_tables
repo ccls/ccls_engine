@@ -1166,6 +1166,7 @@ Table: piis
 | maiden_name                 | varchar(255) | YES  |     | NULL    |                |
 | generational_suffix         | varchar(10)  | YES  |     | NULL    |                |
 | father_generational_suffix  | varchar(10)  | YES  |     | NULL    |                |
+| birth_year                  | varchar(4)   | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: project_outcomes

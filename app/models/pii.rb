@@ -44,6 +44,8 @@ class Pii < Shared
  	validates_length_of :generational_suffix, :father_generational_suffix, 
 		:maximum => 10, :allow_blank => true
 
+ 	validates_length_of :birth_year, :maximum => 4, :allow_blank => true
+
 
 	#	study_subject is not known at validation on creation
 	#	when using the accepts_nested_attributes feature
