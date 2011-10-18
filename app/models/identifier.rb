@@ -13,29 +13,7 @@ class Identifier < Shared
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
 
-#
-#	TODO - Don't validate anything that the creating user can't do anything about.
-#
-
-	##	TODO - find a better way to do this
-	#	because study_subject accepts_nested_attributes for identifer
-	#	we can't require study_subject_id on create
-	#
-	#	study_subject_id is not known until before_save
-	#		so cannot be validated on creation
-	#
 	attr_protected          :study_subject_id
-#	validates_presence_of   :study_subject,    :on => :update
-#	NOTE This requirement is in the database as well.
-#	validates_uniqueness_of :study_subject_id, :allow_nil => true
-	#
-	#	since I can't use the conventional validations to check 
-	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the study_subject creation too if using nested attributes.
-	#	I don't know that this is ever really an even possible issue
-	#	as there is no way to directly create one.
-#	before_create :ensure_presence_of_study_subject_id
-
 
 	validates_length_of     :case_control_type, :is => 1, :allow_nil => true
 
@@ -49,7 +27,8 @@ class Identifier < Shared
 #	validates_presence_of   :subjectid
 #	validates_uniqueness_of :subjectid, :allow_nil => true
 
-#	validates_presense_of :hospital_no #	TODO odms#36
+	validates_presence_of :hospital_no
+	validates_length_of   :hospital_no, :maximum => 25
 
 	with_options :allow_nil => true do |n|
 		n.validates_uniqueness_of :ssn
@@ -60,7 +39,6 @@ class Identifier < Shared
 		n.validates_uniqueness_of	:gbid
 		n.validates_uniqueness_of	:lab_no_wiemels
 		n.validates_uniqueness_of	:accession_no
-#		n.validates_uniqueness_of	:hospital_no
 		n.validates_uniqueness_of	:idno_wiemels
 	end
 
@@ -137,21 +115,6 @@ protected
 		study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
 	end
 
-#	TODO I think that I should just remove these as
-#		it is realistically not possible to do this through
-#		the web app.  Is in Pii, Patient, Identifier.
-#	##
-#	#	since I can't use the conventional validations to check 
-#	#	study_subject_id, do it before_save.  This'll rollback 
-#	#	the study_subject creation too if using nested attributes.
-##	this is probably a bad idea as the user can't do anything about it anyway
-#	def ensure_presence_of_study_subject_id
-#		if study_subject_id.blank?
-#			errors.add(:study_subject_id, :blank )
-#			return false
-#		end
-#	end
-
 	def prepare_fields_for_validation
 		self.case_control_type = ( ( case_control_type.blank? 
 			) ? nil : case_control_type.to_s.upcase )
@@ -167,7 +130,7 @@ protected
 		self.gbid = nil if gbid.blank?
 		self.lab_no_wiemels = nil if lab_no_wiemels.blank?
 		self.accession_no = nil if accession_no.blank?
-		self.hospital_no = nil if hospital_no.blank?
+#		self.hospital_no = nil if hospital_no.blank?
 		self.idno_wiemels = nil if idno_wiemels.blank?
 
 		patid.try(:gsub!,/\D/,'') #unless patid.nil?
