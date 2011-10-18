@@ -15,7 +15,7 @@ class Identifier < Shared
 
 	attr_protected :study_subject_id
 
-	validates_length_of:case_control_type, :is => 1, :allow_nil => true
+	validates_length_of :case_control_type, :is => 1, :allow_nil => true
 
 #	TODO : add a validation for contents of orderno
 #		won't have at creation
@@ -26,8 +26,11 @@ class Identifier < Shared
 #	validates_presence_of   :subjectid
 #	validates_uniqueness_of :subjectid, :allow_nil => true
 
-	validates_presence_of :hospital_no
-	validates_length_of   :hospital_no, :maximum => 25
+#	won't work for non-cases
+#	validates_presence_of :hospital_no
+#	validates_length_of   :hospital_no, :maximum => 25
+
+	validates_length_of   :hospital_no, :maximum => 25, :allow_blank => true
 
 	with_options :allow_nil => true do |n|
 		n.validates_uniqueness_of :ssn

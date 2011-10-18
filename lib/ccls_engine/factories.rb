@@ -14,25 +14,12 @@ def random_float
 	rand * 100
 end
 
-#Factory.define :document do |f|
-#	f.sequence(:title) { |n| "Title#{n}" }
-##	f.sequence(:document_file_name) { |n| "document_file_name#{n}" }
-#end
-
-#Factory.define :photo do |f|
-#	f.sequence(:title) { |n| "Title#{n}" }
-#end
-
 Factory.define :page do |f|
 	f.sequence(:path)    { |n| "/path#{n}" }
 	f.sequence(:menu_en) { |n| "Menu #{n}" }
 	f.sequence(:title_en){ |n| "Title #{n}" }
 	f.body_en  "Page Body"
 end
-
-#Factory.define :role do |f|
-#	f.sequence(:name) { |n| "name#{n}" }
-#end
 
 Factory.define :user do |f|
 	f.sequence(:uid) { |n| "UID#{n}" }
@@ -45,27 +32,12 @@ end
 Factory.define :admin_user, :parent => :user do |f|
 	f.administrator true
 end	#	parent must be defined first
-Factory.define :sender, :parent => :user do |f|
-#	This is really just an alias of convenience for UserInvitation
-end	#	parent must be defined first
-Factory.define :owner, :parent => :user do |f|
-#	This is really just an alias of convenience for Document
-end	#	parent must be defined first
-
-#Factory.define :user_invitation do |f|
-#	f.association :sender, :factory => :user
-#	f.sequence(:email){|n| "invitation#{n}@example.com"}
-#end
-#Factory.define :maker do |f|
-#end
-#Factory.define :widget do |f|
-#end
-
-
-
-
-
-
+#Factory.define :sender, :parent => :user do |f|
+##	This is really just an alias of convenience for UserInvitation
+#end	#	parent must be defined first
+#Factory.define :owner, :parent => :user do |f|
+##	This is really just an alias of convenience for Document
+#end	#	parent must be defined first
 
 Factory.define :address do |f|
 #	f.association :study_subject
@@ -154,7 +126,7 @@ Factory.define :identifier do |f|
 	f.sequence(:accession_no){|n| "#{n}"}
 	f.sequence(:lab_no_wiemels){|n| "#{n}"}
 	f.sequence(:idno_wiemels){|n| "#{n}"}
-	f.sequence(:hospital_no){|n| "#{n}"}	#	in order to test presence or uniqueness, MUST BE HERE
+#	f.sequence(:hospital_no){|n| "#{n}"}	#	in order to test presence or uniqueness, MUST BE HERE
 	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
 end
 Factory.define :case_identifier, :parent => :identifier do |f|
@@ -190,9 +162,6 @@ Factory.define :document_version do |f|
 	f.sequence(:title) { |n| "Title#{n}" }
 	f.association :document_type
 end
-
-#Factory.define :dust_kit do |f|
-#end
 
 Factory.define :enrollment do |f|
 	f.association :study_subject
@@ -235,17 +204,9 @@ Factory.define :homex_outcome do |f|
 	f.interview_outcome_on Date.today
 end
 
-#Factory.define :home_exposure_event do |f|
-##	f.association :study_subject
-#end
-
 Factory.define :home_exposure_response do |f|
 	f.association :study_subject
 end
-
-#Factory.define :home_page_pic do |f|
-#	f.sequence(:title){ |n| "Title #{n}" }
-#end
 
 Factory.define :icf_master_id do |f|
 end
@@ -323,8 +284,8 @@ end
 Factory.define :patient do |f|
 	#	really don't see the point of a patient w/o a study_subject
 	f.association :study_subject, :factory => :case_study_subject
-	f.admit_date Date.jd(2440000+rand(15000))
-	f.association :organization
+#	f.admit_date Date.jd(2440000+rand(15000))
+#	f.association :organization
 end
 
 Factory.define :person do |f|
@@ -353,10 +314,6 @@ Factory.define :race do |f|
 	f.sequence(:code)       {|n| "Race#{n}"}
 	f.sequence(:description){|n| "Desc#{n}"}
 end
-
-#Factory.define :residence do |f|
-#	f.association :address
-#end
 
 Factory.define :refusal_reason do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
@@ -466,12 +423,6 @@ Factory.define :subject_type do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
-#Factory.define :survey_invitation do |f|
-#	f.association :survey
-#	f.association :study_subject
-#end
-
-
 Factory.define :track do |f|
 	f.association :trackable, :factory => :package
 	f.name "Name"
@@ -506,47 +457,6 @@ Factory.define :export do |f|
 	f.sequence(:childid) { |n| "childid#{n}" }
 	f.sequence(:patid)   { |n| "patid#{n}" }
 end
-
-
-
-
-
-#
-#		Survey related factories
-#
-#Factory.define :survey do |f|
-#	f.sequence(:title){|n| "My Survey #{n}" }
-#end
-#Factory.define :survey_section do |f|
-#	f.association :survey
-#	f.sequence(:title) { |n| "Title #{n}" }
-#	f.sequence(:display_order){ |n| n }
-#end
-#Factory.define :response_set do |f|
-#	f.association :study_subject
-#	f.association :survey
-#end
-#Factory.define :response do |f|
-#	f.association :response_set
-#	f.association :question
-#	f.association :answer
-#end
-#Factory.define :question do |f|
-#	f.association :survey_section
-#	f.sequence(:display_order){ |n| n }
-#	f.text "My Question Text"
-#	f.is_mandatory false
-#	f.sequence(:data_export_identifier){|n| "qdei_#{n}" }
-#end
-#Factory.define :answer do |f|
-#	f.association :question
-#	f.text "My Answer Text"
-#	f.sequence(:data_export_identifier){|n| "adei_#{n}" }
-##	f.response_class "answer"
-#end
-
-
-
 
 
 Factory.define :county do |f|

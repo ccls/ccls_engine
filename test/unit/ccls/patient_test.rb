@@ -2,22 +2,23 @@ require 'test_helper'
 
 class Ccls::PatientTest < ActiveSupport::TestCase
 
-	assert_should_require :organization_id
-	assert_should_require :admit_date
-
+#	assert_should_require :organization_id, :admit_date
+	assert_should_not_require :organization_id
+	assert_should_not_require :admit_date
 	assert_should_create_default_object
-
-	assert_should_initially_belong_to(:study_subject)
+	assert_should_initially_belong_to :study_subject
+	assert_should_initially_belong_to :organization
 	assert_should_protect( :study_subject_id )
-
-	assert_should_belong_to( :organization, :diagnosis )
-
-	assert_should_not_require_attributes( :admit_date, :diagnosis_date,
-		:diagnosis_id, :organization_id, :raf_zip, :raf_county )
+	assert_should_belong_to( :diagnosis )
+	assert_should_not_require_attributes :diagnosis_date
+	assert_should_not_require_attributes :diagnosis_id
+	assert_should_not_require_attributes :raf_zip
+	assert_should_not_require_attributes :raf_county
 	assert_should_require_attribute_length( :raf_zip, :maximum => 10 )
-
-	assert_requires_complete_date( :admit_date, :diagnosis_date )
-	assert_requires_past_date( :admit_date, :diagnosis_date )
+	assert_requires_complete_date :admit_date
+	assert_requires_complete_date :diagnosis_date
+	assert_requires_past_date :admit_date
+	assert_requires_past_date :diagnosis_date
 
 	test "should default was_ca_resident_at_diagnosis to null" do
 		assert_difference( "Patient.count", 1 ) {

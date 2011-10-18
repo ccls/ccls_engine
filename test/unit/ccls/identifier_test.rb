@@ -2,7 +2,8 @@ require 'test_helper'
 
 class Ccls::IdentifierTest < ActiveSupport::TestCase
 
-	assert_should_require :hospital_no
+#	assert_should_require :hospital_no
+	assert_should_not_require :hospital_no
 
 	assert_should_create_default_object
 	assert_should_not_require_attributes( :case_control_type )
@@ -49,9 +50,15 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length :idno_wiemels, :maximum => 10
 	assert_should_require_attribute_length :accession_no, :maximum => 25
 	assert_should_require_attribute_length :icf_master_id, :maximum => 9
-	assert_should_protect_attributes(:studyid,:studyid_nohyphen,:studyid_intonly_nohyphen,
-		:familyid, :childid, :subjectid, :patid)	#, :matchingid
 
+	assert_should_protect_attributes(
+		:studyid,
+		:studyid_nohyphen,
+		:studyid_intonly_nohyphen,
+		:familyid,
+		:childid,
+		:subjectid,
+		:patid )
 
 	test "should nullify blank ssn before validation" do
 		identifier = Factory.build(:identifier, :ssn => '')

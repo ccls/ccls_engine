@@ -27,14 +27,11 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		:guardian_relationship_other,
 			:maximum => 250 )
 
-	assert_should_require_attribute_length( 
-		:generational_suffix, :father_generational_suffix,
-			:maximum => 10 )
-
-	assert_should_require_attribute_length( 
-		:birth_year, :maximum => 4 )
-
-	assert_requires_complete_date( :dob, :died_on )
+	assert_should_require_attribute_length( :generational_suffix, :maximum => 10 )
+	assert_should_require_attribute_length( :father_generational_suffix, :maximum => 10 )
+	assert_should_require_attribute_length( :birth_year, :maximum => 4 )
+	assert_requires_complete_date( :dob )
+	assert_requires_complete_date( :died_on )
 
 	%w( email first_name middle_name last_name 
 		father_first_name father_middle_name father_last_name
