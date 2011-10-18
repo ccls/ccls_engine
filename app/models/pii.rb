@@ -70,17 +70,20 @@ class Pii < Shared
 
 	#	Returns string containing study_subject's father's first, middle and last name
 	def fathers_name
-		[father_first_name, father_middle_name, father_last_name].compact.join(' ')
+		fathersname = [father_first_name, father_middle_name, father_last_name].compact.join(' ')
+		( fathersname.blank? ) ? '[name not available]' : fathersname
 	end
 
 	#	Returns string containing study_subject's mother's first, middle and last name
 	def mothers_name
-		[mother_first_name, mother_middle_name, mother_last_name].compact.join(' ')
+		mothersname = [mother_first_name, mother_middle_name, mother_last_name].compact.join(' ')
+		( mothersname.blank? ) ? '[name not available]' : mothersname
 	end
 
 	#	Returns string containing study_subject's guardian's first, middle and last name
 	def guardians_name
-		[guardian_first_name, guardian_middle_name, guardian_last_name].compact.join(' ')
+		guardiansname = [guardian_first_name, guardian_middle_name, guardian_last_name].compact.join(' ')
+		( guardiansname.blank? ) ? '[name not available]' : guardiansname
 	end
 
 #
@@ -109,6 +112,16 @@ protected
 		self.first_name = nil if first_name.blank?
 		self.middle_name = nil if middle_name.blank?
 		self.last_name = nil if last_name.blank?
+		self.father_first_name = nil if father_first_name.blank?
+		self.father_middle_name = nil if father_middle_name.blank?
+		self.father_last_name = nil if father_last_name.blank?
+		self.mother_first_name = nil if mother_first_name.blank?
+		self.mother_middle_name = nil if mother_middle_name.blank?
+		self.mother_maiden_name = nil if mother_maiden_name.blank?
+		self.mother_last_name = nil if mother_last_name.blank?
+		self.guardian_first_name = nil if guardian_first_name.blank?
+		self.guardian_middle_name = nil if guardian_middle_name.blank?
+		self.guardian_last_name = nil if guardian_last_name.blank?
 	end
 
 	def guardian_relationship_is_other?
