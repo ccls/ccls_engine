@@ -32,6 +32,9 @@ class Patient < Shared
 #	before_create :ensure_presence_of_study_subject_id
 
 
+#	validates_presence_of :admit_date	#	TODO odms#36
+#	validates_presence_of :organization_id	#	TODO odms#36
+
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
 	validate :admit_date_is_after_dob

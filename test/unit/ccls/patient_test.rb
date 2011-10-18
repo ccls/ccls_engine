@@ -2,23 +2,13 @@ require 'test_helper'
 
 class Ccls::PatientTest < ActiveSupport::TestCase
 
+#	assert_should_require :organization_id #	TODO odms#36
+#	assert_should_require :admit_date			 #	TODO odms#36
+
 	assert_should_create_default_object
 
-#	assert_should_belong_to(:study_subject)
 	assert_should_initially_belong_to(:study_subject)
 	assert_should_protect( :study_subject_id )
-
-
-
-#	NOTE Used to work, but after changing Subject to StudySubject doesn't?  Should it?
-#	assert_should_not_require_attributes( :study_subject_id )
-#	Interesting.  There's actually a counter test that tests its requirement??
-#	I don't understand how it ever would've worked.
-
-
-
-#	assert_should_require_attributes( :study_subject_id )
-#	assert_should_require_unique_attributes( :study_subject_id )
 
 	assert_should_belong_to( :organization, :diagnosis )
 
@@ -28,36 +18,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	assert_requires_complete_date( :admit_date, :diagnosis_date )
 	assert_requires_past_date( :admit_date, :diagnosis_date )
-
-	#
-	#	study_subject uses accepts_attributes_for :patient
-	#	so the patient can't require study_subject_id on create
-	#	or this test fails.
-	#
-#	test "should require study_subject_id on update" do
-#		assert_difference( "#{model_name}.count", 1 ) do
-#				object = create_object
-#			object.reload.update_attributes(:diagnosis_date => Date.today)
-#			assert object.errors.on_attr_and_type(:study_subject,:blank)
-#		end
-#	end
-
-#	test "should require study_subject_id" do
-#		assert_difference( "StudySubject.count", 0 ) {
-#		assert_difference( "#{model_name}.count", 0 ) {
-#				object = create_object(:study_subject => nil)
-#			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
-#		} }
-#	end
-#
-#	test "should require unique study_subject_id" do
-#		study_subject = Factory(:case_study_subject)
-#		create_object(:study_subject => study_subject)
-#		assert_difference( "#{model_name}.count", 0 ) do
-#			object = create_object(:study_subject => study_subject)
-#			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
-#		end
-#	end
 
 	test "should default was_ca_resident_at_diagnosis to null" do
 		assert_difference( "Patient.count", 1 ) {

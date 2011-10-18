@@ -14,10 +14,10 @@ def random_float
 	rand * 100
 end
 
-Factory.define :document do |f|
-	f.sequence(:title) { |n| "Title#{n}" }
-#	f.sequence(:document_file_name) { |n| "document_file_name#{n}" }
-end
+#Factory.define :document do |f|
+#	f.sequence(:title) { |n| "Title#{n}" }
+##	f.sequence(:document_file_name) { |n| "document_file_name#{n}" }
+#end
 
 #Factory.define :photo do |f|
 #	f.sequence(:title) { |n| "Title#{n}" }
@@ -191,8 +191,8 @@ Factory.define :document_version do |f|
 	f.association :document_type
 end
 
-Factory.define :dust_kit do |f|
-end
+#Factory.define :dust_kit do |f|
+#end
 
 Factory.define :enrollment do |f|
 	f.association :study_subject
@@ -243,9 +243,9 @@ Factory.define :home_exposure_response do |f|
 	f.association :study_subject
 end
 
-Factory.define :home_page_pic do |f|
-	f.sequence(:title){ |n| "Title #{n}" }
-end
+#Factory.define :home_page_pic do |f|
+#	f.sequence(:title){ |n| "Title #{n}" }
+#end
 
 Factory.define :icf_master_id do |f|
 end
@@ -512,36 +512,36 @@ end
 #
 #		Survey related factories
 #
-Factory.define :survey do |f|
-	f.sequence(:title){|n| "My Survey #{n}" }
-end
-Factory.define :survey_section do |f|
-	f.association :survey
-	f.sequence(:title) { |n| "Title #{n}" }
-	f.sequence(:display_order){ |n| n }
-end
-Factory.define :response_set do |f|
-	f.association :study_subject
-	f.association :survey
-end
-Factory.define :response do |f|
-	f.association :response_set
-	f.association :question
-	f.association :answer
-end
-Factory.define :question do |f|
-	f.association :survey_section
-	f.sequence(:display_order){ |n| n }
-	f.text "My Question Text"
-	f.is_mandatory false
-	f.sequence(:data_export_identifier){|n| "qdei_#{n}" }
-end
-Factory.define :answer do |f|
-	f.association :question
-	f.text "My Answer Text"
-	f.sequence(:data_export_identifier){|n| "adei_#{n}" }
-#	f.response_class "answer"
-end
+#Factory.define :survey do |f|
+#	f.sequence(:title){|n| "My Survey #{n}" }
+#end
+#Factory.define :survey_section do |f|
+#	f.association :survey
+#	f.sequence(:title) { |n| "Title #{n}" }
+#	f.sequence(:display_order){ |n| n }
+#end
+#Factory.define :response_set do |f|
+#	f.association :study_subject
+#	f.association :survey
+#end
+#Factory.define :response do |f|
+#	f.association :response_set
+#	f.association :question
+#	f.association :answer
+#end
+#Factory.define :question do |f|
+#	f.association :survey_section
+#	f.sequence(:display_order){ |n| n }
+#	f.text "My Question Text"
+#	f.is_mandatory false
+#	f.sequence(:data_export_identifier){|n| "qdei_#{n}" }
+#end
+#Factory.define :answer do |f|
+#	f.association :question
+#	f.text "My Answer Text"
+#	f.sequence(:data_export_identifier){|n| "adei_#{n}" }
+##	f.response_class "answer"
+#end
 
 
 

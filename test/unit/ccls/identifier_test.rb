@@ -2,6 +2,8 @@ require 'test_helper'
 
 class Ccls::IdentifierTest < ActiveSupport::TestCase
 
+#	assert_should_require :hospital_no			 #	TODO odms#36
+
 	assert_should_create_default_object
 	assert_should_not_require_attributes( :case_control_type )
 	assert_should_require_unique_attribute( 
@@ -51,31 +53,6 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_protect_attributes(:studyid,:studyid_nohyphen,:studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid)	#, :matchingid
 
-#	test "should require study_subject_id" do
-#		assert_difference( "StudySubject.count", 0 ) {
-#		assert_difference( "#{model_name}.count", 0 ) {
-#			object = create_object(:study_subject => nil)
-#			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
-#		} }
-#	end
-#
-#	test "should require unique study_subject_id" do
-#		study_subject = Factory(:study_subject)
-#		create_object(:study_subject => study_subject)
-#		assert_difference( "#{model_name}.count", 0 ) do
-#			object = create_object(:study_subject => study_subject)
-#			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
-#		end
-#	end
-
-#	test "should nullify blank subjectid before validation" do
-#		identifier = Factory.build(:identifier, :subjectid => '')
-#		assert  identifier.subjectid.blank?
-#		assert !identifier.subjectid.nil?
-#		identifier.valid?
-#		assert  identifier.subjectid.blank?
-#		assert  identifier.subjectid.nil?
-#	end 
 
 	test "should nullify blank ssn before validation" do
 		identifier = Factory.build(:identifier, :ssn => '')

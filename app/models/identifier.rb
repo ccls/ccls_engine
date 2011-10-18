@@ -49,6 +49,8 @@ class Identifier < Shared
 #	validates_presence_of   :subjectid
 #	validates_uniqueness_of :subjectid, :allow_nil => true
 
+#	validates_presense_of :hospital_no #	TODO odms#36
+
 	with_options :allow_nil => true do |n|
 		n.validates_uniqueness_of :ssn
 		n.validates_uniqueness_of :icf_master_id
