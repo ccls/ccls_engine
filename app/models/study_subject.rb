@@ -67,6 +67,8 @@ class StudySubject < Shared
 	has_many :unmerged_abstracts, :class_name => 'Abstract',
 		:conditions => [ "merged_by_uid IS NULL" ]
 
+	before_validation :nullify_blank_sex
+
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
 
@@ -495,6 +497,11 @@ protected
 		if !patient.nil? and !is_case?
 			errors.add(:patient ,"must be case to have patient info")
 		end
+	end
+
+	def nullify_blank_sex
+		#	An empty form field is not NULL to MySQL so ...
+		self.sex = nil if sex.blank?
 	end
 
 end

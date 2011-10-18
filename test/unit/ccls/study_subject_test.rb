@@ -22,6 +22,13 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} 
 	end 
 
+	test "should set nullify blank sex" do
+		assert_difference( "StudySubject.count", 1 ) {
+			study_subject = create_study_subject(:sex => '')
+			assert_nil study_subject.reload.sex
+		} 
+	end 
+
 	test "create_control_study_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
 		assert_difference( "StudySubject.count", 1 ) {
