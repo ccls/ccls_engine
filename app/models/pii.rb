@@ -12,28 +12,7 @@ class Pii < Shared
 	#	to determine if the dob is required.
 	attr_accessor :subject_is_mother, :subject_is_father
 
-#
-#	TODO - Don't validate anything that the creating user can't do anything about.
-#
-
-	##	TODO - find a better way to do this
-	#	because study_subject accepts_nested_attributes for pii 
-	#	we can't require study_subject_id on create
-	#
-	#	study_subject_id is not known until before_save
-	#		so cannot be validated on creation
-	#
 	attr_protected          :study_subject_id
-#	validates_presence_of   :study_subject,    :on => :update
-#	NOTE This requirement is in the database as well.
-#	validates_uniqueness_of :study_subject_id, :allow_nil => true
-	#
-	#	since I can't use the conventional validations to check 
-	#	study_subject_id, do it before_save.  This'll rollback 
-	#	the study_subject creation too if using nested attributes.
-	#	I don't know that this is ever really an even possible issue
-	#	as there is no way to directly create one.
-#	before_create :ensure_presence_of_study_subject_id
 
 	before_validation :nullify_blank_email
 
@@ -55,12 +34,8 @@ class Pii < Shared
 		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
 		:if => :guardian_relationship_is_other?
 
-#
-#	TODO gonna need to require some of these names
-#
-	validates_presence_of :first_name, :last_name
-	validates_length_of :first_name, :last_name, :maximum => 250
-	validates_length_of :middle_name, :maiden_name, :guardian_relationship_other,
+	validates_length_of :first_name, :last_name, 
+		:middle_name, :maiden_name, :guardian_relationship_other,
 		:father_first_name, :father_middle_name, :father_last_name,
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
@@ -124,25 +99,6 @@ class Pii < Shared
 	end
 
 protected
-
-#	TODO I think that I should just remove these as
-#		it is realistically not possible to do this through
-#		the web app.  Is in Pii, Patient, Identifier.
-#	##
-#	#	since I can't use the conventional validations to check 
-#	#	study_subject_id, do it before_save.  This'll rollback 
-#	#	the study_subject creation too if using nested attributes.
-##	there is no uniqueness check anymore
-#	def ensure_presence_of_study_subject_id
-#		if study_subject_id.blank?
-#			errors.add(:study_subject_id, :blank )
-#			return false
-#		#	As this is only on create, we don't need to consider self.id
-##		elsif Pii.exists?(:study_subject_id => study_subject_id)
-##			errors.add(:study_subject_id, :taken )
-##			return false
-#		end
-#	end
 
 	def nullify_blank_email
 		#	An empty form field is not NULL to MySQL so ...

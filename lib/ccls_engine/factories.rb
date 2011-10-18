@@ -334,9 +334,9 @@ Factory.define :pii do |f|
 	#	really don't see the point of a PII w/o a study_subject
 	#	but ...
 	f.association :study_subject
-	f.first_name "First"
+#	f.first_name "First"
 #	f.middle_name "Middle"
-	f.last_name "Last"
+#	f.last_name "Last"
 	f.sequence(:email){|n| "email#{n}@example.com"}
 	f.dob Date.jd(2440000+rand(15000))
 end

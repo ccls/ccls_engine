@@ -4,27 +4,14 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
-#	assert_should_belong_to(:study_subject)
 	assert_should_initially_belong_to(:study_subject)
 	assert_should_protect( :study_subject_id )
-
-
-#	NOTE Used to work, but after changing Subject to StudySubject doesn't?  Should it?
-#	assert_should_not_require_attributes( :study_subject_id )
-#	Interesting.  There's actually a counter test that tests its requirement??
-#	I don't understand how it ever would've worked.
-
-
-
-#	assert_should_require_attributes( :study_subject_id )
-#	assert_should_require_unique_attributes( :study_subject_id )
 
 	assert_should_belong_to( :guardian_relationship, :class_name => 'SubjectRelationship' )
 	assert_should_require_attributes( :dob )
 	assert_should_require_unique_attributes( :email )
-#	assert_should_not_require_attributes( :first_name )
-	assert_should_require_attributes( :first_name )
-	assert_should_require_attributes( :last_name )
+	assert_should_not_require_attributes( :first_name )
+	assert_should_not_require_attributes( :last_name )
 
 	assert_should_not_require_attributes( :died_on, 
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
@@ -46,38 +33,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		:generational_suffix, :father_generational_suffix,
 			:maximum => 10 )
 
-
 	assert_requires_complete_date( :dob, :died_on )
-
-	#
-	#	study_subject uses accepts_attributes_for :pii
-	#	so the pii can't require study_subject_id on create
-	#	or this test fails.
-	#
-#	test "should require study_subject_id on update" do
-#		assert_difference( "#{model_name}.count", 1 ) do
-#			object = create_object
-#			object.reload.update_attributes(:first_name => "New First Name")
-#			assert object.errors.on_attr_and_type(:study_subject,:blank)
-#		end
-#	end
-
-#	test "should require study_subject_id" do
-#		assert_difference( "StudySubject.count", 0 ) {
-#		assert_difference( "#{model_name}.count", 0 ) {
-#				object = create_object(:study_subject => nil)
-#			assert object.errors.on_attr_and_type(:study_subject_id, :blank)
-#		} }
-#	end
-#
-#	test "should require unique study_subject_id" do
-#		study_subject = Factory(:study_subject)
-#		create_object(:study_subject => study_subject)
-#		assert_difference( "#{model_name}.count", 0 ) do
-#			object = create_object(:study_subject => study_subject)
-#			assert object.errors.on_attr_and_type(:study_subject_id,:taken)
-#		end
-#	end
 
 	test "should allow multiple blank email" do
 		create_object(:email => '  ')
