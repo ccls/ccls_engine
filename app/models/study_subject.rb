@@ -197,7 +197,13 @@ class StudySubject < Shared
 #		load 'pii.rb' if RAILS_ENV == 'development'	#	forgets
 		require_dependency 'pii.rb' unless Pii
 		#	interesting that I don't have to load 'identifier.rb' ???
-		[childid,'(',studyid,full_name,')'].compact.join(' ')
+		[childid,'(',studyid,fullname,')'].compact.join(' ')
+	end
+
+	#	pii may actually be nil, so need to address this.
+	#	The default full_name if non-existant is ALSO in pii.
+	def fullname
+		full_name || '[name not available]'
 	end
 
 	#	Returns boolean of comparison

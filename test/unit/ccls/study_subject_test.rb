@@ -561,6 +561,12 @@ pending
 			"#{object}"
 	end
 
+	test "should return 'name not available' for study_subject without pii" do
+		object = create_object
+		assert_nil object.pii
+		assert_equal '[name not available]', object.fullname
+	end
+
 	test "should return hx_id" do
 		hx_id = Project['HomeExposures'].id
 		assert_not_nil hx_id
