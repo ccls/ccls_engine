@@ -104,5 +104,44 @@ class Ccls::GiftCardSearchTest < ActiveSupport::TestCase
 		assert !gift_cards.include?(g2)
 	end
 
+protected
+
+	def create_gift_cards(count=0,options={})
+		gift_cards = []
+		count.times{ gift_cards.push(create_gift_card(options)) }
+		return gift_cards
+	end
+
+	def create_gift_card_with_first_name(first_name)
+		study_subject = create_study_subject_with_first_name(first_name)
+		gift_card = create_gift_card
+		study_subject.gift_cards << gift_card
+		gift_card
+	end
+	
+	def create_gift_card_with_last_name(last_name)
+		study_subject = create_study_subject_with_last_name(last_name)
+		gift_card = create_gift_card
+		study_subject.gift_cards << gift_card
+		gift_card
+	end
+	
+	def create_gift_card_with_childid(childid)
+		study_subject = create_study_subject_with_childid(childid)
+		gift_card = create_gift_card
+		study_subject.gift_cards << gift_card
+		gift_card
+	end
+	
+	def create_gift_card_with_patid(patid)
+		study_subject = create_study_subject_with_patid(patid)
+		gift_card = create_gift_card
+		study_subject.gift_cards << gift_card
+		gift_card
+	end
+	
+	def create_gift_card_with_number(number)
+		create_gift_card(:number => number)
+	end
 
 end

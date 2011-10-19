@@ -111,4 +111,40 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 		assert !abstracts.include?(a2)
 	end
 
+protected 
+
+	def create_abstracts(count=0,options={})
+		abstracts = []
+		count.times{ abstracts.push(create_abstract(options)) }
+		return abstracts
+	end
+
+	def create_abstract_with_first_name(first_name)
+		study_subject  = create_study_subject_with_first_name(first_name)
+		abstract = create_abstract
+		study_subject.abstracts << abstract
+		abstract
+	end
+
+	def create_abstract_with_last_name(last_name)
+		study_subject  = create_study_subject_with_last_name(last_name)
+		abstract = create_abstract
+		study_subject.abstracts << abstract
+		abstract
+	end
+
+	def create_abstract_with_childid(childid)
+		study_subject  = create_study_subject_with_childid(childid)
+		abstract = create_abstract
+		study_subject.abstracts << abstract
+		abstract
+	end
+
+	def create_abstract_with_patid(patid)
+		study_subject  = create_study_subject_with_patid(patid)
+		abstract = create_abstract
+		study_subject.abstracts << abstract
+		abstract
+	end
+
 end
