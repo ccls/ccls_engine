@@ -556,9 +556,8 @@ pending
 	test "should return concat of 3 fields as to_s" do
 		object = create_object
 		#	[childid,'(',studyid,full_name,')'].compact.join(' ')
-		assert_equal [
-			object.childid,'(',object.studyid,object.full_name,')'].compact.join(' '), 
-			"#{object}"
+		assert_equal "#{object}",
+			[object.childid,'(',object.studyid,object.fullname,')'].compact.join(' ')
 	end
 
 	test "should return 'name not available' for study_subject without pii" do
