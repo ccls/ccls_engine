@@ -4,7 +4,6 @@ class StudySubject < Shared
 #
 #	NOTE: Don't validate anything that the creating user can't do anything about.
 #
-#	self.abstract_class = true
 
 	class NotTwoAbstracts < StandardError; end
 
@@ -82,7 +81,6 @@ class StudySubject < Shared
 		n.validates_complete_date_for :reference_date
 		n.with_options :to => :pii do |o|
 			o.delegate :initials
-#			o.delegate :full_name
 			o.delegate :email
 			o.delegate :last_name
 			o.delegate :first_name
@@ -144,10 +142,6 @@ class StudySubject < Shared
 	accepts_nested_attributes_for :identifier
 	accepts_nested_attributes_for :patient
 
-
-
-
-
 	def father
 		StudySubject.find(:first,
 			:joins => :identifier,
@@ -186,7 +180,6 @@ class StudySubject < Shared
 		)
 	end
 
-
 	#	Returns number of addresses with 
 	#	address_type.code == 'residence'
 	def residence_addresses_count
@@ -200,15 +193,10 @@ class StudySubject < Shared
 		[childid,'(',studyid,full_name,')'].compact.join(' ')
 	end
 
-	#	pii may actually be nil, so need to address this.
 	#	The default full_name if non-existant is ALSO in pii.
-	#	Perhaps it would be better to NOT delegate full_name to pii
-	#	and just use "full_name" for this method and refer to
-	#	pii.full_name to remove possible the "_" confusion?
 	def full_name
-		pii.full_name || '[name not available]'
+		pii.try(:full_name) || '[name not available]'
 	end
-#	alias_method :fullname,:full_name
 
 	#	Returns boolean of comparison
 	#	true only if type is Case
