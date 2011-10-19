@@ -1,4 +1,3 @@
-#module CclsEngine
 module Ccls::CoreExtension
 
 	def class_exists?(full_class_name)
@@ -12,5 +11,4 @@ module Ccls::CoreExtension
 	end
 
 end	#	Ccls::CoreExtension
-#include CclsEngine::CoreExtension
 include Ccls::CoreExtension

@@ -1,6 +1,5 @@
 module Ccls;end
 
-#module CclsEngine;end
 namespace :test do
 	namespace :units do
 		Rake::TestTask.new(:ccls_engine => "db:test:prepare") do |t|
