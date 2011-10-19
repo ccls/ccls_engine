@@ -51,4 +51,12 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 		assert_equal organization.name, "#{organization}"
 	end
 
+protected
+
+	def create_organization(options={})
+		organization = Factory.build(:organization,options)
+		organization.save
+		organization
+	end
+
 end

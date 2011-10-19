@@ -13,24 +13,32 @@ class Ccls::VitalStatusTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :key, :maximum => 250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		vital_status = create_vital_status
+		assert_equal vital_status.description, "#{vital_status}"
 	end
 
 	test "should find by key with ['string']" do
-		object = VitalStatus['living']
-		assert object.is_a?(VitalStatus)
+		vital_status = VitalStatus['living']
+		assert vital_status.is_a?(VitalStatus)
 	end
 
 	test "should find by key with [:symbol]" do
-		object = VitalStatus[:living]
-		assert object.is_a?(VitalStatus)
+		vital_status = VitalStatus[:living]
+		assert vital_status.is_a?(VitalStatus)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(VitalStatus::NotFound) {
-#			object = VitalStatus['idonotexist']
+#			vital_status = VitalStatus['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_vital_status(options={})
+		vital_status = Factory.build(:vital_status,options)
+		vital_status.save
+		vital_status
+	end
 
 end

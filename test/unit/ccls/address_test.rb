@@ -3,33 +3,46 @@ require 'test_helper'
 class Ccls::AddressTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_require_attributes( :line_1, :city, :state, :zip )
-	assert_should_not_require_attributes( :line_2, :unit,
-		:data_source_id, :external_address_id )
-	assert_should_require_attribute_length( :zip, 
-		:maximum => 10 )
-	assert_should_require_attribute_length( :line_1, :line_2, :unit,
-		:city, :state,
-		:maximum => 250 )
+	assert_should_require_attributes( 
+		:line_1, 
+		:city, 
+		:state, 
+		:zip )
+	assert_should_not_require_attributes( 
+		:line_2, 
+		:unit,
+		:data_source_id, 
+		:external_address_id )
+	assert_should_require_attribute_length( 
+		:zip, 
+			:maximum => 10 )
+	assert_should_require_attribute_length( 
+		:line_1, 
+		:line_2, 
+		:unit,
+		:city, 
+		:state,
+			:maximum => 250 )
 
 	assert_should_have_one(:addressing)
 	assert_should_have_many(:interviews)
 	assert_should_belong_to(:data_source)
 	assert_should_initially_belong_to(:address_type)
 
-
 	test "should require 5 or 9 digit zip" do
 		%w( asdf 1234 123456 1234Q ).each do |bad_zip|
-			assert_difference( "#{model_name}.count", 0 ) do
-				object = create_object( :zip => bad_zip )
-				assert object.errors.on(:zip)
+			assert_difference( "Address.count", 0 ) do
+				address = Factory.build(:address, :zip => bad_zip )
+				address.save
+				assert address.errors.on(:zip)
 			end
 		end
 		%w( 12345 12345-6789 123456789 ).each do |good_zip|
-			assert_difference( "#{model_name}.count", 1 ) do
-				object = create_object( :zip => good_zip )
-				assert !object.errors.on(:zip)
-				assert object.zip =~ /\A\d{5}(-)?(\d{4})?\z/
+			assert_difference( "Address.count", 1 ) do
+				address = Factory.build(:address, :zip => good_zip )
+				address.save
+				assert !address.errors.on(:zip)
+				assert address.zip =~ /\A\d{5}(-)?(\d{4})?\z/
 			end
 		end
 	end
@@ -51,12 +64,13 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 	end
 
 	test "should require non-residence address type with pobox in line" do
-		assert_difference( "#{model_name}.count", 0 ) do
-			object = create_object({
+		assert_difference( "Address.count", 0 ) do
+			address = Factory.build(:address,
 				:line_1 => "P.O. Box 123",
 				:address_type => AddressType['residence']
-			})
-			assert object.errors.on(:address_type_id)
+			)
+			address.save
+			assert address.errors.on(:address_type_id)
 		end
 	end
 

@@ -17,14 +17,22 @@ class Ccls::GiftCardTest < ActiveSupport::TestCase
 			:maximum => 250 )
 
 	test "should return number as to_s" do
-		object = create_object
-		assert_equal object.number, "#{object}"
+		gift_card = create_gift_card
+		assert_equal gift_card.number, "#{gift_card}"
 	end
 
 #	Add search tests
 
 	test "should search for stuff" do
 pending
+	end
+
+protected
+
+	def create_gift_card(options={})
+		gift_card = Factory.build(:gift_card,options)
+		gift_card.save
+		gift_card
 	end
 
 end

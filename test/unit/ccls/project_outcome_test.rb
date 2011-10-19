@@ -12,9 +12,17 @@ class Ccls::ProjectOutcomeTest < ActiveSupport::TestCase
 		:maximum => 250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description,
-			"#{object}"
+		project_outcome = create_project_outcome
+		assert_equal project_outcome.description,
+			"#{project_outcome}"
+	end
+
+protected
+
+	def create_project_outcome(options={})
+		project_outcome = Factory.build(:project_outcome,options)
+		project_outcome.save
+		project_outcome
 	end
 
 end

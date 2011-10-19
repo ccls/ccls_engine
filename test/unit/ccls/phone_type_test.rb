@@ -12,8 +12,16 @@ class Ccls::PhoneTypeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :maximum => 250 )
 
 	test "should return code as to_s" do
-		object = create_object
-		assert_equal object.code, "#{object}"
+		phone_type = create_phone_type
+		assert_equal phone_type.code, "#{phone_type}"
+	end
+
+protected
+
+	def create_phone_type(options={})
+		phone_type = Factory.build(:phone_type,options)
+		phone_type.save
+		phone_type
 	end
 
 end

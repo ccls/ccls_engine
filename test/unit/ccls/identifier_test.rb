@@ -123,29 +123,29 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	end 
 
 	test "should create with all numeric ssn" do
-		assert_difference( "#{model_name}.count", 1 ) do
-			object = create_object(:ssn => 987654321)
-			assert !object.new_record?, 
-				"#{object.errors.full_messages.to_sentence}"
-			assert_equal '987654321', object.reload.ssn
+		assert_difference( "Identifier.count", 1 ) do
+			identifier = create_identifier(:ssn => 987654321)
+			assert !identifier.new_record?, 
+				"#{identifier.errors.full_messages.to_sentence}"
+			assert_equal '987654321', identifier.reload.ssn
 		end
 	end
 
 	test "should create with string all numeric ssn" do
-		assert_difference( "#{model_name}.count", 1 ) do
-			object = create_object(:ssn => '987654321')
-			assert !object.new_record?, 
-				"#{object.errors.full_messages.to_sentence}"
-			assert_equal '987654321', object.reload.ssn
+		assert_difference( "Identifier.count", 1 ) do
+			identifier = create_identifier(:ssn => '987654321')
+			assert !identifier.new_record?, 
+				"#{identifier.errors.full_messages.to_sentence}"
+			assert_equal '987654321', identifier.reload.ssn
 		end
 	end
 
 	test "should create with string standard format ssn" do
-		assert_difference( "#{model_name}.count", 1 ) do
-			object = create_object(:ssn => '987-65-4321')
-			assert !object.new_record?, 
-				"#{object.errors.full_messages.to_sentence}"
-			assert_equal '987654321', object.reload.ssn
+		assert_difference( "Identifier.count", 1 ) do
+			identifier = create_identifier(:ssn => '987-65-4321')
+			assert !identifier.new_record?, 
+				"#{identifier.errors.full_messages.to_sentence}"
+			assert_equal '987654321', identifier.reload.ssn
 		end
 	end
 
@@ -162,9 +162,9 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	test "should require 9 digits in ssn" do
 pending
 #		%w( 12345678X 12345678 1-34-56-789 ).each do |invalid_ssn|
-#			assert_difference( "#{model_name}.count", 0 ) do
-#				object = create_object(:ssn => invalid_ssn)
-#				assert object.errors.on(:ssn)
+#			assert_difference( "Identifier.count", 0 ) do
+#				identifier = create_identifier(:ssn => invalid_ssn)
+#				assert identifier.errors.on(:ssn)
 #			end
 #		end
 	end
@@ -305,7 +305,7 @@ pending
 		#	existing data import
 		assert_difference( "Patid.next_id", 0 ) {
 		assert_difference( "Patid.count", 0 ) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Identifier.count", 1 ) {
 			identifier = Factory.build(:case_identifier)
 			identifier.patid = '123'
 			identifier.save
@@ -321,7 +321,7 @@ pending
 		#	existing data import
 		assert_difference( "Childid.next_id", 0 ) {
 		assert_difference( "Childid.count", 0 ) {
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Identifier.count", 1 ) {
 			identifier = Factory.build(:case_identifier)
 			identifier.childid = '123'
 			identifier.save
@@ -332,7 +332,7 @@ pending
 
 	test "should not generate new orderno if given" do
 		#	existing data import
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Identifier.count", 1 ) {
 			identifier = Factory.build(:case_identifier)
 			identifier.orderno = 9
 			identifier.save
@@ -343,7 +343,7 @@ pending
 
 	test "should not generate new subjectid if given" do
 		#	existing data import
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Identifier.count", 1 ) {
 			identifier = Factory.build(:case_identifier)
 			identifier.subjectid = "ABCDEF"
 			identifier.save
@@ -354,7 +354,7 @@ pending
 
 	test "should not generate new familyid if given" do
 		#	existing data import
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Identifier.count", 1 ) {
 			identifier = Factory.build(:case_identifier)
 			identifier.familyid = "ABCDEF"
 			identifier.save
@@ -365,13 +365,21 @@ pending
 
 	test "should not generate new matchingid if given" do
 		#	existing data import
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "Identifier.count", 1 ) {
 			identifier = Factory.build(:case_identifier)
 			identifier.matchingid = "123456"	#	NOTE converted to integer in validation, so make numeric so can compare value
 			identifier.save
 			identifier.reload
 			assert_equal "123456", identifier.matchingid
 		}
+	end
+
+protected
+
+	def create_identifier(options={})
+		identifier = Factory.build(:identifier,options)
+		identifier.save
+		identifier
 	end
 
 end

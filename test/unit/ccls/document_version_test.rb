@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class Ccls::DocumentVersionTest < ActiveSupport::TestCase
+
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many(:enrollments)
@@ -20,8 +21,16 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 	end
 
 	test "should return title as to_s" do
-		object = create_object
-		assert_equal object.title, "#{object}"
+		document_version = create_document_version
+		assert_equal document_version.title, "#{document_version}"
+	end
+
+protected
+
+	def create_document_version(options={})
+		document_version = Factory.build(:document_version,options)
+		document_version.save
+		document_version
 	end
 
 end

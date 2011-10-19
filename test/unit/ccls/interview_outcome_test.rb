@@ -12,25 +12,33 @@ class Ccls::InterviewOutcomeTest < ActiveSupport::TestCase
 		:maximum => 250 )
 
 	test "should return description as to_s" do
-		object = create_object(:description => "Description")
-		assert_equal object.description,
-			"#{object}"
+		interview_outcome = create_interview_outcome(:description => "Description")
+		assert_equal interview_outcome.description,
+			"#{interview_outcome}"
 	end
 
 	test "should find by code with ['string']" do
-		object = InterviewOutcome['complete']
-		assert object.is_a?(InterviewOutcome)
+		interview_outcome = InterviewOutcome['complete']
+		assert interview_outcome.is_a?(InterviewOutcome)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = InterviewOutcome[:complete]
-		assert object.is_a?(InterviewOutcome)
+		interview_outcome = InterviewOutcome[:complete]
+		assert interview_outcome.is_a?(InterviewOutcome)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(InterviewOutcome::NotFound) {
-#			object = InterviewOutcome['idonotexist']
+#			interview_outcome = InterviewOutcome['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_interview_outcome(options={})
+		interview_outcome = Factory.build(:interview_outcome,options)
+		interview_outcome.save
+		interview_outcome
+	end
 
 end

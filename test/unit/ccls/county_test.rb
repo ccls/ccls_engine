@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class Ccls::CountyTest < ActiveSupport::TestCase
+
 	assert_should_create_default_object
 	assert_should_have_many(:zip_codes)
 	assert_should_require( :name, :state_abbrev )
@@ -10,8 +11,16 @@ class Ccls::CountyTest < ActiveSupport::TestCase
 	assert_should_require_length( :fips_code, :maximum => 5 )
 
 	test "should return name and state as to_s" do
-		object = create_object
-		assert_equal "#{object.name}, #{object.state_abbrev}", "#{object}"
+		county = create_county
+		assert_equal "#{county.name}, #{county.state_abbrev}", "#{county}"
+	end
+
+protected
+
+	def create_county(options={})
+		county = Factory.build(:county,options)
+		county.save
+		county
 	end
 
 end

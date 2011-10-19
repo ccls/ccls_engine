@@ -22,29 +22,37 @@ class Ccls::InstrumentVersionTest < ActiveSupport::TestCase
 
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		instrument_version = create_instrument_version
+		assert_equal instrument_version.description, "#{instrument_version}"
 	end
 
 	test "should find by code with ['string']" do
-		object = InstrumentVersion['unknown']
-		assert object.is_a?(InstrumentVersion)
+		instrument_version = InstrumentVersion['unknown']
+		assert instrument_version.is_a?(InstrumentVersion)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = InstrumentVersion[:unknown]
-		assert object.is_a?(InstrumentVersion)
+		instrument_version = InstrumentVersion[:unknown]
+		assert instrument_version.is_a?(InstrumentVersion)
 	end
 
 	test "should find random" do
-		object = InstrumentVersion.random()
-		assert object.is_a?(InstrumentVersion)
+		instrument_version = InstrumentVersion.random()
+		assert instrument_version.is_a?(InstrumentVersion)
 	end
 
 	test "should return nil on random when no records" do
 		InstrumentVersion.stubs(:count).returns(0)
-		object = InstrumentVersion.random()
-		assert_nil object
+		instrument_version = InstrumentVersion.random()
+		assert_nil instrument_version
+	end
+
+protected
+
+	def create_instrument_version(options={})
+		instrument_version = Factory.build(:instrument_version,options)
+		instrument_version.save
+		instrument_version
 	end
 
 end

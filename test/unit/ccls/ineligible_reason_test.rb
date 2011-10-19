@@ -16,36 +16,44 @@ class Ccls::IneligibleReasonTest < ActiveSupport::TestCase
 		:maximum => 250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		ineligible_reason = create_ineligible_reason
+		assert_equal ineligible_reason.description, "#{ineligible_reason}"
 	end
 
 	test "should find by code with ['string']" do
-		object = IneligibleReason['moved']
-		assert object.is_a?(IneligibleReason)
+		ineligible_reason = IneligibleReason['moved']
+		assert ineligible_reason.is_a?(IneligibleReason)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = IneligibleReason[:moved]
-		assert object.is_a?(IneligibleReason)
+		ineligible_reason = IneligibleReason[:moved]
+		assert ineligible_reason.is_a?(IneligibleReason)
 	end
 
 	test "should find random" do
-		object = IneligibleReason.random()
-		assert object.is_a?(IneligibleReason)
+		ineligible_reason = IneligibleReason.random()
+		assert ineligible_reason.is_a?(IneligibleReason)
 	end
 
 	test "should return nil on random when no records" do
 #		IneligibleReason.destroy_all
 		IneligibleReason.stubs(:count).returns(0)
-		object = IneligibleReason.random()
-		assert_nil object
+		ineligible_reason = IneligibleReason.random()
+		assert_nil ineligible_reason
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(IneligibleReason::NotFound) {
-#			object = IneligibleReason['idonotexist']
+#			ineligible_reason = IneligibleReason['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_ineligible_reason(options={})
+		ineligible_reason = Factory.build(:ineligible_reason,options)
+		ineligible_reason.save
+		ineligible_reason
+	end
 
 end

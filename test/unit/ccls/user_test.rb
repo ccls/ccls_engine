@@ -2,20 +2,13 @@ require 'test_helper'
 
 class Ccls::UserTest < ActiveSupport::TestCase
 
-#	assert_should_require(:uid,
-#		:model => 'User')
-#	assert_should_require_unique(:uid,
-#		:model => 'User')
-#	assert_should_habtm(:roles,
-#		:model => 'User')
-#	again, can't remember why I specified :model	(110606)
 	assert_should_require(:uid)
 	assert_should_require_unique(:uid)
 	assert_should_habtm(:roles)
 
 	test "should create user" do
 		assert_difference 'User.count' do
-			user = create_object
+			user = create_user
 			assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
 			assert !user.may_administrate?
 		end
@@ -23,7 +16,7 @@ class Ccls::UserTest < ActiveSupport::TestCase
 
 	test "should create reader" do
 		assert_difference 'User.count' do
-			user = create_object
+			user = create_user
 			user.roles << Role.find_by_name('reader')
 			assert  user.is_reader?
 			assert  user.may_read?
@@ -35,7 +28,7 @@ class Ccls::UserTest < ActiveSupport::TestCase
 
 	test "should create interviewer" do
 		assert_difference 'User.count' do
-			user = create_object
+			user = create_user
 			user.roles << Role.find_by_name('interviewer')
 			assert  user.is_interviewer?
 			assert  user.may_interview?
@@ -48,7 +41,7 @@ class Ccls::UserTest < ActiveSupport::TestCase
 
 	test "should create editor" do
 		assert_difference 'User.count' do
-			user = create_object
+			user = create_user
 			user.roles << Role.find_by_name('editor')
 			assert  user.is_editor?
 			assert  user.may_edit?
@@ -62,7 +55,7 @@ class Ccls::UserTest < ActiveSupport::TestCase
 
 	test "should create administrator" do
 		assert_difference 'User.count' do
-			user = create_object
+			user = create_user
 			user.roles << Role.find_by_name('administrator')
 			assert  user.is_administrator?
 			assert  user.may_edit?
@@ -104,7 +97,7 @@ class Ccls::UserTest < ActiveSupport::TestCase
 
 	test "should create superuser" do
 		assert_difference 'User.count' do
-			user = create_object
+			user = create_user
 			user.roles << Role.find_by_name('superuser')
 			assert  user.is_superuser?
 			assert  user.is_super_user?
@@ -118,34 +111,23 @@ class Ccls::UserTest < ActiveSupport::TestCase
 	end
 
 	test "should deputize to create administrator" do
-		u = create_object
+		u = create_user
 		assert !u.role_names.include?('administrator')
 		u.deputize
 		assert  u.role_names.include?('administrator')
 	end
 
-#	test "should return non-nil email" do
-#		user = create_object
-#		assert_not_nil user.email
-#	end
-
 	test "should return non-nil mail" do
-		user = create_object
+		user = create_user
 		assert_not_nil user.mail
 	end
-
-#	test "should return non-nil gravatar_url" do
-#		user = create_object
-#		assert_not_nil user.gravatar_url
-#	end
-
 	test "should respond to roles" do
-		user = create_object
+		user = create_user
 		assert user.respond_to?(:roles)
 	end
 
 	test "should have many roles" do
-		u = create_object
+		u = create_user
 		assert_equal 0, u.roles.length
 		roles = Role.all
 		assert roles.length > 0
@@ -158,24 +140,17 @@ class Ccls::UserTest < ActiveSupport::TestCase
 	end
 
 	test "should return displayname as to_s" do
-		object = create_object(:displayname => "Mr Test")
-		assert_equal object.displayname, "Mr Test"
-		assert_equal object.displayname, "#{object}"
+		user = create_user(:displayname => "Mr Test")
+		assert_equal user.displayname, "Mr Test"
+		assert_equal user.displayname, "#{user}"
 	end
 
 protected
 
-#	I think that my method_missing for create_object nullfies the need for this
-#	110606
-	#
-	#	This method is used so that an invalid user produces errors
-	#	rather than raises exceptions which will cause the tests to fail.
-	#
-#	def create_user(options = {})
-#		record = Factory.build(:user,options)
-#		record.save
-#		record
-#	end
-#	alias_method :create_object, :create_user
+	def create_user(options = {})
+		user = Factory.build(:user,options)
+		user.save
+		user
+	end
 	
 end

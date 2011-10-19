@@ -10,7 +10,7 @@ class Ccls::PackageTest < ActiveSupport::TestCase
 		:maximum => 250 )
 
 	test "should NOT require 3 char tracking_number" do
-		assert_difference( "#{model_name}.count", 1 ) do
+		assert_difference( "Package.count", 1 ) do
 			package = create_package(:tracking_number => 'Hi')
 			assert !package.errors.on(:tracking_number)
 		end

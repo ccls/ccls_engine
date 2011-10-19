@@ -12,24 +12,32 @@ class Ccls::RaceTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :key, :code, :maximum => 250 )
 
 	test "should return name as to_s" do
-		object = create_object
-		assert_equal object.name, "#{object}"
+		race = create_race
+		assert_equal race.name, "#{race}"
 	end
 
 	test "should find by key with ['string']" do
-		object = Race['white']
-		assert object.is_a?(Race)
+		race = Race['white']
+		assert race.is_a?(Race)
 	end
 
 	test "should find by key with [:symbol]" do
-		object = Race[:white]
-		assert object.is_a?(Race)
+		race = Race[:white]
+		assert race.is_a?(Race)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(Race::NotFound) {
-#			object = Race['idonotexist']
+#			race = Race['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_race(options={})
+		race = Factory.build(:race,options)
+		race.save
+		race
+	end
 
 end

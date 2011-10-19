@@ -14,36 +14,44 @@ class Ccls::RefusalReasonTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		refusal_reason = create_refusal_reason
+		assert_equal refusal_reason.description, "#{refusal_reason}"
 	end
 
 	test "should find by code with ['string']" do
-		object = RefusalReason['busy']
-		assert object.is_a?(RefusalReason)
+		refusal_reason = RefusalReason['busy']
+		assert refusal_reason.is_a?(RefusalReason)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = RefusalReason[:busy]
-		assert object.is_a?(RefusalReason)
+		refusal_reason = RefusalReason[:busy]
+		assert refusal_reason.is_a?(RefusalReason)
 	end
 
 	test "should find random" do
-		object = RefusalReason.random()
-		assert object.is_a?(RefusalReason)
+		refusal_reason = RefusalReason.random()
+		assert refusal_reason.is_a?(RefusalReason)
 	end
 
 	test "should return nil on random when no records" do
 #		RefusalReason.destroy_all
 		RefusalReason.stubs(:count).returns(0)
-		object = RefusalReason.random()
-		assert_nil object
+		refusal_reason = RefusalReason.random()
+		assert_nil refusal_reason
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(RefusalReason::NotFound) {
-#			object = RefusalReason['idonotexist']
+#			refusal_reason = RefusalReason['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_refusal_reason(options={})
+		refusal_reason = Factory.build(:refusal_reason,options)
+		refusal_reason.save
+		refusal_reason
+	end
 
 end

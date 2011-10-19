@@ -11,25 +11,33 @@ class Ccls::SampleOutcomeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :description, :maximum => 250 )
 
 	test "should return description as to_s" do
-		object = create_object(:description => "Description")
-		assert_equal object.description,
-			"#{object}"
+		sample_outcome = create_sample_outcome(:description => "Description")
+		assert_equal sample_outcome.description,
+			"#{sample_outcome}"
 	end
 
 	test "should find by code with ['string']" do
-		object = SampleOutcome['complete']
-		assert object.is_a?(SampleOutcome)
+		sample_outcome = SampleOutcome['complete']
+		assert sample_outcome.is_a?(SampleOutcome)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = SampleOutcome[:complete]
-		assert object.is_a?(SampleOutcome)
+		sample_outcome = SampleOutcome[:complete]
+		assert sample_outcome.is_a?(SampleOutcome)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(SampleOutcome::NotFound) {
-#			object = SampleOutcome['idonotexist']
+#			sample_outcome = SampleOutcome['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_sample_outcome(options={})
+		sample_outcome = Factory.build(:sample_outcome,options)
+		sample_outcome.save
+		sample_outcome
+	end
 
 end

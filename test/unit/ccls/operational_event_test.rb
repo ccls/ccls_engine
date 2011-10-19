@@ -13,123 +13,130 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 
 	#	description is not required so ...
 	test "should return description as to_s if not nil" do
-		object = create_object(:description => 'testing')
-		assert_equal object.description, "#{object}"
+		operational_event = create_operational_event(:description => 'testing')
+		assert_equal operational_event.description, "#{operational_event}"
 	end
 
 #	test "should return NOT description as to_s if nil" do
-#		object = create_object
-#		assert_not_equal object.description, "#{object}"
+#		operational_event = create_operational_event
+#		assert_not_equal operational_event.description, "#{operational_event}"
 #	end
 
 	test "should order by type ASC" do
-		oes = create_oet_objects
+		oes = create_oet_operational_events
 		events = OperationalEvent.search(:order => 'type',:dir => 'asc')
 		assert_equal events, [oes[1],oes[0],oes[2]]
 	end
 
 	test "should order by type DESC" do
-		oes = create_oet_objects
+		oes = create_oet_operational_events
 		events = OperationalEvent.search(:order => 'type',:dir => 'desc')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should order by type and DESC as default dir" do
-		oes = create_oet_objects
+		oes = create_oet_operational_events
 		events = OperationalEvent.search(:order => 'type')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should order by description ASC" do
-		oes = create_description_objects
+		oes = create_description_operational_events
 		events = OperationalEvent.search(:order => 'description',:dir => 'asc')
 		assert_equal events, [oes[1],oes[0],oes[2]]
 	end
 
 	test "should order by description DESC" do
-		oes = create_description_objects
+		oes = create_description_operational_events
 		events = OperationalEvent.search(:order => 'description',:dir => 'desc')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should order by description and DESC as default dir" do
-		oes = create_description_objects
+		oes = create_description_operational_events
 		events = OperationalEvent.search(:order => 'description')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should order by occurred_on ASC" do
-		oes = create_occurred_on_objects
+		oes = create_occurred_on_operational_events
 		events = OperationalEvent.search(:order => 'occurred_on',:dir => 'asc')
 		assert_equal events, [oes[1],oes[0],oes[2]]
 	end
 
 	test "should order by occurred_on DESC" do
-		oes = create_occurred_on_objects
+		oes = create_occurred_on_operational_events
 		events = OperationalEvent.search(:order => 'occurred_on',:dir => 'desc')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should order by occurred_on and DESC as default dir" do
-		oes = create_occurred_on_objects
+		oes = create_occurred_on_operational_events
 		events = OperationalEvent.search(:order => 'occurred_on')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should order by occurred_on DESC as defaults" do
-		oes = create_occurred_on_objects
+		oes = create_occurred_on_operational_events
 		events = OperationalEvent.search()
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should ignore invalid order" do
-		oes = create_occurred_on_objects
+		oes = create_occurred_on_operational_events
 		events = OperationalEvent.search(:order => 'iambogus')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should ignore invalid dir" do
-		oes = create_occurred_on_objects
+		oes = create_occurred_on_operational_events
 		events = OperationalEvent.search(:order => 'occurred_on',
 			:dir => 'iambogus')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should ignore valid dir without order" do
-		oes = create_occurred_on_objects
+		oes = create_occurred_on_operational_events
 		events = OperationalEvent.search(:dir => 'ASC')
 		assert_equal events, [oes[2],oes[0],oes[1]]
 	end
 
 	test "should copy operational event type description on create" do
-		object = create_object
-		assert_equal object.reload.description, object.operational_event_type.description
+		operational_event = create_operational_event
+		assert_equal operational_event.reload.description, 
+			operational_event.operational_event_type.description
 	end
 
 protected
 
-	def create_objects(*args)
-		args.collect{|options| create_object(options) }
+	def create_operational_event(options={})
+		operational_event = Factory.build(:operational_event,options)
+		operational_event.save
+		operational_event
 	end
 
-	def create_occurred_on_objects
-		create_objects(
+	def create_operational_events(*args)
+		args.collect{|options| create_operational_event(options) }
+	end
+
+	def create_occurred_on_operational_events
+		create_operational_events(
 			{ :occurred_on => Chronic.parse('last month') },
 			{ :occurred_on => Chronic.parse('last year') },
 			{ :occurred_on => Chronic.parse('last week') }
 		)
 	end
 
-	def create_description_objects
-		create_objects(
+	def create_description_operational_events
+		create_operational_events(
 			{ :description => 'M' },
 			{ :description => 'A' },
 			{ :description => 'Z' }
 		)
 	end
 
-	def create_oet_objects
-		create_objects(
+	def create_oet_operational_events
+		create_operational_events(
 			{ :operational_event_type => Factory(
 				:operational_event_type,:description => 'MMMM') },
 			{ :operational_event_type => Factory(

@@ -12,29 +12,37 @@ class Ccls::InterviewMethodTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		interview_method = create_interview_method
+		assert_equal interview_method.description, "#{interview_method}"
 	end
 
 	test "should find by code with ['string']" do
-		object = InterviewMethod['other']
-		assert object.is_a?(InterviewMethod)
+		interview_method = InterviewMethod['other']
+		assert interview_method.is_a?(InterviewMethod)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = InterviewMethod[:other]
-		assert object.is_a?(InterviewMethod)
+		interview_method = InterviewMethod[:other]
+		assert interview_method.is_a?(InterviewMethod)
 	end
 
 	test "should find random" do
-		object = InterviewMethod.random()
-		assert object.is_a?(InterviewMethod)
+		interview_method = InterviewMethod.random()
+		assert interview_method.is_a?(InterviewMethod)
 	end
 
 	test "should return nil on random when no records" do
 		InterviewMethod.stubs(:count).returns(0)
-		object = InterviewMethod.random()
-		assert_nil object
+		interview_method = InterviewMethod.random()
+		assert_nil interview_method
+	end
+
+protected
+
+	def create_interview_method(options={})
+		interview_method = Factory.build(:interview_method,options)
+		interview_method.save
+		interview_method
 	end
 
 end

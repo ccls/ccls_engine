@@ -14,8 +14,8 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 		:maximum => 250 )
 
 	test "should return city, state zip as to_s" do
-		object = create_object
-		assert_equal "#{object.city}, #{object.state} #{object.zip_code}", "#{object}"
+		zip_code = create_zip_code
+		assert_equal "#{zip_code.city}, #{zip_code.state} #{zip_code.zip_code}", "#{zip_code}"
 	end
 
 	test "should not find non-existant zip code with ['string']" do
@@ -24,14 +24,22 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 
 	test "should find by zip code with ['string']" do
 		Factory(:zip_code,:zip_code => '94700')
-		object = ZipCode['94700']
-		assert object.is_a?(ZipCode)
+		zip_code = ZipCode['94700']
+		assert zip_code.is_a?(ZipCode)
 	end
 
 	test "should find by zip code with [:symbol]" do
 		Factory(:zip_code,:zip_code => '94700')
-		object = ZipCode['94700'.to_sym]	#	:1 is no good, but '1'.to_sym is OK
-		assert object.is_a?(ZipCode)
+		zip_code = ZipCode['94700'.to_sym]	#	:1 is no good, but '1'.to_sym is OK
+		assert zip_code.is_a?(ZipCode)
+	end
+
+protected
+
+	def create_zip_code(options={})
+		zip_code = Factory.build(:zip_code,options)
+		zip_code.save
+		zip_code
 	end
 
 end

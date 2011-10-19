@@ -13,24 +13,32 @@ class Ccls::OperationalEventTypeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :event_category, :in => 4..250 )
 
 	test "should return event_category as to_s" do
-		object = create_object
-		assert_equal object.event_category, "#{object}"
+		operational_event_type = create_operational_event_type
+		assert_equal operational_event_type.event_category, "#{operational_event_type}"
 	end
 
 	test "should find by code with ['string']" do
-		object = OperationalEventType['ineligible']
-		assert object.is_a?(OperationalEventType)
+		operational_event_type = OperationalEventType['ineligible']
+		assert operational_event_type.is_a?(OperationalEventType)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = OperationalEventType[:ineligible]
-		assert object.is_a?(OperationalEventType)
+		operational_event_type = OperationalEventType[:ineligible]
+		assert operational_event_type.is_a?(OperationalEventType)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(OperationalEventType::NotFound) {
-#			object = OperationalEventType['idonotexist']
+#			operational_event_type = OperationalEventType['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_operational_event_type(options={})
+		operational_event_type = Factory.build(:operational_event_type,options)
+		operational_event_type.save
+		operational_event_type
+	end
 
 end

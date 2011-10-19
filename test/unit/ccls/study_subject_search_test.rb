@@ -688,12 +688,12 @@ pending
 
 protected
 
-	def create_survey_response_sets
-		survey = Survey.find_by_access_code("home_exposure_survey")
-		rs1 = fill_out_survey(:survey => survey)
-		rs2 = fill_out_survey(:survey => survey,
-			:study_subject => rs1.study_subject)
-		[rs1.reload,rs2.reload]
-	end
+#	def create_survey_response_sets
+#		survey = Survey.find_by_access_code("home_exposure_survey")
+#		rs1 = fill_out_survey(:survey => survey)
+#		rs2 = fill_out_survey(:survey => survey,
+#			:study_subject => rs1.study_subject)
+#		[rs1.reload,rs2.reload]
+#	end
 
 end

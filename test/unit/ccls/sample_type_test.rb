@@ -27,6 +27,8 @@ class Ccls::SampleTypeTest < ActiveSupport::TestCase
 
 protected
 
+#	The common assertions use create_object, so leave this alone.
+
 	def create_object(options = {})
 #		record = Factory.build(:sample_type,options)
 #	The normal sample_type factory creates a parent 

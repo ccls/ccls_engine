@@ -11,31 +11,39 @@ class Ccls::SubjectTypeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :description, :maximum => 250 )
 
 	test "should return description as name" do
-		object = create_object
-		assert_equal object.description,
-			object.name
+		subject_type = create_subject_type
+		assert_equal subject_type.description,
+			subject_type.name
 	end
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description,
-			"#{object}"
+		subject_type = create_subject_type
+		assert_equal subject_type.description,
+			"#{subject_type}"
 	end
 
 	test "should find by code with ['string']" do
-		object = SubjectType['Case']
-		assert object.is_a?(SubjectType)
+		subject_type = SubjectType['Case']
+		assert subject_type.is_a?(SubjectType)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = SubjectType[:Case]
-		assert object.is_a?(SubjectType)
+		subject_type = SubjectType[:Case]
+		assert subject_type.is_a?(SubjectType)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(SubjectType::NotFound) {
-#			object = SubjectType['idonotexist']
+#			subject_type = SubjectType['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_subject_type(options={})
+		subject_type = Factory.build(:subject_type,options)
+		subject_type.save
+		subject_type
+	end
 
 end

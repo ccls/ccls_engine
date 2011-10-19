@@ -13,29 +13,37 @@ class Ccls::LanguageTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 
 	test "should find by key with ['string']" do
-		object = Language['english']
-		assert object.is_a?(Language)
+		language = Language['english']
+		assert language.is_a?(Language)
 	end
 
 	test "should find by key with [:symbol]" do
-		object = Language[:english]
-		assert object.is_a?(Language)
+		language = Language[:english]
+		assert language.is_a?(Language)
 	end
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		language = create_language
+		assert_equal language.description, "#{language}"
 	end
 
 	test "should find random" do
-		object = Language.random()
-		assert object.is_a?(Language)
+		language = Language.random()
+		assert language.is_a?(Language)
 	end
 
 	test "should return nil on random when no records" do
 		Language.stubs(:count).returns(0)
-		object = Language.random()
-		assert_nil object
+		language = Language.random()
+		assert_nil language
+	end
+
+protected
+
+	def create_language(options={})
+		language = Factory.build(:language,options)
+		language.save
+		language
 	end
 
 end

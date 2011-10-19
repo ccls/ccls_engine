@@ -13,26 +13,34 @@ class Ccls::FollowUpTypeTest < ActiveSupport::TestCase
 #	assert_should_require_attribute_length( :event_category, :in => 4..250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		follow_up_type = create_follow_up_type
+		assert_equal follow_up_type.description, "#{follow_up_type}"
 	end
 
 	test "should find by code with ['string']" do
-		create_object(:code => 'justatest')
-		object = FollowUpType['justatest']
-		assert object.is_a?(FollowUpType)
+		create_follow_up_type(:code => 'justatest')
+		follow_up_type = FollowUpType['justatest']
+		assert follow_up_type.is_a?(FollowUpType)
 	end
 
 	test "should find by code with [:symbol]" do
-		create_object(:code => 'justatest')
-		object = FollowUpType[:justatest]
-		assert object.is_a?(FollowUpType)
+		create_follow_up_type(:code => 'justatest')
+		follow_up_type = FollowUpType[:justatest]
+		assert follow_up_type.is_a?(FollowUpType)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(OperationalEventType::NotFound) {
-#			object = OperationalEventType['idonotexist']
+#			follow_up_type = OperationalEventType['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_follow_up_type(options={})
+		follow_up_type = Factory.build(:follow_up_type,options)
+		follow_up_type.save
+		follow_up_type
+	end
 
 end

@@ -49,15 +49,15 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	test "should require Case study_subject" do
 		assert_difference( "StudySubject.count", 1 ) {
-		assert_difference( "#{model_name}.count", 0 ) {
-			object = create_object(:study_subject => Factory(:study_subject))
-			assert object.errors.on(:study_subject)
+		assert_difference( "Patient.count", 0 ) {
+			patient = create_patient(:study_subject => Factory(:study_subject))
+			assert patient.errors.on(:study_subject)
 		} }
 	end
 
 	test "should require case study_subject when using nested attributes" do
 		assert_difference( "StudySubject.count", 0 ) {
-		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Patient.count", 0 ) {
 			study_subject = create_study_subject(
 				:patient_attributes => Factory.attributes_for(:patient))
 			assert study_subject.errors.on(:patient)	#	raised from study_subject model, NOT patient
@@ -65,23 +65,23 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should require admit_date be after DOB" do
-		assert_difference( "#{model_name}.count", 0 ) do
+		assert_difference( "Patient.count", 0 ) do
 			study_subject = Factory(:case_study_subject)
 			pii = Factory(:pii,:study_subject => study_subject)
-			object = create_object(
+			patient = create_patient(
 				:study_subject => study_subject,
 				:admit_date => Date.jd(2430000) ) 
 				# smaller than my factory set dob
-			assert object.errors.on(:admit_date)
+			assert patient.errors.on(:admit_date)
 			assert_match(/before.*dob/,
-				object.errors.on(:admit_date))
+				patient.errors.on(:admit_date))
 		end
 	end
 
 	test "should require admit_date be after DOB when using nested attributes" do
 		assert_difference( "Pii.count", 0 ) {
 		assert_difference( "StudySubject.count", 0 ) {
-		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Patient.count", 0 ) {
 			study_subject = create_case_study_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
@@ -93,23 +93,23 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should require diagnosis_date be after DOB" do
-		assert_difference( "#{model_name}.count", 0 ) do
+		assert_difference( "Patient.count", 0 ) do
 			study_subject = Factory(:case_study_subject)
 			pii = Factory(:pii,:study_subject => study_subject)
-			object = create_object(
+			patient = create_patient(
 				:study_subject => study_subject,
 				:diagnosis_date => Date.jd(2430000) ) 
 				# smaller than my factory set dob
-			assert object.errors.on(:diagnosis_date)
+			assert patient.errors.on(:diagnosis_date)
 			assert_match(/before.*dob/,
-				object.errors.on(:diagnosis_date))
+				patient.errors.on(:diagnosis_date))
 		end
 	end
 
 	test "should require diagnosis_date be after DOB when using nested attributes" do
 		assert_difference( "Pii.count", 0 ) {
 		assert_difference( "StudySubject.count", 0 ) {
-		assert_difference( "#{model_name}.count", 0 ) {
+		assert_difference( "Patient.count", 0 ) {
 			study_subject = create_case_study_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
@@ -218,18 +218,26 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	test "should require 5 or 9 digit raf_zip" do
 		%w( asdf 1234 123456 1234Q ).each do |bad_zip|
-			assert_difference( "#{model_name}.count", 0 ) do
-				object = create_object( :raf_zip => bad_zip )
-				assert object.errors.on(:raf_zip)
+			assert_difference( "Patient.count", 0 ) do
+				patient = create_patient( :raf_zip => bad_zip )
+				assert patient.errors.on(:raf_zip)
 			end
 		end
 		%w( 12345 12345-6789 123456789 ).each do |good_zip|
-			assert_difference( "#{model_name}.count", 1 ) do
-				object = create_object( :raf_zip => good_zip )
-				assert !object.errors.on(:raf_zip)
-				assert object.raf_zip =~ /\A\d{5}(-)?(\d{4})?\z/
+			assert_difference( "Patient.count", 1 ) do
+				patient = create_patient( :raf_zip => good_zip )
+				assert !patient.errors.on(:raf_zip)
+				assert patient.raf_zip =~ /\A\d{5}(-)?(\d{4})?\z/
 			end
 		end
+	end
+
+protected
+
+	def create_patient(options={})
+		patient = Factory.build(:patient,options)
+		patient.save
+		patient
 	end
 
 end

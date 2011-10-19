@@ -9,10 +9,11 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 #	assert_should_require_unique_attribute(:study_subject_id)
 
 	test "should require unique study_subject_id" do
-		o = create_object
+		o = create_home_exposure_response
 		assert_no_difference "HomeExposureResponse.count" do
-			object = create_object(:study_subject => o.study_subject)
-			assert object.errors.on_attr_and_type(:study_subject_id, :taken)
+			home_exposure_response = create_home_exposure_response(
+				:study_subject => o.study_subject)
+			assert home_exposure_response.errors.on_attr_and_type(:study_subject_id, :taken)
 		end
 	end
 
@@ -36,7 +37,7 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 		assert field_names.length > 100
 	end
 
-#	temporary
+#	temporary? It's been here a while.
 	test "should return the same array for field_names and db_field_names" do
 		db_field_names = HomeExposureResponse.db_field_names
 		field_names = HomeExposureResponse.field_names
@@ -44,5 +45,13 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 	end
 
 	assert_should_not_require_attributes( *HomeExposureResponse.field_names )
+
+protected
+
+	def create_home_exposure_response(options={})
+		home_exposure_response = Factory.build(:home_exposure_response,options)
+		home_exposure_response.save
+		home_exposure_response
+	end
 
 end

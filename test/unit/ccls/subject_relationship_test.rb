@@ -10,29 +10,37 @@ class Ccls::SubjectRelationshipTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		subject_relationship = create_subject_relationship
+		assert_equal subject_relationship.description, "#{subject_relationship}"
 	end
 
 	test "should find by code with ['string']" do
-		object = SubjectRelationship['unknown']
-		assert object.is_a?(SubjectRelationship)
+		subject_relationship = SubjectRelationship['unknown']
+		assert subject_relationship.is_a?(SubjectRelationship)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = SubjectRelationship[:unknown]
-		assert object.is_a?(SubjectRelationship)
+		subject_relationship = SubjectRelationship[:unknown]
+		assert subject_relationship.is_a?(SubjectRelationship)
 	end
 
 	test "should find random" do
-		object = SubjectRelationship.random()
-		assert object.is_a?(SubjectRelationship)
+		subject_relationship = SubjectRelationship.random()
+		assert subject_relationship.is_a?(SubjectRelationship)
 	end
 
 	test "should return nil on random when no records" do
 		SubjectRelationship.stubs(:count).returns(0)
-		object = SubjectRelationship.random()
-		assert_nil object
+		subject_relationship = SubjectRelationship.random()
+		assert_nil subject_relationship
+	end
+
+protected
+
+	def create_subject_relationship(options={})
+		subject_relationship = Factory.build(:subject_relationship,options)
+		subject_relationship.save
+		subject_relationship
 	end
 
 end

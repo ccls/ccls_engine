@@ -13,26 +13,34 @@ class Ccls::SectionTest < ActiveSupport::TestCase
 #	assert_should_require_attribute_length( :event_category, :in => 4..250 )
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		section = create_section
+		assert_equal section.description, "#{section}"
 	end
 
 	test "should find by code with ['string']" do
-		create_object(:code => 'justatest')
-		object = Section['justatest']
-		assert object.is_a?(Section)
+		create_section(:code => 'justatest')
+		section = Section['justatest']
+		assert section.is_a?(Section)
 	end
 
 	test "should find by code with [:symbol]" do
-		create_object(:code => 'justatest')
-		object = Section[:justatest]
-		assert object.is_a?(Section)
+		create_section(:code => 'justatest')
+		section = Section[:justatest]
+		assert section.is_a?(Section)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(OperationalEventType::NotFound) {
-#			object = OperationalEventType['idonotexist']
+#			section = OperationalEventType['idonotexist']
 #		}
 #	end
+
+protected
+
+	def create_section(options={})
+		section = Factory.build(:section,options)
+		section.save
+		section
+	end
 
 end

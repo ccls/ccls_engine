@@ -367,12 +367,12 @@ pending
 	end
 
 	test "should have and belong to many analyses" do
-		object = create_object
-		assert_equal 0, object.analyses.length
-		object.analyses << Factory(:analysis)
-		assert_equal 1, object.reload.analyses.length
-		object.analyses << Factory(:analysis)
-		assert_equal 2, object.reload.analyses.length
+		study_subject = create_study_subject
+		assert_equal 0, study_subject.analyses.length
+		study_subject.analyses << Factory(:analysis)
+		assert_equal 1, study_subject.reload.analyses.length
+		study_subject.analyses << Factory(:analysis)
+		assert_equal 2, study_subject.reload.analyses.length
 	end
 
 	test "should NOT destroy samples with study_subject" do
@@ -552,16 +552,16 @@ pending
 	end
 
 	test "should return concat of 3 fields as to_s" do
-		object = create_object
+		study_subject = create_study_subject
 		#	[childid,'(',studyid,full_name,')'].compact.join(' ')
-		assert_equal "#{object}",
-			[object.childid,'(',object.studyid,object.full_name,')'].compact.join(' ')
+		assert_equal "#{study_subject}",
+			[study_subject.childid,'(',study_subject.studyid,study_subject.full_name,')'].compact.join(' ')
 	end
 
 	test "should return 'name not available' for study_subject without pii" do
-		object = create_object
-		assert_nil object.pii
-		assert_equal '[name not available]', object.full_name
+		study_subject = create_study_subject
+		assert_nil study_subject.pii
+		assert_equal '[name not available]', study_subject.full_name
 	end
 
 	test "should return hx_id" do
@@ -1149,6 +1149,12 @@ pending
 	end
 
 protected
+
+	def create_study_subject(options={})
+		study_subject = Factory.build(:study_subject,options)
+		study_subject.save
+		study_subject
+	end
 
 	def create_study_subject_with_matchingid(matchingid='12345')
 		study_subject = create_study_subject( 

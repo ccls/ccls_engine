@@ -22,8 +22,16 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 
 	#	unfortunately name is NOT unique so should change this
 	test "should return name as to_s" do
-		object = create_object
-		assert_equal object.name, "#{object}"
+		instrument = create_instrument
+		assert_equal instrument.name, "#{instrument}"
+	end
+
+protected
+
+	def create_instrument(options={})
+		instrument = Factory.build(:instrument,options)
+		instrument.save
+		instrument
 	end
 
 end

@@ -106,6 +106,12 @@ class Ccls::GiftCardSearchTest < ActiveSupport::TestCase
 
 protected
 
+	def create_gift_card(options={})
+		gift_card = Factory.build(:gift_card,options)
+		gift_card.save
+		gift_card
+	end
+
 	def create_gift_cards(count=0,options={})
 		gift_cards = []
 		count.times{ gift_cards.push(create_gift_card(options)) }

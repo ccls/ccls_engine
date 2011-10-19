@@ -20,4 +20,18 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 		assert_equal 'Unknown', "#{hospital}"
 	end
 
+protected
+
+	def create_hospital(options={})
+		hospital = Factory.build(:hospital,options)
+		hospital.save
+		hospital
+	end
+
+	def create_organization(options={})
+		organization = Factory.build(:organization,options)
+		organization.save
+		organization
+	end
+
 end

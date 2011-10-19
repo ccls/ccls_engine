@@ -18,32 +18,32 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 
 
 	test "should return description as to_s" do
-		object = create_object
-		assert_equal object.description, "#{object}"
+		project = create_project
+		assert_equal project.description, "#{project}"
 	end
 
 	test "should have many study_subjects through enrollments" do
-		object = create_object
-		assert_equal 0, object.study_subjects.length
-		Factory(:enrollment, :project_id => object.id)
-		assert_equal 1, object.reload.study_subjects.length
-		Factory(:enrollment, :project_id => object.id)
-		assert_equal 2, object.reload.study_subjects.length
+		project = create_project
+		assert_equal 0, project.study_subjects.length
+		Factory(:enrollment, :project_id => project.id)
+		assert_equal 1, project.reload.study_subjects.length
+		Factory(:enrollment, :project_id => project.id)
+		assert_equal 2, project.reload.study_subjects.length
 	end
 
 	test "should find by code with ['string']" do
-		object = Project['HomeExposures']
-		assert object.is_a?(Project)
+		project = Project['HomeExposures']
+		assert project.is_a?(Project)
 	end
 
 	test "should find by code with [:symbol]" do
-		object = Project[:HomeExposures]
-		assert object.is_a?(Project)
+		project = Project[:HomeExposures]
+		assert project.is_a?(Project)
 	end
 
 #	test "should raise error if not found by code with []" do
 #		assert_raise(Project::NotFound) {
-#			object = Project['idonotexist']
+#			project = Project['idonotexist']
 #		}
 #	end
 
@@ -55,6 +55,14 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 		assert_not_nil unenrolled
 		assert unenrolled.is_a?(Array)
 		assert_equal 8, unenrolled.length
+	end
+
+protected
+
+	def create_project(options={})
+		project = Factory.build(:project,options)
+		project.save
+		project
 	end
 
 end

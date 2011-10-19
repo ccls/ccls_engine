@@ -11,25 +11,25 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 
 
 	test "should create sample kit with kit package" do
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "SampleKit.count", 1 ) {
 		assert_difference('Package.count', 1) {
-			object = create_object(
+			sample_kit = create_sample_kit(
 				:kit_package_attributes => Factory.attributes_for(:package) )
 		} }
 	end
 
 	test "should create sample kit with sample package" do
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "SampleKit.count", 1 ) {
 		assert_difference('Package.count', 1) {
-			object = create_object(
+			sample_kit = create_sample_kit(
 				:sample_package_attributes => Factory.attributes_for(:package) )
 		} }
 	end
 
 	test "should create sample kit with both packages" do
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "SampleKit.count", 1 ) {
 		assert_difference('Package.count', 2) {
-			object = create_object(
+			sample_kit = create_sample_kit(
 				:kit_package_attributes  => Factory.attributes_for(:package),
 				:sample_package_attributes => Factory.attributes_for(:package) 
 			)
@@ -37,115 +37,121 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 	end
 
 	test "should require a unique sample" do
-		assert_difference( "#{model_name}.count", 1 ) {
+		assert_difference( "SampleKit.count", 1 ) {
 #		assert_difference('StudySubject.count', 1) {
 		assert_difference('Sample.count', 1) {
-			object = create_object
-			assert_not_nil object.sample
-			object = create_object(:sample_id => object.sample_id)
-			assert object.errors.on(:sample_id)
+			sample_kit = create_sample_kit
+			assert_not_nil sample_kit.sample
+			sample_kit = create_sample_kit(:sample_id => sample_kit.sample_id)
+			assert sample_kit.errors.on(:sample_id)
 		} }
 	end
 
 	test "should returned status New" do
-		object = create_complete_sample_kit	
-		assert_equal 'New', object.status
+		sample_kit = create_complete_sample_kit	
+		assert_equal 'New', sample_kit.status
 	end
 
 	test "should returned status Shipped" do
-		object = create_complete_sample_kit	
-		object.kit_package.update_attribute(:status,'Transit')
-		assert_equal 'Shipped', object.status
+		sample_kit = create_complete_sample_kit	
+		sample_kit.kit_package.update_attribute(:status,'Transit')
+		assert_equal 'Shipped', sample_kit.status
 	end
 
 	test "should returned status Delivered" do
-		object = create_complete_sample_kit	
-		object.kit_package.update_attribute(:status,'Delivered')
-		assert_equal 'Delivered', object.status
+		sample_kit = create_complete_sample_kit	
+		sample_kit.kit_package.update_attribute(:status,'Delivered')
+		assert_equal 'Delivered', sample_kit.status
 	end
 
 	test "should returned status Returned" do
-		object = create_complete_sample_kit	
-		object.sample_package.update_attribute(:status,'Transit')
-		assert_equal 'Returned', object.status
+		sample_kit = create_complete_sample_kit	
+		sample_kit.sample_package.update_attribute(:status,'Transit')
+		assert_equal 'Returned', sample_kit.status
 	end
 
 	test "should returned status Received" do
-		object = create_complete_sample_kit	
-		object.sample_package.update_attribute(:status,'Delivered')
-		assert_equal 'Received', object.status
+		sample_kit = create_complete_sample_kit	
+		sample_kit.sample_package.update_attribute(:status,'Delivered')
+		assert_equal 'Received', sample_kit.status
 	end
 
 	test "should return null sent_on with new kit" do
-		object = create_complete_sample_kit	
-		assert_nil object.sent_on
+		sample_kit = create_complete_sample_kit	
+		assert_nil sample_kit.sent_on
 	end
 
 	test "should return null received_on with new kit" do
-		object = create_complete_sample_kit	
-		assert_nil object.received_on
+		sample_kit = create_complete_sample_kit	
+		assert_nil sample_kit.received_on
 	end
 
 	test "should return date sent_on with kit in transit" do
 		stub_package_for_in_transit()
-		object = create_complete_sample_kit	
-		object.kit_package.update_status
-		assert_not_nil object.reload.sent_on
+		sample_kit = create_complete_sample_kit	
+		sample_kit.kit_package.update_status
+		assert_not_nil sample_kit.reload.sent_on
 	end
 
 	test "should return null received_on with kit in transit" do
 		stub_package_for_in_transit()
-		object = create_complete_sample_kit	
-		object.kit_package.update_status
-		assert_nil object.received_on
+		sample_kit = create_complete_sample_kit	
+		sample_kit.kit_package.update_status
+		assert_nil sample_kit.received_on
 	end
 
 	test "should return date sent_on with kit returned" do
 		stub_package_for_successful_delivery()
-		object = create_complete_sample_kit	
-		object.kit_package.update_status
-		object.sample_package.update_status
-		assert_not_nil object.sent_on
+		sample_kit = create_complete_sample_kit	
+		sample_kit.kit_package.update_status
+		sample_kit.sample_package.update_status
+		assert_not_nil sample_kit.sent_on
 	end
 
 	test "should return date received_on with kit returned" do
 		stub_package_for_successful_delivery()
-		object = create_complete_sample_kit	
-		object.sample_package.update_status
-		assert_not_nil object.received_on
+		sample_kit = create_complete_sample_kit	
+		sample_kit.sample_package.update_status
+		assert_not_nil sample_kit.received_on
 	end
 
 
 
 	test "should set sample sent_to_subject_on" do
 		stub_package_for_in_transit()
-		object = create_complete_sample_kit	
-		sample = object.sample
-		object.kit_package.update_status
-		assert_not_nil object.kit_package.tracks.first
+		sample_kit = create_complete_sample_kit	
+		sample = sample_kit.sample
+		sample_kit.kit_package.update_status
+		assert_not_nil sample_kit.kit_package.tracks.first
 		assert_not_nil sample.reload.sent_to_subject_on
-		assert_equal object.kit_package.tracks.first.time.to_date,
+		assert_equal sample_kit.kit_package.tracks.first.time.to_date,
 			sample.reload.sent_to_subject_on
 	end
 
 	test "should set sample received_by_ccls_on" do
 		stub_package_for_successful_delivery()
-		object = create_complete_sample_kit	
-		sample = object.sample
-		object.sample_package.update_status
-		assert_not_nil object.sample_package.tracks.last
+		sample_kit = create_complete_sample_kit	
+		sample = sample_kit.sample
+		sample_kit.sample_package.update_status
+		assert_not_nil sample_kit.sample_package.tracks.last
 		assert_not_nil sample.reload.received_by_ccls_on
-		assert_equal object.sample_package.tracks.last.time.to_date,
+		assert_equal sample_kit.sample_package.tracks.last.time.to_date,
 			sample.reload.received_by_ccls_on
 	end
 
 protected
 
 	def create_complete_sample_kit(options={})
-		object = create_object(
-			:kit_package_attributes  => Factory.attributes_for(:package),
+		sample_kit = create_sample_kit(
+			:kit_package_attributes    => Factory.attributes_for(:package),
 			:sample_package_attributes => Factory.attributes_for(:package) 
 		)
+	end
+
+	def create_sample_kit(options={})
+		sample_kit = Factory.build(:sample_kit,options)
+		sample_kit.save
+		sample_kit
 	end
 
 end
