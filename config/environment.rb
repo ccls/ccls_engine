@@ -36,7 +36,6 @@ Rails::Initializer.run do |config|
 	config.gem "ccls-use_db"
 	config.gem 'ccls-simply_authorized'
 	config.gem 'ccls-common_lib'
-#	config.gem 'ccls-simply_helpful'
 	config.gem 'jrails'
 
 	#		http://chronic.rubyforge.org/

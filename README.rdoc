@@ -32,10 +32,6 @@ views and routes to the aforementioned resources.
 
 == Installation (as a gem/plugin/engine)
 
- #	don't use this anymore
- cp config/s3.yml.example config/s3.yml
- # Add your own s3 access keys.  Leave 'test' as it is.
-
 In your config/environment.rb
 
  config.gem 'ccls-ccls_engine'
