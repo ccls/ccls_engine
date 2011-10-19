@@ -65,7 +65,6 @@ begin
 		gem.add_dependency('actionpack', '~> 2')
 		gem.add_dependency('jrails')	# hopefully, can drop soon, don't know if I use it
 		gem.add_dependency('ccls-calnet_authenticated','>= 1.2.0')
-#		gem.add_dependency('ccls-ruby_extension')
 		gem.add_dependency('ccls-simply_authorized')
 		gem.add_dependency('chronic')
 		gem.add_dependency('ssl_requirement')
@@ -74,7 +73,6 @@ begin
 		gem.add_dependency('ucb_ldap', '>= 1.4.2')
 		gem.add_dependency('rubycas-client', '>= 2.2.1')
 		gem.add_dependency('ccls-use_db')
-#		gem.add_dependency('ccls-rails_extension')
 		gem.add_dependency('ccls-common_lib')
 	end
 	Jeweler::GemcutterTasks.new
