@@ -58,7 +58,7 @@ module Ccls::Helper
 			"<span>#{study_subject.try(:studyid)}</span>\n" <<
 			"</div><!-- class='studyid' -->\n" <<
 			"<div class='full_name'>\n" <<
-			"<span>#{study_subject.fullname}</span>\n" <<
+			"<span>#{study_subject.full_name}</span>\n" <<
 			"</div><!-- class='full_name' -->\n" <<
 			"<div class='controls'>\n" <<
 			@content_for_id_bar.to_s <<

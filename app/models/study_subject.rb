@@ -82,7 +82,7 @@ class StudySubject < Shared
 		n.validates_complete_date_for :reference_date
 		n.with_options :to => :pii do |o|
 			o.delegate :initials
-			o.delegate :full_name
+#			o.delegate :full_name
 			o.delegate :email
 			o.delegate :last_name
 			o.delegate :first_name
@@ -197,14 +197,18 @@ class StudySubject < Shared
 #		load 'pii.rb' if RAILS_ENV == 'development'	#	forgets
 		require_dependency 'pii.rb' unless Pii
 		#	interesting that I don't have to load 'identifier.rb' ???
-		[childid,'(',studyid,fullname,')'].compact.join(' ')
+		[childid,'(',studyid,full_name,')'].compact.join(' ')
 	end
 
 	#	pii may actually be nil, so need to address this.
 	#	The default full_name if non-existant is ALSO in pii.
-	def fullname
-		full_name || '[name not available]'
+	#	Perhaps it would be better to NOT delegate full_name to pii
+	#	and just use "full_name" for this method and refer to
+	#	pii.full_name to remove possible the "_" confusion?
+	def full_name
+		pii.full_name || '[name not available]'
 	end
+#	alias_method :fullname,:full_name
 
 	#	Returns boolean of comparison
 	#	true only if type is Case

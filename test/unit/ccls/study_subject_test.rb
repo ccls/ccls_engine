@@ -557,13 +557,13 @@ pending
 		object = create_object
 		#	[childid,'(',studyid,full_name,')'].compact.join(' ')
 		assert_equal "#{object}",
-			[object.childid,'(',object.studyid,object.fullname,')'].compact.join(' ')
+			[object.childid,'(',object.studyid,object.full_name,')'].compact.join(' ')
 	end
 
 	test "should return 'name not available' for study_subject without pii" do
 		object = create_object
 		assert_nil object.pii
-		assert_equal '[name not available]', object.fullname
+		assert_equal '[name not available]', object.full_name
 	end
 
 	test "should return hx_id" do
