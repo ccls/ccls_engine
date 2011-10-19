@@ -10,7 +10,7 @@ class Patient < Shared
 	attr_protected :study_subject_id
 
 #	validates_presence_of :admit_date
-#	validates_presence_of :organization_id
+	validates_presence_of :organization_id
 
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date

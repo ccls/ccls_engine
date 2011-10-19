@@ -286,6 +286,11 @@ Factory.define :patient do |f|
 	f.association :study_subject, :factory => :case_study_subject
 #	f.admit_date Date.jd(2440000+rand(15000))
 #	f.association :organization
+
+	#	Doing it this way will actually include organization_id 
+	#	in the Factory.attributes_for(:patient) method.
+	#	Of course, it requires that there actually be an Organization.
+	f.organization { Organization.first }
 end
 
 Factory.define :person do |f|
