@@ -25,7 +25,9 @@ namespace :odms_destroy do
 		Package.destroy_all
 		HomexOutcome.destroy_all
 		HomeExposureResponse.destroy_all
-#		BcRequest.destroy_all
+		#	have to destroy these as well as they are associated with a given 
+		#	subject, all of which were just destroyed.
+		BcRequest.destroy_all	
 #		CandidateControl.destroy_all
 	end
 
