@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class IcfMasterIdTest < ActiveSupport::TestCase
+class Ccls::IcfMasterIdTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_belong_to(:study_subject)
