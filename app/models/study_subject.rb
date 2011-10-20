@@ -358,25 +358,24 @@ class StudySubject < Shared
 		if existing_mother
 			existing_mother
 		else
-			#	protected attributes!
-			mother_identifier = Identifier.new do |i|
-				i.matchingid = identifier.matchingid
-				i.familyid   = identifier.familyid
-			end
 			new_mother = StudySubject.create!({
 				:subject_type => SubjectType['Mother'],
 				:vital_status => VitalStatus['living'],
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
 				:pii_attributes => {
-					:first_name  => self.pii.try(:mother_first_name),
-					:middle_name => self.pii.try(:mother_middle_name),
-					:last_name   => self.pii.try(:mother_last_name),
-					:maiden_name => self.pii.try(:mother_maiden_name),
+					:first_name  => pii.try(:mother_first_name),
+					:middle_name => pii.try(:mother_middle_name),
+					:last_name   => pii.try(:mother_last_name),
+					:maiden_name => pii.try(:mother_maiden_name),
 					#	flag to not require the dob as won't have one
 					:subject_is_mother => true  
 				},
-				:identifier => mother_identifier	#	TODO for some reason does not flag as tested?
+				:identifier => Identifier.new { |i|
+					#	protected attributes!
+					i.matchingid = identifier.matchingid
+					i.familyid   = identifier.familyid
+				}
 			})
 			new_mother.assign_icf_master_id
 			new_mother
@@ -388,24 +387,23 @@ class StudySubject < Shared
 		if existing_father
 			existing_father
 		else
-			#	protected attributes!
-			father_identifier = Identifier.new do |i|
-				i.matchingid = identifier.matchingid
-				i.familyid   = identifier.familyid
-			end
 			new_father = StudySubject.create!({
 				:subject_type => SubjectType['Father'],
 				:vital_status => VitalStatus['living'],
 				:sex => 'M',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
 				:pii_attributes => {
-					:first_name  => self.pii.try(:father_first_name),
-					:middle_name => self.pii.try(:father_middle_name),
-					:last_name   => self.pii.try(:father_last_name),
+					:first_name  => pii.try(:father_first_name),
+					:middle_name => pii.try(:father_middle_name),
+					:last_name   => pii.try(:father_last_name),
 					#	flag to not require the dob as won't have one
 					:subject_is_father => true  
 				},
-				:identifier => father_identifier	#	TODO for some reason does not flag as tested?
+				:identifier => Identifier.new { |i|
+					#	protected attributes!
+					i.matchingid = identifier.matchingid
+					i.familyid   = identifier.familyid
+				}
 			})
 			new_father.assign_icf_master_id
 			new_father
