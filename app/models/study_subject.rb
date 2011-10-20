@@ -376,7 +376,7 @@ class StudySubject < Shared
 					#	flag to not require the dob as won't have one
 					:subject_is_mother => true  
 				},
-				:identifier => mother_identifier
+				:identifier => mother_identifier	#	TODO for some reason does not flag as tested?
 			})
 			new_mother.assign_icf_master_id
 			new_mother
@@ -405,7 +405,7 @@ class StudySubject < Shared
 					#	flag to not require the dob as won't have one
 					:subject_is_father => true  
 				},
-				:identifier => father_identifier
+				:identifier => father_identifier	#	TODO for some reason does not flag as tested?
 			})
 			new_father.assign_icf_master_id
 			new_father
