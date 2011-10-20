@@ -237,8 +237,7 @@ pending
 		assert_difference( "StudySubject.count", 0 ) {
 #			study_subject = create_study_subject( :pii_attributes => {})
 #			assert study_subject.errors.on('patient.state_id_no')
-#	##	patient has no requirements so it would actually work
-#	##	TODO
+#	##	TODO patient has no requirements so it would actually work
 		} }
 	end
 
@@ -1054,13 +1053,12 @@ pending
 	test "should create mother when isn't one" do
 		study_subject = create_identifier.study_subject
 		assert_nil study_subject.reload.mother
-#		assert_difference('Pii.count',1) {
+		assert_difference('Pii.count',1) {
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@mother = study_subject.create_mother
-		} } #}
+		} } }
 		assert_equal @mother, study_subject.mother
-pending
 	end
 
 	test "should not create mother when one exists" do
@@ -1090,6 +1088,46 @@ pending
 		study_subject = create_identifier(:icf_master_id => nil).study_subject
 		mother = study_subject.create_mother
 		assert_nil mother.reload.identifier.icf_master_id
+	end
+
+	test "should create father when isn't one" do
+		study_subject = create_identifier.study_subject
+		assert_nil study_subject.reload.father
+		assert_difference('Pii.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			@father = study_subject.create_father
+		} } }
+		assert_equal @father, study_subject.father
+	end
+
+	test "should not create father when one exists" do
+		study_subject = create_identifier.study_subject
+		father = study_subject.create_father
+		assert_difference('Pii.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('StudySubject.count',0) {
+			@father = study_subject.create_father
+		} } }
+		assert_equal @father, father
+	end
+
+	test "should not create father for father" do
+pending
+	end
+
+	test "should assign icf_master_id to father on creation if one exists" do
+		study_subject = create_identifier(:icf_master_id => nil).study_subject
+		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
+		father = study_subject.create_father
+		assert_not_nil father.reload.identifier.icf_master_id
+		assert_equal '123456789', father.identifier.icf_master_id
+	end
+
+	test "should not assign icf_master_id to father on creation if none exist" do
+		study_subject = create_identifier(:icf_master_id => nil).study_subject
+		father = study_subject.create_father
+		assert_nil father.reload.identifier.icf_master_id
 	end
 
 	test "should include self in family" do
@@ -1174,12 +1212,5 @@ protected
 		assert_equal study_subject.reference_date, study_subject.patient.admit_date
 		study_subject
 	end
-
-#	def create_dust_kit(options = {})
-#		Factory(:dust_kit, {
-#			:kit_package_attributes  => Factory.attributes_for(:package),
-#			:dust_package_attributes => Factory.attributes_for(:package) 
-#		}.merge(options))
-#	end
 
 end

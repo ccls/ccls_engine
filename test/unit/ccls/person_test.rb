@@ -12,9 +12,7 @@ class Ccls::PersonTest < ActiveSupport::TestCase
 	assert_should_act_as_list
 	assert_should_have_many( :organizations )
 
-#	TODO
-#	assert_should_have_many( :interviews,
-#		:foreign_key => :interviewer_id )
+#	TODO assert_should_have_many( :interviews, :foreign_key => :interviewer_id )
 
 	assert_should_require_attribute_length( 
 		:first_name, 

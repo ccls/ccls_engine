@@ -199,7 +199,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	end
 
 	test "should create control from attributes and add studyid" do
-pending	#	TODO
+pending	#	TODO can't remember why this is pending
 		case_study_subject = create_case_identifier.study_subject
 		candidate_control = create_candidate_control
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
@@ -306,11 +306,11 @@ pending #	TODO wrap in transaction.  Don't want this partially done.
 	end
 
 	test "should rollback if create_mother raises error" do
-pending	#	TODO
+pending	#	TODO should test when create_mother fails
 	end
 
 	test "should rollback if assign_icf_master_id raises error" do
-pending	#	TODO
+pending	#	TODO should test when assign_icf_master_id fails
 	end
 
 	#
@@ -324,8 +324,8 @@ protected
 #	TODO mother's pii info not in candidate_control yet
 		assert_difference('Enrollment.count',1) {
 		assert_difference('Identifier.count',2) {
-#		assert_difference('Pii.count',2) {	#	don't have enough info for mother's pii
-		assert_difference('Pii.count',1) {
+		assert_difference('Pii.count',2) {	#	don't have enough info for mother's pii
+#		assert_difference('Pii.count',1) {
 		assert_difference('StudySubject.count',2) {
 			candidate.create_study_subjects(case_subject)
 		} } } }

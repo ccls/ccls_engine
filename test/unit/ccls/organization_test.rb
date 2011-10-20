@@ -39,7 +39,7 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 
 #		flunk samples
 
-#	TODO
+#	TODO haven't really implemented organization samples yet
 
 		#	this is unclear in my diagram
 		pending

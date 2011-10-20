@@ -83,7 +83,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 #		sample.organization = Factory(:organization)
 #		assert_not_nil sample.organization
 
-#	TODO
+#	TODO haven't really implemented organization samples yet
 
 		#	this is not clear in my UML diagram
 

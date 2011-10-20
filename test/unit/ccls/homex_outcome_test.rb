@@ -19,8 +19,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		:interview_outcome_id,
 		:interview_outcome_on )
 
-#	TODO
-#	Need to add something to allow_nil => true
+#	TODO Need to add something to allow_nil => true
 #	assert_should_require_unique_attribute(:study_subject_id)
 
 	#

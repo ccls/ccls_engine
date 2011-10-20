@@ -183,15 +183,6 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
-#	test "should touch study_subject after save" do
-#		pii = create_pii
-#		assert_not_nil pii.study_subject
-#		sleep 2
-#		assert_changes("StudySubject.find(#{pii.study_subject.id}).updated_at") {
-#			pii.touch
-#		}
-#	end
-
 protected
 
 	def create_pii(options={})

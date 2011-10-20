@@ -201,10 +201,6 @@ class StudySubject < Shared
 	#	Returns boolean of comparison
 	#	true only if type is Case
 	def is_case?
-#	TODO would really like to drop the SubjectType model
-#		and make this use identifier's case_control_type instead
-#		identifier.try(:is_case?)
-#		subject_type.try(:code) == 'Case'
 		subject_type == SubjectType['Case']
 	end
 
@@ -372,15 +368,14 @@ class StudySubject < Shared
 				:vital_status => VitalStatus['living'],
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
-#	TODO where from? 
-#			:pii_attributes => {
-#				:first_name  => 'TEST',
-#				:middle_name => 'TEST',
-#				:last_name   => 'TEST',
-#				:maiden_name => mother_maiden_name,
-#				:subject_is_mother => true, #	flag to not require the dob as won't have one
-###				:dob         => Date.today
-#			},
+				:pii_attributes => {
+					:first_name  => self.pii.try(:mother_first_name),
+					:middle_name => self.pii.try(:mother_middle_name),
+					:last_name   => self.pii.try(:mother_last_name),
+					:maiden_name => self.pii.try(:mother_maiden_name),
+					#	flag to not require the dob as won't have one
+					:subject_is_mother => true  
+				},
 				:identifier => mother_identifier
 			})
 			new_mother.assign_icf_master_id
@@ -403,16 +398,13 @@ class StudySubject < Shared
 				:vital_status => VitalStatus['living'],
 				:sex => 'M',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
-#	TODO where from? 
-#			:pii_attributes => {
-#				:first_name  => 'TEST',
-#				:middle_name => 'TEST',
-#				:last_name   => 'TEST',
-#				:maiden_name => mother_maiden_name,
-#		TODO add more generic flag as father probably won't have a dob either
-#				:subject_is_mother => true, #	flag to not require the dob as won't have one
-###				:dob         => Date.today
-#			},
+				:pii_attributes => {
+					:first_name  => self.pii.try(:father_first_name),
+					:middle_name => self.pii.try(:father_middle_name),
+					:last_name   => self.pii.try(:father_last_name),
+					#	flag to not require the dob as won't have one
+					:subject_is_father => true  
+				},
 				:identifier => father_identifier
 			})
 			new_father.assign_icf_master_id
@@ -463,10 +455,6 @@ protected
 				{ :id => study_subject_ids })
 		end
 	end
-#	class << self
-#		alias_method :update_subjects_reference_date, 
-#			:update_study_subjects_reference_date
-#	end
 
 	#	This is a duplication of a patient validation that won't
 	#	work if using nested attributes.  Don't like doing this.

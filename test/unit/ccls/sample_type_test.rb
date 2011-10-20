@@ -8,8 +8,7 @@ class Ccls::SampleTypeTest < ActiveSupport::TestCase
 	assert_should_belong_to( :parent, 
 		:class_name => 'SampleType' )
 
-#	TODO
-#	assert_should_have_many( :children, 
+#	TODO assert_should_have_many( :children, 
 #		:class_name => 'SampleType',
 #		:foreign_key => 'parent_id' )
 
