@@ -1205,6 +1205,14 @@ pending	#	TODO should do what for null familyid for family
 		assert_equal father, study_subject.father
 	end
 
+	test "should return rejected controls for case" do
+pending #	TODO should return rejected controls for case
+	end
+
+	test "should return what for rejected controls for non-case" do
+pending #	TODO should return what for rejected controls for non-case
+	end
+
 protected
 
 	def create_study_subject(options={})

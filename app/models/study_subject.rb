@@ -198,6 +198,15 @@ class StudySubject < Shared
 		)
 	end
 
+	def rejected_controls
+		CandidateControl.find(:all,
+			:conditions => {
+				:related_patid    => patid,
+				:reject_candidate => true
+			}
+		)
+	end
+
 	#	Returns number of addresses with 
 	#	address_type.code == 'residence'
 	def residence_addresses_count
