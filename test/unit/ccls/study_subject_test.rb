@@ -1130,45 +1130,64 @@ pending
 		assert_nil father.reload.identifier.icf_master_id
 	end
 
-	test "should include self in family" do
-		study_subject = create_identifier.study_subject.reload
-		assert_equal 1, study_subject.family.length
-		assert_equal study_subject, study_subject.family.first
+	test "should get control subjects if case" do
+pending #	TODO add controls method, check if case, ...
 	end
 
-	test "should include self in matching" do
+	test "should do what for control subjects if not case" do
+pending #	TODO add controls method, check if case, ...
+	end
+
+	test "should NOT include self in family" do
 		study_subject = create_identifier.study_subject.reload
-		assert_equal 1, study_subject.matching.length
-		assert_equal study_subject, study_subject.matching.first
+		assert_equal 0, study_subject.family.length
+	end
+
+	test "should NOT include self in matching" do
+		study_subject = create_identifier.study_subject.reload
+		assert_equal 0, study_subject.matching.length
 	end
 
 	test "should include mother in family" do
 		study_subject = create_identifier.study_subject.reload
 		mother = study_subject.create_mother
-		assert_equal      2, study_subject.family.length
+		assert_equal      1, study_subject.family.length
 		assert_equal mother, study_subject.family.last
 	end
 
 	test "should include father in family" do
 		study_subject = create_identifier.study_subject.reload
 		father = study_subject.create_father
-		assert_equal      2, study_subject.family.length
+		assert_equal      1, study_subject.family.length
 		assert_equal father, study_subject.family.last
 	end
 
-	test "should include mother in matching" do
-		study_subject = create_identifier.study_subject.reload
+
+#	I think that matchingid is only for matching controls with cases
+	test "should include mother in matching for case" do
+#	TODO what if matchingid is null (as is for non-case)?
+		study_subject = create_case_identifier.study_subject.reload
 		mother = study_subject.create_mother
-		assert_equal      2, study_subject.matching.length
+		assert_equal      1, study_subject.matching.length
 		assert_equal mother, study_subject.matching.last
 	end
 
-	test "should include father in matching" do
-		study_subject = create_identifier.study_subject.reload
+	test "should include father in matching for case" do
+#	TODO what if matchingid is null (as is for non-case)?
+		study_subject = create_case_identifier.study_subject.reload
 		father = study_subject.create_father
-		assert_equal      2, study_subject.matching.length
+		assert_equal      1, study_subject.matching.length
 		assert_equal father, study_subject.matching.last
 	end
+
+	test "should do what for null matchingid for matching" do
+pending	#	TODO should do what for null matchingid for matching
+	end
+
+	test "should do what for null familyid for family" do
+pending	#	TODO should do what for null familyid for family
+	end
+
 
 	test "should return mother if is one" do
 		study_subject = create_identifier.study_subject.reload

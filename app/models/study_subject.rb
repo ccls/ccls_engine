@@ -163,20 +163,38 @@ class StudySubject < Shared
 	end
 
 	def family
+#	TODO what if familyid is NULL?
 		StudySubject.find(:all,
 			:joins => :identifier,
-			:conditions => { 
-				'identifiers.familyid' => identifier.familyid
-			}
+#			:conditions => { 
+#				'identifiers.familyid' => identifier.familyid
+#			}
+			:conditions => [
+				"study_subjects.id != ? AND identifiers.familyid = ?", 
+				id, identifier.familyid ]
 		)
 	end
 
 	def matching
+#	TODO what if matchingid is NULL?
 		StudySubject.find(:all,
 			:joins => :identifier,
-			:conditions => { 
-				'identifiers.matchingid' => identifier.matchingid
-			}
+#			:conditions => { 
+#				'identifiers.matchingid' => identifier.matchingid
+#			}
+			:conditions => [
+				"study_subjects.id != ? AND identifiers.matchingid = ?", 
+				id, identifier.matchingid ]
+		)
+	end
+
+	def controls
+#	TODO what if subject is not a case?
+		StudySubject.find(:all, 
+			:joins => :identifier,
+			:conditions => [
+				"study_subjects.id != ? AND identifiers.patid = ? AND subject_type_id = ?", 
+				id, patid, SubjectType['Control'].id ] 
 		)
 	end
 

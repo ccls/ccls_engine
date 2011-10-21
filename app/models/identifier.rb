@@ -195,6 +195,7 @@ protected
 #	this won't work here unless passed child's subjectid
 #		self.familyid  = ( ( is_mother? ) ? nil : subjectid )
 		#	don't assign if given (familyid is currently protected)
+#	TODO what about is_father?
 		self.familyid  = subjectid if !is_mother? and familyid.blank?
 #		self.familyid  = if is_mother?
 #			nil
