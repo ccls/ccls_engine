@@ -38,3 +38,11 @@ phase5:
   code: phase5
   position: 1
   description: Phase 5 of Tier 1 
+phase4:
+  id: 9
+  code: phase4
+  description: Phase 4 of Tier 1
+ccls:
+  id: 10
+  code: ccls
+  description:  General Participation in CCLS Study
