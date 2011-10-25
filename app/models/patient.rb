@@ -14,13 +14,17 @@ class Patient < Shared
 
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
+	validates_past_date_for :treatment_began_on
 	validate :admit_date_is_after_dob
 	validate :diagnosis_date_is_after_dob
+	validate :treatment_began_on_is_after_diagnosis_date
 	validate :subject_is_case
 
 	validates_complete_date_for :admit_date,
 		:allow_nil => true
 	validates_complete_date_for :diagnosis_date,
+		:allow_nil => true
+	validates_complete_date_for :treatment_began_on,
 		:allow_nil => true
 
 	validates_length_of :raf_zip, :maximum => 10, :allow_blank => true
@@ -82,6 +86,21 @@ protected
 			!study_subject.dob.blank? && 
 			diagnosis_date < study_subject.dob
 			errors.add(:diagnosis_date, "is before study_subject's dob.") 
+		end
+	end
+
+	##
+	#	This validation does not work when using nested attributes as 
+	#	the study_subject has not been resolved yet, unless this is an update.
+	#	This results in a similar validation in Subject.
+#	Actually, both are patient dates so this isn't need in subject!
+	def treatment_began_on_is_after_diagnosis_date
+#puts "in treatment_began_on_is_after_diagnosis_date"
+		if !treatment_began_on.blank? && 
+			!diagnosis_date.blank? && 
+			treatment_began_on < diagnosis_date
+#puts "should be adding error"
+			errors.add(:treatment_began_on, "is before diagnosis_date.") 
 		end
 	end
 

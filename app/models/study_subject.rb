@@ -76,6 +76,8 @@ class StudySubject < Shared
 	validate :must_be_case_if_patient
 	validate :patient_admit_date_is_after_dob
 	validate :patient_diagnosis_date_is_after_dob
+#	not needed
+#	validate :patient_treatment_began_on_is_after_diagnosis_date
 
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
@@ -564,6 +566,16 @@ protected
 			errors.add('patient:diagnosis_date', "is before study_subject's dob.") 
 		end
 	end
+
+#	#	This is a duplication of a patient validation that won't
+#	#	work if using nested attributes.  Don't like doing this.
+#	def patient_treatment_began_on_is_after_diagnosis_date
+#		if !patient.nil? && !patient.treatment_began_on.blank? && 
+#				!patient.diagnosis_date.blank? && 
+#				patient.treatment_began_on < patient.diagnosis_date
+#			errors.add('patient:treatment_began_on', "is before study_subject's diagnosis_date.") 
+#		end
+#	end
 
 	def self.hx_id
 		#	added try and || for usage on empty db

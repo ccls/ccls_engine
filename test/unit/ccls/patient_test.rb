@@ -23,8 +23,10 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :raf_zip, :maximum => 10 )
 	assert_requires_complete_date :admit_date
 	assert_requires_complete_date :diagnosis_date
+	assert_requires_complete_date :treatment_began_on
 	assert_requires_past_date :admit_date
 	assert_requires_past_date :diagnosis_date
+	assert_requires_past_date :treatment_began_on
 
 	test "should default was_ca_resident_at_diagnosis to null" do
 		assert_difference( "Patient.count", 1 ) {
@@ -92,6 +94,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		} } }
 	end
 
+
 	test "should require diagnosis_date be after DOB" do
 		assert_difference( "Patient.count", 0 ) do
 			study_subject = Factory(:case_study_subject)
@@ -117,6 +120,41 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 					:diagnosis_date => Date.jd(2430000),
 				}))
 			assert study_subject.errors.on('patient:diagnosis_date')
+		} } }
+	end
+
+
+	test "should require treatment_began_on be after diagnosis_date" do
+		assert_difference( "Patient.count", 0 ) do
+			study_subject = Factory(:case_study_subject)
+			pii = Factory(:pii,:study_subject => study_subject,
+				:dob => Date.jd(2420000) )
+			patient = create_patient(
+				:study_subject => study_subject,
+				:diagnosis_date => Date.jd(2440000),
+				:treatment_began_on => Date.jd(2430000) ) 
+			assert patient.errors.on(:treatment_began_on)
+			assert_match(/before.*diagnosis_date/,
+				patient.errors.on(:treatment_began_on))
+		end
+	end
+
+	test "should require treatment_began_on be after diagnosis_date when using nested attributes" do
+		assert_difference( "Pii.count", 0 ) {
+		assert_difference( "StudySubject.count", 0 ) {
+		assert_difference( "Patient.count", 0 ) {
+			study_subject = create_case_study_subject(
+				:pii_attributes => Factory.attributes_for(:pii,
+					:dob => Date.jd(2420000) ),
+				:patient_attributes => Factory.attributes_for(:patient,{
+					:diagnosis_date => Date.jd(2440000),
+					:treatment_began_on => Date.jd(2430000),
+				}))
+			assert study_subject.patient.errors.on(:treatment_began_on)
+			assert study_subject.errors.on('patient.treatment_began_on')
+#			assert study_subject.errors.on('patient:treatment_began_on')
+			assert_match(/before.*diagnosis_date/,
+				study_subject.patient.errors.on(:treatment_began_on))
 		} } }
 	end
 
