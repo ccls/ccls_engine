@@ -7,9 +7,9 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 #	TODO assert_should_act_as_list( :scope => :study_subject_id )
 
 	assert_should_initially_belong_to( :study_subject, :phone_type )
-	assert_should_require_attribute(:phone_number)
+	assert_should_require_attribute(:phone_number, :phone_type_id )
 	assert_should_not_require_attributes( :position, :study_subject_id,
-		:phone_type_id, :data_source_id, :is_primary, :is_valid,
+		:data_source_id, :is_primary, :is_valid,
 		:why_invalid, :is_verified, :how_verified,
 		:verified_on, :verified_by_uid, :current_phone )
 	assert_should_require_attribute_length( :how_verified, :why_invalid, 

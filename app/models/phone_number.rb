@@ -7,16 +7,8 @@ class PhoneNumber < Shared
 	belongs_to :study_subject
 	belongs_to :phone_type
 
-	##	TODO - find a way to do this
-	# because study_subject now accepts_nested_attributes for phone_numbers
-	# we can't require study_subject_id on create
-	#
-	#	study_subject_id is not known until before_save
-	#		so cannot be validated on creation
-	#
-#	validates_presence_of   :study_subject, :on => :update
-
 	validates_presence_of :phone_number
+	validates_presence_of :phone_type_id
 #
 #	TODO again, try using a method for the :with
 #
