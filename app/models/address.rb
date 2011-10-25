@@ -12,7 +12,8 @@ class Address < Shared
 	belongs_to :address_type
 	belongs_to :data_source
 
-	validates_presence_of :address_type_id, :address_type
+	validates_presence_of :address_type_id
+#	validates_presence_of :address_type
 	validate :address_type_matches_line
 
 	validates_presence_of :line_1, :city, :state, :zip
