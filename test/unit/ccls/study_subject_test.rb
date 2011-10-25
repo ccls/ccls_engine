@@ -174,12 +174,12 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
 	test "should NOT create study_subject with empty homex_outcome" do
 pending
-#		assert_difference( 'HomexOutcome.count', 0) {
-#		assert_difference( 'StudySubject.count', 0) {
+		assert_difference( 'HomexOutcome.count', 0) {
+		assert_difference( 'StudySubject.count', 0) {
 #			study_subject = create_study_subject( :homex_outcome_attributes => {})
 ##			assert study_subject.errors.on('homex_outcome.state_id_no')	
 #			puts study_subject.errors.inspect
-#		} }
+		} }
 	end
 
 	test "should create case study_subject and accept_nested_attributes_for patient" do
@@ -232,12 +232,13 @@ pending
 	end
 
 	test "should NOT create study_subject with empty patient" do
-pending
+#	TODO will require admit_date and organization_id
 		assert_difference( 'Patient.count', 0) {
 		assert_difference( "StudySubject.count", 0 ) {
-#			study_subject = create_study_subject( :pii_attributes => {})
-#			assert study_subject.errors.on('patient.state_id_no')
-#	##	TODO patient has no requirements so it would actually work
+			study_subject = create_study_subject( :patient_attributes => {})
+#			assert study_subject.errors.on('patient.admit_date')
+			assert study_subject.errors.on('patient.organization_id')
+			assert study_subject.errors.on_attr_and_type('patient.organization_id',:blank)
 		} }
 	end
 
@@ -252,16 +253,17 @@ pending
 	end
 
 #	nothing is required any longer, so this can happen
-#		test "should NOT create study_subject with empty identifier" do
-#			assert_difference( 'Identifier.count', 0) {
-#			assert_difference( 'StudySubject.count', 0) {
+		test "should NOT create study_subject with empty identifier" do
+pending	#	TODO will require hospital_no?
+			assert_difference( 'Identifier.count', 0) {
+			assert_difference( 'StudySubject.count', 0) {
 #				study_subject = create_study_subject( :identifier_attributes => {} )
 #	#			assert study_subject.errors.on_attr_and_type('identifier.orderno',:blank)
 #	#			assert study_subject.errors.on_attr_and_type('identifier.patid',:blank)
 #				assert study_subject.errors.on_attr_and_type('identifier.case_control_type',:blank)
 #	#			assert study_subject.errors.on_attr_and_type('identifier.childid',:blank)
-#			} }
-#		end
+			} }
+		end
 
 	test "studyid should be patid, case_control_type and orderno" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
@@ -1016,7 +1018,6 @@ pending
 		assert_nil @study_subject.reload.dob
 	end
 
-
 	test "should return SOMETHING for next_control_orderno for control" do
 		study_subject = create_identifier.study_subject
 #		assert_equal 1, case_study_subject.next_control_orderno
@@ -1088,7 +1089,7 @@ pending
 	end
 
 	test "should not create mother for mother" do
-pending
+pending	#	TODO should it?  doubt it.
 	end
 
 	test "should assign icf_master_id to mother on creation if one exists" do
@@ -1128,7 +1129,7 @@ pending
 	end
 
 	test "should not create father for father" do
-pending
+pending	#	TODO should it?  doubt it.
 	end
 
 	test "should assign icf_master_id to father on creation if one exists" do
@@ -1181,7 +1182,6 @@ pending #	TODO add controls method, check if case, ...
 		assert_equal father, study_subject.family.last
 	end
 
-
 #	I think that matchingid is only for matching controls with cases
 	test "should include mother in matching for case" do
 #	TODO what if matchingid is null (as is for non-case)?
@@ -1206,7 +1206,6 @@ pending	#	TODO should do what for null matchingid for matching
 	test "should do what for null familyid for family" do
 pending	#	TODO should do what for null familyid for family
 	end
-
 
 	test "should return mother if is one" do
 		study_subject = create_identifier.study_subject.reload
@@ -1237,109 +1236,146 @@ pending #	TODO should return what for rejected controls for non-case
 	end
 
 	test "should respond to duplicates" do
-		duplicates = StudySubject.duplicates
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert duplicates.empty?
+		@duplicates = StudySubject.duplicates
+		assert_no_duplicates_found
 	end
 
 	test "should return no subjects as duplicates with no params" do
-		Factory(:study_subject)
-		duplicates = StudySubject.duplicates
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert duplicates.empty?
+		create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates
+		assert_no_duplicates_found
 	end
 
 	test "should return subject as duplicate if has matching dob and sex" do
-		study_subject = Factory(:study_subject, :sex => 'M',
-			:pii_attributes => Factory.attributes_for(:pii) )
-		duplicates = StudySubject.duplicates(:sex => 'M',
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(:sex => 'M',
 			:dob => study_subject.dob )
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert !duplicates.empty?
+		assert_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching dob" do
-		study_subject = Factory(:study_subject, :sex => 'M',
-			:pii_attributes => Factory.attributes_for(:pii) )
-		duplicates = StudySubject.duplicates(:sex => 'F',
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(:sex => 'F',
 			:dob => study_subject.dob)
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert duplicates.empty?
+		assert_no_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching sex" do
-		study_subject = Factory(:study_subject, :sex => 'M',
-			:pii_attributes => Factory.attributes_for(:pii) )
-		duplicates = StudySubject.duplicates(:sex => study_subject.sex,
-			:dob => Date.today)	#	TODO should make sure this isn't pii's dob
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert duplicates.empty?
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(:sex => study_subject.sex,
+			:dob => Date.today)
+		assert_no_duplicates_found
 	end
 
 	test "should return subject as duplicate if has matching hospital_no" do
-		study_subject = Factory(:study_subject, 
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				:hospital_no => 'matchthis') )
-		duplicates = StudySubject.duplicates(:hospital_no => study_subject.hospital_no)
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert !duplicates.empty?
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(:hospital_no => study_subject.hospital_no)
+		assert_duplicates_found
 	end
 
 	test "should return subject as duplicate if has matching admit_date and organization" do
-		study_subject = Factory(:case_study_subject, 
-			:patient_attributes => Factory.attributes_for(:patient,
-				:admit_date => Date.yesterday ))
-		duplicates = StudySubject.duplicates(
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
 			:admit_date => study_subject.admit_date,
 			:organization_id => study_subject.organization_id)
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert !duplicates.empty?
+		assert_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching admit_date" do
-		study_subject = Factory(:case_study_subject, 
-			:patient_attributes => Factory.attributes_for(:patient,
-				:admit_date => Date.yesterday ))
-		duplicates = StudySubject.duplicates(
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
 			:admit_date => study_subject.admit_date,
-			:organization_id => 0)	#	won't match the subject's
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert duplicates.empty?
+			:organization_id => 0)
+		assert_no_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching organization" do
-		study_subject = Factory(:case_study_subject, 
-			:patient_attributes => Factory.attributes_for(:patient,
-				:admit_date => Date.yesterday ))
-		duplicates = StudySubject.duplicates(
-			:admit_date => Date.today,	#	TODO should make sure doesn't match subject's
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
+			:admit_date => Date.today,
 			:organization_id => study_subject.organization_id)
-		assert_not_nil duplicates
-		assert duplicates.is_a?(Array)
-		assert duplicates.empty?
+		assert_no_duplicates_found
 	end
 
-	test "should add test to test when all of these params are passed and all match" do
-pending #	TODO
+	test "should return subject as duplicate when all of these params are passed and all match" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
+			:hospital_no => study_subject.hospital_no,
+			:sex => 'M',
+			:dob => study_subject.dob,
+			:admit_date => study_subject.admit_date,
+			:organization_id => study_subject.organization_id)
+		assert_duplicates_found
 	end
 
-	test "should add test to test when all of these params are passed and none match" do
-pending #	TODO
+	test "should NOT return subject as duplicate when all of these params are passed and none match" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
+			:hospital_no => 'somethingdifferent',
+			:sex => 'F',
+			:dob => Date.today,
+			:admit_date => Date.today,
+			:organization_id => 0 )
+		assert_no_duplicates_found
 	end
 
-	test "should add test to test when all of these params are passed and some match" do
-pending #	TODO
+	test "should NOT return subject as duplicate when all of these params are passed only sex matches" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
+			:hospital_no => 'somethingdifferent',
+			:sex => 'M',
+			:dob => Date.today,
+			:admit_date => Date.today,
+			:organization_id => 0 )
+		assert_no_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate when all of these params are passed only dob matches" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
+			:hospital_no => 'somethingdifferent',
+			:sex => 'F',
+			:dob => study_subject.dob,
+			:admit_date => Date.today,
+			:organization_id => 0 )
+		assert_no_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate when all of these params are passed only admit_date matches" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
+			:hospital_no => 'somethingdifferent',
+			:sex => 'F',
+			:dob => Date.today,
+			:admit_date => study_subject.admit_date,
+			:organization_id => 0 )
+		assert_no_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate when all of these params are passed only organization matches" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		@duplicates = StudySubject.duplicates(
+			:hospital_no => 'somethingdifferent',
+			:sex => 'F',
+			:dob => Date.today,
+			:admit_date => Date.today,
+			:organization_id => study_subject.organization_id )
+		assert_no_duplicates_found
 	end
 
 protected
+
+	def assert_no_duplicates_found
+		assert_not_nil @duplicates
+		assert @duplicates.is_a?(Array)
+		assert @duplicates.empty?
+	end
+
+	def assert_duplicates_found
+		assert_not_nil @duplicates
+		assert @duplicates.is_a?(Array)
+		assert !@duplicates.empty?
+	end
 
 	def create_study_subject(options={})
 		study_subject = Factory.build(:study_subject,options)
@@ -1351,6 +1387,16 @@ protected
 		study_subject = create_study_subject( 
 			:identifier_attributes => Factory.attributes_for(:identifier,
 				{ :matchingid => matchingid })).reload
+	end
+
+	def create_case_study_subject_for_duplicate_search
+		Factory(:case_study_subject, :sex => 'M',
+			:pii_attributes => Factory.attributes_for(:pii,
+				:dob => Date.yesterday),
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				:hospital_no => 'matchthis'),
+			:patient_attributes => Factory.attributes_for(:patient,
+				:admit_date => Date.yesterday ) )
 	end
 
 	#	Used more than once so ...

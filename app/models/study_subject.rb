@@ -475,7 +475,7 @@ class StudySubject < Shared
 
 	#
 	#	Basically this is just a custom search expecting only the 
-	#	following possible params for comparison ...
+	#	following possible params for search / comparison ...
 	#
 	#		hospital_no
 	#		dob
@@ -499,17 +499,10 @@ class StudySubject < Shared
 			conditions[1] << params[:admit_date]
 			conditions[1] << params[:organization_id]
 		end
-
-
-#	dates may be a problem? maybe not
-#	TODO clean this up
-puts conditions.inspect
-mysqlconditions = []
-mysqlconditions << conditions[0].join(' OR ')
-mysqlconditions += conditions[1].flatten
-puts mysqlconditions.inspect
-
-
+		#	NOTE dates may be a problem? maybe not? seem to work
+#puts
+#puts [ conditions[0].join(' OR '),*(conditions[1].flatten) ].inspect
+#	["(identifiers.hospital_no = ?) OR (piis.dob = ? AND sex = ?) OR (patients.admit_date = ? AND patients.organization_id = ?)", "matchthis", Fri, 14 May 1976, "M", Mon, 24 Oct 2011, 1]
 		unless conditions[0].blank?
 			find(:all,
 				#	have to do a LEFT JOIN, not the default INNER JOIN, here
@@ -519,13 +512,13 @@ puts mysqlconditions.inspect
 					'LEFT JOIN patients ON study_subjects.id = patients.study_subject_id',
 					'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id'
 				],
-				:conditions => mysqlconditions
+				:conditions => [ conditions[0].join(' OR '),
+					*(conditions[1].flatten) ]
 			) 
 		else
 			[]
 		end
 	end
-
 
 protected
 
