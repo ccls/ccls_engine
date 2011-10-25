@@ -485,16 +485,19 @@ class StudySubject < Shared
 	#
 	def self.duplicates(params={})
 		conditions = [[],[]]
-		if params.has_key?(:hospital_no)
+		#	being blank is OK for mysql, but should be removed for simplicity and clarity
+		if params.has_key?(:hospital_no) and !params[:hospital_no].blank?
 			conditions[0] << '(identifiers.hospital_no = ?)'
 			conditions[1] << params[:hospital_no]
 		end
-		if params.has_key?(:dob) and params.has_key?(:sex)
+		if params.has_key?(:dob) and !params[:dob].blank? and
+				params.has_key?(:sex) and !params[:sex].blank?
 			conditions[0] << '(piis.dob = ? AND sex = ?)'
 			conditions[1] << params[:dob]
 			conditions[1] << params[:sex]
 		end
-		if params.has_key?(:admit_date) and params.has_key?(:organization_id)
+		if params.has_key?(:admit_date) and !params[:admit_date].blank? and
+				params.has_key?(:organization_id) and !params[:organization_id].blank?
 			conditions[0] << '(patients.admit_date = ? AND patients.organization_id = ?)'
 			conditions[1] << params[:admit_date]
 			conditions[1] << params[:organization_id]
@@ -518,6 +521,16 @@ class StudySubject < Shared
 		else
 			[]
 		end
+	end
+
+	def duplicates
+		StudySubject.duplicates(
+			:hospital_no => self.hospital_no,
+			:dob => self.dob,
+			:sex => self.sex,
+			:admit_date => self.admit_date,
+			:organization_id => self.organization_id
+		)
 	end
 
 protected

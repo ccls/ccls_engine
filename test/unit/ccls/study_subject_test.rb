@@ -1246,122 +1246,174 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_no_duplicates_found
 	end
 
+	test "should return no subjects as duplicates with minimal params" do
+		create_case_study_subject_for_duplicate_search
+		@duplicates = Factory.build(:study_subject).duplicates
+		assert_no_duplicates_found
+	end
+
 	test "should return subject as duplicate if has matching dob and sex" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(:sex => 'M',
-			:dob => study_subject.dob )
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => 'M',
+			:pii_attributes => { :dob => study_subject.dob } )
+		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching dob" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(:sex => 'F',
-			:dob => study_subject.dob)
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:pii_attributes => { :dob => study_subject.dob } )
+		@duplicates = new_study_subject.duplicates
+		assert_no_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate if has matching dob and blank sex" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => ' ', :pii_attributes => { :dob => study_subject.dob } )
+		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching sex" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(:sex => study_subject.sex,
-			:dob => Date.today)
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => study_subject.sex )
+		@duplicates = new_study_subject.duplicates
+		assert_no_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate if just matching sex and blank dob" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => study_subject.sex, :pii_attributes => { :dob => ' ' } )
+		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
 
 	test "should return subject as duplicate if has matching hospital_no" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(:hospital_no => study_subject.hospital_no)
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:identifier_attributes => { :hospital_no => study_subject.hospital_no })
+		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
 
 	test "should return subject as duplicate if has matching admit_date and organization" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:admit_date => study_subject.admit_date,
-			:organization_id => study_subject.organization_id)
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { 
+				:admit_date => study_subject.admit_date,
+				:organization_id => study_subject.organization_id })
+		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching admit_date" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:admit_date => study_subject.admit_date,
-			:organization_id => 0)
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { 
+				:admit_date => study_subject.admit_date })
+		@duplicates = new_study_subject.duplicates
+		assert_no_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate if has matching admit_date and blank organization_id" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { 
+				:admit_date => study_subject.admit_date,
+				:organization_id => ' ' })
+		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching organization" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:admit_date => Date.today,
-			:organization_id => study_subject.organization_id)
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { 
+				:organization_id => study_subject.organization_id })
+		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
 
-	test "should return subject as duplicate when all of these params are passed and all match" do
+	test "should NOT return subject as duplicate if has matching organization and blank admit_date" do
 		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:hospital_no => study_subject.hospital_no,
-			:sex => 'M',
-			:dob => study_subject.dob,
-			:admit_date => study_subject.admit_date,
-			:organization_id => study_subject.organization_id)
-		assert_duplicates_found
-	end
-
-	test "should NOT return subject as duplicate when all of these params are passed and none match" do
-		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:hospital_no => 'somethingdifferent',
-			:sex => 'F',
-			:dob => Date.today,
-			:admit_date => Date.today,
-			:organization_id => 0 )
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { 
+				:admit_date => ' ',
+				:organization_id => study_subject.organization_id })
+		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
 
-	test "should NOT return subject as duplicate when all of these params are passed only sex matches" do
-		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:hospital_no => 'somethingdifferent',
-			:sex => 'M',
-			:dob => Date.today,
-			:admit_date => Date.today,
-			:organization_id => 0 )
-		assert_no_duplicates_found
-	end
-
-	test "should NOT return subject as duplicate when all of these params are passed only dob matches" do
-		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:hospital_no => 'somethingdifferent',
-			:sex => 'F',
-			:dob => study_subject.dob,
-			:admit_date => Date.today,
-			:organization_id => 0 )
-		assert_no_duplicates_found
-	end
-
-	test "should NOT return subject as duplicate when all of these params are passed only admit_date matches" do
-		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:hospital_no => 'somethingdifferent',
-			:sex => 'F',
-			:dob => Date.today,
-			:admit_date => study_subject.admit_date,
-			:organization_id => 0 )
-		assert_no_duplicates_found
-	end
-
-	test "should NOT return subject as duplicate when all of these params are passed only organization matches" do
-		study_subject = create_case_study_subject_for_duplicate_search
-		@duplicates = StudySubject.duplicates(
-			:hospital_no => 'somethingdifferent',
-			:sex => 'F',
-			:dob => Date.today,
-			:admit_date => Date.today,
-			:organization_id => study_subject.organization_id )
-		assert_no_duplicates_found
-	end
+#	test "should return subject as duplicate when all of these params are passed and all match" do
+#		study_subject = create_case_study_subject_for_duplicate_search
+#		@duplicates = StudySubject.duplicates(
+#			:hospital_no => study_subject.hospital_no,
+#			:sex => 'M',
+#			:dob => study_subject.dob,
+#			:admit_date => study_subject.admit_date,
+#			:organization_id => study_subject.organization_id)
+#		assert_duplicates_found
+#	end
+#
+#	test "should NOT return subject as duplicate when all of these params are passed and none match" do
+#		study_subject = create_case_study_subject_for_duplicate_search
+#		@duplicates = StudySubject.duplicates(
+#			:hospital_no => 'somethingdifferent',
+#			:sex => 'F',
+#			:dob => Date.today,
+#			:admit_date => Date.today,
+#			:organization_id => 0 )
+#		assert_no_duplicates_found
+#	end
+#
+#	test "should NOT return subject as duplicate when all of these params are passed only sex matches" do
+#		study_subject = create_case_study_subject_for_duplicate_search
+#		@duplicates = StudySubject.duplicates(
+#			:hospital_no => 'somethingdifferent',
+#			:sex => 'M',
+#			:dob => Date.today,
+#			:admit_date => Date.today,
+#			:organization_id => 0 )
+#		assert_no_duplicates_found
+#	end
+#
+#	test "should NOT return subject as duplicate when all of these params are passed only dob matches" do
+#		study_subject = create_case_study_subject_for_duplicate_search
+#		@duplicates = StudySubject.duplicates(
+#			:hospital_no => 'somethingdifferent',
+#			:sex => 'F',
+#			:dob => study_subject.dob,
+#			:admit_date => Date.today,
+#			:organization_id => 0 )
+#		assert_no_duplicates_found
+#	end
+#
+#	test "should NOT return subject as duplicate when all of these params are passed only admit_date matches" do
+#		study_subject = create_case_study_subject_for_duplicate_search
+#		@duplicates = StudySubject.duplicates(
+#			:hospital_no => 'somethingdifferent',
+#			:sex => 'F',
+#			:dob => Date.today,
+#			:admit_date => study_subject.admit_date,
+#			:organization_id => 0 )
+#		assert_no_duplicates_found
+#	end
+#
+#	test "should NOT return subject as duplicate when all of these params are passed only organization matches" do
+#		study_subject = create_case_study_subject_for_duplicate_search
+#		@duplicates = StudySubject.duplicates(
+#			:hospital_no => 'somethingdifferent',
+#			:sex => 'F',
+#			:dob => Date.today,
+#			:admit_date => Date.today,
+#			:organization_id => study_subject.organization_id )
+#		assert_no_duplicates_found
+#	end
 
 protected
 
@@ -1389,14 +1441,25 @@ protected
 				{ :matchingid => matchingid })).reload
 	end
 
-	def create_case_study_subject_for_duplicate_search
-		Factory(:case_study_subject, :sex => 'M',
+	def create_case_study_subject_for_duplicate_search(options={})
+		Factory(:case_study_subject, { :sex => 'M',
 			:pii_attributes => Factory.attributes_for(:pii,
 				:dob => Date.yesterday),
 			:identifier_attributes => Factory.attributes_for(:identifier,
 				:hospital_no => 'matchthis'),
 			:patient_attributes => Factory.attributes_for(:patient,
-				:admit_date => Date.yesterday ) )
+				:admit_date => Date.yesterday ) }.deep_merge(options) )
+	end
+
+	def new_case_study_subject_for_duplicate_search(options={})
+		Factory.build(:case_study_subject, { :sex => 'F',
+			:pii_attributes => Factory.attributes_for(:pii,
+				:dob => Date.today),
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				:hospital_no => 'somethingdifferent'),
+			:patient_attributes => Factory.attributes_for(:patient,
+				:organization_id => 0,
+				:admit_date => Date.today ) }.deep_merge(options) )
 	end
 
 	#	Used more than once so ...
