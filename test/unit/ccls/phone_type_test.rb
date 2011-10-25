@@ -16,6 +16,23 @@ class Ccls::PhoneTypeTest < ActiveSupport::TestCase
 		assert_equal phone_type.code, "#{phone_type}"
 	end
 
+	test "should find by code with ['string']" do
+		phone_type = PhoneType['home']
+		assert phone_type.is_a?(PhoneType)
+	end
+
+	test "should find by code with [:symbol]" do
+		phone_type = PhoneType[:home]
+		assert phone_type.is_a?(PhoneType)
+	end
+
+#	test "should raise error if not found by code with []" do
+#		assert_raise(PhoneType::NotFound) {
+#			phone_type = PhoneType['idonotexist']
+#		}
+#	end
+
+
 protected
 
 	def create_phone_type(options={})
