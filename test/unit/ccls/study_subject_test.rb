@@ -398,6 +398,21 @@ pending
 
 	end
 
+	%w( organization ).each do |method_name|
+
+		test "should return nil #{method_name} without patient" do
+			study_subject = create_study_subject
+			assert_nil study_subject.send(method_name)
+		end
+
+		test "should return #{method_name} with patient" do
+			study_subject = create_study_subject(
+				:patient_attributes => Factory.attributes_for(:patient))
+			assert_not_nil study_subject.send(method_name)
+		end
+
+	end
+
 	%w( ssn childid studyid state_id_no ).each do |method_name|
 
 		test "should return nil #{method_name} without identifier" do
@@ -1131,10 +1146,14 @@ pending
 	end
 
 	test "should get control subjects if case" do
+		study_subject = create_case_identifier.study_subject
+		study_subject.controls
 pending #	TODO add controls method, check if case, ...
 	end
 
 	test "should do what for control subjects if not case" do
+		study_subject = create_identifier.study_subject
+		study_subject.controls
 pending #	TODO add controls method, check if case, ...
 	end
 
@@ -1206,11 +1225,118 @@ pending	#	TODO should do what for null familyid for family
 	end
 
 	test "should return rejected controls for case" do
+		study_subject = create_case_identifier.study_subject
+		study_subject.rejected_controls
 pending #	TODO should return rejected controls for case
 	end
 
 	test "should return what for rejected controls for non-case" do
+		study_subject = create_identifier.study_subject
+		study_subject.rejected_controls
 pending #	TODO should return what for rejected controls for non-case
+	end
+
+	test "should respond to duplicates" do
+		duplicates = StudySubject.duplicates
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert duplicates.empty?
+	end
+
+	test "should return no subjects as duplicates with no params" do
+		Factory(:study_subject)
+		duplicates = StudySubject.duplicates
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert duplicates.empty?
+	end
+
+	test "should return subject as duplicate if has matching dob and sex" do
+		study_subject = Factory(:study_subject, :sex => 'M',
+			:pii_attributes => Factory.attributes_for(:pii) )
+		duplicates = StudySubject.duplicates(:sex => 'M',
+			:dob => study_subject.dob )
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert !duplicates.empty?
+	end
+
+	test "should NOT return subject as duplicate if just has matching dob" do
+		study_subject = Factory(:study_subject, :sex => 'M',
+			:pii_attributes => Factory.attributes_for(:pii) )
+		duplicates = StudySubject.duplicates(:sex => 'F',
+			:dob => study_subject.dob)
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert duplicates.empty?
+	end
+
+	test "should NOT return subject as duplicate if just has matching sex" do
+		study_subject = Factory(:study_subject, :sex => 'M',
+			:pii_attributes => Factory.attributes_for(:pii) )
+		duplicates = StudySubject.duplicates(:sex => study_subject.sex,
+			:dob => Date.today)	#	TODO should make sure this isn't pii's dob
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert duplicates.empty?
+	end
+
+	test "should return subject as duplicate if has matching hospital_no" do
+		study_subject = Factory(:study_subject, 
+			:identifier_attributes => Factory.attributes_for(:identifier,
+				:hospital_no => 'matchthis') )
+		duplicates = StudySubject.duplicates(:hospital_no => study_subject.hospital_no)
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert !duplicates.empty?
+	end
+
+	test "should return subject as duplicate if has matching admit_date and organization" do
+		study_subject = Factory(:case_study_subject, 
+			:patient_attributes => Factory.attributes_for(:patient,
+				:admit_date => Date.yesterday ))
+		duplicates = StudySubject.duplicates(
+			:admit_date => study_subject.admit_date,
+			:organization_id => study_subject.organization_id)
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert !duplicates.empty?
+	end
+
+	test "should NOT return subject as duplicate if just has matching admit_date" do
+		study_subject = Factory(:case_study_subject, 
+			:patient_attributes => Factory.attributes_for(:patient,
+				:admit_date => Date.yesterday ))
+		duplicates = StudySubject.duplicates(
+			:admit_date => study_subject.admit_date,
+			:organization_id => 0)	#	won't match the subject's
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert duplicates.empty?
+	end
+
+	test "should NOT return subject as duplicate if just has matching organization" do
+		study_subject = Factory(:case_study_subject, 
+			:patient_attributes => Factory.attributes_for(:patient,
+				:admit_date => Date.yesterday ))
+		duplicates = StudySubject.duplicates(
+			:admit_date => Date.today,	#	TODO should make sure doesn't match subject's
+			:organization_id => study_subject.organization_id)
+		assert_not_nil duplicates
+		assert duplicates.is_a?(Array)
+		assert duplicates.empty?
+	end
+
+	test "should add test to test when all of these params are passed and all match" do
+pending #	TODO
+	end
+
+	test "should add test to test when all of these params are passed and none match" do
+pending #	TODO
+	end
+
+	test "should add test to test when all of these params are passed and some match" do
+pending #	TODO
 	end
 
 protected

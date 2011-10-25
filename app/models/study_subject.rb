@@ -79,6 +79,11 @@ class StudySubject < Shared
 
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
+		n.with_options :to => :patient do |o|
+			o.delegate :admit_date
+			o.delegate :organization
+			o.delegate :organization_id
+		end
 		n.with_options :to => :pii do |o|
 			o.delegate :initials
 			o.delegate :email
@@ -98,6 +103,7 @@ class StudySubject < Shared
 			o.delegate :patid
 			o.delegate :orderno
 			o.delegate :studyid
+			o.delegate :hospital_no
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
@@ -466,6 +472,60 @@ class StudySubject < Shared
 		#	identifier.orderno is delegated to subject for simplicity
 		( last_control.try(:orderno) || 0 ) + 1
 	end
+
+	#
+	#	Basically this is just a custom search expecting only the 
+	#	following possible params for comparison ...
+	#
+	#		hospital_no
+	#		dob
+	#		sex
+	#		admit_date
+	#		organization_id
+	#
+	def self.duplicates(params={})
+		conditions = [[],[]]
+		if params.has_key?(:hospital_no)
+			conditions[0] << '(identifiers.hospital_no = ?)'
+			conditions[1] << params[:hospital_no]
+		end
+		if params.has_key?(:dob) and params.has_key?(:sex)
+			conditions[0] << '(piis.dob = ? AND sex = ?)'
+			conditions[1] << params[:dob]
+			conditions[1] << params[:sex]
+		end
+		if params.has_key?(:admit_date) and params.has_key?(:organization_id)
+			conditions[0] << '(patients.admit_date = ? AND patients.organization_id = ?)'
+			conditions[1] << params[:admit_date]
+			conditions[1] << params[:organization_id]
+		end
+
+
+#	dates may be a problem? maybe not
+#	TODO clean this up
+puts conditions.inspect
+mysqlconditions = []
+mysqlconditions << conditions[0].join(' OR ')
+mysqlconditions += conditions[1].flatten
+puts mysqlconditions.inspect
+
+
+		unless conditions[0].blank?
+			find(:all,
+				#	have to do a LEFT JOIN, not the default INNER JOIN, here
+				#			:joins => [:pii,:patient,:identifier]
+				:joins => [
+					'LEFT JOIN piis ON study_subjects.id = piis.study_subject_id',
+					'LEFT JOIN patients ON study_subjects.id = patients.study_subject_id',
+					'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id'
+				],
+				:conditions => mysqlconditions
+			) 
+		else
+			[]
+		end
+	end
+
 
 protected
 
