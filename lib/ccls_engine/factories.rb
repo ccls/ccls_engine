@@ -290,7 +290,9 @@ Factory.define :patient do |f|
 	#	Doing it this way will actually include organization_id 
 	#	in the Factory.attributes_for(:patient) method.
 	#	Of course, it requires that there actually be an Organization.
-	f.organization { Organization.first }
+#	f.organization { Organization.first }
+#	f.organization_id { Organization.first.id }
+	f.organization_id { Hospital.first.organization_id }
 end
 
 Factory.define :person do |f|
