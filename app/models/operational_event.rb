@@ -69,14 +69,17 @@ protected
 	end
 
 	def self.joins(options={})
+#	TODO may have to use sql for LEFT JOINS rather than the rails symbol
 		joins = []
 		if options.has_key?(:order) && valid_order?(options[:order])
 			case options[:order]
 				when 'type' then joins << :operational_event_type
+#	'LEFT JOIN operational_event_types ON operational_events.operational_event_type_id = operational_event_types.id',
 			end
 		end	
 		if options.has_key?(:study_subject_id) and !options[:study_subject_id].blank?
 			joins << :enrollment
+#	'LEFT JOIN enrollments ON operational_events.enrollment_id = enrollments.id',
 		end
 		joins
 	end
