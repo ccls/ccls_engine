@@ -26,7 +26,9 @@ class OperationalEvent < Shared
 	def self.search(options={})
 		find(:all,
 			:joins => joins(options),
-			:order => order(options))
+			:order => order(options),
+			:conditions => conditions(options)
+		)
 	end
 
 	before_save :copy_operational_event_type_description
@@ -67,14 +69,29 @@ protected
 	end
 
 	def self.joins(options={})
+		joins = []
 		if options.has_key?(:order) && valid_order?(options[:order])
 			case options[:order]
-				when 'type' then :operational_event_type
-				else nil
+				when 'type' then joins << :operational_event_type
 			end
+		end	
+		if options.has_key?(:study_subject_id) and !options[:study_subject_id].blank?
+			joins << :enrollment
+		end
+		joins
+	end
+
+	def self.conditions(options={})
+		conditions = [[],[]]
+		if options.has_key?(:study_subject_id) and !options[:study_subject_id].blank?
+			conditions[0] << '(enrollments.study_subject_id = ?)'
+			conditions[1] << options[:study_subject_id]
+		end
+		unless conditions.flatten.empty?
+			[ conditions[0].join(' AND '), *(conditions[1].flatten) ]
 		else
 			nil
-		end	
+		end
 	end
 
 end

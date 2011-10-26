@@ -107,6 +107,16 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 			operational_event.operational_event_type.description
 	end
 
+	test "should only include operational events for study_subject" do
+		enrollment = Factory(:enrollment)
+		operational_event_1 = create_operational_event
+		operational_event_2 = create_operational_event(
+			:enrollment => enrollment )
+		events = OperationalEvent.search(:study_subject_id => enrollment.study_subject.id)
+		assert_equal 1, events.length
+		assert_equal events.first, operational_event_2
+	end
+
 protected
 
 	def create_operational_event(options={})
