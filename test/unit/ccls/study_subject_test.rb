@@ -1424,6 +1424,12 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_equal study_subject, found_study_subject
 	end
 
+	test "should return nothing if no case matching patid" do
+		study_subject = Factory(:case_identifier).study_subject
+		found_study_subject = StudySubject.find_case_by_patid('0000')
+		assert_nil found_study_subject
+	end
+
 protected
 
 	def assert_no_duplicates_found
