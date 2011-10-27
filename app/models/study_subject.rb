@@ -535,6 +535,18 @@ class StudySubject < Shared
 		)
 	end
 
+	def self.find_case_by_patid(patid)
+		StudySubject.find(:first,	#	patid is unique so better only be 1
+			:joins => [ 
+				'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id' 
+			],
+			:conditions => [
+				'study_subjects.subject_type_id = ? AND identifiers.patid = ?',
+				SubjectType['Case'].id, patid
+			]
+		)
+	end
+
 protected
 
 	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)
