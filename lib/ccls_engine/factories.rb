@@ -284,9 +284,19 @@ end
 Factory.define :patient do |f|
 	#	really don't see the point of a patient w/o a study_subject
 	f.association :study_subject, :factory => :case_study_subject
-#	f.admit_date Date.jd(2440000+rand(15000))
-#	f.association :organization
+#	f.admit_date Date.jd(2440000+rand(15000))	#	may cause problems with date comparison?
+	#	Today should always be after the dob.
+	#	However, with all of the date chronology tests, still may cause problems.
+	f.admit_date Date.today	
 
+
+#	I would like hospital_no moved from identifier to patient.
+#	This way, I could unique it in the scope of the organization_id.
+#	Requiring it in the identifier model will causes issues
+#	as hospital_no seems to only exist for cases and not controls.
+
+
+#	f.association :organization
 	#	Doing it this way will actually include organization_id 
 	#	in the Factory.attributes_for(:patient) method.
 	#	Of course, it requires that there actually be an Organization.

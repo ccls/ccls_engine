@@ -10,11 +10,11 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_belong_to( :diagnosis )
 
 	assert_should_require_attributes(
-		:organization_id )
-#		:admit_date )
+#		:organization_id )
+		:organization_id, :admit_date )
 
 	assert_should_not_require_attributes(
-		:admit_date,
+#		:admit_date,
 		:diagnosis_date,
 		:diagnosis_id,
 		:raf_zip,
@@ -73,7 +73,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			patient = create_patient(
 				:study_subject => study_subject,
 				:admit_date => Date.jd(2430000) ) 
-				# smaller than my factory set dob
+				# BEFORE my factory set dob to raise error
 			assert patient.errors.on(:admit_date)
 			assert_match(/before.*dob/,
 				patient.errors.on(:admit_date))
@@ -87,7 +87,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			study_subject = create_case_study_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
-					# smaller than my factory set dob
+					# BEFORE my factory set dob to raise error
 					:admit_date => Date.jd(2430000),
 				}))
 			assert study_subject.errors.on('patient:admit_date')
@@ -102,7 +102,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			patient = create_patient(
 				:study_subject => study_subject,
 				:diagnosis_date => Date.jd(2430000) ) 
-				# smaller than my factory set dob
+				# BEFORE my factory set dob to raise error
 			assert patient.errors.on(:diagnosis_date)
 			assert_match(/before.*dob/,
 				patient.errors.on(:diagnosis_date))
@@ -116,7 +116,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			study_subject = create_case_study_subject(
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
-					# smaller than my factory set dob
+					# BEFORE my factory set dob to raise error
 					:diagnosis_date => Date.jd(2430000),
 				}))
 			assert study_subject.errors.on('patient:diagnosis_date')

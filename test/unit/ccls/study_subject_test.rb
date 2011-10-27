@@ -909,9 +909,10 @@ pending	#	TODO will require hospital_no?
 				{ :matchingid => '12345' })).reload
 		other   = create_study_subject_with_matchingid
 		nobody  = create_study_subject_with_matchingid('54321')
-		assert_nil study_subject.reference_date
-		assert_nil study_subject.patient.admit_date
-		assert_nil other.reference_date
+#	admit_date is now required, so will exist initially
+#		assert_nil study_subject.reference_date
+#		assert_nil study_subject.patient.admit_date
+#		assert_nil other.reference_date
 		assert_nil nobody.reference_date
 		study_subject.patient.update_attributes(
 			:admit_date => Chronic.parse('yesterday'))
@@ -957,12 +958,19 @@ pending	#	TODO will require hospital_no?
 		assert_nil     other.reload.reference_date
 	end
 
-	test "should nullify study_subject.reference_date if matching patient nullifies admit_date" do
+	test "should nullify study_subject.reference_date if matching patient nullifies admit_date (admit_date now required)" do
 		other   = create_study_subject_with_matchingid
 		study_subject = create_case_study_subject_with_patient_and_identifier
+		assert_not_nil study_subject.patient.admit_date
+		assert_not_nil study_subject.reference_date
 		assert_not_nil other.reload.reference_date
-		study_subject.patient.update_attributes(:admit_date => nil)
-		assert_nil     other.reload.reference_date
+#	admit_date is now required, so can't nullify admit_date
+#	This actually now returns false
+		assert !study_subject.patient.update_attributes(:admit_date => nil)
+		assert_not_nil study_subject.patient.reload.admit_date
+		assert_not_nil study_subject.reference_date
+		assert_not_nil other.reload.reference_date
+#		assert_nil     other.reload.reference_date
 	end
 
 	test "should create_home_exposure_with_study_subject" do

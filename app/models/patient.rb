@@ -9,7 +9,7 @@ class Patient < Shared
 
 	attr_protected :study_subject_id
 
-#	validates_presence_of :admit_date
+	validates_presence_of :admit_date
 	validates_presence_of :organization_id
 
 	validates_past_date_for :admit_date
@@ -90,16 +90,11 @@ protected
 	end
 
 	##
-	#	This validation does not work when using nested attributes as 
-	#	the study_subject has not been resolved yet, unless this is an update.
-	#	This results in a similar validation in Subject.
-#	Actually, both are patient dates so this isn't need in subject!
+	#	Both are patient dates so this doesn't need in subject!
 	def treatment_began_on_is_after_diagnosis_date
-#puts "in treatment_began_on_is_after_diagnosis_date"
 		if !treatment_began_on.blank? && 
 			!diagnosis_date.blank? && 
 			treatment_began_on < diagnosis_date
-#puts "should be adding error"
 			errors.add(:treatment_began_on, "is before diagnosis_date.") 
 		end
 	end
@@ -109,7 +104,6 @@ protected
 	#	the study_subject has not been resolved yet, unless this is an update.
 	#	This results in a similar validation in Subject.
 	def subject_is_case
-#		if study_subject and study_subject.subject_type.code != 'Case'
 		if study_subject and !study_subject.is_case?
 			errors.add(:study_subject,"must be case to have patient info")
 		end
