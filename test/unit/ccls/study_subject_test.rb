@@ -255,7 +255,7 @@ pending
 
 #	nothing is required any longer, so this can happen
 		test "should NOT create study_subject with empty identifier" do
-pending	#	TODO will require hospital_no?
+pending	#	TODO will require something?
 			assert_difference( 'Identifier.count', 0) {
 			assert_difference( 'StudySubject.count', 0) {
 #				study_subject = create_study_subject( :identifier_attributes => {} )
@@ -1305,7 +1305,7 @@ pending #	TODO should return what for rejected controls for non-case
 	test "should return subject as duplicate if has matching hospital_no" do
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
-			:identifier_attributes => { :hospital_no => study_subject.hospital_no })
+			:patient_attributes => { :hospital_no => study_subject.hospital_no })
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
@@ -1468,9 +1468,10 @@ protected
 		Factory(:case_study_subject, { :sex => 'M',
 			:pii_attributes => Factory.attributes_for(:pii,
 				:dob => Date.yesterday),
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				:hospital_no => 'matchthis'),
+#	TODO do we no longer need the identifier in the check since hospital_no moved?
+#			:identifier_attributes => Factory.attributes_for(:identifier),
 			:patient_attributes => Factory.attributes_for(:patient,
+				:hospital_no => 'matchthis',
 				:admit_date => Date.yesterday ) }.deep_merge(options) )
 	end
 
@@ -1478,9 +1479,10 @@ protected
 		Factory.build(:case_study_subject, { :sex => 'F',
 			:pii_attributes => Factory.attributes_for(:pii,
 				:dob => Date.today),
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				:hospital_no => 'somethingdifferent'),
+#	TODO do we no longer need the identifier in the check since hospital_no moved?
+#			:identifier_attributes => Factory.attributes_for(:identifier),
 			:patient_attributes => Factory.attributes_for(:patient,
+				:hospital_no => 'somethingdifferent',
 				:organization_id => 0,
 				:admit_date => Date.today ) }.deep_merge(options) )
 	end

@@ -855,7 +855,6 @@ Table: identifiers
 | matchingid               | varchar(6)   | YES  |     | NULL    |                |
 | familyid                 | varchar(6)   | YES  |     | NULL    |                |
 | state_id_no              | varchar(255) | YES  | UNI | NULL    |                |
-| hospital_no              | varchar(25)  | YES  |     | NULL    |                |
 | childidwho               | varchar(10)  | YES  |     | NULL    |                |
 | studyid                  | varchar(14)  | YES  | UNI | NULL    |                |
 | newid                    | varchar(6)   | YES  |     | NULL    |                |
@@ -1085,6 +1084,7 @@ Table: patients
 | was_under_15_at_dx           | tinyint(1)   | YES  |     | NULL    |                |
 | raf_zip                      | varchar(10)  | YES  |     | NULL    |                |
 | raf_county                   | varchar(255) | YES  |     | NULL    |                |
+| hospital_no                  | varchar(25)  | YES  | MUL | NULL    |                |
 +------------------------------+--------------+------+-----+---------+----------------+
 
 Table: people

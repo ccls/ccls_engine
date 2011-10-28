@@ -85,6 +85,7 @@ class StudySubject < Shared
 			o.delegate :admit_date
 			o.delegate :organization
 			o.delegate :organization_id
+			o.delegate :hospital_no
 		end
 		n.with_options :to => :pii do |o|
 			o.delegate :initials
@@ -105,7 +106,6 @@ class StudySubject < Shared
 			o.delegate :patid
 			o.delegate :orderno
 			o.delegate :studyid
-			o.delegate :hospital_no
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
@@ -486,23 +486,33 @@ class StudySubject < Shared
 	#		organization_id
 	#
 	def self.duplicates(params={})
-		conditions = [[],[]]
+#		conditions = [[],[]]
+		conditions = [[],{}]
 		#	being blank is OK for mysql, but should be removed for simplicity and clarity
+#	use a hash here
 		if params.has_key?(:hospital_no) and !params[:hospital_no].blank?
-			conditions[0] << '(identifiers.hospital_no = ?)'
-			conditions[1] << params[:hospital_no]
+#			conditions[0] << '(identifiers.hospital_no = ?)'
+#			conditions[1] << params[:hospital_no]
+			conditions[0] << '(hospital_no = :hospital_no)'
+			conditions[1][:hospital_no] = params[:hospital_no]
 		end
 		if params.has_key?(:dob) and !params[:dob].blank? and
 				params.has_key?(:sex) and !params[:sex].blank?
-			conditions[0] << '(piis.dob = ? AND sex = ?)'
-			conditions[1] << params[:dob]
-			conditions[1] << params[:sex]
+#			conditions[0] << '(dob = ? AND sex = ?)'
+#			conditions[1] << params[:dob]
+#			conditions[1] << params[:sex]
+			conditions[0] << '(dob = :dob AND sex = :sex)'
+			conditions[1][:dob] = params[:dob]
+			conditions[1][:sex] = params[:sex]
 		end
 		if params.has_key?(:admit_date) and !params[:admit_date].blank? and
 				params.has_key?(:organization_id) and !params[:organization_id].blank?
-			conditions[0] << '(patients.admit_date = ? AND patients.organization_id = ?)'
-			conditions[1] << params[:admit_date]
-			conditions[1] << params[:organization_id]
+#			conditions[0] << '(patients.admit_date = ? AND patients.organization_id = ?)'
+#			conditions[1] << params[:admit_date]
+#			conditions[1] << params[:organization_id]
+			conditions[0] << '(admit_date = :admit AND organization_id = :org)'
+			conditions[1][:admit] = params[:admit_date]
+			conditions[1][:org] = params[:organization_id]
 		end
 		#	NOTE dates may be a problem? maybe not? seem to work
 #puts
@@ -518,7 +528,8 @@ class StudySubject < Shared
 					'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id'
 				],
 				:conditions => [ conditions[0].join(' OR '),
-					*(conditions[1].flatten) ]
+					conditions[1] ]
+#					*(conditions[1].flatten) ]
 			) 
 		else
 			[]

@@ -3,7 +3,7 @@ require 'test_helper'
 class Ccls::IdentifierTest < ActiveSupport::TestCase
 
 #	assert_should_require :hospital_no
-	assert_should_not_require :hospital_no
+#	assert_should_not_require :hospital_no
 
 	assert_should_create_default_object
 	assert_should_not_require_attributes( :case_control_type )
@@ -46,7 +46,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length :newid, :maximum => 6
 	assert_should_require_attribute_length :gbid, :maximum => 26
 	assert_should_require_attribute_length :lab_no_wiemels, :maximum => 25
-	assert_should_require_attribute_length :hospital_no, :maximum => 25
+#	assert_should_require_attribute_length :hospital_no, :maximum => 25
 	assert_should_require_attribute_length :idno_wiemels, :maximum => 10
 	assert_should_require_attribute_length :accession_no, :maximum => 25
 	assert_should_require_attribute_length :icf_master_id, :maximum => 9

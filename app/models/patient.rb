@@ -11,6 +11,12 @@ class Patient < Shared
 
 	validates_presence_of :admit_date
 	validates_presence_of :organization_id
+	validates_presence_of :hospital_no
+#	validates_length_of   :hospital_no, :maximum => 25
+
+	validates_length_of   :hospital_no, :maximum => 25, :allow_blank => true
+
+	validates_uniqueness_of :hospital_no, :scope => :organization_id
 
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date

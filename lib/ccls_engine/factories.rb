@@ -295,6 +295,7 @@ Factory.define :patient do |f|
 #	Requiring it in the identifier model will causes issues
 #	as hospital_no seems to only exist for cases and not controls.
 
+	f.sequence(:hospital_no){|n| "#{n}"}	#	in order to test presence or uniqueness, MUST BE HERE
 
 #	f.association :organization
 	#	Doing it this way will actually include organization_id 

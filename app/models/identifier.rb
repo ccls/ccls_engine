@@ -30,7 +30,7 @@ class Identifier < Shared
 #	validates_presence_of :hospital_no
 #	validates_length_of   :hospital_no, :maximum => 25
 
-	validates_length_of   :hospital_no, :maximum => 25, :allow_blank => true
+#	validates_length_of   :hospital_no, :maximum => 25, :allow_blank => true
 
 	with_options :allow_nil => true do |n|
 		n.validates_uniqueness_of :ssn
@@ -132,7 +132,12 @@ protected
 		self.gbid = nil if gbid.blank?
 		self.lab_no_wiemels = nil if lab_no_wiemels.blank?
 		self.accession_no = nil if accession_no.blank?
+
+
+#	probably gonna need this in patient
 #		self.hospital_no = nil if hospital_no.blank?
+
+
 		self.idno_wiemels = nil if idno_wiemels.blank?
 
 		patid.try(:gsub!,/\D/,'') #unless patid.nil?
