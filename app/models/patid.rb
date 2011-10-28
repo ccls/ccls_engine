@@ -1,3 +1,6 @@
+#
+#	I am removing this due to its issues.
+#
 class Patid < Shared
 #
 #	NOTE: Don't validate anything that the creating user can't do anything about.

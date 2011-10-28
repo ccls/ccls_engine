@@ -26,12 +26,6 @@ class Identifier < Shared
 #	validates_presence_of   :subjectid
 #	validates_uniqueness_of :subjectid, :allow_nil => true
 
-#	won't work for non-cases
-#	validates_presence_of :hospital_no
-#	validates_length_of   :hospital_no, :maximum => 25
-
-#	validates_length_of   :hospital_no, :maximum => 25, :allow_blank => true
-
 	with_options :allow_nil => true do |n|
 		n.validates_uniqueness_of :ssn
 		n.validates_uniqueness_of :icf_master_id
@@ -132,12 +126,6 @@ protected
 		self.gbid = nil if gbid.blank?
 		self.lab_no_wiemels = nil if lab_no_wiemels.blank?
 		self.accession_no = nil if accession_no.blank?
-
-
-#	probably gonna need this in patient
-#		self.hospital_no = nil if hospital_no.blank?
-
-
 		self.idno_wiemels = nil if idno_wiemels.blank?
 
 		patid.try(:gsub!,/\D/,'') #unless patid.nil?
@@ -166,12 +154,26 @@ protected
 
 	#	made separate method so can be stubbed
 	def get_next_childid
-		Childid.create!.destroy.id
+#	TODO I think that we may need to not use the Childid table and just
+#		do something similar to subjectid.  Find the maximum existing
+#		childid and increment it. (to_i first for when nil, blank or string)
+#	This may work, but again, this will rely on the existance of the
+#		data and that it won't be removed (or it may be duplicated)
+#		Childid.create!.destroy.id
+#		(Identifier.maximum(:childid).to_i||0) + 1
+		Identifier.maximum(:childid).to_i + 1
 	end
 
 	#	made separate method so can be stubbed
 	def get_next_patid
-		Patid.create!.destroy.id
+#	TODO I think that we may need to not use the Patid table and just
+#		do something similar to subjectid.  Find the maximum existing
+#		patid and increment it. (to_i first for when nil, blank or string)
+#	This may work, but again, this will rely on the existance of the
+#		data and that it won't be removed (or it may be duplicated)
+#		Patid.create!.destroy.id
+#		(Identifier.maximum(:patid).to_i||0) + 1
+		Identifier.maximum(:patid).to_i + 1
 	end
 
 	#	fields made from fields that WON'T change go here
@@ -228,7 +230,8 @@ protected
 	#	This only guarantees uniqueness before creation,
 	#		but not at creation. This is NOT scalable.
 	#	Fortunately, we won't be creating tons of study_subjects
-	#		at the same time so this should not be an issue.
+	#		at the same time so this should not be an issue,
+	#		however, when it fails, it will be confusing.	#	TODO
 	#	How to rescue from ActiveRecord::RecordInvalid here?
 	#		or would it be RecordNotSaved?
 	def generate_subjectid
