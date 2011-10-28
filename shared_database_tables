@@ -504,6 +504,10 @@ Table: candidate_controls
 | created_at            | datetime     | YES  |     | NULL    |                |
 | updated_at            | datetime     | YES  |     | NULL    |                |
 | father_hispanicity_id | int(11)      | YES  |     | NULL    |                |
+| mother_first_name     | varchar(255) | YES  |     | NULL    |                |
+| mother_middle_name    | varchar(255) | YES  |     | NULL    |                |
+| mother_last_name      | varchar(255) | YES  |     | NULL    |                |
+| mother_dob            | date         | YES  |     | NULL    |                |
 +-----------------------+--------------+------+-----+---------+----------------+
 
 Table: childids

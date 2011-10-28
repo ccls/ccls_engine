@@ -9,6 +9,10 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:last_name,
 		:dob )
 	assert_should_not_require_attributes( 
+		:mother_first_name,
+		:mother_middle_name,
+		:mother_last_name,
+		:mother_dob,
 		:icf_master_id,
 		:related_patid,
 		:middle_name,
