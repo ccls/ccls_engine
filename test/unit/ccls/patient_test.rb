@@ -12,6 +12,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		:hospital_no, :organization_id, :admit_date )
 
 	assert_should_not_require_attributes(
+		:other_diagnosis,
 		:diagnosis_date,
 		:diagnosis_id,
 		:raf_zip,

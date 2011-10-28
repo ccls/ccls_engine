@@ -1085,6 +1085,7 @@ Table: patients
 | raf_zip                      | varchar(10)  | YES  |     | NULL    |                |
 | raf_county                   | varchar(255) | YES  |     | NULL    |                |
 | hospital_no                  | varchar(25)  | YES  | MUL | NULL    |                |
+| other_diagnosis              | varchar(255) | YES  |     | NULL    |                |
 +------------------------------+--------------+------+-----+---------+----------------+
 
 Table: people
