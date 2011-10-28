@@ -9,7 +9,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_belong_to( :diagnosis )
 
 	assert_should_require_attributes(
-		:organization_id, :admit_date )
+		:hospital_no, :organization_id, :admit_date )
 
 	assert_should_not_require_attributes(
 		:diagnosis_date,
