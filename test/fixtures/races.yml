@@ -1,7 +1,7 @@
 #
-#	Do not change id or key
+#	Do not change id, key or code
 #		'id' could be referenced by existing data
-#		'key' is used in the rails code for searching 
+#		'key' or 'code' is used in the rails code for searching 
 #
 white:
   id: 1
