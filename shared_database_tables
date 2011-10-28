@@ -817,15 +817,16 @@ Table: homex_outcomes
 +----------------------+----------+------+-----+---------+----------------+
 
 Table: hospitals
-+-----------------+----------+------+-----+---------+----------------+
-| Field           | Type     | Null | Key | Default | Extra          |
-+-----------------+----------+------+-----+---------+----------------+
-| id              | int(11)  | NO   | PRI | NULL    | auto_increment |
-| position        | int(11)  | YES  |     | NULL    |                |
-| organization_id | int(11)  | YES  | MUL | NULL    |                |
-| created_at      | datetime | YES  |     | NULL    |                |
-| updated_at      | datetime | YES  |     | NULL    |                |
-+-----------------+----------+------+-----+---------+----------------+
++-----------------+------------+------+-----+---------+----------------+
+| Field           | Type       | Null | Key | Default | Extra          |
++-----------------+------------+------+-----+---------+----------------+
+| id              | int(11)    | NO   | PRI | NULL    | auto_increment |
+| position        | int(11)    | YES  |     | NULL    |                |
+| organization_id | int(11)    | YES  | MUL | NULL    |                |
+| created_at      | datetime   | YES  |     | NULL    |                |
+| updated_at      | datetime   | YES  |     | NULL    |                |
+| has_irb_waiver  | tinyint(1) | NO   |     | 0       |                |
++-----------------+------------+------+-----+---------+----------------+
 
 Table: icf_master_ids
 +------------------+------------+------+-----+---------+----------------+

@@ -6,6 +6,9 @@ class Hospital < Shared
 	acts_as_list
 	belongs_to :organization
 
+	#	don't know if this is needed as database will default to false
+#	validates_presence_of :has_irb_waiver
+
 	def to_s
 		organization.try(:name) || 'Unknown'
 	end
