@@ -86,8 +86,11 @@ namespace :homex_import do
 				:state_id_no => line['state_id_no'],
 				:studyid_nohyphen => line['studyID_noHyphen'],
 				:studyid_intonly_nohyphen => line['studyID_intOnly_noHyphen'],
-				:icf_master_id => line['icf_master_id'],
-				:hospital_no => line['hospital_no']
+				:icf_master_id => line['icf_master_id']
+#
+#	hospital_no is now in the Patient model
+#
+#				:hospital_no => line['hospital_no']
 			}
 			Identifier.create!(attributes)
 
@@ -609,8 +612,13 @@ namespace :homex_import do
 #				:patid             => line['PatID'] || f.lineno,			#	TODO
 #				:case_control_type => line['CaCoType'] || 'X',				#	TODO
 #				:orderno           => line['OrderNo'] || f.lineno,		#	TODO
-#				:state_id_no       => sprintf("%s %d",line['StateIDNo'], f.lineno),
+#				:state_id_no       => sprintf("%s %d",line['StateIDNo'], f.lineno),	
+#
+#
+#		hospital_no is now in the Patient model
+#
 #				:hospital_no       => line['HospitalIDNo']
+#
 #			}
 #			Identifier.create!(attributes)
 #
