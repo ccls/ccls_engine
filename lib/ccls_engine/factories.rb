@@ -13,6 +13,9 @@ end
 def random_float
 	rand * 100
 end
+def random_sex
+	%w( M F )[rand(2)]
+end
 
 Factory.define :page do |f|
 	f.sequence(:path)    { |n| "/path#{n}" }
@@ -86,7 +89,8 @@ Factory.define :candidate_control do |f|
 	f.last_name  "Last"
 	f.dob Date.jd(2440000+rand(15000))
 	f.reject_candidate false
-	f.sequence(:sex){|n| %w( M F DK )[n%3] }
+#	f.sequence(:sex){|n| %w( M F DK )[n%3] }
+	f.sex random_sex
 end
 
 Factory.define :identifier do |f|
@@ -406,7 +410,8 @@ Factory.define :study_subject do |f|
 #	f.association :subject_race
 	f.association :vital_status
 #	f.sequence(:subjectid){|n| "#{n}"}
-	f.sequence(:sex){|n| %w( M F DK )[n%3] }
+#	f.sequence(:sex){|n| %w( M F DK )[n%3] }
+	f.sex random_sex
 end
 #	f.subject_type { SubjectType.find(:first,:conditions => {
 #			:code => 'Case'
