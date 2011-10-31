@@ -18,7 +18,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:middle_name,
 		:state_registrar_no,
 		:local_registrar_no,
-		:sex,
+#		:sex,
 		:birth_county,
 		:assigned_on,
 		:mother_race_id,
@@ -37,12 +37,20 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:first_name,
 		:middle_name,
 		:last_name,
-		:sex,
+#		:sex,
 		:birth_county,
 		:birth_type,
 		:mother_maiden_name,
 		:rejection_reason,
 			:maximum => 250 )
+	assert_should_require_attributes_not_nil( :sex )
+
+	test "should require sex be either M, F or DK" do
+		assert_difference("CandidateControl.count",0) {
+			candidate_control = create_candidate_control(:sex => 'X')
+			assert candidate_control.errors.on_attr_and_type(:sex,:inclusion)
+		} 
+	end
 
 	test "should require rejection_reason if reject_candidate is true" do
 		assert_difference("CandidateControl.count",0) {

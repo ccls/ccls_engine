@@ -86,6 +86,7 @@ Factory.define :candidate_control do |f|
 	f.last_name  "Last"
 	f.dob Date.jd(2440000+rand(15000))
 	f.reject_candidate false
+	f.sequence(:sex){|n| %w( M F DK )[n%3] }
 end
 
 Factory.define :identifier do |f|

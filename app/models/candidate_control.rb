@@ -14,9 +14,10 @@ class CandidateControl < Shared
 		:maximum => 25, :allow_blank => true
 		#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
 	validates_length_of     :first_name, :middle_name, :last_name,
-		:sex, :birth_county, :birth_type, :mother_maiden_name,
+		:birth_county, :birth_type, :mother_maiden_name,
 		:rejection_reason, :maximum => 250, :allow_blank => true
 		#	NEED :allow_blank => true or fails validation and says it too long (even when blank)
+	validates_inclusion_of :sex, :in => %w( M F DK )
 
 	#	Returns string containing candidates's first, middle and last name
 	def full_name
