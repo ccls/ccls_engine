@@ -97,6 +97,15 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		assert_not_nil candidate_control.study_subject_id
 	end
 
+	test "should create control with enrollment in ccls" do
+		case_study_subject = create_case_identifier.study_subject
+		candidate_control = create_candidate_control
+		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
+		assert !candidate_control.study_subject.enrollments.empty?
+		assert_equal [Project['ccls']],
+			candidate_control.study_subject.enrollments.collect(&:project)
+	end
+
 	test "should create control from attributes" do
 		case_study_subject = create_case_identifier.study_subject
 		candidate_control = create_candidate_control

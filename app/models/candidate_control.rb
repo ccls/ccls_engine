@@ -68,7 +68,7 @@ class CandidateControl < Shared
 				},
 				:identifier => child_identifier,
 				:enrollments_attributes => [{
-					:project => Project['phase5']
+					:project => Project['ccls']
 				}]
 			})
 			child.assign_icf_master_id
