@@ -66,11 +66,12 @@ class StudySubject < Shared
 	has_many :unmerged_abstracts, :class_name => 'Abstract',
 		:conditions => [ "merged_by_uid IS NULL" ]
 
-	before_validation :nullify_blank_sex
+#	before_validation :nullify_blank_sex
 
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
 
+	validates_inclusion_of :sex, :in => %w( M F DK )
 	validates_inclusion_of :do_not_contact, :in => [ true, false ]
 
 	validate :must_be_case_if_patient
@@ -602,9 +603,9 @@ protected
 		end
 	end
 
-	def nullify_blank_sex
-		#	An empty form field is not NULL to MySQL so ...
-		self.sex = nil if sex.blank?
-	end
+#	def nullify_blank_sex
+#		#	An empty form field is not NULL to MySQL so ...
+#		self.sex = nil if sex.blank?
+#	end
 
 end

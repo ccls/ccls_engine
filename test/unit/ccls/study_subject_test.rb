@@ -10,24 +10,31 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:identifier, :pii )
 	assert_should_habtm(:analyses)
 	assert_requires_complete_date( :reference_date )
-	assert_should_require_attributes_not_nil( :do_not_contact )
+	assert_should_require_attributes_not_nil( :do_not_contact, :sex )
 	assert_should_not_require_attributes( :vital_status_id, :hispanicity_id, 
-		:reference_date, :sex,
-		:mother_yrs_educ, :father_yrs_educ, :birth_type, :birth_county, :is_duplicate_of )
+		:reference_date, :mother_yrs_educ, :father_yrs_educ, 
+		:birth_type, :birth_county, :is_duplicate_of )
 
-	test "should default sex to null" do
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject
-			assert_nil study_subject.reload.sex
-		} 
-	end 
+#	test "should default sex to null" do
+#		assert_difference( "StudySubject.count", 1 ) {
+#			study_subject = create_study_subject
+#			assert_nil study_subject.reload.sex
+#		} 
+#	end 
+#
+#	test "should set nullify blank sex" do
+#		assert_difference( "StudySubject.count", 1 ) {
+#			study_subject = create_study_subject(:sex => '')
+#			assert_nil study_subject.reload.sex
+#		} 
+#	end 
 
-	test "should set nullify blank sex" do
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject(:sex => '')
-			assert_nil study_subject.reload.sex
+	test "should require sex be either M, F or DK" do
+		assert_difference( "StudySubject.count", 0 ) {
+			study_subject = create_study_subject(:sex => 'X')
+			assert study_subject.errors.on_attr_and_type(:sex,:inclusion)
 		} 
-	end 
+	end
 
 	test "create_control_study_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
