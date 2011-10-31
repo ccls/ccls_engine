@@ -48,6 +48,7 @@ class CandidateControl < Shared
 			child = StudySubject.create!({
 				:subject_type => SubjectType['Control'],
 				:vital_status => VitalStatus['living'],
+				:sex                   => sex,
 				:mother_hispanicity_id => mother_hispanicity_id,
 				:father_hispanicity_id => father_hispanicity_id,
 				:birth_type            => birth_type,
