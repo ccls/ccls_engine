@@ -153,6 +153,7 @@ class StudySubject < Shared
 
 	def father
 		StudySubject.find(:first,
+			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
@@ -163,6 +164,7 @@ class StudySubject < Shared
 
 	def mother
 		StudySubject.find(:first,
+			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
@@ -174,6 +176,7 @@ class StudySubject < Shared
 	def family
 #	TODO what if familyid is NULL?
 		StudySubject.find(:all,
+			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
 #			:conditions => { 
 #				'identifiers.familyid' => identifier.familyid
@@ -187,6 +190,7 @@ class StudySubject < Shared
 	def matching
 #	TODO what if matchingid is NULL?
 		StudySubject.find(:all,
+			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
 #			:conditions => { 
 #				'identifiers.matchingid' => identifier.matchingid
@@ -200,6 +204,7 @@ class StudySubject < Shared
 	def controls
 #	TODO what if subject is not a case?
 		StudySubject.find(:all, 
+			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
 			:conditions => [
 				"study_subjects.id != ? AND identifiers.patid = ? AND subject_type_id = ?", 
