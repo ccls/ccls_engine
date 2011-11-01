@@ -107,6 +107,7 @@ class StudySubject < Shared
 			o.delegate :patid
 			o.delegate :orderno
 			o.delegate :studyid
+			o.delegate :icf_master_id
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
