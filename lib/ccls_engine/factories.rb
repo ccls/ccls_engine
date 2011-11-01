@@ -155,6 +155,7 @@ Factory.define :data_source do |f|
 end
 
 Factory.define :diagnosis do |f|
+	f.sequence(:key)         { |n| "key#{n}"}
 	f.sequence(:code)        { |n| n+4 }	#	1, 2 and 3 are in the fixtures
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
