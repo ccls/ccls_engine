@@ -244,7 +244,10 @@ pending
 		assert_difference( 'Patient.count', 0) {
 		assert_difference( "StudySubject.count", 0 ) {
 			study_subject = create_study_subject( :patient_attributes => {})
-#			assert study_subject.errors.on('patient.admit_date')
+			assert study_subject.errors.on('patient.hospital_no')
+			assert study_subject.errors.on_attr_and_type('patient.hospital_no',:blank)
+			assert study_subject.errors.on('patient.admit_date')
+			assert study_subject.errors.on_attr_and_type('patient.admit_date',:blank)
 			assert study_subject.errors.on('patient.organization_id')
 			assert study_subject.errors.on_attr_and_type('patient.organization_id',:blank)
 		} }
@@ -1475,7 +1478,7 @@ protected
 		Factory(:case_study_subject, { :sex => 'M',
 			:pii_attributes => Factory.attributes_for(:pii,
 				:dob => Date.yesterday),
-#	TODO do we no longer need the identifier in the check since hospital_no moved?
+#	we no longer need the identifier in the check since hospital_no moved
 #			:identifier_attributes => Factory.attributes_for(:identifier),
 			:patient_attributes => Factory.attributes_for(:patient,
 				:hospital_no => 'matchthis',
@@ -1486,7 +1489,7 @@ protected
 		Factory.build(:case_study_subject, { :sex => 'F',
 			:pii_attributes => Factory.attributes_for(:pii,
 				:dob => Date.today),
-#	TODO do we no longer need the identifier in the check since hospital_no moved?
+#	we no longer need the identifier in the check since hospital_no moved
 #			:identifier_attributes => Factory.attributes_for(:identifier),
 			:patient_attributes => Factory.attributes_for(:patient,
 				:hospital_no => 'somethingdifferent',
