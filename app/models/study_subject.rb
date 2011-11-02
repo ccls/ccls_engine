@@ -128,6 +128,7 @@ class StudySubject < Shared
 		:reject_if => proc { |attrs|
 			attrs[:address_attributes][:line_1].blank? &&
 			attrs[:address_attributes][:line_2].blank? &&
+			attrs[:address_attributes][:unit].blank? &&
 			attrs[:address_attributes][:city].blank? &&
 			attrs[:address_attributes][:zip].blank? &&
 			attrs[:address_attributes][:county].blank?

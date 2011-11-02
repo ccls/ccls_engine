@@ -37,13 +37,17 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 	# so the addressing can't require address_id on create
 	# or this test fails.
 	#
-	test "should require address_id on update" do
-		assert_difference("Addressing.count", 1 ) do
-			addressing = create_addressing(:address_id => nil)
-			addressing.reload.update_attributes(
-				:created_at => Chronic.parse('yesterday'))
-			assert addressing.errors.on(:address)
-		end
+#	test "should require address on update" do
+#		assert_difference("Addressing.count", 1 ) do
+#			addressing = create_addressing(:address_id => nil)
+#			addressing.reload.update_attributes(
+#				:created_at => Chronic.parse('yesterday'))
+#			assert addressing.errors.on(:address)
+#		end
+#	end
+
+	test "should require an address" do
+pending	#	TODO don't allow an addressing to be created without an address
 	end
 
 	[:yes,:nil].each do |yndk|
