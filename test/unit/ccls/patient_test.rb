@@ -5,16 +5,16 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_initially_belong_to :study_subject
 	assert_should_initially_belong_to :organization
+	assert_should_initially_belong_to :diagnosis
 	assert_should_protect( :study_subject_id )
-	assert_should_belong_to( :diagnosis )
 
 	assert_should_require_attributes(
+		:diagnosis_id,
 		:hospital_no, :organization_id, :admit_date )
 
 	assert_should_not_require_attributes(
 		:other_diagnosis,
 		:diagnosis_date,
-		:diagnosis_id,
 		:raf_zip,
 		:raf_county )
 

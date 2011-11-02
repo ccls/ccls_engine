@@ -310,6 +310,8 @@ Factory.define :patient do |f|
 #	f.organization { Organization.first }
 #	f.organization_id { Organization.first.id }
 	f.organization_id { Hospital.first.organization_id }
+
+	f.diagnosis_id { Diagnosis['ALL'].id }
 end
 
 Factory.define :person do |f|
