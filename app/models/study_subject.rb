@@ -614,6 +614,11 @@ protected
 		end
 	end
 
+#
+#	NOTE be advised that these will no doubt break some tests
+#		that are not expecting any operational events.
+#
+
 	#	All subjects are to have a CCLS project enrollment, so create after create.
 	#	All subjects are to have this operational event, so create after create.
 	#	I suspect that this'll be attached to the CCLS project enrollment.
