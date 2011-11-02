@@ -556,6 +556,10 @@ class StudySubject < Shared
 		)
 	end
 
+	def icf_master_id_or_notice
+		( icf_master_id.blank? ) ? "[no ID assigned]" : icf_master_id
+	end
+
 protected
 
 	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)
