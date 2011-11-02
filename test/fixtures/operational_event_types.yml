@@ -103,3 +103,13 @@ DuplicateCase:
   code: DuplicateCase
   event_category:  ascertainment
   description: A new RAF was sent for an existing patient
+newSubject:
+  id: 21
+  code: NewSubject
+  event_category: ascertainment
+  description:  New subject created by CCLS
+subjectDied:
+  id: 22
+  code:  subjectDied
+  event_category: operations
+  description:  Subject has been reported as deceased.
