@@ -102,12 +102,12 @@ class StudySubject < Shared
 			o.delegate :state_id_no
 			o.delegate :state_registrar_no
 			o.delegate :local_registrar_no
-			o.delegate :childid
+#			o.delegate :childid
 			o.delegate :ssn
 			o.delegate :patid
 			o.delegate :orderno
 			o.delegate :studyid
-			o.delegate :icf_master_id
+#			o.delegate :icf_master_id
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
@@ -556,8 +556,15 @@ class StudySubject < Shared
 		)
 	end
 
-	def icf_master_id_or_notice
-		( icf_master_id.blank? ) ? "[no ID assigned]" : icf_master_id
+	def icf_master_id
+		( identifier.try(:icf_master_id).blank? ) ? 
+			"[no ID assigned]" : identifier.icf_master_id
+	end
+	alias_method :icf_master_id_or_notice, :icf_master_id
+
+	def childid
+#		( identifier.try(:childid).blank? and subject_type == SubjectType['Mother'] ) ? 
+		identifier.try(:childid)
 	end
 
 protected
