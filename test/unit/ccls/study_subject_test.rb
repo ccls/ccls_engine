@@ -1450,6 +1450,27 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_nil found_study_subject
 	end
 
+	test "should return child if subject is mother" do
+		study_subject = create_identifier.study_subject.reload
+		mother = study_subject.create_mother
+		assert_equal mother, study_subject.mother
+		assert_equal mother.child, study_subject
+	end
+
+	test "should return nil for child if is not mother" do
+		study_subject = create_identifier.study_subject.reload
+		assert_nil study_subject.child
+	end
+
+	test "should return appended child's childid if is mother" do
+		study_subject = create_identifier.study_subject.reload
+		mother = study_subject.create_mother
+		assert_not_nil study_subject.childid
+		assert_nil     mother.identifier.childid
+		assert_not_nil mother.childid
+		assert_equal "#{study_subject.childid} (mother)", mother.childid
+	end
+
 protected
 
 	def assert_no_duplicates_found

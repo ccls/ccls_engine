@@ -163,6 +163,20 @@ class StudySubject < Shared
 		)
 	end
 
+	def child
+		if subject_type == SubjectType['Mother']
+			StudySubject.find(:first,
+				:include => [:pii,:identifier,:subject_type],
+				:joins => :identifier,
+				:conditions => [
+					"study_subjects.id != ? AND identifiers.subjectid = ?", 
+						id, identifier.familyid ]
+			)
+		else
+			nil
+		end
+	end
+
 	def mother
 		StudySubject.find(:first,
 			:include => [:pii,:identifier,:subject_type],
@@ -179,12 +193,9 @@ class StudySubject < Shared
 		StudySubject.find(:all,
 			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
-#			:conditions => { 
-#				'identifiers.familyid' => identifier.familyid
-#			}
 			:conditions => [
 				"study_subjects.id != ? AND identifiers.familyid = ?", 
-				id, identifier.familyid ]
+					id, identifier.familyid ]
 		)
 	end
 
@@ -193,12 +204,9 @@ class StudySubject < Shared
 		StudySubject.find(:all,
 			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
-#			:conditions => { 
-#				'identifiers.matchingid' => identifier.matchingid
-#			}
 			:conditions => [
 				"study_subjects.id != ? AND identifiers.matchingid = ?", 
-				id, identifier.matchingid ]
+					id, identifier.matchingid ]
 		)
 	end
 
@@ -209,7 +217,7 @@ class StudySubject < Shared
 			:joins => :identifier,
 			:conditions => [
 				"study_subjects.id != ? AND identifiers.patid = ? AND subject_type_id = ?", 
-				id, patid, SubjectType['Control'].id ] 
+					id, patid, SubjectType['Control'].id ] 
 		)
 	end
 
@@ -563,8 +571,11 @@ class StudySubject < Shared
 	alias_method :icf_master_id_or_notice, :icf_master_id
 
 	def childid
-#		( identifier.try(:childid).blank? and subject_type == SubjectType['Mother'] ) ? 
-		identifier.try(:childid)
+		if subject_type == SubjectType['Mother']
+			"#{child.try(:childid)} (mother)"
+		else
+			identifier.try(:childid)
+		end
 	end
 
 protected
