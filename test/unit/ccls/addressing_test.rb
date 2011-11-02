@@ -214,7 +214,7 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 	end
 
 	%w( address_type address_type_id
-			line_1 line_2 city state zip csz county ).each do |method_name|
+			line_1 line_2 unit city state zip csz county ).each do |method_name|
 		test "should respond to #{method_name}" do
 			addressing = create_addressing
 			assert addressing.respond_to?(method_name)
