@@ -40,7 +40,7 @@ class Addressing < Shared
 		}
 
 	delegate :address_type, :address_type_id,
-		:line_1,:line_2,:city,:state,:zip,:csz,:county,
+		:line_1,:line_2,:unit,:city,:state,:zip,:csz,:county,
 		:to => :address, :allow_nil => true
 
 	validates_presence_of :why_invalid,
