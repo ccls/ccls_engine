@@ -48,25 +48,23 @@ class StudySubject < Shared
 	has_many :addresses, :through => :addressings
 
 	has_many :abstracts
-
 	has_one :first_abstract, :class_name => 'Abstract',
 		:conditions => [
 			"entry_1_by_uid IS NOT NULL AND " <<
 			"entry_2_by_uid IS NULL AND " <<
 			"merged_by_uid  IS NULL" ]
-
 	has_one :second_abstract, :class_name => 'Abstract',
 		:conditions => [
 			"entry_2_by_uid IS NOT NULL AND " <<
 			"merged_by_uid  IS NULL" ]
-
 	has_one :merged_abstract, :class_name => 'Abstract',
 		:conditions => [ "merged_by_uid IS NOT NULL" ]
-
 	has_many :unmerged_abstracts, :class_name => 'Abstract',
 		:conditions => [ "merged_by_uid IS NULL" ]
 
-#	before_validation :nullify_blank_sex
+
+	after_create :add_new_subject_operational_event
+
 
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
@@ -77,8 +75,6 @@ class StudySubject < Shared
 	validate :must_be_case_if_patient
 	validate :patient_admit_date_is_after_dob
 	validate :patient_diagnosis_date_is_after_dob
-#	not needed
-#	validate :patient_treatment_began_on_is_after_diagnosis_date
 
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
@@ -102,12 +98,10 @@ class StudySubject < Shared
 			o.delegate :state_id_no
 			o.delegate :state_registrar_no
 			o.delegate :local_registrar_no
-#			o.delegate :childid
 			o.delegate :ssn
 			o.delegate :patid
 			o.delegate :orderno
 			o.delegate :studyid
-#			o.delegate :icf_master_id
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
@@ -237,7 +231,6 @@ class StudySubject < Shared
 	end
 
 	def to_s
-#		load 'pii.rb' if RAILS_ENV == 'development'	#	forgets
 		require_dependency 'pii.rb' unless Pii
 		#	interesting that I don't have to load 'identifier.rb' ???
 		[childid,'(',studyid,full_name,')'].compact.join(' ')
@@ -610,16 +603,6 @@ protected
 		end
 	end
 
-#	#	This is a duplication of a patient validation that won't
-#	#	work if using nested attributes.  Don't like doing this.
-#	def patient_treatment_began_on_is_after_diagnosis_date
-#		if !patient.nil? && !patient.treatment_began_on.blank? && 
-#				!patient.diagnosis_date.blank? && 
-#				patient.treatment_began_on < patient.diagnosis_date
-#			errors.add('patient:treatment_began_on', "is before study_subject's diagnosis_date.") 
-#		end
-#	end
-
 	def self.hx_id
 		#	added try and || for usage on empty db
 		Project['HomeExposures'].try(:id)||0
@@ -631,9 +614,17 @@ protected
 		end
 	end
 
-#	def nullify_blank_sex
-#		#	An empty form field is not NULL to MySQL so ...
-#		self.sex = nil if sex.blank?
-#	end
+	#	All subjects are to have a CCLS project enrollment, so create after create.
+	#	All subjects are to have this operational event, so create after create.
+	#	I suspect that this'll be attached to the CCLS project enrollment.
+	def add_new_subject_operational_event
+#	add the CCLS project enrollment
+#	attach a newSubject operational event to CCLS enrollment
+	end
+
+	#	Add this if the vital status changes to deceased.
+	#	I suspect that this'll be attached to the CCLS project enrollment.
+	def add_subject_died_operational_event
+	end
 
 end

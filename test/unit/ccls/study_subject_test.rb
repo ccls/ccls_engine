@@ -1471,6 +1471,23 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_equal "#{study_subject.childid} (mother)", mother.childid
 	end
 
+	test "should create newSubject operational event on creation" do
+		study_subject = create_study_subject
+#		assert_equal 1, study_subject.operational_events.length
+pending	#	TODO
+	end
+
+	test "should create subjectDied operational event when vital status changed to deceased" do
+		study_subject = create_study_subject
+		assert_not_nil study_subject.vital_status
+		study_subject.vital_status = VitalStatus['deceased']
+		study_subject.save
+		assert_equal study_subject.reload.vital_status, VitalStatus['deceased']
+pending	#	TODO
+	end
+
+	
+
 protected
 
 	def assert_no_duplicates_found
