@@ -113,3 +113,7 @@ subjectDied:
   code:  subjectDied
   event_category: operations
   description:  Subject has been reported as deceased.
+consent:
+  id: 23
+  code: subjectConsents
+  description:  Subject has consented to participate
