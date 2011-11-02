@@ -107,6 +107,9 @@ class Enrollment < Shared
 	before_save :create_enrollment_update,
 		:if => :is_complete_changed?
 
+	before_save :create_subject_consents_operational_event,
+		:if => :consented_changed?
+
 	#	Return boolean of comparison
 	#	true only if is_eligible == 2
 	def is_not_eligible?
@@ -174,6 +177,18 @@ protected
 				:occurred_on => occurred_on
 			)
 		end
+	end
+
+#	be aware that this will change these tests
+#Ccls/Enrollment @@ should have many operational_events: .
+#Ccls/Enrollment should create operational event when enrollment complete UNSET: .
+	def create_subject_consents_operational_event
+#		if( ( consented == YNDK[:yes] ) and ( consented_was != YNDK[:yes] ) )
+#			operational_events << OperationalEvent.create!(
+#				:operational_event_type => OperationalEventType['subjectConsents'],
+#				:occurred_on            => consented_on
+#			)
+#		end
 	end
 
 end

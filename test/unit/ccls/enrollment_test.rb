@@ -318,6 +318,11 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_equal enrollment.study_subject_id, oe.enrollment.study_subject_id
 	end
 
+
+	test "should create subjectConsents operational event if consent changes to yes" do
+pending	#	TODO
+	end
+
 protected
 
 	def create_enrollment(options={})
