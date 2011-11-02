@@ -26,4 +26,10 @@ class Diagnosis < Shared
 		description
 	end
 
+	#	Returns boolean of comparison
+	#	true only if key == 'other'
+	def is_other?
+		key == 'other'
+	end
+
 end

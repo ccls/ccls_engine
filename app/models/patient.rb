@@ -39,6 +39,8 @@ class Patient < Shared
 		:message => "should be 12345 or 12345-1234",
 		:allow_blank => true
 
+	validates_presence_of :other_diagnosis, :if => :diagnosis_is_other?
+
 	#	TODO it would probably be better to do this before_validation
 	before_save :format_zip
 
@@ -112,6 +114,10 @@ protected
 		if study_subject and !study_subject.is_case?
 			errors.add(:study_subject,"must be case to have patient info")
 		end
+	end
+
+	def diagnosis_is_other?
+		diagnosis.try(:is_other?)
 	end
 
 end

@@ -32,6 +32,21 @@ class Ccls::DiagnosisTest < ActiveSupport::TestCase
 #		}
 #	end
 
+	test "Diagnosis['other'] should return true for is_other?" do
+		diagnosis = Diagnosis['other']
+		assert diagnosis.is_other?
+	end
+
+	test "Diagnosis['ALL'] should return false for is_other?" do
+		diagnosis = Diagnosis['ALL']
+		assert !diagnosis.is_other?
+	end
+
+	test "Diagnosis['AML'] should return false for is_other?" do
+		diagnosis = Diagnosis['AML']
+		assert !diagnosis.is_other?
+	end
+
 protected
 
 	def create_diagnosis(options={})

@@ -271,6 +271,21 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should require other_diagnosis if diagnosis == other" do
+		assert_difference( "Patient.count", 0 ) do
+			patient = create_patient(:diagnosis => Diagnosis['other'])
+			assert patient.errors.on_attr_and_type(:other_diagnosis,:blank)
+		end
+	end
+
+	test "should not require other_diagnosis if diagnosis != other" do
+		assert_difference( "Patient.count", 1 ) do
+			patient = create_patient(:diagnosis => Diagnosis['ALL'])
+			assert !patient.errors.on_attr_and_type(:other_diagnosis,:blank)
+		end
+	end
+
+
 protected
 
 	def create_patient(options={})
