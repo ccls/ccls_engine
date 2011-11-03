@@ -4,7 +4,6 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list
-	assert_should_have_many(:enrollments)
 	assert_should_initially_belong_to(:document_type)
 	assert_requires_valid_association(:document_type)
 	assert_should_require_attributes(:document_type_id)
@@ -23,6 +22,13 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 	test "should return title as to_s" do
 		document_version = create_document_version
 		assert_equal document_version.title, "#{document_version}"
+	end
+
+	test "should have many consented enrollments" do
+		document_version = create_document_version
+		assert_equal 0, document_version.enrollments.length
+		document_version.enrollments << Factory(:consented_enrollment)
+		assert_equal 1, document_version.reload.enrollments.length
 	end
 
 protected

@@ -179,16 +179,13 @@ protected
 		end
 	end
 
-#	be aware that this will change these tests
-#Ccls/Enrollment @@ should have many operational_events: .
-#Ccls/Enrollment should create operational event when enrollment complete UNSET: .
 	def create_subject_consents_operational_event
-#		if( ( consented == YNDK[:yes] ) and ( consented_was != YNDK[:yes] ) )
-#			operational_events << OperationalEvent.create!(
-#				:operational_event_type => OperationalEventType['subjectConsents'],
-#				:occurred_on            => consented_on
-#			)
-#		end
+		if( ( consented == YNDK[:yes] ) and ( consented_was != YNDK[:yes] ) )
+			operational_events << OperationalEvent.create!(
+				:operational_event_type => OperationalEventType['subjectConsents'],
+				:occurred_on            => consented_on
+			)
+		end
 	end
 
 end

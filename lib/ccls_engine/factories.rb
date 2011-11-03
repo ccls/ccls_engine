@@ -169,15 +169,24 @@ Factory.define :document_version do |f|
 	f.association :document_type
 end
 
+#Factory.define :enrollment do |f|
+#	f.association :study_subject
+#	f.association :project
+#	f.is_eligible 1	#true
+#	f.is_chosen   1	#true
+#	f.consented   1	#true
+#	f.consented_on Chronic.parse('yesterday')
+#	f.terminated_participation 2	#false
+#	f.is_complete 2	#false
+#end
+
 Factory.define :enrollment do |f|
 	f.association :study_subject
 	f.association :project
-	f.is_eligible 1	#true
-	f.is_chosen   1	#true
+end
+Factory.define :consented_enrollment, :parent => :enrollment do |f|
 	f.consented   1	#true
 	f.consented_on Chronic.parse('yesterday')
-	f.terminated_participation 2	#false
-	f.is_complete 2	#false
 end
 
 Factory.define :follow_up do |f|

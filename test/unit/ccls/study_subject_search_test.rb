@@ -271,9 +271,9 @@ pending
 	end
 
 	test "should include study_subject by project indifferent consented" do
-		e1 = Factory(:enrollment, :consented => YNDK[:no],
+		e1 = Factory(:consented_enrollment, :consented => YNDK[:no],
 			:refusal_reason_id => RefusalReason.first.id)
-		e2 = Factory(:enrollment, :consented => YNDK[:yes],
+		e2 = Factory(:consented_enrollment, :consented => YNDK[:yes],
 			:project => e1.project )
 		study_subjects = StudySubject.search(:projects => {
 			e1.project.id => { :consented => [true,false] }
@@ -283,9 +283,9 @@ pending
 	end
 
 	test "should include study_subject by project not consented" do
-		e1 = Factory(:enrollment, :consented => YNDK[:no],
+		e1 = Factory(:consented_enrollment, :consented => YNDK[:no],
 			:refusal_reason_id => RefusalReason.first.id)
-		e2 = Factory(:enrollment, :consented => YNDK[:yes],
+		e2 = Factory(:consented_enrollment, :consented => YNDK[:yes],
 			:project => e1.project )
 		study_subjects = StudySubject.search(:projects => {
 			e1.project.id => { :consented => YNDK[:no] }
@@ -295,9 +295,9 @@ pending
 	end
 
 	test "should include study_subject by project is consented" do
-		e1 = Factory(:enrollment, :consented => YNDK[:no],
+		e1 = Factory(:consented_enrollment, :consented => YNDK[:no],
 			:refusal_reason_id => RefusalReason.first.id)
-		e2 = Factory(:enrollment, :consented => YNDK[:yes],
+		e2 = Factory(:consented_enrollment, :consented => YNDK[:yes],
 			:project => e1.project )
 		study_subjects = StudySubject.search(:projects => {
 			e1.project.id => { :consented => true }

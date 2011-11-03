@@ -11,7 +11,8 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should require unique project_id scope study_subject_id" do
 		o = create_enrollment
 		assert_no_difference "Enrollment.count" do
-			enrollment = create_enrollment(:project => o.project,:study_subject => o.study_subject)
+			enrollment = create_enrollment(:project => o.project,
+				:study_subject => o.study_subject)
 			assert enrollment.errors.on_attr_and_type(:project_id, :taken)
 		end
 	end
@@ -171,6 +172,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 			"refusal_reason != other" do
 		assert_difference( "Enrollment.count", 1 ) do
 			enrollment = create_enrollment(:consented => YNDK[:no],
+				:consented_on => Date.today,
 				:refusal_reason => Factory(:refusal_reason),
 				:other_refusal_reason => 'asdfasdf' )
 			assert !enrollment.errors.on(:other_refusal_reason)
@@ -267,6 +269,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should allow document_version_id if consented == :yes" do
 		assert_difference( "Enrollment.count", 1 ) do
 			enrollment = create_enrollment(:consented => YNDK[:yes],
+				:consented_on     => Date.today,
 				:document_version => Factory(:document_version) )
 		end
 	end
@@ -274,6 +277,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should allow document_version_id if consented == :no" do
 		assert_difference( "Enrollment.count", 1 ) do
 			enrollment = create_enrollment(:consented => YNDK[:no],
+				:consented_on     => Date.today,
 				:refusal_reason   => Factory(:refusal_reason),
 				:document_version => Factory(:document_version) )
 		end
@@ -318,9 +322,19 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_equal enrollment.study_subject_id, oe.enrollment.study_subject_id
 	end
 
-
 	test "should create subjectConsents operational event if consent changes to yes" do
-pending	#	TODO
+		enrollment = Factory(:enrollment)
+		assert_nil enrollment.consented
+		assert_difference("Enrollment.find(#{enrollment.id}).operational_events.count",1){
+			enrollment.update_attributes(:consented => YNDK[:yes],
+				:consented_on => Date.today )
+		}
+		enrollment.reload
+		assert_equal enrollment.consented, YNDK[:yes]
+		assert_equal enrollment.consented_on, Date.today
+		consented_event = enrollment.operational_events.find(:first,:conditions => {
+			:operational_event_type_id => OperationalEventType['subjectConsents'].id })
+		assert_not_nil consented_event
 	end
 
 protected
