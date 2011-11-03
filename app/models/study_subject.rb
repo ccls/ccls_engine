@@ -102,7 +102,7 @@ class StudySubject < Shared
 			o.delegate :ssn
 			o.delegate :patid
 			o.delegate :orderno
-			o.delegate :studyid
+#			o.delegate :studyid
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
@@ -570,6 +570,14 @@ class StudySubject < Shared
 			"#{child.try(:childid)} (mother)"
 		else
 			identifier.try(:childid)
+		end
+	end
+
+	def studyid
+		if subject_type == SubjectType['Mother']
+			"n/a"
+		else
+			identifier.try(:studyid)
 		end
 	end
 

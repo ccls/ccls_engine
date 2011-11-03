@@ -89,18 +89,18 @@ class Identifier < Shared
 		!is_case? and !is_mother?
 	end
 
-	def studyid
-		@studyid || "#{patid}-#{case_control_type}-#{orderno}"
-	end
+#	def studyid
+#		@studyid || "#{patid}-#{case_control_type}-#{orderno}"
+#	end
 
-	def studyid_nohyphen
-		@studyid_nohyphen || "#{patid}#{case_control_type}#{orderno}"
-	end
+#	def studyid_nohyphen
+#		@studyid_nohyphen || "#{patid}#{case_control_type}#{orderno}"
+#	end
 
-	def studyid_intonly_nohyphen
-		@studyid_intonly_nohyphen || "#{patid}" <<
-			"#{(is_case?) ? 0 : case_control_type}#{orderno}"
-	end
+#	def studyid_intonly_nohyphen
+#		@studyid_intonly_nohyphen || "#{patid}" <<
+#			"#{(is_case?) ? 0 : case_control_type}#{orderno}"
+#	end
 
 protected
 

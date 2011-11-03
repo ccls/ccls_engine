@@ -220,13 +220,13 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	end
 
 	test "should create control from attributes and add studyid" do
-pending	#	TODO can't remember why this is pending
 		case_study_subject = create_case_identifier.study_subject
 		candidate_control = create_candidate_control
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 #puts candidate_control.study_subject.identifier.studyid
 #	TODO generated on the fly, NOT in the db
-		assert_not_nil candidate_control.study_subject.identifier.studyid		
+pending	#	TODO not generating on the fly anymore
+		assert_nil candidate_control.study_subject.identifier.studyid		
 	end
 
 	#	icf_master_id isn't required as may not have any
