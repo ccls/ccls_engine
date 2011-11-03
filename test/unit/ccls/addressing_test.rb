@@ -46,8 +46,12 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 #		end
 #	end
 
-	test "should require an address" do
-pending	#	TODO don't allow an addressing to be created without an address
+	test "should require a valid address with address_attributes" do
+		assert_difference("Address.count", 0 ) {
+		assert_difference("Addressing.count", 0 ) {
+			addressing = create_addressing(:address_id => nil,
+				:address_attributes => {} )
+		} }
 	end
 
 	[:yes,:nil].each do |yndk|
