@@ -20,7 +20,6 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 
 	assert_should_require_attribute_length :hospital_no, :maximum => 25
 	assert_should_require_unique(:hospital_no, :scope => :organization_id)
-
 	assert_should_require_attribute_length( :raf_zip, :maximum => 10 )
 	assert_requires_complete_date :admit_date
 	assert_requires_complete_date :diagnosis_date
@@ -285,6 +284,27 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should require hospital_no with custom message" do
+		assert_difference( "Patient.count", 0 ) do
+			patient = create_patient( :hospital_no => nil )
+			assert patient.errors.on_attr_and_type(:hospital_no,:blank)
+			assert_match /Hospital record number can't be blank/, 
+				patient.errors.full_messages.to_sentence
+			assert_no_match /Hospital no/i, 
+				patient.errors.full_messages.to_sentence
+		end
+	end
+
+	test "should require organization_id with custom message" do
+		assert_difference( "Patient.count", 0 ) do
+			patient = create_patient( :organization_id => nil )
+			assert patient.errors.on_attr_and_type(:organization_id,:blank)
+			assert_match /Treating institution can't be blank/, 
+				patient.errors.full_messages.to_sentence
+			assert_no_match /Organization/i, 
+				patient.errors.full_messages.to_sentence
+		end
+	end
 
 protected
 

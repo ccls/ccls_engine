@@ -36,6 +36,17 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} 
 	end
 
+	test "should require sex with custom message" do
+		assert_difference( "StudySubject.count", 0 ) do
+			study_subject = create_study_subject( :sex => nil )
+			assert study_subject.errors.on_attr_and_type(:sex,:blank)
+			assert_match /No sex has been chosen/, 
+				study_subject.errors.full_messages.to_sentence
+			assert_no_match /Sex can't be blank/i, 
+				study_subject.errors.full_messages.to_sentence
+		end
+	end
+
 	test "create_control_study_subject should not create a subject type" do
 		assert_difference( 'SubjectType.count', 0 ){
 		assert_difference( "StudySubject.count", 1 ) {

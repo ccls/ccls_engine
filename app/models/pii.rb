@@ -16,7 +16,8 @@ class Pii < Shared
 
 	before_validation :nullify_blank_fields
 
-	validates_presence_of       :dob, :unless => :dob_not_required?
+#	validates_presence_of       :dob, :unless => :dob_not_required?
+	validate :presence_of_dob, :unless => :dob_not_required?
 	validates_complete_date_for :dob, :died_on, :allow_nil => true
 	validates_uniqueness_of     :email, :allow_nil => true
 
@@ -30,8 +31,14 @@ class Pii < Shared
 	#		followed by the error message.  I wrote some code that looks for the <|X|
 	#		and if it finds it, only displays this message without the attribute.
 	#
-	validates_presence_of :guardian_relationship_other,
-		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
+#	validates_presence_of :guardian_relationship_other,
+#		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
+#		:if => :guardian_relationship_is_other?
+#
+#	This probably works, but need to confirm that the view will show error correctly
+#
+
+	validate :presence_of_guardian_relationship_other,
 		:if => :guardian_relationship_is_other?
 
 	validates_length_of :first_name, :last_name, 
@@ -45,7 +52,6 @@ class Pii < Shared
 		:maximum => 10, :allow_blank => true
 
  	validates_length_of :birth_year, :maximum => 4, :allow_blank => true
-
 
 	#	study_subject is not known at validation on creation
 	#	when using the accepts_nested_attributes feature
@@ -126,6 +132,24 @@ protected
 
 	def guardian_relationship_is_other?
 		guardian_relationship.try(:is_other?)
+	end
+
+	#	custom validation for custom message without standard attribute prefix
+	def presence_of_guardian_relationship_other
+		if guardian_relationship_other.blank?
+			errors.add(:guardian_relationship_other, ActiveRecord::Error.new(
+				self, :base, :blank, { 
+					:message => "You must specify a relationship with 'other relationship' is selected." } ) )
+		end
+	end
+
+	#	custom validation for custom message without standard attribute prefix
+	def presence_of_dob
+		if dob.blank?
+			errors.add(:dob, ActiveRecord::Error.new(
+				self, :base, :blank, { 
+					:message => "Date of birth can't be blank." } ) )
+		end
 	end
 
 end

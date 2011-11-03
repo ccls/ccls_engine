@@ -69,7 +69,8 @@ class StudySubject < Shared
 	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
 
-	validates_inclusion_of :sex, :in => %w( M F DK )
+	validate :presence_of_sex
+	validates_inclusion_of :sex, :in => %w( M F DK ), :allow_blank => true
 	validates_inclusion_of :do_not_contact, :in => [ true, false ]
 
 	validate :must_be_case_if_patient
@@ -631,6 +632,15 @@ protected
 	#	Add this if the vital status changes to deceased.
 	#	I suspect that this'll be attached to the CCLS project enrollment.
 	def add_subject_died_operational_event
+	end
+
+	# custom validation for custom message without standard attribute prefix
+	def presence_of_sex
+		if sex.blank?
+			errors.add(:sex, ActiveRecord::Error.new(
+				self, :base, :blank, {
+					:message => "No sex has been chosen." } ) )
+		end
 	end
 
 end

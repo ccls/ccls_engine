@@ -155,6 +155,29 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should require guardian_relationship_other with custom message" do
+		assert_difference( "Pii.count", 0 ) do
+			pii = create_pii(
+				:guardian_relationship => SubjectRelationship['other'] )
+			assert pii.errors.on_attr_and_type(:guardian_relationship_other,:blank)
+			assert_match /You must specify a relationship with 'other relationship' is selected/, 
+				pii.errors.full_messages.to_sentence
+			assert_no_match /Guardian relationship other/, 
+				pii.errors.full_messages.to_sentence
+		end
+	end
+
+	test "should require dob with custom message" do
+		assert_difference( "Pii.count", 0 ) do
+			pii = create_pii( :dob => nil )
+			assert pii.errors.on_attr_and_type(:dob,:blank)
+			assert_match /Date of birth can't be blank/, 
+				pii.errors.full_messages.to_sentence
+			assert_no_match /DOB/i, 
+				pii.errors.full_messages.to_sentence
+		end
+	end
+
 	test "should not require dob if subject_is_mother flag is true" do
 		assert_difference('Pii.count',1) do
 			pii = create_pii( :subject_is_mother => true, :dob => nil )
