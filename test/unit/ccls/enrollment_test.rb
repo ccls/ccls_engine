@@ -337,6 +337,21 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_not_nil consented_event
 	end
 
+	test "should not create subjectConsents operational event if consent doesn't change" do
+		enrollment = Factory(:consented_enrollment)
+		assert_not_nil enrollment.consented
+		assert_difference("Enrollment.find(#{enrollment.id}).operational_events.count",0){
+			enrollment.update_attributes(:consented => YNDK[:yes],
+				:consented_on => Date.today )
+		}
+		enrollment.reload
+		assert_equal enrollment.consented, YNDK[:yes]
+		assert_equal enrollment.consented_on, Date.today
+		consented_event = enrollment.operational_events.find(:first,:conditions => {
+			:operational_event_type_id => OperationalEventType['subjectConsents'].id })
+		assert_not_nil consented_event
+	end
+
 protected
 
 	def create_enrollment(options={})
