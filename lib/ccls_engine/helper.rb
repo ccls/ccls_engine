@@ -4,6 +4,7 @@ module Ccls::Helper
 	def sort_link(column,text=nil)
 		order = column.to_s.downcase.gsub(/\s+/,'_')
 		dir = ( params[:dir] && params[:dir] == 'asc' ) ? 'desc' : 'asc'
+		params[:page] = nil
 		link_text = text||column
 		classes = []	#[order]
 		arrow = ''
