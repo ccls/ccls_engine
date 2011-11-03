@@ -563,7 +563,7 @@ class StudySubject < Shared
 		( identifier.try(:icf_master_id).blank? ) ? 
 			"[no ID assigned]" : identifier.icf_master_id
 	end
-	alias_method :icf_master_id_or_notice, :icf_master_id
+#	alias_method :icf_master_id_or_notice, :icf_master_id
 
 	def childid
 		if subject_type == SubjectType['Mother']
