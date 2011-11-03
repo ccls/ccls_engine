@@ -1138,6 +1138,20 @@ pending	#	TODO should it?  doubt it.
 		assert_nil mother.reload.identifier.icf_master_id
 	end
 
+	test "should return 'no ID assigned' if study_subject has no icf_master_id" do
+		study_subject = create_identifier(:icf_master_id => nil).study_subject
+		assert_nil     study_subject.identifier.icf_master_id
+		assert_not_nil study_subject.icf_master_id
+		assert_equal   study_subject.icf_master_id, '[no ID assigned]'
+	end
+
+	test "should return icf_master_id if study_subject has icf_master_id" do
+		study_subject = create_identifier.study_subject
+		assert_not_nil study_subject.identifier.icf_master_id
+		assert_not_nil study_subject.icf_master_id
+		assert_equal   study_subject.icf_master_id, study_subject.identifier.icf_master_id
+	end
+
 	test "should create father when isn't one" do
 		study_subject = create_identifier.study_subject
 		assert_nil study_subject.reload.father
