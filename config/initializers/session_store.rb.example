@@ -5,11 +5,23 @@
 # Make sure the secret is at least 30 characters and all random, 
 # no regular words or you'll be exposed to dictionary attacks.
 ActionController::Base.session = {
-  :key         => '_ucb_ccls_engine_session',
-  :secret      => '9fea3e770ced866cf996df81bf9bca9c'
+  :key         => '_ucb_ccls_session',
+  :secret      => 'insert your secret key here'
 }
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
 # (create the session table with "rake db:sessions:create")
 # ActionController::Base.session_store = :active_record_store
+
+
+
+#
+#	It is not necessary, but for convenience, we should have all 3 genepi apps
+#	share the same cookie.  This way, we won't have to log in to each one separately.
+#	Should you also choose to do this, the session key AND the secret MUST
+#	be the same.  If the key is the same, but the secret is different, things
+#	we be really weird.  Your browser will probably raise errors suggesting that
+#	the applications are broken, which technically they would be.  This is
+#	really, really important.
+#

@@ -15,15 +15,11 @@ test:
   password: 
   host: localhost
 
-staging:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/staging.sqlite3
-
 production:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/production.sqlite3
+  adapter: mysql
+  encoding: utf8
+  database: ccls_engine_production
+  username: root
+  password: 
+  host: localhost
 
