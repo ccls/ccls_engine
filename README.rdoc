@@ -14,7 +14,6 @@ views and routes to the aforementioned resources.
 
 == Required Gems
 
-* {ccls-ruby_extension}[http://github.com/ccls/ruby_extension] - modifications, updates and patches for ruby.
 * rails ~> 2
 * jrails
 * chronic
@@ -24,11 +23,10 @@ views and routes to the aforementioned resources.
 * ryanb-acts-as-list
 * RedCloth
 * paperclip	#	don't use this anymore
-* {ccls-simply_helpful}[http://github.com/ccls/simply_helpful]
+* {ccls-common_lib}[http://github.com/ccls/common_lib]
 * {ccls-calnet_authenticated}[http://github.com/ccls/calnet_authenticated]
 * {ccls-simply_authorized}[http://github.com/ccls/simply_authorized]
 * {ccls-use_db}[http://github.com/ccls/use_db]
-* {ccls-rails_extension}[http://github.com/ccls/rails_extension]
 
 == Installation (as a gem/plugin/engine)
 
