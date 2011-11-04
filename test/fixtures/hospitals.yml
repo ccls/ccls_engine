@@ -1,100 +1,200 @@
 CPMC:
   id:  1
   organization_id:  1
-  has_waiver: 1
+<<<<<<< HEAD
+  has_irb_waiver: 1
 CHCC:
   id:  2
   organization_id:  2
-  has_waiver: 1
+  has_irb_waiver: 1
 CHLA:
   id:  3
   organization_id:  3
-  has_waiver: 0
+  has_irb_waiver: 0
 CHOC:
   id:  4
   organization_id:  4
-  has_waiver: 0
+  has_irb_waiver: 0
 CHOK:
   id:  5
   organization_id:  5
-  has_waiver: 1
+  has_irb_waiver: 1
 CSMC:
   id:  6
   organization_id:  6
-  has_waiver: 1
+  has_irb_waiver: 1
 LPCH:
   id:  9
   organization_id:  9
-  has_waiver: 1
+  has_irb_waiver: 1
 MCHO:
   id:  10
   organization_id:  10
-  has_waiver: 1
+  has_irb_waiver: 1
 RCSD:
   id:  11
   organization_id:  11
-  has_waiver: 1
+  has_irb_waiver: 1
 SUMH:
   id:  12
   organization_id:  12
-  has_waiver: 1
+  has_irb_waiver: 1
 UCDV:
   id:  13
   organization_id:  13
-  has_waiver: 1
+  has_irb_waiver: 1
 UCLA:
   id:  14
   organization_id:  14
-  has_waiver: 0
+  has_irb_waiver: 0
 UCSF:
   id:  15
   organization_id:  15
-  has_waiver: 1
+  has_irb_waiver: 1
 COTH:
   id:  16
   organization_id:  21
-  has_waiver: 1
+  has_irb_waiver: 1
 KPAN:
   id:  17
   organization_id:  22
-  has_waiver: 1
+  has_irb_waiver: 1
 KPDO:
   id:  18
   organization_id:  23
-  has_waiver: 1
+  has_irb_waiver: 1
 KPFO:
   id:  19
   organization_id:  24
-  has_waiver: 1
+  has_irb_waiver: 1
 KPLA:
   id:  20
   organization_id:  25
-  has_waiver: 1
+  has_irb_waiver: 1
 KPOA:
   id:  21
   organization_id:  26
-  has_waiver: 1
+  has_irb_waiver: 1
 KPRO:
   id:  22
   organization_id:  27
-  has_waiver: 1
+  has_irb_waiver: 1
 KPSA:
   id:  23
   organization_id:  28
-  has_waiver: 1
+  has_irb_waiver: 1
 KPSD:
   id:  24
   organization_id:  29
-  has_waiver: 1
+  has_irb_waiver: 1
 KPSF:
   id:  25
   organization_id:  30
-  has_waiver: 1
+  has_irb_waiver: 1
 KPSC:
   id:  7
   organization_id:  31
-  has_waiver: 1
+  has_irb_waiver: 1
 LOMA:
   id:  8
   organization_id:  32
-  has_waiver: 1
+  has_irb_waiver: 1
+=======
+  has_IRB_waiver: 1
+CHCC:
+  id:  2
+  organization_id:  2
+  has_IRB_waiver: 1
+CHLA:
+  id:  3
+  organization_id:  3
+  has_IRB_waiver: 0
+CHOC:
+  id:  4
+  organization_id:  4
+  has_IRB_waiver: 0
+CHOK:
+  id:  5
+  organization_id:  5
+  has_IRB_waiver: 1
+CSMC:
+  id:  6
+  organization_id:  6
+  has_IRB_waiver: 1
+LPCH:
+  id:  9
+  organization_id:  9
+  has_IRB_waiver: 1
+MCHO:
+  id:  10
+  organization_id:  10
+  has_IRB_waiver: 1
+RCSD:
+  id:  11
+  organization_id:  11
+  has_IRB_waiver: 1
+SUMH:
+  id:  12
+  organization_id:  12
+  has_IRB_waiver: 1
+UCDV:
+  id:  13
+  organization_id:  13
+  has_IRB_waiver: 1
+UCLA:
+  id:  14
+  organization_id:  14
+  has_IRB_waiver: 0
+UCSF:
+  id:  15
+  organization_id:  15
+  has_IRB_waiver: 1
+COTH:
+  id:  16
+  organization_id:  21
+  has_IRB_waiver: 1
+KPAN:
+  id:  17
+  organization_id:  22
+  has_IRB_waiver: 1
+KPDO:
+  id:  18
+  organization_id:  23
+  has_IRB_waiver: 1
+KPFO:
+  id:  19
+  organization_id:  24
+  has_IRB_waiver: 1
+KPLA:
+  id:  20
+  organization_id:  25
+  has_IRB_waiver: 1
+KPOA:
+  id:  21
+  organization_id:  26
+  has_IRB_waiver: 1
+KPRO:
+  id:  22
+  organization_id:  27
+  has_IRB_waiver: 1
+KPSA:
+  id:  23
+  organization_id:  28
+  has_IRB_waiver: 1
+KPSD:
+  id:  24
+  organization_id:  29
+  has_IRB_waiver: 1
+KPSF:
+  id:  25
+  organization_id:  30
+  has_IRB_waiver: 1
+KPSC:
+  id:  7
+  organization_id:  31
+  has_IRB_waiver: 1
+LOMA:
+  id:  8
+  organization_id:  32
+  has_IRB_waiver: 1
+>>>>>>> a206aafdd478be35caec02139662106ef24cd866
