@@ -12,3 +12,19 @@
 #two:
 #  research_origin: MyString
 #  data_origin: MyString
+raf:
+  id:  1
+  code:  raf
+  description:  RAF (CCLS Rapid Ascertainment Form)
+consent:
+  id:  2
+  code:  consent
+  description:  Study Consent Form
+interview:
+  id:  3
+  code:  interview
+  description:  Interview with Subject
+usps:
+  id:  4
+  code:  usps
+  description:  USPS Address Service
