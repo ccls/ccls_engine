@@ -2,22 +2,39 @@ module Ccls::Helper
 
 	#	&uarr; and &darr;
 	def sort_link(column,text=nil)
+		#	make local copy so mods to muck up real params which
+		#	may still be references elsewhere.
+		local_params = params.dup
+
+#
+#	May want to NOT flip dir for other columns.  Only the current order.
+#	Will wait until someone else makes the suggestion.
+#
 		order = column.to_s.downcase.gsub(/\s+/,'_')
-		dir = ( params[:dir] && params[:dir] == 'asc' ) ? 'desc' : 'asc'
-		params[:page] = nil
+		dir = ( local_params[:dir] && local_params[:dir] == 'asc' ) ? 'desc' : 'asc'
+
+		local_params[:page] = nil
 		link_text = text||column
-		classes = []	#[order]
+		classes = ['sortable',order]
 		arrow = ''
-		if params[:order] && params[:order] == order
+		if local_params[:order] && local_params[:order] == order
 			classes.push('sorted')
 			arrow = if dir == 'desc'
-				"<span class='down arrow'>&darr;</span>"
+				if File.exists? "#{Rails.root}/public/images/sort_down.png"
+					image_tag('sort_down.png', :class => 'down arrow')
+				else
+					"<span class='down arrow'>&darr;</span>"
+				end
 			else
-				"<span class='up arrow'>&uarr;</span>"
+				if File.exists? "#{Rails.root}/public/images/sort_up.png"
+					image_tag('sort_up.png', :class => 'up arrow')
+				else
+					"<span class='up arrow'>&uarr;</span>"
+				end
 			end
 		end
 		s = "<div class='#{classes.join(' ')}'>"
-		s << link_to(link_text,params.merge(:order => order,:dir => dir))
+		s << link_to(link_text,local_params.merge(:order => order,:dir => dir))
 		s << arrow unless arrow.blank?
 		s << "</div>"
 		s
