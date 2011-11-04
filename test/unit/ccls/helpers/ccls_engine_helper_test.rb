@@ -33,7 +33,10 @@ class Ccls::HelperTest < ActionView::TestCase
 		#		<span class="up arrow">&uarr;</span></div>
 		assert_select response, 'div.sorted', 1 do
 			assert_select 'a', 1
-			assert_select 'span.up.arrow', 1
+#			assert_select 'span.up.arrow', 1
+#	Using images now
+			assert_select '.up.arrow', 1
+			assert_select 'img.up.arrow', 1
 		end
 	end
 
@@ -46,7 +49,10 @@ class Ccls::HelperTest < ActionView::TestCase
 		#		<span class="down arrow">&uarr;</span></div>
 		assert_select response, 'div.sorted', 1 do
 			assert_select 'a', 1
-			assert_select 'span.down.arrow', 1
+#			assert_select 'span.down.arrow', 1
+#	Using images now
+			assert_select '.down.arrow', 1
+			assert_select 'img.down.arrow', 1
 		end
 	end
 
@@ -59,7 +65,10 @@ class Ccls::HelperTest < ActionView::TestCase
 		#		<span class="up arrow">&uarr;</span></div>
 		assert_select response, 'div.sorted', 1 do
 			assert_select 'a', 1
-			assert_select 'span.up.arrow', 1
+#			assert_select 'span.up.arrow', 1
+#	Using images now
+			assert_select '.up.arrow', 1
+			assert_select 'img.up.arrow', 1
 		end
 	end
 
