@@ -152,6 +152,8 @@ Factory.define :context do |f|
 end
 
 Factory.define :data_source do |f|
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :diagnosis do |f|

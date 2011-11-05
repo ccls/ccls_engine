@@ -14,4 +14,30 @@ class Ccls::DataSourceTest < ActiveSupport::TestCase
 		:data_origin, 
 			:maximum => 250 )
 
+	assert_should_require_attributes( :code, :description )
+	assert_should_require_unique_attributes( :code )
+	assert_should_require_attribute_length( :code, :description, :maximum => 250 )
+
+	test "should return description as to_s" do
+		data_source = create_data_source
+		assert_equal data_source.description,
+			"#{data_source}"
+	end
+
+	test "should find by code with ['string']" do
+		data_source = DataSource['raf']
+		assert data_source.is_a?(DataSource)
+	end
+
+	test "should find by code with [:symbol]" do
+		data_source = DataSource[:raf]
+		assert data_source.is_a?(DataSource)
+	end
+
+#	test "should raise error if not found by code with []" do
+#		assert_raise(DataSource::NotFound) {
+#			data_source = DataSource['idonotexist']
+#		}
+#	end
+
 end

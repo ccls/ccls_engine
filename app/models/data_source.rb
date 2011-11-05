@@ -9,4 +9,23 @@ class DataSource < Shared
 
 	validates_length_of :research_origin, :data_origin,
 		:maximum => 250, :allow_blank => true
+
+	validates_presence_of   :code, :description
+	validates_uniqueness_of :code
+	validates_length_of     :code, :description,
+		:maximum => 250
+
+	#	Returns description
+	def to_s
+		description
+	end
+
+#	class NotFound < StandardError; end
+
+	#	Treats the class a bit like a Hash and
+	#	searches for a record with a matching code.
+	def self.[](code)
+		find_by_code(code.to_s) #|| raise(NotFound)
+	end
+
 end
