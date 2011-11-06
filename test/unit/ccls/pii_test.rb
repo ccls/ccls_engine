@@ -70,9 +70,11 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	end
 
 	test "should return dob as a date NOT time" do
-		pii = create_pii
+#	Chronic.parse('tomorrow at noon') returns nil on my MacBook???
+		pii = create_pii(:dob => (Time.now - 5.days) )
+		assert_not_nil pii.dob
 		assert_changes("Pii.find(#{pii.id}).dob") {
-			pii.update_attribute(:dob, Chronic.parse('tomorrow at noon'))
+			pii.update_attributes(:dob => (Time.now - 4.days) )
 		}
 		assert !pii.new_record?
 		assert_not_nil pii.dob
