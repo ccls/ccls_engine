@@ -54,25 +54,33 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 
 	test "should returned status Shipped" do
 		sample_kit = create_complete_sample_kit	
-		sample_kit.kit_package.update_attribute(:status,'Transit')
+#	update_attribute SKIPS validations which may ignore errors
+#		sample_kit.kit_package.update_attribute(:status,'Transit')
+		sample_kit.kit_package.update_attributes(:status => 'Transit')
 		assert_equal 'Shipped', sample_kit.status
 	end
 
 	test "should returned status Delivered" do
 		sample_kit = create_complete_sample_kit	
-		sample_kit.kit_package.update_attribute(:status,'Delivered')
+#	update_attribute SKIPS validations which may ignore errors
+#		sample_kit.kit_package.update_attribute(:status,'Delivered')
+		sample_kit.kit_package.update_attributes(:status => 'Delivered')
 		assert_equal 'Delivered', sample_kit.status
 	end
 
 	test "should returned status Returned" do
 		sample_kit = create_complete_sample_kit	
-		sample_kit.sample_package.update_attribute(:status,'Transit')
+#	update_attribute SKIPS validations which may ignore errors
+#		sample_kit.sample_package.update_attribute(:status,'Transit')
+		sample_kit.sample_package.update_attributes(:status => 'Transit')
 		assert_equal 'Returned', sample_kit.status
 	end
 
 	test "should returned status Received" do
 		sample_kit = create_complete_sample_kit	
-		sample_kit.sample_package.update_attribute(:status,'Delivered')
+#	update_attribute SKIPS validations which may ignore errors
+#		sample_kit.sample_package.update_attribute(:status,'Delivered')
+		sample_kit.sample_package.update_attributes(:status => 'Delivered')
 		assert_equal 'Received', sample_kit.status
 	end
 

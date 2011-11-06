@@ -54,7 +54,9 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			:intro_letter_sent_on => Chronic.parse('yesterday'))
 		assert_difference( "OperationalEvent.count", 0 ) {
 		assert_difference( "Interview.count", 0 ) {
-			interview.update_attribute(:intro_letter_sent_on, Chronic.parse('today'))
+#	update_attribute SKIPS validations which may ignore errors
+#			interview.update_attribute(:intro_letter_sent_on, Chronic.parse('today'))
+			interview.update_attributes(:intro_letter_sent_on => Chronic.parse('today'))
 		} }
 		assert_equal Chronic.parse('today').to_date,
 			OperationalEvent.last.occurred_on

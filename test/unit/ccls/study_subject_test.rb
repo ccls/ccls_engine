@@ -1026,7 +1026,9 @@ pending	#	TODO gotta figure this out
 				:pii_attributes => Factory.attributes_for(:pii) )
 		}
 		assert_not_nil @study_subject.reload.dob
-		@study_subject.pii.update_attribute(:dob, nil)
+#	update_attribute SKIPS validations which may ignore errors
+#		@study_subject.pii.update_attribute(:dob, nil)
+		@study_subject.pii.update_attributes(:dob => nil)
 		assert_nil @study_subject.reload.dob
 	end
 
@@ -1048,7 +1050,9 @@ pending	#	TODO gotta figure this out
 				:pii_attributes => Factory.attributes_for(:pii) )
 		}
 		assert_not_nil @study_subject.reload.dob
-		@study_subject.pii.update_attribute(:dob, nil)
+#	update_attribute SKIPS validations which may ignore errors
+#		@study_subject.pii.update_attribute(:dob, nil)
+		@study_subject.pii.update_attributes(:dob => nil)
 		assert_nil @study_subject.reload.dob
 	end
 

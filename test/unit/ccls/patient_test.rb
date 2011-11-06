@@ -236,7 +236,9 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			})
 		).reload
 		assert !study_subject.patient.was_under_15_at_dx
-		study_subject.pii.update_attribute(:dob, 10.years.ago.to_date)
+#	update_attribute SKIPS validations which may ignore errors
+#		study_subject.pii.update_attribute(:dob, 10.years.ago.to_date)
+		study_subject.pii.update_attributes(:dob => 10.years.ago.to_date)
 		assert  study_subject.patient.reload.was_under_15_at_dx
 	end
 
@@ -250,7 +252,9 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			})
 		).reload
 		assert !study_subject.patient.was_under_15_at_dx
-		study_subject.patient.update_attribute(:admit_date, 10.years.ago.to_date)
+#	update_attribute SKIPS validations which may ignore errors
+#		study_subject.patient.update_attribute(:admit_date, 10.years.ago.to_date)
+		study_subject.patient.update_attributes(:admit_date => 10.years.ago.to_date)
 		assert  study_subject.patient.reload.was_under_15_at_dx
 	end
 
