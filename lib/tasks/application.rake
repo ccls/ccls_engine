@@ -27,6 +27,7 @@ namespace :ccls do
 #			gift_cards
 		fixtures = %w(
 			address_types
+			contexts
 			data_sources
 			diagnoses
 			document_types

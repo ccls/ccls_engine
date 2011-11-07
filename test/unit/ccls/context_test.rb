@@ -11,4 +11,27 @@ class Ccls::ContextTest < ActiveSupport::TestCase
 	assert_should_act_as_list
 	assert_should_have_many(:units)
 
+	test "should return description as to_s" do
+		context = create_context
+		assert_equal context.description,
+			"#{context}"
+	end
+
+	test "should find by code with ['string']" do
+		context = Context['address']
+		assert context.is_a?(Context)
+	end
+
+	test "should find by code with [:symbol]" do
+		context = Context[:address]
+		assert context.is_a?(Context)
+	end
+
+#	test "should raise error if not found by code with []" do
+#		assert_raise(Context::NotFound) {
+#			context = Context['idonotexist']
+#		}
+#	end
+
+
 end
