@@ -554,6 +554,8 @@ Table: data_sources
 | data_origin     | varchar(255) | YES  |     | NULL    |                |
 | created_at      | datetime     | YES  |     | NULL    |                |
 | updated_at      | datetime     | YES  |     | NULL    |                |
+| code            | varchar(255) | NO   | UNI | NULL    |                |
+| description     | varchar(255) | NO   |     | NULL    |                |
 +-----------------+--------------+------+-----+---------+----------------+
 
 Table: diagnoses
@@ -1109,26 +1111,27 @@ Table: people
 +----------------+--------------+------+-----+---------+----------------+
 
 Table: phone_numbers
-+------------------+--------------+------+-----+---------+----------------+
-| Field            | Type         | Null | Key | Default | Extra          |
-+------------------+--------------+------+-----+---------+----------------+
-| id               | int(11)      | NO   | PRI | NULL    | auto_increment |
-| position         | int(11)      | YES  |     | NULL    |                |
-| study_subject_id | int(11)      | YES  | MUL | NULL    |                |
-| phone_type_id    | int(11)      | YES  |     | NULL    |                |
-| data_source_id   | int(11)      | YES  |     | NULL    |                |
-| phone_number     | varchar(255) | YES  |     | NULL    |                |
-| is_primary       | tinyint(1)   | YES  |     | NULL    |                |
-| is_valid         | int(11)      | YES  |     | NULL    |                |
-| why_invalid      | varchar(255) | YES  |     | NULL    |                |
-| is_verified      | tinyint(1)   | YES  |     | NULL    |                |
-| how_verified     | varchar(255) | YES  |     | NULL    |                |
-| verified_on      | datetime     | YES  |     | NULL    |                |
-| verified_by_uid  | varchar(255) | YES  |     | NULL    |                |
-| created_at       | datetime     | YES  |     | NULL    |                |
-| updated_at       | datetime     | YES  |     | NULL    |                |
-| current_phone    | int(11)      | YES  |     | 1       |                |
-+------------------+--------------+------+-----+---------+----------------+
++-------------------+--------------+------+-----+---------+----------------+
+| Field             | Type         | Null | Key | Default | Extra          |
++-------------------+--------------+------+-----+---------+----------------+
+| id                | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position          | int(11)      | YES  |     | NULL    |                |
+| study_subject_id  | int(11)      | YES  | MUL | NULL    |                |
+| phone_type_id     | int(11)      | YES  |     | NULL    |                |
+| data_source_id    | int(11)      | YES  |     | NULL    |                |
+| phone_number      | varchar(255) | YES  |     | NULL    |                |
+| is_primary        | tinyint(1)   | YES  |     | NULL    |                |
+| is_valid          | int(11)      | YES  |     | NULL    |                |
+| why_invalid       | varchar(255) | YES  |     | NULL    |                |
+| is_verified       | tinyint(1)   | YES  |     | NULL    |                |
+| how_verified      | varchar(255) | YES  |     | NULL    |                |
+| verified_on       | datetime     | YES  |     | NULL    |                |
+| verified_by_uid   | varchar(255) | YES  |     | NULL    |                |
+| created_at        | datetime     | YES  |     | NULL    |                |
+| updated_at        | datetime     | YES  |     | NULL    |                |
+| current_phone     | int(11)      | YES  |     | 1       |                |
+| data_source_other | varchar(255) | YES  |     | NULL    |                |
++-------------------+--------------+------+-----+---------+----------------+
 
 Table: phone_types
 +-------------+--------------+------+-----+---------+----------------+
