@@ -3,7 +3,14 @@ require 'test_helper'
 class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-	assert_should_have_many( :abstracts, :addressings, :enrollments,
+
+#	Cannot in enrollments here due to the creation of one
+#	during the creation of a study_subject
+#	Should create custom check, but this is indirectly tested
+#	in the creation of the enrollment so not really needed.
+#		:enrollments,
+
+	assert_should_have_many( :abstracts, :addressings, 
 		:gift_cards, :phone_numbers, :samples, :interviews, :bc_requests )
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome,
@@ -14,20 +21,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :vital_status_id, :hispanicity_id, 
 		:reference_date, :mother_yrs_educ, :father_yrs_educ, 
 		:birth_type, :birth_county, :is_duplicate_of )
-
-#	test "should default sex to null" do
-#		assert_difference( "StudySubject.count", 1 ) {
-#			study_subject = create_study_subject
-#			assert_nil study_subject.reload.sex
-#		} 
-#	end 
-#
-#	test "should set nullify blank sex" do
-#		assert_difference( "StudySubject.count", 1 ) {
-#			study_subject = create_study_subject(:sex => '')
-#			assert_nil study_subject.reload.sex
-#		} 
-#	end 
 
 	test "should require sex be either M, F or DK" do
 		assert_difference( "StudySubject.count", 0 ) {
@@ -152,7 +145,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should create study_subject and accept_nested_attributes_for enrollments" do
-		assert_difference( 'Enrollment.count', 1) {
+		assert_difference( 'Enrollment.count', 2) {	#	ccls enrollment is auto-created, so 2
 		assert_difference( "StudySubject.count", 1 ) {
 			study_subject = create_study_subject(
 				:enrollments_attributes => [Factory.attributes_for(:enrollment,
@@ -176,7 +169,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference( 'Pii.count', 0) {
 		assert_difference( "StudySubject.count", 0 ) {
 			study_subject = create_study_subject( :pii_attributes => {})
-#			assert study_subject.errors.on('pii.state_id_no')
 			assert study_subject.errors.on_attr_and_type('pii.dob',:blank)
 		} }
 	end
@@ -251,7 +243,6 @@ pending
 	end
 
 	test "should NOT create study_subject with empty patient" do
-#	TODO will require admit_date and organization_id
 		assert_difference( 'Patient.count', 0) {
 		assert_difference( "StudySubject.count", 0 ) {
 			study_subject = create_study_subject( :patient_attributes => {})
@@ -291,13 +282,14 @@ pending	#	TODO will require something?
 
 	test "studyid should be patid, case_control_type and orderno" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
-#		study_subject = create_study_subject(
-#			:identifier_attributes => Factory.attributes_for(:identifier, 
-#				:case_control_type => 'c'
-#		)).reload
 		study_subject = Factory(:case_identifier).reload.study_subject
-		Identifier.any_instance.unstub(:get_next_patid)
-pending	#	TODO gotta figure this out
+#	why unstub here
+#		Identifier.any_instance.unstub(:get_next_patid)
+		assert_nil study_subject.studyid
+		assert_nil study_subject.identifier.studyid
+		assert_nil study_subject.identifier.studyid_nohyphen
+		assert_nil study_subject.identifier.studyid_intonly_nohyphen
+pending	#	TODO gotta figure this out.  Studyids no longer computed
 #		assert_equal "0123-C-0", study_subject.studyid
 #		assert_equal "0123C0",   study_subject.identifier.studyid_nohyphen
 #		assert_equal "012300",   study_subject.identifier.studyid_intonly_nohyphen
@@ -362,6 +354,12 @@ pending	#	TODO gotta figure this out
 		} }
 	end
 
+	test "should destroy addressings with study_subject" do
+pending	#	TODO think should destroy addressings but NOT addresses
+	end
+
+#	Address belongs to addressing so address can be shared
+#	Should destroy addressings though??
 #	test "should NOT destroy addresses with study_subject" do
 #		study_subject = create_study_subject
 #		Factory(:address, :study_subject => study_subject)
@@ -372,6 +370,7 @@ pending	#	TODO gotta figure this out
 #		} }
 #	end
 
+#	TODO	Why not?
 #	test "should NOT destroy operational_events with study_subject" do
 #		study_subject = create_study_subject
 #		Factory(:operational_event, :study_subject => study_subject)
@@ -382,6 +381,7 @@ pending	#	TODO gotta figure this out
 #		} }
 #	end
 
+#	TODO	Why not?
 	test "should NOT destroy enrollments with study_subject" do
 		study_subject = create_study_subject
 		Factory(:enrollment, :study_subject => study_subject)
@@ -499,6 +499,7 @@ pending	#	TODO gotta figure this out
 	end
 
 
+#	TODO
 #	test "should destroy patient on study_subject destroy" do
 #		assert_difference( 'Patient.count', 1) {
 #		assert_difference( 'StudySubject.count', 1) {
@@ -523,6 +524,7 @@ pending	#	TODO gotta figure this out
 #		} }
 #	end
 #
+#	TODO
 #	test "should destroy identifier on study_subject destroy" do
 #		assert_difference( 'Identifier.count', 1) {
 #		assert_difference( 'StudySubject.count', 1) {
@@ -535,6 +537,7 @@ pending	#	TODO gotta figure this out
 #		} }
 #	end
 #
+#	TODO
 #	test "should destroy pii on study_subject destroy" do
 #		assert_difference( 'Pii.count', 1) {
 #		assert_difference( 'StudySubject.count', 1) {
@@ -1059,7 +1062,7 @@ pending	#	TODO gotta figure this out
 	test "should return SOMETHING for next_control_orderno for control" do
 		study_subject = create_identifier.study_subject
 #		assert_equal 1, case_study_subject.next_control_orderno
-pending
+pending	#	TODO 
 	end
 
 	test "should return 1 for next_control_orderno for case with no controls" do
@@ -1070,10 +1073,11 @@ pending
 	test "should return 2 for next_control_orderno for case with one control" do
 		case_study_subject = create_case_identifier.study_subject
 		assert_equal 1, case_study_subject.next_control_orderno
-#		control = case_study_subject.create_control({ })
-#	add a control
-#		assert_equal 2, case_study_subject.next_control_orderno
-pending
+		control = create_control_identifier(
+			:matchingid => case_study_subject.identifier.subjectid,
+			:case_control_type => '6',	#	<- default used for next_control_orderno
+			:orderno    => case_study_subject.next_control_orderno ).study_subject
+		assert_equal 2, case_study_subject.next_control_orderno
 	end
 
 	test "should not assign icf_master_id when there are none" do
@@ -1513,22 +1517,56 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_equal 'n/a', mother.studyid
 	end
 
+	test "should create ccls project enrollment on creation" do
+		study_subject = nil
+		assert_difference('Project.count',0) {	#	make sure it didn't create id
+		assert_difference('Enrollment.count',1) {
+		assert_difference('StudySubject.count',1) {
+			study_subject = create_study_subject
+		} } }
+		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
+		assert_not_nil ccls_enrollment
+	end
+
+	test "should only create 1 ccls project enrollment on creation if given one" do
+		study_subject = nil
+		assert_difference('Project.count',0) {	#	make sure it didn't create id
+		assert_difference('Enrollment.count',1) {
+		assert_difference('StudySubject.count',1) {
+			study_subject = create_study_subject(:enrollments_attributes => [
+				{ :project_id => Project['ccls'].id }
+			])
+		} } }
+		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
+		assert_not_nil ccls_enrollment
+	end
+
 	test "should create newSubject operational event on creation" do
-		study_subject = create_study_subject
-#		assert_equal 1, study_subject.operational_events.length
-pending	#	TODO
+		study_subject = nil
+		assert_difference('OperationalEventType.count',0) {	#	make sure it didn't create it
+		assert_difference('OperationalEvent.count',1) {
+		assert_difference('StudySubject.count',1) {
+			study_subject = create_study_subject
+		} } }
+		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
+		assert_not_nil ccls_enrollment
+		new_subject_event = ccls_enrollment.operational_events.find_by_operational_event_type_id( OperationalEventType['newSubject'].id )
+		assert_not_nil new_subject_event
 	end
 
 	test "should create subjectDied operational event when vital status changed to deceased" do
-		study_subject = create_study_subject
+		study_subject = create_study_subject.reload		#	reload.  sometimes you need it?
 		assert_not_nil study_subject.vital_status
-		study_subject.vital_status = VitalStatus['deceased']
-		study_subject.save
+		assert_difference('OperationalEventType.count',0) {	#	make sure it didn't create it
+		assert_difference('OperationalEvent.count',1) {
+			study_subject.update_attributes(:vital_status_id => VitalStatus['deceased'].id)
+		} }
 		assert_equal study_subject.reload.vital_status, VitalStatus['deceased']
-pending	#	TODO
+		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
+		assert_not_nil ccls_enrollment
+		subject_died_event = ccls_enrollment.operational_events.find_by_operational_event_type_id( OperationalEventType['subjectDied'].id )
+		assert_not_nil subject_died_event
 	end
-
-	
 
 protected
 

@@ -64,6 +64,9 @@ class StudySubject < Shared
 
 
 	after_create :add_new_subject_operational_event
+	#	if want to compare, must be in a BEFORE_save?
+#	before_save  :add_subject_died_operational_event
+	after_save   :add_subject_died_operational_event
 
 
 	validates_presence_of :subject_type
@@ -633,13 +636,24 @@ protected
 	#	All subjects are to have this operational event, so create after create.
 	#	I suspect that this'll be attached to the CCLS project enrollment.
 	def add_new_subject_operational_event
-#	add the CCLS project enrollment
-#	attach a newSubject operational event to CCLS enrollment
+		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
+		ccls_enrollment.operational_events << OperationalEvent.create!(
+			:operational_event_type => OperationalEventType['newSubject'],
+			:occurred_on            => Date.today
+		)
 	end
 
 	#	Add this if the vital status changes to deceased.
 	#	I suspect that this'll be attached to the CCLS project enrollment.
 	def add_subject_died_operational_event
+		if( ( vital_status_id == VitalStatus['deceased'].id ) && 
+				( vital_status_id_was != VitalStatus['deceased'].id ) )
+			ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
+			ccls_enrollment.operational_events << OperationalEvent.create!(
+				:operational_event_type => OperationalEventType['subjectDied'],
+				:occurred_on            => Date.today
+			)
+		end
 	end
 
 	# custom validation for custom message without standard attribute prefix
