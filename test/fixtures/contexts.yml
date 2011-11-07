@@ -6,11 +6,10 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 addresses:
- id: 1 
- code: addresses 
- description: address combo boxes in ODMS 
+  id: 1 
+  code: addresses 
+  description: address combo boxes in ODMS 
 phones:
- id: 2 
- code: phones 
- description: phone number combo boxes in ODMS
-
+  id: 2 
+  code: phones 
+  description: phone number combo boxes in ODMS
