@@ -18,12 +18,12 @@ class Ccls::ContextTest < ActiveSupport::TestCase
 	end
 
 	test "should find by code with ['string']" do
-		context = Context['address']
+		context = Context['addresses']
 		assert context.is_a?(Context)
 	end
 
 	test "should find by code with [:symbol]" do
-		context = Context[:address]
+		context = Context[:addresses]
 		assert context.is_a?(Context)
 	end
 
