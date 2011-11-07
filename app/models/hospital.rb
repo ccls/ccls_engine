@@ -8,6 +8,7 @@ class Hospital < Shared
 
 	#	don't know if this is needed as database will default to false
 #	validates_presence_of :has_irb_waiver
+	validates_inclusion_of :has_irb_waiver, :in => [ true, false ]
 
 	def to_s
 		organization.try(:name) || 'Unknown'

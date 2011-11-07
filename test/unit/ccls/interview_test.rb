@@ -33,17 +33,15 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 
 	test "should create intro letter operational event " <<
 			"when intro_letter_sent_on set" do
+		study_subject = create_hx_study_subject
 		assert_difference( "OperationalEvent.count", 1 ) {
 		assert_difference( "Interview.count", 1 ) {
-		assert_difference( "Enrollment.count", 1 ) {
-		assert_difference( "StudySubject.count", 1 ) {
-			create_interview(
-				:study_subject => create_hx_study_subject,
-				:intro_letter_sent_on => Chronic.parse('yesterday'))
-		} } } }
+			@interview = create_interview( :study_subject => study_subject,
+				:intro_letter_sent_on => Chronic.parse('yesterday')).reload
+		} }
 		assert_equal OperationalEventType['intro'],
 			OperationalEvent.last.operational_event_type
-		assert_equal model_name.constantize.last.intro_letter_sent_on,
+		assert_equal @interview.intro_letter_sent_on,
 			OperationalEvent.last.occurred_on
 	end
 
@@ -54,8 +52,6 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			:intro_letter_sent_on => Chronic.parse('yesterday'))
 		assert_difference( "OperationalEvent.count", 0 ) {
 		assert_difference( "Interview.count", 0 ) {
-#	update_attribute SKIPS validations which may ignore errors
-#			interview.update_attribute(:intro_letter_sent_on, Chronic.parse('today'))
 			interview.update_attributes(:intro_letter_sent_on => Chronic.parse('today'))
 		} }
 		assert_equal Chronic.parse('today').to_date,

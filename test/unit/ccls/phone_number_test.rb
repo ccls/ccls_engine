@@ -4,7 +4,7 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
-#	TODO assert_should_act_as_list( :scope => :study_subject_id )
+	assert_should_act_as_list( :scope => :study_subject_id )
 
 	assert_should_initially_belong_to( :study_subject, :phone_type )
 	assert_should_require_attribute(:phone_number, :phone_type_id )

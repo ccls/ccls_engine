@@ -7,11 +7,9 @@ class Ccls::SampleTypeTest < ActiveSupport::TestCase
 	assert_should_have_many( :samples )
 	assert_should_belong_to( :parent, 
 		:class_name => 'SampleType' )
-
-#	TODO assert_should_have_many( :children, 
-#		:class_name => 'SampleType',
-#		:foreign_key => 'parent_id' )
-
+	assert_should_have_many( :children,
+		:class_name => 'SampleType',
+		:foreign_key => 'parent_id' )
 	assert_should_require_attributes( :code, :description )
 	assert_should_require_unique_attributes( :code, :description )
 	assert_should_not_require_attributes( :position, :parent_id )

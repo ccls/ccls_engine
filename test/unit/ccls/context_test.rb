@@ -33,5 +33,4 @@ class Ccls::ContextTest < ActiveSupport::TestCase
 #		}
 #	end
 
-
 end

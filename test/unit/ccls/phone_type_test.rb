@@ -32,7 +32,6 @@ class Ccls::PhoneTypeTest < ActiveSupport::TestCase
 #		}
 #	end
 
-
 protected
 
 	def create_phone_type(options={})

@@ -190,6 +190,9 @@ Factory.define :consented_enrollment, :parent => :enrollment do |f|
 	f.consented   1	#true
 	f.consented_on Chronic.parse('yesterday')
 end
+Factory.define :subjectless_enrollment, :class => 'Enrollment' do |f|
+	f.association :project
+end
 
 Factory.define :follow_up do |f|
 	f.association :section

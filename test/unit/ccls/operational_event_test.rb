@@ -113,8 +113,9 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 		operational_event_2 = create_operational_event(
 			:enrollment => enrollment )
 		events = OperationalEvent.search(:study_subject_id => enrollment.study_subject.id)
-		assert_equal 1, events.length
-		assert_equal events.first, operational_event_2
+		#	enrollment creates subject with auto-created ccls enrollment
+		assert_equal 2, events.length
+		assert events.include? operational_event_2
 	end
 
 protected

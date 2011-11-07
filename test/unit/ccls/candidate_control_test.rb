@@ -18,7 +18,6 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:middle_name,
 		:state_registrar_no,
 		:local_registrar_no,
-#		:sex,
 		:birth_county,
 		:assigned_on,
 		:mother_race_id,
@@ -37,7 +36,6 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		:first_name,
 		:middle_name,
 		:last_name,
-#		:sex,
 		:birth_county,
 		:birth_type,
 		:mother_maiden_name,
@@ -342,11 +340,9 @@ pending	#	TODO should test when assign_icf_master_id fails
 protected
 
 	def create_study_subjects_for_candidate_control(candidate,case_subject)
-#	TODO mother's pii info not in candidate_control yet
-		assert_difference('Enrollment.count',1) {
+		assert_difference('Enrollment.count',2) {	#	both get auto-created ccls enrollment
 		assert_difference('Identifier.count',2) {
-		assert_difference('Pii.count',2) {	#	don't have enough info for mother's pii
-#		assert_difference('Pii.count',1) {
+		assert_difference('Pii.count',2) {
 		assert_difference('StudySubject.count',2) {
 			candidate.create_study_subjects(case_subject)
 		} } } }

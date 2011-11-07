@@ -22,9 +22,9 @@ class Sample < Shared
 		'received_by_ccls_on IS NOT NULL' ]
 
 	validates_presence_of :sample_type_id
-	validates_presence_of :sample_type
+#	validates_presence_of :sample_type
 	validates_presence_of :study_subject_id
-	validates_presence_of :study_subject
+#	validates_presence_of :study_subject
 
 	validates_presence_of :sent_to_subject_on, 
 		:if => :collected_on

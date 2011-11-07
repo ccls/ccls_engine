@@ -24,7 +24,7 @@ class Ccls::GiftCardTest < ActiveSupport::TestCase
 #	Add search tests
 
 	test "should search for stuff" do
-pending
+pending	#	TODO should add some search tests
 	end
 
 protected

@@ -9,7 +9,6 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 	assert_should_require_unique_attribute( :sample_id )
 	assert_should_not_require_attributes( :kit_package_id, :sample_package_id )
 
-
 	test "should create sample kit with kit package" do
 		assert_difference( "SampleKit.count", 1 ) {
 		assert_difference('Package.count', 1) {
@@ -38,7 +37,6 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 
 	test "should require a unique sample" do
 		assert_difference( "SampleKit.count", 1 ) {
-#		assert_difference('StudySubject.count', 1) {
 		assert_difference('Sample.count', 1) {
 			sample_kit = create_sample_kit
 			assert_not_nil sample_kit.sample
@@ -54,32 +52,24 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 
 	test "should returned status Shipped" do
 		sample_kit = create_complete_sample_kit	
-#	update_attribute SKIPS validations which may ignore errors
-#		sample_kit.kit_package.update_attribute(:status,'Transit')
 		sample_kit.kit_package.update_attributes(:status => 'Transit')
 		assert_equal 'Shipped', sample_kit.status
 	end
 
 	test "should returned status Delivered" do
 		sample_kit = create_complete_sample_kit	
-#	update_attribute SKIPS validations which may ignore errors
-#		sample_kit.kit_package.update_attribute(:status,'Delivered')
 		sample_kit.kit_package.update_attributes(:status => 'Delivered')
 		assert_equal 'Delivered', sample_kit.status
 	end
 
 	test "should returned status Returned" do
 		sample_kit = create_complete_sample_kit	
-#	update_attribute SKIPS validations which may ignore errors
-#		sample_kit.sample_package.update_attribute(:status,'Transit')
 		sample_kit.sample_package.update_attributes(:status => 'Transit')
 		assert_equal 'Returned', sample_kit.status
 	end
 
 	test "should returned status Received" do
 		sample_kit = create_complete_sample_kit	
-#	update_attribute SKIPS validations which may ignore errors
-#		sample_kit.sample_package.update_attribute(:status,'Delivered')
 		sample_kit.sample_package.update_attributes(:status => 'Delivered')
 		assert_equal 'Received', sample_kit.status
 	end
@@ -122,8 +112,6 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 		sample_kit.sample_package.update_status
 		assert_not_nil sample_kit.received_on
 	end
-
-
 
 	test "should set sample sent_to_subject_on" do
 		stub_package_for_in_transit()

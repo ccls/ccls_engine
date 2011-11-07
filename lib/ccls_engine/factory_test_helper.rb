@@ -36,7 +36,7 @@ module Ccls::FactoryTestHelper
 	def create_eligible_hx_study_subject()
 		study_subject = nil
 		assert_nil study_subject
-		assert_difference('Enrollment.count',1) {
+		assert_difference('Enrollment.count',2) {	#	homex and auto-created ccls
 		assert_difference('StudySubject.count',1) {
 			study_subject = create_hx_study_subject(:enrollment => {
 				:is_eligible => YNDK[:yes] })
@@ -79,9 +79,10 @@ module Ccls::FactoryTestHelper
 		}
 		study_subjects = priorities.collect do |priority|
 			study_subject = nil
+			assert_difference('Enrollment.count',1){	#	auto-created ccls enrollment
 			assert_difference('StudySubject.count',1) {
 				study_subject = create_study_subject
-			}
+			} }
 			assert_difference('Enrollment.count',1){
 				Factory(:enrollment, :project => project, 
 					:study_subject => study_subject,

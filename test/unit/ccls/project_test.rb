@@ -54,7 +54,9 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 		unenrolled = Project.unenrolled_projects(study_subject)
 		assert_not_nil unenrolled
 		assert unenrolled.is_a?(Array)
-		assert_equal 10, unenrolled.length
+		assert_equal 10, Project.count
+		#	due to the auto-enrollment in ccls, there are only 9 now
+		assert_equal 9, unenrolled.length
 	end
 
 protected

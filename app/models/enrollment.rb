@@ -1,6 +1,5 @@
 #	Rich join of Subject and Project
 #	==	requires
-#	*	study_subject_id
 #	*	project
 class Enrollment < Shared
 #
@@ -18,19 +17,6 @@ class Enrollment < Shared
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id]
 	validates_presence_of :project_id
 	validates_presence_of :project
-
-
-	##	TODO - find a way to do this
-	# because study_subject now accepts_nested_attributes for enrollments
-	# we can't require study_subject_id on create
-	#
-	#	study_subject_id is not known until before_save
-	#		so cannot be validated on creation
-	#
-	validates_presence_of   :study_subject, :on => :update
-#	validates_presence_of :study_subject_id
-#	validates_presence_of :study_subject
-
 
 	validates_presence_of :ineligible_reason,
 		:message => 'required if ineligible',

@@ -8,17 +8,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
 	assert_should_initially_belong_to( :study_subject, :sample_type )
 	assert_should_habtm( :projects )
-	assert_should_require_attributes( :sample_type_id )
-
-#	not working
-#	assert_should_require_attributes( :sample_type_id, :study_subject_id )
-
-	test "should require study_subject_id" do
-		assert_no_difference "Sample.count" do
-			sample = create_sample(:study_subject => nil)
-			assert sample.errors.on_attr_and_type(:study_subject_id, :blank)
-		end
-	end
+	assert_should_require_attributes( :sample_type_id, :study_subject_id )
 
 	assert_should_not_require_attributes( :position,
 		:aliquot_sample_format_id,
@@ -229,11 +219,12 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	end
 
 	test "should update homex outcome sample_outcome to sent" do
+		study_subject = create_hx_study_subject
 		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			sample = create_sample(
-				:study_subject => create_hx_study_subject(),
+				:study_subject => study_subject,
 				:sent_to_subject_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['sent'],
 				sample.study_subject.homex_outcome.sample_outcome
@@ -243,11 +234,12 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	end
 
 	test "should update homex outcome sample_outcome to received" do
+		study_subject = create_hx_study_subject
 		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			sample = create_sample(
-				:study_subject => create_hx_study_subject(),
+				:study_subject => study_subject,
 				:sent_to_subject_on => Chronic.parse('3 days ago'),
 				:collected_on => Chronic.parse('2 days ago'),
 				:received_by_ccls_on => Chronic.parse('yesterday') )
@@ -259,11 +251,13 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	end
 
 	test "should update homex outcome sample_outcome to lab" do
+		study_subject = create_hx_study_subject
+#	This update does not create an operational event
 #		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			sample = create_sample(
-				:study_subject => create_hx_study_subject(),
+				:study_subject => study_subject,
 				:organization => Factory(:organization),
 				:sent_to_subject_on => Chronic.parse('4 days ago'),
 				:collected_on => Chronic.parse('3 days ago'),

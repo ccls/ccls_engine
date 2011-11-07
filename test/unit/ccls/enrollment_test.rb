@@ -3,20 +3,6 @@ require 'test_helper'
 class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-
-#	TODO doesn't actually generate an error any more in the factory
-#	i think that it is the non-standard name
-#	assert_should_require_unique_attribute(:project_id, :scope => :study_subject_id)
-
-	test "should require unique project_id scope study_subject_id" do
-		o = create_enrollment
-		assert_no_difference "Enrollment.count" do
-			enrollment = create_enrollment(:project => o.project,
-				:study_subject => o.study_subject)
-			assert enrollment.errors.on_attr_and_type(:project_id, :taken)
-		end
-	end
-
 	assert_should_not_require_attributes( 
 		:position,
 		:recruitment_priority,
@@ -53,9 +39,23 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		:ineligible_reason,
 		:refusal_reason,
 		:document_version )
-	assert_should_initially_belong_to(:study_subject, :project)
+
+#	using subjectless_enrollment so, this isn't true
+#	assert_should_initially_belong_to(:study_subject, :project)
+	assert_should_belong_to(:study_subject)
+
+	assert_should_initially_belong_to(:project)
 	assert_requires_complete_date(:completed_on, :consented_on)
 	assert_requires_past_date(    :completed_on, :consented_on)
+
+	test "should require unique project_id scope study_subject_id" do
+		o = create_enrollment
+		assert_no_difference "Enrollment.count" do
+			enrollment = create_enrollment(:project => o.project,
+				:study_subject => o.study_subject)
+			assert enrollment.errors.on_attr_and_type(:project_id, :taken)
+		end
+	end
 
 #	test "should require completed_on be in the past" do
 #		assert_difference( "Enrollment.count", 0 ) do
@@ -71,7 +71,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	test "should require ineligible_reason if is_eligible == :no" do
 		assert_difference( "Enrollment.count", 0 ) do
-			enrollment = create_enrollment(:is_eligible => YNDK[:no])
+			enrollment = create_subjectless_enrollment(:is_eligible => YNDK[:no])
 			assert enrollment.errors.on(:ineligible_reason)
 			assert enrollment.errors.on_attr_and_type(:ineligible_reason,:blank)
 		end
@@ -79,7 +79,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	[:yes,:dk,:nil].each do |yndk|
 		test "should NOT ALLOW ineligible_reason if is_eligible == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:is_eligible => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:is_eligible => YNDK[yndk],
 					:ineligible_reason => Factory(:ineligible_reason) )
 				assert enrollment.errors.on(:ineligible_reason)
 				assert enrollment.errors.on_attr_and_type(:ineligible_reason,:present)
@@ -90,7 +90,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should require ineligible_reason_specify if " <<
 			"ineligible_reason == other" do
 		assert_difference( "Enrollment.count", 0 ) do
-			enrollment = create_enrollment(
+			enrollment = create_subjectless_enrollment(
 				:is_eligible => YNDK[:no],
 				:ineligible_reason => IneligibleReason['other'] )
 			assert enrollment.errors.on(:ineligible_reason_specify)
@@ -100,7 +100,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should ALLOW ineligible_reason_specify if " <<
 			"ineligible_reason != other" do
 		assert_difference( "Enrollment.count", 1 ) do
-			enrollment = create_enrollment(
+			enrollment = create_subjectless_enrollment(
 				:is_eligible => YNDK[:no],
 				:ineligible_reason => Factory(:ineligible_reason),
 				:ineligible_reason_specify => 'blah blah blah' )
@@ -111,7 +111,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		test "should NOT ALLOW ineligible_reason_specify if " <<
 				"is_eligible == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(
+				enrollment = create_subjectless_enrollment(
 					:is_eligible => YNDK[yndk],
 					:ineligible_reason => Factory(:ineligible_reason),
 					:ineligible_reason_specify => 'blah blah blah' )
@@ -124,7 +124,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	test "should require reason_not_chosen if is_chosen == :no" do
 		assert_difference( "Enrollment.count", 0 ) do
-			enrollment = create_enrollment(:is_chosen => YNDK[:no])
+			enrollment = create_subjectless_enrollment(:is_chosen => YNDK[:no])
 			assert enrollment.errors.on(:reason_not_chosen)
 			assert enrollment.errors.on_attr_and_type(:reason_not_chosen,:blank)
 		end
@@ -132,7 +132,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	[:yes,:dk,:nil].each do |yndk|
 		test "should NOT ALLOW reason_not_chosen if is_chosen == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:is_chosen => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:is_chosen => YNDK[yndk],
 					:reason_not_chosen => "blah blah blah")
 				assert enrollment.errors.on(:reason_not_chosen)
 				assert enrollment.errors.on_attr_and_type(:reason_not_chosen,:present)
@@ -143,7 +143,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	test "should require refusal_reason if consented == :no" do
 		assert_difference( "Enrollment.count", 0 ) do
-			enrollment = create_enrollment(:consented => YNDK[:no])
+			enrollment = create_subjectless_enrollment(:consented => YNDK[:no])
 			assert enrollment.errors.on(:refusal_reason)
 			assert enrollment.errors.on_attr_and_type(:refusal_reason,:blank)
 		end
@@ -151,7 +151,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	[:yes,:dk,:nil].each do |yndk|
 		test "should NOT ALLOW refusal_reason if consented == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:consented => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:consented => YNDK[yndk],
 					:refusal_reason => Factory(:refusal_reason))
 				assert enrollment.errors.on(:refusal_reason)
 				assert enrollment.errors.on_attr_and_type(:refusal_reason,:present)
@@ -162,7 +162,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should require other_refusal_reason if " <<
 			"refusal_reason == other" do
 		assert_difference( "Enrollment.count", 0 ) do
-			enrollment = create_enrollment(:consented => YNDK[:no],
+			enrollment = create_subjectless_enrollment(:consented => YNDK[:no],
 				:refusal_reason => RefusalReason['other'] )
 			assert enrollment.errors.on(:other_refusal_reason)
 			assert enrollment.errors.on_attr_and_type(:other_refusal_reason,:blank)
@@ -171,7 +171,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should ALLOW other_refusal_reason if " <<
 			"refusal_reason != other" do
 		assert_difference( "Enrollment.count", 1 ) do
-			enrollment = create_enrollment(:consented => YNDK[:no],
+			enrollment = create_subjectless_enrollment(:consented => YNDK[:no],
 				:consented_on => Date.today,
 				:refusal_reason => Factory(:refusal_reason),
 				:other_refusal_reason => 'asdfasdf' )
@@ -182,7 +182,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		test "should NOT ALLOW other_refusal_reason if "<<
 				"consented == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:consented => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:consented => YNDK[yndk],
 					:refusal_reason => Factory(:refusal_reason),
 					:other_refusal_reason => 'asdfasdf' )
 				assert enrollment.errors.on(:other_refusal_reason)
@@ -195,7 +195,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	[:yes,:no].each do |yndk|
 		test "should require consented_on if consented == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:consented => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:consented => YNDK[yndk],
 					:consented_on => nil)
 				assert enrollment.errors.on_attr_and_type(:consented_on,:blank)
 			end
@@ -204,7 +204,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	[:dk,:nil].each do |yndk|
 		test "should NOT ALLOW consented_on if consented == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:consented => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:consented => YNDK[yndk],
 					:consented_on => Date.today)
 				assert enrollment.errors.on(:consented_on)
 				assert enrollment.errors.on_attr_and_type(:consented_on,:present)
@@ -216,7 +216,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should require terminated_reason if " <<
 			"terminated_participation == :yes" do
 		assert_difference( "Enrollment.count", 0 ) do
-			enrollment = create_enrollment(:terminated_participation => YNDK[:yes])
+			enrollment = create_subjectless_enrollment(:terminated_participation => YNDK[:yes])
 			assert enrollment.errors.on(:terminated_reason)
 			assert enrollment.errors.on_attr_and_type(:terminated_reason,:blank)
 		end
@@ -226,7 +226,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		test "should NOT ALLOW terminated_reason if " <<
 				"terminated_participation == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(
+				enrollment = create_subjectless_enrollment(
 					:terminated_participation => YNDK[yndk],
 					:terminated_reason => 'some bogus reason')
 				assert enrollment.errors.on(:terminated_reason)
@@ -238,7 +238,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	test "should require completed_on if is_complete == :yes" do
 		assert_difference( "Enrollment.count", 0 ) do
-			enrollment = create_enrollment(:is_complete => YNDK[:yes])
+			enrollment = create_subjectless_enrollment(:is_complete => YNDK[:yes])
 			assert enrollment.errors.on(:completed_on)
 			assert enrollment.errors.on_attr_and_type(:completed_on,:blank)
 		end
@@ -246,7 +246,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	[:no,:dk,:nil].each do |yndk|
 		test "should NOT ALLOW completed_on if is_complete == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:is_complete => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:is_complete => YNDK[yndk],
 					:completed_on => Date.today)
 				assert enrollment.errors.on(:completed_on)
 				assert enrollment.errors.on_attr_and_type(:completed_on,:present)
@@ -258,7 +258,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	[:dk,:nil].each do |yndk|
 		test "should NOT ALLOW document_version_id if consented == #{yndk}" do
 			assert_difference( "Enrollment.count", 0 ) do
-				enrollment = create_enrollment(:consented => YNDK[yndk],
+				enrollment = create_subjectless_enrollment(:consented => YNDK[yndk],
 					:document_version => Factory(:document_version) )
 				assert enrollment.errors.on(:document_version)
 				assert enrollment.errors.on_attr_and_type(:document_version,:present)
@@ -268,7 +268,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	test "should allow document_version_id if consented == :yes" do
 		assert_difference( "Enrollment.count", 1 ) do
-			enrollment = create_enrollment(:consented => YNDK[:yes],
+			enrollment = create_subjectless_enrollment(:consented => YNDK[:yes],
 				:consented_on     => Date.today,
 				:document_version => Factory(:document_version) )
 		end
@@ -276,7 +276,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	test "should allow document_version_id if consented == :no" do
 		assert_difference( "Enrollment.count", 1 ) do
-			enrollment = create_enrollment(:consented => YNDK[:no],
+			enrollment = create_subjectless_enrollment(:consented => YNDK[:no],
 				:consented_on     => Date.today,
 				:refusal_reason   => Factory(:refusal_reason),
 				:document_version => Factory(:document_version) )
@@ -286,7 +286,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 
 	test "should create operational event when enrollment complete" do
-		enrollment = create_enrollment(
+		enrollment = create_subjectless_enrollment(
 			:completed_on => nil,
 			:is_complete => YNDK[:no])
 		past_date = Chronic.parse('Jan 15 2003').to_date
@@ -305,7 +305,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		past_date = Chronic.parse('Jan 15 2003').to_date
 		enrollment = nil
 		assert_difference('OperationalEvent.count',1) do
-			enrollment = create_enrollment(
+			enrollment = create_subjectless_enrollment(
 				:completed_on => past_date,
 				:is_complete => YNDK[:yes])
 		end
@@ -323,7 +323,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	end
 
 	test "should create subjectConsents operational event if consent changes to yes" do
-		enrollment = Factory(:enrollment)
+		enrollment = create_subjectless_enrollment
 		assert_nil enrollment.consented
 		assert_difference("Enrollment.find(#{enrollment.id}).operational_events.count",1){
 			enrollment.update_attributes(:consented => YNDK[:yes],
@@ -353,6 +353,17 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	end
 
 protected
+
+	def create_subjectless_enrollment(options={})
+		enrollment = Factory.build(:subjectless_enrollment,options)
+		enrollment.save
+		enrollment
+	end
+
+#	create_object is used in the basic assertions,
+#	but it creates a subject which creates an enrollment and operational_event
+#	so if I create a subjectless enrollment, they work
+	alias_method :create_object, :create_subjectless_enrollment
 
 	def create_enrollment(options={})
 		enrollment = Factory.build(:enrollment,options)
