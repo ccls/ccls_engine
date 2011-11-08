@@ -10,7 +10,9 @@ class Address < Shared
 	has_one :addressing
 	has_one :study_subject, :through => :addressing
 	belongs_to :address_type
-	belongs_to :data_source
+
+#	Using addressing's association
+#	belongs_to :data_source
 
 	validates_presence_of :address_type
 

@@ -14,8 +14,8 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		:valid_from,
 		:valid_to,
 		:verified_on,
-		:verified_by_uid,
-		:data_source_id )
+		:verified_by_uid )
+#		:data_source_id )
 	assert_should_initially_belong_to( 
 		:study_subject, 
 		:address )

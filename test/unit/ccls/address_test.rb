@@ -11,7 +11,7 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( 
 		:line_2, 
 		:unit,
-		:data_source_id, 
+#		:data_source_id, 
 		:external_address_id )
 	assert_should_require_attribute_length( 
 		:zip, 
@@ -26,9 +26,8 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 
 	assert_should_have_one(:addressing)
 	assert_should_have_many(:interviews)
-	assert_should_belong_to(:data_source)
+#	assert_should_belong_to(:data_source)
 	assert_should_initially_belong_to(:address_type)
-#	assert_requires_valid_association(:address_type) #	no actual testing
 
 	test "should require address_type" do
 		assert_difference( "Address.count", 0 ) do

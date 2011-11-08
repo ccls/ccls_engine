@@ -5,8 +5,6 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_initially_belong_to(:document_type)
-#	assert_requires_valid_association(:document_type) #	no real test
-#	assert_should_require_attributes(:document_type_id)
 	assert_should_not_require_attributes( :position, :title, :description, :indicator )
 	assert_should_require_attribute_length( :title, :description, :indicator,
 		:maximum => 250 )
