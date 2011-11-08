@@ -28,6 +28,7 @@ namespace :ccls do
 		fixtures = %w(
 			address_types
 			contexts
+			context_data_sources
 			data_sources
 			diagnoses
 			document_types
