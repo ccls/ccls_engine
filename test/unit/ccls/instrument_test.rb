@@ -7,8 +7,7 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 	assert_should_have_many(:instrument_versions)
 	assert_should_belong_to(:interview_method)
 	assert_should_initially_belong_to(:project)
-#	assert_requires_valid_association(:project)
-	assert_should_require_attributes( :code, :name, :project_id, :description )
+	assert_should_require_attributes( :code, :name, :description )
 	assert_should_require_unique_attributes( :code, :description )
 	assert_should_not_require_attributes( :position,
 		:results_table_id,
@@ -24,6 +23,20 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 	test "should return name as to_s" do
 		instrument = create_instrument
 		assert_equal instrument.name, "#{instrument}"
+	end
+
+	test "should require project" do
+		assert_difference( "Instrument.count", 0 ) do
+			instrument = create_instrument( :project => nil)
+			assert instrument.errors.on(:project)
+		end
+	end
+
+	test "should require valid project" do
+		assert_difference( "Instrument.count", 0 ) do
+			instrument = create_instrument( :project_id => 0)
+			assert instrument.errors.on(:project)
+		end
 	end
 
 protected

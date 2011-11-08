@@ -9,7 +9,8 @@ class Instrument < Shared
 	belongs_to :interview_method
 	has_many :instrument_versions
 
-	validates_presence_of   :project_id
+	validates_presence_of   :project
+
 	validates_presence_of   :code
 	validates_uniqueness_of :code
 	validates_presence_of   :name
