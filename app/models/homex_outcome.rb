@@ -50,11 +50,14 @@ protected
 			else nil
 		end
 		unless operational_event_type.nil?
-			raise NoHomeExposureEnrollment if study_subject.hx_enrollment.nil?
-			study_subject.hx_enrollment.operational_events << OperationalEvent.create!(
-				:operational_event_type => operational_event_type,
-				:occurred_on => interview_outcome_on
-			)
+			if hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+				hxe.operational_events << OperationalEvent.create!(
+					:operational_event_type => operational_event_type,
+					:occurred_on => interview_outcome_on
+				)
+			else
+				raise NoHomeExposureEnrollment 
+			end
 		end
 	end
 
@@ -70,11 +73,14 @@ protected
 			else nil
 		end
 		unless operational_event_type.nil?
-			raise NoHomeExposureEnrollment if study_subject.hx_enrollment.nil?
-			study_subject.hx_enrollment.operational_events << OperationalEvent.create!(
-				:operational_event_type => operational_event_type,
-				:occurred_on => sample_outcome_on
-			)
+			if hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+				hxe.operational_events << OperationalEvent.create!(
+					:operational_event_type => operational_event_type,
+					:occurred_on => sample_outcome_on
+				)
+			else
+				raise NoHomeExposureEnrollment 
+			end
 		end
 	end
 

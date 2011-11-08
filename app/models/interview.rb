@@ -31,17 +31,6 @@ class Interview < Shared
 		o.validates_length_of :respondent_last_name
 	end
 
-#	TODO don't like the message thing.  Write my own validates method
-#	and that should provide me the ability to avoid this. <|X| monster that
-#	I've created.  It is used here and in Pii. I think the condition stuff still works?
-
-#	validates_presence_of :subject_relationship_other,
-#		:message => "<|X|You must specify a relationship with 'other relationship' is selected",
-#		:if => :subject_relationship_is_other?
-#
-#	This probably works, but need to confirm that the view will show error correctly
-#
-
 	validate :presence_of_subject_relationship_other,
 		:if => :subject_relationship_is_other?
 
@@ -107,8 +96,7 @@ protected
 
 	def update_intro_operational_event
 		oet = OperationalEventType['intro']
-#		hxe = identifier.study_subject.hx_enrollment
-		hxe = study_subject.hx_enrollment
+		hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
 		if oet && hxe
 			oe = hxe.operational_events.find(:first,
 				:conditions => { :operational_event_type_id => oet.id } )

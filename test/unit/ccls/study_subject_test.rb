@@ -564,16 +564,16 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	test "should return nil hx_enrollment if not enrolled" do
 		study_subject = create_study_subject
-		assert_nil study_subject.hx_enrollment
+		assert_nil study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
 	end
 
 	test "should return valid hx_enrollment if enrolled" do
 		study_subject = create_study_subject
-		hx_enrollment = Factory(:enrollment,
+		hxe = Factory(:enrollment,
 			:study_subject => study_subject,
 			:project => Project['HomeExposures']
 		)
-		assert_not_nil study_subject.hx_enrollment
+		assert_not_nil study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
 	end
 
 	test "should not be case unless explicitly told" do
@@ -1029,8 +1029,6 @@ pending	#	TODO think should destroy addressings but NOT addresses
 				:pii_attributes => Factory.attributes_for(:pii) )
 		}
 		assert_not_nil @study_subject.reload.dob
-#	update_attribute SKIPS validations which may ignore errors
-#		@study_subject.pii.update_attribute(:dob, nil)
 		@study_subject.pii.update_attributes(:dob => nil)
 		assert_nil @study_subject.reload.dob
 	end
@@ -1053,8 +1051,6 @@ pending	#	TODO think should destroy addressings but NOT addresses
 				:pii_attributes => Factory.attributes_for(:pii) )
 		}
 		assert_not_nil @study_subject.reload.dob
-#	update_attribute SKIPS validations which may ignore errors
-#		@study_subject.pii.update_attribute(:dob, nil)
 		@study_subject.pii.update_attributes(:dob => nil)
 		assert_nil @study_subject.reload.dob
 	end

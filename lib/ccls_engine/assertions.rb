@@ -5,14 +5,18 @@ module Ccls::Assertions
 	end
 
 	def assert_subject_is_eligible(study_subject)
-		assert_nil   study_subject.hx_enrollment.ineligible_reason_id
-		assert_equal study_subject.hx_enrollment.is_eligible, YNDK[:yes]
+		hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_not_nil hxe
+		assert_nil     hxe.ineligible_reason_id
+		assert_equal   hxe.is_eligible, YNDK[:yes]
 	end
 	alias_method :assert_study_subject_is_eligible, :assert_subject_is_eligible
 
 	def assert_subject_is_not_eligible(study_subject)
-		assert_not_nil study_subject.hx_enrollment.ineligible_reason_id
-		assert_equal   study_subject.hx_enrollment.is_eligible, YNDK[:no]
+		hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_not_nil hxe
+		assert_not_nil hxe.ineligible_reason_id
+		assert_equal   hxe.is_eligible, YNDK[:no]
 	end
 	alias_method :assert_study_subject_is_not_eligible, :assert_subject_is_not_eligible
 

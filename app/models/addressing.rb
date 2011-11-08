@@ -66,7 +66,8 @@ protected
 	end
 
 	def check_state_for_eligibilty
-		if( state != 'CA' && study_subject && study_subject.hx_enrollment &&
+		if( state != 'CA' && study_subject && 
+			( hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id) ) &&
 			address_type == AddressType['residence'] )
 
 			#	This is an after_save so using 1 NOT 0
@@ -76,7 +77,7 @@ protected
 				IneligibleReason['moved']
 			end
 
-			study_subject.hx_enrollment.update_attributes(
+			hxe.update_attributes(
 				:is_eligible => YNDK[:no],
 				:ineligible_reason => ineligible_reason
 			)
@@ -87,7 +88,7 @@ protected
 				raise ActiveRecord::RecordNotSaved
 			end
 
-			study_subject.hx_enrollment.operational_events << OperationalEvent.create!(
+			hxe.operational_events << OperationalEvent.create!(
 				:operational_event_type => oet,
 				:occurred_on => Date.today,
 				:description => ineligible_reason.to_s

@@ -165,7 +165,8 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 			create_az_addressing(study_subject)
 		} } }
 		assert_study_subject_is_not_eligible(study_subject)
-		assert_equal   study_subject.hx_enrollment.ineligible_reason,
+		hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_equal   hxe.ineligible_reason,
 			IneligibleReason['newnonCA']
 	end
 
@@ -179,7 +180,8 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 			create_az_addressing(study_subject)
 		} } }
 		assert_study_subject_is_not_eligible(study_subject)
-		assert_equal   study_subject.hx_enrollment.ineligible_reason,
+		hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_equal   hxe.ineligible_reason,
 			IneligibleReason['moved']
 	end
 
@@ -194,7 +196,6 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 			assert_raise(ActiveRecord::RecordNotSaved){
 				create_az_addressing(study_subject)
 		} } } }
-		study_subject.hx_enrollment.reload	#	NEEDED
 		assert_study_subject_is_eligible(study_subject)
 	end
 

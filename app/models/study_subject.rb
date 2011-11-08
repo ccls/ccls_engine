@@ -37,12 +37,6 @@ class StudySubject < Shared
 #
 ##########
 
-	with_options :conditions => ["projects.code = 'HomeExposures'"], :include => :project do |p|
-		p.has_one :hx_enrollment, :class_name => "Enrollment"
-		p.has_one :hx_gift_card,  :class_name => "GiftCard"
-	end
-
-
 	has_many :races,     :through => :subject_races
 	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
@@ -62,14 +56,10 @@ class StudySubject < Shared
 	has_many :unmerged_abstracts, :class_name => 'Abstract',
 		:conditions => [ "merged_by_uid IS NULL" ]
 
-
 	after_create :add_new_subject_operational_event
-	#	if want to compare, must be in a BEFORE_save?
-#	before_save  :add_subject_died_operational_event
 	after_save   :add_subject_died_operational_event
 
-
-	validates_presence_of :subject_type
+#	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
 
 	validate :presence_of_sex
@@ -105,7 +95,6 @@ class StudySubject < Shared
 			o.delegate :ssn
 			o.delegate :patid
 			o.delegate :orderno
-#			o.delegate :studyid
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
@@ -566,7 +555,6 @@ class StudySubject < Shared
 		( identifier.try(:icf_master_id).blank? ) ? 
 			"[no ID assigned]" : identifier.icf_master_id
 	end
-#	alias_method :icf_master_id_or_notice, :icf_master_id
 
 	def childid
 		if subject_type == SubjectType['Mother']
