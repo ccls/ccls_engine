@@ -1,0 +1,39 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+1:
+  id: 1
+  context_id:  1
+  data_source_id:  1
+2:
+  id: 2
+  context_id:  1
+  data_source_id:  2
+3:
+  id:  3
+  context_id:  1
+  data_source_id:  3
+4:
+  id:  4
+  context_id:  1
+  data_source_id:  4
+5:
+  id: 5
+  context_id:  2
+  data_source_id:  1
+6:
+  id: 6
+  context_id:  2
+  data_source_id:  2
+7:
+  id:  7
+  context_id:  2
+  data_source_id:  3
+8:
+  id:  8
+  context_id:  2
+  data_source_id:  4
