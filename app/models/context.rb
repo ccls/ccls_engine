@@ -10,6 +10,9 @@ class Context < Shared
 	has_many :units
 #	has_many :people
 
+	has_many :context_data_sources
+	has_many :data_sources, :through => :context_data_sources
+
 	validates_presence_of   :code
 	validates_uniqueness_of :code
 	validates_length_of     :description, :minimum => 4

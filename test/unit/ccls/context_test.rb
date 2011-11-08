@@ -33,4 +33,12 @@ class Ccls::ContextTest < ActiveSupport::TestCase
 #		}
 #	end
 
+	test "should have many context_data_sources" do
+pending	#	TODO
+	end
+
+	test "should have many data_sources through context_data_sources" do
+pending	#	TODO
+	end
+
 end
