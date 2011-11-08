@@ -28,19 +28,32 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 	assert_should_have_many(:interviews)
 	assert_should_belong_to(:data_source)
 	assert_should_initially_belong_to(:address_type)
+#	assert_requires_valid_association(:address_type) #	no actual testing
+
+	test "should require address_type" do
+		assert_difference( "Address.count", 0 ) do
+			address = create_address( :address_type => nil)
+			assert address.errors.on(:address_type)
+		end
+	end
+
+	test "should require valid address_type" do
+		assert_difference( "Address.count", 0 ) do
+			address = create_address( :address_type_id => 0)
+			assert address.errors.on(:address_type)
+		end
+	end
 
 	test "should require 5 or 9 digit zip" do
 		%w( asdf 1234 123456 1234Q ).each do |bad_zip|
 			assert_difference( "Address.count", 0 ) do
-				address = Factory.build(:address, :zip => bad_zip )
-				address.save
+				address = create_address( :zip => bad_zip )
 				assert address.errors.on(:zip)
 			end
 		end
 		%w( 12345 12345-6789 123456789 ).each do |good_zip|
 			assert_difference( "Address.count", 1 ) do
-				address = Factory.build(:address, :zip => good_zip )
-				address.save
+				address = create_address( :zip => good_zip )
 				assert !address.errors.on(:zip)
 				assert address.zip =~ /\A\d{5}(-)?(\d{4})?\z/
 			end
@@ -65,13 +78,20 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 
 	test "should require non-residence address type with pobox in line" do
 		assert_difference( "Address.count", 0 ) do
-			address = Factory.build(:address,
+			address = create_address( 
 				:line_1 => "P.O. Box 123",
 				:address_type => AddressType['residence']
 			)
-			address.save
 			assert address.errors.on(:address_type_id)
 		end
+	end
+
+protected
+
+	def create_address(options={})
+		address = Factory.build(:address,options)
+		address.save
+		address
 	end
 
 end

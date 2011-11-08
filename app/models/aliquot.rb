@@ -10,18 +10,12 @@ class Aliquot < Shared
 	belongs_to :unit
 	belongs_to :aliquot_sample_format
 
-	#	rdoc_rails docs this incorrectly.  The :counter_cache 
-	#	is causing the class_name to be ignored.  Using the
-	#	column name rather than true seems to fix.
-	#	( I am working on the plugin to fix this. )
-	belongs_to :owner, 
-		:class_name => "Organization"
-#		:counter_cache => :aliquots_count
+	belongs_to :owner, :class_name => "Organization"
 
 	has_many :transfers
 
-	validates_presence_of :sample, :unit, :owner,
-		:sample_id, :unit_id, :owner_id
+	validates_presence_of :sample, :unit, :owner
+
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :location
 		o.validates_length_of :mass

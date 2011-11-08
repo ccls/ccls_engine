@@ -22,6 +22,20 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:reference_date, :mother_yrs_educ, :father_yrs_educ, 
 		:birth_type, :birth_county, :is_duplicate_of )
 
+	test "should require subject_type" do
+		assert_difference( "StudySubject.count", 0 ) do
+			study_subject = create_study_subject( :subject_type => nil)
+			assert study_subject.errors.on(:subject_type)
+		end
+	end
+
+	test "should require valid subject_type" do
+		assert_difference( "StudySubject.count", 0 ) do
+			study_subject = create_study_subject( :subject_type_id => 0)
+			assert study_subject.errors.on(:subject_type)
+		end
+	end
+
 	test "should require sex be either M, F or DK" do
 		assert_difference( "StudySubject.count", 0 ) {
 			study_subject = create_study_subject(:sex => 'X')

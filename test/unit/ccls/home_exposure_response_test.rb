@@ -8,6 +8,20 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 #	not working
 #	assert_should_require_unique_attribute(:study_subject_id)
 
+	test "should require study_subject" do
+		assert_difference( "HomeExposureResponse.count", 0 ) do
+			home_exposure_response = create_home_exposure_response( :study_subject => nil)
+			assert home_exposure_response.errors.on(:study_subject)
+		end
+	end
+
+	test "should require valid owner" do
+		assert_difference( "HomeExposureResponse.count", 0 ) do
+			home_exposure_response = create_home_exposure_response( :study_subject_id => 0)
+			assert home_exposure_response.errors.on(:study_subject)
+		end
+	end
+
 	test "should require unique study_subject_id" do
 		o = create_home_exposure_response
 		assert_no_difference "HomeExposureResponse.count" do

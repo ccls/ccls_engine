@@ -48,6 +48,20 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	assert_requires_complete_date(:completed_on, :consented_on)
 	assert_requires_past_date(    :completed_on, :consented_on)
 
+	test "should require project" do
+		assert_difference( "Enrollment.count", 0 ) do
+			enrollment = create_subjectless_enrollment( :project => nil)
+			assert enrollment.errors.on(:project)
+		end
+	end
+
+	test "should require valid project" do
+		assert_difference( "Enrollment.count", 0 ) do
+			enrollment = create_subjectless_enrollment( :project_id => 0)
+			assert enrollment.errors.on(:project)
+		end
+	end
+
 	test "should require unique project_id scope study_subject_id" do
 		o = create_enrollment
 		assert_no_difference "Enrollment.count" do

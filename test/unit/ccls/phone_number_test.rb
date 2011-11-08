@@ -7,13 +7,27 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	assert_should_act_as_list( :scope => :study_subject_id )
 
 	assert_should_initially_belong_to( :study_subject, :phone_type )
-	assert_should_require_attribute(:phone_number, :phone_type_id )
+	assert_should_require_attribute(:phone_number )	#, :phone_type_id )
 	assert_should_not_require_attributes( :position, :study_subject_id,
 		:data_source_id, :is_primary, :is_valid,
 		:why_invalid, :is_verified, :how_verified,
 		:verified_on, :verified_by_uid, :current_phone )
 	assert_should_require_attribute_length( :how_verified, :why_invalid, 
 		:maximum => 250 )
+
+	test "should require phone_type" do
+		assert_difference( "PhoneNumber.count", 0 ) do
+			phone_number = create_phone_number( :phone_type => nil)
+			assert phone_number.errors.on(:phone_type)
+		end
+	end
+
+	test "should require valid phone_type" do
+		assert_difference( "PhoneNumber.count", 0 ) do
+			phone_number = create_phone_number( :phone_type_id => 0)
+			assert phone_number.errors.on(:phone_type)
+		end
+	end
 
 	test "current_phone should default to 1" do
 		phone_number = PhoneNumber.new

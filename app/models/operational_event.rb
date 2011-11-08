@@ -8,8 +8,11 @@ class OperationalEvent < Shared
 	belongs_to :enrollment
 
 	belongs_to :operational_event_type
-	validates_presence_of :operational_event_type_id
+
 	validates_presence_of :operational_event_type
+
+#	based on how I create them, this would probably cause problems.
+#	validates_presence_of :enrollment
 
 	validates_complete_date_for :occurred_on, 
 		:allow_nil => true

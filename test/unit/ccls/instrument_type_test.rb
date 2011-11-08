@@ -12,4 +12,18 @@ class Ccls::InstrumentTypeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 
+	test "should require project" do
+		assert_difference( "InstrumentType.count", 0 ) do
+			instrument_type = create_instrument_type( :project => nil)
+			assert instrument_type.errors.on(:project)
+		end
+	end
+
+	test "should require valid project" do
+		assert_difference( "InstrumentType.count", 0 ) do
+			instrument_type = create_instrument_type( :project_id => 0)
+			assert instrument_type.errors.on(:project)
+		end
+	end
+
 end

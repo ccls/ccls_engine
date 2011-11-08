@@ -14,9 +14,8 @@ class Enrollment < Shared
 	has_many   :operational_events
 	has_many   :follow_ups
 
-	validates_uniqueness_of :project_id, :scope => [:study_subject_id]
-	validates_presence_of :project_id
-	validates_presence_of :project
+	validates_presence_of   :project
+	validates_uniqueness_of :project_id, :scope => [:study_subject_id], :allow_blank => true
 
 	validates_presence_of :ineligible_reason,
 		:message => 'required if ineligible',

@@ -5,7 +5,8 @@ class HomeExposureResponse < Shared
 #
 	belongs_to :study_subject
 
-	validates_presence_of   :study_subject_id
+	#	TODO This should probably be removed.  There is nothing that the user
+	#		could do if one of these were created without a study_subject.
 	validates_presence_of   :study_subject
 	validates_uniqueness_of :study_subject_id
 

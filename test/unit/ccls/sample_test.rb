@@ -8,7 +8,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
 	assert_should_initially_belong_to( :study_subject, :sample_type )
 	assert_should_habtm( :projects )
-	assert_should_require_attributes( :sample_type_id, :study_subject_id )
+#	assert_should_require_attributes( :sample_type_id, :study_subject_id )
 
 	assert_should_not_require_attributes( :position,
 		:aliquot_sample_format_id,
@@ -36,6 +36,34 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		:received_by_ccls_on, :sent_to_lab_on,
 		:received_by_lab_on, :aliquotted_on,
 		:receipt_confirmed_on, :collected_on )
+
+	test "should require sample_type" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :sample_type => nil)
+			assert sample.errors.on(:sample_type)
+		end
+	end
+
+	test "should require valid sample_type" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :sample_type_id => 0)
+			assert sample.errors.on(:sample_type)
+		end
+	end
+
+	test "should require study_subject" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :study_subject => nil)
+			assert sample.errors.on(:study_subject)
+		end
+	end
+
+	test "should require valid study_subject" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :study_subject_id => 0)
+			assert sample.errors.on(:study_subject)
+		end
+	end
 
 
 	test "should require that kit and sample tracking " <<

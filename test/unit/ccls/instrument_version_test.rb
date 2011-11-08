@@ -7,7 +7,7 @@ class Ccls::InstrumentVersionTest < ActiveSupport::TestCase
 	assert_should_have_many( :interviews )
 	assert_should_belong_to( :language, :instrument )
 	assert_should_initially_belong_to( :instrument_type )
-	assert_should_require_attributes( :code, :description, :instrument_type_id )
+	assert_should_require_attributes( :code, :description )	#, :instrument_type_id )
 	assert_should_require_unique_attributes( :code, :description )
 	assert_should_not_require_attributes( 
 		:position,
@@ -20,6 +20,19 @@ class Ccls::InstrumentVersionTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 
+	test "should require instrument_type" do
+		assert_difference( "InstrumentVersion.count", 0 ) do
+			instrument_version = create_instrument_version( :instrument_type => nil)
+			assert instrument_version.errors.on(:instrument_type)
+		end
+	end
+
+	test "should require valid instrument_type" do
+		assert_difference( "InstrumentVersion.count", 0 ) do
+			instrument_version = create_instrument_version( :instrument_type_id => 0)
+			assert instrument_version.errors.on(:instrument_type)
+		end
+	end
 
 	test "should return description as to_s" do
 		instrument_version = create_instrument_version

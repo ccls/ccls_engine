@@ -11,6 +11,22 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :maximum => 250 )
 	assert_should_require_attribute_length( :event_notes, :maximum => 250 )
 
+
+	test "should require operational_event_type" do
+		assert_difference( "OperationalEvent.count", 0 ) do
+			operational_event = create_operational_event( :operational_event_type => nil)
+			assert operational_event.errors.on(:operational_event_type)
+		end
+	end
+
+	test "should require valid operational_event_type" do
+		assert_difference( "OperationalEvent.count", 0 ) do
+			operational_event = create_operational_event( :operational_event_type_id => 0)
+			assert operational_event.errors.on(:operational_event_type)
+		end
+	end
+
+
 	#	description is not required so ...
 	test "should return description as to_s if not nil" do
 		operational_event = create_operational_event(:description => 'testing')

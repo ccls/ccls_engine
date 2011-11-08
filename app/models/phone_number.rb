@@ -8,7 +8,8 @@ class PhoneNumber < Shared
 	belongs_to :phone_type
 
 	validates_presence_of :phone_number
-	validates_presence_of :phone_type_id
+	validates_presence_of :phone_type
+
 #
 #	TODO again, try using a method for the :with
 #

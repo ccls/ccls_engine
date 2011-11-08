@@ -7,8 +7,8 @@ class DocumentVersion < Shared
 	belongs_to :document_type
 	has_many :enrollments
 
-	validates_presence_of :document_type_id
 	validates_presence_of :document_type
+
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :title
 		o.validates_length_of :description
