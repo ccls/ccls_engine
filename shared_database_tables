@@ -519,6 +519,17 @@ Table: childids
 | updated_at | datetime | YES  |     | NULL    |                |
 +------------+----------+------+-----+---------+----------------+
 
+Table: context_data_sources
++----------------+----------+------+-----+---------+----------------+
+| Field          | Type     | Null | Key | Default | Extra          |
++----------------+----------+------+-----+---------+----------------+
+| id             | int(11)  | NO   | PRI | NULL    | auto_increment |
+| context_id     | int(11)  | YES  |     | NULL    |                |
+| data_source_id | int(11)  | YES  |     | NULL    |                |
+| created_at     | datetime | YES  |     | NULL    |                |
+| updated_at     | datetime | YES  |     | NULL    |                |
++----------------+----------+------+-----+---------+----------------+
+
 Table: contexts
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |

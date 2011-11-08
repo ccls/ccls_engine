@@ -34,11 +34,16 @@ class Ccls::ContextTest < ActiveSupport::TestCase
 #	end
 
 	test "should have many context_data_sources" do
-pending	#	TODO
+		context = Context[:addresses]
+		assert !context.context_data_sources.empty?
+		assert_difference('ContextDataSource.count',1) {
+			context.data_sources << Factory(:data_source)
+		}
 	end
 
 	test "should have many data_sources through context_data_sources" do
-pending	#	TODO
+		context = Context[:addresses]
+		assert !context.data_sources.empty?
 	end
 
 end
