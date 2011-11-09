@@ -93,59 +93,6 @@ Factory.define :candidate_control do |f|
 	f.sex random_sex
 end
 
-Factory.define :identifier do |f|
-	f.association :study_subject
-#	f.sequence(:childid) { |n| "#{n}" }
-	f.sequence(:ssn){|n| sprintf("%09d",n) }
-#	f.sequence(:patid){|n| "#{n}"}
-
-#	f.sequence(:orderno){|n| "#{n}"}
-#	This is just one digit so looping through all.
-#	This is potentially a problem causer in testing.
-#	orderno is NOT just one digit
-#	f.sequence(:orderno){|n| '0123456789'.split('')[n%10] }
-
-#	f.sequence(:stype){|n| "#{n}"}
-#	This is just one character so looping through known unused chars.
-#	This is potentially a problem causer in testing.
-
-#	So 'C' is the only possible letter value for case_control_type? All others are integers?
-#	That's correct.
-#	f.sequence(:case_control_type){|n| 
-#		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n%36] }
-#	f.sequence(:case_control_type){|n| "#{n}" }
-#	This is just one char/digit so looping through all.
-#	This is potentially a problem causer in testing.
-
-
-#	technically, this makes this a control identifier
-	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
-
-
-
-#	f.sequence(:subjectid){|n| "#{n}"}
-	f.sequence(:state_id_no){|n| "#{n}"}
-	f.sequence(:state_registrar_no){|n| "#{n}"}
-	f.sequence(:local_registrar_no){|n| "#{n}"}
-	f.sequence(:gbid){|n| "#{n}"}
-	f.sequence(:accession_no){|n| "#{n}"}
-	f.sequence(:lab_no_wiemels){|n| "#{n}"}
-	f.sequence(:idno_wiemels){|n| "#{n}"}
-#	f.sequence(:hospital_no){|n| "#{n}"}	#	in order to test presence or uniqueness, MUST BE HERE
-	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
-end
-Factory.define :case_identifier, :parent => :identifier do |f|
-	f.association :study_subject, :factory => :case_study_subject
-	f.case_control_type 'c'
-end
-Factory.define :control_identifier, :parent => :identifier do |f|
-	f.association :study_subject, :factory => :control_study_subject
-end
-Factory.define :mother_identifier, :parent => :identifier do |f|
-	f.association :study_subject, :factory => :mother_study_subject
-	f.case_control_type 'm'
-end
-
 Factory.define :context do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
@@ -237,6 +184,59 @@ end
 Factory.define :icf_master_id do |f|
 end
 
+Factory.define :identifier do |f|
+	f.association :study_subject
+#	f.sequence(:childid) { |n| "#{n}" }
+	f.sequence(:ssn){|n| sprintf("%09d",n) }
+#	f.sequence(:patid){|n| "#{n}"}
+
+#	f.sequence(:orderno){|n| "#{n}"}
+#	This is just one digit so looping through all.
+#	This is potentially a problem causer in testing.
+#	orderno is NOT just one digit
+#	f.sequence(:orderno){|n| '0123456789'.split('')[n%10] }
+
+#	f.sequence(:stype){|n| "#{n}"}
+#	This is just one character so looping through known unused chars.
+#	This is potentially a problem causer in testing.
+
+#	So 'C' is the only possible letter value for case_control_type? All others are integers?
+#	That's correct.
+#	f.sequence(:case_control_type){|n| 
+#		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n%36] }
+#	f.sequence(:case_control_type){|n| "#{n}" }
+#	This is just one char/digit so looping through all.
+#	This is potentially a problem causer in testing.
+
+
+#	technically, this makes this a control identifier
+	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
+
+
+
+#	f.sequence(:subjectid){|n| "#{n}"}
+	f.sequence(:state_id_no){|n| "#{n}"}
+	f.sequence(:state_registrar_no){|n| "#{n}"}
+	f.sequence(:local_registrar_no){|n| "#{n}"}
+	f.sequence(:gbid){|n| "#{n}"}
+	f.sequence(:accession_no){|n| "#{n}"}
+	f.sequence(:lab_no_wiemels){|n| "#{n}"}
+	f.sequence(:idno_wiemels){|n| "#{n}"}
+#	f.sequence(:hospital_no){|n| "#{n}"}	#	in order to test presence or uniqueness, MUST BE HERE
+	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
+end
+Factory.define :case_identifier, :parent => :identifier do |f|
+	f.association :study_subject, :factory => :case_study_subject
+	f.case_control_type 'c'
+end
+Factory.define :control_identifier, :parent => :identifier do |f|
+	f.association :study_subject, :factory => :control_study_subject
+end
+Factory.define :mother_identifier, :parent => :identifier do |f|
+	f.association :study_subject, :factory => :mother_study_subject
+	f.case_control_type 'm'
+end
+
 Factory.define :ineligible_reason do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
@@ -315,20 +315,15 @@ Factory.define :patient do |f|
 	#	However, with all of the date chronology tests, still may cause problems.
 	f.admit_date Date.today	
 
+	#	in order to test presence or uniqueness, MUST BE HERE
+	f.sequence(:hospital_no){|n| "#{n}"}	
 
-#	I would like hospital_no moved from identifier to patient.
-#	This way, I could unique it in the scope of the organization_id.
-#	Requiring it in the identifier model will causes issues
-#	as hospital_no seems to only exist for cases and not controls.
-
-	f.sequence(:hospital_no){|n| "#{n}"}	#	in order to test presence or uniqueness, MUST BE HERE
-
-#	f.association :organization
 	#	Doing it this way will actually include organization_id 
 	#	in the Factory.attributes_for(:patient) method.
 	#	Of course, it requires that there actually be an Organization.
-#	f.organization { Organization.first }
-#	f.organization_id { Organization.first.id }
+	#	f.association :organization
+	#	f.organization { Organization.first }
+	#	f.organization_id { Organization.first.id }
 	f.organization_id { Hospital.first.organization_id }
 
 	f.diagnosis_id { Diagnosis['ALL'].id }
