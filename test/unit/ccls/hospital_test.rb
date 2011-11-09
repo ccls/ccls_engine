@@ -22,6 +22,24 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 		assert_equal 'Unknown', "#{hospital}"
 	end
 
+	test "should return waivered hospitals" do
+		hospitals = Hospital.waivered
+		assert !hospitals.empty?
+		assert_equal 22, hospitals.length	#	this is true now, but will change
+		hospitals.each do |hospital|
+			assert hospital.has_irb_waiver
+		end
+	end
+
+	test "should return nonwaivered hospitals" do
+		hospitals = Hospital.nonwaivered
+		assert !hospitals.empty?
+		assert_equal 3, hospitals.length	#	this is true now, but will change
+		hospitals.each do |hospital|
+			assert !hospital.has_irb_waiver
+		end
+	end
+
 protected
 
 	def create_hospital(options={})
