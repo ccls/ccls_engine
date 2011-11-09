@@ -132,6 +132,16 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
 	end
 
+	test "should raise NoHomeExposureEnrollment on create_interview_outcome_update" <<
+			" if no enrollment in HomeExposures" do
+pending	#	TODO
+	end
+
+	test "should raise NoHomeExposureEnrollment on create_sample_outcome_update" <<
+			" if no enrollment in HomeExposures" do
+pending	#	TODO
+	end
+
 protected
 
 	def create_homex_outcome(options={})
