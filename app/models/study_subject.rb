@@ -6,6 +6,7 @@ class StudySubject < Shared
 #
 
 	class NotTwoAbstracts < StandardError; end
+	class DuplicatesFound < StandardError; end
 
 	belongs_to :subject_type
 	belongs_to :vital_status
