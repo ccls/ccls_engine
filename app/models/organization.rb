@@ -17,7 +17,8 @@ class Organization < Shared
 			:foreign_key => 'from_organization_id'
 	end
 
-	has_many :hospitals
+#	has_many :hospitals
+	has_one  :hospital
 	has_many :patients
 
 	validates_uniqueness_of :code

@@ -221,6 +221,7 @@ Factory.define :guide do |f|
 end
 
 Factory.define :hospital do |f|
+	f.association :organization
 end
 
 Factory.define :homex_outcome do |f|
