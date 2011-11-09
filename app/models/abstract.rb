@@ -315,6 +315,9 @@ class Abstract < Shared
 	end
 
 	def self.search(params={})
+		#	TODO	stop using this.  Now that study subjects and abstracts are in
+		#		the same database, this should be simplified.  Particularly since
+		#		the only searching is really on the study subject and not the abstract.
 		AbstractSearch.new(params).abstracts
 	end
 

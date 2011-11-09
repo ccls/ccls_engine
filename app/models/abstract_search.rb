@@ -33,6 +33,10 @@ private	#	THIS IS REQUIRED
 
 	#	Certainly not the fastest way, but quite possibly the only way
 	#	to search against study_subjects being in a separate database.
+#
+#	TODO StudySubjects are now in the same database as the Abstracts so
+#	this unnecessarily complicated searching should be removed.
+#
 	def study_subjects_conditions
 		unless q.blank?
 			study_subjects = StudySubject.search(:q => q, :paginate => false)
