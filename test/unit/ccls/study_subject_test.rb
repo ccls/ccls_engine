@@ -425,12 +425,18 @@ pending	#	TODO think should destroy addressings but NOT addresses
 		} }
 	end
 
-	%w( initials full_name first_name last_name fathers_name 
-			mothers_name mother_maiden_name email dob state_id_no
-			local_registrar_no state_registrar_no
-			ssn childid patid orderno studyid 
-			interview_outcome interview_outcome_on 
-			sample_outcome sample_outcome_on ).each do |method_name|
+	#	All delegated fields
+	%w( 
+		admitting_oncologist admit_date organization 
+			organization_id hospital_no
+		patid orderno ssn childid state_id_no 
+			state_registrar_no local_registrar_no
+		first_name last_name mother_maiden_name
+			initials fathers_name mothers_name email dob 
+		interview_outcome sample_outcome
+			interview_outcome_on sample_outcome_on 
+		studyid full_name
+		).each do |method_name|
 
 		test "should respond to #{method_name}" do
 			study_subject = create_study_subject
@@ -439,7 +445,10 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	end
 
-	%w( organization ).each do |method_name|
+	#	Delegated patient fields except ... admitting_oncologist
+	%w( admit_date organization 
+			organization_id hospital_no
+		).each do |method_name|
 
 		test "should return nil #{method_name} without patient" do
 			study_subject = create_study_subject
@@ -454,8 +463,10 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	end
 
-#	%w( ssn childid studyid state_id_no ).each do |method_name|
-	%w( ssn childid state_id_no ).each do |method_name|
+	#	Mostly delegated identifier fields except ... patid, orderno
+	%w( ssn childid state_id_no 
+			state_registrar_no local_registrar_no
+		).each do |method_name|
 
 		test "should return nil #{method_name} without identifier" do
 			study_subject = create_study_subject
@@ -470,6 +481,7 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	end
 
+	#	Delegated pii fields except ... first_name, last_name, mother_maiden_name
 	%w( initials fathers_name mothers_name email dob ).each do |method_name|
 
 		test "should return nil #{method_name} without pii" do
@@ -485,8 +497,8 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	end
 
-	%w( interview_outcome interview_outcome_on 
-			sample_outcome sample_outcome_on ).each do |method_name|
+	#	Delegated homex_outcome fields except ... interview_outcome, sample_outcome
+	%w( interview_outcome_on sample_outcome_on ).each do |method_name|
 
 		test "should return nil #{method_name} without homex_outcome" do
 			study_subject = create_study_subject
@@ -496,7 +508,7 @@ pending	#	TODO think should destroy addressings but NOT addresses
 		test "should return #{method_name} with homex_outcome" do
 			study_subject = create_study_subject(
 				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
-#			assert_not_nil study_subject.send(method_name)
+			assert_not_nil study_subject.send(method_name)
 		end
 
 	end
@@ -578,7 +590,8 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	test "should return nil hx_enrollment if not enrolled" do
 		study_subject = create_study_subject
-		assert_nil study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_nil study_subject.enrollments.find_by_project_id(
+			Project['HomeExposures'].id)
 	end
 
 	test "should return valid hx_enrollment if enrolled" do
@@ -587,7 +600,8 @@ pending	#	TODO think should destroy addressings but NOT addresses
 			:study_subject => study_subject,
 			:project => Project['HomeExposures']
 		)
-		assert_not_nil study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_not_nil study_subject.enrollments.find_by_project_id(
+			Project['HomeExposures'].id)
 	end
 
 	test "should not be case unless explicitly told" do
@@ -1381,7 +1395,8 @@ pending #	TODO should return what for rejected controls for non-case
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:patient_attributes => { 
-				:admit_date => study_subject.admit_date })
+				:admit_date => study_subject.admit_date,
+				:organization_id => '0' })
 		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
@@ -1413,6 +1428,17 @@ pending #	TODO should return what for rejected controls for non-case
 				:organization_id => study_subject.organization_id })
 		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
+	end
+
+	test "should create operational event for raf duplicate" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { :hospital_no => study_subject.hospital_no })
+		@duplicates = new_study_subject.duplicates
+		assert_duplicates_found
+		assert_difference('OperationalEvent.count',1) {
+			study_subject.raf_duplicate_creation_attempted(new_study_subject)
+		}
 	end
 
 #	test "should return subject as duplicate when all of these params are passed and all match" do
@@ -1534,8 +1560,7 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_difference('StudySubject.count',1) {
 			study_subject = create_study_subject
 		} } }
-		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
-		assert_not_nil ccls_enrollment
+		assert_not_nil study_subject.enrollments.find_by_project_id(Project['ccls'].id)
 	end
 
 	test "should only create 1 ccls project enrollment on creation if given one" do
@@ -1547,8 +1572,7 @@ pending #	TODO should return what for rejected controls for non-case
 				{ :project_id => Project['ccls'].id }
 			])
 		} } }
-		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
-		assert_not_nil ccls_enrollment
+		assert_not_nil study_subject.enrollments.find_by_project_id(Project['ccls'].id)
 	end
 
 	test "should create newSubject operational event on creation" do
@@ -1560,8 +1584,8 @@ pending #	TODO should return what for rejected controls for non-case
 		} } }
 		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
 		assert_not_nil ccls_enrollment
-		new_subject_event = ccls_enrollment.operational_events.find_by_operational_event_type_id( OperationalEventType['newSubject'].id )
-		assert_not_nil new_subject_event
+		assert_not_nil ccls_enrollment.operational_events.find_by_operational_event_type_id(
+			OperationalEventType['newSubject'].id )
 	end
 
 	test "should create subjectDied operational event when vital status changed to deceased" do
@@ -1574,8 +1598,8 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_equal study_subject.reload.vital_status, VitalStatus['deceased']
 		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
 		assert_not_nil ccls_enrollment
-		subject_died_event = ccls_enrollment.operational_events.find_by_operational_event_type_id( OperationalEventType['subjectDied'].id )
-		assert_not_nil subject_died_event
+		assert_not_nil ccls_enrollment.operational_events.find_by_operational_event_type_id(
+			OperationalEventType['subjectDied'].id )
 	end
 
 protected
@@ -1623,7 +1647,7 @@ protected
 #			:identifier_attributes => Factory.attributes_for(:identifier),
 			:patient_attributes => Factory.attributes_for(:patient,
 				:hospital_no => 'somethingdifferent',
-				:organization_id => 0,
+#				:organization_id => 0,	#	Why 0? was for just matching admit_date
 				:admit_date => Date.today ) }.deep_merge(options) )
 	end
 

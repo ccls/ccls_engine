@@ -344,6 +344,9 @@ Factory.define :pii do |f|
 	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
 	f.dob Date.jd(2440000+rand(15000))
 end
+Factory.define :case_pii, :parent => :pii do |f|
+	f.association :study_subject, :factory => :case_study_subject
+end
 
 Factory.define :project_outcome do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }

@@ -73,6 +73,7 @@ class StudySubject < Shared
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
 		n.with_options :to => :patient do |o|
+			o.delegate :admitting_oncologist
 			o.delegate :admit_date
 			o.delegate :organization
 			o.delegate :organization_id
@@ -576,6 +577,21 @@ class StudySubject < Shared
 		else
 			identifier.try(:studyid)
 		end
+	end
+
+	#	NOTE admitting_oncologist is not a required field
+	#		and as such may be blank in the description.
+	def raf_duplicate_creation_attempted(attempted_subject)
+		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
+		ccls_enrollment.operational_events << OperationalEvent.create!(
+			:operational_event_type => OperationalEventType['DuplicateCase'],
+			:occurred_on            => Date.today,
+			:description            => "a new RAF for this subject was submitted by " <<
+				"#{attempted_subject.admitting_oncologist} of " <<
+				"#{attempted_subject.organization} " <<
+				"with hospital number: " <<
+				"#{attempted_subject.hospital_no}."
+		)
 	end
 
 protected
