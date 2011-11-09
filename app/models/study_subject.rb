@@ -489,6 +489,11 @@ class StudySubject < Shared
 	#
 	def self.duplicates(params={})
 		conditions = [[],{}]
+#
+#	TODO may want to explicitly exclude self, but this check is
+#		to be done before subject creation so won't actually
+#		have an id to use to exclude itself anyway.
+#
 		#	being blank is OK for mysql, but should be removed for simplicity and clarity
 		if params.has_key?(:hospital_no) and !params[:hospital_no].blank?
 			conditions[0] << '(hospital_no = :hospital_no)'
@@ -496,6 +501,8 @@ class StudySubject < Shared
 		end
 		if params.has_key?(:dob) and !params[:dob].blank? and
 				params.has_key?(:sex) and !params[:sex].blank?
+#	•	All subjects:  Have the same birth date (piis.dob) and sex (subject.sex) as the new subject and (same mother’s maiden name or existing mother’s maiden name is null), or
+#	TODO need to add the mother's maiden name to comparison
 			conditions[0] << '(dob = :dob AND sex = :sex)'
 			conditions[1][:dob] = params[:dob]
 			conditions[1][:sex] = params[:sex]
@@ -523,7 +530,6 @@ class StudySubject < Shared
 				],
 				:conditions => [ conditions[0].join(' OR '), conditions[1] ]
 			) 
-#					*(conditions[1].flatten) ]
 		else
 			[]
 		end
