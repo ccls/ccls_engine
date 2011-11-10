@@ -35,16 +35,8 @@ end
 Factory.define :admin_user, :parent => :user do |f|
 	f.administrator true
 end	#	parent must be defined first
-#Factory.define :sender, :parent => :user do |f|
-##	This is really just an alias of convenience for UserInvitation
-#end	#	parent must be defined first
-#Factory.define :owner, :parent => :user do |f|
-##	This is really just an alias of convenience for Document
-#end	#	parent must be defined first
 
 Factory.define :address do |f|
-#	f.association :study_subject
-#	f.association :addressing
 	f.association :address_type
 	f.sequence(:line_1) { |n| "Box #{n}" }
 	f.city "Berkeley"
@@ -67,7 +59,6 @@ end
 Factory.define :aliquot do |f|
 	f.association :sample
 	f.association :unit
-#	f.association :aliquoter, :factory => :organization
 	f.association :owner, :factory => :organization
 end
 
@@ -84,12 +75,12 @@ end
 Factory.define :bc_request do |f|
 	f.sequence(:notes) { |n| "Notes#{n}" }	#	forces an update
 end
+
 Factory.define :candidate_control do |f|
 	f.first_name "First"
 	f.last_name  "Last"
 	f.dob Date.jd(2440000+rand(15000))
 	f.reject_candidate false
-#	f.sequence(:sex){|n| %w( M F DK )[n%3] }
 	f.sex random_sex
 end
 
@@ -123,8 +114,11 @@ Factory.define :document_version do |f|
 	f.association :document_type
 end
 
-#Factory.define :enrollment do |f|
-#	f.association :study_subject
+Factory.define :subjectless_enrollment, :class => 'Enrollment' do |f|
+	f.association :project
+end
+Factory.define :enrollment, :parent => :subjectless_enrollment do |f|
+	f.association :study_subject
 #	f.association :project
 #	f.is_eligible 1	#true
 #	f.is_chosen   1	#true
@@ -132,18 +126,10 @@ end
 #	f.consented_on Chronic.parse('yesterday')
 #	f.terminated_participation 2	#false
 #	f.is_complete 2	#false
-#end
-
-Factory.define :enrollment do |f|
-	f.association :study_subject
-	f.association :project
 end
 Factory.define :consented_enrollment, :parent => :enrollment do |f|
 	f.consented   1	#true
 	f.consented_on Chronic.parse('yesterday')
-end
-Factory.define :subjectless_enrollment, :class => 'Enrollment' do |f|
-	f.association :project
 end
 
 Factory.define :follow_up do |f|
@@ -172,7 +158,6 @@ Factory.define :hospital do |f|
 end
 
 Factory.define :homex_outcome do |f|
-#	f.association :study_subject
 	f.sample_outcome_on Date.today
 	f.interview_outcome_on Date.today
 end
@@ -184,37 +169,10 @@ end
 Factory.define :icf_master_id do |f|
 end
 
-Factory.define :identifier do |f|
-	f.association :study_subject
-#	f.sequence(:childid) { |n| "#{n}" }
+Factory.define :subjectless_identifier, :class => 'Identifier' do |f|
 	f.sequence(:ssn){|n| sprintf("%09d",n) }
-#	f.sequence(:patid){|n| "#{n}"}
-
-#	f.sequence(:orderno){|n| "#{n}"}
-#	This is just one digit so looping through all.
-#	This is potentially a problem causer in testing.
-#	orderno is NOT just one digit
-#	f.sequence(:orderno){|n| '0123456789'.split('')[n%10] }
-
-#	f.sequence(:stype){|n| "#{n}"}
-#	This is just one character so looping through known unused chars.
-#	This is potentially a problem causer in testing.
-
-#	So 'C' is the only possible letter value for case_control_type? All others are integers?
-#	That's correct.
-#	f.sequence(:case_control_type){|n| 
-#		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n%36] }
-#	f.sequence(:case_control_type){|n| "#{n}" }
-#	This is just one char/digit so looping through all.
-#	This is potentially a problem causer in testing.
-
-
-#	technically, this makes this a control identifier
+	#	technically, this makes this a control identifier
 	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
-
-
-
-#	f.sequence(:subjectid){|n| "#{n}"}
 	f.sequence(:state_id_no){|n| "#{n}"}
 	f.sequence(:state_registrar_no){|n| "#{n}"}
 	f.sequence(:local_registrar_no){|n| "#{n}"}
@@ -222,8 +180,10 @@ Factory.define :identifier do |f|
 	f.sequence(:accession_no){|n| "#{n}"}
 	f.sequence(:lab_no_wiemels){|n| "#{n}"}
 	f.sequence(:idno_wiemels){|n| "#{n}"}
-#	f.sequence(:hospital_no){|n| "#{n}"}	#	in order to test presence or uniqueness, MUST BE HERE
 	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
+end
+Factory.define :identifier, :parent => :subjectless_identifier do |f|
+	f.association :study_subject
 end
 Factory.define :case_identifier, :parent => :identifier do |f|
 	f.association :study_subject, :factory => :case_study_subject
@@ -243,10 +203,7 @@ Factory.define :ineligible_reason do |f|
 end
 
 Factory.define :interview do |f|
-#	f.association :address
 	f.association :study_subject
-#	f.association :interviewer, :factory => :person
-#	f.association :identifier
 end
 
 Factory.define :interview_method do |f|
@@ -269,15 +226,12 @@ Factory.define :instrument do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.name 'Instrument Name'
 	f.sequence(:description) { |n| "Desc#{n}" }
-#	f.association :instrument_type
-#	f.association :language
 end
 
 Factory.define :instrument_version do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 	f.association :instrument_type
-#	f.association :language
 end
 
 Factory.define :language do |f|
@@ -292,7 +246,6 @@ Factory.define :organization do |f|
 end
 
 Factory.define :operational_event do |f|
-#	f.association :study_subject
 	f.association :operational_event_type
 end
 
@@ -307,10 +260,7 @@ Factory.define :package do |f|
 	f.sequence(:tracking_number) { |n| "ABC123#{n}" }
 end
 
-Factory.define :patient do |f|
-	#	really don't see the point of a patient w/o a study_subject
-	f.association :study_subject, :factory => :case_study_subject
-#	f.admit_date Date.jd(2440000+rand(15000))	#	may cause problems with date comparison?
+Factory.define :subjectless_patient, :class => 'Patient' do |f|
 	#	Today should always be after the dob.
 	#	However, with all of the date chronology tests, still may cause problems.
 	f.admit_date Date.today	
@@ -328,21 +278,22 @@ Factory.define :patient do |f|
 
 	f.diagnosis_id { Diagnosis['ALL'].id }
 end
+Factory.define :patient, :parent => :subjectless_patient do |f|
+	#	really don't see the point of a patient w/o a study_subject
+	f.association :study_subject, :factory => :case_study_subject
+end
 
 Factory.define :person do |f|
 	#	use sequence so will actually update
 	f.sequence(:last_name){|n| "LastName#{n}"}	
 end
 
-Factory.define :pii do |f|
-	#	really don't see the point of a PII w/o a study_subject
-	#	but ...
-	f.association :study_subject
-#	f.first_name "First"
-#	f.middle_name "Middle"
-#	f.last_name "Last"
+Factory.define :subjectless_pii, :class => 'Pii' do |f|
 	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
 	f.dob Date.jd(2440000+rand(15000))
+end
+Factory.define :pii, :parent => :subjectless_pii do |f|
+	f.association :study_subject
 end
 Factory.define :case_pii, :parent => :pii do |f|
 	f.association :study_subject, :factory => :case_study_subject
@@ -366,7 +317,6 @@ end
 
 Factory.define :sample do |f|
 	f.association :study_subject
-#	f.association :unit
 	f.association :sample_type
 end
 
@@ -428,17 +378,22 @@ end
 
 Factory.define :study_subject do |f|
 	f.association :subject_type
-#	f.association :subject_race
 	f.association :vital_status
-#	f.sequence(:subjectid){|n| "#{n}"}
-#	f.sequence(:sex){|n| %w( M F DK )[n%3] }
 	f.sex random_sex
 end
-#	f.subject_type { SubjectType.find(:first,:conditions => {
-#			:code => 'Case'
-#		}) }
 Factory.define :case_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
+end
+Factory.define :complete_case_study_subject, :parent => :case_study_subject do |f|
+	f.subject_type { SubjectType['Case'] }
+	f.pii_attributes Factory.attributes_for(:pii)
+	#	wrap in {} so is a proc/lambda and runs at runtime NOT at definition
+	#	when the fixtures have been loaded and these will work.
+	f.patient_attributes { Factory.attributes_for(:patient,
+		:organization_id => Hospital.first.organization_id,
+		:diagnosis_id    => Diagnosis['ALL'].id
+	) }
+	f.identifier_attributes Factory.attributes_for(:case_identifier)
 end
 Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }

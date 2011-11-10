@@ -1602,6 +1602,19 @@ pending #	TODO should return what for rejected controls for non-case
 			OperationalEventType['subjectDied'].id )
 	end
 
+	test "complete case study subject factory test" do
+		assert_difference('Pii.count',1) {
+		assert_difference('Patient.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			s = Factory(:complete_case_study_subject)
+			puts s.inspect
+			puts s.pii.inspect
+			puts s.patient.inspect
+			puts s.identifier.inspect
+		} } } }
+	end
+
 protected
 
 	def assert_no_duplicates_found
