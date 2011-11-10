@@ -385,17 +385,21 @@ Factory.define :case_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
 end
 Factory.define :complete_case_study_subject, :parent => :case_study_subject do |f|
-	f.subject_type { SubjectType['Case'] }
-	f.pii_attributes Factory.attributes_for(:pii)
 	#	wrap in {} so is a proc/lambda and runs at runtime NOT at definition
 	#	when the fixtures have been loaded and these will work.
 	#	Only really needed for patient as gets Hospital and Diagnosis.
-	f.patient_attributes { Factory.attributes_for(:patient) }
-#	f.patient_attributes { Factory.attributes_for(:patient,
-#		:organization_id => Hospital.first.organization_id,
-#		:diagnosis_id    => Diagnosis['ALL'].id
-#	) }
-	f.identifier_attributes Factory.attributes_for(:case_identifier)
+	f.subject_type { SubjectType['Case'] }
+	f.pii { Factory.build(:subjectless_pii) }
+	f.patient { Factory.build(:subjectless_patient) }
+	f.identifier { Factory.build(:subjectless_identifier,
+		:case_control_type => 'C' ) }
+#	Either by building subjectless versions(above) or 
+#		with nested attributes(below). Both seem to work.
+#	The model must be set to accept nested attributes for
+#		those versions to actually work though.
+#	f.pii_attributes Factory.attributes_for(:pii)
+#	f.patient_attributes { Factory.attributes_for(:patient) }
+#	f.identifier_attributes Factory.attributes_for(:case_identifier)
 end
 Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
