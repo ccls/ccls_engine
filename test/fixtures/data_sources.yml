@@ -28,3 +28,7 @@ usps:
   id:  4
   code:  usps
   description:  USPS Address Service
+other:
+  id:  5
+  code:  other
+  description:  Other Source
