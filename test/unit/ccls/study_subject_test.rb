@@ -1610,7 +1610,7 @@ pending #	TODO should return what for rejected controls for non-case
 			s = Factory(:complete_case_study_subject)
 			assert_equal s.subject_type, SubjectType['Case']
 			assert_equal s.identifier.case_control_type, 'C'
-			assert_equal s.identifier.orderno, '0'
+			assert_equal s.identifier.orderno, 0
 			assert_not_nil s.identifier.childid
 			assert_not_nil s.identifier.patid
 		} } } }

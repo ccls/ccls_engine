@@ -389,10 +389,12 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 	f.pii_attributes Factory.attributes_for(:pii)
 	#	wrap in {} so is a proc/lambda and runs at runtime NOT at definition
 	#	when the fixtures have been loaded and these will work.
-	f.patient_attributes { Factory.attributes_for(:patient,
-		:organization_id => Hospital.first.organization_id,
-		:diagnosis_id    => Diagnosis['ALL'].id
-	) }
+	#	Only really needed for patient as gets Hospital and Diagnosis.
+	f.patient_attributes { Factory.attributes_for(:patient) }
+#	f.patient_attributes { Factory.attributes_for(:patient,
+#		:organization_id => Hospital.first.organization_id,
+#		:diagnosis_id    => Diagnosis['ALL'].id
+#	) }
 	f.identifier_attributes Factory.attributes_for(:case_identifier)
 end
 Factory.define :control_study_subject, :parent => :study_subject do |f|
