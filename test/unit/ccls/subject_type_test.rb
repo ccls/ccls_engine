@@ -10,6 +10,14 @@ class Ccls::SubjectTypeTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :position, :related_case_control_type )
 	assert_should_require_attribute_length( :code, :description, :maximum => 250 )
 
+	test "explicit Factory subject_type test" do
+		assert_difference('SubjectType.count',1) {
+			subject_type = Factory(:subject_type)
+			assert_match /Code\d*/, subject_type.code
+			assert_match /Desc\d*/, subject_type.description
+		}
+	end
+
 	test "should return description as name" do
 		subject_type = create_subject_type
 		assert_equal subject_type.description,
@@ -38,12 +46,12 @@ class Ccls::SubjectTypeTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_subject_type(options={})
-		subject_type = Factory.build(:subject_type,options)
-		subject_type.save
-		subject_type
-	end
+#protected
+#
+#	def create_subject_type(options={})
+#		subject_type = Factory.build(:subject_type,options)
+#		subject_type.save
+#		subject_type
+#	end
 
 end

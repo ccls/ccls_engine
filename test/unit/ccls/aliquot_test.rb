@@ -19,6 +19,18 @@ class Ccls::AliquotTest < ActiveSupport::TestCase
 	assert_should_initially_belong_to( :sample, :unit )
 	assert_should_initially_belong_to( :owner, :class_name => 'Organization' )
 
+	test "explicit Factory aliquot test" do
+		assert_difference('Sample.count',1) {
+		assert_difference('Unit.count',1) {
+		assert_difference('Organization.count',1) {
+		assert_difference('Aliquot.count',1) {
+			aliquot = Factory(:aliquot)
+			assert_not_nil aliquot.sample
+			assert_not_nil aliquot.unit
+			assert_not_nil aliquot.owner
+		} } } }
+	end
+
 	test "should require owner" do
 		assert_difference( "Aliquot.count", 0 ) do
 			aliquot = create_aliquot( :owner => nil)

@@ -9,6 +9,14 @@ class Ccls::SampleKitTest < ActiveSupport::TestCase
 	assert_should_require_unique_attribute( :sample_id )
 	assert_should_not_require_attributes( :kit_package_id, :sample_package_id )
 
+	test "explicit Factory sample_kit test" do
+		assert_difference('Sample.count',1) {
+		assert_difference('SampleKit.count',1) {
+			sample_kit = Factory(:sample_kit)
+			assert_not_nil sample_kit.sample
+		} }
+	end
+
 	test "should create sample kit with kit package" do
 		assert_difference( "SampleKit.count", 1 ) {
 		assert_difference('Package.count', 1) {
@@ -144,10 +152,10 @@ protected
 		)
 	end
 
-	def create_sample_kit(options={})
-		sample_kit = Factory.build(:sample_kit,options)
-		sample_kit.save
-		sample_kit
-	end
+#	def create_sample_kit(options={})
+#		sample_kit = Factory.build(:sample_kit,options)
+#		sample_kit.save
+#		sample_kit
+#	end
 
 end

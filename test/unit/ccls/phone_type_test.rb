@@ -11,6 +11,13 @@ class Ccls::PhoneTypeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :in => 4..250 )
 	assert_should_require_attribute_length( :description, :maximum => 250 )
 
+	test "explicit Factory phone_type test" do
+		assert_difference('PhoneType.count',1) {
+			phone_type = Factory(:phone_type)
+			assert_match /Code\d*/, phone_type.code
+		}
+	end
+
 	test "should return code as to_s" do
 		phone_type = create_phone_type
 		assert_equal phone_type.code, "#{phone_type}"
@@ -32,12 +39,12 @@ class Ccls::PhoneTypeTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_phone_type(options={})
-		phone_type = Factory.build(:phone_type,options)
-		phone_type.save
-		phone_type
-	end
+#protected
+#
+#	def create_phone_type(options={})
+#		phone_type = Factory.build(:phone_type,options)
+#		phone_type.save
+#		phone_type
+#	end
 
 end

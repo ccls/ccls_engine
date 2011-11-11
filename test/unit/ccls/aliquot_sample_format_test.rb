@@ -11,4 +11,12 @@ class Ccls::AliquotSampleFormatTest < ActiveSupport::TestCase
 	assert_should_act_as_list
 	assert_should_have_many( :aliquots, :samples )
 
+	test "explicit Factory aliquot_sample_format test" do
+		assert_difference('AliquotSampleFormat.count',1) {
+			aliquot_sample_format = Factory(:aliquot_sample_format)
+			assert_match /Code\d*/, aliquot_sample_format.code
+			assert_match /Desc\d*/, aliquot_sample_format.description
+		}
+	end
+
 end

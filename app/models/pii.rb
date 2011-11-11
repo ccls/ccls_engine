@@ -92,11 +92,23 @@ class Pii < Shared
 
 	after_save :trigger_setting_was_under_15_at_dx,
 		:if => :dob_changed?
-	def trigger_setting_was_under_15_at_dx
-		study_subject.update_patient_was_under_15_at_dx
-	end
+
 
 protected
+#
+# logger levels are ... debug, info, warn, error, and fatal.
+#
+	def trigger_setting_was_under_15_at_dx
+		logger.debug "DEBUG: calling update_patient_was_under_15_at_dx from Pii:#{self.attributes['id']}"
+		logger.debug "DEBUG: DOB changed from:#{dob_was}:to:#{dob}"
+		if study_subject
+			logger.debug "DEBUG: study_subject:#{study_subject.id}"
+			study_subject.update_patient_was_under_15_at_dx
+		else
+			# This should never happen, except in testing.
+			logger.warn "WARNING: Pii(#{self.attributes['id']}) is missing study_subject"
+		end
+	end
 
 	def nullify_blank_fields
 		#	An empty form field is not NULL to MySQL so ...

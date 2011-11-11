@@ -16,6 +16,13 @@ class Ccls::GiftCardTest < ActiveSupport::TestCase
 		:number, 
 			:maximum => 250 )
 
+	test "explicit Factory gift_card test" do
+		assert_difference('GiftCard.count',1) {
+			gift_card = Factory(:gift_card)
+			assert_match /\d*/, gift_card.number
+		}
+	end
+
 	test "should return number as to_s" do
 		gift_card = create_gift_card
 		assert_equal gift_card.number, "#{gift_card}"
@@ -27,12 +34,12 @@ class Ccls::GiftCardTest < ActiveSupport::TestCase
 pending	#	TODO should add some search tests
 	end
 
-protected
-
-	def create_gift_card(options={})
-		gift_card = Factory.build(:gift_card,options)
-		gift_card.save
-		gift_card
-	end
+#protected
+#
+#	def create_gift_card(options={})
+#		gift_card = Factory.build(:gift_card,options)
+#		gift_card.save
+#		gift_card
+#	end
 
 end

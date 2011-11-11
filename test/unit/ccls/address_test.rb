@@ -29,6 +29,18 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 #	assert_should_belong_to(:data_source)
 	assert_should_initially_belong_to(:address_type)
 
+	test "explicit Factory address test" do
+		assert_difference('AddressType.count',1) {
+		assert_difference('Address.count',1) {
+			address = Factory(:address)
+			assert_not_nil address.address_type
+			assert_match /Box \d*/, address.line_1
+			assert_equal "Berkeley", address.city
+			assert_equal "CA", address.state
+			assert_equal "12345", address.zip
+		} }
+	end
+
 	test "should require address_type" do
 		assert_difference( "Address.count", 0 ) do
 			address = create_address( :address_type => nil)

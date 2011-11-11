@@ -11,6 +11,13 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :maximum => 250 )
 	assert_should_require_attribute_length( :event_notes, :maximum => 250 )
 
+	test "explicit Factory operational_event test" do
+		assert_difference('OperationalEventType.count',1) {
+		assert_difference('OperationalEvent.count',1) {
+			operational_event = Factory(:operational_event)
+			assert_not_nil operational_event.operational_event_type
+		} }
+	end
 
 	test "should require operational_event_type" do
 		assert_difference( "OperationalEvent.count", 0 ) do
@@ -136,11 +143,11 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 
 protected
 
-	def create_operational_event(options={})
-		operational_event = Factory.build(:operational_event,options)
-		operational_event.save
-		operational_event
-	end
+#	def create_operational_event(options={})
+#		operational_event = Factory.build(:operational_event,options)
+#		operational_event.save
+#		operational_event
+#	end
 
 	def create_operational_events(*args)
 		args.collect{|options| create_operational_event(options) }

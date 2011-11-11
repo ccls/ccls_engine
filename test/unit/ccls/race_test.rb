@@ -11,6 +11,15 @@ class Ccls::RaceTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 	assert_should_require_attribute_length( :key, :code, :maximum => 250 )
 
+	test "explicit Factory race test" do
+		assert_difference('Race.count',1) {
+			race = Factory(:race)
+			assert_match /key\d*/,  race.key
+			assert_match /Race\d*/, race.code
+			assert_match /Desc\d*/, race.description
+		}
+	end
+
 	test "should return name as to_s" do
 		race = create_race
 		assert_equal race.name, "#{race}"
@@ -32,12 +41,12 @@ class Ccls::RaceTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_race(options={})
-		race = Factory.build(:race,options)
-		race.save
-		race
-	end
+#protected
+#
+#	def create_race(options={})
+#		race = Factory.build(:race,options)
+#		race.save
+#		race
+#	end
 
 end

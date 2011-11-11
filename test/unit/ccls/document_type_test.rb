@@ -12,17 +12,24 @@ class Ccls::DocumentTypeTest < ActiveSupport::TestCase
 		:description, 
 			:maximum => 250 )
 
+	test "explicit Factory document_type test" do
+		assert_difference('DocumentType.count',1) {
+			document_type = Factory(:document_type)
+			assert_match /Title\d*/,  document_type.title
+		}
+	end
+
 	test "should return title as to_s" do
 		document_type = create_document_type
 		assert_equal document_type.title, "#{document_type}"
 	end
 
-protected
-
-	def create_document_type(options={})
-		document_type = Factory.build(:document_type,options)
-		document_type.save
-		document_type
-	end
+#protected
+#
+#	def create_document_type(options={})
+#		document_type = Factory.build(:document_type,options)
+#		document_type.save
+#		document_type
+#	end
 
 end

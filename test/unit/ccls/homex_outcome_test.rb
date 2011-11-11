@@ -22,6 +22,16 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 #	TODO Need to add something to allow_nil => true
 #	assert_should_require_unique_attribute(:study_subject_id)
 
+	test "explicit Factory homex_outcome test" do
+		assert_difference('HomexOutcome.count',1) {
+			homex_outcome = Factory(:homex_outcome)
+			assert_nil     homex_outcome.sample_outcome
+			assert_not_nil homex_outcome.sample_outcome_on	#	because of SampleOutcome test
+			assert_nil     homex_outcome.interview_outcome
+			assert_not_nil homex_outcome.interview_outcome_on	#	because of InterviewOutcome test
+		}
+	end
+
 	#
 	#	study_subject uses accepts_attributes_for :pii
 	#	so the pii can't require study_subject_id on create
@@ -144,11 +154,11 @@ pending	#	TODO
 
 protected
 
-	def create_homex_outcome(options={})
-		homex_outcome = Factory.build(:homex_outcome,options)
-		homex_outcome.save
-		homex_outcome
-	end
+#	def create_homex_outcome(options={})
+#		homex_outcome = Factory.build(:homex_outcome,options)
+#		homex_outcome.save
+#		homex_outcome
+#	end
 
 	def create_complete_homex_outcome(options={})
 		s = Factory(:study_subject,options[:study_subject]||{})
@@ -158,6 +168,7 @@ protected
 			(options[:homex_outcome]||{}).merge(:study_subject => s,
 			:interview_outcome_on => nil,
 			:sample_outcome_on => nil))
+#			(options[:homex_outcome]||{}).merge(:study_subject => s))
 		h
 	end
 

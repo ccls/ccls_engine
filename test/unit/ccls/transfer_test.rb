@@ -11,6 +11,17 @@ class Ccls::TransferTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :position, :amount, :reason, :is_permanent )
 	assert_should_require_attribute_length( :reason, :maximum => 250 )
 
+	test "explicit Factory transfer test" do
+		assert_difference('Organization.count',3) {	#	aliquot also creates an Organization
+		assert_difference('Aliquot.count',1) {
+		assert_difference('Transfer.count',1) {
+			transfer = Factory(:transfer)
+			assert_not_nil transfer.aliquot
+			assert_not_nil transfer.from_organization
+			assert_not_nil transfer.to_organization
+		} } }
+	end
+
 	test "should require aliquot" do
 		assert_difference( "Transfer.count", 0 ) do
 			transfer = create_transfer( :aliquot => nil)
@@ -53,12 +64,12 @@ class Ccls::TransferTest < ActiveSupport::TestCase
 		end
 	end
 
-protected
-
-	def create_transfer(options={})
-		transfer = Factory.build(:transfer,options)
-		transfer.save
-		transfer
-	end
+#protected
+#
+#	def create_transfer(options={})
+#		transfer = Factory.build(:transfer,options)
+#		transfer.save
+#		transfer
+#	end
 
 end

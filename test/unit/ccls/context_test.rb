@@ -11,6 +11,14 @@ class Ccls::ContextTest < ActiveSupport::TestCase
 	assert_should_act_as_list
 	assert_should_have_many(:units)
 
+	test "explicit Factory context test" do
+		assert_difference('Context.count',1) {
+			context = Factory(:context)
+			assert_match /Code\d*/, context.code
+			assert_match /Desc\d*/, context.description
+		}
+	end
+
 	test "should return description as to_s" do
 		context = create_context
 		assert_equal context.description,

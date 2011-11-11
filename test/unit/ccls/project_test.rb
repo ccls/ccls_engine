@@ -16,6 +16,13 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 
 	assert_requires_complete_date( :began_on, :ended_on )
 
+	test "explicit Factory project test" do
+		assert_difference('Project.count',1) {
+			project = Factory(:project)
+			assert_match /Code\d*/, project.code
+			assert_match /Desc\d*/, project.description
+		}
+	end
 
 	test "should return description as to_s" do
 		project = create_project
@@ -59,12 +66,12 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 		assert_equal 9, unenrolled.length
 	end
 
-protected
-
-	def create_project(options={})
-		project = Factory.build(:project,options)
-		project.save
-		project
-	end
+#protected
+#
+#	def create_project(options={})
+#		project = Factory.build(:project,options)
+#		project.save
+#		project
+#	end
 
 end

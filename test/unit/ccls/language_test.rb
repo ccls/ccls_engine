@@ -12,6 +12,15 @@ class Ccls::LanguageTest < ActiveSupport::TestCase
 		:maximum => 250 )
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 
+	test "explicit Factory language test" do
+		assert_difference('Language.count',1) {
+			language = Factory(:language)
+			assert_match /Key\d*/,  language.key
+			assert_match /Code\d*/, language.code
+			assert_match /Desc\d*/, language.description
+		}
+	end
+
 	test "should find by key with ['string']" do
 		language = Language['english']
 		assert language.is_a?(Language)
@@ -38,12 +47,12 @@ class Ccls::LanguageTest < ActiveSupport::TestCase
 		assert_nil language
 	end
 
-protected
-
-	def create_language(options={})
-		language = Factory.build(:language,options)
-		language.save
-		language
-	end
+#protected
+#
+#	def create_language(options={})
+#		language = Factory.build(:language,options)
+#		language.save
+#		language
+#	end
 
 end

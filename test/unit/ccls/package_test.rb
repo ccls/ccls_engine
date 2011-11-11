@@ -9,6 +9,13 @@ class Ccls::PackageTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :status, :tracking_number, :latest_event, 
 		:maximum => 250 )
 
+	test "explicit Factory package test" do
+		assert_difference('Package.count',1) {
+			package = Factory(:package)
+			assert_match /ABC123\d*/, package.tracking_number
+		}
+	end
+
 	test "should NOT require 3 char tracking_number" do
 		assert_difference( "Package.count", 1 ) do
 			package = create_package(:tracking_number => 'Hi')

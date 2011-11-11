@@ -11,6 +11,14 @@ class Ccls::InterviewMethodTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 
+	test "explicit Factory interview_method test" do
+		assert_difference('InterviewMethod.count',1) {
+			interview_method = Factory(:interview_method)
+			assert_match /Code\d*/, interview_method.code
+			assert_match /Desc\d*/, interview_method.description
+		}
+	end
+
 	test "should return description as to_s" do
 		interview_method = create_interview_method
 		assert_equal interview_method.description, "#{interview_method}"
@@ -37,12 +45,12 @@ class Ccls::InterviewMethodTest < ActiveSupport::TestCase
 		assert_nil interview_method
 	end
 
-protected
-
-	def create_interview_method(options={})
-		interview_method = Factory.build(:interview_method,options)
-		interview_method.save
-		interview_method
-	end
+#protected
+#
+#	def create_interview_method(options={})
+#		interview_method = Factory.build(:interview_method,options)
+#		interview_method.save
+#		interview_method
+#	end
 
 end

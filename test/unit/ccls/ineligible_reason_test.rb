@@ -15,6 +15,14 @@ class Ccls::IneligibleReasonTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :ineligible_context, 
 		:maximum => 250 )
 
+	test "explicit Factory ineligible_reason test" do
+		assert_difference('IneligibleReason.count',1) {
+			ineligible_reason = Factory(:ineligible_reason)
+			assert_match /Code\d*/, ineligible_reason.code
+			assert_match /Desc\d*/, ineligible_reason.description
+		}
+	end
+
 	test "should return description as to_s" do
 		ineligible_reason = create_ineligible_reason
 		assert_equal ineligible_reason.description, "#{ineligible_reason}"
@@ -48,12 +56,12 @@ class Ccls::IneligibleReasonTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_ineligible_reason(options={})
-		ineligible_reason = Factory.build(:ineligible_reason,options)
-		ineligible_reason.save
-		ineligible_reason
-	end
+#protected
+#
+#	def create_ineligible_reason(options={})
+#		ineligible_reason = Factory.build(:ineligible_reason,options)
+#		ineligible_reason.save
+#		ineligible_reason
+#	end
 
 end

@@ -22,6 +22,24 @@ class Ccls::SampleTypeTest < ActiveSupport::TestCase
 			"#{object}"
 	end
 
+	test "explicit Factory sample_type test" do
+		assert_difference('SampleType.count',2) {	#	creates sample_type and a parent sample_type
+			sample_type = Factory(:sample_type)
+			assert_not_nil sample_type.parent
+			assert_match /Code\d*/, sample_type.code
+			assert_match /Desc\d*/, sample_type.description
+		}
+	end
+
+	test "explicit Factory sample_type parent test" do
+		assert_difference('SampleType.count',1) {
+			sample_type = Factory(:sample_type_parent)
+			assert_nil sample_type.parent
+			assert_match /Code\d*/, sample_type.code
+			assert_match /Desc\d*/, sample_type.description
+		}
+	end
+
 protected
 
 #	The common assertions use create_object, so leave this alone.

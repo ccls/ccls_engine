@@ -13,6 +13,14 @@ class Ccls::RefusalReasonTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 
+	test "explicit Factory refusal_reason test" do
+		assert_difference('RefusalReason.count',1) {
+			refusal_reason = Factory(:refusal_reason)
+			assert_match /Code\d*/, refusal_reason.code
+			assert_match /Desc\d*/, refusal_reason.description
+		}
+	end
+
 	test "should return description as to_s" do
 		refusal_reason = create_refusal_reason
 		assert_equal refusal_reason.description, "#{refusal_reason}"
@@ -46,12 +54,12 @@ class Ccls::RefusalReasonTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_refusal_reason(options={})
-		refusal_reason = Factory.build(:refusal_reason,options)
-		refusal_reason.save
-		refusal_reason
-	end
+#protected
+#
+#	def create_refusal_reason(options={})
+#		refusal_reason = Factory.build(:refusal_reason,options)
+#		refusal_reason.save
+#		refusal_reason
+#	end
 
 end

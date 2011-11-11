@@ -60,6 +60,51 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:subjectid,
 		:patid )
 
+	test "explicit Factory subjectless identifier test" do
+		assert_difference('StudySubject.count',0) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:subjectless_identifier)
+			assert_nil identifier.study_subject
+		} }
+	end
+
+	test "explicit Factory identifier test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:identifier)
+			assert_not_nil identifier.study_subject
+		} }
+	end
+
+	test "explicit Factory case identifier test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:case_identifier)
+			assert_not_nil identifier.study_subject
+			assert_equal identifier.case_control_type, 'C'
+			assert_equal identifier.study_subject.subject_type, SubjectType['Case']
+		} }
+	end
+
+	test "explicit Factory control identifier test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:control_identifier)
+			assert_not_nil identifier.study_subject
+			assert_equal identifier.study_subject.subject_type, SubjectType['Control']
+		} }
+	end
+
+	test "explicit Factory mother identifier test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:mother_identifier)
+			assert_not_nil identifier.study_subject
+			assert_equal identifier.case_control_type, 'M'
+			assert_equal identifier.study_subject.subject_type, SubjectType['Mother']
+		} }
+	end
+
 	test "should nullify blank ssn before validation" do
 		identifier = Factory.build(:identifier, :ssn => '')
 		assert  identifier.ssn.blank?
@@ -438,12 +483,12 @@ pending	#	TODO	still gotta figure this out
 		}
 	end
 
-protected
-
-	def create_identifier(options={})
-		identifier = Factory.build(:identifier,options)
-		identifier.save
-		identifier
-	end
+#protected
+#
+#	def create_identifier(options={})
+#		identifier = Factory.build(:identifier,options)
+#		identifier.save
+#		identifier
+#	end
 
 end

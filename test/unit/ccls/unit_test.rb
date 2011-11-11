@@ -12,4 +12,12 @@ class Ccls::UnitTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 
+	test "explicit Factory unit test" do
+		assert_difference('Unit.count',1) {
+			unit = Factory(:unit)
+			assert_match /Code\d*/, unit.code
+			assert_match /Desc\d*/, unit.description
+		}
+	end
+
 end

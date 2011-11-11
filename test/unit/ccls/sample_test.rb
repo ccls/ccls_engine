@@ -37,6 +37,17 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		:received_by_lab_on, :aliquotted_on,
 		:receipt_confirmed_on, :collected_on )
 
+	test "explicit Factory sample test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('SampleType.count',2) {	#	creates sample_type and a parent sample_type
+		assert_difference('Sample.count',1) {
+			sample = Factory(:sample)
+			assert_not_nil sample.sample_type
+			assert_not_nil sample.sample_type.parent
+			assert_not_nil sample.study_subject
+		} } }
+	end
+
 	test "should require sample_type" do
 		assert_difference( "Sample.count", 0 ) do
 			sample = create_sample( :sample_type => nil)
@@ -331,12 +342,12 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_nil sample.sample_received_on
 	end
 
-protected
-
-	def create_sample(options={})
-		sample = Factory.build(:sample,options)
-		sample.save
-		sample
-	end
+#protected
+#
+#	def create_sample(options={})
+#		sample = Factory.build(:sample,options)
+#		sample.save
+#		sample
+#	end
 
 end

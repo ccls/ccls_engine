@@ -19,6 +19,17 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 	assert_requires_complete_date( :began_use_on, :ended_use_on )
 
+	test "explicit Factory instrument test" do
+		assert_difference('Project.count',1) {
+		assert_difference('Instrument.count',1) {
+			instrument = Factory(:instrument)
+			assert_not_nil instrument.project
+			assert_equal 'Instrument Name', instrument.name
+			assert_match /Code\d*/, instrument.code
+			assert_match /Desc\d*/, instrument.description
+		} }
+	end
+
 	#	unfortunately name is NOT unique so should change this
 	test "should return name as to_s" do
 		instrument = create_instrument
@@ -39,12 +50,12 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 		end
 	end
 
-protected
-
-	def create_instrument(options={})
-		instrument = Factory.build(:instrument,options)
-		instrument.save
-		instrument
-	end
+#protected
+#
+#	def create_instrument(options={})
+#		instrument = Factory.build(:instrument,options)
+#		instrument.save
+#		instrument
+#	end
 
 end

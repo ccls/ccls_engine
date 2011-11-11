@@ -31,6 +31,14 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :began_on, :ended_on, :intro_letter_sent_on )
 	assert_should_protect( :began_at, :ended_at )
 
+	test "explicit Factory interview test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Interview.count',1) {
+			interview = Factory(:interview)
+			assert_not_nil interview.study_subject
+		} }
+	end
+
 	test "should create intro letter operational event " <<
 			"when intro_letter_sent_on set" do
 		study_subject = create_hx_study_subject
@@ -266,11 +274,11 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 
 protected
 
-	def create_interview(options={})
-		interview = Factory.build(:interview,options)
-		interview.save
-		interview
-	end
+#	def create_interview(options={})
+#		interview = Factory.build(:interview,options)
+#		interview.save
+#		interview
+#	end
 
 	def create_interview_with_times(options={})
 		ioptions = HashWithIndifferentAccess.new({

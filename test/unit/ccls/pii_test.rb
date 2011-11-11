@@ -33,6 +33,33 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :dob )
 	assert_requires_complete_date( :died_on )
 
+	test "explicit Factory subjectless pii test" do
+		assert_difference('StudySubject.count',0) {
+		assert_difference('Pii.count',1) {
+			pii = Factory(:subjectless_pii)
+			assert_nil pii.study_subject
+			assert_not_nil pii.email
+			assert_not_nil pii.dob
+		} }
+	end
+
+	test "explicit Factory pii test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Pii.count',1) {
+			pii = Factory(:pii)
+			assert_not_nil pii.study_subject
+		} }
+	end
+
+	test "explicit Factory case pii test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Pii.count',1) {
+			pii = Factory(:case_pii)
+			assert_not_nil pii.study_subject
+			assert_equal pii.study_subject.subject_type, SubjectType['Case']
+		} }
+	end
+
 	%w( email first_name middle_name last_name 
 		father_first_name father_middle_name father_last_name
 		mother_first_name mother_middle_name 

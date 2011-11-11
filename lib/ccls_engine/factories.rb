@@ -48,7 +48,7 @@ Factory.define :addressing do |f|
 	f.association :address
 	f.association :study_subject
 	f.is_valid    1
-	f.is_verified 2
+	f.is_verified false		#		2		#	20111110 just noticed that this is boolean and not int for YNDK
 	f.updated_at Time.now	#	to make it dirty
 end
 
@@ -92,6 +92,11 @@ end
 Factory.define :context_data_source do |f|
 	f.association :context
 	f.association :data_source
+end
+
+Factory.define :county do |f|
+	f.sequence(:name){ |n| "Name #{n}" }
+	f.state_abbrev 'XX'
 end
 
 Factory.define :data_source do |f|
@@ -153,17 +158,27 @@ Factory.define :guide do |f|
 	f.sequence(:body)      { |n| "Body #{n}" }
 end
 
-Factory.define :hospital do |f|
-	f.association :organization
+Factory.define :home_exposure_response do |f|
+	f.association :study_subject
 end
 
 Factory.define :homex_outcome do |f|
-	f.sample_outcome_on Date.today
+	#	20111110 - don't know why this was explicitly set
+	#	They are explicitly set solely for testing OTHER models.
+	#	interview_outcome_on is required for the InterviewOutcome test
+	#	sample_outcome_on is required for the SampleOutcome test
+	f.sample_outcome_on Date.today		
 	f.interview_outcome_on Date.today
 end
 
-Factory.define :home_exposure_response do |f|
-	f.association :study_subject
+Factory.define :hospital do |f|
+	f.association :organization
+end
+Factory.define :waivered_hospital, :parent => :hospital do |f|
+	f.has_irb_waiver true
+end
+Factory.define :nonwaivered_hospital, :parent => :hospital do |f|
+	f.has_irb_waiver false
 end
 
 Factory.define :icf_master_id do |f|
@@ -202,8 +217,23 @@ Factory.define :ineligible_reason do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
-Factory.define :interview do |f|
-	f.association :study_subject
+Factory.define :instrument do |f|
+	f.association :project
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.name 'Instrument Name'
+	f.sequence(:description) { |n| "Desc#{n}" }
+end
+
+Factory.define :instrument_type do |f|
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
+	f.association :project
+end
+
+Factory.define :instrument_version do |f|
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
+	f.association :instrument_type
 end
 
 Factory.define :interview_method do |f|
@@ -215,34 +245,14 @@ Factory.define :interview_outcome do |f|
 	f.sequence(:code) { |n| "Code#{n}" }
 end
 
-Factory.define :instrument_type do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
-	f.sequence(:description) { |n| "Desc#{n}" }
-	f.association :project
-end
-
-Factory.define :instrument do |f|
-	f.association :project
-	f.sequence(:code)        { |n| "Code#{n}" }
-	f.name 'Instrument Name'
-	f.sequence(:description) { |n| "Desc#{n}" }
-end
-
-Factory.define :instrument_version do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
-	f.sequence(:description) { |n| "Desc#{n}" }
-	f.association :instrument_type
+Factory.define :interview do |f|
+	f.association :study_subject
 end
 
 Factory.define :language do |f|
 	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
-end
-
-Factory.define :organization do |f|
-	f.sequence(:code) { |n| "Code #{n}" }
-	f.sequence(:name) { |n| "Name #{n}" }
 end
 
 Factory.define :operational_event do |f|
@@ -253,6 +263,11 @@ Factory.define :operational_event_type do |f|
 	f.sequence(:code)           { |n| "Code#{n}" }
 	f.sequence(:description)    { |n| "Desc#{n}" }
 	f.sequence(:event_category) { |n| "Cat#{n}" }
+end
+
+Factory.define :organization do |f|
+	f.sequence(:code) { |n| "Code #{n}" }
+	f.sequence(:name) { |n| "Name #{n}" }
 end
 
 Factory.define :package do |f|
@@ -288,6 +303,19 @@ Factory.define :person do |f|
 	f.sequence(:last_name){|n| "LastName#{n}"}	
 end
 
+Factory.define :phone_number do |f|
+	f.association :study_subject
+	f.association :phone_type
+	f.sequence(:phone_number){|n| sprintf("%010d",n) }
+	f.is_valid    1
+	f.is_verified false		#		2		#	20111110 just noticed that this is boolean and not int for YNDK
+end
+
+Factory.define :phone_type do |f|
+	f.sequence(:code) { |n| "Code#{n}" }
+#	f.sequence(:description) { |n| "Desc#{n}" }
+end
+
 Factory.define :subjectless_pii, :class => 'Pii' do |f|
 	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
 	f.dob Date.jd(2440000+rand(15000))
@@ -304,6 +332,11 @@ Factory.define :project_outcome do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
+Factory.define :project do |f|
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
+end
+
 Factory.define :race do |f|
 	f.sequence(:key)        {|n| "key#{n}"}
 	f.sequence(:code)       {|n| "Race#{n}"}
@@ -315,17 +348,17 @@ Factory.define :refusal_reason do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
-Factory.define :sample do |f|
-	f.association :study_subject
-	f.association :sample_type
-end
-
 Factory.define :sample_kit do |f|
 	f.association :sample
 end
 
 Factory.define :sample_outcome do |f|
 	f.sequence(:code) { |n| "Code#{n}" }
+end
+
+Factory.define :sample do |f|
+	f.association :study_subject
+	f.association :sample_type
 end
 
 Factory.define :sample_type do |f|
@@ -338,24 +371,6 @@ Factory.define :sample_type_parent, :parent => :sample_type do |f|
 end
 
 Factory.define :section do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
-	f.sequence(:description) { |n| "Desc#{n}" }
-end
-
-Factory.define :phone_number do |f|
-	f.association :study_subject
-	f.association :phone_type
-	f.sequence(:phone_number){|n| sprintf("%010d",n) }
-	f.is_valid    1
-	f.is_verified 2
-end
-
-Factory.define :phone_type do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
-#	f.sequence(:description) { |n| "Desc#{n}" }
-end
-
-Factory.define :project do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
@@ -409,14 +424,14 @@ Factory.define :mother_study_subject, :parent => :study_subject do |f|
 	f.sex 'F'
 end
 
-Factory.define :subject_race do |f|
-	f.association :study_subject
-	f.association :race
-end
-
 Factory.define :subject_language do |f|
 	f.association :study_subject
 	f.association :language
+end
+
+Factory.define :subject_race do |f|
+	f.association :study_subject
+	f.association :race
 end
 
 Factory.define :subject_relationship do |f|
@@ -452,6 +467,16 @@ Factory.define :vital_status do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
+Factory.define :zip_code do |f|
+	f.sequence(:zip_code){ |n| sprintf("X%04d",n) }
+#	f.latitude random_float()
+#	f.longitude random_float()
+	f.sequence(:city){ |n| sprintf("%05d",n) }
+	f.sequence(:state){ |n| sprintf("%05d",n) }
+#	f.sequence(:county){ |n| sprintf("%05d",n) }
+	f.zip_class "TESTING"
+end
+
 
 #
 #		Intended for communication with SRC,
@@ -464,21 +489,6 @@ Factory.define :export do |f|
 	f.sequence(:patid)   { |n| "patid#{n}" }
 end
 
-
-Factory.define :county do |f|
-	f.sequence(:name){ |n| "Name #{n}" }
-	f.state_abbrev 'XX'
-end
-
-Factory.define :zip_code do |f|
-	f.sequence(:zip_code){ |n| sprintf("X%04d",n) }
-#	f.latitude random_float()
-#	f.longitude random_float()
-	f.sequence(:city){ |n| sprintf("%05d",n) }
-	f.sequence(:state){ |n| sprintf("%05d",n) }
-#	f.sequence(:county){ |n| sprintf("%05d",n) }
-	f.zip_class "TESTING"
-end
 
 
 Factory.define :abstract do |f|

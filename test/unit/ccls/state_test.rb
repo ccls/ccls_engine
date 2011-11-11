@@ -11,6 +11,16 @@ class Ccls::StateTest < ActiveSupport::TestCase
 		:fips_state_code, :fips_country_code, 
 			:maximum => 250 )
 
+	test "explicit Factory state test" do
+		assert_difference('State.count',1) {
+			state = Factory(:state)
+			assert_match /Code\d*/, state.code
+			assert_match /Name\d*/, state.name
+			assert_not_nil state.fips_state_code
+			assert_equal 'US', state.fips_country_code
+		}
+	end
+
 	test "should return an array of state abbreviations" do
 		abbreviations = State.abbreviations
 		assert_not_nil abbreviations

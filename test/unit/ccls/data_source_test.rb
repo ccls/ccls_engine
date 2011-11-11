@@ -18,6 +18,14 @@ class Ccls::DataSourceTest < ActiveSupport::TestCase
 	assert_should_require_unique_attributes( :code )
 	assert_should_require_attribute_length( :code, :description, :maximum => 250 )
 
+	test "explicit Factory data_source test" do
+		assert_difference('DataSource.count',1) {
+			data_source = Factory(:data_source)
+			assert_match /Code\d*/, data_source.code
+			assert_match /Desc\d*/, data_source.description
+		}
+	end
+
 	test "should return description as to_s" do
 		data_source = create_data_source
 		assert_equal data_source.description,

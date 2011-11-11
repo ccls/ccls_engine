@@ -15,4 +15,11 @@ class Ccls::BcRequestTest < ActiveSupport::TestCase
 		statuses.each { |s| assert s.is_a?(String) }
 	end
 
+	test "explicit Factory bc_request test" do
+		assert_difference('BcRequest.count',1) {
+			bc_request = Factory(:bc_request)
+			assert_match /Notes\d*/, bc_request.notes
+		}
+	end
+
 end

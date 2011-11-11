@@ -22,4 +22,12 @@ class Ccls::AnalysisTest < ActiveSupport::TestCase
 	assert_should_belong_to( :project )
 	assert_should_habtm( :study_subjects )
 
+	test "explicit Factory analysis test" do
+		assert_difference('Analysis.count',1) {
+			analysis = Factory(:analysis)
+			assert_match /Code\d*/, analysis.code
+			assert_match /Desc\d*/, analysis.description
+		}
+	end
+
 end

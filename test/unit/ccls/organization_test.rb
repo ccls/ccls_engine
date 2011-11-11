@@ -24,6 +24,14 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 
 	assert_should_require_attribute_length( :code, :name, :in => 4..250 )
 
+	test "explicit Factory organization test" do
+		assert_difference('Organization.count',1) {
+			organization = Factory(:organization)
+			assert_match /Code \d*/, organization.code
+			assert_match /Name \d*/, organization.name
+		}
+	end
+
 	test "new incoming_transfer should have matching organization id" do
 		organization = create_organization
 		transfer = organization.incoming_transfers.build
@@ -53,12 +61,12 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 		assert_equal organization.name, "#{organization}"
 	end
 
-protected
-
-	def create_organization(options={})
-		organization = Factory.build(:organization,options)
-		organization.save
-		organization
-	end
+#protected
+#
+#	def create_organization(options={})
+#		organization = Factory.build(:organization,options)
+#		organization.save
+#		organization
+#	end
 
 end

@@ -10,6 +10,13 @@ class Ccls::SampleOutcomeTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :position, :description )
 	assert_should_require_attribute_length( :code, :description, :maximum => 250 )
 
+	test "explicit Factory sample_outcome test" do
+		assert_difference('SampleOutcome.count',1) {
+			sample_outcome = Factory(:sample_outcome)
+			assert_match /Code\d*/, sample_outcome.code
+		}
+	end
+
 	test "should return description as to_s" do
 		sample_outcome = create_sample_outcome(:description => "Description")
 		assert_equal sample_outcome.description,
@@ -32,12 +39,12 @@ class Ccls::SampleOutcomeTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_sample_outcome(options={})
-		sample_outcome = Factory.build(:sample_outcome,options)
-		sample_outcome.save
-		sample_outcome
-	end
+#protected
+#
+#	def create_sample_outcome(options={})
+#		sample_outcome = Factory.build(:sample_outcome,options)
+#		sample_outcome.save
+#		sample_outcome
+#	end
 
 end

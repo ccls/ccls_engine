@@ -13,6 +13,16 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :city, :state, :zip_class,
 		:maximum => 250 )
 
+	test "explicit Factory zip_code test" do
+		assert_difference('ZipCode.count',1) {
+			zip_code = Factory(:zip_code)
+			assert_match /X\d{4}/, zip_code.zip_code
+			assert_match /\d{5}/,  zip_code.city
+			assert_match /\d{5}/,  zip_code.state
+			assert_equal 'TESTING', zip_code.zip_class
+		}
+	end
+
 	test "should return city, state zip as to_s" do
 		zip_code = create_zip_code
 		assert_equal "#{zip_code.city}, #{zip_code.state} #{zip_code.zip_code}", "#{zip_code}"
@@ -34,12 +44,12 @@ class Ccls::ZipCodeTest < ActiveSupport::TestCase
 		assert zip_code.is_a?(ZipCode)
 	end
 
-protected
-
-	def create_zip_code(options={})
-		zip_code = Factory.build(:zip_code,options)
-		zip_code.save
-		zip_code
-	end
+#protected
+#
+#	def create_zip_code(options={})
+#		zip_code = Factory.build(:zip_code,options)
+#		zip_code.save
+#		zip_code
+#	end
 
 end

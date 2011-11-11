@@ -8,6 +8,14 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 #	not working
 #	assert_should_require_unique_attribute(:study_subject_id)
 
+	test "explicit Factory home_exposure_response test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('HomeExposureResponse.count',1) {
+			home_exposure_response = Factory(:home_exposure_response)
+			assert_not_nil home_exposure_response.study_subject
+		} }
+	end
+
 	test "should require study_subject" do
 		assert_difference( "HomeExposureResponse.count", 0 ) do
 			home_exposure_response = create_home_exposure_response( :study_subject => nil)
@@ -60,12 +68,12 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 
 	assert_should_not_require_attributes( *HomeExposureResponse.field_names )
 
-protected
-
-	def create_home_exposure_response(options={})
-		home_exposure_response = Factory.build(:home_exposure_response,options)
-		home_exposure_response.save
-		home_exposure_response
-	end
+#protected
+#
+#	def create_home_exposure_response(options={})
+#		home_exposure_response = Factory.build(:home_exposure_response,options)
+#		home_exposure_response.save
+#		home_exposure_response
+#	end
 
 end

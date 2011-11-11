@@ -11,6 +11,15 @@ class Ccls::DiagnosisTest < ActiveSupport::TestCase
 	assert_should_act_as_list
 	#	NOTE	code is an integer for diagnosis (so key is used)
 
+	test "explicit Factory diagnosis test" do
+		assert_difference('Diagnosis.count',1) {
+			diagnosis = Factory(:diagnosis)
+			assert_match /key\d*/,  diagnosis.key
+			assert_match /\d*/,     diagnosis.code.to_s
+			assert_match /Desc\d*/, diagnosis.description
+		}
+	end
+
 	test "should return description as to_s" do
 		diagnosis = create_diagnosis
 		assert_equal diagnosis.description, "#{diagnosis}"
@@ -47,12 +56,12 @@ class Ccls::DiagnosisTest < ActiveSupport::TestCase
 		assert !diagnosis.is_other?
 	end
 
-protected
-
-	def create_diagnosis(options={})
-		diagnosis = Factory.build(:diagnosis,options)
-		diagnosis.save
-		diagnosis
-	end
+#protected
+#
+#	def create_diagnosis(options={})
+#		diagnosis = Factory.build(:diagnosis,options)
+#		diagnosis.save
+#		diagnosis
+#	end
 
 end

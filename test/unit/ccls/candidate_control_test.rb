@@ -43,6 +43,18 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 			:maximum => 250 )
 	assert_should_require_attributes_not_nil( :sex )
 
+	test "explicit Factory candidate_control test" do
+		assert_difference('CandidateControl.count',1) {
+			candidate_control = Factory(:candidate_control)
+			assert_equal 'First', candidate_control.first_name
+			assert_equal 'Last',  candidate_control.last_name
+			assert_not_nil candidate_control.dob
+			assert_not_nil candidate_control.reject_candidate
+			assert !candidate_control.reject_candidate
+			assert_not_nil candidate_control.sex
+		}
+	end
+
 	test "should require sex be either M, F or DK" do
 		assert_difference("CandidateControl.count",0) {
 			candidate_control = create_candidate_control(:sex => 'X')

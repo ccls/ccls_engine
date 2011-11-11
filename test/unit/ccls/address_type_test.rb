@@ -11,6 +11,13 @@ class Ccls::AddressTypeTest < ActiveSupport::TestCase
 	assert_should_act_as_list
 	assert_should_have_many(:addresses)
 
+	test "explicit Factory address_type test" do
+		assert_difference('AddressType.count',1) {
+			address_type = Factory(:address_type)
+			assert_match /Code\d*/, address_type.code
+		}
+	end
+
 	test "should return code as to_s" do
 		address_type = Factory(:address_type)
 		assert_equal address_type.code, "#{address_type}"

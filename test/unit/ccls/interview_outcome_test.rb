@@ -11,6 +11,13 @@ class Ccls::InterviewOutcomeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :description, 
 		:maximum => 250 )
 
+	test "explicit Factory interview_outcome test" do
+		assert_difference('InterviewOutcome.count',1) {
+			interview_outcome = Factory(:interview_outcome)
+			assert_match /Code\d*/, interview_outcome.code
+		}
+	end
+
 	test "should return description as to_s" do
 		interview_outcome = create_interview_outcome(:description => "Description")
 		assert_equal interview_outcome.description,
@@ -33,12 +40,12 @@ class Ccls::InterviewOutcomeTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_interview_outcome(options={})
-		interview_outcome = Factory.build(:interview_outcome,options)
-		interview_outcome.save
-		interview_outcome
-	end
+#protected
+#
+#	def create_interview_outcome(options={})
+#		interview_outcome = Factory.build(:interview_outcome,options)
+#		interview_outcome.save
+#		interview_outcome
+#	end
 
 end

@@ -20,6 +20,13 @@ class Ccls::PersonTest < ActiveSupport::TestCase
 		:honorific, 
 			:maximum => 250 )
 
+	test "explicit Factory person test" do
+		assert_difference('Person.count',1) {
+			person = Factory(:person)
+			assert_match /LastName\d*/, person.last_name
+		}
+	end
+
 	test "should return full_name as to_s" do
 		person = create_person
 		assert_equal person.full_name, "#{person}"
@@ -36,12 +43,12 @@ class Ccls::PersonTest < ActiveSupport::TestCase
 		assert_nil person
 	end
 
-protected
-
-	def create_person(options={})
-		person = Factory.build(:person,options)
-		person.save
-		person
-	end
+#protected
+#
+#	def create_person(options={})
+#		person = Factory.build(:person,options)
+#		person.save
+#		person
+#	end
 
 end

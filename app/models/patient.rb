@@ -62,15 +62,30 @@ protected
 	end
 
 	def trigger_setting_was_under_15_at_dx
-		study_subject.update_patient_was_under_15_at_dx
-	end
-
-	def trigger_update_matching_study_subjects_reference_date
-		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from Patient:#{self.attributes['id']}"
+		logger.debug "DEBUG: calling update_patient_was_under_15_at_dx from Patient:#{self.attributes['id']}"
 		logger.debug "DEBUG: Admit date changed from:#{admit_date_was}:to:#{admit_date}"
-		logger.debug "DEBUG: study_subject:#{study_subject.id}"
-#		study_subject.update_matching_study_subjects_reference_date
-		study_subject.update_study_subjects_reference_date_matching
+		if study_subject
+			logger.debug "DEBUG: study_subject:#{study_subject.id}"
+			study_subject.update_patient_was_under_15_at_dx
+		else
+			#	This should never happen, except in testing.
+			logger.warn "WARNING: Patient(#{self.attributes['id']}) is missing study_subject"
+		end
+	end
+#
+#	logger levels are ... debug, info, warn, error, and fatal.
+#
+	def trigger_update_matching_study_subjects_reference_date
+		logger.debug "DEBUG: calling update_study_subjects_reference_date_matching from Patient:#{self.attributes['id']}"
+		logger.debug "DEBUG: Admit date changed from:#{admit_date_was}:to:#{admit_date}"
+		if study_subject
+			logger.debug "DEBUG: study_subject:#{study_subject.id}"
+			# study_subject.update_matching_study_subjects_reference_date
+			study_subject.update_study_subjects_reference_date_matching
+		else
+			#	This should never happen, except in testing.
+			logger.warn "WARNING: Patient(#{self.attributes['id']}) is missing study_subject"
+		end
 	end
 
 	##

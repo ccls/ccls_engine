@@ -28,6 +28,27 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_requires_past_date :diagnosis_date
 	assert_requires_past_date :treatment_began_on
 
+	test "explicit Factory subjectless patient test" do
+		assert_difference('StudySubject.count',0) {
+		assert_difference('Patient.count',1) {
+			patient = Factory(:subjectless_patient)
+			assert_nil patient.study_subject
+			assert_not_nil patient.admit_date
+			assert_not_nil patient.hospital_no
+			assert_not_nil patient.organization_id
+			assert_not_nil patient.diagnosis_id
+		} }
+	end
+
+	test "explicit Factory patient test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Patient.count',1) {
+			patient = Factory(:patient)
+			assert_not_nil patient.study_subject
+			assert_equal patient.study_subject.subject_type, SubjectType['Case']
+		} }
+	end
+
 	test "should default was_ca_resident_at_diagnosis to null" do
 		assert_difference( "Patient.count", 1 ) {
 			patient = create_patient

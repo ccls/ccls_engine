@@ -9,6 +9,15 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :title, :description, :indicator,
 		:maximum => 250 )
 
+	test "explicit Factory document_version test" do
+		assert_difference('DocumentType.count',1) {
+		assert_difference('DocumentVersion.count',1) {
+			document_version = Factory(:document_version)
+			assert_match /Title\d*/,  document_version.title
+			assert_not_nil document_version.document_type
+		} }
+	end
+
 	test "should require document_type" do
 		assert_difference( "DocumentVersion.count", 0 ) do
 			document_version = create_document_version( :document_type => nil)
@@ -43,12 +52,12 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 		assert_equal 1, document_version.reload.enrollments.length
 	end
 
-protected
-
-	def create_document_version(options={})
-		document_version = Factory.build(:document_version,options)
-		document_version.save
-		document_version
-	end
+#protected
+#
+#	def create_document_version(options={})
+#		document_version = Factory.build(:document_version,options)
+#		document_version.save
+#		document_version
+#	end
 
 end

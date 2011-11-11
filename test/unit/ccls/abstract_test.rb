@@ -1,6 +1,18 @@
 require 'test_helper'
 
 class Ccls::AbstractTest < ActiveSupport::TestCase
+	#
+	#	Most, if not all, of these 'class level' assertions are defined in ccls-common_lib.
+	#	They call 'create_object', which, unless explicitly defined, is handled in a
+	#	method_missing handler which extracts the model name from the testing class
+	#	and uses the factory of the same name.  (ie. AbstractTest -> Factory(:abstract) )
+	#	In addition, this same method missing handler is used for handling undefined 
+	#	methods like 'create_abstract'.  The handler takes this method which 
+	#	matches /create_(.*)/ and calls a Factory($1)
+	#	Also note, create_object only works in unit tests as they are generally associated
+	#	with a particular model.  Controllers, on the other hand, do not share this
+	#	privilege as they are not.  The create_MODEL_NAME technique does still work.
+	#	
 	assert_should_belong_to :study_subject
 	assert_should_protect( :study_subject_id, :entry_1_by_uid, 
 		:entry_2_by_uid, :merged_by_uid )
@@ -264,6 +276,24 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		:response_comment,
 			:maximum => 65000 )
 
+	test "explicit Factory abstract test" do
+		assert_difference('Abstract.count',1) {
+			@abstract = Factory(:abstract)
+		}
+		( not_nil = %w( id created_at updated_at cbc_percent_blasts_unknown ) ).each do |c|
+			assert_not_nil @abstract.send(c), "#{c} is nil"
+		end
+		( Abstract.column_names - not_nil ).each do |c|
+			assert_nil @abstract.send(c), "#{c} is not nil"
+		end
+	end
+
+	test "explicit Factory complete_abstract test" do
+		assert_difference('Abstract.count',1) {
+			#	this factory randomly sets values, some of which can be nil
+			abstract = Factory(:complete_abstract)
+		}
+	end
 
 	test "should not convert weight if weight_units is null" do
 		abstract = Factory(:abstract,:weight_at_diagnosis => 100)

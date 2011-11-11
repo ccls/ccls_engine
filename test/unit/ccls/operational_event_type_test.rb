@@ -12,6 +12,15 @@ class Ccls::OperationalEventTypeTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description,    :in => 4..250 )
 	assert_should_require_attribute_length( :event_category, :in => 4..250 )
 
+	test "explicit Factory operational_event_type test" do
+		assert_difference('OperationalEventType.count',1) {
+			operational_event_type = Factory(:operational_event_type)
+			assert_match /Code\d*/, operational_event_type.code
+			assert_match /Desc\d*/, operational_event_type.description
+			assert_match /Cat\d*/,  operational_event_type.event_category
+		}
+	end
+
 	test "should return event_category as to_s" do
 		operational_event_type = create_operational_event_type
 		assert_equal operational_event_type.event_category, "#{operational_event_type}"
@@ -33,12 +42,12 @@ class Ccls::OperationalEventTypeTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_operational_event_type(options={})
-		operational_event_type = Factory.build(:operational_event_type,options)
-		operational_event_type.save
-		operational_event_type
-	end
+#protected
+#
+#	def create_operational_event_type(options={})
+#		operational_event_type = Factory.build(:operational_event_type,options)
+#		operational_event_type.save
+#		operational_event_type
+#	end
 
 end

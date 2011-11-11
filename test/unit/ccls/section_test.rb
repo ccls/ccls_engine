@@ -12,6 +12,14 @@ class Ccls::SectionTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :description,    :in => 4..250 )
 #	assert_should_require_attribute_length( :event_category, :in => 4..250 )
 
+	test "explicit Factory section test" do
+		assert_difference('Section.count',1) {
+			section = Factory(:section)
+			assert_match /Code\d*/, section.code
+			assert_match /Desc\d*/, section.description
+		}
+	end
+
 	test "should return description as to_s" do
 		section = create_section
 		assert_equal section.description, "#{section}"
@@ -35,12 +43,12 @@ class Ccls::SectionTest < ActiveSupport::TestCase
 #		}
 #	end
 
-protected
-
-	def create_section(options={})
-		section = Factory.build(:section,options)
-		section.save
-		section
-	end
+#protected
+#
+#	def create_section(options={})
+#		section = Factory.build(:section,options)
+#		section.save
+#		section
+#	end
 
 end

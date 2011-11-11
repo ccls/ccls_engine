@@ -11,6 +11,33 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :position )	#, :organization_id )
 	assert_should_require_unique_attributes( :organization_id )
 
+	test "explicit Factory hospital test" do
+		assert_difference('Organization.count',1) {
+		assert_difference('Hospital.count',1) {
+			hospital = Factory(:hospital)
+			assert_not_nil hospital.organization
+			assert !hospital.has_irb_waiver	#	database default
+		} }
+	end
+
+	test "explicit Factory nonwaivered hospital test" do
+		assert_difference('Organization.count',1) {
+		assert_difference('Hospital.count',1) {
+			hospital = Factory(:nonwaivered_hospital)
+			assert_not_nil hospital.organization
+			assert !hospital.has_irb_waiver	#	database default
+		} }
+	end
+
+	test "explicit Factory waivered hospital test" do
+		assert_difference('Organization.count',1) {
+		assert_difference('Hospital.count',1) {
+			hospital = Factory(:waivered_hospital)
+			assert_not_nil hospital.organization
+			assert hospital.has_irb_waiver
+		} }
+	end
+
 	test "should require organization" do
 		assert_difference( "Hospital.count", 0 ) do
 			hospital = create_hospital( :organization => nil)
@@ -57,18 +84,18 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 		end
 	end
 
-protected
-
-	def create_hospital(options={})
-		hospital = Factory.build(:hospital,options)
-		hospital.save
-		hospital
-	end
-
-	def create_organization(options={})
-		organization = Factory.build(:organization,options)
-		organization.save
-		organization
-	end
+#protected
+#
+#	def create_hospital(options={})
+#		hospital = Factory.build(:hospital,options)
+#		hospital.save
+#		hospital
+#	end
+#
+#	def create_organization(options={})
+#		organization = Factory.build(:organization,options)
+#		organization.save
+#		organization
+#	end
 
 end

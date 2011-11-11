@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class Ccls::SubjectRelationshipTest < ActiveSupport::TestCase
+
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_require_attributes( :code, :description )
@@ -8,6 +9,14 @@ class Ccls::SubjectRelationshipTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :position )
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 	assert_should_require_attribute_length( :code, :maximum => 250 )
+
+	test "explicit Factory subject_relationship test" do
+		assert_difference('SubjectRelationship.count',1) {
+			subject_relationship = Factory(:subject_relationship)
+			assert_match /Code\d*/, subject_relationship.code
+			assert_match /Desc\d*/, subject_relationship.description
+		}
+	end
 
 	test "should return description as to_s" do
 		subject_relationship = create_subject_relationship
@@ -35,12 +44,12 @@ class Ccls::SubjectRelationshipTest < ActiveSupport::TestCase
 		assert_nil subject_relationship
 	end
 
-protected
-
-	def create_subject_relationship(options={})
-		subject_relationship = Factory.build(:subject_relationship,options)
-		subject_relationship.save
-		subject_relationship
-	end
+#protected
+#
+#	def create_subject_relationship(options={})
+#		subject_relationship = Factory.build(:subject_relationship,options)
+#		subject_relationship.save
+#		subject_relationship
+#	end
 
 end

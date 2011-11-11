@@ -20,6 +20,16 @@ class Ccls::InstrumentVersionTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length( :code, :maximum => 250 )
 	assert_should_require_attribute_length( :description, :in => 4..250 )
 
+	test "explicit Factory instrument_version test" do
+		assert_difference('InstrumentType.count',1) {
+		assert_difference('InstrumentVersion.count',1) {
+			instrument_version = Factory(:instrument_version)
+			assert_not_nil instrument_version.instrument_type
+			assert_match /Code\d*/, instrument_version.code
+			assert_match /Desc\d*/, instrument_version.description
+		} }
+	end
+
 	test "should require instrument_type" do
 		assert_difference( "InstrumentVersion.count", 0 ) do
 			instrument_version = create_instrument_version( :instrument_type => nil)

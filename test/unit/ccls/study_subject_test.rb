@@ -22,6 +22,62 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:reference_date, :mother_yrs_educ, :father_yrs_educ, 
 		:birth_type, :birth_county, :is_duplicate_of )
 
+	test "explicit Factory study_subject test" do
+		assert_difference('VitalStatus.count',1) {
+		assert_difference('SubjectType.count',1) {
+		assert_difference('StudySubject.count',1) {
+			study_subject = Factory(:study_subject)
+			assert_not_nil study_subject.subject_type
+			assert_not_nil study_subject.vital_status
+			assert_not_nil study_subject.sex
+		} } }
+	end
+
+	test "explicit Factory case study_subject test" do
+		assert_difference('StudySubject.count',1) {
+			study_subject = Factory(:case_study_subject)
+			assert_equal study_subject.subject_type, SubjectType['Case']
+		}
+	end
+
+	test "explicit Factory control study_subject test" do
+		assert_difference('StudySubject.count',1) {
+			study_subject = Factory(:control_study_subject)
+			assert_equal study_subject.subject_type, SubjectType['Control']
+		}
+	end
+
+	test "explicit Factory mother study_subject test" do
+		assert_difference('StudySubject.count',1) {
+			study_subject = Factory(:mother_study_subject)
+			assert_equal study_subject.subject_type, SubjectType['Mother']
+			assert_equal study_subject.sex, 'F'
+		}
+	end
+
+	test "explicit Factory complete case study subject test" do
+		assert_difference('Pii.count',1) {
+		assert_difference('Patient.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			s = Factory(:complete_case_study_subject)
+			assert_equal s.subject_type, SubjectType['Case']
+			assert_equal s.identifier.case_control_type, 'C'
+			assert_equal s.identifier.orderno, 0
+			assert_not_nil s.identifier.childid
+			assert_not_nil s.identifier.patid
+			assert_equal s.organization_id, Hospital.first.organization_id
+		} } } }
+	end
+
+#	test "set organization for complete case study subject factory test" do
+#		#	Factory only does a merge, NOT a deep_merge, so this won' work
+#		s = Factory(:complete_case_study_subject,
+#			:patient_attributes => { :organization_id => Hospital.last.organization_id } )
+#		assert Hospital.first != Hospital.last
+#		assert_equal s.organization_id, Hospital.last.organization_id
+#	end
+
 	test "should require subject_type" do
 		assert_difference( "StudySubject.count", 0 ) do
 			study_subject = create_study_subject( :subject_type => nil)
@@ -1602,20 +1658,6 @@ pending #	TODO should return what for rejected controls for non-case
 			OperationalEventType['subjectDied'].id )
 	end
 
-	test "complete case study subject factory test" do
-		assert_difference('Pii.count',1) {
-		assert_difference('Patient.count',1) {
-		assert_difference('Identifier.count',1) {
-		assert_difference('StudySubject.count',1) {
-			s = Factory(:complete_case_study_subject)
-			assert_equal s.subject_type, SubjectType['Case']
-			assert_equal s.identifier.case_control_type, 'C'
-			assert_equal s.identifier.orderno, 0
-			assert_not_nil s.identifier.childid
-			assert_not_nil s.identifier.patid
-		} } } }
-	end
-
 protected
 
 	def assert_no_duplicates_found
@@ -1630,11 +1672,11 @@ protected
 		assert !@duplicates.empty?
 	end
 
-	def create_study_subject(options={})
-		study_subject = Factory.build(:study_subject,options)
-		study_subject.save
-		study_subject
-	end
+#	def create_study_subject(options={})
+#		study_subject = Factory.build(:study_subject,options)
+#		study_subject.save
+#		study_subject
+#	end
 
 	def create_study_subject_with_matchingid(matchingid='12345')
 		study_subject = create_study_subject( 

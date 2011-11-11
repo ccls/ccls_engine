@@ -48,6 +48,39 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	assert_requires_complete_date(:completed_on, :consented_on)
 	assert_requires_past_date(    :completed_on, :consented_on)
 
+	test "explicit Factory enrollment test" do
+		assert_difference('Project.count',1) {
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Enrollment.count',2) {	#	this enrollment AND the subject's ccls enrollment
+			enrollment = Factory(:enrollment)
+			assert !enrollment.consented
+			assert_not_nil enrollment.project
+			assert_not_nil enrollment.study_subject
+		} } }
+	end
+
+	test "explicit Factory subjectless_enrollment test" do
+		assert_difference('Project.count',1) {
+		assert_difference('StudySubject.count',0) {
+		assert_difference('Enrollment.count',1) {
+			enrollment = Factory(:subjectless_enrollment)
+			assert !enrollment.consented
+			assert_not_nil enrollment.project
+			assert_nil     enrollment.study_subject
+		} } }
+	end
+
+	test "explicit Factory consented_enrollment test" do
+		assert_difference('Project.count',1) {
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Enrollment.count',2) {	#	this enrollment AND the subject's ccls enrollment
+			enrollment = Factory(:consented_enrollment)
+			assert enrollment.consented
+			assert_not_nil enrollment.project
+			assert_not_nil enrollment.study_subject
+		} } }
+	end
+
 	test "should require project" do
 		assert_difference( "Enrollment.count", 0 ) do
 			enrollment = create_subjectless_enrollment( :project => nil)
@@ -379,10 +412,10 @@ protected
 #	so if I create a subjectless enrollment, they work
 	alias_method :create_object, :create_subjectless_enrollment
 
-	def create_enrollment(options={})
-		enrollment = Factory.build(:enrollment,options)
-		enrollment.save
-		enrollment
-	end
+#	def create_enrollment(options={})
+#		enrollment = Factory.build(:enrollment,options)
+#		enrollment.save
+#		enrollment
+#	end
 
 end

@@ -27,6 +27,19 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		:valid_from, 
 		:valid_to )
 
+	test "explicit Factory addressing test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Address.count',1) {
+		assert_difference('Addressing.count',1) {
+			addressing = Factory(:addressing)
+			assert_not_nil addressing.address
+			assert_not_nil addressing.study_subject
+			assert_equal 1, addressing.is_valid
+#			assert_equal 2, addressing.is_verified
+			assert         !addressing.is_verified	#	noticed that this is NOT int for YNDK, but boolean
+		} } }
+	end
+
 	test "current_address should default to 1" do
 		addressing = Addressing.new
 		assert_equal 1, addressing.current_address
