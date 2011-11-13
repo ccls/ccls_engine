@@ -17,6 +17,7 @@ def random_sex
 	%w( M F )[rand(2)]
 end
 
+#	Probably not needed as gem doesn't have this model anymore (but apps still do)
 Factory.define :page do |f|
 	f.sequence(:path)    { |n| "/path#{n}" }
 	f.sequence(:menu_en) { |n| "Menu #{n}" }
@@ -404,17 +405,21 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 	#	when the fixtures have been loaded and these will work.
 	#	Only really needed for patient as gets Hospital and Diagnosis.
 	f.subject_type { SubjectType['Case'] }
-	f.pii { Factory.build(:subjectless_pii) }
-	f.patient { Factory.build(:subjectless_patient) }
-	f.identifier { Factory.build(:subjectless_identifier,
-		:case_control_type => 'C' ) }
+#	f.pii { Factory.build(:subjectless_pii) }
+#	f.patient { Factory.build(:subjectless_patient) }
+#	f.identifier { Factory.build(:subjectless_identifier,
+#		:case_control_type => 'C' ) }
 #	Either by building subjectless versions(above) or 
 #		with nested attributes(below). Both seem to work.
 #	The model must be set to accept nested attributes for
 #		those versions to actually work though.
-#	f.pii_attributes Factory.attributes_for(:pii)
-#	f.patient_attributes { Factory.attributes_for(:patient) }
-#	f.identifier_attributes Factory.attributes_for(:case_identifier)
+#	Using the nested attributes makes for easier merging.
+#	Actually, this mucks up sequencing.  Calling this factory twice results in uniqueness validation failures.
+#	If these calls are wrapped in {}, the sequencing is fine.  Its all about when its called
+#		and the {} delay the execution of the Factory.attributes_for
+	f.pii_attributes { Factory.attributes_for(:pii) }	#	as this is attributes_for, doesn't need to be "subjectless_pii"
+	f.patient_attributes { Factory.attributes_for(:patient) }
+	f.identifier_attributes { Factory.attributes_for(:case_identifier) }
 end
 Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
