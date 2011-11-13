@@ -17,6 +17,7 @@ def random_sex
 	%w( M F )[rand(2)]
 end
 
+#	This is no longer used in this gem, but is used in the apps
 Factory.define :page do |f|
 	f.sequence(:path)    { |n| "/path#{n}" }
 	f.sequence(:menu_en) { |n| "Menu #{n}" }
@@ -152,6 +153,7 @@ Factory.define :gift_card do |f|
 	f.sequence(:number){ |n| "#{n}" }
 end
 
+#	This is no longer used in this gem, but is used in the apps
 Factory.define :guide do |f|
 	f.sequence(:controller){ |n| "controller#{n}" }
 	f.sequence(:action)    { |n| "action#{n}" }
