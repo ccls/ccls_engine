@@ -17,7 +17,6 @@ def random_sex
 	%w( M F )[rand(2)]
 end
 
-#	Probably not needed as gem doesn't have this model anymore (but apps still do)
 Factory.define :page do |f|
 	f.sequence(:path)    { |n| "/path#{n}" }
 	f.sequence(:menu_en) { |n| "Menu #{n}" }
@@ -80,9 +79,9 @@ end
 Factory.define :candidate_control do |f|
 	f.first_name "First"
 	f.last_name  "Last"
-	f.dob Date.jd(2440000+rand(15000))
+	f.dob { random_date }	#Date.jd(2440000+rand(15000))
 	f.reject_candidate false
-	f.sex random_sex
+	f.sex { random_sex }
 end
 
 Factory.define :context do |f|
@@ -298,6 +297,8 @@ Factory.define :patient, :parent => :subjectless_patient do |f|
 	#	really don't see the point of a patient w/o a study_subject
 	f.association :study_subject, :factory => :case_study_subject
 end
+#	Factory.define :waivered_patient
+#	Factory.define :nonwaivered_patient
 
 Factory.define :person do |f|
 	#	use sequence so will actually update
@@ -319,7 +320,7 @@ end
 
 Factory.define :subjectless_pii, :class => 'Pii' do |f|
 	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
-	f.dob Date.jd(2440000+rand(15000))
+	f.dob { random_date }	#Date.jd(2440000+rand(15000))
 end
 Factory.define :pii, :parent => :subjectless_pii do |f|
 	f.association :study_subject
@@ -395,7 +396,7 @@ end
 Factory.define :study_subject do |f|
 	f.association :subject_type
 	f.association :vital_status
-	f.sex random_sex
+	f.sex { random_sex }
 end
 Factory.define :case_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
@@ -421,6 +422,8 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 	f.patient_attributes { Factory.attributes_for(:patient) }
 	f.identifier_attributes { Factory.attributes_for(:case_identifier) }
 end
+#	Factory.define :complete_waivered_case_study_subject
+#	Factory.define :complete_nonwaivered_case_study_subject
 Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
 end
@@ -474,8 +477,8 @@ end
 
 Factory.define :zip_code do |f|
 	f.sequence(:zip_code){ |n| sprintf("X%04d",n) }
-#	f.latitude random_float()
-#	f.longitude random_float()
+#	f.latitude { random_float() }
+#	f.longitude { random_float() }
 	f.sequence(:city){ |n| sprintf("%05d",n) }
 	f.sequence(:state){ |n| sprintf("%05d",n) }
 #	f.sequence(:county){ |n| sprintf("%05d",n) }
@@ -501,28 +504,28 @@ Factory.define :abstract do |f|
 end
 Factory.define :complete_abstract, :class => 'Abstract' do |f|
 #	f.sequence(:subject_id){|n| n }
-	f.response_day14or28_flag random_yndk()
-	f.received_bone_marrow_biopsy random_yndk()
-	f.received_h_and_p random_yndk()
-	f.received_other_reports random_yndk()
-	f.received_discharge_summary random_yndk()
-	f.received_chemo_protocol random_yndk()
-	f.received_resp_to_therapy random_yndk()
+	f.response_day14or28_flag { random_yndk() }
+	f.received_bone_marrow_biopsy { random_yndk() }
+	f.received_h_and_p { random_yndk() }
+	f.received_other_reports { random_yndk() }
+	f.received_discharge_summary { random_yndk() }
+	f.received_chemo_protocol { random_yndk() }
+	f.received_resp_to_therapy { random_yndk() }
 	f.sequence(:received_specify_other_reports){|n| "#{n}"}
-	f.received_bone_marrow_aspirate random_yndk()
-	f.received_flow_cytometry random_yndk()
-	f.received_ploidy random_yndk()
-	f.received_hla_typing random_yndk()
-	f.received_cytogenetics random_yndk()
-	f.received_cbc random_yndk()
-	f.received_csf random_yndk()
-	f.received_chest_xray random_yndk()
-	f.response_report_found_day_14 random_yndk()
-	f.response_report_found_day_28 random_yndk()
-	f.response_report_found_day_7 random_yndk()
-	f.response_report_on_day_14 random_date()
-	f.response_report_on_day_28 random_date()
-	f.response_report_on_day_7  random_date()
+	f.received_bone_marrow_aspirate { random_yndk() }
+	f.received_flow_cytometry { random_yndk() }
+	f.received_ploidy { random_yndk() }
+	f.received_hla_typing { random_yndk() }
+	f.received_cytogenetics { random_yndk() }
+	f.received_cbc { random_yndk() }
+	f.received_csf { random_yndk() }
+	f.received_chest_xray { random_yndk() }
+	f.response_report_found_day_14 { random_yndk() }
+	f.response_report_found_day_28 { random_yndk() }
+	f.response_report_found_day_7 { random_yndk() }
+	f.response_report_on_day_14 { random_date() }
+	f.response_report_on_day_28 { random_date() }
+	f.response_report_on_day_7  { random_date() }
 	f.sequence(:response_classification_day_14){|n| "#{n}"}
 	f.sequence(:response_classification_day_28){|n| "#{n}"}
 	f.sequence(:response_classification_day_7){|n| "#{n}"}
@@ -533,26 +536,26 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:response_blasts_units_day_28){|n| "#{n}"}
 	f.sequence(:response_blasts_units_day_7){|n| "#{n}"}
 	f.sequence(:response_in_remission_day_14){|n| n }
-	f.marrow_biopsy_report_found random_yndk()
-	f.marrow_biopsy_on random_date()
+	f.marrow_biopsy_report_found { random_yndk() }
+	f.marrow_biopsy_on { random_date() }
 	f.sequence(:marrow_biopsy_diagnosis){|n| "#{n}"}
-	f.marrow_aspirate_report_found random_yndk()
-	f.marrow_aspirate_taken_on random_date()
+	f.marrow_aspirate_report_found { random_yndk() }
+	f.marrow_aspirate_taken_on { random_date() }
 	f.sequence(:marrow_aspirate_diagnosis){|n| "#{n}"}
 	f.sequence(:response_marrow_kappa_day_14){|n| n }
 	f.sequence(:response_marrow_kappa_day_7){|n| n }
 	f.sequence(:response_marrow_lambda_day_14){|n| n }
 	f.sequence(:response_marrow_lambda_day_7){|n| n }
-	f.cbc_report_found random_yndk()
-	f.cbc_report_on random_date()
-	f.cbc_white_blood_count rand*1000
+	f.cbc_report_found { random_yndk() }
+	f.cbc_report_on { random_date() }
+	f.cbc_white_blood_count { rand*1000 }
 	f.sequence(:cbc_percent_blasts){|n| n }
-	f.cbc_percent_blasts_unknown random_true_or_false()
+	f.cbc_percent_blasts_unknown { random_true_or_false() }
 	f.sequence(:cbc_number_blasts){|n| n }
-	f.cbc_hemoglobin_level rand*1000
+	f.cbc_hemoglobin_level { rand*1000 }
 	f.sequence(:cbc_platelet_count){|n| n }
-	f.cerebrospinal_fluid_report_found random_yndk()
-	f.csf_report_on random_date()
+	f.cerebrospinal_fluid_report_found { random_yndk() }
+	f.csf_report_on { random_date() }
 	f.sequence(:csf_white_blood_count){|n| n }
 	f.sequence(:csf_white_blood_count_text){|n| "#{n}"}
 	f.sequence(:csf_red_blood_count){|n| n }
@@ -561,8 +564,8 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:number_of_blasts){|n| n }
 	f.sequence(:peripheral_blood_in_csf){|n| "#{n}"}
 	f.sequence(:csf_comment){|n| "#{n}"}
-	f.chemo_protocol_report_found random_yndk()
-	f.patient_on_chemo_protocol random_yndk()
+	f.chemo_protocol_report_found { random_yndk() }
+	f.patient_on_chemo_protocol { random_yndk() }
 	f.sequence(:chemo_protocol_name){|n| "#{n}"}
 	f.sequence(:chemo_protocol_agent_description){|n| "#{n}"}
 	f.sequence(:response_cd10_day_14){|n| "#{n}"}
@@ -593,23 +596,23 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:response_cd61_day_14){|n| "#{n}"}
 	f.sequence(:response_cd7a_day_14){|n| "#{n}"}
 	f.sequence(:response_cd8a_day_14){|n| "#{n}"}
-	f.response_day30_is_in_remission random_yndk()
-	f.chest_imaging_report_found	random_yndk()
-	f.chest_imaging_report_on random_date()
-	f.mediastinal_mass_present random_yndk()
+	f.response_day30_is_in_remission { random_yndk() }
+	f.chest_imaging_report_found	{ random_yndk() }
+	f.chest_imaging_report_on { random_date() }
+	f.mediastinal_mass_present { random_yndk() }
 	f.sequence(:chest_imaging_comment){|n| "#{n}"}
-	f.received_chest_ct random_yndk()
-	f.chest_ct_taken_on random_date()
-	f.chest_ct_medmass_present random_yndk()
+	f.received_chest_ct { random_yndk() }
+	f.chest_ct_taken_on { random_date() }
+	f.chest_ct_medmass_present { random_yndk() }
 #	f.sequence(:user_id){|n| n }
-	f.cytogen_trisomy10 random_yndk()
-	f.cytogen_trisomy17 random_yndk()
-	f.cytogen_trisomy21 random_yndk()
-	f.is_down_syndrome_phenotype random_yndk()
-	f.cytogen_trisomy4 random_yndk()
-	f.cytogen_trisomy5 random_yndk()
-	f.cytogen_report_found random_yndk()
-	f.cytogen_report_on random_date()
+	f.cytogen_trisomy10 { random_yndk() }
+	f.cytogen_trisomy17 { random_yndk() }
+	f.cytogen_trisomy21 { random_yndk() }
+	f.is_down_syndrome_phenotype { random_yndk() }
+	f.cytogen_trisomy4 { random_yndk() }
+	f.cytogen_trisomy5 { random_yndk() }
+	f.cytogen_report_found { random_yndk() }
+	f.cytogen_report_on { random_date() }
 	f.sequence(:conventional_karyotype_results){|n| "#{n}"}
 	f.sequence(:normal_cytogen){|n| "#{n}"}
 	f.sequence(:is_cytogen_hosp_fish_t1221_done){|n| "#{n}"}
@@ -617,23 +620,23 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:number_normal_metaphase_karyotype){|n| n }
 	f.sequence(:number_metaphase_tested_karyotype){|n| n }
 	f.sequence(:cytogen_comment){|n| "#{n}"}
-	f.is_verification_complete [true,false][rand(2)]
+	f.is_verification_complete { random_true_or_false }	#[true,false][rand(2)]
 	f.sequence(:discharge_summary){|n| "#{n}"}
-	f.diagnosis_is_b_all random_yndk()
-	f.diagnosis_is_t_all random_yndk()
-	f.diagnosis_is_all random_yndk()
+	f.diagnosis_is_b_all { random_yndk() }
+	f.diagnosis_is_t_all { random_yndk() }
+	f.diagnosis_is_all { random_yndk() }
 	f.sequence(:diagnosis_all_type_id){|n| n}
-	f.diagnosis_is_cml random_yndk()
-	f.diagnosis_is_cll random_yndk()
-	f.diagnosis_is_aml random_yndk()
+	f.diagnosis_is_cml { random_yndk() }
+	f.diagnosis_is_cll { random_yndk() }
+	f.diagnosis_is_aml { random_yndk() }
 	f.sequence(:diagnosis_aml_type_id){|n| n}
-	f.diagnosis_is_other random_yndk()
-	f.flow_cyto_report_found random_yndk()
+	f.diagnosis_is_other { random_yndk() }
+	f.flow_cyto_report_found { random_yndk() }
 	f.sequence(:received_flow_cyto_day_14){|n| n }
 	f.sequence(:received_flow_cyto_day_7){|n| n }
-	f.flow_cyto_report_on random_date()
-	f.response_flow_cyto_day_14_on random_date()
-	f.response_flow_cyto_day_7_on random_date()
+	f.flow_cyto_report_on { random_date() }
+	f.response_flow_cyto_day_14_on { random_date() }
+	f.response_flow_cyto_day_7_on { random_date() }
 	f.sequence(:flow_cyto_cd10){|n| "#{n}"}
 	f.sequence(:flow_cyto_igm){|n| "#{n}"}
 	f.sequence(:flow_cyto_igm_text){|n| "#{n}"}
@@ -736,38 +739,38 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:flow_cyto_other_marker_5){|n| "#{n}"}
 	f.sequence(:flow_cyto_other_marker_5_text){|n| "#{n}"}
 	f.sequence(:flow_cyto_remarks){|n| "#{n}"}
-	f.tdt_often_found_flow_cytometry random_yndk()
-	f.tdt_report_found random_yndk()
-	f.tdt_report_on random_date()
-	f.tdt_positive_or_negative random_pos_neg()
+	f.tdt_often_found_flow_cytometry { random_yndk() }
+	f.tdt_report_found { random_yndk() }
+	f.tdt_report_on { random_date() }
+	f.tdt_positive_or_negative { random_pos_neg() }
 	f.sequence(:tdt_numerical_result){|n| n }
-	f.tdt_found_in_flow_cyto_chart [true,false][rand(2)]
-	f.tdt_found_in_separate_report [true,false][rand(2)]
+	f.tdt_found_in_flow_cyto_chart { random_true_or_false }	#[true,false][rand(2)]
+	f.tdt_found_in_separate_report { random_true_or_false }	#[true,false][rand(2)]
 	f.sequence(:response_comment_day_7){|n| "#{n}"}
 	f.sequence(:response_comment_day_14){|n| "#{n}"}
-	f.cytogen_karyotype_done random_yndk()
-	f.cytogen_hospital_fish_done random_yndk()
+	f.cytogen_karyotype_done { random_yndk() }
+	f.cytogen_hospital_fish_done { random_yndk() }
 	f.sequence(:hospital_fish_results){|n| "#{n}"}
-	f.cytogen_ucb_fish_done random_yndk()
+	f.cytogen_ucb_fish_done { random_yndk() }
 	f.sequence(:ucb_fish_results){|n| "#{n}"}
 	f.sequence(:response_hladr_day_14){|n| "#{n}"}
 	f.sequence(:response_hladr_day_7){|n| "#{n}"}
-	f.histo_report_found random_yndk()
-	f.histo_report_on random_date()
+	f.histo_report_found { random_yndk() }
+	f.histo_report_on { random_date() }
 	f.sequence(:histo_report_results){|n| "#{n}"}
-	f.diagnosed_on random_date()
-	f.treatment_began_on random_date()
-	f.response_is_inconclusive_day_14 random_yndk()
-	f.response_is_inconclusive_day_21 random_yndk()
-	f.response_is_inconclusive_day_28 random_yndk()
-	f.response_is_inconclusive_day_7 random_yndk()
+	f.diagnosed_on { random_date() }
+	f.treatment_began_on { random_date() }
+	f.response_is_inconclusive_day_14 { random_yndk() }
+	f.response_is_inconclusive_day_21 { random_yndk() }
+	f.response_is_inconclusive_day_28 { random_yndk() }
+	f.response_is_inconclusive_day_7 { random_yndk() }
 	f.sequence(:abstractor_id){|n| n }
-	f.abstracted_on random_date()
+	f.abstracted_on { random_date() }
 	f.sequence(:reviewer_id){|n| n }
-	f.reviewed_on random_date()
-	f.data_entry_done_on random_date()
+	f.reviewed_on { random_date() }
+	f.data_entry_done_on { random_date() }
 #	f.sequence(:abstract_version_number){|n| n }
-	f.flow_cyto_num_results_available random_yndk()
+	f.flow_cyto_num_results_available { random_yndk() }
 	f.sequence(:response_other1_value_day_14){|n| "#{n}"}
 	f.sequence(:response_other1_value_day_7){|n| "#{n}"}
 	f.sequence(:response_other2_value_day_14){|n| "#{n}"}
@@ -775,22 +778,22 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:response_other3_value_day_14){|n| "#{n}"}
 	f.sequence(:response_other4_value_day_14){|n| "#{n}"}
 	f.sequence(:response_other5_value_day_14){|n| "#{n}"}
-	f.h_and_p_reports_found random_yndk()
-	f.is_h_and_p_report_found [true,false][rand(2)]
-	f.h_and_p_reports_on random_date()
+	f.h_and_p_reports_found { random_yndk() }
+	f.is_h_and_p_report_found { random_true_or_false }	#[true,false][rand(2)]
+	f.h_and_p_reports_on { random_date() }
 	f.sequence(:physical_neuro){|n| "#{n}"}
 	f.sequence(:physical_other_soft_2){|n| "#{n}"}
 	f.sequence(:vital_status_id){|n| n }
-	f.dod  random_date()
-	f.discharge_summary_found random_yndk()
+	f.dod  { random_date() }
+	f.discharge_summary_found { random_yndk() }
 	f.sequence(:physical_gingival){|n| "#{n}"}
 	f.sequence(:physical_leukemic_skin){|n| "#{n}"}
 	f.sequence(:physical_lymph){|n| "#{n}"}
 	f.sequence(:physical_spleen){|n| "#{n}"}
 	f.sequence(:physical_testicle){|n| "#{n}"}
 	f.sequence(:physical_other_soft){|n| "#{n}"}
-	f.ploidy_report_found random_yndk()
-	f.ploidy_report_on random_date()
+	f.ploidy_report_found { random_yndk() }
+	f.ploidy_report_on { random_date() }
 	f.sequence(:is_hypodiploid){|n| "#{n}"}
 	f.sequence(:is_hyperdiploid){|n| "#{n}"}
 	f.sequence(:is_diploid){|n| "#{n}"}
@@ -833,6 +836,6 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:response_tdt_day_7){|n| "#{n}"}
 #	f.sequence(:abstract_version_description){|n| "#{n}"}
 	f.sequence(:abstract_version_id){|n| n }
-	f.height_at_diagnosis random_float()
-	f.weight_at_diagnosis random_float()
+	f.height_at_diagnosis { random_float() }
+	f.weight_at_diagnosis { random_float() }
 end
