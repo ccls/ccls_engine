@@ -1376,6 +1376,19 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_no_duplicates_found
 	end
 
+	test "create_case_study_subject_for_duplicate_search test" do
+		subject = create_case_study_subject_for_duplicate_search
+		assert_equal subject.sex, 'M'
+		assert_equal subject.subject_type, SubjectType['Case']
+		assert_nil subject.identifier
+		assert_not_nil subject.pii
+		assert_not_nil subject.dob
+		assert_not_nil subject.patient
+		assert_not_nil subject.admit_date
+		assert_equal 'matchthis', subject.hospital_no
+		assert_nil subject.mother_maiden_name
+	end
+
 	test "should return no subjects as duplicates with no params" do
 		create_case_study_subject_for_duplicate_search
 		@duplicates = StudySubject.duplicates
@@ -1388,13 +1401,52 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_no_duplicates_found
 	end
 
-	test "should return subject as duplicate if has matching dob and sex" do
+#	All subjects:  Have the same birth date (piis.dob) and sex (subject.sex) as the new subject and 
+#			(same mother’s maiden name or existing mother’s maiden name is null)
+
+	test "should return subject as duplicate if has matching dob and sex and blank mother_maiden_names" do
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:sex => 'M',
 			:pii_attributes => { :dob => study_subject.dob } )
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
+	end
+
+	test "should return subject as duplicate if has matching dob and sex and mother_maiden_name" do
+		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => 'M',
+			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+		@duplicates = new_study_subject.duplicates
+		assert_duplicates_found
+	end
+
+	test "should return subject as duplicate if has matching dob and sex and existing mother_maiden_name is nil" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => 'M',
+			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+		@duplicates = new_study_subject.duplicates
+		assert_duplicates_found
+	end
+
+	test "should return subject as duplicate if has matching dob and sex and existing mother_maiden_name is blank" do
+		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => '' })
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => 'M',
+			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+		@duplicates = new_study_subject.duplicates
+		assert_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate if has matching dob and sex and differing mother_maiden_name" do
+		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => 'M',
+			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Jones' } )
+		@duplicates = new_study_subject.duplicates
+		assert_no_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching dob" do
@@ -1429,6 +1481,9 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_no_duplicates_found
 	end
 
+#	Case subjects: Have the same hospital_no (patient.hospital_no) as the new subject
+#	Only cases have a patient record, so not explicit check for Case is done.
+
 	test "should return subject as duplicate if has matching hospital_no" do
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
@@ -1436,6 +1491,9 @@ pending #	TODO should return what for rejected controls for non-case
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
+
+#	Case subjects:  Are admitted the same admit date (patients.admit_date) at the same institution (patients.organization_id)
+#	Only cases have a patient record, so not explicit check for Case is done.
 
 	test "should return subject as duplicate if has matching admit_date and organization" do
 		study_subject = create_case_study_subject_for_duplicate_search

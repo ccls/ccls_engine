@@ -482,6 +482,7 @@ class StudySubject < Shared
 	#	Basically this is just a custom search expecting only the 
 	#	following possible params for search / comparison ...
 	#
+	#		mother_maiden_name
 	#		hospital_no
 	#		dob
 	#		sex
@@ -501,12 +502,14 @@ class StudySubject < Shared
 			conditions[1][:hospital_no] = params[:hospital_no]
 		end
 		if params.has_key?(:dob) and !params[:dob].blank? and
-				params.has_key?(:sex) and !params[:sex].blank?
-#	•	All subjects:  Have the same birth date (piis.dob) and sex (subject.sex) as the new subject and (same mother’s maiden name or existing mother’s maiden name is null), or
-#	TODO need to add the mother's maiden name to comparison
-			conditions[0] << '(dob = :dob AND sex = :sex)'
+				params.has_key?(:sex) and !params[:sex].blank? and
+				params.has_key?(:mother_maiden_name) #and !params[:mother_maiden_name].blank?
+#				params.has_key?(:mother_maiden_name) and !params[:mother_maiden_name].blank?
+#	Have the same birth date (piis.dob) and sex (subject.sex) as the new subject and (same mother’s maiden name or existing mother’s maiden name is null), or
+			conditions[0] << '(dob = :dob AND sex = :sex AND ( mother_maiden_name IS NULL OR mother_maiden_name = :mother_maiden_name ))'
 			conditions[1][:dob] = params[:dob]
 			conditions[1][:sex] = params[:sex]
+			conditions[1][:mother_maiden_name] = params[:mother_maiden_name].to_s		#	to_s as may be null
 		end
 		if params.has_key?(:admit_date) and !params[:admit_date].blank? and
 				params.has_key?(:organization_id) and !params[:organization_id].blank?
@@ -514,10 +517,6 @@ class StudySubject < Shared
 			conditions[1][:admit] = params[:admit_date]
 			conditions[1][:org] = params[:organization_id]
 		end
-		#	NOTE dates may be a problem? maybe not? seem to work
-#puts
-#puts [ conditions[0].join(' OR '),*(conditions[1].flatten) ].inspect
-#	["(identifiers.hospital_no = ?) OR (piis.dob = ? AND sex = ?) OR (patients.admit_date = ? AND patients.organization_id = ?)", "matchthis", Fri, 14 May 1976, "M", Mon, 24 Oct 2011, 1]
 		unless conditions[0].blank?
 			find(:all,
 				#	have to do a LEFT JOIN, not the default INNER JOIN, here
@@ -538,6 +537,7 @@ class StudySubject < Shared
 
 	def duplicates
 		StudySubject.duplicates(
+			:mother_maiden_name => self.mother_maiden_name,
 			:hospital_no => self.hospital_no,
 			:dob => self.dob,
 			:sex => self.sex,
