@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.9.22"
+  s.version = "3.9.23"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-11-01}
+  s.date = %q{2011-11-14}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
     "app/models/candidate_control.rb",
     "app/models/childid.rb",
     "app/models/context.rb",
+    "app/models/context_data_source.rb",
     "app/models/county.rb",
     "app/models/data_source.rb",
     "app/models/diagnosis.rb",
@@ -144,11 +145,13 @@ Gem::Specification.new do |s|
     "generators/ccls_engine/templates/functional/stylesheets_controller_test.rb",
     "generators/ccls_engine/templates/functional/user_invitations_controller_test.rb",
     "generators/ccls_engine/templates/functional/users_controller_test.rb",
+    "generators/ccls_engine/templates/images/sort_down.png",
+    "generators/ccls_engine/templates/images/sort_up.png",
     "generators/ccls_engine/templates/initializer.rb",
+    "generators/ccls_engine/templates/javascripts/ccls_engine.js",
     "generators/ccls_engine/templates/javascripts/jquery-ui.js",
     "generators/ccls_engine/templates/javascripts/jquery.js",
     "generators/ccls_engine/templates/javascripts/jrails.js",
-    "generators/ccls_engine/templates/javascripts/ucb_ccls_engine.js",
     "generators/ccls_engine/templates/migrations/create_user_invitations.rb",
     "generators/ccls_engine/templates/migrations/create_users.rb",
     "generators/ccls_engine/templates/migrations/drop_user_invitations.rb",
@@ -193,7 +196,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{one-line summary of your gem}
-  s.test_files = ["test/config/routes.rb", "test/functional/ccls/calendars_controller_test.rb", "test/functional/ccls/ineligible_reasons_controller_test.rb", "test/functional/ccls/javascripts_controller_test.rb", "test/functional/ccls/languages_controller_test.rb", "test/functional/ccls/people_controller_test.rb", "test/functional/ccls/races_controller_test.rb", "test/functional/ccls/refusal_reasons_controller_test.rb", "test/functional/ccls/roles_controller_test.rb", "test/functional/ccls/sessions_controller_test.rb", "test/functional/ccls/stylesheets_controller_test.rb", "test/functional/ccls/users_controller_test.rb", "test/functional/ccls/zip_codes_controller_test.rb", "test/helpers/authlogic_test_helper.rb", "test/unit/ccls/abstract_search_test.rb", "test/unit/ccls/abstract_test.rb", "test/unit/ccls/address_test.rb", "test/unit/ccls/address_type_test.rb", "test/unit/ccls/addressing_test.rb", "test/unit/ccls/aliquot_sample_format_test.rb", "test/unit/ccls/aliquot_test.rb", "test/unit/ccls/analysis_test.rb", "test/unit/ccls/bc_request_test.rb", "test/unit/ccls/candidate_control_test.rb", "test/unit/ccls/childid_test.rb", "test/unit/ccls/context_test.rb", "test/unit/ccls/core_extension_test.rb", "test/unit/ccls/county_test.rb", "test/unit/ccls/data_source_test.rb", "test/unit/ccls/diagnosis_test.rb", "test/unit/ccls/document_type_test.rb", "test/unit/ccls/document_version_test.rb", "test/unit/ccls/enrollment_test.rb", "test/unit/ccls/follow_up_test.rb", "test/unit/ccls/follow_up_type_test.rb", "test/unit/ccls/gift_card_search_test.rb", "test/unit/ccls/gift_card_test.rb", "test/unit/ccls/helpers/ccls_engine_helper_test.rb", "test/unit/ccls/home_exposure_response_test.rb", "test/unit/ccls/homex_outcome_test.rb", "test/unit/ccls/hospital_test.rb", "test/unit/ccls/icf_master_id_test.rb", "test/unit/ccls/identifier_test.rb", "test/unit/ccls/ineligible_reason_test.rb", "test/unit/ccls/instrument_test.rb", "test/unit/ccls/instrument_type_test.rb", "test/unit/ccls/instrument_version_test.rb", "test/unit/ccls/interview_method_test.rb", "test/unit/ccls/interview_outcome_test.rb", "test/unit/ccls/interview_test.rb", "test/unit/ccls/language_test.rb", "test/unit/ccls/operational_event_test.rb", "test/unit/ccls/operational_event_type_test.rb", "test/unit/ccls/organization_test.rb", "test/unit/ccls/package_test.rb", "test/unit/ccls/patid_test.rb", "test/unit/ccls/patient_test.rb", "test/unit/ccls/person_test.rb", "test/unit/ccls/phone_number_test.rb", "test/unit/ccls/phone_type_test.rb", "test/unit/ccls/pii_test.rb", "test/unit/ccls/project_outcome_test.rb", "test/unit/ccls/project_test.rb", "test/unit/ccls/race_test.rb", "test/unit/ccls/refusal_reason_test.rb", "test/unit/ccls/role_test.rb", "test/unit/ccls/sample_kit_test.rb", "test/unit/ccls/sample_outcome_test.rb", "test/unit/ccls/sample_test.rb", "test/unit/ccls/sample_type_test.rb", "test/unit/ccls/section_test.rb", "test/unit/ccls/state_test.rb", "test/unit/ccls/study_subject_search_test.rb", "test/unit/ccls/study_subject_test.rb", "test/unit/ccls/subject_language_test.rb", "test/unit/ccls/subject_race_test.rb", "test/unit/ccls/subject_relationship_test.rb", "test/unit/ccls/subject_type_test.rb", "test/unit/ccls/transfer_test.rb", "test/unit/ccls/unit_test.rb", "test/unit/ccls/user_test.rb", "test/unit/ccls/vital_status_test.rb", "test/unit/ccls/zip_code_test.rb"]
+  s.test_files = ["test/config/routes.rb", "test/functional/ccls/calendars_controller_test.rb", "test/functional/ccls/ineligible_reasons_controller_test.rb", "test/functional/ccls/javascripts_controller_test.rb", "test/functional/ccls/languages_controller_test.rb", "test/functional/ccls/people_controller_test.rb", "test/functional/ccls/races_controller_test.rb", "test/functional/ccls/refusal_reasons_controller_test.rb", "test/functional/ccls/roles_controller_test.rb", "test/functional/ccls/sessions_controller_test.rb", "test/functional/ccls/stylesheets_controller_test.rb", "test/functional/ccls/users_controller_test.rb", "test/functional/ccls/zip_codes_controller_test.rb", "test/helpers/authlogic_test_helper.rb", "test/unit/ccls/abstract_search_test.rb", "test/unit/ccls/abstract_test.rb", "test/unit/ccls/address_test.rb", "test/unit/ccls/address_type_test.rb", "test/unit/ccls/addressing_test.rb", "test/unit/ccls/aliquot_sample_format_test.rb", "test/unit/ccls/aliquot_test.rb", "test/unit/ccls/analysis_test.rb", "test/unit/ccls/bc_request_test.rb", "test/unit/ccls/candidate_control_test.rb", "test/unit/ccls/childid_test.rb", "test/unit/ccls/context_data_source_test.rb", "test/unit/ccls/context_test.rb", "test/unit/ccls/core_extension_test.rb", "test/unit/ccls/county_test.rb", "test/unit/ccls/data_source_test.rb", "test/unit/ccls/diagnosis_test.rb", "test/unit/ccls/document_type_test.rb", "test/unit/ccls/document_version_test.rb", "test/unit/ccls/enrollment_test.rb", "test/unit/ccls/follow_up_test.rb", "test/unit/ccls/follow_up_type_test.rb", "test/unit/ccls/gift_card_search_test.rb", "test/unit/ccls/gift_card_test.rb", "test/unit/ccls/helpers/ccls_engine_helper_test.rb", "test/unit/ccls/home_exposure_response_test.rb", "test/unit/ccls/homex_outcome_test.rb", "test/unit/ccls/hospital_test.rb", "test/unit/ccls/icf_master_id_test.rb", "test/unit/ccls/identifier_test.rb", "test/unit/ccls/ineligible_reason_test.rb", "test/unit/ccls/instrument_test.rb", "test/unit/ccls/instrument_type_test.rb", "test/unit/ccls/instrument_version_test.rb", "test/unit/ccls/interview_method_test.rb", "test/unit/ccls/interview_outcome_test.rb", "test/unit/ccls/interview_test.rb", "test/unit/ccls/language_test.rb", "test/unit/ccls/operational_event_test.rb", "test/unit/ccls/operational_event_type_test.rb", "test/unit/ccls/organization_test.rb", "test/unit/ccls/package_test.rb", "test/unit/ccls/patid_test.rb", "test/unit/ccls/patient_test.rb", "test/unit/ccls/person_test.rb", "test/unit/ccls/phone_number_test.rb", "test/unit/ccls/phone_type_test.rb", "test/unit/ccls/pii_test.rb", "test/unit/ccls/project_outcome_test.rb", "test/unit/ccls/project_test.rb", "test/unit/ccls/race_test.rb", "test/unit/ccls/refusal_reason_test.rb", "test/unit/ccls/role_test.rb", "test/unit/ccls/sample_kit_test.rb", "test/unit/ccls/sample_outcome_test.rb", "test/unit/ccls/sample_test.rb", "test/unit/ccls/sample_type_test.rb", "test/unit/ccls/section_test.rb", "test/unit/ccls/state_test.rb", "test/unit/ccls/study_subject_search_test.rb", "test/unit/ccls/study_subject_test.rb", "test/unit/ccls/subject_language_test.rb", "test/unit/ccls/subject_race_test.rb", "test/unit/ccls/subject_relationship_test.rb", "test/unit/ccls/subject_type_test.rb", "test/unit/ccls/transfer_test.rb", "test/unit/ccls/unit_test.rb", "test/unit/ccls/user_test.rb", "test/unit/ccls/vital_status_test.rb", "test/unit/ccls/zip_code_test.rb"]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
