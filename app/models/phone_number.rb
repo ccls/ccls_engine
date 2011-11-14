@@ -6,6 +6,7 @@ class PhoneNumber < Shared
 	acts_as_list :scope => :study_subject_id
 	belongs_to :study_subject
 	belongs_to :phone_type
+	belongs_to :data_source
 
 	validates_presence_of :phone_number
 	validates_presence_of :phone_type
@@ -20,6 +21,9 @@ class PhoneNumber < Shared
 		:if => :is_not_valid?
 	validates_presence_of :how_verified,
 		:if => :is_verified?
+
+	validates_presence_of :data_source_other,
+		:if => :data_source_is_other?
 
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :why_invalid
@@ -53,6 +57,10 @@ class PhoneNumber < Shared
 	end
 
 protected
+
+	def data_source_is_other?
+		data_source.try(:is_other?)
+	end
 
 	#	Set verified time and user if given
 	def set_verifier

@@ -7,7 +7,7 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	assert_should_act_as_list( :scope => :study_subject_id )
 
 	assert_should_initially_belong_to( :study_subject, :phone_type )
-	assert_should_require_attribute(:phone_number )	#, :phone_type_id )
+	assert_should_require_attribute(:phone_number )
 	assert_should_not_require_attributes( :position, :study_subject_id,
 #		:data_source_id, :is_primary, :is_valid,
 		:is_primary, :is_valid,
@@ -27,6 +27,22 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 			assert_equal 1, phone_number.is_valid
 			assert         !phone_number.is_verified
 		} } }
+	end
+
+	test "should require data_source_other if data_source is other" do
+pending	#	TODO
+		assert_difference( "PhoneNumber.count", 0 ) do
+			phone_number = create_phone_number( :data_source => DataSource['Other'])
+			assert phone_number.errors.on_attr_and_type(:data_source_other,:blank)
+		end
+	end
+
+	test "should NOT require data_source_other if data_source is not other" do
+pending	#	TODO
+		assert_difference( "PhoneNumber.count", 1 ) do
+			phone_number = create_phone_number( :data_source => DataSource['raf'])
+			assert !phone_number.errors.on_attr_and_type(:data_source_other,:blank)
+		end
 	end
 
 	test "should require phone_type" do

@@ -42,6 +42,11 @@ class Ccls::DataSourceTest < ActiveSupport::TestCase
 		assert data_source.is_a?(DataSource)
 	end
 
+	test "should return true for is_other if is other" do
+		data_source = DataSource['Other']
+		assert data_source.is_other?
+	end
+
 #	test "should raise error if not found by code with []" do
 #		assert_raise(DataSource::NotFound) {
 #			data_source = DataSource['idonotexist']

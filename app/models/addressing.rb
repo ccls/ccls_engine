@@ -5,6 +5,7 @@ class Addressing < Shared
 #
 	belongs_to :study_subject
 	belongs_to :address
+	belongs_to :data_source
 
 	with_options :maximum => 250, :allow_blank => true do |o|
 		o.validates_length_of :why_invalid
@@ -25,6 +26,9 @@ class Addressing < Shared
 
 	validates_complete_date_for :valid_from, :valid_to,
 		:allow_nil => true
+
+	validates_presence_of :data_source_other,
+		:if => :data_source_is_other?
 
 	named_scope :current, :conditions => [
 		'current_address IS NOT NULL AND current_address != 2'
@@ -52,6 +56,10 @@ class Addressing < Shared
 	end
 
 protected
+
+	def data_source_is_other?
+		data_source.try(:is_other?)
+	end
 
 	#	Set verified time and user if given
 	def set_verifier

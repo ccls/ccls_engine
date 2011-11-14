@@ -48,6 +48,11 @@ class Ccls::RefusalReasonTest < ActiveSupport::TestCase
 		assert_nil refusal_reason
 	end
 
+	test "should return true for is_other if is other" do
+		refusal_reason = RefusalReason['Other']
+		assert refusal_reason.is_other?
+	end
+
 #	test "should raise error if not found by code with []" do
 #		assert_raise(RefusalReason::NotFound) {
 #			refusal_reason = RefusalReason['idonotexist']

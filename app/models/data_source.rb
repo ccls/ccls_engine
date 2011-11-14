@@ -30,4 +30,10 @@ class DataSource < Shared
 		find_by_code(code.to_s) #|| raise(NotFound)
 	end
 
+	#	Returns boolean of comparison
+	#	true only if code == 'other'
+	def is_other?
+		code == 'other'
+	end
+
 end
