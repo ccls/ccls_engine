@@ -4,6 +4,13 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_not_require_attributes( 
+		:use_smp_future_rsrch,
+		:use_smp_future_cancer_rsrch,
+		:use_smp_future_other_rsrch,
+		:share_smp_with_others,
+		:contact_for_related_study,
+		:provide_saliva_smp,
+		:receive_study_findings,
 		:position,
 		:recruitment_priority,
 		:able_to_locate,

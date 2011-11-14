@@ -609,38 +609,45 @@ Table: document_versions
 +------------------+--------------+------+-----+---------+----------------+
 
 Table: enrollments
-+---------------------------+--------------+------+-----+---------+----------------+
-| Field                     | Type         | Null | Key | Default | Extra          |
-+---------------------------+--------------+------+-----+---------+----------------+
-| id                        | int(11)      | NO   | PRI | NULL    | auto_increment |
-| position                  | int(11)      | YES  |     | NULL    |                |
-| study_subject_id          | int(11)      | YES  |     | NULL    |                |
-| project_id                | int(11)      | YES  | MUL | NULL    |                |
-| recruitment_priority      | varchar(255) | YES  |     | NULL    |                |
-| able_to_locate            | int(11)      | YES  |     | NULL    |                |
-| is_candidate              | int(11)      | YES  |     | NULL    |                |
-| is_eligible               | int(11)      | YES  |     | NULL    |                |
-| ineligible_reason_id      | int(11)      | YES  |     | NULL    |                |
-| ineligible_reason_specify | varchar(255) | YES  |     | NULL    |                |
-| consented                 | int(11)      | YES  |     | NULL    |                |
-| consented_on              | date         | YES  |     | NULL    |                |
-| refusal_reason_id         | int(11)      | YES  |     | NULL    |                |
-| other_refusal_reason      | varchar(255) | YES  |     | NULL    |                |
-| is_chosen                 | int(11)      | YES  |     | NULL    |                |
-| reason_not_chosen         | varchar(255) | YES  |     | NULL    |                |
-| terminated_participation  | int(11)      | YES  |     | NULL    |                |
-| terminated_reason         | varchar(255) | YES  |     | NULL    |                |
-| is_complete               | int(11)      | YES  |     | NULL    |                |
-| completed_on              | date         | YES  |     | NULL    |                |
-| is_closed                 | tinyint(1)   | YES  |     | NULL    |                |
-| reason_closed             | varchar(255) | YES  |     | NULL    |                |
-| notes                     | text         | YES  |     | NULL    |                |
-| document_version_id       | int(11)      | YES  |     | NULL    |                |
-| project_outcome_id        | int(11)      | YES  |     | NULL    |                |
-| project_outcome_on        | date         | YES  |     | NULL    |                |
-| created_at                | datetime     | YES  |     | NULL    |                |
-| updated_at                | datetime     | YES  |     | NULL    |                |
-+---------------------------+--------------+------+-----+---------+----------------+
++-----------------------------+--------------+------+-----+---------+----------------+
+| Field                       | Type         | Null | Key | Default | Extra          |
++-----------------------------+--------------+------+-----+---------+----------------+
+| id                          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position                    | int(11)      | YES  |     | NULL    |                |
+| study_subject_id            | int(11)      | YES  |     | NULL    |                |
+| project_id                  | int(11)      | YES  | MUL | NULL    |                |
+| recruitment_priority        | varchar(255) | YES  |     | NULL    |                |
+| able_to_locate              | int(11)      | YES  |     | NULL    |                |
+| is_candidate                | int(11)      | YES  |     | NULL    |                |
+| is_eligible                 | int(11)      | YES  |     | NULL    |                |
+| ineligible_reason_id        | int(11)      | YES  |     | NULL    |                |
+| ineligible_reason_specify   | varchar(255) | YES  |     | NULL    |                |
+| consented                   | int(11)      | YES  |     | NULL    |                |
+| consented_on                | date         | YES  |     | NULL    |                |
+| refusal_reason_id           | int(11)      | YES  |     | NULL    |                |
+| other_refusal_reason        | varchar(255) | YES  |     | NULL    |                |
+| is_chosen                   | int(11)      | YES  |     | NULL    |                |
+| reason_not_chosen           | varchar(255) | YES  |     | NULL    |                |
+| terminated_participation    | int(11)      | YES  |     | NULL    |                |
+| terminated_reason           | varchar(255) | YES  |     | NULL    |                |
+| is_complete                 | int(11)      | YES  |     | NULL    |                |
+| completed_on                | date         | YES  |     | NULL    |                |
+| is_closed                   | tinyint(1)   | YES  |     | NULL    |                |
+| reason_closed               | varchar(255) | YES  |     | NULL    |                |
+| notes                       | text         | YES  |     | NULL    |                |
+| document_version_id         | int(11)      | YES  |     | NULL    |                |
+| project_outcome_id          | int(11)      | YES  |     | NULL    |                |
+| project_outcome_on          | date         | YES  |     | NULL    |                |
+| created_at                  | datetime     | YES  |     | NULL    |                |
+| updated_at                  | datetime     | YES  |     | NULL    |                |
+| use_smp_future_rsrch        | int(11)      | YES  |     | NULL    |                |
+| use_smp_future_cancer_rsrch | int(11)      | YES  |     | NULL    |                |
+| use_smp_future_other_rsrch  | int(11)      | YES  |     | NULL    |                |
+| share_smp_with_others       | int(11)      | YES  |     | NULL    |                |
+| contact_for_related_study   | int(11)      | YES  |     | NULL    |                |
+| provide_saliva_smp          | int(11)      | YES  |     | NULL    |                |
+| receive_study_findings      | int(11)      | YES  |     | NULL    |                |
++-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: follow_up_types
 +-------------+--------------+------+-----+---------+----------------+
