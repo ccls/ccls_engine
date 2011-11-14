@@ -291,7 +291,11 @@ Factory.define :subjectless_patient, :class => 'Patient' do |f|
 	#	f.association :organization
 	#	f.organization { Organization.first }
 	#	f.organization_id { Organization.first.id }
-	f.organization_id { Hospital.first.organization_id }
+
+#	f.organization_id { Hospital.first.organization_id }		#	make this a sequence rather than just first?
+#	This sequence seems to work, but lets see if it has any repercusions.  May have to modify
+#	some other existing tests that may have expected it not to change.
+	f.sequence(:organization_id){|n| Hospital.all()[ n % Hospital.count ].organization_id }
 
 	f.diagnosis_id { Diagnosis['ALL'].id }
 end
@@ -299,8 +303,14 @@ Factory.define :patient, :parent => :subjectless_patient do |f|
 	#	really don't see the point of a patient w/o a study_subject
 	f.association :study_subject, :factory => :case_study_subject
 end
-#	Factory.define :waivered_patient
-#	Factory.define :nonwaivered_patient
+Factory.define :waivered_patient, :parent => :patient do |f|
+#	f.organization_id { Hospital.waivered.first.organization_id }		#	make this a sequence rather than just first?
+	f.sequence(:organization_id){|n| Hospital.waivered()[ n % Hospital.waivered.length ].organization_id }
+end
+Factory.define :nonwaivered_patient, :parent => :patient do |f|
+#	f.organization_id { Hospital.nonwaivered.first.organization_id }		#	make this a sequence rather than just first?
+	f.sequence(:organization_id){|n| Hospital.nonwaivered()[ n % Hospital.nonwaivered.length ].organization_id }
+end
 
 Factory.define :person do |f|
 	#	use sequence so will actually update
@@ -424,8 +434,12 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 	f.patient_attributes { Factory.attributes_for(:patient) }
 	f.identifier_attributes { Factory.attributes_for(:case_identifier) }
 end
-#	Factory.define :complete_waivered_case_study_subject
-#	Factory.define :complete_nonwaivered_case_study_subject
+Factory.define :complete_waivered_case_study_subject, :parent => :complete_case_study_subject do |f|
+	f.patient_attributes { Factory.attributes_for(:waivered_patient) }
+end
+Factory.define :complete_nonwaivered_case_study_subject, :parent => :complete_case_study_subject do |f|
+	f.patient_attributes { Factory.attributes_for(:nonwaivered_patient) }
+end
 Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
 end

@@ -4,11 +4,9 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list
-#	assert_should_belong_to(:organization)
 	assert_should_initially_belong_to(:organization)
-#	assert_should_require_attributes( :has_irb_waiver )
 	assert_should_require_attributes_not_nil( :has_irb_waiver )
-	assert_should_not_require_attributes( :position )	#, :organization_id )
+	assert_should_not_require_attributes( :position )
 	assert_should_require_unique_attributes( :organization_id )
 
 	test "explicit Factory hospital test" do

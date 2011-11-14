@@ -40,12 +40,62 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		} }
 	end
 
+	test "explicit Factory patient hospital sequence test" do
+		patient = Factory(:patient)		#	'first' hospital
+		(Hospital.count - 1).times {	#	loop over the rest of the hospitals
+			new_patient = Factory(:patient)
+			assert patient.organization_id != new_patient.organization_id
+		}
+		new_patient = Factory(:patient)	#	back to the 'first' hospital
+		assert patient.organization_id == new_patient.organization_id
+	end
+
 	test "explicit Factory patient test" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('Patient.count',1) {
 			patient = Factory(:patient)
 			assert_not_nil patient.study_subject
 			assert_equal patient.study_subject.subject_type, SubjectType['Case']
+		} }
+	end
+
+	test "explicit Factory waivered patient hospital sequence test" do
+		patient = Factory(:waivered_patient)		#	'first' hospital
+		(Hospital.waivered.count - 1).times {	#	loop over the rest of the hospitals
+			new_patient = Factory(:waivered_patient)
+			assert patient.organization_id != new_patient.organization_id
+		}
+		new_patient = Factory(:waivered_patient)	#	back to the 'first' hospital
+		assert patient.organization_id == new_patient.organization_id
+	end
+
+	test "explicit Factory waivered_patient test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Patient.count',1) {
+			patient = Factory(:waivered_patient)
+			assert_not_nil patient.study_subject
+			assert_equal patient.study_subject.subject_type, SubjectType['Case']
+			assert patient.organization.hospital.has_irb_waiver
+		} }
+	end
+
+	test "explicit Factory nonwaivered patient hospital sequence test" do
+		patient = Factory(:nonwaivered_patient)		#	'first' hospital
+		(Hospital.nonwaivered.count - 1).times {	#	loop over the rest of the hospitals
+			new_patient = Factory(:nonwaivered_patient)
+			assert patient.organization_id != new_patient.organization_id
+		}
+		new_patient = Factory(:nonwaivered_patient)	#	back to the 'first' hospital
+		assert patient.organization_id == new_patient.organization_id
+	end
+
+	test "explicit Factory nonwaivered_patient test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Patient.count',1) {
+			patient = Factory(:nonwaivered_patient)
+			assert_not_nil patient.study_subject
+			assert_equal patient.study_subject.subject_type, SubjectType['Case']
+			assert !patient.organization.hospital.has_irb_waiver
 		} }
 	end
 
@@ -327,12 +377,12 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		end
 	end
 
-protected
-
-	def create_patient(options={})
-		patient = Factory.build(:patient,options)
-		patient.save
-		patient
-	end
+#protected
+#
+#	def create_patient(options={})
+#		patient = Factory.build(:patient,options)
+#		patient.save
+#		patient
+#	end
 
 end

@@ -66,7 +66,41 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_equal s.identifier.orderno, 0
 			assert_not_nil s.identifier.childid
 			assert_not_nil s.identifier.patid
-			assert_equal s.organization_id, Hospital.first.organization_id
+			assert_not_nil s.organization_id
+#	New sequencing make the value of this relatively unpredictable
+#			assert_equal s.organization_id, Hospital.first.organization_id
+		} } } }
+	end
+
+	test "explicit Factory complete waivered case study subject test" do
+		assert_difference('Pii.count',1) {
+		assert_difference('Patient.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			s = Factory(:complete_waivered_case_study_subject)
+			assert_equal s.subject_type, SubjectType['Case']
+			assert_equal s.identifier.case_control_type, 'C'
+			assert_equal s.identifier.orderno, 0
+			assert_not_nil s.identifier.childid
+			assert_not_nil s.identifier.patid
+			assert_not_nil s.organization_id
+			assert s.organization.hospital.has_irb_waiver
+		} } } }
+	end
+
+	test "explicit Factory complete nonwaivered case study subject test" do
+		assert_difference('Pii.count',1) {
+		assert_difference('Patient.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			s = Factory(:complete_nonwaivered_case_study_subject)
+			assert_equal s.subject_type, SubjectType['Case']
+			assert_equal s.identifier.case_control_type, 'C'
+			assert_equal s.identifier.orderno, 0
+			assert_not_nil s.identifier.childid
+			assert_not_nil s.identifier.patid
+			assert_not_nil s.organization_id
+			assert !s.organization.hospital.has_irb_waiver
 		} } } }
 	end
 
