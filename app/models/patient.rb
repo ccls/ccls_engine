@@ -116,11 +116,15 @@ protected
 
 	##
 	#	Both are patient dates so this doesn't need in subject!
+	#	custom validation and custom message
 	def treatment_began_on_is_after_diagnosis_date
 		if !treatment_began_on.blank? && 
 			!diagnosis_date.blank? && 
 			treatment_began_on < diagnosis_date
-			errors.add(:treatment_began_on, "is before diagnosis_date.") 
+#			errors.add(:treatment_began_on, "is before diagnosis_date.") 
+			errors.add(:treatment_began_on, ActiveRecord::Error.new(
+				self, :base, :blank, { 
+					:message => "Date treatment began must be on or after the diagnosis date." } ) )
 		end
 	end
 

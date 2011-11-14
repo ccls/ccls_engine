@@ -205,7 +205,9 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 				:diagnosis_date => Date.jd(2440000),
 				:treatment_began_on => Date.jd(2430000) ) 
 			assert patient.errors.on(:treatment_began_on)
-			assert_match(/before.*diagnosis_date/,
+#			assert_match(/before.*diagnosis_date/,
+#				patient.errors.on(:treatment_began_on))
+			assert_match(/Date treatment began must be on or after the diagnosis date/,
 				patient.errors.on(:treatment_began_on))
 		end
 	end
@@ -224,7 +226,9 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			assert study_subject.patient.errors.on(:treatment_began_on)
 			assert study_subject.errors.on('patient.treatment_began_on')
 #			assert study_subject.errors.on('patient:treatment_began_on')
-			assert_match(/before.*diagnosis_date/,
+#			assert_match(/before.*diagnosis_date/,
+#				study_subject.patient.errors.on(:treatment_began_on))
+			assert_match(/Date treatment began must be on or after the diagnosis date/,
 				study_subject.patient.errors.on(:treatment_began_on))
 		} } }
 	end
