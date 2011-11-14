@@ -55,6 +55,15 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		}
 	end
 
+	test "explicit Factory complete case study subject build test" do
+		assert_difference('Pii.count',0) {
+		assert_difference('Patient.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('StudySubject.count',0) {
+			s = Factory.build(:complete_case_study_subject)
+		} } } }
+	end
+
 	test "explicit Factory complete case study subject test" do
 		assert_difference('Pii.count',1) {
 		assert_difference('Patient.count',1) {
