@@ -73,7 +73,6 @@ class StudySubject < Shared
 	with_options :allow_nil => true do |n|
 		n.validates_complete_date_for :reference_date
 		n.with_options :to => :patient do |o|
-			o.delegate :admitting_oncologist
 			o.delegate :admit_date
 			o.delegate :organization
 			o.delegate :organization_id
@@ -576,6 +575,16 @@ class StudySubject < Shared
 			"n/a"
 		else
 			identifier.try(:studyid)
+		end
+	end
+
+	def admitting_oncologist
+		#	can be blank so need more than try
+		#patient.try(:admitting_oncologist) || "[no oncologist specified]"
+		if patient and !patient.admitting_oncologist.blank?
+			patient.admitting_oncologist
+		else
+			"[no oncologist specified]"
 		end
 	end
 

@@ -526,7 +526,7 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	#	All delegated fields
 	%w( 
-		admitting_oncologist admit_date organization 
+		admit_date organization 
 			organization_id hospital_no
 		patid orderno ssn childid state_id_no 
 			state_registrar_no local_registrar_no
@@ -544,7 +544,7 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	end
 
-	#	Delegated patient fields except ... admitting_oncologist
+	#	Delegated patient fields
 	%w( admit_date organization 
 			organization_id hospital_no
 		).each do |method_name|
@@ -734,6 +734,39 @@ pending	#	TODO think should destroy addressings but NOT addresses
 		study_subject = create_study_subject
 		assert_nil study_subject.pii
 		assert_equal '[name not available]', study_subject.full_name
+	end
+
+	test "should return 'no oncologist specified' for study_subject without patient" do
+		study_subject = create_study_subject.reload
+		assert_nil study_subject.patient
+		assert_equal '[no oncologist specified]', study_subject.admitting_oncologist
+	end
+
+	test "should return 'no oncologist specified' for study_subject with null patient#admitting_oncologist" do
+		assert_difference('Patient.count',1) {
+		assert_difference('StudySubject.count',1) {
+			study_subject = create_patient(:admitting_oncologist => nil
+				).study_subject.reload
+			assert_equal '[no oncologist specified]', study_subject.admitting_oncologist
+		} }
+	end
+
+	test "should return 'no oncologist specified' for study_subject with blank patient#admitting_oncologist" do
+		assert_difference('Patient.count',1) {
+		assert_difference('StudySubject.count',1) {
+			study_subject = create_patient(:admitting_oncologist => ''
+				).study_subject.reload
+			assert_equal '[no oncologist specified]', study_subject.admitting_oncologist
+		} }
+	end
+
+	test "should return admitting_oncologist for study_subject with patient#admitting_oncologist" do
+		assert_difference('Patient.count',1) {
+		assert_difference('StudySubject.count',1) {
+			study_subject = create_patient(:admitting_oncologist => 'Dr Jim'
+				).study_subject.reload
+			assert_equal 'Dr Jim', study_subject.admitting_oncologist
+		} }
 	end
 
 	test "should return hx_id" do
