@@ -530,6 +530,7 @@ pending	#	TODO think should destroy addressings but NOT addresses
 			organization_id hospital_no
 		patid orderno ssn childid state_id_no 
 			state_registrar_no local_registrar_no
+			case_control_type
 		first_name last_name mother_maiden_name
 			initials fathers_name mothers_name email dob 
 		interview_outcome sample_outcome
@@ -562,7 +563,7 @@ pending	#	TODO think should destroy addressings but NOT addresses
 
 	end
 
-	#	Mostly delegated identifier fields except ... patid, orderno
+	#	Mostly delegated identifier fields except ... patid, orderno, case_control_type
 	%w( ssn childid state_id_no 
 			state_registrar_no local_registrar_no
 		).each do |method_name|

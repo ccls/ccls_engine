@@ -95,6 +95,7 @@ class StudySubject < Shared
 			o.delegate :ssn
 			o.delegate :patid
 			o.delegate :orderno
+			o.delegate :case_control_type
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
