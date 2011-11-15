@@ -15,12 +15,12 @@ class Ccls::RoleTest < ActiveSupport::TestCase
 		end 
 	end
 
-protected
-
-	def create_role(options = {})
-		role = Factory.build(:role,options)
-		role.save
-		role
-	end
+#protected
+#
+#	def create_role(options = {})
+#		role = Factory.build(:role,options)
+#		role.save
+#		role
+#	end
 
 end

@@ -408,6 +408,8 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 protected
 
+	#	MUST define this method so can use the alias_method below.
+	#	Or could just define create_object.  Either way.
 	def create_subjectless_enrollment(options={})
 		enrollment = Factory.build(:subjectless_enrollment,options)
 		enrollment.save

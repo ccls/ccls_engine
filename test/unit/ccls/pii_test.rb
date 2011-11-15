@@ -235,12 +235,12 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
-protected
-
-	def create_pii(options={})
-		pii = Factory.build(:pii,options)
-		pii.save
-		pii
-	end
+#protected
+#
+#	def create_pii(options={})
+#		pii = Factory.build(:pii,options)
+#		pii.save
+#		pii
+#	end
 
 end

@@ -145,12 +145,12 @@ class Ccls::UserTest < ActiveSupport::TestCase
 		assert_equal user.displayname, "#{user}"
 	end
 
-protected
-
-	def create_user(options = {})
-		user = Factory.build(:user,options)
-		user.save
-		user
-	end
+#protected
+#
+#	def create_user(options = {})
+#		user = Factory.build(:user,options)
+#		user.save
+#		user
+#	end
 	
 end
