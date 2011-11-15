@@ -1,7 +1,8 @@
 #
-#	Do not change id, key or code
+#	Do not change id, key, code or description
 #		'id' could be referenced by existing data
 #		'key' or 'code' is used in the rails code for searching 
+#		'description' is used in javascript ( changing it here will require a corresponding change there )
 #
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
