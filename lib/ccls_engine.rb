@@ -29,6 +29,27 @@ module Ccls
 #	predefine namespace
 end
 
+
+#
+#	As this gem has controllers, which are subclasses of ApplicationController,
+#		in development mode, ApplicationController loads and unloads, which will
+#		cause the following error after the first request.  I'd really prefer
+#		to find a better solution.  The basic problem is creating a class in this
+#		gem that is a subclass of a class defined in the app.
+#	This is really only needed in development mode.  I'm not sure what'll 
+#		happen in production, but should work as well.
+#
+#	Processing ZipCodesController#index to json (for 169.229.196.225 at 2011-11-15 13:50:34) [GET]
+#	  Parameters: {"q"=>"1785"}
+#	
+#	ArgumentError (A copy of ApplicationController has been removed from the module tree but is still active!):
+#	  app/controllers/application_controller.rb:121:in `get_guidance'
+#	Rendered rescues/_trace (99.8ms)
+#	Rendered rescues/_request_and_response (1.2ms)
+#	Rendering rescues/layout (internal_server_error)
+require 'application_controller'
+
+
 #	This doesn't seem necessary
 %w{models controllers}.each do |dir|
 	path = File.expand_path(File.join(File.dirname(__FILE__), '../app', dir))

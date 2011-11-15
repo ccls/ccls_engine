@@ -1,5 +1,16 @@
 class SessionsController < ApplicationController
 
+	def destroy
+		calnetuid = session[:calnetuid]
+		CASClient::Frameworks::Rails::Filter.logout(self)
+	end
+
+end
+
+__END__
+
+class SessionsController < ApplicationController
+
 #	skip_before_filter :login_required, :only => :create
 #
 #	def create
