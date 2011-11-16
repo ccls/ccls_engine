@@ -105,6 +105,12 @@ class Identifier < Shared
 protected
 
 	#	TODO this requires study_subject to exist FIRST
+#
+#	Surprised that my testing didn't force me to wrap it like I did in Patient and Pii
+#	This is most likely because my subjectless factory tests didn't 'change' the 
+#		matchingid which would've triggered this method and raised this issue.
+#	In reality, this should never occur.
+#
 	def trigger_update_matching_study_subjects_reference_date
 		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from Identifier:#{self.attributes['id']}"
 		logger.debug "DEBUG: matchingid changed from:#{matchingid_was}:to:#{matchingid}"
@@ -129,8 +135,25 @@ protected
 		self.accession_no = nil if accession_no.blank?
 		self.idno_wiemels = nil if idno_wiemels.blank?
 
+
+
+#	Is this still necessary?  No validations on patid
+#	and it should only 'change' on create.
+#	20111115 - commenting out to see what happens in testing.
+#	there is one test that tests that it is padded at validation.
+#	there is another that fails as it doesn't pad in creation
+#	These are probably because there used to be validation for patid.
+#	TODO should probably move this functionality into the
+#		prepare_fields_for_creation and remove the before validation test.
+#	leaving it here until then
+#	The prepare_fields_for_creation currently only mucks with the patid
+#	for cases so would need to handle non-cases as well.
 		patid.try(:gsub!,/\D/,'') #unless patid.nil?
 		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
+
+
+
+
 		matchingid.try(:gsub!,/\D/,'')
 #	TODO add more tests for this (try with valid? method)
 #puts "Matchingid before before validation:#{matchingid}"
@@ -175,19 +198,32 @@ protected
 #		Patid.create!.destroy.id
 #		(Identifier.maximum(:patid).to_i||0) + 1
 		Identifier.maximum(:patid).to_i + 1
+#
+#	What happens if/when this goes over 4 digits? 
+#	The database field is only 4 chars.
+#
 	end
 
 	#	fields made from fields that WON'T change go here
 	def prepare_fields_for_creation
 
-		#	don't assign if given (childid is currently protected)
+		#	don't assign if given or is mother (childid is currently protected)
 		self.childid = get_next_childid if !is_mother? and childid.blank?
 
-		#	don't assign if given (patid is currently protected)
+		#	don't assign if given or is not case (patid is currently protected)
 		self.patid = sprintf("%04d",get_next_patid.to_i) if is_case? and patid.blank?
 
-		#	don't assign if given (orderno is currently protected)
+#	should move this from pre validation to here for ALL subjects.
+#		patid.try(:gsub!,/\D/,'')
+#		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
+
+
+
+		#	don't assign if given or is not case (orderno is currently protected)
 		self.orderno = 0 if is_case? and orderno.blank?
+
+		#	don't assign if given or is mother (studyid is currently protected)
+		self.studyid = "#{patid}-#{case_control_type}-#{orderno}" if !is_mother? and studyid.blank?
 
 		#	perhaps put in an after_save with an update_attribute(s)
 		#	and simply generate a new one until all is well

@@ -233,10 +233,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		case_study_subject = create_case_identifier.study_subject
 		candidate_control = create_candidate_control
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-#puts candidate_control.study_subject.identifier.studyid
-#	TODO generated on the fly, NOT in the db
-pending	#	TODO not generating on the fly anymore
-		assert_nil candidate_control.study_subject.identifier.studyid		
+		assert_not_nil candidate_control.study_subject.identifier.studyid		
+		assert_match /\d{4}-\d-\d/, candidate_control.study_subject.identifier.studyid
 	end
 
 	#	icf_master_id isn't required as may not have any

@@ -283,16 +283,15 @@ pending
 		assert_equal 0, identifier.orderno
 	end
 
-	test "should NOT set studyid with patid, case_control_type and orderno for" <<
+	test "should set studyid with patid, case_control_type and orderno for" <<
 			" case_control_type c" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
 		identifier = Factory(:case_identifier).reload
 		assert_equal "0123", identifier.patid
-		assert_nil identifier.studyid
+		assert_not_nil identifier.studyid
 		assert_nil identifier.studyid_nohyphen
 		assert_nil identifier.studyid_intonly_nohyphen
-pending	#	TODO need to figure this out
-#		assert_equal "0123-C-0", identifier.studyid
+		assert_equal "0123-C-0", identifier.studyid
 #		assert_equal "0123C0",   identifier.studyid_nohyphen
 #		assert_equal "012300",   identifier.studyid_intonly_nohyphen
 	end
@@ -368,11 +367,10 @@ pending
 			identifier.patid = '123'
 			identifier.save
 			identifier.reload
-			assert_nil identifier.studyid
+			assert_not_nil identifier.studyid
 			assert_nil identifier.studyid_nohyphen
 			assert_nil identifier.studyid_intonly_nohyphen
-pending	#	TODO	still gotta figure this out
-#			assert_equal "0123-C-0", identifier.studyid
+			assert_equal "0123-C-0", identifier.studyid
 #			assert_equal "0123C0",   identifier.studyid_nohyphen
 #			assert_equal "012300",   identifier.studyid_intonly_nohyphen
 			assert_equal "0123",     identifier.patid

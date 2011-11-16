@@ -396,14 +396,13 @@ pending	#	TODO will require something?
 	test "studyid should be patid, case_control_type and orderno" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
 		study_subject = Factory(:case_identifier).reload.study_subject
-#	why unstub here
+#	why unstub here?
 #		Identifier.any_instance.unstub(:get_next_patid)
-		assert_nil study_subject.studyid
-		assert_nil study_subject.identifier.studyid
+		assert_not_nil study_subject.studyid
+		assert_not_nil study_subject.identifier.studyid
 		assert_nil study_subject.identifier.studyid_nohyphen
 		assert_nil study_subject.identifier.studyid_intonly_nohyphen
-pending	#	TODO gotta figure this out.  Studyids no longer computed
-#		assert_equal "0123-C-0", study_subject.studyid
+		assert_equal "0123-C-0", study_subject.studyid
 #		assert_equal "0123C0",   study_subject.identifier.studyid_nohyphen
 #		assert_equal "012300",   study_subject.identifier.studyid_intonly_nohyphen
 	end
@@ -1733,10 +1732,18 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_equal "#{study_subject.childid} (mother)", mother.childid
 	end
 
-	test "should return nil for subjects without studyid" do
-		study_subject = create_identifier.study_subject.reload
-		assert_nil study_subject.studyid
-	end
+#
+#	As control is created attached to a case, it would be passed
+#		a patid and computed orderno.  Creating an identifier on its
+#		own would create a partial studyid like '-1-' or something
+#		as the only thing the factory would create would be a random
+#		case control type.  It should never actually be nil.
+#
+#	test "should return nil for subjects without studyid" do
+#		study_subject = create_identifier(
+#			:patid   => '0123', :orderno => 7 ).study_subject.reload
+#		assert_nil study_subject.studyid
+#	end
 
 	test "should return n/a for mother's studyid" do
 		study_subject = create_identifier.study_subject.reload
