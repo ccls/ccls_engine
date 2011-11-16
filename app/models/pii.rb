@@ -8,20 +8,21 @@ class Pii < Shared
 	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
-	delegate :is_other?, :to => :guardian_relationship, :allow_nil => true, :prefix => true
+	delegate :is_other?,    :to => :guardian_relationship, :allow_nil => true, :prefix => true
+	delegate :subject_type, :to => :study_subject, :allow_nil => true
 
 	#	Basically, this is only used as a flag during nested creation
 	#	to determine if the dob is required.
 	attr_accessor :subject_is_mother, :subject_is_father
 
-	attr_protected          :study_subject_id
+	attr_protected :study_subject_id
 
 	before_validation :nullify_blank_fields
 
 	validate :presence_of_dob, :unless => :dob_not_required?
 	validates_complete_date_for :dob,     :allow_nil => true
 	validates_complete_date_for :died_on, :allow_nil => true
-	validates_uniqueness_of     :email, :allow_nil => true
+	validates_uniqueness_of     :email,   :allow_nil => true
 
 	validates_format_of :email,
 	  :with => /\A([-a-z0-9!\#$%&'*+\/=?^_`{|}~]+\.)*[-a-z0-9!\#$%&'*+\/=?^_`{|}~]+@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, 
@@ -47,8 +48,10 @@ class Pii < Shared
 	#	so we must explicitly set a flag.
 	def dob_not_required?
 		subject_is_mother || subject_is_father || 
-			( study_subject.try(:subject_type) == SubjectType['Mother'] ) ||
-			( study_subject.try(:subject_type) == SubjectType['Father'] )
+			( subject_type == SubjectType['Mother'] ) ||
+			( subject_type == SubjectType['Father'] )
+#			( study_subject.try(:subject_type) == SubjectType['Mother'] ) ||
+#			( study_subject.try(:subject_type) == SubjectType['Father'] )
 	end
 
 	#	Returns string containing study_subject's first, middle and last initials
@@ -95,7 +98,6 @@ class Pii < Shared
 
 	after_save :trigger_setting_was_under_15_at_dx,
 		:if => :dob_changed?
-
 
 protected
 #

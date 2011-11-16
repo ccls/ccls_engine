@@ -84,7 +84,13 @@ class StudySubject < Shared
 			o.delegate :first_name
 			o.delegate :dob
 			o.delegate :fathers_name
+			o.delegate :father_first_name
+			o.delegate :father_middle_name
+			o.delegate :father_last_name
 			o.delegate :mothers_name
+			o.delegate :mother_first_name
+			o.delegate :mother_middle_name
+			o.delegate :mother_last_name
 			o.delegate :mother_maiden_name
 		end
 		n.with_options :to => :identifier do |o|
@@ -240,6 +246,7 @@ class StudySubject < Shared
 	end
 
 	#	The default full_name if non-existant is ALSO in pii.
+	#	Can't delegate this or won't get '[name not available]' if no pii
 	def full_name
 		pii.try(:full_name) || '[name not available]'
 	end
@@ -411,10 +418,14 @@ class StudySubject < Shared
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
 				:pii_attributes => {
-					:first_name  => pii.try(:mother_first_name),
-					:middle_name => pii.try(:mother_middle_name),
-					:last_name   => pii.try(:mother_last_name),
-					:maiden_name => pii.try(:mother_maiden_name),
+#					:first_name  => pii.try(:mother_first_name),
+#					:middle_name => pii.try(:mother_middle_name),
+#					:last_name   => pii.try(:mother_last_name),
+#					:maiden_name => pii.try(:mother_maiden_name),
+					:first_name  => mother_first_name,
+					:middle_name => mother_middle_name,
+					:last_name   => mother_last_name,
+					:maiden_name => mother_maiden_name,
 					#	flag to not require the dob as won't have one
 					:subject_is_mother => true  
 				},
@@ -443,9 +454,12 @@ class StudySubject < Shared
 				:sex => 'M',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
 				:pii_attributes => {
-					:first_name  => pii.try(:father_first_name),
-					:middle_name => pii.try(:father_middle_name),
-					:last_name   => pii.try(:father_last_name),
+#					:first_name  => pii.try(:father_first_name),
+#					:middle_name => pii.try(:father_middle_name),
+#					:last_name   => pii.try(:father_last_name),
+					:first_name  => father_first_name,
+					:middle_name => father_middle_name,
+					:last_name   => father_last_name,
 					#	flag to not require the dob as won't have one
 					:subject_is_father => true  
 				},

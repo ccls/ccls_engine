@@ -20,8 +20,11 @@ class Hospital < Shared
 	named_scope :waivered,    :conditions => { :has_irb_waiver => true }
 	named_scope :nonwaivered, :conditions => { :has_irb_waiver => false }
 
-	def to_s
-		organization.try(:name) || 'Unknown'	#	organization is required now, so Unknown should never happen
-	end
+
+	delegate :to_s, :to => :organization, :allow_nil => true
+#	def to_s
+#		organization.try(:name) || 'Unknown'	#	organization is required now, so Unknown should never happen
+#	end
+
 
 end

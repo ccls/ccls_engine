@@ -7,9 +7,9 @@ class SampleKit < Shared
 	belongs_to :kit_package,    :class_name => 'Package'
 	belongs_to :sample_package, :class_name => 'Package'
 
-	delegate :study_subject,     :to => :sample
-	delegate :sent_on,     :to => :kit_package
-	delegate :received_on, :to => :sample_package
+	delegate :study_subject, :to => :sample
+	delegate :sent_on,       :to => :kit_package
+	delegate :received_on,   :to => :sample_package
 
 #	validates_uniqueness_of :kit_package_id,  :allow_nil => true
 #	validates_uniqueness_of :sample_package_id, :allow_nil => true
