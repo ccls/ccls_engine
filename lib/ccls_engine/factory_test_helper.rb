@@ -58,13 +58,14 @@ module Ccls::FactoryTestHelper
 		study_subject
 	end
 
-	def create_study_subject(options = {})
-		#	May contain options for testing failing so can't assert
-		#	that StudySubject.count will change here.
-		record = Factory.build(:study_subject,options)
-		record.save
-		record
-	end
+#	This shouldn't be explicitly needed due to method_missing for create_*
+#	def create_study_subject(options = {})
+#		#	May contain options for testing failing so can't assert
+#		#	that StudySubject.count will change here.
+#		record = Factory.build(:study_subject,options)
+#		record.save
+#		record
+#	end
 
 	def create_study_subjects(count=0,options={})
 		study_subjects = []
