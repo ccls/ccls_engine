@@ -5,13 +5,11 @@ class AddressType < Shared
 #
 	acts_as_list
 	has_many :addresses
+
 	validates_presence_of   :code
-	validates_length_of     :code, :minimum => 4
+	validates_length_of     :code, :in => 4..250, :allow_blank => true
 	validates_uniqueness_of :code
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :code
-		o.validates_length_of :description
-	end
+	validates_length_of     :description, :maximum => 250, :allow_blank => true
 
 	#	Returns the code
 	def to_s

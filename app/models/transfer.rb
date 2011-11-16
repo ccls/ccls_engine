@@ -10,10 +10,10 @@ class Transfer < Shared
 	belongs_to :from_organization, :class_name => "Organization"
 	belongs_to :to_organization,   :class_name => "Organization"
 
-	validates_presence_of :aliquot, :to_organization, :from_organization
-
-	validates_length_of :reason, 
-		:maximum => 250, :allow_blank => true
+	validates_presence_of :aliquot
+	validates_presence_of :to_organization
+	validates_presence_of :from_organization
+	validates_length_of   :reason, :maximum => 250, :allow_blank => true
 
 	before_save :update_aliquot_owner
 

@@ -5,14 +5,8 @@ class SubjectLanguage < Shared
 	belongs_to :study_subject
 	belongs_to :language
 
-	validates_presence_of :other,
-		:if => :language_is_other?
+	delegate :is_other?, :to => :language, :allow_nil => true, :prefix => true
 
-protected
-#	TODO delegate :is_other?
-
-	def language_is_other?
-		language.try(:is_other?)
-	end
+	validates_presence_of :other, :if => :language_is_other?
 
 end

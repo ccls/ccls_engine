@@ -23,31 +23,21 @@ class Sample < Shared
 
 	validates_presence_of :sample_type
 	validates_presence_of :study_subject
+	validates_presence_of :sent_to_subject_on,  :if => :collected_on
+	validates_presence_of :collected_on,        :if => :received_by_ccls_on
+	validates_presence_of :location_id,         :if => :sent_to_lab_on
+	validates_presence_of :received_by_ccls_on, :if => :sent_to_lab_on
+	validates_presence_of :sent_to_lab_on,      :if => :received_by_lab_on
+	validates_presence_of :received_by_lab_on,  :if => :aliquotted_on
 
-	validates_presence_of :sent_to_subject_on, 
-		:if => :collected_on
-	validates_presence_of :collected_on, 
-		:if => :received_by_ccls_on
-	validates_presence_of :location_id, 
-		:if => :sent_to_lab_on
-	validates_presence_of :received_by_ccls_on, 
-		:if => :sent_to_lab_on
-	validates_presence_of :sent_to_lab_on, 
-		:if => :received_by_lab_on
-	validates_presence_of :received_by_lab_on, 
-		:if => :aliquotted_on
+	validates_complete_date_for :sent_to_subject_on,   :allow_nil => true
+	validates_complete_date_for :collected_on,         :allow_nil => true
+	validates_complete_date_for :received_by_ccls_on,  :allow_nil => true
+	validates_complete_date_for :sent_to_lab_on,       :allow_nil => true
+	validates_complete_date_for :received_by_lab_on,   :allow_nil => true
+	validates_complete_date_for :aliquotted_on,        :allow_nil => true
+	validates_complete_date_for :receipt_confirmed_on, :allow_nil => true
 
-#	TODO make me smaller
-
-	with_options :allow_nil => true do |o|
-		o.validates_complete_date_for :sent_to_subject_on
-		o.validates_complete_date_for :collected_on
-		o.validates_complete_date_for :received_by_ccls_on
-		o.validates_complete_date_for :sent_to_lab_on
-		o.validates_complete_date_for :received_by_lab_on
-		o.validates_complete_date_for :aliquotted_on
-		o.validates_complete_date_for :receipt_confirmed_on
-	end
 	validates_past_date_for :sent_to_subject_on
 	validates_past_date_for :collected_on
 	validates_past_date_for :received_by_ccls_on

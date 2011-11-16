@@ -7,30 +7,26 @@ class Package < Shared
 #
 #	NOTE: Don't validate anything that the creating user can't do anything about.
 #
-	with_options :class_name => 'SampleKit' do |o|
-		o.has_one :o_sample_kit, :foreign_key => 'kit_package_id'
-		o.has_one :i_sample_kit, :foreign_key => 'sample_package_id'
-	end
+	has_one :o_sample_kit, :class_name => 'SampleKit', :foreign_key => 'kit_package_id'
+	has_one :i_sample_kit, :class_name => 'SampleKit', :foreign_key => 'sample_package_id'
 		
 	include ActiveMerchant::Shipping
 
 	#	This is polymorphic as was part of a gem.
 	#	It doesn't need to be, but would require mods to the db to change.
 	has_many	:tracks, :as => :trackable, :dependent => :destroy
+
 	#validates_length_of :tracking_number, :minimum => 3
 	validates_uniqueness_of :tracking_number, :allow_blank => true
+	validates_length_of :status,          :maximum => 250, :allow_blank => true
+	validates_length_of :tracking_number, :maximum => 250, :allow_blank => true
+	validates_length_of :latest_event,    :maximum => 250, :allow_blank => true
 
 	before_validation :nullify_blank_tracking_number
 
 	def nullify_blank_tracking_number
 		#	An empty form field is not NULL to MySQL so ...
 		self.tracking_number = nil if tracking_number.blank?
-	end
-
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :status
-		o.validates_length_of :tracking_number
-		o.validates_length_of :latest_event
 	end
 
 	@@fedex = FedEx.new(YAML::load(ERB.new(

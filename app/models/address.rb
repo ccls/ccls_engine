@@ -11,23 +11,23 @@ class Address < Shared
 	has_one :study_subject, :through => :addressing
 	belongs_to :address_type
 
-#	Using addressing's association
-#	belongs_to :data_source
-
-	validates_presence_of :address_type
-
 	validate :address_type_matches_line
 
-	validates_presence_of :line_1, :city, :state, :zip
-	validates_length_of   :line_1, :line_2, :unit, :city, :state,
-			:maximum => 250, :allow_blank => true
+	validates_presence_of :address_type
+	validates_presence_of :line_1
+	validates_length_of   :line_1, :maximum => 250, :allow_blank => true
+	validates_length_of   :line_2, :maximum => 250, :allow_blank => true
+	validates_length_of   :unit,   :maximum => 250, :allow_blank => true
+	validates_presence_of :city
+	validates_length_of   :city,   :maximum => 250, :allow_blank => true
+	validates_presence_of :state
+	validates_length_of   :state,  :maximum => 250, :allow_blank => true
+	validates_presence_of :zip
+	validates_length_of   :zip, :maximum => 10, :allow_blank => true
 
-	validates_length_of :zip, :maximum => 10
-
-#	TODO again, perhaps replace the inline regex with a method that returns it
 	validates_format_of :zip,
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
-		:message => "should be 12345 or 12345-1234"
+		:message => "should be 12345 or 12345-1234", :allow_blank => true
 
 	# TODO it would probably be better to do this before_validation
 	before_save :format_zip

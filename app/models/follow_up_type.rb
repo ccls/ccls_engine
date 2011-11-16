@@ -11,15 +11,11 @@ class FollowUpType < Shared
 	has_many :follow_ups
 
 	validates_presence_of   :code
+	validates_length_of     :code, :maximum => 250, :allow_blank => true
 	validates_uniqueness_of :code
 	validates_presence_of   :description
+	validates_length_of     :description, :in => 4..250, :allow_blank => true
 	validates_uniqueness_of :description
-
-	with_options :allow_blank => true do |o|
-		o.validates_length_of :code, :maximum => 250
-		o.validates_length_of :description, :in => 4..250
-#		o.validates_length_of :event_category, :in => 4..250
-	end
 
 #	class NotFound < StandardError; end
 

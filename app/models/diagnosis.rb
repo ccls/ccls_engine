@@ -6,12 +6,14 @@ class Diagnosis < Shared
 	acts_as_list
 	default_scope :order => :position
 
-#	has_many :study_subjects
-
-	validates_presence_of   :key, :code
-	validates_uniqueness_of :key, :code, :description
-	validates_length_of     :description, :in => 3..250
-	validates_length_of     :key, :maximum => 250
+	validates_presence_of   :code
+	validates_uniqueness_of :code
+	validates_presence_of   :description
+	validates_length_of     :description, :in => 3..250, :allow_blank => true
+	validates_uniqueness_of :description
+	validates_presence_of   :key
+	validates_length_of     :key, :maximum => 250, :allow_blank => true
+	validates_uniqueness_of :key
 
 #	class NotFound < StandardError; end
 

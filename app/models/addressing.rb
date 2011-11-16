@@ -7,28 +7,21 @@ class Addressing < Shared
 	belongs_to :address
 	belongs_to :data_source
 
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :why_invalid
-		o.validates_length_of :how_verified
-	end
-
-	#	Don't do the rejections here.
-	accepts_nested_attributes_for :address
-
+	delegate :is_other?, :to => :data_source, :allow_nil => true, :prefix => true
 	delegate :address_type, :address_type_id,
 		:line_1,:line_2,:unit,:city,:state,:zip,:csz,:county,
 		:to => :address, :allow_nil => true
 
-	validates_presence_of :why_invalid,
-		:if => :is_not_valid?
-	validates_presence_of :how_verified,
-		:if => :is_verified?
+	attr_accessor :current_user
 
-	validates_complete_date_for :valid_from, :valid_to,
-		:allow_nil => true
+	validates_length_of   :why_invalid,  :maximum => 250, :allow_blank => true
+	validates_presence_of :why_invalid,  :if => :is_not_valid?
+	validates_length_of   :how_verified, :maximum => 250, :allow_blank => true
+	validates_presence_of :how_verified, :if => :is_verified?
+	validates_complete_date_for :valid_from, :allow_nil => true
+	validates_complete_date_for :valid_to,   :allow_nil => true
 
-	validates_presence_of :data_source_other,
-		:if => :data_source_is_other?
+	validates_presence_of :data_source_other, :if => :data_source_is_other?
 
 	named_scope :current, :conditions => [
 		'current_address IS NOT NULL AND current_address != 2'
@@ -37,6 +30,9 @@ class Addressing < Shared
 	named_scope :historic, :conditions => [
 		'current_address IS NULL OR current_address = 2'
 	]
+
+	#	Don't do the rejections here.
+	accepts_nested_attributes_for :address
 
 	before_save :set_verifier, 
 		:if => :is_verified?, 
@@ -48,18 +44,12 @@ class Addressing < Shared
 
 	after_create :check_state_for_eligibilty
 
-	attr_accessor :current_user
-
 	#	Returns boolean of comparison of is_valid == 2 or 999
 	def is_not_valid?
 		[2,999].include?(is_valid)
 	end
 
 protected
-
-	def data_source_is_other?
-		data_source.try(:is_other?)
-	end
 
 	#	Set verified time and user if given
 	def set_verifier

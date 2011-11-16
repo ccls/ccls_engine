@@ -19,13 +19,8 @@ class HomexOutcome < Shared
 	#
 	validates_presence_of   :study_subject, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
-
-	validates_presence_of :sample_outcome_on,
-		:if => :sample_outcome_id?
-
-	validates_presence_of :interview_outcome_on,
-		:if => :interview_outcome_id?
-
+	validates_presence_of   :sample_outcome_on,    :if => :sample_outcome_id?
+	validates_presence_of   :interview_outcome_on, :if => :interview_outcome_id?
 	validates_complete_date_for :interview_outcome_on, :allow_nil => true
 	validates_complete_date_for :sample_outcome_on,    :allow_nil => true
 

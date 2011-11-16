@@ -8,6 +8,8 @@ class Pii < Shared
 	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
+	delegate :is_other?, :to => :guardian_relationship, :allow_nil => true, :prefix => true
+
 	#	Basically, this is only used as a flag during nested creation
 	#	to determine if the dob is required.
 	attr_accessor :subject_is_mother, :subject_is_father
@@ -17,7 +19,8 @@ class Pii < Shared
 	before_validation :nullify_blank_fields
 
 	validate :presence_of_dob, :unless => :dob_not_required?
-	validates_complete_date_for :dob, :died_on, :allow_nil => true
+	validates_complete_date_for :dob,     :allow_nil => true
+	validates_complete_date_for :died_on, :allow_nil => true
 	validates_uniqueness_of     :email, :allow_nil => true
 
 	validates_format_of :email,
@@ -126,10 +129,6 @@ protected
 		self.guardian_first_name = nil if guardian_first_name.blank?
 		self.guardian_middle_name = nil if guardian_middle_name.blank?
 		self.guardian_last_name = nil if guardian_last_name.blank?
-	end
-
-	def guardian_relationship_is_other?
-		guardian_relationship.try(:is_other?)
 	end
 
 	#	custom validation for custom message without standard attribute prefix

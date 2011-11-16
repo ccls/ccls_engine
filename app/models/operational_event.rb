@@ -6,19 +6,12 @@ class OperationalEvent < Shared
 #
 	default_scope :order => 'occurred_on DESC'
 	belongs_to :enrollment
-
 	belongs_to :operational_event_type
 
 	validates_presence_of :operational_event_type
-
-#	based on how I create them, this would probably cause problems.
-#	validates_presence_of :enrollment
-
-	validates_complete_date_for :occurred_on, 
-		:allow_nil => true
-
-	validates_length_of :description, :event_notes,
-		:maximum => 250, :allow_blank => true
+	validates_complete_date_for :occurred_on, :allow_nil => true
+	validates_length_of :description, :maximum => 250, :allow_blank => true
+	validates_length_of :event_notes, :maximum => 250, :allow_blank => true
 
 	#	Returns description
 	def to_s

@@ -4,13 +4,12 @@ class GiftCard < Shared
 #
 	belongs_to :study_subject
 	belongs_to :project
+
 	validates_presence_of   :number
+	validates_length_of     :number,     :maximum => 250, :allow_blank => true
 	validates_uniqueness_of :number
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :expiration
-		o.validates_length_of :vendor
-		o.validates_length_of :number
-	end
+	validates_length_of     :expiration, :maximum => 250, :allow_blank => true
+	validates_length_of     :vendor,     :maximum => 250, :allow_blank => true
 
 	def to_s
 		number

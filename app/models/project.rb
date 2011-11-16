@@ -16,16 +16,16 @@ class Project < Shared
 	has_many :study_subjects, :through => :enrollments
 	has_many :instruments
 
-	validates_presence_of   :code, :description
-	validates_uniqueness_of :code, :description
-	validates_length_of     :code,        :maximum => 250
+	validates_presence_of   :code
+	validates_uniqueness_of :code
+	validates_length_of     :code, :maximum => 250
+	validates_presence_of   :description
 	validates_length_of     :description, :in => 4..250
-
+	validates_uniqueness_of :description
 	validates_complete_date_for :began_on, :allow_nil => true
 	validates_complete_date_for :ended_on, :allow_nil => true
 
-
-#	TODO perhaps move this into study_subject where is clearly belongs
+#	TODO perhaps move this into study_subject where is clearly belongs, but will need a RIGHT JOIN or something?
 	#	Returns all projects for which the study_subject
 	#	does not have an enrollment
 	def self.unenrolled_projects(study_subject)

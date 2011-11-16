@@ -8,12 +8,9 @@ class DocumentVersion < Shared
 	has_many :enrollments
 
 	validates_presence_of :document_type
-
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :title
-		o.validates_length_of :description
-		o.validates_length_of :indicator
-	end
+	validates_length_of   :title,       :maximum => 250, :allow_blank => true
+	validates_length_of   :description, :maximum => 250, :allow_blank => true
+	validates_length_of   :indicator,   :maximum => 250, :allow_blank => true
 
 	#	Return title
 	def to_s

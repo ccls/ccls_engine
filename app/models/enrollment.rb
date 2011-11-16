@@ -14,6 +14,9 @@ class Enrollment < Shared
 	has_many   :operational_events
 	has_many   :follow_ups
 
+	delegate :is_other?, :to => :ineligible_reason, :allow_nil => true, :prefix => true
+	delegate :is_other?, :to => :refusal_reason,    :allow_nil => true, :prefix => true
+
 	validates_presence_of   :project
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id], :allow_blank => true
 
@@ -80,14 +83,12 @@ class Enrollment < Shared
 	validates_complete_date_for :consented_on, :allow_nil => true
 	validates_complete_date_for :completed_on, :allow_nil => true
 
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :recruitment_priority
-		o.validates_length_of :ineligible_reason_specify
-		o.validates_length_of :other_refusal_reason
-		o.validates_length_of :reason_not_chosen
-		o.validates_length_of :terminated_reason
-		o.validates_length_of :reason_closed
-	end
+	validates_length_of :recruitment_priority,      :maximum => 250, :allow_blank => true
+	validates_length_of :ineligible_reason_specify, :maximum => 250, :allow_blank => true
+	validates_length_of :other_refusal_reason,      :maximum => 250, :allow_blank => true
+	validates_length_of :reason_not_chosen,         :maximum => 250, :allow_blank => true
+	validates_length_of :terminated_reason,         :maximum => 250, :allow_blank => true
+	validates_length_of :reason_closed,             :maximum => 250, :allow_blank => true
 
 	before_save :create_enrollment_update,
 		:if => :is_complete_changed?
@@ -139,14 +140,6 @@ class Enrollment < Shared
 	end
 
 protected
-
-	def ineligible_reason_is_other?
-		ineligible_reason.try(:is_other?)
-	end
-
-	def refusal_reason_is_other?
-		refusal_reason.try(:is_other?)
-	end
 
 	def create_enrollment_update
 		operational_event_type, occurred_on = if( is_complete == YNDK[:yes] )

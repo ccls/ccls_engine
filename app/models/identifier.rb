@@ -89,33 +89,21 @@ class Identifier < Shared
 		!is_case? and !is_mother?
 	end
 
-#	def studyid
-#		@studyid || "#{patid}-#{case_control_type}-#{orderno}"
-#	end
-
-#	def studyid_nohyphen
-#		@studyid_nohyphen || "#{patid}#{case_control_type}#{orderno}"
-#	end
-
-#	def studyid_intonly_nohyphen
-#		@studyid_intonly_nohyphen || "#{patid}" <<
-#			"#{(is_case?) ? 0 : case_control_type}#{orderno}"
-#	end
-
 protected
 
-	#	TODO this requires study_subject to exist FIRST
-#
-#	Surprised that my testing didn't force me to wrap it like I did in Patient and Pii
-#	This is most likely because my subjectless factory tests didn't 'change' the 
-#		matchingid which would've triggered this method and raised this issue.
-#	In reality, this should never occur.
-#
+	#
+	# logger levels are ... debug, info, warn, error, and fatal.
+	#
 	def trigger_update_matching_study_subjects_reference_date
 		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from Identifier:#{self.attributes['id']}"
 		logger.debug "DEBUG: matchingid changed from:#{matchingid_was}:to:#{matchingid}"
-		logger.debug "DEBUG: study_subject:#{study_subject.id}"
-		study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
+		if study_subject
+			logger.debug "DEBUG: study_subject:#{study_subject.id}"
+			study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
+		else
+			# This should never happen, except in testing.
+			logger.warn "WARNING: Identifier(#{self.attributes['id']}) is missing study_subject"
+		end
 	end
 
 	def prepare_fields_for_validation
@@ -135,24 +123,8 @@ protected
 		self.accession_no = nil if accession_no.blank?
 		self.idno_wiemels = nil if idno_wiemels.blank?
 
-
-
-#	Is this still necessary?  No validations on patid
-#	and it should only 'change' on create.
-#	20111115 - commenting out to see what happens in testing.
-#	there is one test that tests that it is padded at validation.
-#	there is another that fails as it doesn't pad in creation
-#	These are probably because there used to be validation for patid.
-#	TODO should probably move this functionality into the
-#		prepare_fields_for_creation and remove the before validation test.
-#	leaving it here until then
-#	The prepare_fields_for_creation currently only mucks with the patid
-#	for cases so would need to handle non-cases as well.
-		patid.try(:gsub!,/\D/,'') #unless patid.nil?
+		patid.try(:gsub!,/\D/,'')
 		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
-
-
-
 
 		matchingid.try(:gsub!,/\D/,'')
 #	TODO add more tests for this (try with valid? method)
@@ -160,7 +132,7 @@ protected
 		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
 	end
 
-#	TODO
+#	TODO	the new technique of basing the next on the maximum current works, but will require the existing data (at least the highs)
 #	The techniques for generating childid and patid are just not
 #	sustainable.  I do not have any immediate idea for a better
 #	approach, but I can already see that this will cause problems
@@ -216,8 +188,6 @@ protected
 #	should move this from pre validation to here for ALL subjects.
 #		patid.try(:gsub!,/\D/,'')
 #		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
-
-
 
 		#	don't assign if given or is not case (orderno is currently protected)
 		self.orderno = 0 if is_case? and orderno.blank?

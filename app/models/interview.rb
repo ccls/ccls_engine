@@ -20,16 +20,15 @@ class Interview < Shared
 	belongs_to :language
 	belongs_to :subject_relationship
 
-	with_options :allow_nil => true do |o|
-		o.validates_complete_date_for :began_on
-		o.validates_complete_date_for :ended_on
-		o.validates_complete_date_for :intro_letter_sent_on
-	end
-	with_options :maximum => 250, :allow_blank => true do |o|
-		o.validates_length_of :subject_relationship_other
-		o.validates_length_of :respondent_first_name
-		o.validates_length_of :respondent_last_name
-	end
+	delegate :is_other?, :to => :subject_relationship, :allow_nil => true, :prefix => true
+
+	validates_complete_date_for :began_on, :allow_nil => true
+	validates_complete_date_for :ended_on, :allow_nil => true
+	validates_complete_date_for :intro_letter_sent_on, :allow_nil => true
+
+	validates_length_of :subject_relationship_other, :maximum => 250, :allow_blank => true
+	validates_length_of :respondent_first_name,      :maximum => 250, :allow_blank => true
+	validates_length_of :respondent_last_name,       :maximum => 250, :allow_blank => true
 
 	validate :presence_of_subject_relationship_other,
 		:if => :subject_relationship_is_other?
@@ -88,10 +87,6 @@ protected
 
 	def subject_relationship_id_blank?
 		subject_relationship_id.blank?
-	end
-
-	def subject_relationship_is_other?
-		subject_relationship.try(:is_other?)
 	end
 
 	def update_intro_operational_event

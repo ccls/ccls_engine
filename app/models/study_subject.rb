@@ -4,7 +4,6 @@ class StudySubject < Shared
 #
 #	NOTE: Don't validate anything that the creating user can't do anything about.
 #
-
 	class NotTwoAbstracts < StandardError; end
 	class DuplicatesFound < StandardError; end
 
@@ -69,9 +68,9 @@ class StudySubject < Shared
 	validate :must_be_case_if_patient
 	validate :patient_admit_date_is_after_dob
 	validate :patient_diagnosis_date_is_after_dob
+	validates_complete_date_for :reference_date, :allow_nil => true
 
 	with_options :allow_nil => true do |n|
-		n.validates_complete_date_for :reference_date
 		n.with_options :to => :patient do |o|
 			o.delegate :admit_date
 			o.delegate :organization
@@ -141,6 +140,9 @@ class StudySubject < Shared
 	accepts_nested_attributes_for :identifier
 	accepts_nested_attributes_for :patient
 
+	#	Father's don't seem to be even remotely important in any of our study data.
+	#	Nevertheless, ...
+	#	Find the subject with matching familyid and subject_type of Father.
 	def father
 		StudySubject.find(:first,
 			:include => [:pii,:identifier,:subject_type],
@@ -152,6 +154,8 @@ class StudySubject < Shared
 		)
 	end
 
+	#	Find the subject with matching familyid except self.
+	#	TODO add a subject_type check here?  Otherwise, this could return any subject_type
 	def child
 		if subject_type == SubjectType['Mother']
 			StudySubject.find(:first,
@@ -166,6 +170,7 @@ class StudySubject < Shared
 		end
 	end
 
+	#	Find the subject with matching familyid and subject_type of Mother.
 	def mother
 		StudySubject.find(:first,
 			:include => [:pii,:identifier,:subject_type],
@@ -177,6 +182,7 @@ class StudySubject < Shared
 		)
 	end
 
+	#	Find all the subjects with matching familyid except self.
 	def family
 #	TODO what if familyid is NULL?
 		StudySubject.find(:all,
@@ -188,6 +194,7 @@ class StudySubject < Shared
 		)
 	end
 
+	#	Find all the subjects with matching matchingid except self.
 	def matching
 #	TODO what if matchingid is NULL?
 		StudySubject.find(:all,
@@ -199,6 +206,7 @@ class StudySubject < Shared
 		)
 	end
 
+	#	Find all the subjects with matching patid with subject_type Control except self.
 	def controls
 #	TODO what if subject is not a case?
 		StudySubject.find(:all, 
@@ -391,6 +399,7 @@ class StudySubject < Shared
 #	alias_method :update_subjects_reference_date_matching, 
 #		:update_study_subjects_reference_date_matching
 
+	#	Create (or just return mother) a mother subject based on subject's own data.
 	def create_mother
 		existing_mother = mother
 		if existing_mother
@@ -420,6 +429,9 @@ class StudySubject < Shared
 		end
 	end
 
+	#	Father's don't seem to be even remotely important in any of our study data.
+	#	Nevertheless, ...
+	#	Create (or just return father) a father subject based on subject's own data.
 	def create_father
 		existing_father = father
 		if existing_father
@@ -580,7 +592,7 @@ class StudySubject < Shared
 	end
 
 	def admitting_oncologist
-		#	can be blank so need more than try
+		#	can be blank so need more than try unless I nilify admitting_oncologist if blank
 		#patient.try(:admitting_oncologist) || "[no oncologist specified]"
 		if patient and !patient.admitting_oncologist.blank?
 			patient.admitting_oncologist
@@ -589,8 +601,6 @@ class StudySubject < Shared
 		end
 	end
 
-	#	NOTE admitting_oncologist is not a required field
-	#		and as such may be blank in the description.
 	def raf_duplicate_creation_attempted(attempted_subject)
 		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
 		ccls_enrollment.operational_events << OperationalEvent.create!(
@@ -637,7 +647,9 @@ protected
 	end
 
 	def self.hx_id
-		#	added try and || for usage on empty db
+		#	added try and || for usage on empty db.  
+		#	It is highly likely that most tests will fail on an empty db so this is kinda moot.
+		#	TODO remove the usage of hx_id and other hx_* specific methods.
 		Project['HomeExposures'].try(:id)||0
 	end
 

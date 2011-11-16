@@ -7,6 +7,8 @@ class Patient < Shared
 	belongs_to :organization
 	belongs_to :diagnosis
 
+	delegate :is_other?, :to => :diagnosis, :allow_nil => true, :prefix => true
+
 	attr_protected :study_subject_id
 
 	validates_presence_of :admit_date
@@ -19,7 +21,6 @@ class Patient < Shared
 #	avoid duplicate errors so allow blank here
 	validates_length_of   :hospital_no, :maximum => 25, :allow_blank => true
 	validates_uniqueness_of :hospital_no, :scope => :organization_id
-
 	validates_past_date_for :admit_date
 	validates_past_date_for :diagnosis_date
 	validates_past_date_for :treatment_began_on
@@ -27,13 +28,9 @@ class Patient < Shared
 	validate :diagnosis_date_is_after_dob
 	validate :treatment_began_on_is_after_diagnosis_date
 	validate :subject_is_case
-
-	validates_complete_date_for :admit_date,
-		:allow_nil => true
-	validates_complete_date_for :diagnosis_date,
-		:allow_nil => true
-	validates_complete_date_for :treatment_began_on,
-		:allow_nil => true
+	validates_complete_date_for :admit_date,         :allow_nil => true
+	validates_complete_date_for :diagnosis_date,     :allow_nil => true
+	validates_complete_date_for :treatment_began_on, :allow_nil => true
 
 	validates_length_of :raf_zip, :maximum => 10, :allow_blank => true
 
@@ -136,10 +133,6 @@ protected
 		if study_subject and !study_subject.is_case?
 			errors.add(:study_subject,"must be case to have patient info")
 		end
-	end
-
-	def diagnosis_is_other?
-		diagnosis.try(:is_other?)
 	end
 
 	#	custom validation for custom message without standard attribute prefix
