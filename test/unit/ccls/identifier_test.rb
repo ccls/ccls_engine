@@ -65,6 +65,18 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_difference('Identifier.count',1) {
 			identifier = Factory(:subjectless_identifier)
 			assert_nil identifier.study_subject
+			assert_not_nil identifier.studyid
+			assert_match /-\d-/, identifier.studyid			#	no patid or orderno
+		} }
+	end
+
+	test "explicit Factory subjectless identifier test with patid and orderno" do
+		assert_difference('StudySubject.count',0) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:subjectless_identifier,:patid => '123', :orderno => 7)
+			assert_nil identifier.study_subject
+			assert_not_nil identifier.studyid
+			assert_match /0123-\d-7/, identifier.studyid
 		} }
 	end
 
@@ -73,6 +85,22 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_difference('Identifier.count',1) {
 			identifier = Factory(:identifier)
 			assert_not_nil identifier.study_subject
+			assert_not_nil identifier.studyid
+			assert_not_nil identifier.study_subject.studyid
+			assert_match /-\d-/, identifier.studyid										#	no patid or orderno
+			assert_match /-\d-/, identifier.study_subject.studyid			#	no patid or orderno
+		} }
+	end
+
+	test "explicit Factory identifier test with patid and orderno" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:identifier,:patid => '123', :orderno => 7)
+			assert_not_nil identifier.study_subject
+			assert_not_nil identifier.studyid
+			assert_not_nil identifier.study_subject.studyid
+			assert_match /0123-\d-7/, identifier.studyid
+			assert_match /0123-\d-7/, identifier.study_subject.studyid
 		} }
 	end
 
@@ -83,6 +111,10 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 			assert_not_nil identifier.study_subject
 			assert_equal identifier.case_control_type, 'C'
 			assert_equal identifier.study_subject.subject_type, SubjectType['Case']
+			assert_not_nil identifier.studyid
+			assert_not_nil identifier.study_subject.studyid
+			assert_match /\d{4}-C-0/, identifier.studyid
+			assert_match /\d{4}-C-0/, identifier.study_subject.studyid
 		} }
 	end
 
@@ -92,6 +124,23 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 			identifier = Factory(:control_identifier)
 			assert_not_nil identifier.study_subject
 			assert_equal identifier.study_subject.subject_type, SubjectType['Control']
+			assert_not_nil identifier.studyid
+			assert_not_nil identifier.study_subject.studyid
+			assert_match /-\d-/, identifier.studyid										#	no patid or orderno
+			assert_match /-\d-/, identifier.study_subject.studyid			#	no patid or orderno
+		} }
+	end
+
+	test "explicit Factory control identifier test with patid and orderno" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Identifier.count',1) {
+			identifier = Factory(:control_identifier,:patid => '123', :orderno => 7)
+			assert_not_nil identifier.study_subject
+			assert_equal identifier.study_subject.subject_type, SubjectType['Control']
+			assert_not_nil identifier.studyid
+			assert_not_nil identifier.study_subject.studyid
+			assert_match /0123-\d-7/, identifier.studyid
+			assert_match /0123-\d-7/, identifier.study_subject.studyid
 		} }
 	end
 
@@ -102,7 +151,17 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 			assert_not_nil identifier.study_subject
 			assert_equal identifier.case_control_type, 'M'
 			assert_equal identifier.study_subject.subject_type, SubjectType['Mother']
+			assert_nil identifier.studyid
+			assert_not_nil identifier.study_subject.studyid
+			assert_equal 'n/a', identifier.study_subject.studyid
 		} }
+	end
+
+	test "explicit Factory subjectless identifier test to after_save change" do
+		identifier = Factory(:subjectless_identifier)
+		assert_nil identifier.study_subject
+		#	trigger_update_matching_study_subjects_reference_date
+		identifier.update_attributes(:matchingid => 'somethingtotrigger')
 	end
 
 	test "should nullify blank ssn before validation" do
@@ -297,8 +356,6 @@ pending
 		assert_nil identifier.studyid_nohyphen
 		assert_nil identifier.studyid_intonly_nohyphen
 		assert_equal "0123-C-0", identifier.studyid
-#		assert_equal "0123C0",   identifier.studyid_nohyphen
-#		assert_equal "012300",   identifier.studyid_intonly_nohyphen
 	end
 
 	test "should generate subjectid on creation for any study_subject" do
@@ -376,8 +433,6 @@ pending
 			assert_nil identifier.studyid_nohyphen
 			assert_nil identifier.studyid_intonly_nohyphen
 			assert_equal "0123-C-0", identifier.studyid
-#			assert_equal "0123C0",   identifier.studyid_nohyphen
-#			assert_equal "012300",   identifier.studyid_intonly_nohyphen
 			assert_equal "0123",     identifier.patid
 		} } #}
 	end

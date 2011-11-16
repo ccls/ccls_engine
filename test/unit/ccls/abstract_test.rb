@@ -2,6 +2,8 @@ require 'test_helper'
 
 class Ccls::AbstractTest < ActiveSupport::TestCase
 	#
+	#	At some point, I need to point this comment somewhere more noticable.
+	#
 	#	Most, if not all, of these 'class level' assertions are defined in ccls-common_lib.
 	#	They call 'create_object', which, unless explicitly defined, is handled in a
 	#	method_missing handler which extracts the model name from the testing class
@@ -9,9 +11,16 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	#	In addition, this same method missing handler is used for handling undefined 
 	#	methods like 'create_abstract'.  The handler takes this method which 
 	#	matches /create_(.*)/ and calls a Factory($1)
+	#
 	#	Also note, create_object only works in unit tests as they are generally associated
 	#	with a particular model.  Controllers, on the other hand, do not share this
 	#	privilege as they are not.  The create_MODEL_NAME technique does still work.
+	#
+	#	These create_* methods call Factory.build and then save.
+	#	This is predominantly because by default Factory uses create! which raises
+	#	errors rather than returning false which makes testing the error difficult.
+	#	I think that there is a way to set the "default_strategy" for factory_girl,
+	#	but I've yet to figure that out.
 	#	
 	assert_should_belong_to :study_subject
 	assert_should_protect( :study_subject_id, :entry_1_by_uid, 

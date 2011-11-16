@@ -49,9 +49,12 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
 	test "explicit Factory mother study_subject test" do
 		assert_difference('StudySubject.count',1) {
-			study_subject = Factory(:mother_study_subject)
-			assert_equal study_subject.subject_type, SubjectType['Mother']
-			assert_equal study_subject.sex, 'F'
+			s = Factory(:mother_study_subject)
+			assert_equal s.subject_type, SubjectType['Mother']
+			assert_equal s.sex, 'F'
+			assert_nil s.identifier
+			assert_not_nil s.studyid
+			assert_equal 'n/a', s.studyid
 		}
 	end
 
@@ -76,6 +79,10 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_not_nil s.identifier.childid
 			assert_not_nil s.identifier.patid
 			assert_not_nil s.organization_id
+			assert_not_nil s.studyid
+			assert_not_nil s.identifier.studyid
+			assert_match /\d{4}-C-0/, s.studyid
+			assert_match /\d{4}-C-0/, s.identifier.studyid
 #	New sequencing make the value of this relatively unpredictable
 #			assert_equal s.organization_id, Hospital.first.organization_id
 		} } } }
@@ -403,8 +410,6 @@ pending	#	TODO will require something?
 		assert_nil study_subject.identifier.studyid_nohyphen
 		assert_nil study_subject.identifier.studyid_intonly_nohyphen
 		assert_equal "0123-C-0", study_subject.studyid
-#		assert_equal "0123C0",   study_subject.identifier.studyid_nohyphen
-#		assert_equal "012300",   study_subject.identifier.studyid_intonly_nohyphen
 	end
 
 	test "should belong to vital_status" do
