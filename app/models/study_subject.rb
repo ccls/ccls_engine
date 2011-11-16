@@ -529,7 +529,7 @@ class StudySubject < Shared
 		#	as the other attributes are from the patient model
 		#	which is only for cases.
 		if params.has_key?(:dob) and !params[:dob].blank? and
-				params.has_key?(:sex) and !params[:sex].blank? and
+				params.has_key?(:sex) and !params[:sex].blank? and 
 				params.has_key?(:mother_maiden_name)
 			conditions[0] << '(dob = :dob AND sex = :sex AND ( mother_maiden_name IS NULL OR mother_maiden_name = :mother_maiden_name ))'
 			conditions[1][:dob] = params[:dob]
