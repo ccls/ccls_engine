@@ -1270,12 +1270,61 @@ pending	#	TODO
 	end
 
 	test "should create mother when isn't one" do
+		#	need an identifier when creating mother
 		study_subject = create_identifier.study_subject
 		assert_nil study_subject.reload.mother
 		assert_difference('Pii.count',1) {
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@mother = study_subject.create_mother
+		} } }
+		assert_equal @mother, study_subject.mother
+	end
+
+	test "should copy mothers names when create mother for case" do
+		study_subject = create_complete_case_study_subject(
+			:pii_attributes => Factory.attributes_for(:pii,
+				:mother_first_name  => 'First',
+				:mother_middle_name => 'Middle',
+				:mother_last_name   => 'Last',
+				:mother_maiden_name => 'Maiden'))
+		assert_nil study_subject.reload.mother
+		assert_difference('Pii.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			@mother = study_subject.create_mother
+			assert_equal @mother.first_name,  'First'
+			assert_equal @mother.middle_name, 'Middle'
+			assert_equal @mother.last_name,   'Last'
+			assert_equal @mother.maiden_name, 'Maiden'
+			assert_equal @mother.first_name,  study_subject.mother_first_name
+			assert_equal @mother.middle_name, study_subject.mother_middle_name
+			assert_equal @mother.last_name,   study_subject.mother_last_name
+			assert_equal @mother.maiden_name, study_subject.mother_maiden_name
+		} } }
+		assert_equal @mother, study_subject.mother
+	end
+
+	test "should copy mothers names when create mother for control" do
+		study_subject = create_complete_control_study_subject(
+			:pii_attributes => Factory.attributes_for(:pii,
+				:mother_first_name  => 'First',
+				:mother_middle_name => 'Middle',
+				:mother_last_name   => 'Last',
+				:mother_maiden_name => 'Maiden'))
+		assert_nil study_subject.reload.mother
+		assert_difference('Pii.count',1) {
+		assert_difference('Identifier.count',1) {
+		assert_difference('StudySubject.count',1) {
+			@mother = study_subject.create_mother
+			assert_equal @mother.first_name,  'First'
+			assert_equal @mother.middle_name, 'Middle'
+			assert_equal @mother.last_name,   'Last'
+			assert_equal @mother.maiden_name, 'Maiden'
+			assert_equal @mother.first_name,  study_subject.mother_first_name
+			assert_equal @mother.middle_name, study_subject.mother_middle_name
+			assert_equal @mother.last_name,   study_subject.mother_last_name
+			assert_equal @mother.maiden_name, study_subject.mother_maiden_name
 		} } }
 		assert_equal @mother, study_subject.mother
 	end

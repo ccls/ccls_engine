@@ -80,8 +80,10 @@ class StudySubject < Shared
 		n.with_options :to => :pii do |o|
 			o.delegate :initials
 			o.delegate :email
-			o.delegate :last_name
 			o.delegate :first_name
+			o.delegate :middle_name
+			o.delegate :last_name
+			o.delegate :maiden_name
 			o.delegate :dob
 			o.delegate :fathers_name
 			o.delegate :father_first_name
@@ -418,10 +420,6 @@ class StudySubject < Shared
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
 				:pii_attributes => {
-#					:first_name  => pii.try(:mother_first_name),
-#					:middle_name => pii.try(:mother_middle_name),
-#					:last_name   => pii.try(:mother_last_name),
-#					:maiden_name => pii.try(:mother_maiden_name),
 					:first_name  => mother_first_name,
 					:middle_name => mother_middle_name,
 					:last_name   => mother_last_name,
@@ -454,9 +452,6 @@ class StudySubject < Shared
 				:sex => 'M',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
 				:pii_attributes => {
-#					:first_name  => pii.try(:father_first_name),
-#					:middle_name => pii.try(:father_middle_name),
-#					:last_name   => pii.try(:father_last_name),
 					:first_name  => father_first_name,
 					:middle_name => father_middle_name,
 					:last_name   => father_last_name,
@@ -515,18 +510,21 @@ class StudySubject < Shared
 	#		admit_date
 	#		organization_id
 	#
+	#		Would want to explicitly exclude self, but this check is
+	#		to be done BEFORE subject creation so won't actually
+	#		have an id to use to exclude itself anyway.
+	#
 	def self.duplicates(params={})
 		conditions = [[],{}]
-#
-#	TODO may want to explicitly exclude self, but this check is
-#		to be done before subject creation so won't actually
-#		have an id to use to exclude itself anyway.
-#
 		#	being blank is OK for mysql, but should be removed for simplicity and clarity
 		if params.has_key?(:hospital_no) and !params[:hospital_no].blank?
 			conditions[0] << '(hospital_no = :hospital_no)'
 			conditions[1][:hospital_no] = params[:hospital_no]
 		end
+
+		#	This is effectively the only test for adding controls
+		#	as the other attributes are from the patient model
+		#	which is only for cases.
 		if params.has_key?(:dob) and !params[:dob].blank? and
 				params.has_key?(:sex) and !params[:sex].blank? and
 				params.has_key?(:mother_maiden_name) #and !params[:mother_maiden_name].blank?
@@ -548,7 +546,7 @@ class StudySubject < Shared
 				#	have to do a LEFT JOIN, not the default INNER JOIN, here
 				#			:joins => [:pii,:patient,:identifier]
 				#	otherwise would only include subjects with pii, patient and identifier,
-				#	which would effectively exclude controls. (maybe that's ok?)
+				#	which would effectively exclude controls. (maybe that's ok?. NOT OK.)
 				:joins => [
 					'LEFT JOIN piis ON study_subjects.id = piis.study_subject_id',
 					'LEFT JOIN patients ON study_subjects.id = patients.study_subject_id',

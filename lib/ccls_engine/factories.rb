@@ -417,7 +417,10 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 	#	wrap in {} so is a proc/lambda and runs at runtime NOT at definition
 	#	when the fixtures have been loaded and these will work.
 	#	Only really needed for patient as gets Hospital and Diagnosis.
-	f.subject_type { SubjectType['Case'] }
+
+#	in parent so shouldn't be needed here
+#	f.subject_type { SubjectType['Case'] }
+
 #	f.pii { Factory.build(:subjectless_pii) }
 #	f.patient { Factory.build(:subjectless_patient) }
 #	f.identifier { Factory.build(:subjectless_identifier,
@@ -442,6 +445,11 @@ Factory.define :complete_nonwaivered_case_study_subject, :parent => :complete_ca
 end
 Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
+end
+Factory.define :complete_control_study_subject, :parent => :control_study_subject do |f|
+	#	as these are attributes_for, don't need to be "subjectless_*"
+	f.pii_attributes { Factory.attributes_for(:pii) }	
+	f.identifier_attributes { Factory.attributes_for(:control_identifier) }
 end
 Factory.define :mother_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Mother'] }
