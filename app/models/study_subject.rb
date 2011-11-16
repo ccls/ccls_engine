@@ -514,9 +514,12 @@ class StudySubject < Shared
 	#		to be done BEFORE subject creation so won't actually
 	#		have an id to use to exclude itself anyway.
 	#
+	#		For adding controls, will need to be able to exclude case
+	#		so adding :exclude_id option somehow
+	#
 	def self.duplicates(params={})
 		conditions = [[],{}]
-		#	being blank is OK for mysql, but should be removed for simplicity and clarity
+
 		if params.has_key?(:hospital_no) and !params[:hospital_no].blank?
 			conditions[0] << '(hospital_no = :hospital_no)'
 			conditions[1][:hospital_no] = params[:hospital_no]
@@ -527,13 +530,12 @@ class StudySubject < Shared
 		#	which is only for cases.
 		if params.has_key?(:dob) and !params[:dob].blank? and
 				params.has_key?(:sex) and !params[:sex].blank? and
-				params.has_key?(:mother_maiden_name) #and !params[:mother_maiden_name].blank?
-#				params.has_key?(:mother_maiden_name) and !params[:mother_maiden_name].blank?
-#	Have the same birth date (piis.dob) and sex (subject.sex) as the new subject and (same mother’s maiden name or existing mother’s maiden name is null), or
+				params.has_key?(:mother_maiden_name)
 			conditions[0] << '(dob = :dob AND sex = :sex AND ( mother_maiden_name IS NULL OR mother_maiden_name = :mother_maiden_name ))'
 			conditions[1][:dob] = params[:dob]
 			conditions[1][:sex] = params[:sex]
-			conditions[1][:mother_maiden_name] = params[:mother_maiden_name].to_s		#	to_s as may be null
+			#	added to_s as may be null so sql is valid and has '' rather than a blank
+			conditions[1][:mother_maiden_name] = params[:mother_maiden_name].to_s		
 		end
 		if params.has_key?(:admit_date) and !params[:admit_date].blank? and
 				params.has_key?(:organization_id) and !params[:organization_id].blank?
@@ -541,7 +543,17 @@ class StudySubject < Shared
 			conditions[1][:admit] = params[:admit_date]
 			conditions[1][:org] = params[:organization_id]
 		end
+
 		unless conditions[0].blank?
+			conditions_array = [ "(#{conditions[0].join(' OR ')})" ]
+			if params.has_key?(:exclude_id)
+				conditions_array[0] << " AND study_subjects.id != :exclude_id"
+				conditions[1][:exclude_id] = params[:exclude_id]
+			end
+			conditions_array << conditions[1]
+#puts conditions_array.inspect
+#["((hospital_no = :hospital_no) OR (dob = :dob AND sex = :sex AND ( mother_maiden_name IS NULL OR mother_maiden_name = :mother_maiden_name )) OR (admit_date = :admit AND organization_id = :org)) AND study_subjects.id != :exclude_id", {:hospital_no=>"matchthis", :org=>31, :admit=>Wed, 16 Nov 2011, :sex=>"F", :exclude_id=>3, :mother_maiden_name=>"", :dob=>Wed, 16 Nov 2011}]
+
 			find(:all,
 				#	have to do a LEFT JOIN, not the default INNER JOIN, here
 				#			:joins => [:pii,:patient,:identifier]
@@ -552,22 +564,22 @@ class StudySubject < Shared
 					'LEFT JOIN patients ON study_subjects.id = patients.study_subject_id',
 					'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id'
 				],
-				:conditions => [ conditions[0].join(' OR '), conditions[1] ]
+				:conditions => conditions_array
 			) 
 		else
 			[]
 		end
 	end
 
-	def duplicates
-		StudySubject.duplicates(
+	def duplicates(options={})
+		StudySubject.duplicates({
 			:mother_maiden_name => self.mother_maiden_name,
 			:hospital_no => self.hospital_no,
 			:dob => self.dob,
 			:sex => self.sex,
 			:admit_date => self.admit_date,
 			:organization_id => self.organization_id
-		)
+		}.merge(options))
 	end
 
 	def self.find_case_by_patid(patid)

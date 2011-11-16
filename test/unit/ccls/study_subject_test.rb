@@ -1501,6 +1501,10 @@ pending #	TODO should return rejected controls for case
 pending #	TODO should return what for rejected controls for non-case
 	end
 
+######################################################################
+#
+#	BEGIN duplicates tests
+#
 	test "should respond to duplicates" do
 		@duplicates = StudySubject.duplicates
 		assert_no_duplicates_found
@@ -1570,6 +1574,15 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_duplicates_found
 	end
 
+	test "should NOT return subject as duplicate if has matching dob and sex and explicitly excluded" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:sex => 'M',
+			:pii_attributes => { :dob => study_subject.dob } )
+		@duplicates = new_study_subject.duplicates(:exclude_id => study_subject.id)
+		assert_no_duplicates_found
+	end
+
 	test "should NOT return subject as duplicate if has matching dob and sex and differing mother_maiden_name" do
 		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
 		new_study_subject = new_case_study_subject_for_duplicate_search(
@@ -1622,6 +1635,14 @@ pending #	TODO should return what for rejected controls for non-case
 		assert_duplicates_found
 	end
 
+	test "should NOT return subject as duplicate if has matching hospital_no and explicitly excluded" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { :hospital_no => study_subject.hospital_no })
+		@duplicates = new_study_subject.duplicates(:exclude_id => study_subject.id)
+		assert_no_duplicates_found
+	end
+
 #	Case subjects:  Are admitted the same admit date (patients.admit_date) at the same institution (patients.organization_id)
 #	Only cases have a patient record, so not explicit check for Case is done.
 
@@ -1633,6 +1654,16 @@ pending #	TODO should return what for rejected controls for non-case
 				:organization_id => study_subject.organization_id })
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
+	end
+
+	test "should NOT return subject as duplicate if has matching admit_date and organization and explicitly excluded" do
+		study_subject = create_case_study_subject_for_duplicate_search
+		new_study_subject = new_case_study_subject_for_duplicate_search(
+			:patient_attributes => { 
+				:admit_date => study_subject.admit_date,
+				:organization_id => study_subject.organization_id })
+		@duplicates = new_study_subject.duplicates(:exclude_id => study_subject.id)
+		assert_no_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if just has matching admit_date" do
@@ -1750,6 +1781,11 @@ pending #	TODO should return what for rejected controls for non-case
 #			:organization_id => study_subject.organization_id )
 #		assert_no_duplicates_found
 #	end
+
+#
+#	END duplicates tests
+#
+######################################################################
 
 	test "should return case by patid" do
 		Factory(:case_study_subject)	#	just another for noise
