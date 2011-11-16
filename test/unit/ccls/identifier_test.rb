@@ -283,6 +283,11 @@ pending
 		assert_equal 0, identifier.orderno
 	end
 
+	test "should not overwrite given studyid" do
+		identifier = Factory(:identifier,:studyid => 'MyStudyId').reload
+		assert_equal 'MyStudyId', identifier.studyid
+	end
+
 	test "should set studyid with patid, case_control_type and orderno for" <<
 			" case_control_type c" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
