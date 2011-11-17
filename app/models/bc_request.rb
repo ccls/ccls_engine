@@ -9,6 +9,8 @@ class BcRequest < Shared
 	validates_length_of :request_type, :maximum => 250, :allow_blank => true
 	validates_length_of :status,       :maximum => 250, :allow_blank => true
 
+#	validates_inclusion_of :status, :in => statuses
+
 	def self.statuses
 		%w( active waitlist pending complete )
 	end
