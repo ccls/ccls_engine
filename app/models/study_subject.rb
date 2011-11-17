@@ -130,6 +130,7 @@ class StudySubject < Shared
 	accepts_nested_attributes_for :enrollments
 	accepts_nested_attributes_for :addressings,
 		:reject_if => proc { |attrs|
+			!attrs[:address_required] &&
 			attrs[:address_attributes][:line_1].blank? &&
 			attrs[:address_attributes][:line_2].blank? &&
 			attrs[:address_attributes][:unit].blank? &&

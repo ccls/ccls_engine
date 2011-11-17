@@ -14,6 +14,10 @@ class Addressing < Shared
 
 	attr_accessor :current_user
 
+	#	flag used in study_subject's nested attributes for addressing
+	#		to not reject if address fields are blank.
+	attr_accessor :address_required
+
 	validates_length_of   :why_invalid,  :maximum => 250, :allow_blank => true
 	validates_presence_of :why_invalid,  :if => :is_not_valid?
 	validates_length_of   :how_verified, :maximum => 250, :allow_blank => true

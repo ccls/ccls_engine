@@ -226,6 +226,21 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} } }
 	end
 
+	test "should create study_subject and require address with flag" do
+		assert_difference( 'Address.count', 0) {
+		assert_difference( 'Addressing.count', 0) {
+		assert_difference( "StudySubject.count", 0 ) {
+			study_subject = create_study_subject(
+				:addressings_attributes => [Factory.attributes_for(:addressing,
+					:address_required   => true,
+					:address_attributes => { :address_type => AddressType['residence'] } )])
+			assert study_subject.errors.on_attr_and_type('addressings.address.line_1',:blank)
+			assert study_subject.errors.on_attr_and_type('addressings.address.city',:blank)
+			assert study_subject.errors.on_attr_and_type('addressings.address.state',:blank)
+			assert study_subject.errors.on_attr_and_type('addressings.address.zip',:blank)
+		} } }
+	end
+
 	test "should respond to residence_addresses_count" do
 		study_subject = create_study_subject
 		assert study_subject.respond_to?(:residence_addresses_count)
