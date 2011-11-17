@@ -103,6 +103,9 @@ class StudySubject < Shared
 			o.delegate :patid
 			o.delegate :orderno
 			o.delegate :case_control_type
+			o.delegate :subjectid
+#			o.delegate :familyid
+#			o.delegate :matchingid
 		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
@@ -203,6 +206,7 @@ class StudySubject < Shared
 	end
 
 	#	Find all the subjects with matching matchingid except self.
+	#	If matchingid is nil, this sql doesn't work.  Could fix, but this situation is unlikely.
 	def matching
 #	TODO what if matchingid is NULL?
 		StudySubject.find(:all,
@@ -215,8 +219,9 @@ class StudySubject < Shared
 	end
 
 	#	Find all the subjects with matching patid with subject_type Control except self.
+	#	If patid is nil, this sql doesn't work.  Could fix, but this situation is unlikely.
 	def controls
-#	TODO what if subject is not a case?
+		return [] unless is_case?
 		StudySubject.find(:all, 
 			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
@@ -227,6 +232,7 @@ class StudySubject < Shared
 	end
 
 	def rejected_controls
+		return [] unless is_case?
 		CandidateControl.find(:all,
 			:conditions => {
 				:related_patid    => patid,
@@ -257,6 +263,24 @@ class StudySubject < Shared
 	#	true only if type is Case
 	def is_case?
 		subject_type == SubjectType['Case']
+	end
+
+	#	Returns boolean of comparison
+	#	true only if type is Control
+	def is_control?
+		subject_type == SubjectType['Control']
+	end
+
+	#	Returns boolean of comparison
+	#	true only if type is Mother
+	def is_mother?
+		subject_type == SubjectType['Mother']
+	end
+
+	#	Returns boolean of comparison
+	#	true only if type is Father
+	def is_father?
+		subject_type == SubjectType['Father']
 	end
 
 	def race_names
@@ -405,11 +429,10 @@ class StudySubject < Shared
 		end
 		true
 	end
-#	alias_method :update_subjects_reference_date_matching, 
-#		:update_study_subjects_reference_date_matching
 
 	#	Create (or just return mother) a mother subject based on subject's own data.
 	def create_mother
+		#	The mother method will effectively find and itself.
 		existing_mother = mother
 		if existing_mother
 			existing_mother
@@ -442,6 +465,7 @@ class StudySubject < Shared
 	#	Nevertheless, ...
 	#	Create (or just return father) a father subject based on subject's own data.
 	def create_father
+		#	The father method will effectively find and itself.
 		existing_father = father
 		if existing_father
 			existing_father
@@ -483,9 +507,7 @@ class StudySubject < Shared
 	end
 
 	def next_control_orderno(grouping='6')
-#		assume that self is a case?
-		#	code from CandidateControl
-		#require_dependency 'identifier.rb' unless Identifier
+		return nil unless is_case?
 		last_control = StudySubject.find(:first, 
 			:joins => :identifier, 
 			:order => 'identifiers.orderno DESC', 

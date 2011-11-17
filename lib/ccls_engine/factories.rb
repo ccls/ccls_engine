@@ -84,6 +84,10 @@ Factory.define :candidate_control do |f|
 	f.reject_candidate false
 	f.sex { random_sex }
 end
+Factory.define :rejected_candidate_control, :parent => :candidate_control do |f|
+	f.reject_candidate true
+	f.rejection_reason "Some test reason"
+end
 
 Factory.define :context do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
@@ -212,6 +216,10 @@ end
 Factory.define :mother_identifier, :parent => :identifier do |f|
 	f.association :study_subject, :factory => :mother_study_subject
 	f.case_control_type 'm'
+end
+Factory.define :father_identifier, :parent => :identifier do |f|
+	f.association :study_subject, :factory => :father_study_subject
+#	f.case_control_type 'm'
 end
 
 Factory.define :ineligible_reason do |f|
@@ -454,6 +462,20 @@ end
 Factory.define :mother_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Mother'] }
 	f.sex 'F'
+end
+Factory.define :complete_mother_study_subject, :parent => :mother_study_subject do |f|
+	#	as these are attributes_for, don't need to be "subjectless_*"
+	f.pii_attributes { Factory.attributes_for(:pii) }	
+	f.identifier_attributes { Factory.attributes_for(:mother_identifier) }
+end
+Factory.define :father_study_subject, :parent => :study_subject do |f|
+	f.subject_type { SubjectType['Father'] }
+	f.sex 'M'
+end
+Factory.define :complete_father_study_subject, :parent => :father_study_subject do |f|
+	#	as these are attributes_for, don't need to be "subjectless_*"
+	f.pii_attributes { Factory.attributes_for(:pii) }	
+	f.identifier_attributes { Factory.attributes_for(:father_identifier) }
 end
 
 Factory.define :subject_language do |f|

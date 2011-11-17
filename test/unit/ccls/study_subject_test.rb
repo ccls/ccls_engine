@@ -303,13 +303,12 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should NOT create study_subject with empty homex_outcome" do
-pending
-		assert_difference( 'HomexOutcome.count', 0) {
-		assert_difference( 'StudySubject.count', 0) {
-#			study_subject = create_study_subject( :homex_outcome_attributes => {})
-##			assert study_subject.errors.on('homex_outcome.state_id_no')	
-#			puts study_subject.errors.inspect
+	#	StudySubject currently accepts nested attributes for homex_outcome,
+	#	but an empty homex_outcome is no longer invalid.
+	test "should create study_subject with empty homex_outcome" do
+		assert_difference( 'HomexOutcome.count', 1) {
+		assert_difference( 'StudySubject.count', 1) {
+			study_subject = create_study_subject( :homex_outcome_attributes => {})
 		} }
 	end
 
@@ -387,18 +386,15 @@ pending
 		} }
 	end
 
-#	nothing is required any longer, so this can happen
-		test "should NOT create study_subject with empty identifier" do
-pending	#	TODO will require something?
-			assert_difference( 'Identifier.count', 0) {
-			assert_difference( 'StudySubject.count', 0) {
-#				study_subject = create_study_subject( :identifier_attributes => {} )
-#	#			assert study_subject.errors.on_attr_and_type('identifier.orderno',:blank)
-#	#			assert study_subject.errors.on_attr_and_type('identifier.patid',:blank)
-#				assert study_subject.errors.on_attr_and_type('identifier.case_control_type',:blank)
-#	#			assert study_subject.errors.on_attr_and_type('identifier.childid',:blank)
-			} }
-		end
+	#	StudySubject currently accepts nested attributes for identifier,
+	#	but an empty identifier is no longer invalid.
+	test "should create study_subject with empty identifier" do
+		assert_difference( 'Identifier.count', 1) {
+		assert_difference( 'StudySubject.count', 1) {
+			study_subject = create_study_subject( :identifier_attributes => {} )
+			assert_not_nil study_subject.identifier.subjectid
+		} }
+	end
 
 	test "studyid should be patid, case_control_type and orderno" do
 		Identifier.any_instance.stubs(:get_next_patid).returns('123')
@@ -436,76 +432,211 @@ pending	#	TODO will require something?
 #		} }
 #	end
 
-	test "should NOT destroy identifier with study_subject" do
-		study_subject = create_study_subject
-		Factory(:identifier, :study_subject => study_subject)
-		assert_difference( "StudySubject.count", -1 ) {
-		assert_difference('Identifier.count',0) {
-			study_subject.destroy
+	#
+	#	The dependency relationships are left undefined for most models.
+	#	Because of this, associated records are neither nullfied nor destroyed
+	#	when the associated models is destroyed.
+	#
+
+	test "should NOT destroy abstracts with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Abstract.count',1) {
+			@study_subject = Factory(:study_subject)
+			Factory(:abstract, :study_subject => @study_subject)
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Abstract.count',0) {
+			@study_subject.destroy
 		} }
 	end
 
-	test "should NOT destroy pii with study_subject" do
-		study_subject = create_study_subject
-		Factory(:pii, :study_subject => study_subject)
-		assert_difference( "StudySubject.count", -1 ) {
-		assert_difference('Pii.count',0) {
-			study_subject.destroy
+	test "should NOT destroy addressings with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Addressing.count',1) {
+			@study_subject = Factory(:addressing).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Addressing.count',0) {
+			@study_subject.destroy
 		} }
 	end
 
-	test "should NOT destroy patient with study_subject" do
-		study_subject = Factory(:case_study_subject)
-		Factory(:patient, :study_subject => study_subject)
-		assert_difference( "StudySubject.count", -1 ) {
-		assert_difference('Patient.count',0) {
-			study_subject.destroy
+	test "should NOT destroy addresses with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Address.count',1) {
+			@study_subject = Factory(:addressing).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Address.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy bc_requests with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('BcRequest.count',1) {
+			@study_subject = Factory(:study_subject)
+			Factory(:bc_request, :study_subject => @study_subject)
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('BcRequest.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy enrollments with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Enrollment.count',2) {	#	due to the callback creation of ccls enrollment
+			@study_subject = Factory(:enrollment).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Enrollment.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy gift_cards with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('GiftCard.count',1) {
+			@study_subject = Factory(:study_subject)
+			Factory(:gift_card, :study_subject => @study_subject)
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('GiftCard.count',0) {
+			@study_subject.destroy
 		} }
 	end
 
 	test "should NOT destroy home_exposure_response with study_subject" do
-		study_subject = Factory(:home_exposure_response).study_subject
-		assert_difference( "StudySubject.count", -1 ) {
+		assert_difference('StudySubject.count',1) {
+		assert_difference('HomeExposureResponse.count',1) {
+			@study_subject = Factory(:home_exposure_response).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
 		assert_difference('HomeExposureResponse.count',0) {
-			study_subject.destroy
+			@study_subject.destroy
 		} }
 	end
 
-	test "should destroy addressings with study_subject" do
-pending	#	TODO think should destroy addressings but NOT addresses
+	test "should NOT destroy homex_outcome with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('HomexOutcome.count',1) {
+			@study_subject = Factory(:study_subject)
+			Factory(:homex_outcome, :study_subject => @study_subject)
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('HomexOutcome.count',0) {
+			@study_subject.destroy
+		} }
 	end
 
-#	Address belongs to addressing so address can be shared
-#	Should destroy addressings though??
-#	test "should NOT destroy addresses with study_subject" do
-#		study_subject = create_study_subject
-#		Factory(:address, :study_subject => study_subject)
-#		Factory(:address, :study_subject => study_subject)
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('Address.count',0) {
-#			study_subject.destroy
-#		} }
-#	end
+	test "should NOT destroy identifier with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Identifier.count',1) {
+			@study_subject = Factory(:identifier).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Identifier.count',0) {
+			@study_subject.destroy
+		} }
+	end
 
-#	TODO	Why not?
-#	test "should NOT destroy operational_events with study_subject" do
-#		study_subject = create_study_subject
-#		Factory(:operational_event, :study_subject => study_subject)
-#		Factory(:operational_event, :study_subject => study_subject)
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('OperationalEvent.count',0) {
-#			study_subject.destroy
-#		} }
-#	end
+	test "should NOT destroy interviews with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Interview.count',1) {
+			@study_subject = Factory(:interview).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Interview.count',0) {
+			@study_subject.destroy
+		} }
+	end
 
-#	TODO	Why not?
-	test "should NOT destroy enrollments with study_subject" do
-		study_subject = create_study_subject
-		Factory(:enrollment, :study_subject => study_subject)
-		Factory(:enrollment, :study_subject => study_subject)
-		assert_difference( "StudySubject.count", -1 ) {
-		assert_difference('Enrollment.count',0) {
-			study_subject.destroy
+	test "should NOT destroy languages with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('SubjectLanguage.count',1) {
+			@study_subject = Factory(:subject_language).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('SubjectLanguage.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy patient with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Patient.count',1) {
+			@study_subject = Factory(:patient).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Patient.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy phone_numbers with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('PhoneNumber.count',1) {
+			@study_subject = Factory(:phone_number).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('PhoneNumber.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy pii with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Pii.count',1) {
+			@study_subject = Factory(:pii).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Pii.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy races with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Race.count',1) {
+			@study_subject = Factory(:subject_race).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Race.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy samples with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Sample.count',1) {
+			@study_subject = Factory(:sample).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Sample.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy subject_languages with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('SubjectLanguage.count',1) {
+			@study_subject = Factory(:subject_language).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('SubjectLanguage.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy subject_races with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('SubjectRace.count',1) {
+			@study_subject = Factory(:subject_race).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('SubjectRace.count',0) {
+			@study_subject.destroy
 		} }
 	end
 
@@ -516,16 +647,6 @@ pending	#	TODO think should destroy addressings but NOT addresses
 		assert_equal 1, study_subject.reload.analyses.length
 		study_subject.analyses << Factory(:analysis)
 		assert_equal 2, study_subject.reload.analyses.length
-	end
-
-	test "should NOT destroy samples with study_subject" do
-		study_subject = create_study_subject
-		Factory(:sample, :study_subject => study_subject)
-		Factory(:sample, :study_subject => study_subject)
-		assert_difference( "StudySubject.count", -1 ) {
-		assert_difference('Sample.count',0) {
-			study_subject.destroy
-		} }
 	end
 
 	#	All delegated fields
@@ -627,58 +748,6 @@ pending	#	TODO think should destroy addressings but NOT addresses
 			:pii_attributes => Factory.attributes_for(:pii))
 		assert study_subject.is_eligible_for_invitation?
 	end
-
-
-#	TODO
-#	test "should destroy patient on study_subject destroy" do
-#		assert_difference( 'Patient.count', 1) {
-#		assert_difference( 'StudySubject.count', 1) {
-#			@study_subject = create_study_subject(
-#				:patient_attributes => Factory.attributes_for(:patient))
-#		} }
-#		assert_difference( 'Patient.count', -1) {
-#		assert_difference( 'StudySubject.count', -1) {
-#			@study_subject.destroy
-#		} }
-#	end
-#
-#	test "should destroy dust_kit on study_subject destroy" do
-#		assert_difference( 'DustKit.count', 1) {
-#		assert_difference( 'StudySubject.count', 1) {
-#			@study_subject = create_study_subject(
-#				:dust_kit_attributes => Factory.attributes_for(:dust_kit))
-#		} }
-#		assert_difference( 'DustKit.count', -1) {
-#		assert_difference( 'StudySubject.count', -1) {
-#			@study_subject.destroy
-#		} }
-#	end
-#
-#	TODO
-#	test "should destroy identifier on study_subject destroy" do
-#		assert_difference( 'Identifier.count', 1) {
-#		assert_difference( 'StudySubject.count', 1) {
-#			@study_subject = create_study_subject(
-#				:identifier_attributes => Factory.attributes_for(:identifier))
-#		} }
-#		assert_difference( 'Identifier.count', -1) {
-#		assert_difference( 'StudySubject.count', -1) {
-#			@study_subject.destroy
-#		} }
-#	end
-#
-#	TODO
-#	test "should destroy pii on study_subject destroy" do
-#		assert_difference( 'Pii.count', 1) {
-#		assert_difference( 'StudySubject.count', 1) {
-#			@study_subject = create_study_subject(
-#				:pii_attributes => Factory.attributes_for(:pii))
-#		} }
-#		assert_difference( 'Pii.count', -1) {
-#		assert_difference( 'StudySubject.count', -1) {
-#			@study_subject.destroy
-#		} }
-#	end
 
 	test "should return race name for string" do
 		study_subject = create_study_subject
@@ -1220,10 +1289,16 @@ pending	#	TODO think should destroy addressings but NOT addresses
 		assert_nil @study_subject.reload.dob
 	end
 
-	test "should return SOMETHING for next_control_orderno for control" do
-		study_subject = create_identifier.study_subject
-#		assert_equal 1, case_study_subject.next_control_orderno
-pending	#	TODO 
+	test "should return nil for next_control_orderno for control" do
+		study_subject = create_complete_control_study_subject
+		assert study_subject.is_control?
+		assert_equal nil, study_subject.next_control_orderno
+	end
+
+	test "should return nil for next_control_orderno for mother" do
+		study_subject = create_complete_mother_study_subject
+		assert study_subject.is_mother?
+		assert_equal nil, study_subject.next_control_orderno
 	end
 
 	test "should return 1 for next_control_orderno for case with no controls" do
@@ -1341,7 +1416,9 @@ pending	#	TODO
 	end
 
 	test "should not create mother for mother" do
-pending	#	TODO should it?  doubt it.
+		study_subject = create_complete_mother_study_subject
+		assert_equal study_subject, study_subject.mother
+		assert_equal study_subject, study_subject.create_mother
 	end
 
 	test "should assign icf_master_id to mother on creation if one exists" do
@@ -1395,7 +1472,9 @@ pending	#	TODO should it?  doubt it.
 	end
 
 	test "should not create father for father" do
-pending	#	TODO should it?  doubt it.
+		study_subject = create_complete_father_study_subject
+		assert_equal study_subject, study_subject.father
+		assert_equal study_subject, study_subject.create_father
 	end
 
 	test "should assign icf_master_id to father on creation if one exists" do
@@ -1412,16 +1491,19 @@ pending	#	TODO should it?  doubt it.
 		assert_nil father.reload.identifier.icf_master_id
 	end
 
-	test "should get control subjects if case" do
-		study_subject = create_case_identifier.study_subject
-		study_subject.controls
-pending #	TODO add controls method, check if case, ...
+	test "should get control subjects for case subject" do
+		study_subject = create_complete_case_study_subject
+		assert_equal [], study_subject.controls	#	aren't any controls, yet
+		control = create_control_identifier(:patid => study_subject.patid).study_subject.reload
+		assert_equal [control], study_subject.controls
 	end
 
-	test "should do what for control subjects if not case" do
-		study_subject = create_identifier.study_subject
-		study_subject.controls
-pending #	TODO add controls method, check if case, ...
+	test "should get other control subjects for control subject" do
+		study_subject = create_complete_control_study_subject
+		assert_equal [], study_subject.controls
+		control = create_control_identifier.study_subject				
+		#	both have nil patid so not particularly helpful 'patid = NULL' doesn't work
+		assert_equal [], study_subject.controls
 	end
 
 	test "should NOT include self in family" do
@@ -1489,16 +1571,21 @@ pending	#	TODO should do what for null familyid for family
 		assert_equal father, study_subject.father
 	end
 
-	test "should return rejected controls for case" do
-		study_subject = create_case_identifier.study_subject
-		study_subject.rejected_controls
-pending #	TODO should return rejected controls for case
+	test "should return rejected controls for case subject" do
+		study_subject = create_complete_case_study_subject
+		assert study_subject.is_case?
+		assert study_subject.rejected_controls.empty?
+		candidate_control = create_rejected_candidate_control(:related_patid => study_subject.patid)
+		assert_equal [candidate_control], study_subject.rejected_controls
 	end
 
-	test "should return what for rejected controls for non-case" do
-		study_subject = create_identifier.study_subject
-		study_subject.rejected_controls
-pending #	TODO should return what for rejected controls for non-case
+	test "should return rejected controls for control subject" do
+		study_subject = create_complete_control_study_subject
+		assert !study_subject.is_case?
+		assert  study_subject.is_control?
+		assert study_subject.rejected_controls.empty?
+		candidate_control = create_rejected_candidate_control(:related_patid => study_subject.patid)
+		assert_equal [], study_subject.rejected_controls
 	end
 
 ######################################################################

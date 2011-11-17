@@ -100,6 +100,11 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
 	end
 
+	test "should raise NoHomeExposureEnrollment on create_interview_outcome_update" <<
+			" if no enrollment in HomeExposures" do
+pending	#	TODO
+	end
+
 	test "should create operational event when sample kit sent" do
 		homex_outcome = create_complete_homex_outcome
 		past_date = Chronic.parse('Jan 15 2003').to_date
@@ -140,11 +145,6 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		assert_equal 'sample_complete', oe.operational_event_type.code
 		assert_equal past_date,  oe.occurred_on
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
-	end
-
-	test "should raise NoHomeExposureEnrollment on create_interview_outcome_update" <<
-			" if no enrollment in HomeExposures" do
-pending	#	TODO
 	end
 
 	test "should raise NoHomeExposureEnrollment on create_sample_outcome_update" <<

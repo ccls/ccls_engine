@@ -46,7 +46,6 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_require_attribute_length :newid, :maximum => 6
 	assert_should_require_attribute_length :gbid, :maximum => 26
 	assert_should_require_attribute_length :lab_no_wiemels, :maximum => 25
-#	assert_should_require_attribute_length :hospital_no, :maximum => 25
 	assert_should_require_attribute_length :idno_wiemels, :maximum => 10
 	assert_should_require_attribute_length :accession_no, :maximum => 25
 	assert_should_require_attribute_length :icf_master_id, :maximum => 9
@@ -392,14 +391,18 @@ pending
 
 	end
 
-	#	TODO "should generate familyid == child's subjectid on creation of mother" do
-	test "should generate familyid == child's subjectid on creation of mother" do
-		identifier = Factory(:identifier, :case_control_type => 'm' )
-		assert_not_nil identifier.subjectid
-#	TODO subject could be mother, but child may not be in database?
-#		assert_not_nil identifier.familyid
-#		assert_equal   identifier.subjectid, identifier.familyid
-pending
+	test "should generate familyid == child's subjectid on creation of case's mother" do
+		case_identifier = create_case_identifier
+		assert_equal case_identifier.subjectid, case_identifier.familyid
+		mother = case_identifier.study_subject.create_mother
+		assert_equal case_identifier.subjectid, mother.identifier.familyid
+	end
+
+	test "should generate familyid == child's subjectid on creation of control's mother" do
+		control_identifier = create_control_identifier
+		assert_equal control_identifier.subjectid, control_identifier.familyid
+		mother = control_identifier.study_subject.create_mother
+		assert_equal control_identifier.subjectid, mother.identifier.familyid
 	end
 
 	test "should generate matchingid == subjectid on creation of case" do
@@ -425,10 +428,7 @@ pending
 		assert_difference( "Identifier.maximum(:patid).to_i", 123 ) {	#	was 0, now 123
 #		assert_difference( "Patid.count", 0 ) {
 		assert_difference( "Identifier.count", 1 ) {
-			identifier = Factory.build(:case_identifier)
-			identifier.patid = '123'
-			identifier.save
-			identifier.reload
+			identifier = Factory(:case_identifier, :patid => '123').reload
 			assert_not_nil identifier.studyid
 			assert_nil identifier.studyid_nohyphen
 			assert_nil identifier.studyid_intonly_nohyphen
@@ -443,10 +443,7 @@ pending
 		assert_difference( "Identifier.maximum(:childid).to_i", 123 ) {	#	was 0, now 123
 #		assert_difference( "Childid.count", 0 ) {
 		assert_difference( "Identifier.count", 1 ) {
-			identifier = Factory.build(:case_identifier)
-			identifier.childid = '123'
-			identifier.save
-			identifier.reload
+			identifier = Factory(:case_identifier, :childid => '123').reload
 			assert_equal 123, identifier.childid
 		} } #}
 	end
@@ -454,10 +451,7 @@ pending
 	test "should not generate new orderno if given" do
 		#	existing data import
 		assert_difference( "Identifier.count", 1 ) {
-			identifier = Factory.build(:case_identifier)
-			identifier.orderno = 9
-			identifier.save
-			identifier.reload
+			identifier = Factory(:case_identifier, :orderno => 9).reload
 			assert_equal 9, identifier.orderno
 		}
 	end
@@ -465,10 +459,7 @@ pending
 	test "should not generate new subjectid if given" do
 		#	existing data import
 		assert_difference( "Identifier.count", 1 ) {
-			identifier = Factory.build(:case_identifier)
-			identifier.subjectid = "ABCDEF"
-			identifier.save
-			identifier.reload
+			identifier = Factory(:case_identifier, :subjectid => 'ABCDEF').reload
 			assert_equal "ABCDEF", identifier.subjectid
 		}
 	end
@@ -476,10 +467,7 @@ pending
 	test "should not generate new familyid if given" do
 		#	existing data import
 		assert_difference( "Identifier.count", 1 ) {
-			identifier = Factory.build(:case_identifier)
-			identifier.familyid = "ABCDEF"
-			identifier.save
-			identifier.reload
+			identifier = Factory(:case_identifier, :familyid => 'ABCDEF').reload
 			assert_equal "ABCDEF", identifier.familyid
 		}
 	end
@@ -487,10 +475,7 @@ pending
 	test "should not generate new matchingid if given" do
 		#	existing data import
 		assert_difference( "Identifier.count", 1 ) {
-			identifier = Factory.build(:case_identifier)
-			identifier.matchingid = "123456"	#	NOTE converted to integer in validation, so make numeric so can compare value
-			identifier.save
-			identifier.reload
+			identifier = Factory(:case_identifier, :matchingid => '123456').reload
 			assert_equal "123456", identifier.matchingid
 		}
 	end
