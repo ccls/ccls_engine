@@ -1,3 +1,7 @@
+/*
+	I don't think that any of the apps use this anymore.
+*/
+/*
 jQuery(function(){
 
 	jQuery('button.link').click(function(){
@@ -17,3 +21,4 @@ jQuery(function(){
 	jQuery('p.flash').click(function(){$(this).remove();});
 
 });
+*/
