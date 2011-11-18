@@ -1,0 +1,26 @@
+<% stylesheets('users') %>
+<h4>Users:</h4>
+<% unless @users.empty? %>
+<table id='users'><tbody>
+<% @users.each do |user| %>
+<tr class='<%=user.role_names.join(' ')-%> user row'>
+<td class='gravatar'>
+<%#= link_to( image_tag(user.gravatar_url), "http://gravatar.com", :target => 'new' )%>
+</td>
+<td class='username'>
+<%= link_to user.displayname, user_path(user) -%>
+</td>
+<td class='role_name'>&nbsp;
+<% user.role_names.each do |role_name| %>
+<%= link_to role_name, users_path( :role_name => role_name ) -%>
+<% end %>
+</td>
+<td class='manage'>
+<%= destroy_link_to( 'Destroy', user_path(user) ) %>
+</td>
+</tr>
+<% end %>
+</tbody></table><!-- id='users' -->
+<% else %>
+Sorry, no users yet.
+<% end %>

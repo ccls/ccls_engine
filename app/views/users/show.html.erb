@@ -1,0 +1,19 @@
+<% stylesheets('user') %>
+
+<fieldset id='user'>
+<legend><%= @user.sn %></legend>
+
+<div class='person'><dl>
+	<% %w( displayname mail uid ).each do |key| -%>
+		<dt><%= key -%></dt>
+		<dd><%= @user.attributes[key] -%></dd>
+	<% end -%>
+</dl>
+</div>
+
+<div id='roles'>
+<%#= link_to( image_tag(@user.gravatar_url), "http://gravatar.com", :target => 'new' )%>
+<%= user_roles() %>
+</div>
+ 
+</fieldset> 
