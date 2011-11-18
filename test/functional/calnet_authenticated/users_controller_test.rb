@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class UsersControllerTest < ActionController::TestCase
+class CalnetAuthenticated::UsersControllerTest < ActionController::TestCase
+	tests UsersController
 
 	ASSERT_ACCESS_OPTIONS = {
 		:model => 'User',
