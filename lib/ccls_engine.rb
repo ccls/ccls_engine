@@ -38,6 +38,13 @@ end
 #		gem that is a subclass of a class defined in the app.
 #	This is really only needed in development mode.  I'm not sure what'll 
 #		happen in production, but should work as well.
+#	It does mean that if you change application_controller in dev mode,
+#		you'll need to restart the app to see the changes as it won't reload.
+#
+#	A better solution would be to add the controllers, views and routes
+#		to the generator installation and actually have them in the app.
+#		Or just put them their by hand.  But now they won't be DRY.  BooHoo.
+#
 #
 #	Processing ZipCodesController#index to json (for 169.229.196.225 at 2011-11-15 13:50:34) [GET]
 #	  Parameters: {"q"=>"1785"}
@@ -50,12 +57,17 @@ end
 require 'application_controller'
 
 
-#	This doesn't seem necessary
-%w{models controllers}.each do |dir|
-	path = File.expand_path(File.join(File.dirname(__FILE__), '../app', dir))
-	ActiveSupport::Dependencies.autoload_paths << path
-	ActiveSupport::Dependencies.autoload_once_paths << path
-end
+#	This doesn't seem necessary.  Removing it doesn't seem to do anything.
+#	And having it doesn't seem to do anything?
+#	Maybe the latest rails gem does this automagically?
+#%w{models controllers}.each do |dir|
+#	path = File.expand_path(File.join(File.dirname(__FILE__), '../app', dir))
+#	ActiveSupport::Dependencies.autoload_paths << path
+#	ActiveSupport::Dependencies.autoload_once_paths << path
+#end
+
+
+
 
 HTML::WhiteListSanitizer.allowed_attributes.merge(%w(
 	id class style
