@@ -1,4 +1,3 @@
-#require File.dirname(__FILE__) + '/../../test_helper'
 require 'test_helper'
 
 class Ccls::StylesheetsControllerTest < ActionController::TestCase

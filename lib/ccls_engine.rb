@@ -54,7 +54,7 @@ end
 #	Rendered rescues/_trace (99.8ms)
 #	Rendered rescues/_request_and_response (1.2ms)
 #	Rendering rescues/layout (internal_server_error)
-require 'application_controller'
+#require 'application_controller'
 
 
 #	This doesn't seem necessary.  Removing it doesn't seem to do anything.
@@ -94,15 +94,15 @@ ActionView::Helpers::AssetTagHelper.register_javascript_expansion(
 	:ccls => ['jquery','jquery-ui','jrails','application'] )
 
 
-ActionController::Routing::Routes.add_configuration_file(
-	File.expand_path(
-		File.join(
-			File.dirname(__FILE__), '../config/routes.rb')))
-
-ActionController::Base.view_paths <<
-	File.expand_path(
-		File.join(
-			File.dirname(__FILE__), '../app/views'))
+#ActionController::Routing::Routes.add_configuration_file(
+#	File.expand_path(
+#		File.join(
+#			File.dirname(__FILE__), '../config/routes.rb')))
+#
+#ActionController::Base.view_paths <<
+#	File.expand_path(
+#		File.join(
+#			File.dirname(__FILE__), '../app/views'))
 
 require 'paperclip'
 if defined? ::Paperclip::Glue

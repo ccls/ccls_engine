@@ -1,0 +1,9 @@
+<h4>Person:</h4>
+<% form_for(@person) do |f| %>
+	<%= f.error_messages %>
+	<%= f.wrapped_text_field :honorific %>
+	<%= f.wrapped_text_field :first_name %>
+	<%= f.wrapped_text_field :last_name %>
+	<%= f.wrapped_text_field :person_type_id %>
+	<p><%= f.submit( (@person.new_record?)?'Create':'Update' ) %></p>
+<% end %>

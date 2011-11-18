@@ -1,0 +1,8 @@
+<h4>Language:</h4>
+<% form_for(@language) do |f| %>
+	<%= f.error_messages %>
+	<%= f.wrapped_text_field :key %>
+	<%= f.wrapped_text_field :code %>
+	<%= f.wrapped_text_field :description %>
+	<p><%= f.submit( (@language.new_record?)?'Create':'Update' ) %></p>
+<% end %>

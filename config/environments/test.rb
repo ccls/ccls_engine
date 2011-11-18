@@ -30,13 +30,13 @@ config.action_mailer.delivery_method = :test
 config.action_mailer.default_url_options = { 
 	:host => "localhost:3000" }
 
-config.routes_configuration_file = File.expand_path(
-	File.join(File.dirname(__FILE__),'../../test/config/routes.rb'))
-
-config.autoload_paths += [
-	File.expand_path(
-		File.join(File.dirname(__FILE__),'../../test/app/models'))
-]
+#config.routes_configuration_file = File.expand_path(
+#	File.join(File.dirname(__FILE__),'../../test/config/routes.rb'))
+#
+#config.autoload_paths += [
+#	File.expand_path(
+#		File.join(File.dirname(__FILE__),'../../test/app/models'))
+#]
 
 config.gem "thoughtbot-factory_girl", :lib => "factory_girl"
 

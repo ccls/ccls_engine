@@ -1,0 +1,17 @@
+<% content_tag_for :tr, race, :class => 'row' do %>
+	<td class='key'>
+		<%= race.key %>
+	</td>
+	<td class='code'>
+		<%= race.code %>
+	</td>
+	<td class='description'>
+		<%= race.description %>
+	</td>
+	<td class='manage'>
+		<%= button_link_to 'Edit', edit_race_path(race) %>&nbsp;
+<% destroy_link_to 'Destroy', race_path(race) do %>
+<%= hidden_field_tag 'confirm', "Destroy race '#{race}'?", :id => nil %>
+<% end %>
+	</td>
+<% end %>

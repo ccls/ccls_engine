@@ -11,8 +11,14 @@ class CclsEngineGenerator < Rails::Generator::Base
 		#	rails-2.3.10/lib/rails_generator/commands.rb
 		#	for code methods for record (Manifest)
 		record do |m|
+
+			#	The autotest file will require that the app actually 
+			#		looks for autotest files.
 			m.directory('config/autotest')
 			m.file('autotest_ccls_engine.rb', 'config/autotest/ccls_engine.rb')
+
+			#	*.rake files in the lib/tasks/ directory are automatically
+			#		loaded so nothing is required to include this.
 			m.directory('lib/tasks')
 			m.file('ccls_engine.rake', 'lib/tasks/ccls_engine.rake')
 
@@ -44,11 +50,27 @@ class CclsEngineGenerator < Rails::Generator::Base
 				f = file.split('/').slice(-2,2).join('/')
 				m.file(f, "public/stylesheets/#{File.basename(file)}")
 			}
-#			m.directory('test/functional/ccls')
-#			Dir["#{File.dirname(__FILE__)}/templates/functional/*rb"].each{|file| 
-#				f = file.split('/').slice(-2,2).join('/')
-#				m.file(f, "test/functional/ccls/#{File.basename(file)}")
-#			}
+
+			Dir["#{dot}/templates/views/*/**/"].each do |dir|
+				last_dir = dir.split('/').last
+				m.directory("app/views/#{last_dir}")
+				Dir["#{dot}/templates/views/#{last_dir}/*rb"].each do |file|
+					f = file.split('/').slice(-3,3).join('/')
+					m.file(f, "app/views/#{last_dir}/#{File.basename(file)}")
+				end
+			end
+
+			m.directory('app/controllers')
+			Dir["#{dot}/templates/controllers/*rb"].each{|file| 
+				f = file.split('/').slice(-2,2).join('/')
+				m.file(f, "app/controllers/#{File.basename(file)}")
+			}
+			m.directory('test/functional/ccls')
+			Dir["#{dot}/templates/functional/*rb"].each{|file| 
+				f = file.split('/').slice(-2,2).join('/')
+				m.file(f, "test/functional/ccls/#{File.basename(file)}")
+			}
+
 #			m.directory('test/unit/ccls')
 #			Dir["#{File.dirname(__FILE__)}/templates/unit/*rb"].each{|file| 
 #				f = file.split('/').slice(-2,2).join('/')

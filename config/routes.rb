@@ -10,12 +10,12 @@ ActionController::Routing::Routes.draw do |map|
 
 
 #	from calnet_authenticated
-	map.logout 'logout', :controller => 'sessions', :action => 'destroy'
 	map.resources :users, :only => [:destroy,:show,:index],
 		:collection => { :menu => :get } do |user|
 		user.resources :roles, :only => [:update,:destroy]
 	end
 	map.resource :session, :only => [ :destroy ]
+	map.logout 'logout', :controller => 'sessions', :action => 'destroy'
 
 
 
@@ -41,4 +41,16 @@ ActionController::Routing::Routes.draw do |map|
 	map.resources :ineligible_reasons
 	map.resources :zip_codes, :only => [ :index ]
 
+
+
+
+	map.resources :locales, :only => :show
+
+	map.root :controller => "pages", :action => "show", :path => [""]
+
+	#	MUST BE LAST OR WILL BLOCK ALL OTHER ROUTES!
+	#	catch all route to manage admin created pages.
+	map.connect   '*path', :controller => 'pages', :action => 'show'
+
+puts "IN config routes"
 end

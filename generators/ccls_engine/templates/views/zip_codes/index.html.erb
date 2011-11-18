@@ -1,0 +1,13 @@
+<h1>ZipCodes#index</h1>
+<p>Find me in app/views/zip_codes/index.html.erb</p>
+
+<table><tbody>
+<% @zip_codes.each do |zip_code| %>
+<tr>
+<td><%= zip_code.city %></td>
+<td><%= zip_code.state %></td>
+<td><%= zip_code.zip_code %></td>
+<td><%= zip_code.county_name %></td>
+</tr>
+<% end %>
+</tbody></table>

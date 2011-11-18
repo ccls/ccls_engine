@@ -1,0 +1,17 @@
+<% content_tag_for :tr, language, :class => 'row' do %>
+	<td class='key'>
+		<%= language.key %>
+	</td>
+	<td class='code'>
+		<%= language.code %>
+	</td>
+	<td class='description'>
+		<%= language.description %>
+	</td>
+	<td class='manage'>
+		<%= button_link_to 'Edit', edit_language_path(language) %>&nbsp;
+<% destroy_link_to 'Destroy', language_path(language) do %>
+<%= hidden_field_tag 'confirm', "Destroy language '#{language}'?", :id => nil %>
+<% end %>
+	</td>
+<% end %>

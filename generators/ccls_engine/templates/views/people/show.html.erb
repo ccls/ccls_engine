@@ -1,0 +1,7 @@
+<% div_for @person do %>
+<%= wrapped_spans :person, :honorific %>
+<%= wrapped_spans :person, :first_name %>
+<%= wrapped_spans :person, :last_name %>
+<%= wrapped_spans :person, :person_type_id %>
+<% end %>
+<%= link_to 'People', people_path %>

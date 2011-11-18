@@ -1,0 +1,5 @@
+
+
+script/generate ccls_engine User
+
+	The required "User" should be removed as it is always User now.

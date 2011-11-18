@@ -1,0 +1,20 @@
+<% content_tag_for :tr, person, :class => 'row' do %>
+	<td class='honorific'>
+		<%= person.honorific %>
+	</td>
+	<td class='first_name'>
+		<%= person.first_name %>
+	</td>
+	<td class='last_name'>
+		<%= person.last_name %>
+	</td>
+	<td class='person_type_id'>
+		<%= person.person_type_id %>
+	</td>
+	<td class='manage'>
+		<%= button_link_to 'Edit', edit_person_path(person) %>&nbsp;
+<% destroy_link_to 'Destroy', person_path(person) do %>
+<%= hidden_field_tag 'confirm', "Destroy person '#{person}'?", :id => nil %>
+<% end %>
+	</td>
+<% end %>
