@@ -2,7 +2,6 @@ require 'test_helper'
 
 class SimplyAuthorized::RolesControllerTest < ActionController::TestCase
 	tests RolesController
-#class RolesControllerTest < ActionController::TestCase
 
 	#	no user_id
 	assert_no_route(:put, :update, :id => 'reader')
