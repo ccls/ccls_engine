@@ -1,5 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
 
+#
+#	from simply_authorized
+#
+#	map.resources :users, :only => [:destroy,:show,:index],
+#		:collection => { :menu => :get } do |user|
+#		user.resources :roles, :only => [:update,:destroy]
+#	end
+
 #	map.logout 'logout', :controller => 'sessions', :action => 'destroy'
 #	map.resource :session, :only => [ :destroy ]
 
