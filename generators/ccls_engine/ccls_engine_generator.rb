@@ -66,12 +66,12 @@ class CclsEngineGenerator < Rails::Generator::Base
 #				f = file.split('/').slice(-2,2).join('/')
 #				m.file(f, "app/controllers/#{File.basename(file)}")
 #			}
-
-			m.directory('test/functional/ccls')
-			Dir["#{dot}/templates/functional/*rb"].each{|file| 
-				f = file.split('/').slice(-2,2).join('/')
-				m.file(f, "test/functional/ccls/#{File.basename(file)}")
-			}
+#
+#			m.directory('test/functional/ccls')
+#			Dir["#{dot}/templates/functional/*rb"].each{|file| 
+#				f = file.split('/').slice(-2,2).join('/')
+#				m.file(f, "test/functional/ccls/#{File.basename(file)}")
+#			}
 
 #			m.directory('test/unit/ccls')
 #			Dir["#{File.dirname(__FILE__)}/templates/unit/*rb"].each{|file| 
