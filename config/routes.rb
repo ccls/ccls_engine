@@ -52,5 +52,4 @@ ActionController::Routing::Routes.draw do |map|
 	#	catch all route to manage admin created pages.
 	map.connect   '*path', :controller => 'pages', :action => 'show'
 
-puts "IN config routes"
 end

@@ -10,11 +10,17 @@ class Autotest::Rails
 		self.extra_files << File.expand_path(File.join(
 				File.dirname(__FILE__),'/../../test/unit/ccls/'))
 
-		self.extra_files << File.expand_path(File.join(
-				File.dirname(__FILE__),'/../../test/functional/ccls/'))
+#		self.extra_files << File.expand_path(File.join(
+#				File.dirname(__FILE__),'/../../test/functional/ccls/'))
+
+#		add_mapping( 
+#			%r{^#{File.expand_path(File.join(File.dirname(__FILE__),'/../../test/'))}/(unit|functional)/ccls/.*_test\.rb$}
+#			) do |filename, _|
+#			filename
+#		end
 
 		add_mapping( 
-			%r{^#{File.expand_path(File.join(File.dirname(__FILE__),'/../../test/'))}/(unit|functional)/ccls/.*_test\.rb$}
+			%r{^#{File.expand_path(File.join(File.dirname(__FILE__),'/../../test/'))}/unit/ccls/.*_test\.rb$}
 			) do |filename, _|
 			filename
 		end
@@ -35,11 +41,11 @@ class Autotest::Rails
 				self.extra_class_map[$1.camelcase] = File.expand_path(f)
 			end
 		end
-		Dir[File.join(File.dirname(__FILE__),'/../../test/functional/**/*rb')].each do |f|
-			if f =~ /test\/functional\/(ccls\/.*)\.rb/
-				self.extra_class_map[$1.camelcase] = File.expand_path(f)
-			end
-		end
+#		Dir[File.join(File.dirname(__FILE__),'/../../test/functional/**/*rb')].each do |f|
+#			if f =~ /test\/functional\/(ccls\/.*)\.rb/
+#				self.extra_class_map[$1.camelcase] = File.expand_path(f)
+#			end
+#		end
 
 		run_without_ccls_engine
 	end

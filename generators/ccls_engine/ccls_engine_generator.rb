@@ -35,18 +35,20 @@ class CclsEngineGenerator < Rails::Generator::Base
 					'db/migrate', :migration_file_name => migration
 			end
 
+			dot = File.dirname(__FILE__)
+
 			m.directory('public/images')
-			Dir["#{File.dirname(__FILE__)}/templates/images/*"].each{|file| 
+			Dir["#{dot}/templates/images/*"].each{|file| 
 				f = file.split('/').slice(-2,2).join('/')
 				m.file(f, "public/images/#{File.basename(file)}")
 			}
 			m.directory('public/javascripts')
-			Dir["#{File.dirname(__FILE__)}/templates/javascripts/*js"].each{|file| 
+			Dir["#{dot}/templates/javascripts/*js"].each{|file| 
 				f = file.split('/').slice(-2,2).join('/')
 				m.file(f, "public/javascripts/#{File.basename(file)}")
 			}
 			m.directory('public/stylesheets')
-			Dir["#{File.dirname(__FILE__)}/templates/stylesheets/*css"].each{|file| 
+			Dir["#{dot}/templates/stylesheets/*css"].each{|file| 
 				f = file.split('/').slice(-2,2).join('/')
 				m.file(f, "public/stylesheets/#{File.basename(file)}")
 			}
