@@ -1,0 +1,17 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+dk:
+  id: 1
+  position: 1
+  code: unknown
+  description: unable to discern correct version
+phone1:
+  id: 2
+  position: 2
+  instrument_id:  1
+  code: Phone Interview
+  description: Phone Interview - version 1
+

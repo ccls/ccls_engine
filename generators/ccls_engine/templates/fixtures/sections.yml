@@ -1,0 +1,27 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+main:
+  position: 1
+  code: Main
+  description: Main
+subjects:
+  position: 2
+  code: Subjects
+  description: Subjects
+interviews:
+  position: 3
+  code: Interviews
+  description: Interviews
+samples:
+  position: 4
+  code: Samples
+  description: Samples
+studies:
+  position: 5
+  code: Studies
+  description: Studies

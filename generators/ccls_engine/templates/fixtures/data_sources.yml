@@ -1,0 +1,35 @@
+#
+#	Do not change id, key, code or description
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#		'description' is used in javascript ( changing it here will require a corresponding change there )
+#
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+#one:
+#  research_origin: MyString
+#  data_origin: MyString
+#
+#two:
+#  research_origin: MyString
+#  data_origin: MyString
+raf:
+  id:  1
+  code:  raf
+  description:  RAF (CCLS Rapid Ascertainment Form)
+consent:
+  id:  2
+  code:  consent
+  description:  Study Consent Form
+interview:
+  id:  3
+  code:  interview
+  description:  Interview with Subject
+usps:
+  id:  4
+  code:  usps
+  description:  USPS Address Service
+other:
+  id:  5
+  code:  other
+  description:  Other Source

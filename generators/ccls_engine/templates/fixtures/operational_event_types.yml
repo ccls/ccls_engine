@@ -1,0 +1,119 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+intro:
+  id: 1
+  code: intro
+  event_category: correspondence
+  description: intro letter sent
+scheduled:
+  id: 2
+  code: scheduled
+  event_category: interviews
+  description: interview scheduled with respondent
+iv_complete:
+  id: 3
+  code: iv_complete
+  event_category: interviews
+  description: interview completed
+kit_sent:
+  id: 4
+  code: kit_sent
+  event_category: samples
+  description: sample kit sent
+sample_received:
+  id: 5
+  code: sample_received
+  event_category: samples
+  description: sample received by CCLS
+sample_to_lab:
+  id: 6
+  code: sample_to_lab
+  event_category: samples
+  description: sample sent to lab
+giftcard:
+  id: 7
+  code: giftcard
+  event_category: compensation
+  description: gift card issued
+thankyou:
+  id: 8
+  code: thank_you
+  event_category: correspondence
+  description: thank you letter sent to respondent
+completed:
+  id: 9
+  code: complete
+  event_category: completions
+  description: completed all study requirements
+other:
+  id: 10
+  code: other
+  event_category:  
+  description: other event - please specify
+sample_complete:
+  id: 11
+  code: sample_complete
+  event_category:  completions
+  description: sample collection completed
+subject_moved:
+  id: 12
+  code: subject_moved
+  event_category:  operations
+  description: subject moved
+reopened:
+  id: 13
+  code: reopened
+  event_category:  completions
+  description: subject's enrollment re-opened (changed completed from 'yes')
+ineligible:
+  id: 14
+  code: ineligible
+  event_category:  enrollments
+  description: subject determined to be ineligible
+BCRequest:
+  id: 15
+  code: bc_request_sent
+  event_category:  operations
+  description: birth certificates request sent
+BCReceived:
+  id: 16
+  code: bc_received
+  event_category:  operations
+  description: birth certificate data received
+RAF:
+  id: 17
+  code: raf_entered
+  event_category:  operations
+  description: RAF entered into system
+sentToICF:
+  id: 18
+  code: sentToICF
+  event_category:  operations
+  description: Subject data was sent to ICF for recruitment and interview
+ChangeContactInfo:
+  id: 19
+  code: ChangeContactInfo
+  event_category:  operations
+  description: The subject's contact info has been changed
+DuplicateCase:
+  id: 20
+  code: DuplicateCase
+  event_category:  ascertainment
+  description: A new RAF was sent for an existing patient
+newSubject:
+  id: 21
+  code: NewSubject
+  event_category: ascertainment
+  description:  New subject created by CCLS
+subjectDied:
+  id: 22
+  code:  subjectDied
+  event_category: operations
+  description:  Subject has been reported as deceased.
+consent:
+  id: 23
+  code: subjectConsents
+  description:  Subject has consented to participate

@@ -1,0 +1,165 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+CPMC:
+  id:  1
+  position:  1
+  code:  CPMC
+  name:  California Pacific Medical Center
+  person_id:  11
+CHCC:
+  id:  2
+  position:  2
+  code:  CHCC
+  name:  Children's Hospital Central California
+  person_id:  3
+CHLA:
+  id:  3
+  position:  3
+  code:  CHLA
+  name:  University of Southern California, Children's Hospital of Los Angeles
+  person_id:  17
+CHOC:
+  id:  4
+  position:  4
+  code:  CHOC
+  name:  Children's Hospital Orange County
+  person_id:  15
+CHOK:
+  id:  5
+  position:  5
+  code:  CHOK
+  name:  Children's Hospital Oakland
+  person_id:  6
+CSMC:
+  id:  6
+  position:  6
+  code:  CSMC
+  name:  Cedars-Sinai Medical Center
+  person_id:  11
+KPNC:
+  id:  7
+  position:  7
+  code:  KPNC
+  name:  Kaiser Permanente Medical Group (Northern California)
+  person_id:  10
+KPSC:
+  id:  8
+  position:  8
+  code:  KPSC
+  name:  Kaiser Permanente Medical Group (Southern California)
+  person_id:  2
+LPCH:
+  id:  9
+  position:  9
+  code:  LPCH
+  name:  Stanford University, Lucile Packard Children's Hospital
+  person_id:  4
+MCHO:
+  id:  10
+  position:  10
+  code:  MCHO
+  name:  Long Beach Memorial Medical Center, Miller Children's Hospital
+  person_id:  7
+RCSD:
+  id:  11
+  position:  11
+  code:  RCSD
+  name:  Rady Children's Hospital San Diego
+  person_id:  13
+SUMH:
+  id:  12
+  position:  12
+  code:  SUMH
+  name:  Sutter Memorial Hospital
+  person_id:  9
+UCDV:
+  id:  13
+  position:  13
+  code:  UCDV
+  name:  University of California, Davis
+  person_id:  5
+UCLA:
+  id:  14
+  position:  14
+  code:  UCLA
+  name:  University of California, Los Angeles, Mattel Children's Hospital
+  person_id:  8
+UCSF:
+  id:  15
+  position:  15
+  code:  UCSF
+  name:  University of California, San Francisco
+  person_id:  12
+Smith:
+  id: 16
+  code: Smith
+  name:  Smith Lab
+  person_id: 16
+GEGL:
+  id: 17
+  code: GEGL
+  name: Barcellos Lab (GEGL)
+  person_id: 1
+CalEPA:
+  id: 18
+  code: CalEPA
+  name: California EPA
+CCLS:
+  id: 19
+  code: CCLS
+  name: California Childhood Leukemia Study (CCLS)
+CDC:
+  id: 20
+  code: CDC
+  name:  United States Center for Disease Control
+Cottage:
+  id: 21
+  code: COT
+  name:  Cottage Hospital
+Anaheim:
+  id: 22
+  code: KPAna
+  name:  Kaiser Anaheim
+Downey:
+  id: 23
+  code: KPDow
+  name:  Kaiser Downey
+Fontana:
+  id: 24
+  code: KPFon
+  name:  Kaiser Fontana
+KPLA:
+  id: 25
+  code: KPLA
+  name:  Kaiser Los Angeles
+KPOak:
+  id: 26
+  code: KPOak
+  name:  Kaiser Oakland
+Roseville:
+  id: 27
+  code: KPRos
+  name:  Kaiser Roseville
+Sacramento:
+  id: 28
+  code: KPSac
+  name:  Kaiser Sacramento
+SanDiego:
+  id: 29
+  code: KPSD
+  name:  Kaiser San Diego
+SanFran:
+  id: 30
+  code: KPSF
+  name:  Kaiser San Francisco
+SantaClara:
+  id: 31
+  code: KPSCL
+  name:  Kaiser Santa Clara
+LomaLinda:
+  id: 32
+  code: Loma
+  name:  Loma Linda Hospital

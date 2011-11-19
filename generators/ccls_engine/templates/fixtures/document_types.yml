@@ -1,0 +1,60 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+homex_consents:
+  id: 1
+  position: 1
+  title: Home Exposures Consents
+  description: consent forms for the home exposures project
+abstract:
+  id: 2
+  position: 2
+  title: abstract data form
+  description: abstract data form
+homex:
+  id: 3
+  position: 3
+  title: home exposures questionnaire
+  description: home exposures questionnaire
+t1interview:
+  id: 4
+  position: 4
+  title: Tier I Interview
+  description: Tier I Interview
+t2interview:
+  id: 5
+  position: 5
+  title:  Tier II Interview
+  description: Tier II Interview
+hsq:
+  id: 6
+  position: 6
+  title: Household Survey Questionnaire
+  description: questionnaire about vacuuming, etc.
+hpi:
+  id: 7
+  position: 7
+  title:  Household Pesticide Inventory
+  description: instrument describing how pesticides were used in the home (by whom, for what purpose, etc.)
+hps:
+  id: 8
+  position: 8
+  title: Household Pesticide Sheet
+  description: inventory sheet describing use of a specific pesticide found in the home
+diet:
+  id: 9
+  position: 9
+  title: instrument for capturing information about maternal diet
+  description: instrument for capturing information about maternal diet
+other:
+  id: 10
+  position: 10
+  title: unspecified or other instrument
+  description: unspecified or other instrument
+dk:
+  id: 11
+  position: 11
+  title: don't know
+  description: don't know

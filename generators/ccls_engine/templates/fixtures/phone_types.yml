@@ -1,0 +1,25 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+home:
+  id: 1
+  position: 1
+  code: home
+  description: home
+mobile:
+  id: 2
+  position: 2
+  code: mobile
+  description: mobile
+work:
+  id: 3
+  position: 3
+  code: work
+  description: work
+dk:
+  id: 4
+  position: 4
+  code: unknown
+  description: unknown

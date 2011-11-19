@@ -1,0 +1,21 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+hardcopy:
+  id: 1
+  code: hardcopy
+  description: hard copy questionnaire or assessment form
+online:
+  id: 2
+  code: online
+  description: online form or questionnaire
+other:
+  id: 3
+  code: other
+  description: some other data collection method
+dk:
+  id: 4
+  code: unknown
+  description: instrument type unknown

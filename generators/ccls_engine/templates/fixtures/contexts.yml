@@ -1,0 +1,15 @@
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+addresses:
+  id: 1 
+  code: addresses 
+  description: address combo boxes in ODMS 
+phones:
+  id: 2 
+  code: phones 
+  description: phone number combo boxes in ODMS
