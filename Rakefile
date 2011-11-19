@@ -31,7 +31,6 @@ begin
 		gem.authors = ["George 'Jake' Wendt"]
 		# gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
 
-#		gem.files  = FileList['config/routes.rb']
 		gem.files  = FileList['config/home_exposure_response_fields.yml']
 		gem.files += FileList['config/abstract_fields.yml']
 		gem.files += FileList['config/abstract_sections.yml']
@@ -40,24 +39,15 @@ begin
 #	It will need to be manually maintained and copied to apps.
 #		gem.files += FileList['config/shared_database.yml']
 		gem.files += FileList['rails/init.rb']
-#		gem.files += FileList['app/**/*.rb']
-# just app/models from now on
 		gem.files += FileList['app/models/*.rb']
 		gem.files -= FileList['app/models/user.rb']
-#		gem.files += FileList['app/**/*.erb']
 		gem.files += FileList['lib/**/*.rb']
 		gem.files += FileList['lib/**/*.rake']
 		gem.files += FileList['generators/**/*']
 		gem.files -= FileList['**/versions/*']
-#		gem.files -= FileList['app/controllers/application_controller.rb']
-#		gem.files -= FileList['app/views/pages/*.html.erb']	#	why are they even here anymore?
-#		gem.files -= FileList['app/views/layouts/application.html.erb']
 		gem.files -= FileList['lib/ccls_engine/warble.rb']
 
-#		gem.test_files = FileList['test/**/*.rb']
 		gem.test_files = FileList['test/unit/ccls/*.rb']
-		#	DO NOT INCLUDE test_helper.rb
-#		gem.test_files -= FileList['test/test_helper.rb']
 
 		gem.add_dependency('rails', '~> 2')
 #	had to explicitly add rails components as greater
