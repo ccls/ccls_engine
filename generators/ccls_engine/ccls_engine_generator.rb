@@ -53,20 +53,20 @@ class CclsEngineGenerator < Rails::Generator::Base
 				m.file(f, "public/stylesheets/#{File.basename(file)}")
 			}
 
-			Dir["#{dot}/templates/views/*/**/"].each do |dir|
-				last_dir = dir.split('/').last
-				m.directory("app/views/#{last_dir}")
-				Dir["#{dot}/templates/views/#{last_dir}/*rb"].each do |file|
-					f = file.split('/').slice(-3,3).join('/')
-					m.file(f, "app/views/#{last_dir}/#{File.basename(file)}")
-				end
-			end
+#			Dir["#{dot}/templates/views/*/**/"].each do |dir|
+#				last_dir = dir.split('/').last
+#				m.directory("app/views/#{last_dir}")
+#				Dir["#{dot}/templates/views/#{last_dir}/*rb"].each do |file|
+#					f = file.split('/').slice(-3,3).join('/')
+#					m.file(f, "app/views/#{last_dir}/#{File.basename(file)}")
+#				end
+#			end
+#			m.directory('app/controllers')
+#			Dir["#{dot}/templates/controllers/*rb"].each{|file| 
+#				f = file.split('/').slice(-2,2).join('/')
+#				m.file(f, "app/controllers/#{File.basename(file)}")
+#			}
 
-			m.directory('app/controllers')
-			Dir["#{dot}/templates/controllers/*rb"].each{|file| 
-				f = file.split('/').slice(-2,2).join('/')
-				m.file(f, "app/controllers/#{File.basename(file)}")
-			}
 			m.directory('test/functional/ccls')
 			Dir["#{dot}/templates/functional/*rb"].each{|file| 
 				f = file.split('/').slice(-2,2).join('/')
