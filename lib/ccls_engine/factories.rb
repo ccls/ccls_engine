@@ -44,6 +44,12 @@ Factory.define :address do |f|
 	f.state "CA"
 	f.zip "12345"
 end
+Factory.define :mailing_address, :parent => :address do |f|
+	f.address_type { AddressType['mailing'] }
+end
+Factory.define :residence_address, :parent => :address do |f|
+	f.address_type { AddressType['residence'] }
+end
 
 Factory.define :addressing do |f|
 	f.association :address
@@ -51,6 +57,22 @@ Factory.define :addressing do |f|
 	f.is_valid    1
 	f.is_verified false		#		2		#	20111110 just noticed that this is boolean and not int for YNDK
 	f.updated_at Time.now	#	to make it dirty
+end
+Factory.define :mailing_addressing, :parent => :addressing do |f|
+	f.association :address, :factory => :mailing_address
+	f.current_address { YNDK[:no] }
+end
+Factory.define :current_mailing_addressing, :parent => :mailing_addressing do |f|
+	f.association :address, :factory => :mailing_address
+	f.current_address { YNDK[:yes] }
+end
+Factory.define :residence_addressing, :parent => :addressing do |f|
+	f.association :address, :factory => :residence_address
+	f.current_address { YNDK[:no] }
+end
+Factory.define :current_residence_addressing, :parent => :residence_addressing do |f|
+	f.association :address, :factory => :residence_address
+	f.current_address { YNDK[:yes] }
 end
 
 Factory.define :address_type do |f|

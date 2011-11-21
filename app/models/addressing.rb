@@ -38,13 +38,9 @@ class Addressing < Shared
 	#	Don't do the rejections here.
 	accepts_nested_attributes_for :address
 
-
-
 	attr_accessor :subject_moved
 
 	after_save :create_subject_moved_event, :if => :subject_moved
-
-
 
 	before_save :set_verifier, 
 		:if => :is_verified?, 
@@ -107,12 +103,14 @@ protected
 		end
 	end
 
-
 	def create_subject_moved_event
 		#	subject_moved will most likely be a string 'true' or 'false'
 		#		as it will really only come as a hash value from a view.
 		#	.true? is a common_lib#object method.
-		if subject_moved.true?
+		if subject_moved.true? &&
+				current_address == YNDK[:no] &&
+				current_address_was != YNDK[:no] &&
+				address.address_type == AddressType['residence']
 			ccls_enrollment = study_subject.enrollments.find_or_create_by_project_id(
 				Project['ccls'].id)
 			ccls_enrollment.operational_events << OperationalEvent.create!(

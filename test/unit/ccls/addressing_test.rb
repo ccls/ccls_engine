@@ -40,6 +40,50 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 		} } }
 	end
 
+	test "explicity Factory mailing_addressing test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Address.count',1) {
+		assert_difference('Addressing.count',1) {
+			addressing = Factory(:mailing_addressing)
+			assert_equal addressing.address.address_type,
+				AddressType['mailing']
+			assert_equal addressing.current_address, YNDK[:no]
+		} } }
+	end
+
+	test "explicity Factory current_mailing_addressing test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Address.count',1) {
+		assert_difference('Addressing.count',1) {
+			addressing = Factory(:current_mailing_addressing)
+			assert_equal addressing.address.address_type,
+				AddressType['mailing']
+			assert_equal addressing.current_address, YNDK[:yes]
+		} } }
+	end
+
+	test "explicity Factory residence_addressing test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Address.count',1) {
+		assert_difference('Addressing.count',1) {
+			addressing = Factory(:residence_addressing)
+			assert_equal addressing.address.address_type,
+				AddressType['residence']
+			assert_equal addressing.current_address, YNDK[:no]
+		} } }
+	end
+
+	test "explicity Factory current_residence_addressing test" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Address.count',1) {
+		assert_difference('Addressing.count',1) {
+			addressing = Factory(:current_residence_addressing)
+			assert_equal addressing.address.address_type,
+				AddressType['residence']
+			assert_equal addressing.current_address, YNDK[:yes]
+		} } }
+	end
+
 	test "current_address should default to 1" do
 		addressing = Addressing.new
 		assert_equal 1, addressing.current_address
@@ -266,45 +310,73 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 #	'1' and '0' are the default values for a checkbox.
 #	I probably should add a condition to this event that
 #	the address_type be 'Residence', but I've left that to the view.
+#			addressing = Factory(:current_residence_addressing)
+
+	test "should NOT add 'subject_moved' event to subject if subject_moved is '1'" <<
+			" if not residence address" do
+		addressing = Factory(:current_mailing_addressing)
+		assert_difference('OperationalEvent.count',0) {
+			addressing.update_attributes(
+				:current_address => '2',
+				:subject_moved => '1')
+		}
+	end
+
+	test "should NOT add 'subject_moved' event to subject if subject_moved is '1'" <<
+			" if was not current address" do
+		addressing = Factory(:residence_addressing)
+		assert_difference('OperationalEvent.count',0) {
+			addressing.update_attributes(
+				:current_address => '2',
+				:subject_moved => '1')
+		}
+	end
 
 	test "should add 'subject_moved' event to subject if subject_moved is '1'" do
-		addressing = create_addressing
+		addressing = Factory(:current_residence_addressing)
 		assert_difference('OperationalEvent.count',1) {
-			addressing.update_attributes(:subject_moved => '1')
+			addressing.update_attributes(
+				:current_address => '2',
+				:subject_moved => '1')
 		}
 	end
 
 	test "should not add 'subject_moved' event to subject if subject_moved is '0'" do
-		addressing = create_addressing
+		addressing = Factory(:current_residence_addressing)
 		assert_difference('OperationalEvent.count',0) {
-			addressing.update_attributes(:subject_moved => '0')
+			addressing.update_attributes(
+				:current_address => '2',
+				:subject_moved => '0')
 		}
 	end
 
 	test "should add 'subject_moved' event to subject if subject_moved is 'true'" do
-		addressing = create_addressing
+		addressing = Factory(:current_residence_addressing)
 		assert_difference('OperationalEvent.count',1) {
-			addressing.update_attributes(:subject_moved => 'true')
+			addressing.update_attributes(
+				:current_address => '2',
+				:subject_moved => 'true')
 		}
 	end
 
 	test "should not add 'subject_moved' event to subject if subject_moved is 'false'" do
-		addressing = create_addressing
+		addressing = Factory(:current_residence_addressing)
 		assert_difference('OperationalEvent.count',0) {
-			addressing.update_attributes(:subject_moved => 'false')
+			addressing.update_attributes(
+				:current_address => '2',
+				:subject_moved => 'false')
 		}
 	end
 
 	test "should not add 'subject_moved' event to subject if subject_moved is nil" do
-		addressing = create_addressing
+		addressing = Factory(:current_residence_addressing)
 		assert_difference('OperationalEvent.count',0) {
-			addressing.update_attributes(:subject_moved => nil)
+			addressing.update_attributes(
+				:current_address => '2',
+				:subject_moved => nil)
 		}
 	end
 
-
-
-	
 protected
 
 #	def create_addressing(options={})

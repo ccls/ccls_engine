@@ -39,6 +39,22 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 		} }
 	end
 
+	test "explicit Factory mailing_address test" do
+		assert_difference('AddressType.count',0) {
+		assert_difference('Address.count',1) {
+			address = Factory(:mailing_address)
+			assert_equal address.address_type, AddressType['mailing']
+		} }
+	end
+
+	test "explicit Factory residence_address test" do
+		assert_difference('AddressType.count',0) {
+		assert_difference('Address.count',1) {
+			address = Factory(:residence_address)
+			assert_equal address.address_type, AddressType['residence']
+		} }
+	end
+
 	test "should require address_type" do
 		assert_difference( "Address.count", 0 ) do
 			address = create_address( :address_type => nil)
@@ -95,45 +111,6 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 		end
 	end
 
-#	'1' and '0' are the default values for a checkbox.
-#	I probably should add a condition to this event that
-#	the address_type be 'Residence', but I've left that to the view.
-#
-#	test "should add 'subject_moved' event to subject if subject_moved is '1'" do
-#		address = create_addressing.address
-#		assert_difference('OperationalEvent.count',1) {
-#			address.update_attributes(:subject_moved => '1')
-#		}
-#	end
-#
-#	test "should not add 'subject_moved' event to subject if subject_moved is '0'" do
-#		address = create_addressing.address
-#		assert_difference('OperationalEvent.count',0) {
-#			address.update_attributes(:subject_moved => '0')
-#		}
-#	end
-#
-#	test "should add 'subject_moved' event to subject if subject_moved is 'true'" do
-#		address = create_addressing.address
-#		assert_difference('OperationalEvent.count',1) {
-#			address.update_attributes(:subject_moved => 'true')
-#		}
-#	end
-#
-#	test "should not add 'subject_moved' event to subject if subject_moved is 'false'" do
-#		address = create_addressing.address
-#		assert_difference('OperationalEvent.count',0) {
-#			address.update_attributes(:subject_moved => 'false')
-#		}
-#	end
-#
-#	test "should not add 'subject_moved' event to subject if subject_moved is nil" do
-#		address = create_addressing.address
-#		assert_difference('OperationalEvent.count',0) {
-#			address.update_attributes(:subject_moved => nil)
-#		}
-#	end
-#
 #protected
 #
 #	def create_address(options={})
