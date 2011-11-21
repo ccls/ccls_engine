@@ -103,6 +103,8 @@ protected
 		end
 	end
 
+	#	this will actually create an event on creation as well
+	#	if attributes match
 	def create_subject_moved_event
 		#	subject_moved will most likely be a string 'true' or 'false'
 		#		as it will really only come as a hash value from a view.
