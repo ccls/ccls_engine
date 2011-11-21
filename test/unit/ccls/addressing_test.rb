@@ -261,6 +261,49 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 			assert addressing.respond_to?(method_name)
 		end
 	end
+
+
+#	'1' and '0' are the default values for a checkbox.
+#	I probably should add a condition to this event that
+#	the address_type be 'Residence', but I've left that to the view.
+
+	test "should add 'subject_moved' event to subject if subject_moved is '1'" do
+		addressing = create_addressing
+		assert_difference('OperationalEvent.count',1) {
+			addressing.update_attributes(:subject_moved => '1')
+		}
+	end
+
+	test "should not add 'subject_moved' event to subject if subject_moved is '0'" do
+		addressing = create_addressing
+		assert_difference('OperationalEvent.count',0) {
+			addressing.update_attributes(:subject_moved => '0')
+		}
+	end
+
+	test "should add 'subject_moved' event to subject if subject_moved is 'true'" do
+		addressing = create_addressing
+		assert_difference('OperationalEvent.count',1) {
+			addressing.update_attributes(:subject_moved => 'true')
+		}
+	end
+
+	test "should not add 'subject_moved' event to subject if subject_moved is 'false'" do
+		addressing = create_addressing
+		assert_difference('OperationalEvent.count',0) {
+			addressing.update_attributes(:subject_moved => 'false')
+		}
+	end
+
+	test "should not add 'subject_moved' event to subject if subject_moved is nil" do
+		addressing = create_addressing
+		assert_difference('OperationalEvent.count',0) {
+			addressing.update_attributes(:subject_moved => nil)
+		}
+	end
+
+
+
 	
 protected
 
