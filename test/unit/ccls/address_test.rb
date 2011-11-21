@@ -11,7 +11,6 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( 
 		:line_2, 
 		:unit,
-#		:data_source_id, 
 		:external_address_id )
 	assert_should_require_attribute_length( 
 		:zip, 
@@ -26,7 +25,6 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 
 	assert_should_have_one(:addressing)
 	assert_should_have_many(:interviews)
-#	assert_should_belong_to(:data_source)
 	assert_should_initially_belong_to(:address_type)
 
 	test "explicit Factory address test" do
@@ -95,6 +93,27 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 			)
 			assert address.errors.on(:address_type_id)
 		end
+	end
+
+	test "should add 'subject_moved' event to subject if subject_moved is 'true'" do
+		address = create_addressing.address
+		assert_difference('OperationalEvent.count',1) {
+			address.update_attributes(:subject_moved => 'true')
+		}
+	end
+
+	test "should not add 'subject_moved' event to subject if subject_moved is 'false'" do
+		address = create_addressing.address
+		assert_difference('OperationalEvent.count',0) {
+			address.update_attributes(:subject_moved => 'false')
+		}
+	end
+
+	test "should not add 'subject_moved' event to subject if subject_moved is nil" do
+		address = create_addressing.address
+		assert_difference('OperationalEvent.count',0) {
+			address.update_attributes(:subject_moved => nil)
+		}
 	end
 
 protected

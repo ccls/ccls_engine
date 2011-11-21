@@ -29,6 +29,10 @@ class Address < Shared
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
 		:message => "should be 12345 or 12345-1234", :allow_blank => true
 
+	attr_accessor :subject_moved
+
+	after_save :create_subject_moved_event, :if => :subject_moved
+
 	# TODO it would probably be better to do this before_validation
 	before_save :format_zip
 
@@ -54,6 +58,20 @@ protected
 	def format_zip
 		#	zip was nil during import and skipping validations
 		self.zip.squish! unless zip.nil?
+	end
+
+	def create_subject_moved_event
+		#	subject_moved will most likely be a string 'true' or 'false'
+		#		as it will really only come as a hash value from a view.
+		#	.true? is a common_lib#object method.
+		if subject_moved.true?
+			ccls_enrollment = study_subject.enrollments.find_or_create_by_project_id(
+				Project['ccls'].id)
+			ccls_enrollment.operational_events << OperationalEvent.create!(
+				:operational_event_type => OperationalEventType['subject_moved'],
+				:occurred_on            => Date.today
+			)
+		end
 	end
 
 end
