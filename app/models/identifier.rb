@@ -15,6 +15,8 @@ class Identifier < Shared
 
 	attr_protected :study_subject_id
 
+	validates_uniqueness_of :studyid, :allow_nil => true
+
 	validates_length_of :case_control_type, :is => 1, :allow_nil => true
 
 #	TODO : add a validation for contents of orderno
