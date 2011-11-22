@@ -21,3 +21,15 @@ other:
   code: 3
   key: other
   description: other
+legacy:
+  id: 4
+  code: 888
+  position: 4
+  key: unspec
+  description:  missing data (eg. legacy nulls)
+dk:
+  id: 5
+  code: 999
+  position: 5
+  key: dk
+  description:  don't know
