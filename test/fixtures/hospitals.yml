@@ -98,3 +98,11 @@ LOMA:
   id: 8
   organization_id: 32
   has_irb_waiver: 1
+unspec:
+  id: 9
+  organization_id: 33
+  has_irb_waiver: 0
+dk:
+  id: 10
+  organization_id: 34
+  has_irb_waiver: 0
