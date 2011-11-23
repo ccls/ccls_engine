@@ -66,7 +66,9 @@ namespace :odms_import do
 					s.identifier.newid,
 
 #	NOTE need to explicitly get the studyid attribute (not method)
-					s.identifier.read_attribute(:studyid),		
+#					s.identifier.read_attribute(:studyid),		
+#	not anymore
+					s.identifier.studyid,		
 
 					s.identifier.related_case_childid,
 					s.identifier.state_id_no,
@@ -166,13 +168,6 @@ namespace :odms_import do
 		puts "Destroying candidate controls"
 		CandidateControl.destroy_all
 		puts "Importing candidate controls"
-#Factory.define :candidate_control do |f|
-#	f.first_name "First"
-#	f.last_name  "Last"
-#	f.dob Date.jd(2440000+rand(15000))
-#	f.reject_candidate false
-#end
-
 		SubjectType['Case'].study_subjects.each do |s|
 			rand(5).times do |i|
 				puts "Creating candidate control for study_subject_id:#{s.id}"
@@ -197,7 +192,7 @@ namespace :odms_import do
 		error_file = File.open('subjects_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112211.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112211c.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -206,7 +201,7 @@ namespace :odms_import do
 			puts "Processing line #{f.lineno}"
 			puts line
 
-#"subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id"
+#"subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"
 
 ##	BEGIN anticipated errors
 #
@@ -303,8 +298,6 @@ namespace :odms_import do
 				end
 			end
 
-#","hispanicity_id",","","organization_name","created_at","","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year"
-
 			identifier = Identifier.new do |m|
 				m.subjectid     = line['subjectid']
 				m.childid       = line['childid']
@@ -341,6 +334,7 @@ namespace :odms_import do
 					m.admit_date = ( line['admit_date'].blank?
 						) ? nil : Time.parse(line['admit_date'])
 					m.diagnosis_id    = line['diagnosis_id']
+					m.other_diagnosis = line['other_diagnosis']
 					m.organization_id = line['organization_id']
 					m.hospital_no     = line['hospital_no']
 					m.was_previously_treated = line['was_previously_treated']
@@ -399,152 +393,7 @@ namespace :odms_import do
 			:conditions => { :childidwho => 'T' })
 		printf "%-19s %5d\n", "Pii.count:", Pii.count
 		printf "%-19s %5d\n", "Patient.count:", Patient.count
+		printf "%-19s %5d\n", "Enrollment.count:", Enrollment.count
 	end		#	task :subjects => :environment do
-
-#	task :subjects_092611 => :environment do
-#		puts "Importing subjects"
-#
-#		error_file = File.open('subjects_errors.txt','w')
-#
-#		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-#		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_092611.csv", 'rb',{
-#			:headers => true })).each do |line|
-#			puts "Processing line #{f.lineno}"
-#			puts line
-#
-##	subjectID,subjectType_id,vital_status_id,do_not_contact,sex,refdate
-##,ChildId,icf_master_id,matchingID,familyID,PatID,case_control_type,OrderNo,newID,studyID,related_case_childID,state_id_no,
-##subject_type_id
-##,admit_date,diagnosis_id,organization_id,
-##ODMS_Patients_092611.created_at,was_previously_treated,was_under_15_at_dx,Zipcode,County
-##,first_name,middle_name,last_name,maiden_name,dob,died_on,mother_first_name,mother_maiden_name,mother_last_name,father_first_name,father_last_name,ODMS_Identifiers_092611.created_at
-#
-##	BEGIN anticipated errors
-#
-#			if line['subject_type_id'].blank?
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: No subject_type_id"
-#				error_file.puts line
-#			end
-#
-#			if line['subject_type_id'] != line['subjectType_id']
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: subject type id mismatch: " <<
-#					"subject_type_id:#{line['subject_type_id']}: " <<
-#					"subjectType_id:#{line['subjectType_id']}:"
-#				error_file.puts line
-#			end
-#
-#			if line['first_name'].blank?
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: No first_name"
-#				error_file.puts line
-#			end
-#
-#			if line['last_name'].blank?
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: No last_name"
-#				error_file.puts line
-#			end
-#
-#			raf_zip = line['Zipcode']
-#			if !raf_zip.blank? and ![5,10].include?(raf_zip.length)
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: Unexpected zipcode length :#{raf_zip}:"
-#				error_file.puts line
-#				raf_zip = '99999'
-#			end
-#
-#			state_id_no = line['state_id_no']
-#			if !state_id_no.blank? && Identifier.exists?(:state_id_no => state_id_no)
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: " <<
-#					"state_id_no is a duplicate:#{line['state_id_no']}:"
-#				error_file.puts line
-#				state_id_no = nil
-#			end
-#
-##	END anticipated errors
-#
-#			pii = Pii.new do |m|
-#				m.first_name         = line['first_name'] || "FIXME"	#	TODO
-#				m.middle_name        = line['middle_name']
-#				m.last_name          = line['last_name'] || "FIXME"	#	TODO
-#				m.maiden_name        = line['maiden_name']
-#				m.died_on            = ( line['died_on'].blank? 
-#					) ? nil : Time.parse(line['died_on'])
-#				m.mother_first_name  = line['mother_first_name']
-#				m.mother_maiden_name = line['mother_maiden_name']
-#				m.mother_last_name   = line['mother_last_name']
-#				m.father_first_name  = line['father_first_name']
-#				m.father_last_name   = line['father_last_name']
-#
-#				if line['subject_type_id'].to_i == SubjectType['Mother'].id
-#					m.subject_is_mother = true
-#					m.dob               = ( line['dob'].blank? 
-#						) ? nil : Time.parse(line['dob']).to_date
-#				else
-#					#	blank dob only a problem if not mother
-#					if line['dob'].blank?
-#						error_file.puts 
-#						error_file.puts "Line #:#{f.lineno}: No dob and not mother"
-#						error_file.puts line
-#					end
-#					m.dob               = (( line['dob'].blank? 
-#						) ? Time.parse('01-Jan-1900') : Time.parse(line['dob']) ).to_date
-#				end
-#			end
-#
-#			identifier = Identifier.new do |m|
-#				m.subjectid     = line['subjectID']
-#				m.childid       = line['ChildId']
-#				m.icf_master_id = line['icf_master_id']
-#				m.matchingid    = line['matchingID']
-#				m.familyid      = line['familyID']
-#				m.patid         = line['PatID']
-#				m.orderno       = line['OrderNo']
-#				m.newid         = line['newID']
-#				m.studyid       = line['studyID']
-#				m.state_id_no   = state_id_no
-#				m.case_control_type = line['case_control_type']
-#				m.related_case_childid = line['related_case_childID']
-#				m.created_at         = line['ODMS_Identifiers_092611.created_at']
-#			end
-#
-#			attributes = {
-#				:subject_type_id => line['subject_type_id'],
-#				:vital_status_id => line['vital_status_id'],
-#				:do_not_contact  => line['do_not_contact'],
-#				:sex             => line['sex'],
-#				:reference_date  => ( line['refdate'].blank?
-#						) ? nil : Time.parse(line['refdate']),
-#				:pii             => pii,
-#				:identifier      => identifier
-#			}
-#
-#			if line['subject_type_id'] == '1'
-#				patient = Patient.new do |m|
-#					m.admit_date = ( line['admit_date'].blank?
-#						) ? nil : Time.parse(line['admit_date'])
-#					m.diagnosis_id    = line['diagnosis_id']
-#					m.organization_id = line['organization_id']
-#					m.was_previously_treated = line['was_previously_treated']
-#					m.was_under_15_at_dx     = line['was_under_15_at_dx']
-#					m.raf_zip                = raf_zip
-#					m.raf_county             = line['County']
-#					m.created_at             = line['ODMS_Patients_092611.created_at']
-#				end
-#				attributes[:patient] = patient
-#			end
-#
-#			s = StudySubject.create!(attributes)
-#		end	#	FasterCSV.open
-#		error_file.close
-#
-#		printf "%-19s %5d\n", "StudySubject.count:", StudySubject.count
-#		printf "%-19s %5d\n", "Identifier.count:", Identifier.count
-#		printf "%-19s %5d\n", "Pii.count:", Pii.count
-#		printf "%-19s %5d\n", "Patient.count:", Patient.count
-#	end		#	task :subjects_092611 => :environment do
 
 end
