@@ -163,3 +163,11 @@ LomaLinda:
   id: 32
   code: Loma
   name:  Loma Linda Hospital
+unspec:
+  id: 33
+  code: 888
+  name: Unspecified Organization/Hospital
+dk:
+  id: 34
+  code: 999
+  name: organization unknown
