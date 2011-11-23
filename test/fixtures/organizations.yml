@@ -165,9 +165,9 @@ LomaLinda:
   name:  Loma Linda Hospital
 unspec:
   id: 33
-  code: unspecified
+  code: 888
   name: Unspecified Organization/Hospital
 dk:
   id: 34
-  code: dk
+  code: 999
   name: organization unknown
