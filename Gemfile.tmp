@@ -90,3 +90,6 @@ gem "sunspot_rails"
 gem "sunspot"
 gem "packet"	#	don't remember why (think from backgroundrb)
 
+gem "webrat"
+gem "capybara"
+
