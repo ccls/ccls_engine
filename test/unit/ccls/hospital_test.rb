@@ -76,7 +76,8 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 	test "should return nonwaivered hospitals" do
 		hospitals = Hospital.nonwaivered
 		assert !hospitals.empty?
-		assert_equal 3, hospitals.length	#	this is true now, but will change
+		#	the addition of the "unspecified" and "don't know" make this 5 now
+		assert_equal 5, hospitals.length	#	this is true now, but will change
 		hospitals.each do |hospital|
 			assert !hospital.has_irb_waiver
 		end
