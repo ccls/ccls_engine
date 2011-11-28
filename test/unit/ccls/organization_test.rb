@@ -61,6 +61,16 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 		assert_equal organization.name, "#{organization}"
 	end
 
+	test "should find by code with ['string']" do
+		organization = Organization['Loma']
+		assert organization.is_a?(Organization)
+	end
+
+	test "should find by code with [:symbol]" do
+		organization = Organization[:Loma]
+		assert organization.is_a?(Organization)
+	end
+
 #protected
 #
 #	def create_organization(options={})

@@ -26,4 +26,12 @@ class Organization < Shared
 		name
 	end
 
+#	class NotFound < StandardError; end
+
+	#	Treats the class a bit like a Hash and
+	#	searches for a record with a matching code.
+	def self.[](code)
+		find_by_code(code.to_s) #|| raise(NotFound)
+	end
+
 end
