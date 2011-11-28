@@ -104,12 +104,21 @@ ActionView::Helpers::AssetTagHelper.register_javascript_expansion(
 #		File.join(
 #			File.dirname(__FILE__), '../app/views'))
 
-require 'paperclip'
-if defined? ::Paperclip::Glue
-	ActiveRecord::Base.send(:include, ::Paperclip::Glue)
-else
-	ActiveRecord::Base.send(:include, ::Paperclip)
-end
+
+#
+#	None of the models included in this gem use Paperclip
+#		so removing this shouldn't break anything.  However,
+#		since anything is possible, I'm just commenting it
+#		out in case something funky should occur.
+#
+#require 'paperclip'
+#if defined? ::Paperclip::Glue
+#	ActiveRecord::Base.send(:include, ::Paperclip::Glue)
+#else
+#	ActiveRecord::Base.send(:include, ::Paperclip)
+#end
+
+
 
 #	While a HWIA does not differentiate strings and symbols,
 #	it does not differentiate between strings and numbers.
