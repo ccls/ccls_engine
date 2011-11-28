@@ -78,6 +78,7 @@ require 'ccls_engine/core_extension'
 require 'ccls_engine/shared'
 require 'ccls_engine/ccls_user'
 require 'ccls_engine/helper'
+require 'ccls_engine/action_view_extension'
 
 if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@configuration")
 	require 'active_support/test_case'
