@@ -110,6 +110,7 @@ namespace :odms_import do
 		'odms_import:subjects'#,
 #		'odms_import:icf_master_ids',
 #		'odms_import:create_dummy_candidate_controls'
+#		'odms_import:enrollments'
 	]
 
 	task :icf_master_ids => :environment do 
@@ -184,6 +185,36 @@ namespace :odms_import do
 		printf "%-19s %5d\n", "CandidateControl.count:", CandidateControl.count
 	end
 
+	desc "Import data from enrollments.csv file"
+	task :enrollments => :environment do
+		puts "Importing enrollments"
+
+#		error_file = File.open('enrollments_errors.txt','a')	#	append existing
+		error_file = File.open('enrollments_errors.txt','w')	#	overwrite existing
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_enrollments_111711_beta.csv", 'rb',{
+			:headers => true })).each do |line|
+
+#	skip until ...
+#			next if f.lineno <= 10619
+
+			puts "Processing line #{f.lineno}"
+			puts line
+
+#	this is probably wrong as project_id is 7 (unspecified)
+#"ChildId","project_id","subjectID","consented","consented_on","refusal_reason_id","document_version_id","is_eligible"
+#1,7,"044746","2","1/1/1900","888",1,"true"
+
+
+#			subject = StudySubject.find ....
+
+#	which enrollment
+#			subject.enrollments.create <<
+
+	end
+
+
 	desc "Import data from subjects.csv file"
 	task :subjects => :environment do
 		puts "Importing subjects"
@@ -192,7 +223,7 @@ namespace :odms_import do
 		error_file = File.open('subjects_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112211c.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112311.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -262,6 +293,7 @@ namespace :odms_import do
 #		Models built in block mode to avoid protected attributes
 #
 			pii = Pii.new do |m|
+				m.birth_year         = line['birth_year']
 				m.created_at         = line['created_at']
 				m.first_name         = line['first_name'] #|| "FIXME"	#	TODO
 				m.middle_name        = line['middle_name']
@@ -313,7 +345,6 @@ namespace :odms_import do
 				m.case_control_type = line['case_control_type']
 				m.related_case_childid = line['related_case_childid']
 				m.created_at         = line['created_at']
-#				m.created_at         = line['ODMS_Identifiers_xxxxxx_created_at']
 			end
 
 			attributes = {
@@ -335,7 +366,7 @@ namespace :odms_import do
 						) ? nil : Time.parse(line['admit_date'])
 					m.diagnosis_id    = line['diagnosis_id']
 					m.other_diagnosis = line['other_diagnosis']
-					m.organization_id = line['organization_id']
+					m.organization_id = line['organization_id']||Organization['888'].id
 					m.hospital_no     = line['hospital_no']
 					m.was_previously_treated = line['was_previously_treated']
 					m.was_under_15_at_dx     = line['was_under_15_at_dx']
@@ -343,18 +374,10 @@ namespace :odms_import do
 					m.raf_zip                = line['raf_zipcode']
 					m.raf_county             = line['raf_county']
 					m.created_at             = line['created_at']
-#					m.created_at             = line['ODMS_Patients_xxxxxx_created_at']
 				end
-
-
-
 				attributes[:patient] = patient
-
-
-
 			end
 
-#			s = StudySubject.create!(attributes)
 			s = StudySubject.create(attributes)
 			if s.new_record?
 				error_file.puts 
