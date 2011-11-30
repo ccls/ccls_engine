@@ -1,8 +1,6 @@
 #	The type of address (home,work,residence,pobox,etc.)
-class AddressType < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class AddressType < ActiveRecordShared
+
 	acts_as_list
 	has_many :addresses
 

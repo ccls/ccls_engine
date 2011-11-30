@@ -1,10 +1,8 @@
 # == PII (Personally Identifiable Information)
 #	==	requires
 #	*	study_subject_id
-class Pii < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Pii < ActiveRecordShared
+
 	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 

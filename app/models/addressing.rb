@@ -1,8 +1,6 @@
 #	Rich join of Subject and Address
-class Addressing < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Addressing < ActiveRecordShared
+
 	belongs_to :study_subject
 	belongs_to :address
 	belongs_to :data_source

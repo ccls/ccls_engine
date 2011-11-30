@@ -1,9 +1,7 @@
 #	==	requires
 #	*	subject_type_id
-class StudySubject < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class StudySubject < ActiveRecordShared
+
 	class NotTwoAbstracts < StandardError; end
 	class DuplicatesFound < StandardError; end
 
@@ -59,8 +57,6 @@ class StudySubject < Shared
 	after_create :add_new_subject_operational_event
 	after_save   :add_subject_died_operational_event
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of :subject_type
 	validates_presence_of :subject_type_id
 
 	validate :presence_of_sex

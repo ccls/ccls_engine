@@ -1,8 +1,6 @@
 # Patient related study_subject info.
-class Patient < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Patient < ActiveRecordShared
+
 	belongs_to :study_subject
 	belongs_to :organization
 	belongs_to :diagnosis
@@ -12,13 +10,9 @@ class Patient < Shared
 	attr_protected :study_subject_id
 
 	validates_presence_of :admit_date
-#	validates_presence_of :organization_id
 	validate :presence_of_organization_id
 	validates_presence_of :diagnosis_id
-#	validates_presence_of :hospital_no
 	validate :presence_of_hospital_no
-#	validates_length_of   :hospital_no, :maximum => 25
-#	avoid duplicate errors so allow blank here
 	validates_length_of   :hospital_no, :maximum => 25, :allow_blank => true
 	validates_uniqueness_of :hospital_no, :scope => :organization_id
 	validates_past_date_for :admit_date

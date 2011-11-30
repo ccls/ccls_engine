@@ -1,8 +1,5 @@
 #	Abstract model
-class Abstract < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Abstract < ActiveRecordShared
 
 	belongs_to :study_subject, :counter_cache => true
 

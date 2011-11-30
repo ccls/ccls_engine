@@ -2,10 +2,7 @@
 #	*	address_id
 #	*	interviewer_id
 #	*	study_subject_id
-class Interview < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Interview < ActiveRecordShared
 
 	belongs_to :study_subject
 

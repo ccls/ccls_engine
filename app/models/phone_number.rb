@@ -1,8 +1,6 @@
 # A study_subject's phone number
-class PhoneNumber < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class PhoneNumber < ActiveRecordShared
+
 	acts_as_list :scope => :study_subject_id
 	belongs_to :study_subject
 	belongs_to :phone_type
@@ -12,8 +10,6 @@ class PhoneNumber < Shared
 
 	validates_presence_of :phone_number
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of :phone_type
 	validates_presence_of :phone_type_id
 
 	validates_presence_of :why_invalid,       :if => :is_not_valid?

@@ -1,7 +1,5 @@
-class ProjectOutcome < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class ProjectOutcome < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 	has_many :enrollments

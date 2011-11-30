@@ -1,7 +1,4 @@
-class BcRequest < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class BcRequest < ActiveRecordShared
 
 	belongs_to :study_subject
 	attr_protected :study_subject_id

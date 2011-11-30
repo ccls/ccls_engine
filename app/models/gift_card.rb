@@ -1,7 +1,5 @@
-class GiftCard < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class GiftCard < ActiveRecordShared
+
 	belongs_to :study_subject
 	belongs_to :project
 

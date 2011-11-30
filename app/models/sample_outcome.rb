@@ -1,8 +1,6 @@
 # don't know exactly
-class SampleOutcome < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class SampleOutcome < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 

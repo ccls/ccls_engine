@@ -2,10 +2,8 @@
 #	*	childid (unique)
 #	*	study_subject_id (unique)
 #	*	state_id_no ( unique )
-class Identifier < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Identifier < ActiveRecordShared
+
 	belongs_to :study_subject
 
 	#	Very cool that this doesn't stop factory girl from using them.

@@ -1,9 +1,7 @@
 #	Address for a study_subject
 #	Actually, this may be used for things other than subjects
-class Address < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Address < ActiveRecordShared
+
 	default_scope :order => 'created_at DESC'
 
 	has_many :interviews
@@ -13,8 +11,6 @@ class Address < Shared
 
 	validate :address_type_matches_line
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of :address_type
 	validates_presence_of :address_type_id
 
 	validates_presence_of :line_1

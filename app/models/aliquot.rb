@@ -2,10 +2,8 @@
 #	*	sample_id
 #	*	unit_id
 #	*	owner_id
-class Aliquot < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Aliquot < ActiveRecordShared
+
 	belongs_to :sample
 	belongs_to :unit
 	belongs_to :aliquot_sample_format

@@ -3,10 +3,8 @@ require 'active_shipping'
 #	==	named_scopes (don't get parsed by rdoc???)
 #	*	delivered
 #	*	undelivered
-class Package < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Package < ActiveRecordShared
+
 	has_one :o_sample_kit, :class_name => 'SampleKit', :foreign_key => 'kit_package_id'
 	has_one :i_sample_kit, :class_name => 'SampleKit', :foreign_key => 'sample_package_id'
 		

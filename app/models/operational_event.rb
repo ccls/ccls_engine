@@ -1,15 +1,11 @@
 #	==	requires
 #	*	operational_event_type_id
-class OperationalEvent < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class OperationalEvent < ActiveRecordShared
+
 	default_scope :order => 'occurred_on DESC'
 	belongs_to :enrollment
 	belongs_to :operational_event_type
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of :operational_event_type
 	validates_presence_of :operational_event_type_id
 
 	validates_complete_date_for :occurred_on, :allow_nil => true

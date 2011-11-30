@@ -1,7 +1,7 @@
 #
 #	I am removing this due to its issues.
 #
-class Patid < Shared
+class Patid < ActiveRecordShared
 #
 #	NOTE: Don't validate anything that the creating user can't do anything about.
 #

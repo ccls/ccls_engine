@@ -1,9 +1,7 @@
 #	==	requires
 #	*	description ( unique and > 3 chars )
-class Unit < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Unit < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 

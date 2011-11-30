@@ -1,7 +1,4 @@
-class IcfMasterId < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class IcfMasterId < ActiveRecordShared
 
 #+------------------+------------+------+-----+---------+----------------+
 #| Field            | Type       | Null | Key | Default | Extra          |

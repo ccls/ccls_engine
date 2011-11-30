@@ -1,8 +1,6 @@
 # The type of phone number (home,work,mobile,etc.)
-class PhoneType < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class PhoneType < ActiveRecordShared
+
 	acts_as_list
 	has_many :phone_numbers
 

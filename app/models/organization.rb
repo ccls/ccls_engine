@@ -1,9 +1,7 @@
 #	==	requires
 #	*	name ( unique and > 3 chars )
-class Organization < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Organization < ActiveRecordShared
+
 	acts_as_list
 
 	belongs_to :person

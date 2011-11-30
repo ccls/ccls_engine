@@ -1,7 +1,5 @@
-class County < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class County < ActiveRecordShared
+
 	default_scope :order => :name
 	has_many :zip_codes
 

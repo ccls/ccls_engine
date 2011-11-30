@@ -1,18 +1,14 @@
 #	==	requires
 #	*	description ( unique and > 3 chars )
 #	*	project
-class InstrumentType < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class InstrumentType < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 
 	belongs_to :project
 	has_many :instrument_versions
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of   :project
 	validates_presence_of   :project_id
 
 	validates_presence_of   :code

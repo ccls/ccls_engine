@@ -1,10 +1,8 @@
 #	Rich join of Subject and Project
 #	==	requires
 #	*	project
-class Enrollment < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Enrollment < ActiveRecordShared
+
 	belongs_to :study_subject
 	belongs_to :ineligible_reason
 	belongs_to :refusal_reason
@@ -20,22 +18,9 @@ class Enrollment < Shared
 	validates_presence_of   :project
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id], :allow_blank => true
 
-#
-#	NOTE validations on the association rather than the foreign key
-#		DO NOT get flagged in view.  (ie. an error on refusal_reason IS NOT
-#			the same as an error on refusal_reason_id)
-#		Recently, I changed all of these to association validations rather
-#			than foreign key validations because it ensures an existing association, 
-#			but now I see that this may need modified for clarity in the view.
-#
-
-#	validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of :ineligible_reason,
 	validates_presence_of :ineligible_reason_id,
 		:message => 'required if ineligible',
 		:if => :is_not_eligible?
-#	validate on foreign key rather than association so error shows up correctly in view.
-#	validates_absence_of :ineligible_reason,
 	validates_absence_of :ineligible_reason_id,
 		:message => 'not allowed if not ineligible',
 		:unless => :is_not_eligible?
@@ -52,12 +37,8 @@ class Enrollment < Shared
 		:message => 'not allowed',
 		:unless => :is_not_chosen?
 
-#	validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of :refusal_reason,
 	validates_presence_of :refusal_reason_id,
 		:if => :not_consented?
-#	validate on foreign key rather than association so error shows up correctly in view.
-#	validates_absence_of :refusal_reason,
 	validates_absence_of :refusal_reason_id,
 		:message => "not allowed with consent",
 		:unless => :not_consented?
@@ -93,8 +74,6 @@ class Enrollment < Shared
 		:unless => :is_complete?
 	validates_past_date_for :completed_on
 
-#	validate on foreign key rather than association so error shows up correctly in view.
-#	validates_absence_of :document_version,
 	validates_absence_of :document_version_id,
 		:message => "not allowed with unknown consent",
 		:if => :consent_unknown?

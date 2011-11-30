@@ -1,8 +1,6 @@
 # Currently just US states + DC
-class State < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class State < ActiveRecordShared
+
 	acts_as_list
 
 	validates_presence_of   :code

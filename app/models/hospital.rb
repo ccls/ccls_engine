@@ -1,8 +1,6 @@
 # don't know exactly
-class Hospital < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Hospital < ActiveRecordShared
+
 	acts_as_list
 	belongs_to :organization
 
@@ -12,8 +10,6 @@ class Hospital < Shared
 
 #	if organization_id is not unique, using find_by_organization_id as I do WILL cause problems
 #	as it will only evern return the first match
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of   :organization
 	validates_presence_of   :organization_id
 	validates_uniqueness_of :organization_id, :allow_blank => true
 #	Remove current organization_id index and add a unique index??
@@ -22,11 +18,9 @@ class Hospital < Shared
 	named_scope :waivered,    :conditions => { :has_irb_waiver => true }
 	named_scope :nonwaivered, :conditions => { :has_irb_waiver => false }
 
-
 	delegate :to_s, :to => :organization, :allow_nil => true
 #	def to_s
 #		organization.try(:name) || 'Unknown'	#	organization is required now, so Unknown should never happen
 #	end
-
 
 end

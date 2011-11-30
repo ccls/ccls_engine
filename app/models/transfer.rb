@@ -2,18 +2,12 @@
 #	*	aliquot_id
 #	*	from_organization_id
 #	*	to_organization_id
-class Transfer < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Transfer < ActiveRecordShared
+
 	belongs_to :aliquot
 	belongs_to :from_organization, :class_name => "Organization"
 	belongs_to :to_organization,   :class_name => "Organization"
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of :aliquot
-#	validates_presence_of :to_organization
-#	validates_presence_of :from_organization
 	validates_presence_of :aliquot_id
 	validates_presence_of :to_organization_id
 	validates_presence_of :from_organization_id

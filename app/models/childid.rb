@@ -1,7 +1,7 @@
 #
 #	I am removing this due to its issues.
 #
-class Childid < Shared
+class Childid < ActiveRecordShared
 #
 #	NOTE: Don't validate anything that the creating user can't do anything about.
 #

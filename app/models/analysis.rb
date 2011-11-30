@@ -1,8 +1,5 @@
 # don't know exactly
-class Analysis < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Analysis < ActiveRecordShared
 #
 #	TODO remove the habtm and replace it with hmt SubjectAnalyses ?
 #

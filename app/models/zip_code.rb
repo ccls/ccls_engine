@@ -1,7 +1,5 @@
-class ZipCode < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class ZipCode < ActiveRecordShared
+
 	default_scope :order => :zip_code, :limit => 10
 	belongs_to :county
 

@@ -1,8 +1,6 @@
 #	don't know exactly
-class VitalStatus < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class VitalStatus < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 

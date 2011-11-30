@@ -1,7 +1,5 @@
-class CandidateControl < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class CandidateControl < ActiveRecordShared
+
 	belongs_to :study_subject
 
 	attr_protected :study_subject_id

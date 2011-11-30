@@ -1,7 +1,5 @@
-class Instrument < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class Instrument < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 
@@ -9,8 +7,6 @@ class Instrument < Shared
 	belongs_to :interview_method
 	has_many :instrument_versions
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	validates_presence_of   :project
 	validates_presence_of   :project_id
 
 	validates_presence_of   :code

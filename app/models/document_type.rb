@@ -1,7 +1,5 @@
-class DocumentType < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class DocumentType < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 	has_many :document_versions

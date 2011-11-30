@@ -1,9 +1,7 @@
 #	==	requires
 #	*	description (unique and > 3 chars)
-class IneligibleReason < Shared
-#
-#	NOTE: Don't validate anything that the creating user can't do anything about.
-#
+class IneligibleReason < ActiveRecordShared
+
 	acts_as_list
 	default_scope :order => :position
 
