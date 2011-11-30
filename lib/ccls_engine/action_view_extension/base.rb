@@ -67,8 +67,9 @@ module Ccls::ActionViewExtension::Base
 		def a_d_na(value=nil)
 			case value
 				when 1   then 'Agree'
-				when 2   then 'Disagree'
-				when 999 then "N/A"
+				when 2   then 'Do Not Agree'
+				when 888 then "N/A"
+				when 999 then "Don't Know"
 				else '&nbsp;'
 			end
 		end
@@ -84,7 +85,7 @@ module Ccls::ActionViewExtension::Base
 		def a_d_na_select(object_name, method, 
 				options={}, html_options={})
 			select(object_name, method,
-				[['Agree',1],['Disagree',2],["N/A",999]],
+				[['Agree',1],['Do Not Agree',2],['N/A',888],["Don't Know",999]],
 				{:include_blank => true}.merge(options), html_options)
 		end
 		alias_method :adna_select, :a_d_na_select

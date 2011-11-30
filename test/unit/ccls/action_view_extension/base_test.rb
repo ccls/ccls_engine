@@ -22,12 +22,16 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 		assert_equal 'Agree', adna(1)
 	end
 
-	test "adna(2) should return 'Disagree'" do
-		assert_equal 'Disagree', adna(2)
+	test "adna(2) should return 'Do Not Agree'" do
+		assert_equal 'Do Not Agree', adna(2)
 	end
 
-	test "adna(999) should return 'N/A'" do
-		assert_equal "N/A", adna(999)
+	test "adna(888) should return 'N/A'" do
+		assert_equal "N/A", adna(888)
+	end
+
+	test "adna(999) should return 'Don't Know'" do
+		assert_equal "Don't Know", adna(999)
 	end
 
 	test "adna(0) should return '&nbsp;'" do
@@ -42,12 +46,16 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 		assert_equal 'Agree', a_d_na(1)
 	end
 
-	test "a_d_na(2) should return 'Disagree'" do
-		assert_equal 'Disagree', a_d_na(2)
+	test "a_d_na(2) should return 'Do Not Agree'" do
+		assert_equal 'Do Not Agree', a_d_na(2)
 	end
 
-	test "a_d_na(999) should return 'N/A'" do
-		assert_equal "N/A", a_d_na(999)
+	test "a_d_na(888) should return 'N/A'" do
+		assert_equal "N/A", a_d_na(888)
+	end
+
+	test "a_d_na(999) should return 'Don't Know'" do
+		assert_equal "Don't Know", a_d_na(999)
 	end
 
 	test "a_d_na(0) should return '&nbsp;'" do
@@ -251,8 +259,9 @@ pending
 			a_d_na_select(:some_model, :adna)).root
 		assert_select response, "select#some_model_adna[name='some_model[adna]']" do
 			assert_select 'option[value=1]', 'Agree'
-			assert_select 'option[value=2]', 'Disagree'
-			assert_select 'option[value=999]', "N/A"
+			assert_select 'option[value=2]', 'Do Not Agree'
+			assert_select 'option[value=888]', "N/A"
+			assert_select 'option[value=999]', "Don't Know"
 		end
 	end
 
@@ -262,8 +271,9 @@ pending
 			adna_select(:some_model, :adna)).root
 		assert_select response, "select#some_model_adna[name='some_model[adna]']" do
 			assert_select 'option[value=1]', 'Agree'
-			assert_select 'option[value=2]', 'Disagree'
-			assert_select 'option[value=999]', "N/A"
+			assert_select 'option[value=2]', 'Do Not Agree'
+			assert_select 'option[value=888]', "N/A"
+			assert_select 'option[value=999]', "Don't Know"
 		end
 	end
 
