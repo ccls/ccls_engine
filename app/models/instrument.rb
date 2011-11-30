@@ -9,7 +9,9 @@ class Instrument < Shared
 	belongs_to :interview_method
 	has_many :instrument_versions
 
-	validates_presence_of   :project
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of   :project
+	validates_presence_of   :project_id
 
 	validates_presence_of   :code
 	validates_length_of     :code, :maximum => 250, :allow_blank => true

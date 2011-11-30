@@ -13,7 +13,10 @@ class Address < Shared
 
 	validate :address_type_matches_line
 
-	validates_presence_of :address_type
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of :address_type
+	validates_presence_of :address_type_id
+
 	validates_presence_of :line_1
 	validates_length_of   :line_1, :maximum => 250, :allow_blank => true
 	validates_length_of   :line_2, :maximum => 250, :allow_blank => true

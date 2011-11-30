@@ -25,44 +25,53 @@ class Ccls::TransferTest < ActiveSupport::TestCase
 	test "should require aliquot" do
 		assert_difference( "Transfer.count", 0 ) do
 			transfer = create_transfer( :aliquot => nil)
-			assert transfer.errors.on(:aliquot)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert transfer.errors.on(:aliquot)
+			assert transfer.errors.on_attr_and_type(:aliquot_id,:blank)
 		end
 	end
 
-	test "should require valid aliquot" do
-		assert_difference( "Transfer.count", 0 ) do
-			transfer = create_transfer( :aliquot_id => 0)
-			assert transfer.errors.on(:aliquot)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid aliquot" do
+#		assert_difference( "Transfer.count", 0 ) do
+#			transfer = create_transfer( :aliquot_id => 0)
+#			assert transfer.errors.on(:aliquot)
+#		end
+#	end
 
 	test "should require from_organization" do
 		assert_difference( "Transfer.count", 0 ) do
 			transfer = create_transfer( :from_organization => nil)
-			assert transfer.errors.on(:from_organization)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert transfer.errors.on(:from_organization)
+			assert transfer.errors.on_attr_and_type(:from_organization_id,:blank)
 		end
 	end
 
-	test "should require valid from_organization" do
-		assert_difference( "Transfer.count", 0 ) do
-			transfer = create_transfer( :from_organization_id => 0)
-			assert transfer.errors.on(:from_organization)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid from_organization" do
+#		assert_difference( "Transfer.count", 0 ) do
+#			transfer = create_transfer( :from_organization_id => 0)
+#			assert transfer.errors.on(:from_organization)
+#		end
+#	end
 
 	test "should require to_organization" do
 		assert_difference( "Transfer.count", 0 ) do
 			transfer = create_transfer( :to_organization => nil)
-			assert transfer.errors.on(:to_organization)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert transfer.errors.on(:to_organization)
+			assert transfer.errors.on_attr_and_type(:to_organization_id,:blank)
 		end
 	end
 
-	test "should require valid to_organization" do
-		assert_difference( "Transfer.count", 0 ) do
-			transfer = create_transfer( :to_organization_id => 0)
-			assert transfer.errors.on(:to_organization)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid to_organization" do
+#		assert_difference( "Transfer.count", 0 ) do
+#			transfer = create_transfer( :to_organization_id => 0)
+#			assert transfer.errors.on(:to_organization)
+#		end
+#	end
 
 #protected
 #

@@ -46,16 +46,19 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	test "should require phone_type" do
 		assert_difference( "PhoneNumber.count", 0 ) do
 			phone_number = create_phone_number( :phone_type => nil)
-			assert phone_number.errors.on(:phone_type)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert phone_number.errors.on(:phone_type)
+			assert phone_number.errors.on_attr_and_type(:phone_type_id, :blank)
 		end
 	end
 
-	test "should require valid phone_type" do
-		assert_difference( "PhoneNumber.count", 0 ) do
-			phone_number = create_phone_number( :phone_type_id => 0)
-			assert phone_number.errors.on(:phone_type)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid phone_type" do
+#		assert_difference( "PhoneNumber.count", 0 ) do
+#			phone_number = create_phone_number( :phone_type_id => 0)
+#			assert phone_number.errors.on(:phone_type)
+#		end
+#	end
 
 	test "current_phone should default to 1" do
 		phone_number = PhoneNumber.new

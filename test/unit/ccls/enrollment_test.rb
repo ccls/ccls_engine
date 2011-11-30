@@ -126,8 +126,11 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should require ineligible_reason if is_eligible == :no" do
 		assert_difference( "Enrollment.count", 0 ) do
 			enrollment = create_subjectless_enrollment(:is_eligible => YNDK[:no])
-			assert enrollment.errors.on(:ineligible_reason)
-			assert enrollment.errors.on_attr_and_type(:ineligible_reason,:blank)
+#			assert enrollment.errors.on(:ineligible_reason)
+#			assert enrollment.errors.on_attr_and_type(:ineligible_reason,:blank)
+#	validate on foreign key rather than association so error shows up correctly in view.
+			assert enrollment.errors.on(:ineligible_reason_id)
+			assert enrollment.errors.on_attr_and_type(:ineligible_reason_id,:blank)
 		end
 	end
 	[:yes,:dk,:nil].each do |yndk|
@@ -135,8 +138,11 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 			assert_difference( "Enrollment.count", 0 ) do
 				enrollment = create_subjectless_enrollment(:is_eligible => YNDK[yndk],
 					:ineligible_reason => Factory(:ineligible_reason) )
-				assert enrollment.errors.on(:ineligible_reason)
-				assert enrollment.errors.on_attr_and_type(:ineligible_reason,:present)
+#				assert enrollment.errors.on(:ineligible_reason)
+#				assert enrollment.errors.on_attr_and_type(:ineligible_reason,:present)
+#	validate on foreign key rather than association so error shows up correctly in view.
+				assert enrollment.errors.on(:ineligible_reason_id)
+				assert enrollment.errors.on_attr_and_type(:ineligible_reason_id,:present)
 			end
 		end
 	end
@@ -198,8 +204,11 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	test "should require refusal_reason if consented == :no" do
 		assert_difference( "Enrollment.count", 0 ) do
 			enrollment = create_subjectless_enrollment(:consented => YNDK[:no])
-			assert enrollment.errors.on(:refusal_reason)
-			assert enrollment.errors.on_attr_and_type(:refusal_reason,:blank)
+#			assert enrollment.errors.on(:refusal_reason)
+#			assert enrollment.errors.on_attr_and_type(:refusal_reason,:blank)
+#	validate on foreign key rather than association so error shows up correctly in view.
+			assert enrollment.errors.on(:refusal_reason_id)
+			assert enrollment.errors.on_attr_and_type(:refusal_reason_id,:blank)
 		end
 	end
 	[:yes,:dk,:nil].each do |yndk|
@@ -207,8 +216,11 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 			assert_difference( "Enrollment.count", 0 ) do
 				enrollment = create_subjectless_enrollment(:consented => YNDK[yndk],
 					:refusal_reason => Factory(:refusal_reason))
-				assert enrollment.errors.on(:refusal_reason)
-				assert enrollment.errors.on_attr_and_type(:refusal_reason,:present)
+#				assert enrollment.errors.on(:refusal_reason)
+#				assert enrollment.errors.on_attr_and_type(:refusal_reason,:present)
+#	validate on foreign key rather than association so error shows up correctly in view.
+				assert enrollment.errors.on(:refusal_reason_id)
+				assert enrollment.errors.on_attr_and_type(:refusal_reason_id,:present)
 			end
 		end
 	end
@@ -314,8 +326,11 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 			assert_difference( "Enrollment.count", 0 ) do
 				enrollment = create_subjectless_enrollment(:consented => YNDK[yndk],
 					:document_version => Factory(:document_version) )
-				assert enrollment.errors.on(:document_version)
-				assert enrollment.errors.on_attr_and_type(:document_version,:present)
+#				assert enrollment.errors.on(:document_version)
+#				assert enrollment.errors.on_attr_and_type(:document_version,:present)
+#	validate on foreign key rather than association so error shows up correctly in view.
+				assert enrollment.errors.on(:document_version_id)
+				assert enrollment.errors.on_attr_and_type(:document_version_id,:present)
 			end
 		end
 	end

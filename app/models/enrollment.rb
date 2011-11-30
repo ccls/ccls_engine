@@ -29,10 +29,14 @@ class Enrollment < Shared
 #			but now I see that this may need modified for clarity in the view.
 #
 
-	validates_presence_of :ineligible_reason,
+#	validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of :ineligible_reason,
+	validates_presence_of :ineligible_reason_id,
 		:message => 'required if ineligible',
 		:if => :is_not_eligible?
-	validates_absence_of :ineligible_reason,
+#	validate on foreign key rather than association so error shows up correctly in view.
+#	validates_absence_of :ineligible_reason,
+	validates_absence_of :ineligible_reason_id,
 		:message => 'not allowed if not ineligible',
 		:unless => :is_not_eligible?
 
@@ -48,9 +52,13 @@ class Enrollment < Shared
 		:message => 'not allowed',
 		:unless => :is_not_chosen?
 
-	validates_presence_of :refusal_reason,
+#	validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of :refusal_reason,
+	validates_presence_of :refusal_reason_id,
 		:if => :not_consented?
-	validates_absence_of :refusal_reason,
+#	validate on foreign key rather than association so error shows up correctly in view.
+#	validates_absence_of :refusal_reason,
+	validates_absence_of :refusal_reason_id,
 		:message => "not allowed with consent",
 		:unless => :not_consented?
 
@@ -85,7 +93,9 @@ class Enrollment < Shared
 		:unless => :is_complete?
 	validates_past_date_for :completed_on
 
-	validates_absence_of :document_version,
+#	validate on foreign key rather than association so error shows up correctly in view.
+#	validates_absence_of :document_version,
+	validates_absence_of :document_version_id,
 		:message => "not allowed with unknown consent",
 		:if => :consent_unknown?
 	

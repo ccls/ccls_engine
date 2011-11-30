@@ -8,7 +8,10 @@ class OperationalEvent < Shared
 	belongs_to :enrollment
 	belongs_to :operational_event_type
 
-	validates_presence_of :operational_event_type
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of :operational_event_type
+	validates_presence_of :operational_event_type_id
+
 	validates_complete_date_for :occurred_on, :allow_nil => true
 	validates_length_of :description, :maximum => 250, :allow_blank => true
 	validates_length_of :event_notes, :maximum => 250, :allow_blank => true

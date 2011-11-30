@@ -21,8 +21,12 @@ class Sample < Shared
 	named_scope :collected, :conditions => [
 		'received_by_ccls_on IS NOT NULL' ]
 
-	validates_presence_of :sample_type
-	validates_presence_of :study_subject
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of :sample_type
+#	validates_presence_of :study_subject
+	validates_presence_of :sample_type_id
+	validates_presence_of :study_subject_id
+
 	validates_presence_of :sent_to_subject_on,  :if => :collected_on
 	validates_presence_of :collected_on,        :if => :received_by_ccls_on
 	validates_presence_of :location_id,         :if => :sent_to_lab_on

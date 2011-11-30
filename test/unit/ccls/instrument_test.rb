@@ -39,16 +39,19 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 	test "should require project" do
 		assert_difference( "Instrument.count", 0 ) do
 			instrument = create_instrument( :project => nil)
-			assert instrument.errors.on(:project)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert instrument.errors.on(:project)
+			assert instrument.errors.on_attr_and_type(:project_id,:blank)
 		end
 	end
 
-	test "should require valid project" do
-		assert_difference( "Instrument.count", 0 ) do
-			instrument = create_instrument( :project_id => 0)
-			assert instrument.errors.on(:project)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid project" do
+#		assert_difference( "Instrument.count", 0 ) do
+#			instrument = create_instrument( :project_id => 0)
+#			assert instrument.errors.on(:project)
+#		end
+#	end
 
 #protected
 #

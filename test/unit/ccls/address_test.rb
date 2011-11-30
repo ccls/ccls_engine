@@ -58,16 +58,19 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 	test "should require address_type" do
 		assert_difference( "Address.count", 0 ) do
 			address = create_address( :address_type => nil)
-			assert address.errors.on(:address_type)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert address.errors.on(:address_type)
+			assert address.errors.on_attr_and_type(:address_type_id,:blank)
 		end
 	end
 
-	test "should require valid address_type" do
-		assert_difference( "Address.count", 0 ) do
-			address = create_address( :address_type_id => 0)
-			assert address.errors.on(:address_type)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid address_type" do
+#		assert_difference( "Address.count", 0 ) do
+#			address = create_address( :address_type_id => 0)
+#			assert address.errors.on(:address_type)
+#		end
+#	end
 
 	test "should require 5 or 9 digit zip" do
 		%w( asdf 1234 123456 1234Q ).each do |bad_zip|

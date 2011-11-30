@@ -11,7 +11,11 @@ class PhoneNumber < Shared
 	delegate :is_other?, :to => :data_source, :allow_nil => true, :prefix => true
 
 	validates_presence_of :phone_number
-	validates_presence_of :phone_type
+
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of :phone_type
+	validates_presence_of :phone_type_id
+
 	validates_presence_of :why_invalid,       :if => :is_not_valid?
 	validates_presence_of :how_verified,      :if => :is_verified?
 	validates_presence_of :data_source_other, :if => :data_source_is_other?

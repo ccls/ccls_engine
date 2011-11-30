@@ -21,16 +21,19 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 	test "should require document_type" do
 		assert_difference( "DocumentVersion.count", 0 ) do
 			document_version = create_document_version( :document_type => nil)
-			assert document_version.errors.on(:document_type)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert document_version.errors.on(:document_type)
+			assert document_version.errors.on_attr_and_type(:document_type_id, :blank)
 		end
 	end
 
-	test "should require valid document_type" do
-		assert_difference( "DocumentVersion.count", 0 ) do
-			document_version = create_document_version( :document_type_id => 0)
-			assert document_version.errors.on(:document_type)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid document_type" do
+#		assert_difference( "DocumentVersion.count", 0 ) do
+#			document_version = create_document_version( :document_type_id => 0)
+#			assert document_version.errors.on(:document_type)
+#		end
+#	end
 
 	test "should only return document type id == 1 for type1" do
 		objects = DocumentVersion.type1

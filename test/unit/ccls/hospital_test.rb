@@ -39,16 +39,19 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 	test "should require organization" do
 		assert_difference( "Hospital.count", 0 ) do
 			hospital = create_hospital( :organization => nil)
-			assert hospital.errors.on(:organization)
+# validate on foreign key rather than association so error shows up correctly in view.
+#			assert hospital.errors.on(:organization)
+			assert hospital.errors.on_attr_and_type(:organization_id,:blank)
 		end
 	end
 
-	test "should require valid organization" do
-		assert_difference( "Hospital.count", 0 ) do
-			hospital = create_hospital( :organization_id => 0)
-			assert hospital.errors.on(:organization)
-		end
-	end
+# validate on foreign key rather than association so error shows up correctly in view.
+#	test "should require valid organization" do
+#		assert_difference( "Hospital.count", 0 ) do
+#			hospital = create_hospital( :organization_id => 0)
+#			assert hospital.errors.on(:organization)
+#		end
+#	end
 
 	test "should return organization name as to_s if organization" do
 		organization = create_organization

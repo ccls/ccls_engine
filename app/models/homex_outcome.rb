@@ -17,7 +17,9 @@ class HomexOutcome < Shared
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	validates_presence_of   :study_subject, :on => :update
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of   :study_subject, :on => :update
+	validates_presence_of   :study_subject_id, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 	validates_presence_of   :sample_outcome_on,    :if => :sample_outcome_id?
 	validates_presence_of   :interview_outcome_on, :if => :interview_outcome_id?

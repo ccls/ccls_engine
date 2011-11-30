@@ -7,7 +7,10 @@ class DocumentVersion < Shared
 	belongs_to :document_type
 	has_many :enrollments
 
-	validates_presence_of :document_type
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of :document_type
+	validates_presence_of :document_type_id
+
 	validates_length_of   :title,       :maximum => 250, :allow_blank => true
 	validates_length_of   :description, :maximum => 250, :allow_blank => true
 	validates_length_of   :indicator,   :maximum => 250, :allow_blank => true

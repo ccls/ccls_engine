@@ -7,7 +7,9 @@ class HomeExposureResponse < Shared
 
 	#	TODO This should probably be removed.  There is nothing that the user
 	#		could do if one of these were created without a study_subject.
-	validates_presence_of   :study_subject
+# validate on foreign key rather than association so error shows up correctly in view.
+#	validates_presence_of   :study_subject
+	validates_presence_of   :study_subject_id
 	validates_uniqueness_of :study_subject_id
 
 	def self.fields
