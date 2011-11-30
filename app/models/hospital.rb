@@ -11,6 +11,7 @@ class Hospital < ActiveRecordShared
 #	if organization_id is not unique, using find_by_organization_id as I do WILL cause problems
 #	as it will only evern return the first match
 	validates_presence_of   :organization_id
+	validates_presence_of   :organization, :if => :organization_id
 	validates_uniqueness_of :organization_id, :allow_blank => true
 #	Remove current organization_id index and add a unique index??
 #	Without it, the fixtures won't be tested when loaded.

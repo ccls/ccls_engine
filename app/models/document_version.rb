@@ -6,6 +6,7 @@ class DocumentVersion < ActiveRecordShared
 	has_many :enrollments
 
 	validates_presence_of :document_type_id
+	validates_presence_of :document_type, :if => :document_type_id
 
 	validates_length_of   :title,       :maximum => 250, :allow_blank => true
 	validates_length_of   :description, :maximum => 250, :allow_blank => true

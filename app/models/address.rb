@@ -12,6 +12,7 @@ class Address < ActiveRecordShared
 	validate :address_type_matches_line
 
 	validates_presence_of :address_type_id
+	validates_presence_of :address_type, :if => :address_type_id
 
 	validates_presence_of :line_1
 	validates_length_of   :line_1, :maximum => 250, :allow_blank => true

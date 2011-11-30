@@ -9,8 +9,11 @@ class Transfer < ActiveRecordShared
 	belongs_to :to_organization,   :class_name => "Organization"
 
 	validates_presence_of :aliquot_id
+	validates_presence_of :aliquot, :if => :aliquot_id
 	validates_presence_of :to_organization_id
+	validates_presence_of :to_organization, :if => :to_organization_id
 	validates_presence_of :from_organization_id
+	validates_presence_of :from_organization, :if => :from_organization_id
 
 	validates_length_of   :reason, :maximum => 250, :allow_blank => true
 

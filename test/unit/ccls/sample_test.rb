@@ -51,36 +51,34 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	test "should require sample_type" do
 		assert_difference( "Sample.count", 0 ) do
 			sample = create_sample( :sample_type => nil)
-# validate on foreign key rather than association so error shows up correctly in view.
-#			assert sample.errors.on(:sample_type)
-			assert sample.errors.on_attr_and_type(:sample_type_id,:blank)
+			assert !sample.errors.on(:sample_type)
+			assert  sample.errors.on_attr_and_type(:sample_type_id,:blank)
 		end
 	end
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	test "should require valid sample_type" do
-#		assert_difference( "Sample.count", 0 ) do
-#			sample = create_sample( :sample_type_id => 0)
-#			assert sample.errors.on(:sample_type)
-#		end
-#	end
+	test "should require valid sample_type" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :sample_type_id => 0)
+			assert !sample.errors.on(:sample_type_id)
+			assert  sample.errors.on_attr_and_type(:sample_type,:blank)
+		end
+	end
 
 	test "should require study_subject" do
 		assert_difference( "Sample.count", 0 ) do
 			sample = create_sample( :study_subject => nil)
-# validate on foreign key rather than association so error shows up correctly in view.
-#			assert sample.errors.on(:study_subject)
-			assert sample.errors.on_attr_and_type(:study_subject_id,:blank)
+			assert !sample.errors.on(:study_subject)
+			assert  sample.errors.on_attr_and_type(:study_subject_id,:blank)
 		end
 	end
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	test "should require valid study_subject" do
-#		assert_difference( "Sample.count", 0 ) do
-#			sample = create_sample( :study_subject_id => 0)
-#			assert sample.errors.on(:study_subject)
-#		end
-#	end
+	test "should require valid study_subject" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :study_subject_id => 0)
+			assert !sample.errors.on(:study_subject_id)
+			assert  sample.errors.on_attr_and_type(:study_subject,:blank)
+		end
+	end
 
 
 	test "should require that kit and sample tracking " <<

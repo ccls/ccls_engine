@@ -58,6 +58,7 @@ class StudySubject < ActiveRecordShared
 	after_save   :add_subject_died_operational_event
 
 	validates_presence_of :subject_type_id
+	validates_presence_of :subject_type, :if => :subject_type_id
 
 	validate :presence_of_sex
 	validates_inclusion_of :sex, :in => %w( M F DK ), :allow_blank => true

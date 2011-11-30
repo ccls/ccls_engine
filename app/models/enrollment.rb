@@ -15,7 +15,8 @@ class Enrollment < ActiveRecordShared
 	delegate :is_other?, :to => :ineligible_reason, :allow_nil => true, :prefix => true
 	delegate :is_other?, :to => :refusal_reason,    :allow_nil => true, :prefix => true
 
-	validates_presence_of   :project
+	validates_presence_of   :project_id
+	validates_presence_of   :project, :if => :project_id
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id], :allow_blank => true
 
 	validates_presence_of :ineligible_reason_id,
@@ -24,6 +25,7 @@ class Enrollment < ActiveRecordShared
 	validates_absence_of :ineligible_reason_id,
 		:message => 'not allowed if not ineligible',
 		:unless => :is_not_eligible?
+	validates_presence_of :ineligible_reason, :if => :ineligible_reason_id
 
 	validates_presence_of :ineligible_reason_specify,
 		:if => :ineligible_reason_is_other?
@@ -42,6 +44,7 @@ class Enrollment < ActiveRecordShared
 	validates_absence_of :refusal_reason_id,
 		:message => "not allowed with consent",
 		:unless => :not_consented?
+	validates_presence_of :refusal_reason, :if => :refusal_reason_id
 
 #	validates_presence_of :consented_on,
 #		:message => 'date is required when adding consent information',
@@ -77,6 +80,7 @@ class Enrollment < ActiveRecordShared
 	validates_absence_of :document_version_id,
 		:message => "not allowed with unknown consent",
 		:if => :consent_unknown?
+	validates_presence_of :document_version, :if => :document_version_id
 	
 	validates_complete_date_for :consented_on, :allow_nil => true
 	validates_complete_date_for :completed_on, :allow_nil => true

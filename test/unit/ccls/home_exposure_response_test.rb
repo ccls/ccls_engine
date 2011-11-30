@@ -19,19 +19,18 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 	test "should require study_subject" do
 		assert_difference( "HomeExposureResponse.count", 0 ) do
 			home_exposure_response = create_home_exposure_response( :study_subject => nil)
-# validate on foreign key rather than association so error shows up correctly in view.
-#			assert home_exposure_response.errors.on(:study_subject)
-			assert home_exposure_response.errors.on_attr_and_type(:study_subject_id, :blank)
+			assert !home_exposure_response.errors.on(:study_subject)
+			assert  home_exposure_response.errors.on_attr_and_type(:study_subject_id, :blank)
 		end
 	end
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	test "should require valid study_subject" do
-#		assert_difference( "HomeExposureResponse.count", 0 ) do
-#			home_exposure_response = create_home_exposure_response( :study_subject_id => 0)
-#			assert home_exposure_response.errors.on(:study_subject)
-#		end
-#	end
+	test "should require valid study_subject" do
+		assert_difference( "HomeExposureResponse.count", 0 ) do
+			home_exposure_response = create_home_exposure_response( :study_subject_id => 0)
+			assert !home_exposure_response.errors.on(:study_subject_id)
+			assert  home_exposure_response.errors.on_attr_and_type(:study_subject,:blank)
+		end
+	end
 
 	test "should require unique study_subject_id" do
 		o = create_home_exposure_response

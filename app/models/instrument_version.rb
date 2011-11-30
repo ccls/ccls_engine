@@ -20,6 +20,7 @@ class InstrumentVersion < ActiveRecordShared
 	validates_uniqueness_of :description
 
 	validates_presence_of   :instrument_type_id
+	validates_presence_of   :instrument_type, :if => :instrument_type_id
 
 	validates_complete_date_for :began_use_on, :allow_nil => true
 	validates_complete_date_for :ended_use_on, :allow_nil => true

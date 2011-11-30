@@ -10,6 +10,7 @@ class InstrumentType < ActiveRecordShared
 	has_many :instrument_versions
 
 	validates_presence_of   :project_id
+	validates_presence_of   :project, :if => :project_id
 
 	validates_presence_of   :code
 	validates_length_of     :code, :maximum => 250, :allow_blank => true

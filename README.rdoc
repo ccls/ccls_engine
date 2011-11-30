@@ -25,7 +25,21 @@ Don't have validations that could raise errors that the user can't do anything a
 
 When using validates_presence_of, use allow_blank => true on other validations to avoid multiple errors if blank.
 
-When validating the presence of associations, validate on foreign key rather than association so that the error shows up correctly in view.
+When validating the presence of associations, validate on foreign key rather than association so that the error shows up correctly in view.  Unfortunately, this will not guarantee that an association actually exists with that id as it would if the validation was on the association.
+
+ validates_presence_of :project ( will not raise error on project_id so in the view, the project_id selector won't have an error and so won't be highlighted like other errors will be.)
+ validates_presence_of :project_id ( will not ensure that an actual project for the given id exists, but will show the error correctly in the view. )
+
+ I would like to have a validation that ensures that the _id is legitimate.  I do not think that validates_associated is what I want.  Having the both does what I want, but then the view will show "Project is blank" twice.
+
+
+This seems to work ...
+ validates_presence_of :project, :if => :project_id
+ validates_presence_of :project_id
+... but is a bit of a misnomer.  The association validation will raise a 'blank' error, rather than a more appropriate 'non-existant' error.
+
+
+Still some models and associations may need done due to priorities and the fact that some never end up in a view and the association may be problematic. (Aliquot,HomexOutcome,Patient)
 
 
 ===Some general ActiveSupport::TestCase unit test notes:

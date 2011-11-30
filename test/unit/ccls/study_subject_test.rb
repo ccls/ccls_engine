@@ -131,19 +131,18 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	test "should require subject_type" do
 		assert_difference( "StudySubject.count", 0 ) do
 			study_subject = create_study_subject( :subject_type => nil)
-# validate on foreign key rather than association so error shows up correctly in view.
-#			assert study_subject.errors.on(:subject_type)
-			assert study_subject.errors.on_attr_and_type(:subject_type_id,:blank)
+			assert !study_subject.errors.on(:subject_type)
+			assert  study_subject.errors.on_attr_and_type(:subject_type_id,:blank)
 		end
 	end
 
-# validate on foreign key rather than association so error shows up correctly in view.
-#	test "should require valid subject_type" do
-#		assert_difference( "StudySubject.count", 0 ) do
-#			study_subject = create_study_subject( :subject_type_id => 0)
-#			assert study_subject.errors.on(:subject_type)
-#		end
-#	end
+	test "should require valid subject_type" do
+		assert_difference( "StudySubject.count", 0 ) do
+			study_subject = create_study_subject( :subject_type_id => 0)
+			assert !study_subject.errors.on(:subject_type_id)
+			assert  study_subject.errors.on_attr_and_type(:subject_type,:blank)
+		end
+	end
 
 	test "should require sex be either M, F or DK" do
 		assert_difference( "StudySubject.count", 0 ) {

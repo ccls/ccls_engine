@@ -7,6 +7,7 @@ class OperationalEvent < ActiveRecordShared
 	belongs_to :operational_event_type
 
 	validates_presence_of :operational_event_type_id
+	validates_presence_of :operational_event_type, :if => :operational_event_type_id
 
 	validates_complete_date_for :occurred_on, :allow_nil => true
 	validates_length_of :description, :maximum => 250, :allow_blank => true

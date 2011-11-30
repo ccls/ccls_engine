@@ -41,9 +41,8 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		assert_difference( "HomexOutcome.count", 1 ) do
 			homex_outcome = create_homex_outcome
 			homex_outcome.reload.update_attributes(:updated_at => Time.now)
-# validate on foreign key rather than association so error shows up correctly in view.
-#			assert homex_outcome.errors.on(:study_subject)
-			assert homex_outcome.errors.on_attr_and_type(:study_subject_id,:blank)
+			assert !homex_outcome.errors.on(:study_subject)
+			assert  homex_outcome.errors.on_attr_and_type(:study_subject_id,:blank)
 		end
 	end
 
