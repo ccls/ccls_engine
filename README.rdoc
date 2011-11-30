@@ -7,6 +7,46 @@ It is no longer really used as a plugin, but does contain the
 relevant features of an 'engine' including models, controllers,
 views and routes to the aforementioned resources.
 
+
+== Development Notes
+
+As this code is stored in publicly accessible repositories,
+DO NOT UNDER ANY CIRCUMSTANCES PUT ANY REAL SUBJECT DATA IN THE CODE!
+
+The models in this gem are stored in a shared database, therefore, the migrations
+that create and modify it, as well as the ActiveRecord models that use it must
+reflect this.  Currently, the models which are normally subclasses of ActiveRecord::Base
+need to now by subclasses of ActiveRecordShared.  The migrations, normally subclasses 
+of ActiveRecord::Migration, need to be subclasses of SharedMigration.
+
+===Some general ActiveRecord model notes:
+* Don't have validations that could raise errors that the user can't do anything about.
+* When using validates_presence_of, use allow_blank => true on other validations to avoid multiple errors if blank.
+* When validating the presence of associations, validate on foreign key rather than association so that the error shows up correctly in view.
+
+
+===Some general ActiveSupport::TestCase unit test notes:
+
+Most, if not all, of the 'class level' assertions are defined in ccls-common_lib.
+They call 'create_object', which, unless explicitly defined, is handled in a
+method_missing handler which extracts the model name from the testing class
+and uses the factory of the same name.  (ie. AbstractTest -> Factory(:abstract) )
+In addition, this same method missing handler is used for handling undefined 
+methods like 'create_abstract'.  The handler takes this method which 
+matches /create_(.*)/ and calls a Factory($1)
+
+Also note, create_object only works in unit tests as they are generally associated
+with a particular model.  Controllers, on the other hand, do not share this
+privilege as they are not.  The create_MODEL_NAME technique does still work.
+
+These create_* methods call Factory.build and then save.
+This is predominantly because by default Factory uses create! which raises
+errors rather than returning false which makes testing the error difficult.
+I think that there is a way to set the "default_strategy" for factory_girl,
+but I've yet to figure that out.
+
+
+
 == Required Gem Sources
 
  gem sources -a http://rubygems.org
