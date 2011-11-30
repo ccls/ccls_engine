@@ -20,6 +20,15 @@ class Enrollment < Shared
 	validates_presence_of   :project
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id], :allow_blank => true
 
+#
+#	NOTE validations on the association rather than the foreign key
+#		DO NOT get flagged in view.  (ie. an error on refusal_reason IS NOT
+#			the same as an error on refusal_reason_id)
+#		Recently, I changed all of these to association validations rather
+#			than foreign key validations because it ensures an existing association, 
+#			but now I see that this may need modified for clarity in the view.
+#
+
 	validates_presence_of :ineligible_reason,
 		:message => 'required if ineligible',
 		:if => :is_not_eligible?
