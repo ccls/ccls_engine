@@ -20,9 +20,12 @@ need to now by subclasses of ActiveRecordShared.  The migrations, normally subcl
 of ActiveRecord::Migration, need to be subclasses of SharedMigration.
 
 ===Some general ActiveRecord model notes:
-* Don't have validations that could raise errors that the user can't do anything about.
-* When using validates_presence_of, use allow_blank => true on other validations to avoid multiple errors if blank.
-* When validating the presence of associations, validate on foreign key rather than association so that the error shows up correctly in view.
+
+Don't have validations that could raise errors that the user can't do anything about.
+
+When using validates_presence_of, use allow_blank => true on other validations to avoid multiple errors if blank.
+
+When validating the presence of associations, validate on foreign key rather than association so that the error shows up correctly in view.
 
 
 ===Some general ActiveSupport::TestCase unit test notes:
@@ -58,11 +61,9 @@ but I've yet to figure that out.
 * jrails
 * chronic
 * ruby-hmac
-* aws-s3	#	don't use this anymore
 * ssl_requirement
 * ryanb-acts-as-list
-* RedCloth
-* paperclip	#	don't use this anymore
+* RedCloth	#	may not use this anymore
 * {ccls-common_lib}[http://github.com/ccls/common_lib]
 * {ccls-calnet_authenticated}[http://github.com/ccls/calnet_authenticated]
 * {ccls-simply_authorized}[http://github.com/ccls/simply_authorized]
@@ -88,6 +89,11 @@ Also need to manually add a shared_database.yml with matching configuration.
 
 
 == Production Installation
+
+
+
+
+
 
 
 == Production Updating
