@@ -95,4 +95,5 @@ gem "packet"	#	don't remember why (think from backgroundrb)
 
 gem "webrat"
 gem "capybara"
+gem "capybara-webkit"
 
