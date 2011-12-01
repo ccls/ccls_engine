@@ -6,7 +6,7 @@
 		<%= ineligible_reason.description %>
 	</td>
 	<td class='manage'>
-		<%= button_link_to 'Edit', edit_ineligible_reason_path(ineligible_reason) %>&nbsp;
+		<%= link_to 'Edit', edit_ineligible_reason_path(ineligible_reason) %>&nbsp;
 <% destroy_link_to 'Destroy', ineligible_reason_path(ineligible_reason) do %>
 <%= hidden_field_tag 'confirm', "Destroy ineligible_reason '#{ineligible_reason}'?", :id => nil %>
 <% end %>

@@ -12,7 +12,7 @@
 		<%= person.person_type_id %>
 	</td>
 	<td class='manage'>
-		<%= button_link_to 'Edit', edit_person_path(person) %>&nbsp;
+		<%= link_to 'Edit', edit_person_path(person) %>&nbsp;
 <% destroy_link_to 'Destroy', person_path(person) do %>
 <%= hidden_field_tag 'confirm', "Destroy person '#{person}'?", :id => nil %>
 <% end %>

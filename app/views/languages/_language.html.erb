@@ -9,7 +9,7 @@
 		<%= language.description %>
 	</td>
 	<td class='manage'>
-		<%= button_link_to 'Edit', edit_language_path(language) %>&nbsp;
+		<%= link_to 'Edit', edit_language_path(language) %>&nbsp;
 <% destroy_link_to 'Destroy', language_path(language) do %>
 <%= hidden_field_tag 'confirm', "Destroy language '#{language}'?", :id => nil %>
 <% end %>
