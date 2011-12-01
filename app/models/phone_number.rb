@@ -18,7 +18,8 @@ class PhoneNumber < ActiveRecordShared
 	validates_presence_of :data_source_other, :if => :data_source_is_other?
 	validates_length_of   :why_invalid,  :maximum => 250, :allow_blank => true
 	validates_length_of   :how_verified, :maximum => 250, :allow_blank => true
-	validates_format_of   :phone_number, :with => /\A(\D*\d\D*){10}\z/
+	validates_format_of   :phone_number, :with => /\A(\D*\d\D*){10}\z/,
+		:allow_blank => true
 
 	named_scope :current, :conditions => [
 		'current_phone IS NOT NULL AND current_phone != 2'
