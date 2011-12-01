@@ -47,7 +47,8 @@ namespace :odms_import do
 #
 #
 			#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112311.csv", 'rb',{
+#			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112311.csv", 'rb',{
+			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_120111.csv", 'rb',{
 				:headers => true })).each do |line|
 #break if f.lineno > 10
 
@@ -177,8 +178,8 @@ namespace :odms_import do
 	desc "Import subject data from CSV files"
 	task :csv_data => [
 		'odms_destroy:csv_data',
-		'odms_import:subjects'#,
-#		'odms_import:icf_master_ids',
+		'odms_import:subjects',
+		'odms_import:icf_master_ids'
 #		'odms_import:create_dummy_candidate_controls'
 #		'odms_import:enrollments'
 	]
@@ -294,7 +295,8 @@ namespace :odms_import do
 		error_file = File.open('subjects_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112311.csv", 'rb',{
+#		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112311.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_120111.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
