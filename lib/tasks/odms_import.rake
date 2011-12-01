@@ -437,7 +437,8 @@ namespace :odms_import do
 						) ? nil : Time.parse(line['admit_date'])
 					m.diagnosis_id    = line['diagnosis_id']
 					m.other_diagnosis = line['other_diagnosis']
-					m.organization_id = line['organization_id']||Organization['888'].id
+#					m.organization_id = line['organization_id']||Organization['888'].id
+					m.organization_id = line['organization_id']
 					m.hospital_no     = line['hospital_no']
 					m.was_previously_treated = line['was_previously_treated']
 					m.was_under_15_at_dx     = line['was_under_15_at_dx']
