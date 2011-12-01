@@ -2,8 +2,6 @@ class CreateOperationalEventTypes < SharedMigration
 	def self.up
 		create_table :operational_event_types do |t|
 			t.integer :position
-			t.references :project
-#			t.references :interview
 			t.string :code, :null => false
 			t.string :description
 			t.string :event_category

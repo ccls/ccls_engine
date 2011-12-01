@@ -1,8 +1,7 @@
 class CreateHomeExposureResponses < SharedMigration
 	def self.up
 		create_table :home_exposure_responses do |t|
-#			t.integer :childid
-			t.integer :subject_id
+			t.integer :study_subject_id
 #	If it is an HER, then it is complete
 #	Only the response sets may be incomplete.
 #			t.boolean :is_complete
@@ -123,13 +122,14 @@ class CreateHomeExposureResponses < SharedMigration
 			t.integer :number_of_computers_in_home
 			t.integer :avg_number_hours_computers_used
 			t.text :additional_comments
-
 			t.integer :vacuum_bag_last_changed
 			t.integer :vacuum_used_outside_home
-
+			t.boolean :consent_read_over_phone
+			t.boolean :respondent_requested_new_consent
+			t.boolean :consent_reviewed_with_respondent
 			t.timestamps
 		end
-		add_index :home_exposure_responses, :subject_id, :unique => true
+		add_index :home_exposure_responses, :study_subject_id, :unique => true
 	end
 
 	def self.down

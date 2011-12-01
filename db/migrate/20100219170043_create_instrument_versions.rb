@@ -2,7 +2,7 @@ class CreateInstrumentVersions < SharedMigration
 	def self.up
 		create_table :instrument_versions do |t|
 			t.integer :position
-			t.references :interview_type
+			t.references :instrument_type
 			t.references :language
 			t.date :began_use_on
 			t.date :ended_use_on

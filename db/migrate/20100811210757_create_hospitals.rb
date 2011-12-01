@@ -3,6 +3,7 @@ class CreateHospitals < SharedMigration
 		create_table :hospitals do |t|
 			t.integer :position
 			t.references :organization
+			t.boolean :has_irb_waiver, :null => false, :default => false
 			t.timestamps
 		end
 		add_index :hospitals, :organization_id

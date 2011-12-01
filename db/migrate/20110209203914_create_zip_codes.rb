@@ -3,13 +3,11 @@ class CreateZipCodes < SharedMigration
 		create_table :zip_codes do |t|
 			t.with_options :null => false do |o|
 				o.string  :zip_code, :limit => 5
-				o.float   :latitude
-				o.float   :longitude
 				o.string  :city
 				o.string  :state
-				o.string  :county
 				o.string  :zip_class
 			end
+			t.integer :county_id	#	null is ok?
 			t.timestamps
 		end
 		add_index :zip_codes, :zip_code, :unique => true

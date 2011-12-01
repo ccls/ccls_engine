@@ -1,7 +1,7 @@
 class CreateAbstracts < SharedMigration
 	def self.up
 		create_table :abstracts do |t|
-			t.integer  :subject_id							#, :null => false
+			t.integer  :study_subject_id							#, :null => false
 			t.integer  :response_day14or28_flag
 			t.integer  :received_bone_marrow_biopsy
 			t.integer  :received_h_and_p

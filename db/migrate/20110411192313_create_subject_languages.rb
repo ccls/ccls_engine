@@ -3,6 +3,7 @@ class CreateSubjectLanguages < SharedMigration
 		create_table :subject_languages do |t|
 			t.integer :study_subject_id
 			t.integer :language_id
+			t.string  :other
 			t.timestamps
 		end
 	end

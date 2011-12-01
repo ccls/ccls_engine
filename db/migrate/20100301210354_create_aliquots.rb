@@ -8,7 +8,6 @@ class CreateAliquots < SharedMigration
 			t.references :aliquot_sample_format
 			t.string :location
 			t.string :mass
-#			t.string :owner
 			t.string :external_aliquot_id
 			t.string :external_aliquot_id_source
 			t.timestamps

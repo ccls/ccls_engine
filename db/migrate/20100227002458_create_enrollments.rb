@@ -2,7 +2,7 @@ class CreateEnrollments < SharedMigration
 	def self.up
 		create_table :enrollments do |t|
 			t.integer :position
-			t.references :subject
+			t.references :study_subject
 			t.references :project
 			t.string :recruitment_priority
 			t.integer :able_to_locate
@@ -26,9 +26,16 @@ class CreateEnrollments < SharedMigration
 			t.integer :document_version_id
 			t.integer :project_outcome_id
 			t.date :project_outcome_on
+			t.integer :use_smp_future_rsrch
+			t.integer :use_smp_future_cancer_rsrch
+			t.integer :use_smp_future_other_rsrch
+			t.integer :share_smp_with_others
+			t.integer :contact_for_related_study
+			t.integer :provide_saliva_smp
+			t.integer :receive_study_findings
 			t.timestamps
 		end
-		add_index :enrollments, [:project_id, :subject_id],
+		add_index :enrollments, [:project_id, :study_subject_id],
 			:unique => true
 	end
 

@@ -1,7 +1,7 @@
 class CreateGiftCards < SharedMigration
 	def self.up
 		create_table :gift_cards do |t|
-			t.references :subject
+			t.references :study_subject
 			t.references :project
 			t.date :issued_on
 			t.string :expiration, :limit => 25

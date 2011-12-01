@@ -5,6 +5,7 @@ class CreateBcRequests < SharedMigration
 			t.date    :sent_on
 			t.string  :status
 			t.text    :notes
+			t.string  :request_type
 			t.timestamps
 		end
 	end

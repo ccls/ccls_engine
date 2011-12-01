@@ -11,17 +11,22 @@ class CreateCandidateControls < SharedMigration
 			t.string  :state_registrar_no, :limit => 25
 			t.string  :local_registrar_no, :limit => 25
 			t.string  :sex
-			t.string  :county_of_birth
+			t.string  :birth_county
 			t.date    :assigned_on
 			t.integer :mother_race_id
-			t.integer :mother_hisp_id
+			t.integer :mother_hispanicity_id
 			t.integer :father_race_id
+			t.integer :father_hispanicity_id
 			t.string  :birth_type
 			t.string  :mother_maiden_name
 			t.integer :mother_yrs_educ
 			t.integer :father_yrs_educ
 			t.boolean :reject_candidate, :null => false, :default => false
 			t.string  :rejection_reason
+			t.string  :mother_first_name
+			t.string  :mother_middle_name
+			t.string  :mother_last_name
+			t.date    :mother_dob
 			t.timestamps
 		end
 	end
