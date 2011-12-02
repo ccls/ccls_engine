@@ -114,7 +114,8 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		#	but Date.parse will. ???
 		assert_difference( "Pii.count", 1 ) do
 			pii = create_pii(
-				:dob => Chronic.parse("January 1 2001"))
+				:dob => Date.parse("January 1 2001") )
+#				:dob => Chronic.parse("January 1 2001"))
 			assert !pii.new_record?, 
 				"#{pii.errors.full_messages.to_sentence}"
 		end

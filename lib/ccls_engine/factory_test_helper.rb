@@ -203,6 +203,8 @@ module Ccls::FactoryTestHelper
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
+#	TODO trying to remove Chronic
+	#	probably called through pluralization
 	def create_study_subject_with_sent_to_subject_on(date)
 		study_subject = create_hx_study_subject
 		Factory(:sample,
@@ -217,6 +219,8 @@ module Ccls::FactoryTestHelper
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
+#	TODO trying to remove Chronic
+	#	probably called through pluralization
 	def create_study_subject_with_received_by_ccls_on(date)
 		study_subject = create_hx_study_subject
 		Factory(:sample,

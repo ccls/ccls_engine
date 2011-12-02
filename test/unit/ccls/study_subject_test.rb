@@ -1194,7 +1194,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 #		assert_nil other.reference_date
 		assert_nil nobody.reference_date
 		study_subject.patient.update_attributes(
-			:admit_date => Chronic.parse('yesterday'))
+			:admit_date => Date.yesterday )
+#			:admit_date => Chronic.parse('yesterday'))
 		assert_not_nil study_subject.patient.admit_date
 		assert_not_nil study_subject.reload.reference_date
 		assert_not_nil other.reload.reference_date
@@ -2142,7 +2143,8 @@ protected
 	def create_case_study_subject_with_patient_and_identifier
 		study_subject = create_case_study_subject( 
 			:patient_attributes    => Factory.attributes_for(:patient,
-				{ :admit_date => Chronic.parse('yesterday') }),
+				{ :admit_date => Date.yesterday }),
+#				{ :admit_date => Chronic.parse('yesterday') }),
 			:identifier_attributes => Factory.attributes_for(:identifier,
 				{ :matchingid => '12345' })).reload
 		assert_not_nil study_subject.reference_date

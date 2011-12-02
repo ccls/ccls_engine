@@ -59,7 +59,16 @@ begin
 		gem.add_dependency('jrails')	# hopefully, can drop soon, don't know if I use it
 		gem.add_dependency('ccls-calnet_authenticated','>= 1.2.0')
 		gem.add_dependency('ccls-simply_authorized')
+
+#
+#	Chronic has gotten quite finicky so trying to avoid.
+#	Let's see if I can.  Doubt it.
+#	A couple places still used in ...
+#		./lib/ccls_engine/factory_test_helper.rb
+#	but I've managed to eradicate it elsewhere.
 		gem.add_dependency('chronic')
+#
+
 		gem.add_dependency('ssl_requirement')
 		gem.add_dependency('ryanb-acts-as-list')
 		gem.add_dependency('thoughtbot-factory_girl')

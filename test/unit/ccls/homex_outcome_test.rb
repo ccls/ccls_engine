@@ -79,7 +79,9 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 
 	test "should create operational event when interview scheduled" do
 		homex_outcome = create_complete_homex_outcome
-		past_date = Chronic.parse('Jan 15 2003').to_date
+		#	arbitrary past date
+		#	past_date = Chronic.parse('Jan 15 2003').to_date
+		past_date = Date.parse('Jan 15 2003')
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:interview_outcome_on => past_date,
@@ -93,7 +95,9 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 
 	test "should create operational event when interview completed" do
 		homex_outcome = create_complete_homex_outcome
-		past_date = Chronic.parse('Jan 15 2003').to_date
+		#	arbitrary past date
+		#	past_date = Chronic.parse('Jan 15 2003').to_date
+		past_date = Date.parse('Jan 15 2003')
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:interview_outcome_on => past_date,
@@ -112,7 +116,9 @@ pending	#	TODO
 
 	test "should create operational event when sample kit sent" do
 		homex_outcome = create_complete_homex_outcome
-		past_date = Chronic.parse('Jan 15 2003').to_date
+		#	arbitrary past date
+		#	past_date = Chronic.parse('Jan 15 2003').to_date
+		past_date = Date.parse('Jan 15 2003')
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:sample_outcome_on => past_date,
@@ -126,7 +132,9 @@ pending	#	TODO
 
 	test "should create operational event when sample received" do
 		homex_outcome = create_complete_homex_outcome
-		past_date = Chronic.parse('Jan 15 2003').to_date
+		#	arbitrary past date
+		#	past_date = Chronic.parse('Jan 15 2003').to_date
+		past_date = Date.parse('Jan 15 2003')
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:sample_outcome_on => past_date,
@@ -140,7 +148,9 @@ pending	#	TODO
 
 	test "should create operational event when sample complete" do
 		homex_outcome = create_complete_homex_outcome
-		past_date = Chronic.parse('Jan 15 2003').to_date
+		#	arbitrary past date
+		#	past_date = Chronic.parse('Jan 15 2003').to_date
+		past_date = Date.parse('Jan 15 2003')
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:sample_outcome_on => past_date,

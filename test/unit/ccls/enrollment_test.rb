@@ -366,7 +366,9 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		enrollment = create_subjectless_enrollment(
 			:completed_on => nil,
 			:is_complete => YNDK[:no])
-		past_date = Chronic.parse('Jan 15 2003').to_date
+		#	arbitrary past date
+		#	past_date = Chronic.parse('Jan 15 2003').to_date
+		past_date = Date.parse('Jan 15 2003')
 		assert_difference('OperationalEvent.count',1) do
 			enrollment.update_attributes(
 				:completed_on => past_date,
@@ -379,7 +381,9 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	end
 
 	test "should create operational event when enrollment complete UNSET" do
-		past_date = Chronic.parse('Jan 15 2003').to_date
+		#	arbitrary past date
+		#	past_date = Chronic.parse('Jan 15 2003').to_date
+		past_date = Date.parse('Jan 15 2003')
 		enrollment = nil
 		assert_difference('OperationalEvent.count',1) do
 			enrollment = create_subjectless_enrollment(

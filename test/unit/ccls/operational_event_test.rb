@@ -157,9 +157,12 @@ protected
 
 	def create_occurred_on_operational_events
 		create_operational_events(
-			{ :occurred_on => Chronic.parse('last month') },
-			{ :occurred_on => Chronic.parse('last year') },
-			{ :occurred_on => Chronic.parse('last week') }
+#			{ :occurred_on => Chronic.parse('last month') },
+#			{ :occurred_on => Chronic.parse('last year') },
+#			{ :occurred_on => Chronic.parse('last week') }
+			{ :occurred_on => ( Date.today - 1.month ) },
+			{ :occurred_on => ( Date.today - 1.year ) },
+			{ :occurred_on => ( Date.today - 1.week ) }
 		)
 	end
 
