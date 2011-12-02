@@ -73,7 +73,7 @@ but I've yet to figure that out.
 
 * rails ~> 2
 * jrails
-* chronic
+* chronic	#	trying to remove
 * ruby-hmac
 * ssl_requirement
 * ryanb-acts-as-list

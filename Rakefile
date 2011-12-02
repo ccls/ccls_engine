@@ -66,7 +66,7 @@ begin
 #	A couple places still used in ...
 #		./lib/ccls_engine/factory_test_helper.rb
 #	but I've managed to eradicate it elsewhere.
-		gem.add_dependency('chronic')
+#		gem.add_dependency('chronic')
 #
 
 		gem.add_dependency('ssl_requirement')

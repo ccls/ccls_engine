@@ -31,7 +31,8 @@ module Ccls::FactoryTestHelper
 		end
 		study_subject
 	end
-	alias_method :create_hx_study_subject, :create_home_exposure_with_study_subject
+	alias_method :create_hx_study_subject, 
+		:create_home_exposure_with_study_subject
 
 	def create_eligible_hx_study_subject()
 		study_subject = nil
@@ -129,12 +130,14 @@ module Ccls::FactoryTestHelper
 		assert_equal patid.to_s, identifier.patid.to_s
 		identifier.study_subject
 	end
-	alias_method :create_study_subject_with_studyid, :create_study_subject_with_patid
+	alias_method :create_study_subject_with_studyid,
+		:create_study_subject_with_patid
 
 	def three_study_subjects_with_patid
 		create_study_subjects_with_patids(9,3,6)
 	end
-	alias_method :three_study_subjects_with_studyid,       :three_study_subjects_with_patid
+	alias_method :three_study_subjects_with_studyid,
+		:three_study_subjects_with_patid
 
 	def create_study_subject_with_last_name(last_name)
 		create_study_subject(
@@ -180,22 +183,8 @@ module Ccls::FactoryTestHelper
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
-	def create_study_subject_with_sample_outcome(outcome)
-		s = create_hx_study_subject
-		s.update_attributes( 
-			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
-				:sample_outcome_id => outcome) )
-		s
-	end
-
 	def three_study_subjects_with_sample_outcome
 		create_study_subjects_with_sample_outcomes('9','3','6')
-	end
-
-	def create_study_subject_with_interview_outcome_on(date)
-		create_hx_study_subject(:study_subject => {
-			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
-				:interview_outcome_on => date ) })
 	end
 
 	def three_study_subjects_with_interview_outcome_on
@@ -203,33 +192,9 @@ module Ccls::FactoryTestHelper
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
-#	TODO trying to remove Chronic
-	#	probably called through pluralization
-	def create_study_subject_with_sent_to_subject_on(date)
-		study_subject = create_hx_study_subject
-		Factory(:sample,
-			:study_subject => study_subject,
-			:sent_to_subject_on => Chronic.parse(date)
-		)
-		study_subject
-	end
-
 	def three_study_subjects_with_sent_to_subject_on
 		create_study_subjects_with_sent_to_subject_on(
 			'12/31/2005','12/31/2001','12/31/2003')
-	end
-
-#	TODO trying to remove Chronic
-	#	probably called through pluralization
-	def create_study_subject_with_received_by_ccls_on(date)
-		study_subject = create_hx_study_subject
-		Factory(:sample,
-			:study_subject => study_subject,
-			:sent_to_subject_on  => (Chronic.parse(date) - 2000000),
-			:collected_on  => (Chronic.parse(date) - 1000000),
-			:received_by_ccls_on => Chronic.parse(date)
-		)
-		study_subject
 	end
 
 	def three_study_subjects_with_received_by_ccls_on
@@ -266,6 +231,55 @@ module Ccls::FactoryTestHelper
 	def self.included(base)
 		base.alias_method_chain( :method_missing, :pluralization 
 			) unless base.respond_to?(:method_missing_without_pluralization)
+	end
+
+
+protected	#	NOT called from the outside
+
+	def create_study_subject_with_sample_outcome(outcome)
+		s = create_hx_study_subject
+		s.update_attributes( 
+			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
+				:sample_outcome_id => outcome) )
+		s
+	end
+
+	def create_study_subject_with_interview_outcome_on(date)
+		create_hx_study_subject(:study_subject => {
+			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
+				:interview_outcome_on => date ) })
+	end
+
+#	TODO trying to remove Chronic
+	#	only called through pluralization
+#			'12/31/2005','12/31/2001','12/31/2003')
+	def create_study_subject_with_sent_to_subject_on(date)
+		study_subject = create_hx_study_subject
+		Factory(:sample,
+			:study_subject => study_subject,
+			:sent_to_subject_on => Date.parse(date)
+#			:sent_to_subject_on => Chronic.parse(date)
+		)
+		study_subject
+	end
+
+#	TODO trying to remove Chronic
+	#	only called through pluralization
+#>> (Chronic.parse('12/31/2001') - 1000000)
+#=> Wed Dec 19 22:13:20 -0800 2001
+#			'12/31/2005','12/31/2001','12/31/2003')
+	def create_study_subject_with_received_by_ccls_on(date)
+		study_subject = create_hx_study_subject
+		Factory(:sample,
+			:study_subject => study_subject,
+			:sent_to_subject_on  => (Date.parse(date) - 10.days),
+			:collected_on        => (Date.parse(date) - 5.days),
+			:received_by_ccls_on => Date.parse(date)
+#			:sent_to_subject_on  => (Chronic.parse(date) - 2000000),
+#			:collected_on  => (Chronic.parse(date) - 1000000),
+#			:received_by_ccls_on => Chronic.parse(date)
+		)
+		study_subject
 	end
 
 end
