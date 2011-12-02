@@ -253,24 +253,17 @@ protected	#	NOT called from the outside
 				:interview_outcome_on => date ) })
 	end
 
-#	TODO trying to remove Chronic
 	#	only called through pluralization
-#			'12/31/2005','12/31/2001','12/31/2003')
 	def create_study_subject_with_sent_to_subject_on(date)
 		study_subject = create_hx_study_subject
 		Factory(:sample,
 			:study_subject => study_subject,
 			:sent_to_subject_on => Date.parse(date)
-#			:sent_to_subject_on => Chronic.parse(date)
 		)
 		study_subject
 	end
 
-#	TODO trying to remove Chronic
 	#	only called through pluralization
-#>> (Chronic.parse('12/31/2001') - 1000000)
-#=> Wed Dec 19 22:13:20 -0800 2001
-#			'12/31/2005','12/31/2001','12/31/2003')
 	def create_study_subject_with_received_by_ccls_on(date)
 		study_subject = create_hx_study_subject
 		Factory(:sample,
@@ -278,9 +271,6 @@ protected	#	NOT called from the outside
 			:sent_to_subject_on  => (Date.parse(date) - 10.days),
 			:collected_on        => (Date.parse(date) - 5.days),
 			:received_by_ccls_on => Date.parse(date)
-#			:sent_to_subject_on  => (Chronic.parse(date) - 2000000),
-#			:collected_on  => (Chronic.parse(date) - 1000000),
-#			:received_by_ccls_on => Chronic.parse(date)
 		)
 		study_subject
 	end

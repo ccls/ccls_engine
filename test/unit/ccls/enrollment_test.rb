@@ -117,7 +117,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 #		assert_difference( "Enrollment.count", 0 ) do
 #			enrollment = create_enrollment(
 #				:is_complete  => YNDK[:yes],
-#				:completed_on => Chronic.parse('tomorrow'))
+#				:completed_on => Date.tomorrow )
 #			#	sometimes this fails during test:coverage?
 #			assert enrollment.errors.on(:completed_on)
 #			assert_match(/future/,
@@ -367,7 +367,6 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 			:completed_on => nil,
 			:is_complete => YNDK[:no])
 		#	arbitrary past date
-		#	past_date = Chronic.parse('Jan 15 2003').to_date
 		past_date = Date.parse('Jan 15 2003')
 		assert_difference('OperationalEvent.count',1) do
 			enrollment.update_attributes(
@@ -382,7 +381,6 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	test "should create operational event when enrollment complete UNSET" do
 		#	arbitrary past date
-		#	past_date = Chronic.parse('Jan 15 2003').to_date
 		past_date = Date.parse('Jan 15 2003')
 		enrollment = nil
 		assert_difference('OperationalEvent.count',1) do

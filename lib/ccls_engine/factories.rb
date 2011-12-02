@@ -155,13 +155,12 @@ Factory.define :enrollment, :parent => :subjectless_enrollment do |f|
 #	f.is_eligible 1	#true
 #	f.is_chosen   1	#true
 #	f.consented   1	#true
-#	f.consented_on Chronic.parse('yesterday')
+#	f.consented_on Date.yesterday
 #	f.terminated_participation 2	#false
 #	f.is_complete 2	#false
 end
 Factory.define :consented_enrollment, :parent => :enrollment do |f|
 	f.consented   1	#true
-#	f.consented_on Chronic.parse('yesterday')
 	f.consented_on Date.yesterday
 end
 

@@ -97,7 +97,6 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	end
 
 	test "should return dob as a date NOT time" do
-#	Chronic.parse('tomorrow at noon') returns nil on my MacBook???
 		pii = create_pii(:dob => (Time.now - 5.days) )
 		assert_not_nil pii.dob
 		assert_changes("Pii.find(#{pii.id}).dob") {
@@ -110,12 +109,9 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	end
 
 	test "should parse a properly formatted date" do
-		#	Chronic won't parse this correctly,
-		#	but Date.parse will. ???
 		assert_difference( "Pii.count", 1 ) do
 			pii = create_pii(
 				:dob => Date.parse("January 1 2001") )
-#				:dob => Chronic.parse("January 1 2001"))
 			assert !pii.new_record?, 
 				"#{pii.errors.full_messages.to_sentence}"
 		end

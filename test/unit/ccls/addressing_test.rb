@@ -98,7 +98,7 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 #		assert_difference("Addressing.count", 1 ) do
 #			addressing = create_addressing(:address_id => nil)
 #			addressing.reload.update_attributes(
-#				:created_at => Chronic.parse('yesterday'))
+#				:created_at => Date.yesterday )
 #			assert addressing.errors.on(:address)
 #		end
 #	end

@@ -135,7 +135,6 @@ class Ccls::PackageTest < ActiveSupport::TestCase
 		assert_equal 0, package.tracks.length
 		Factory(:track, :trackable => package, 
 			:time => ( DateTime.now - 1.day ) )
-#			:time => Chronic.parse('yesterday') )
 		assert_equal 1, package.reload.tracks.length
 		Factory(:track, :trackable => package)
 		assert_equal 2, package.reload.tracks.length

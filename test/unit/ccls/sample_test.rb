@@ -128,7 +128,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:sent_to_subject_on => nil,
 				:collected_on => Date.yesterday
-#				:collected_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:sent_to_subject_on)
 			assert_match(/be blank/,
@@ -141,8 +140,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:sent_to_subject_on => Date.tomorrow,
 				:collected_on => Date.yesterday
-#				:sent_to_subject_on => Chronic.parse('tomorrow'),
-#				:collected_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:collected_on)
 			assert_match(/after sent_to_subject_on/,
@@ -155,7 +152,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:collected_on => nil,
 				:received_by_ccls_on => Date.yesterday
-#				:received_by_ccls_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:collected_on)
 			assert_match(/be blank/,
@@ -168,8 +164,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:collected_on => Date.tomorrow,
 				:received_by_ccls_on => Date.yesterday
-#				:collected_on => Chronic.parse('tomorrow'),
-#				:received_by_ccls_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:received_by_ccls_on)
 			assert_match(/after collected_on/,
@@ -182,7 +176,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:received_by_ccls_on => nil,
 				:sent_to_lab_on => Date.yesterday
-#				:sent_to_lab_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:received_by_ccls_on)
 			assert_match(/be blank/,
@@ -195,8 +188,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:received_by_ccls_on => Date.tomorrow,
 				:sent_to_lab_on => Date.yesterday
-#				:received_by_ccls_on => Chronic.parse('tomorrow'),
-#				:sent_to_lab_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:sent_to_lab_on)
 			assert_match(/after received_by_ccls_on/,
@@ -209,7 +200,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:sent_to_lab_on => nil,
 				:received_by_lab_on => Date.yesterday
-#				:received_by_lab_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:sent_to_lab_on)
 			assert_match(/be blank/,
@@ -222,8 +212,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:sent_to_lab_on => Date.tomorrow,
 				:received_by_lab_on => Date.yesterday
-#				:sent_to_lab_on => Chronic.parse('tomorrow'),
-#				:received_by_lab_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:received_by_lab_on)
 			assert_match(/after sent_to_lab_on/,
@@ -235,7 +223,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( 'Sample.count', 0 ) do
 			sample = create_sample(
 				:sent_to_lab_on => Date.yesterday
-#				:sent_to_lab_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:location_id)
 			assert_match(/blank/, sample.errors.on(:location_id) )
@@ -247,7 +234,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:received_by_lab_on => nil,
 				:aliquotted_on => Date.yesterday
-#				:aliquotted_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:received_by_lab_on)
 			assert_match(/be blank/,
@@ -260,8 +246,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:received_by_lab_on => Date.tomorrow,
 				:aliquotted_on => Date.yesterday
-#				:received_by_lab_on => Chronic.parse('tomorrow'),
-#				:aliquotted_on => Chronic.parse('yesterday')
 			)
 			assert sample.errors.on(:aliquotted_on)
 			assert_match(/after received_by_lab_on/,
@@ -285,7 +269,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:study_subject => study_subject,
 				:sent_to_subject_on => Date.yesterday )
-#				:sent_to_subject_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['sent'],
 				sample.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.sent_to_subject_on,
@@ -304,9 +287,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 				:sent_to_subject_on => ( today - 3.days ),
 				:collected_on => ( today - 2.days ),
 				:received_by_ccls_on => ( today - 1.day ) )
-#				:sent_to_subject_on => Chronic.parse('3 days ago'),
-#				:collected_on => Chronic.parse('2 days ago'),
-#				:received_by_ccls_on => Chronic.parse('yesterday') )
 			assert_equal SampleOutcome['received'],
 				sample.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.received_by_ccls_on,
@@ -328,10 +308,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 				:collected_on => ( today - 3.days ),
 				:received_by_ccls_on => ( today - 2.days ),
 				:sent_to_lab_on => ( today - 1.day ) )
-#				:sent_to_subject_on => Chronic.parse('4 days ago'),
-#				:collected_on => Chronic.parse('3 days ago'),
-#				:received_by_ccls_on => Chronic.parse('2 days ago'),
-#				:sent_to_lab_on => Chronic.parse('yesterday') )
 			assert !sample.new_record?, "Object was not created"
 			assert_equal SampleOutcome['lab'],
 				sample.study_subject.homex_outcome.sample_outcome

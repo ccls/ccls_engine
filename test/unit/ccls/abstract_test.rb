@@ -367,7 +367,6 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	end
 
 	test "should NOT set days since diagnosis fields on create without response_report_on" do
-#		abstract = Factory(:abstract,:diagnosed_on => Chronic.parse('10 days ago'),
 		abstract = Factory(:abstract,
 			:diagnosed_on              => ( Date.today - 10 ),
 			:response_report_on_day_7  => nil,
@@ -381,13 +380,6 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	end
 
 	test "should set days since diagnosis fields on create with diagnosed_on" do
-#		abstract = Factory(:abstract,:diagnosed_on => Chronic.parse('40 days ago'),
-#			:response_report_on_day_7  => Chronic.parse('30 days ago'),
-#			:response_report_on_day_14 => Chronic.parse('20 days ago'),
-#			:response_report_on_day_28 => Chronic.parse('10 days ago')
-#		)
-		#	Changed these to Date rather than Chronic parses.
-		#	Get today once so doesn't change at midnight.
 		today = Date.today
 		abstract = Factory(:abstract,
 			:diagnosed_on              => ( today - 40 ),
@@ -395,23 +387,6 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 			:response_report_on_day_14 => ( today - 20 ),
 			:response_report_on_day_28 => ( today - 10 )
 		)
-#
-#	TODO depending on the time of day that this is run,
-#		it may not work due to improper time zones used in calculation.
-#	Actually, these are dates so time zones shouldn't be an issue.
-#		However, I ran these tests around midnight and had this failure.
-#		I'll need to run then again late at night to get a better look.
-#	2011-12-01 23:42:04.000000000 -0800
-#	@@ -1 +1 @@
-#	-<20>
-#	+<19>
-#	Chronic does return a datetime though.
-#	Perhaps I should use (Date.today - 40) rather than Chronic.parse('40 days ago')
-#	This will ensure that the result is a date.
-#	There may also be a problem with the Chronic being run at
-#		'compile' time rather than 'execution' time as this is a block?
-#		Doubt that though, but factory_girl does do that in definitions.
-#
 		assert_not_nil abstract.diagnosed_on
 		assert_not_nil abstract.response_day_7_days_since_diagnosis
 		assert_equal 10, abstract.response_day_7_days_since_diagnosis
@@ -430,7 +405,6 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	end
 
 	test "should NOT set days since treatment_began fields on create without response_report_on" do
-#		abstract = Factory(:abstract,:treatment_began_on => Chronic.parse('10 days ago'),
 		abstract = Factory(:abstract,
 			:treatment_began_on        => ( Date.today - 10 ),
 			:response_report_on_day_7  => nil,
@@ -444,13 +418,6 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	end
 
 	test "should set days since treatment_began fields on create with treatment_began_on" do
-#		abstract = Factory(:abstract,:treatment_began_on => Chronic.parse('40 days ago'),
-#			:response_report_on_day_7  => Chronic.parse('30 days ago'),
-#			:response_report_on_day_14 => Chronic.parse('20 days ago'),
-#			:response_report_on_day_28 => Chronic.parse('10 days ago')
-#		)
-		#	Changed these to Date rather than Chronic parses.
-		#	Get today once so doesn't change at midnight.
 		today = Date.today	
 		abstract = Factory(:abstract,
 			:treatment_began_on        => ( today - 40 ),
@@ -459,23 +426,6 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 			:response_report_on_day_28 => ( today - 10 )
 		)
 		assert_not_nil abstract.treatment_began_on
-#
-#	TODO depending on the time of day that this is run,
-#		it may not work due to improper time zones used in calculation.
-#	Actually, these are dates so time zones shouldn't be an issue.
-#		However, I ran these tests around midnight and had this failure.
-#		I'll need to run then again late at night to get a better look.
-#	2011-12-01 23:42:04.000000000 -0800
-#	@@ -1 +1 @@
-#	-<20>
-#	+<19>
-#	Chronic does return a datetime though.
-#	Perhaps I should use (Date.today - 40) rather than Chronic.parse('40 days ago')
-#	This will ensure that the result is a date.
-#	There may also be a problem with the Chronic being run at
-#		'compile' time rather than 'execution' time as this is a block?
-#		Doubt that though, but factory_girl does do that in definitions.
-#	
 		assert_not_nil abstract.response_day_7_days_since_treatment_began
 		assert_equal 10, abstract.response_day_7_days_since_treatment_began
 		assert_not_nil abstract.response_day_14_days_since_treatment_began

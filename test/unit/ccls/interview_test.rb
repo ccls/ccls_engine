@@ -46,7 +46,6 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		assert_difference( "Interview.count", 1 ) {
 			@interview = create_interview( :study_subject => study_subject,
 				:intro_letter_sent_on => Date.yesterday ).reload
-#				:intro_letter_sent_on => Chronic.parse('yesterday')).reload
 		} }
 		assert_equal OperationalEventType['intro'],
 			OperationalEvent.last.operational_event_type
@@ -59,13 +58,10 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 		interview = create_interview(
 			:study_subject => create_hx_study_subject,
 			:intro_letter_sent_on => Date.yesterday )
-#			:intro_letter_sent_on => Chronic.parse('yesterday'))
 		assert_difference( "OperationalEvent.count", 0 ) {
 		assert_difference( "Interview.count", 0 ) {
 			interview.update_attributes(:intro_letter_sent_on => Date.today )
-#			interview.update_attributes(:intro_letter_sent_on => Chronic.parse('today'))
 		} }
-#		assert_equal Chronic.parse('today').to_date,
 		assert_equal Date.today,
 			OperationalEvent.last.occurred_on
 	end
@@ -286,12 +282,10 @@ protected
 
 	def create_interview_with_times(options={})
 		ioptions = HashWithIndifferentAccess.new({
-#			:began_on => Chronic.parse('May 12, 2000').to_date,
 			:began_on => Date.parse('May 12, 2000'),
 			:began_at_hour => 1,
 			:began_at_minute => 30,
 			:began_at_meridiem => 'PM',
-#			:ended_on => Chronic.parse('May 12, 2000').to_date,
 			:ended_on => Date.parse('May 12, 2000'),
 			:ended_at_hour => 1,
 			:ended_at_minute => 30,
