@@ -966,6 +966,33 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
+	test "should update study_subject with subject_languages_attributes" do
+		study_subject = create_study_subject
+		assert_difference( 'SubjectLanguage.count', 1 ){
+			study_subject.update_attributes(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language.first.id }
+			})
+		}
+	end
+
+	test "should destroy subject_language on update with _destroy" do
+		study_subject = create_study_subject
+		assert_difference( 'SubjectLanguage.count', 1 ){
+			study_subject.update_attributes(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language.first.id }
+			})
+		}
+		subject_language = study_subject.subject_languages.first
+		assert_difference( 'SubjectLanguage.count', -1 ){
+			study_subject.update_attributes(:subject_languages_attributes => {
+				:some_random_id => { :id => subject_language.id, :_destroy => 1 }
+			})
+		}
+	end
+
+
+
+
 
 	test "should create study_subject with empty subject_races_attributes" do
 		assert_difference( 'SubjectRace.count', 0 ){
@@ -1095,6 +1122,22 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert !@study_subject.subject_races.empty?
 		assert  @study_subject.subject_races.first.is_primary
 	end
+
+	test "should destroy subject_race on update with _destroy" do
+		study_subject = create_study_subject
+		assert_difference( 'SubjectRace.count', 1 ){
+			study_subject.update_attributes(:subject_races_attributes => {
+				:some_random_id => { :race_id => Race.first.id, :is_primary => 'true' }
+			})
+		}
+		subject_race = study_subject.subject_races.first
+		assert_difference( 'SubjectRace.count', -1 ){
+			study_subject.update_attributes(:subject_races_attributes => {
+				:some_random_id => { :id => subject_race.id, :_destroy => 1 }
+			})
+		}
+	end
+
 
 	test "should raise StudySubject::NotTwoAbstracts with 0 abstracts on abstracts_the_same?" do
 		study_subject = Factory(:study_subject)
