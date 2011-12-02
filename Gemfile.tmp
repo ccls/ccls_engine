@@ -28,7 +28,8 @@ gem "authlogic", "~>2"
 gem "autotest-rails"
 gem "aws-s3"
 gem "aws-sdb"
-gem "chronic",	'>=0.6.2'
+#	Trying to remove Chronic usage
+#gem "chronic",	'>=0.6.2'
 gem "haml"
 gem "hpricot"
 gem "i18n"

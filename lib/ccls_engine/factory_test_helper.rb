@@ -162,7 +162,7 @@ module Ccls::FactoryTestHelper
 	def create_study_subject_with_dob(dob)
 		create_study_subject(
 			:pii_attributes => Factory.attributes_for(:pii, 
-				:dob => Time.parse(dob) ))
+				:dob => Time.parse(dob) ))	#	Time.parse?  Why not Date?
 	end
 
 	def three_study_subjects_with_dob
@@ -170,14 +170,9 @@ module Ccls::FactoryTestHelper
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
-	def create_study_subject_with_sample_outcome_on(date)
-		s = create_hx_study_subject
-		s.update_attributes( 
-			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
-				:sample_outcome_on => date) )
-		s
-	end
-
+	#
+	#	three_study_subjects_with_* methods called from StudySubjectSearchTest
+	#
 	def three_study_subjects_with_sample_outcome_on
 		create_study_subjects_with_sample_outcome_ons(
 			'12/31/2005','12/31/2001','12/31/2003')
@@ -235,6 +230,14 @@ module Ccls::FactoryTestHelper
 
 
 protected	#	NOT called from the outside
+
+	def create_study_subject_with_sample_outcome_on(date)
+		s = create_hx_study_subject
+		s.update_attributes( 
+			:homex_outcome_attributes => Factory.attributes_for(:homex_outcome,
+				:sample_outcome_on => date) )
+		s
+	end
 
 	def create_study_subject_with_sample_outcome(outcome)
 		s = create_hx_study_subject
