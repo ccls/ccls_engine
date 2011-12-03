@@ -40,7 +40,7 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 		assert_difference( "Hospital.count", 0 ) do
 			hospital = create_hospital( :organization => nil)
 			assert !hospital.errors.on(:organization)
-			assert  hospital.errors.on_attr_and_type(:organization_id,:blank)
+			assert  hospital.errors.on_attr_and_type?(:organization_id,:blank)
 		end
 	end
 
@@ -48,7 +48,7 @@ class Ccls::HospitalTest < ActiveSupport::TestCase
 		assert_difference( "Hospital.count", 0 ) do
 			hospital = create_hospital( :organization_id => 0)
 			assert !hospital.errors.on(:organization_id)
-			assert  hospital.errors.on_attr_and_type(:organization,:blank)
+			assert  hospital.errors.on_attr_and_type?(:organization,:blank)
 		end
 	end
 

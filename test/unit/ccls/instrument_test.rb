@@ -40,7 +40,7 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 		assert_difference( "Instrument.count", 0 ) do
 			instrument = create_instrument( :project => nil)
 			assert !instrument.errors.on(:project)
-			assert  instrument.errors.on_attr_and_type(:project_id,:blank)
+			assert  instrument.errors.on_attr_and_type?(:project_id,:blank)
 		end
 	end
 
@@ -48,7 +48,7 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 		assert_difference( "Instrument.count", 0 ) do
 			instrument = create_instrument( :project_id => 0)
 			assert !instrument.errors.on(:project_id)
-			assert  instrument.errors.on_attr_and_type(:project,:blank)
+			assert  instrument.errors.on_attr_and_type?(:project,:blank)
 		end
 	end
 

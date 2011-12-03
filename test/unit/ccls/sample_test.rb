@@ -52,7 +52,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( "Sample.count", 0 ) do
 			sample = create_sample( :sample_type => nil)
 			assert !sample.errors.on(:sample_type)
-			assert  sample.errors.on_attr_and_type(:sample_type_id,:blank)
+			assert  sample.errors.on_attr_and_type?(:sample_type_id,:blank)
 		end
 	end
 
@@ -60,7 +60,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( "Sample.count", 0 ) do
 			sample = create_sample( :sample_type_id => 0)
 			assert !sample.errors.on(:sample_type_id)
-			assert  sample.errors.on_attr_and_type(:sample_type,:blank)
+			assert  sample.errors.on_attr_and_type?(:sample_type,:blank)
 		end
 	end
 
@@ -68,7 +68,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( "Sample.count", 0 ) do
 			sample = create_sample( :study_subject => nil)
 			assert !sample.errors.on(:study_subject)
-			assert  sample.errors.on_attr_and_type(:study_subject_id,:blank)
+			assert  sample.errors.on_attr_and_type?(:study_subject_id,:blank)
 		end
 	end
 
@@ -76,7 +76,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert_difference( "Sample.count", 0 ) do
 			sample = create_sample( :study_subject_id => 0)
 			assert !sample.errors.on(:study_subject_id)
-			assert  sample.errors.on_attr_and_type(:study_subject,:blank)
+			assert  sample.errors.on_attr_and_type?(:study_subject,:blank)
 		end
 	end
 

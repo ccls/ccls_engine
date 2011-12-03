@@ -59,7 +59,7 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 		assert_difference( "Address.count", 0 ) do
 			address = create_address( :address_type => nil)
 			assert !address.errors.on(:address_type)
-			assert  address.errors.on_attr_and_type(:address_type_id,:blank)
+			assert  address.errors.on_attr_and_type?(:address_type_id,:blank)
 		end
 	end
 
@@ -67,7 +67,7 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 		assert_difference( "Address.count", 0 ) do
 			address = create_address( :address_type_id => 0)
 			assert !address.errors.on(:address_type_id)
-			assert  address.errors.on_attr_and_type(:address_type,:blank)
+			assert  address.errors.on_attr_and_type?(:address_type,:blank)
 		end
 	end
 

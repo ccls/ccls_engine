@@ -132,7 +132,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference( "StudySubject.count", 0 ) do
 			study_subject = create_study_subject( :subject_type => nil)
 			assert !study_subject.errors.on(:subject_type)
-			assert  study_subject.errors.on_attr_and_type(:subject_type_id,:blank)
+			assert  study_subject.errors.on_attr_and_type?(:subject_type_id,:blank)
 		end
 	end
 
@@ -140,21 +140,21 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference( "StudySubject.count", 0 ) do
 			study_subject = create_study_subject( :subject_type_id => 0)
 			assert !study_subject.errors.on(:subject_type_id)
-			assert  study_subject.errors.on_attr_and_type(:subject_type,:blank)
+			assert  study_subject.errors.on_attr_and_type?(:subject_type,:blank)
 		end
 	end
 
 	test "should require sex be either M, F or DK" do
 		assert_difference( "StudySubject.count", 0 ) {
 			study_subject = create_study_subject(:sex => 'X')
-			assert study_subject.errors.on_attr_and_type(:sex,:inclusion)
+			assert study_subject.errors.on_attr_and_type?(:sex,:inclusion)
 		} 
 	end
 
 	test "should require sex with custom message" do
 		assert_difference( "StudySubject.count", 0 ) do
 			study_subject = create_study_subject( :sex => nil )
-			assert study_subject.errors.on_attr_and_type(:sex,:blank)
+			assert study_subject.errors.on_attr_and_type?(:sex,:blank)
 			assert_match /No sex has been chosen/, 
 				study_subject.errors.full_messages.to_sentence
 			assert_no_match /Sex can't be blank/i, 
@@ -236,10 +236,10 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 				:addressings_attributes => [Factory.attributes_for(:addressing,
 					:address_required   => true,
 					:address_attributes => { :address_type => AddressType['residence'] } )])
-			assert study_subject.errors.on_attr_and_type('addressings.address.line_1',:blank)
-			assert study_subject.errors.on_attr_and_type('addressings.address.city',:blank)
-			assert study_subject.errors.on_attr_and_type('addressings.address.state',:blank)
-			assert study_subject.errors.on_attr_and_type('addressings.address.zip',:blank)
+			assert study_subject.errors.on_attr_and_type?('addressings.address.line_1',:blank)
+			assert study_subject.errors.on_attr_and_type?('addressings.address.city',:blank)
+			assert study_subject.errors.on_attr_and_type?('addressings.address.state',:blank)
+			assert study_subject.errors.on_attr_and_type?('addressings.address.zip',:blank)
 		} } }
 	end
 
@@ -306,7 +306,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference( 'Pii.count', 0) {
 		assert_difference( "StudySubject.count", 0 ) {
 			study_subject = create_study_subject( :pii_attributes => {})
-			assert study_subject.errors.on_attr_and_type('pii.dob',:blank)
+			assert study_subject.errors.on_attr_and_type?('pii.dob',:blank)
 		} }
 	end
 
@@ -383,13 +383,13 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference( "StudySubject.count", 0 ) {
 			study_subject = create_study_subject( :patient_attributes => {})
 			assert study_subject.errors.on('patient.diagnosis_id')
-			assert study_subject.errors.on_attr_and_type('patient.diagnosis_id',:blank)
+			assert study_subject.errors.on_attr_and_type?('patient.diagnosis_id',:blank)
 			assert study_subject.errors.on('patient.hospital_no')
-			assert study_subject.errors.on_attr_and_type('patient.hospital_no',:blank)
+			assert study_subject.errors.on_attr_and_type?('patient.hospital_no',:blank)
 			assert study_subject.errors.on('patient.admit_date')
-			assert study_subject.errors.on_attr_and_type('patient.admit_date',:blank)
+			assert study_subject.errors.on_attr_and_type?('patient.admit_date',:blank)
 			assert study_subject.errors.on('patient.organization_id')
-			assert study_subject.errors.on_attr_and_type('patient.organization_id',:blank)
+			assert study_subject.errors.on_attr_and_type?('patient.organization_id',:blank)
 		} }
 	end
 
@@ -962,7 +962,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			@study_subject = create_study_subject(:subject_languages_attributes => {
 				:some_random_id => { :language_id => Language['other'].id }
 			})
-			assert @study_subject.errors.on_attr_and_type("subject_languages.other",:blank)
+			assert @study_subject.errors.on_attr_and_type?("subject_languages.other",:blank)
 		} }
 	end
 

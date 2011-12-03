@@ -22,7 +22,7 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 		assert_difference( "DocumentVersion.count", 0 ) do
 			document_version = create_document_version( :document_type => nil)
 			assert !document_version.errors.on(:document_type)
-			assert  document_version.errors.on_attr_and_type(:document_type_id, :blank)
+			assert  document_version.errors.on_attr_and_type?(:document_type_id, :blank)
 		end
 	end
 
@@ -30,7 +30,7 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 		assert_difference( "DocumentVersion.count", 0 ) do
 			document_version = create_document_version( :document_type_id => 0)
 			assert !document_version.errors.on(:document_type_id)
-			assert  document_version.errors.on_attr_and_type(:document_type,:blank)
+			assert  document_version.errors.on_attr_and_type?(:document_type,:blank)
 		end
 	end
 

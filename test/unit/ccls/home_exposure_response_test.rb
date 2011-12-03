@@ -20,7 +20,7 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 		assert_difference( "HomeExposureResponse.count", 0 ) do
 			home_exposure_response = create_home_exposure_response( :study_subject => nil)
 			assert !home_exposure_response.errors.on(:study_subject)
-			assert  home_exposure_response.errors.on_attr_and_type(:study_subject_id, :blank)
+			assert  home_exposure_response.errors.on_attr_and_type?(:study_subject_id, :blank)
 		end
 	end
 
@@ -28,7 +28,7 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 		assert_difference( "HomeExposureResponse.count", 0 ) do
 			home_exposure_response = create_home_exposure_response( :study_subject_id => 0)
 			assert !home_exposure_response.errors.on(:study_subject_id)
-			assert  home_exposure_response.errors.on_attr_and_type(:study_subject,:blank)
+			assert  home_exposure_response.errors.on_attr_and_type?(:study_subject,:blank)
 		end
 	end
 
@@ -37,7 +37,7 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 		assert_no_difference "HomeExposureResponse.count" do
 			home_exposure_response = create_home_exposure_response(
 				:study_subject => o.study_subject)
-			assert home_exposure_response.errors.on_attr_and_type(:study_subject_id, :taken)
+			assert home_exposure_response.errors.on_attr_and_type?(:study_subject_id, :taken)
 		end
 	end
 

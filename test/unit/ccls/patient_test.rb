@@ -348,21 +348,21 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	test "should require other_diagnosis if diagnosis == other" do
 		assert_difference( "Patient.count", 0 ) do
 			patient = create_patient(:diagnosis => Diagnosis['other'])
-			assert patient.errors.on_attr_and_type(:other_diagnosis,:blank)
+			assert patient.errors.on_attr_and_type?(:other_diagnosis,:blank)
 		end
 	end
 
 	test "should not require other_diagnosis if diagnosis != other" do
 		assert_difference( "Patient.count", 1 ) do
 			patient = create_patient(:diagnosis => Diagnosis['ALL'])
-			assert !patient.errors.on_attr_and_type(:other_diagnosis,:blank)
+			assert !patient.errors.on_attr_and_type?(:other_diagnosis,:blank)
 		end
 	end
 
 	test "should require hospital_no with custom message" do
 		assert_difference( "Patient.count", 0 ) do
 			patient = create_patient( :hospital_no => nil )
-			assert patient.errors.on_attr_and_type(:hospital_no,:blank)
+			assert patient.errors.on_attr_and_type?(:hospital_no,:blank)
 			assert_match /Hospital record number can't be blank/, 
 				patient.errors.full_messages.to_sentence
 			assert_no_match /Hospital no/i, 
@@ -373,7 +373,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	test "should require organization_id with custom message" do
 		assert_difference( "Patient.count", 0 ) do
 			patient = create_patient( :organization_id => nil )
-			assert patient.errors.on_attr_and_type(:organization_id,:blank)
+			assert patient.errors.on_attr_and_type?(:organization_id,:blank)
 			assert_match /Treating institution can't be blank/, 
 				patient.errors.full_messages.to_sentence
 			assert_no_match /Organization/i, 

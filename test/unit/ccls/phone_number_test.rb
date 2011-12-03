@@ -32,14 +32,14 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	test "should require data_source_other if data_source is other" do
 		assert_difference( "PhoneNumber.count", 0 ) do
 			phone_number = create_phone_number( :data_source => DataSource['Other'])
-			assert phone_number.errors.on_attr_and_type(:data_source_other,:blank)
+			assert phone_number.errors.on_attr_and_type?(:data_source_other,:blank)
 		end
 	end
 
 	test "should NOT require data_source_other if data_source is not other" do
 		assert_difference( "PhoneNumber.count", 1 ) do
 			phone_number = create_phone_number( :data_source => DataSource['raf'])
-			assert !phone_number.errors.on_attr_and_type(:data_source_other,:blank)
+			assert !phone_number.errors.on_attr_and_type?(:data_source_other,:blank)
 		end
 	end
 
@@ -47,7 +47,7 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 		assert_difference( "PhoneNumber.count", 0 ) do
 			phone_number = create_phone_number( :phone_type => nil)
 			assert !phone_number.errors.on(:phone_type)
-			assert  phone_number.errors.on_attr_and_type(:phone_type_id, :blank)
+			assert  phone_number.errors.on_attr_and_type?(:phone_type_id, :blank)
 		end
 	end
 
@@ -55,7 +55,7 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 		assert_difference( "PhoneNumber.count", 0 ) do
 			phone_number = create_phone_number( :phone_type_id => 0)
 			assert !phone_number.errors.on(:phone_type_id)
-			assert  phone_number.errors.on_attr_and_type(:phone_type,:blank)
+			assert  phone_number.errors.on_attr_and_type?(:phone_type,:blank)
 		end
 	end
 
@@ -89,8 +89,8 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	test "should not have multiple errors for blank phone number" do
 		assert_difference( "PhoneNumber.count", 0 ) do
 			phone_number = create_phone_number(:phone_number => '')
-			assert !phone_number.errors.on_attr_and_type(:phone_number,:invalid)
-			assert  phone_number.errors.on_attr_and_type(:phone_number,:blank)
+			assert !phone_number.errors.on_attr_and_type?(:phone_number,:invalid)
+			assert  phone_number.errors.on_attr_and_type?(:phone_number,:blank)
 		end
 	end
 
@@ -99,14 +99,14 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 		].each do |bad_phone|
 			assert_difference( "PhoneNumber.count", 0 ) do
 				phone_number = create_phone_number(:phone_number => bad_phone)
-				assert phone_number.errors.on_attr_and_type(:phone_number,:invalid)
+				assert phone_number.errors.on_attr_and_type?(:phone_number,:invalid)
 			end
 		end
 		[ "(123)456-7890", "1234567890", 
 			"  1 asdf23,4()5\+67   8 9   0asdf" ].each do |good_phone|
 			assert_difference( "PhoneNumber.count", 1 ) do
 				phone_number = create_phone_number(:phone_number => good_phone)
-				assert !phone_number.errors.on_attr_and_type(:phone_number,:invalid)
+				assert !phone_number.errors.on_attr_and_type?(:phone_number,:invalid)
 				assert phone_number.reload.phone_number =~ /\A\(\d{3}\)\s+\d{3}-\d{4}\z/
 			end
 		end

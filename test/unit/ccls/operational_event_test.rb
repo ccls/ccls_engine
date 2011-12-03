@@ -23,7 +23,7 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 		assert_difference( "OperationalEvent.count", 0 ) do
 			operational_event = create_operational_event( :operational_event_type => nil)
 			assert !operational_event.errors.on(:operational_event_type)
-			assert  operational_event.errors.on_attr_and_type(:operational_event_type_id,:blank)
+			assert  operational_event.errors.on_attr_and_type?(:operational_event_type_id,:blank)
 		end
 	end
 
@@ -31,7 +31,7 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 		assert_difference( "OperationalEvent.count", 0 ) do
 			operational_event = create_operational_event( :operational_event_type_id => 0)
 			assert !operational_event.errors.on(:operational_event_type_id)
-			assert  operational_event.errors.on_attr_and_type(:operational_event_type,:blank)
+			assert  operational_event.errors.on_attr_and_type?(:operational_event_type,:blank)
 		end
 	end
 

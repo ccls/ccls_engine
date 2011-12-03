@@ -234,7 +234,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			assert_difference( "Interview.count", 0 ) do
 				interview = create_interview_with_times("#{time}_at_hour" => 0)
 				assert_nil interview.send("#{time}_at")
-				assert interview.errors.on_attr_and_type("#{time}_at_hour",:inclusion)
+				assert interview.errors.on_attr_and_type?("#{time}_at_hour",:inclusion)
 			end
 		end
 
@@ -242,7 +242,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			assert_difference( "Interview.count", 0 ) do
 				interview = create_interview_with_times("#{time}_at_hour" => 13)
 				assert_nil interview.send("#{time}_at")
-				assert interview.errors.on_attr_and_type("#{time}_at_hour",:inclusion)
+				assert interview.errors.on_attr_and_type?("#{time}_at_hour",:inclusion)
 			end
 		end
 
@@ -250,7 +250,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			assert_difference( "Interview.count", 0 ) do
 				interview = create_interview_with_times("#{time}_at_minute" => -1)
 				assert_nil interview.send("#{time}_at")
-				assert interview.errors.on_attr_and_type("#{time}_at_minute",:inclusion)
+				assert interview.errors.on_attr_and_type?("#{time}_at_minute",:inclusion)
 			end
 		end
 
@@ -258,7 +258,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			assert_difference( "Interview.count", 0 ) do
 				interview = create_interview_with_times("#{time}_at_minute" => 60)
 				assert_nil interview.send("#{time}_at")
-				assert interview.errors.on_attr_and_type("#{time}_at_minute",:inclusion)
+				assert interview.errors.on_attr_and_type?("#{time}_at_minute",:inclusion)
 			end
 		end
 
@@ -266,7 +266,7 @@ class Ccls::InterviewTest < ActiveSupport::TestCase
 			assert_difference( "Interview.count", 0 ) do
 				interview = create_interview_with_times("#{time}_at_meridiem" => 'MM')
 				assert_nil interview.send("#{time}_at")
-				assert interview.errors.on_attr_and_type("#{time}_at_meridiem",:invalid)
+				assert interview.errors.on_attr_and_type?("#{time}_at_meridiem",:invalid)
 			end
 		end
 

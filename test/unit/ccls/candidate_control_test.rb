@@ -58,7 +58,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	test "should require sex be either M, F or DK" do
 		assert_difference("CandidateControl.count",0) {
 			candidate_control = create_candidate_control(:sex => 'X')
-			assert candidate_control.errors.on_attr_and_type(:sex,:inclusion)
+			assert candidate_control.errors.on_attr_and_type?(:sex,:inclusion)
 		} 
 	end
 
@@ -67,7 +67,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 			candidate_control = create_candidate_control(
 				:reject_candidate => true,
 				:rejection_reason => nil)
-			assert candidate_control.errors.on_attr_and_type(:rejection_reason,:blank)
+			assert candidate_control.errors.on_attr_and_type?(:rejection_reason,:blank)
 		}
 	end
 
@@ -82,7 +82,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	test "should require reject_candidate is not nil" do
 		assert_difference("CandidateControl.count",0) {
 			candidate_control = create_candidate_control(:reject_candidate => nil)
-			assert candidate_control.errors.on_attr_and_type(:reject_candidate,:inclusion)
+			assert candidate_control.errors.on_attr_and_type?(:reject_candidate,:inclusion)
 		}
 	end
 

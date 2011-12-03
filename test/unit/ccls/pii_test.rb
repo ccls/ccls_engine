@@ -85,13 +85,13 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		assert_difference( "Pii.count", 0 ) do
 			%w( asdf me@some@where.com me@somewhere ).each do |bad_email|
 				pii = create_pii(:email => bad_email)
-				assert pii.errors.on_attr_and_type(:email,:invalid)
+				assert pii.errors.on_attr_and_type?(:email,:invalid)
 			end
 		end
 		assert_difference( "Pii.count", 1 ) do
 			%w( me@some.where.com ).each do |good_email|
 				pii = create_pii(:email => good_email)
-				assert !pii.errors.on_attr_and_type(:email,:invalid)
+				assert !pii.errors.on_attr_and_type?(:email,:invalid)
 			end
 		end
 	end
@@ -177,7 +177,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		assert_difference( "Pii.count", 0 ) do
 			pii = create_pii(
 				:guardian_relationship => SubjectRelationship['other'] )
-			assert pii.errors.on_attr_and_type(:guardian_relationship_other,:blank)
+			assert pii.errors.on_attr_and_type?(:guardian_relationship_other,:blank)
 		end
 	end
 
@@ -185,7 +185,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		assert_difference( "Pii.count", 0 ) do
 			pii = create_pii(
 				:guardian_relationship => SubjectRelationship['other'] )
-			assert pii.errors.on_attr_and_type(:guardian_relationship_other,:blank)
+			assert pii.errors.on_attr_and_type?(:guardian_relationship_other,:blank)
 			assert_match /You must specify a relationship with 'other relationship' is selected/, 
 				pii.errors.full_messages.to_sentence
 			assert_no_match /Guardian relationship other/, 
@@ -196,7 +196,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	test "should require dob with custom message" do
 		assert_difference( "Pii.count", 0 ) do
 			pii = create_pii( :dob => nil )
-			assert pii.errors.on_attr_and_type(:dob,:blank)
+			assert pii.errors.on_attr_and_type?(:dob,:blank)
 			assert_match /Date of birth can't be blank/, 
 				pii.errors.full_messages.to_sentence
 			assert_no_match /DOB/i, 
