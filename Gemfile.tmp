@@ -25,7 +25,6 @@ gem "active_shipping"
 gem "RedCloth", '<4.2.8'
 gem "arel", "=2.0.2"
 gem "authlogic", "~>2"
-gem "autotest-rails"
 gem "aws-s3"
 gem "aws-sdb"
 #	Trying to remove Chronic usage
@@ -80,6 +79,11 @@ gem "fastercsv"
 gem "packet"	#	don't remember why (think from backgroundrb)
 
 #	These gems are not needed in production
+#	They will be skipped because of config file
+#	/my/ruby/.bundle/config 
+#--- 
+#BUNDLE_WITHOUT: development:test
+#
 group :development do
 	#	It seems that 1.3.0 will require some modifications.
 	gem "sunspot_rails", '=1.2.1'
@@ -88,6 +92,7 @@ end
 
 
 group :test do
+	gem "autotest-rails"
 	gem "rcov"
 	gem "ccls-html_test"
 	#	used only by simply_authorized in testing (so I'd actually like to remove)
