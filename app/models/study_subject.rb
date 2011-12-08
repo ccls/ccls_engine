@@ -168,7 +168,8 @@ class StudySubject < ActiveRecordShared
 	#	Find the subject with matching familyid except self.
 	#	TODO add a subject_type check here?  Otherwise, this could return any subject_type
 	def child
-		if subject_type == SubjectType['Mother']
+#		if subject_type == SubjectType['Mother']
+		if subject_type_id == StudySubject.subject_type_mother_id
 			StudySubject.find(:first,
 				:include => [:pii,:identifier,:subject_type],
 				:joins => :identifier,
@@ -188,7 +189,8 @@ class StudySubject < ActiveRecordShared
 			:joins => :identifier,
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
-				:subject_type_id       => SubjectType['Mother'].id
+				:subject_type_id       => StudySubject.subject_type_mother_id
+#				:subject_type_id       => SubjectType['Mother'].id
 			}
 		)
 	end
@@ -227,7 +229,8 @@ class StudySubject < ActiveRecordShared
 			:joins => :identifier,
 			:conditions => [
 				"study_subjects.id != ? AND identifiers.patid = ? AND subject_type_id = ?", 
-					id, patid, SubjectType['Control'].id ] 
+					id, patid, StudySubject.subject_type_control_id ] 
+#					id, patid, SubjectType['Control'].id ] 
 		)
 	end
 
@@ -262,19 +265,22 @@ class StudySubject < ActiveRecordShared
 	#	Returns boolean of comparison
 	#	true only if type is Case
 	def is_case?
-		subject_type == SubjectType['Case']
+#		subject_type == SubjectType['Case']
+		subject_type_id == StudySubject.subject_type_case_id
 	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Control
 	def is_control?
-		subject_type == SubjectType['Control']
+#		subject_type == SubjectType['Control']
+		subject_type_id == StudySubject.subject_type_control_id
 	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Mother
 	def is_mother?
-		subject_type == SubjectType['Mother']
+#		subject_type == SubjectType['Mother']
+		subject_type_id == StudySubject.subject_type_mother_id
 	end
 
 	#	Returns boolean of comparison
@@ -438,7 +444,8 @@ class StudySubject < ActiveRecordShared
 			existing_mother
 		else
 			new_mother = StudySubject.create!({
-				:subject_type => SubjectType['Mother'],
+				:subject_type_id => StudySubject.subject_type_mother_id,
+#				:subject_type => SubjectType['Mother'],
 				:vital_status => VitalStatus['living'],
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
@@ -512,7 +519,8 @@ class StudySubject < ActiveRecordShared
 			:joins => :identifier, 
 			:order => 'identifiers.orderno DESC', 
 			:conditions => { 
-				:subject_type_id => SubjectType['Control'].id,
+#				:subject_type_id => SubjectType['Control'].id,
+				:subject_type_id => StudySubject.subject_type_control_id,
 				'identifiers.case_control_type' => grouping,
 				'identifiers.matchingid' => self.identifier.subjectid
 			}
@@ -611,7 +619,8 @@ class StudySubject < ActiveRecordShared
 			],
 			:conditions => [
 				'study_subjects.subject_type_id = ? AND identifiers.patid = ?',
-				SubjectType['Case'].id, patid
+				StudySubject.subject_type_case_id, patid
+#				SubjectType['Case'].id, patid
 			]
 		)
 	end
@@ -622,7 +631,8 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def childid
-		if subject_type_id == SubjectType['Mother'].id
+#		if subject_type_id == SubjectType['Mother'].id
+		if subject_type_id == StudySubject.subject_type_mother_id
 			"#{child.try(:childid)} (mother)"
 		else
 			identifier.try(:childid)
@@ -630,7 +640,8 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def studyid
-		if subject_type_id == SubjectType['Mother'].id
+#		if subject_type_id == SubjectType['Mother'].id
+		if subject_type_id == StudySubject.subject_type_mother_id
 			"n/a"
 		else
 			identifier.try(:studyid)
@@ -661,6 +672,17 @@ class StudySubject < ActiveRecordShared
 	end
 
 protected
+
+	#	Use this to stop the constant checking.
+	def self.subject_type_mother_id
+		@@subject_type_mother_id ||= SubjectType['Mother'].id
+	end
+	def self.subject_type_control_id
+		@@subject_type_control_id ||= SubjectType['Control'].id
+	end
+	def self.subject_type_case_id
+		@@subject_type_case_id ||= SubjectType['Case'].id
+	end
 
 	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)
 		logger.debug "DEBUG: In StudySubject.update_study_subjects_reference_date"
