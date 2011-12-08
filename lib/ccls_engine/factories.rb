@@ -160,8 +160,13 @@ Factory.define :enrollment, :parent => :subjectless_enrollment do |f|
 #	f.is_complete 2	#false
 end
 Factory.define :consented_enrollment, :parent => :enrollment do |f|
-	f.consented   1	#true
+	f.consented   { YNDK[:yes] }	#1	#true
 	f.consented_on Date.yesterday
+end
+Factory.define :declined_enrollment, :parent => :enrollment do |f|
+	f.consented   { YNDK[:no] }	#	2
+	f.consented_on Date.yesterday
+	f.association :refusal_reason
 end
 
 Factory.define :follow_up do |f|

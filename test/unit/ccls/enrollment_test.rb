@@ -83,6 +83,19 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_difference('Enrollment.count',2) {	#	this enrollment AND the subject's ccls enrollment
 			enrollment = Factory(:consented_enrollment)
 			assert enrollment.consented
+			assert_equal enrollment.consented, YNDK[:yes]
+			assert_not_nil enrollment.project
+			assert_not_nil enrollment.study_subject
+		} } }
+	end
+
+	test "explicit Factory declined_enrollment test" do
+		assert_difference('Project.count',1) {
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Enrollment.count',2) {	#	this enrollment AND the subject's ccls enrollment
+			enrollment = Factory(:declined_enrollment)
+			assert enrollment.consented
+			assert_equal enrollment.consented, YNDK[:no]
 			assert_not_nil enrollment.project
 			assert_not_nil enrollment.study_subject
 		} } }
@@ -402,7 +415,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	end
 
 	test "should create subjectConsents operational event if consent changes to yes" do
-		enrollment = create_subjectless_enrollment
+		enrollment = Factory(:subjectless_enrollment)
 		assert_nil enrollment.consented
 		assert_difference("Enrollment.find(#{enrollment.id}).operational_events.count",1){
 			enrollment.update_attributes(:consented => YNDK[:yes],
@@ -429,6 +442,37 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		consented_event = enrollment.operational_events.find(:first,:conditions => {
 			:operational_event_type_id => OperationalEventType['subjectConsents'].id })
 		assert_not_nil consented_event
+	end
+
+	test "should create subjectDeclines operational event if consent changes to no" do
+		enrollment = Factory(:subjectless_enrollment)
+		assert_nil enrollment.consented
+		assert_difference("Enrollment.find(#{enrollment.id}).operational_events.count",1){
+			enrollment.update_attributes(:consented => YNDK[:no],
+				:refusal_reason => Factory(:refusal_reason),
+				:consented_on   => Date.today )
+		}
+		enrollment.reload
+		assert_equal enrollment.consented, YNDK[:no]
+		assert_equal enrollment.consented_on, Date.today
+		declined_event = enrollment.operational_events.find(:first,:conditions => {
+			:operational_event_type_id => OperationalEventType['subjectDeclines'].id })
+		assert_not_nil declined_event
+	end
+
+	test "should not create subjectDeclines operational event if consent doesn't change" do
+		enrollment = Factory(:declined_enrollment)
+		assert_not_nil enrollment.consented
+		assert_difference("Enrollment.find(#{enrollment.id}).operational_events.count",0){
+			enrollment.update_attributes(:consented => YNDK[:no],
+				:consented_on => Date.today )
+		}
+		enrollment.reload
+		assert_equal enrollment.consented, YNDK[:no]
+		assert_equal enrollment.consented_on, Date.today
+		declined_event = enrollment.operational_events.find(:first,:conditions => {
+			:operational_event_type_id => OperationalEventType['subjectDeclines'].id })
+		assert_not_nil declined_event
 	end
 
 protected

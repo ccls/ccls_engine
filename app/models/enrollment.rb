@@ -98,6 +98,9 @@ class Enrollment < ActiveRecordShared
 	before_save :create_subject_consents_operational_event,
 		:if => :consented_changed?
 
+	before_save :create_subject_declines_operational_event,
+		:if => :consented_changed?
+
 	#	Return boolean of comparison
 	#	true only if is_eligible == 2
 	def is_not_eligible?
@@ -163,6 +166,15 @@ protected
 		if( ( consented == YNDK[:yes] ) and ( consented_was != YNDK[:yes] ) )
 			operational_events << OperationalEvent.create!(
 				:operational_event_type => OperationalEventType['subjectConsents'],
+				:occurred_on            => consented_on
+			)
+		end
+	end
+
+	def create_subject_declines_operational_event
+		if( ( consented == YNDK[:no] ) and ( consented_was != YNDK[:no] ) )
+			operational_events << OperationalEvent.create!(
+				:operational_event_type => OperationalEventType['subjectDeclines'],
 				:occurred_on            => consented_on
 			)
 		end
