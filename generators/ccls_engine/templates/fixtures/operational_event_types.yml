@@ -116,4 +116,10 @@ subjectDied:
 consent:
   id: 23
   code: subjectConsents
+  event_category: recruitment
   description:  Subject has consented to participate
+declines:
+  id: 24
+  code: subjectDeclines
+  event_category: recruitment
+  description:  Subject has refused consent to participate

@@ -118,7 +118,7 @@ consent:
   code: subjectConsents
   event_category: recruitment
   description:  Subject has consented to participate
-consent:
+declines:
   id: 24
   code: subjectDeclines
   event_category: recruitment
