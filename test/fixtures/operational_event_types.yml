@@ -123,3 +123,8 @@ consent:
   code: subjectDeclines
   event_category: recruitment
   description:  Subject has refused consent to participate
+sentToSRC:
+  id: 25
+  code: sentToSRC
+  event_category:  operations
+  description: Subject data was sent to SRC for recruitment and interview
