@@ -622,7 +622,7 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def childid
-		if subject_type == SubjectType['Mother']
+		if subject_type_id == SubjectType['Mother'].id
 			"#{child.try(:childid)} (mother)"
 		else
 			identifier.try(:childid)
@@ -630,7 +630,7 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def studyid
-		if subject_type == SubjectType['Mother']
+		if subject_type_id == SubjectType['Mother'].id
 			"n/a"
 		else
 			identifier.try(:studyid)
