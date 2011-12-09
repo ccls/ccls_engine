@@ -29,7 +29,8 @@ namespace :odms_destroy do
 		#	have to destroy these as well as they are associated with a given 
 		#	subject, all of which were just destroyed.
 		BcRequest.destroy_all	
-#		CandidateControl.destroy_all
+		CandidateControl.destroy_all
+		IcfMasterId.destroy_all
 	end
 
 end
@@ -179,14 +180,50 @@ namespace :odms_import do
 	task :csv_data => [
 		'odms_destroy:csv_data',
 		'odms_import:subjects',
-		'odms_import:icf_master_ids'
-#		'odms_import:create_dummy_candidate_controls'
+		'odms_import:icf_master_ids',
+		'odms_import:operational_events',
+		'odms_import:create_dummy_candidate_controls'
 #		'odms_import:enrollments'
 	]
 
+
+	task :operational_events => :environment do 
+#	Can't destroy them as there will be some already
+#	Actually, this seems to include the subject creation event
+#		so destruction may be just fine.
+#		puts "Destroying operational_events"
+#		OperationalEvent.destroy_all
+		puts "Importing operational_events"
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Operational_Events_120811.csv", 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+#"subjectID","project_id","operational_event_id","occurred_on","description","enrollment_id","event_notes"
+
+			identifier = Identifier.find_by_subjectid(line['subjectID'])	#	misnamed field
+			study_subject = identifier.study_subject
+			ccls_enrollment = study_subject.enrollments.find_by_project_id(line['project_id'])
+			operational_event = OperationalEvent.create!({
+#			operational_event = OperationalEvent.new({
+				:enrollment_id => ccls_enrollment.id,
+				:operational_event_type_id => line['operational_event_id'],
+				:occurred_on => Time.parse(line['occurred_on']),
+				:description => line['description'],
+				:event_notes => line['event_notes']
+			})
+#			puts operational_event.inspect
+#			puts operational_event.valid?
+#			puts '---'
+#break if f.lineno > 10
+		end
+	end
+
 	task :icf_master_ids => :environment do 
-		puts "Destroying icf_master_ids"
-		IcfMasterId.destroy_all
+#		puts "Destroying icf_master_ids"
+#		IcfMasterId.destroy_all
 		puts "Importing icf_master_ids"
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
@@ -237,9 +274,9 @@ namespace :odms_import do
 
 
 	task :create_dummy_candidate_controls => :environment do
-		puts "Destroying candidate controls"
-		CandidateControl.destroy_all
-		puts "Importing candidate controls"
+#		puts "Destroying candidate controls"
+#		CandidateControl.destroy_all
+		puts "Creating dummy candidate controls"
 		SubjectType['Case'].study_subjects.each do |s|
 			rand(5).times do |i|
 				puts "Creating candidate control for study_subject_id:#{s.id}"
