@@ -160,7 +160,8 @@ class StudySubject < ActiveRecordShared
 			:joins => :identifier,
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
-				:subject_type_id       => SubjectType['Father'].id
+				:subject_type_id       => StudySubject.subject_type_father_id
+#				:subject_type_id       => SubjectType['Father'].id
 			}
 		)
 	end
@@ -286,7 +287,8 @@ class StudySubject < ActiveRecordShared
 	#	Returns boolean of comparison
 	#	true only if type is Father
 	def is_father?
-		subject_type == SubjectType['Father']
+#		subject_type == SubjectType['Father']
+		subject_type_id == StudySubject.subject_type_father_id
 	end
 
 	def race_names
@@ -478,7 +480,8 @@ class StudySubject < ActiveRecordShared
 			existing_father
 		else
 			new_father = StudySubject.create!({
-				:subject_type => SubjectType['Father'],
+#				:subject_type => SubjectType['Father'],
+				:subject_type_id => StudySubject.subject_type_father_id,
 				:vital_status => VitalStatus['living'],
 				:sex => 'M',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
@@ -674,6 +677,9 @@ class StudySubject < ActiveRecordShared
 protected
 
 	#	Use this to stop the constant checking.
+	def self.subject_type_father_id
+		@@subject_type_father_id ||= SubjectType['Father'].id
+	end
 	def self.subject_type_mother_id
 		@@subject_type_mother_id ||= SubjectType['Mother'].id
 	end

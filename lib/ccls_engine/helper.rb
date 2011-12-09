@@ -1,5 +1,13 @@
 module Ccls::Helper
 
+	def sort_up_image
+		"#{Rails.root}/public/images/sort_up.png"
+	end
+
+	def sort_down_image
+		"#{Rails.root}/public/images/sort_down.png"
+	end
+
 	#	&uarr; and &darr;
 	def sort_link(column,text=nil)
 		#	make local copy so mods to muck up real params which
@@ -20,14 +28,14 @@ module Ccls::Helper
 		if local_params[:order] && local_params[:order] == order
 			classes.push('sorted')
 			arrow = if dir == 'desc'
-				if File.exists? "#{Rails.root}/public/images/sort_down.png"
-					image_tag('sort_down.png', :class => 'down arrow')
+				if File.exists? sort_down_image
+					image_tag( File.basename(sort_down_image), :class => 'down arrow')
 				else
 					"<span class='down arrow'>&darr;</span>"
 				end
 			else
-				if File.exists? "#{Rails.root}/public/images/sort_up.png"
-					image_tag('sort_up.png', :class => 'up arrow')
+				if File.exists? sort_up_image
+					image_tag( File.basename(sort_up_image), :class => 'up arrow')
 				else
 					"<span class='up arrow'>&uarr;</span>"
 				end

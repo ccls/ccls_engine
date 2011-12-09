@@ -25,18 +25,46 @@ class Ccls::HelperTest < ActionView::TestCase
 		end
 	end
 
-	test "should return div with link to sort column name with order set to name" do
+	test "should return div with link to sort column name with order set to name" <<
+			" with missing image" do
 		self.params = { :controller => 'users', :action => 'index', 
 			:order => 'name' }
+		self.stubs(:sort_up_image).returns('somefilethatshouldnotexist')
 		response = HTML::Document.new(sort_link('name')).root
 		#	<div class="sorted"><a href="/users?dir=asc&amp;order=name">name</a>
 		#		<span class="up arrow">&uarr;</span></div>
 		assert_select response, 'div.sorted', 1 do
 			assert_select 'a', 1
-#			assert_select 'span.up.arrow', 1
-#	Using images now
+			assert_select '.up.arrow', 1
+			assert_select 'span.up.arrow', 1
+		end
+	end
+
+	test "should return div with link to sort column name with order set to name" do
+		self.params = { :controller => 'users', :action => 'index', 
+			:order => 'name' }
+		response = HTML::Document.new(sort_link('name')).root
+		#	<div class="sortable name sorted"><a href="/users?dir=asc&amp;order=name">name</a>
+		#	<img class="up arrow" src="/images/sort_up.png?1320424344" alt="Sort_up" /></div>
+		assert_select response, 'div.sorted', 1 do
+			assert_select 'a', 1
 			assert_select '.up.arrow', 1
 			assert_select 'img.up.arrow', 1
+		end
+	end
+
+	test "should return div with link to sort column name with order set to name" <<
+			" and dir set to 'asc' with missing image" do
+		self.params = { :controller => 'users', :action => 'index', 
+			:order => 'name', :dir => 'asc' }
+		self.stubs(:sort_down_image).returns('somefilethatshouldnotexist')
+		response = HTML::Document.new(sort_link('name')).root
+		#	<div class="sorted"><a href="/users?dir=asc&amp;order=name">name</a>
+		#		<span class="down arrow">&uarr;</span></div>
+		assert_select response, 'div.sorted', 1 do
+			assert_select 'a', 1
+			assert_select '.down.arrow', 1
+			assert_select 'span.down.arrow', 1
 		end
 	end
 
@@ -45,14 +73,27 @@ class Ccls::HelperTest < ActionView::TestCase
 		self.params = { :controller => 'users', :action => 'index', 
 			:order => 'name', :dir => 'asc' }
 		response = HTML::Document.new(sort_link('name')).root
-		#	<div class="sorted"><a href="/users?dir=asc&amp;order=name">name</a>
-		#		<span class="down arrow">&uarr;</span></div>
+		#	<div class="sortable name sorted"><a href="/users?dir=asc&amp;order=name">name</a>
+		#	<img class="down arrow" src="/images/sort_down.png?1320424344" alt="Sort_up" /></div>
 		assert_select response, 'div.sorted', 1 do
 			assert_select 'a', 1
-#			assert_select 'span.down.arrow', 1
-#	Using images now
 			assert_select '.down.arrow', 1
 			assert_select 'img.down.arrow', 1
+		end
+	end
+
+	test "should return div with link to sort column name with order set to name" <<
+			" and dir set to 'desc' with missing image" do
+		self.params = { :controller => 'users', :action => 'index', 
+			:order => 'name', :dir => 'desc' }
+		self.stubs(:sort_up_image).returns('somefilethatshouldnotexist')
+		response = HTML::Document.new(sort_link('name')).root
+		#	<div class="sorted"><a href="/users?dir=asc&amp;order=name">name</a>
+		#		<span class="up arrow">&uarr;</span></div>
+		assert_select response, 'div.sorted', 1 do
+			assert_select 'a', 1
+			assert_select '.up.arrow', 1
+			assert_select 'span.up.arrow', 1
 		end
 	end
 
@@ -61,12 +102,10 @@ class Ccls::HelperTest < ActionView::TestCase
 		self.params = { :controller => 'users', :action => 'index', 
 			:order => 'name', :dir => 'desc' }
 		response = HTML::Document.new(sort_link('name')).root
-		#	<div class="sorted"><a href="/users?dir=asc&amp;order=name">name</a>
-		#		<span class="up arrow">&uarr;</span></div>
+		#	<div class="sortable name sorted"><a href="/users?dir=asc&amp;order=name">name</a>
+		#	<img class="up arrow" src="/images/sort_up.png?1320424344" alt="Sort_up" /></div>
 		assert_select response, 'div.sorted', 1 do
 			assert_select 'a', 1
-#			assert_select 'span.up.arrow', 1
-#	Using images now
 			assert_select '.up.arrow', 1
 			assert_select 'img.up.arrow', 1
 		end

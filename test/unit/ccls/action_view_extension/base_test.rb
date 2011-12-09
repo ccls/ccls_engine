@@ -10,13 +10,13 @@ class SomeModel
 	end
 end
 
-#
-#	Can't test "wrapped_*_select" methods as wrapping is part of common_lib.
-#	Can't test "wrapped_*_spans" methods as wrapping is part of common_lib.
-#	Would need to add some requirements to do so.
-#
+#	needed for wrapped_*_spans and wrapped_*_select
+require 'common_lib/action_view_extension'
 
 class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
+
+	#	needed for wrapped_*_spans and wrapped_*_select
+	include CommonLib::ActionViewExtension::Base 
 
 	test "adna(1) should return 'Agree'" do
 		assert_equal 'Agree', adna(1)
@@ -106,7 +106,6 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 		assert_equal "&nbsp;", y_n_dk()
 	end
 
-
 	test "ynodk(1) should return 'Yes'" do
 		assert_equal 'Yes', ynodk(1)
 	end
@@ -156,101 +155,145 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 	end
 
 	test "_wrapped_adna_spans" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			_wrapped_adna_spans(:some_model, :adna)).root
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			_wrapped_adna_spans(:some_model, :adna)).root
+#	TODO Question.  Why aren't they wrapped?
+		assert_select response, 'span.label', 'adna', 1
+		assert_select response, 'span.value', '&nbsp;', 1
 	end
 
 	test "_wrapped_a_d_na_spans" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			_wrapped_a_d_na_spans(:some_model, :adna)).root
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			_wrapped_a_d_na_spans(:some_model, :adna)).root
+#	TODO Question.  Why aren't they wrapped?
+		assert_select response, 'span.label', 'adna', 1
+		assert_select response, 'span.value', '&nbsp;', 1
 	end
 
 	test "_wrapped_yndk_spans" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			_wrapped_yndk_spans(:some_model, :adna)).root
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			_wrapped_yndk_spans(:some_model, :yndk)).root
+#	TODO Question.  Why aren't they wrapped?
+		assert_select response, 'span.label', 'yndk', 1
+		assert_select response, 'span.value', '&nbsp;', 1
 	end
 
 	test "_wrapped_y_n_dk_spans" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			_wrapped_y_n_dk_spans(:some_model, :adna)).root
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			_wrapped_y_n_dk_spans(:some_model, :yndk)).root
+#	TODO Question.  Why aren't they wrapped?
+		assert_select response, 'span.label', 'yndk', 1
+		assert_select response, 'span.value', '&nbsp;', 1
 	end
 
 	test "_wrapped_ynodk_spans" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			_wrapped_ynodk_spans(:some_model, :adna)).root
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			_wrapped_ynodk_spans(:some_model, :ynodk)).root
+#	TODO Question.  Why aren't they wrapped?
+		assert_select response, 'span.label', 'ynodk', 1
+		assert_select response, 'span.value', '&nbsp;', 1
 	end
 
 	test "_wrapped_y_n_o_dk_spans" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			_wrapped_y_n_o_dk_spans(:some_model, :adna)).root
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			_wrapped_y_n_o_dk_spans(:some_model, :ynodk)).root
+#	TODO Question.  Why aren't they wrapped?
+		assert_select response, 'span.label', 'ynodk', 1
+		assert_select response, 'span.value', '&nbsp;', 1
 	end
 
 	test "wrapped_adna_select" do
-pending
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			wrapped_adna_select(:some_model, :adna)).root
+		assert_select response, 'div.adna.field_wrapper', 1 do
+			assert_select 'label[for=some_model_adna]','Adna',1 
+			assert_select response, "select#some_model_adna[name='some_model[adna]']" do
+				assert_select 'option[value=1]', 'Agree'
+				assert_select 'option[value=2]', 'Do Not Agree'
+				assert_select 'option[value=888]', "N/A"
+				assert_select 'option[value=999]', "Don't Know"
+			end
+		end
 	end
 
 	test "wrapped_a_d_na_select" do
-pending
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			wrapped_a_d_na_select(:some_model, :adna)).root
+		assert_select response, 'div.adna.field_wrapper', 1 do
+			assert_select 'label[for=some_model_adna]','Adna',1 
+			assert_select response, "select#some_model_adna[name='some_model[adna]']" do
+				assert_select 'option[value=1]', 'Agree'
+				assert_select 'option[value=2]', 'Do Not Agree'
+				assert_select 'option[value=888]', "N/A"
+				assert_select 'option[value=999]', "Don't Know"
+			end
+		end
 	end
 
 	test "wrapped_y_n_dk_select" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			wrapped_y_n_dk_select(:some_model, :yndk)).root
-##<div class="yndk field_wrapper">
-##<label for="some_model_yndk">Yndk</label><select id="some_model_yndk" name="some_model[yn    dk]"><option value="1">Yes</option>
-##<option value="2">No</option>
-##<option value="999">Don't Know</option></select>
-##</div><!-- class='yndk' -->
-#		assert_select response, 'div.yndk.field_wrapper', 1 do
-#			assert_select 'label[for=some_model_yndk]','Yndk',1 
-#			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
-#				assert_select 'option[value=1]', 'Yes'
-#				assert_select 'option[value=2]', 'No'
-#				assert_select 'option[value=999]', "Don't Know"
-#			end
-#		end
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			wrapped_y_n_dk_select(:some_model, :yndk)).root
+		assert_select response, 'div.yndk.field_wrapper', 1 do
+			assert_select 'label[for=some_model_yndk]','Yndk',1 
+			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
+				assert_select 'option[value=1]', 'Yes'
+				assert_select 'option[value=2]', 'No'
+				assert_select 'option[value=999]', "Don't Know"
+			end
+		end
 	end
 
 	test "wrapped_yndk_select" do
-pending
-#		@some_model = SomeModel.new
-#		response = HTML::Document.new(
-#			wrapped_yndk_select(:some_model, :yndk)).root
-##<div class="yndk field_wrapper">
-##<label for="some_model_yndk">Yndk</label><select id="some_model_yndk" name="some_model[yn    dk]"><option value="1">Yes</option>
-##<option value="2">No</option>
-##<option value="999">Don't Know</option></select>
-##</div><!-- class='yndk' -->
-#		assert_select response, 'div.yndk.field_wrapper', 1 do
-#			assert_select 'label[for=some_model_yndk]','Yndk',1 
-#			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
-#				assert_select 'option[value=1]', 'Yes'
-#				assert_select 'option[value=2]', 'No'
-#				assert_select 'option[value=999]', "Don't Know"
-#			end
-#		end
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			wrapped_yndk_select(:some_model, :yndk)).root
+		assert_select response, 'div.yndk.field_wrapper', 1 do
+			assert_select 'label[for=some_model_yndk]','Yndk',1 
+			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
+				assert_select 'option[value=1]', 'Yes'
+				assert_select 'option[value=2]', 'No'
+				assert_select 'option[value=999]', "Don't Know"
+			end
+		end
 	end
 
 	test "wrapped_y_n_o_dk_select" do
-pending
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			wrapped_y_n_o_dk_select(:some_model, :ynodk)).root
+		assert_select response, 'div.ynodk.field_wrapper', 1 do
+			assert_select 'label[for=some_model_ynodk]','Ynodk',1 
+			assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
+				assert_select 'option[value=1]', 'Yes'
+				assert_select 'option[value=2]', 'No'
+				assert_select 'option[value=3]', 'Other'
+				assert_select 'option[value=999]', "Don't Know"
+			end
+		end
 	end
 
 	test "wrapped_ynodk_select" do
-pending
+		@some_model = SomeModel.new
+		response = HTML::Document.new(
+			wrapped_ynodk_select(:some_model, :ynodk)).root
+		assert_select response, 'div.ynodk.field_wrapper', 1 do
+			assert_select 'label[for=some_model_ynodk]','Ynodk',1 
+			assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
+				assert_select 'option[value=1]', 'Yes'
+				assert_select 'option[value=2]', 'No'
+				assert_select 'option[value=3]', 'Other'
+				assert_select 'option[value=999]', "Don't Know"
+			end
+		end
 	end
 
 	test "a_d_na_select" do
