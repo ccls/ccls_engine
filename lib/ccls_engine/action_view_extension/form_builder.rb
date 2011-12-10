@@ -6,6 +6,11 @@ module Ccls::ActionViewExtension::FormBuilder
 
 	module InstanceMethods
 
+#	NOTE 
+#		calling <%= f.wrapped_yndk_select :code %> will NOT call these methods.
+#		It will call the method missing and then the @template.method
+#
+
 		def y_n_dk_select(method,options={},html_options={})
 			@template.y_n_dk_select(
 				@object_name, method, 

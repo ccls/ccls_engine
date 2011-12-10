@@ -19,6 +19,36 @@ reflect this.  Currently, the models which are normally subclasses of ActiveReco
 need to now by subclasses of ActiveRecordShared.  The migrations, normally subclasses 
 of ActiveRecord::Migration, need to be subclasses of SharedMigration.
 
+
+
+Several errors I get on my MacBook when running rake test:coverage that I don't get running autotest,
+  I also don't get these on my Mac Pro ???
+
+  (See full trace by running task with --trace)
+  jake@mbp-3 : ccls_engine 555> ruby -v
+  ruby 1.8.7 (2010-08-16 patchlevel 302) [i686-darwin9.8.0]
+
+  ArgumentError: wrong number of arguments (1 for 0)
+    app/models/search.rb:183:in `flatten'
+    app/models/search.rb:183:in `having_options'
+    app/models/search.rb:175:in `having'
+    app/models/study_subject_search.rb:46:in `study_subjects'
+
+  ArgumentError: odd number of arguments for Hash
+    app/models/abstract.rb:301:in `[]'
+    app/models/abstract.rb:301:in `comparable_attributes'
+    app/models/abstract.rb:309:in `diff'
+    app/models/abstract.rb:305:in `is_the_same_as?'
+
+  Ccls/Pii should return join of mother's name: .
+  DEPRECATION WARNING: String#chars has been deprecated in favor of String#mb_chars. (called from initials at /Users/jake/github_repo/ccls/ccls_engine/app/models/pii.rb:57)
+
+  test_@@_should_get_new_with_superuser_login(Ccls::RefusalReasonsControllerTest):
+  ActionView::TemplateError: undefined method `find_index' for [:code]:Array
+    On line #4 of app/views/refusal_reasons/_form.html.erb
+
+
+
 ===Some general ActiveRecord model notes:
 
 Don't have validations that could raise errors that the user can't do anything about.
