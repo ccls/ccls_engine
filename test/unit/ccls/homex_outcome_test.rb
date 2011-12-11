@@ -84,7 +84,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:interview_outcome_on => past_date,
-				:interview_outcome => InterviewOutcome['scheduled'])
+				:interview_outcome    => InterviewOutcome['scheduled'])
 		end
 		oe = OperationalEvent.last
 		assert_equal 'scheduled', oe.operational_event_type.code
@@ -99,7 +99,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:interview_outcome_on => past_date,
-				:interview_outcome => InterviewOutcome['complete'])
+				:interview_outcome    => InterviewOutcome['complete'])
 		end
 		oe = OperationalEvent.last
 		assert_equal 'iv_complete', oe.operational_event_type.code
@@ -109,7 +109,14 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 
 	test "should raise NoHomeExposureEnrollment on create_interview_outcome_update" <<
 			" if no enrollment in HomeExposures" do
-pending	#	TODO
+		study_subject = Factory(:study_subject)
+		homex_outcome = Factory(:homex_outcome,:study_subject => study_subject)
+		assert_nil study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_raises(HomexOutcome::NoHomeExposureEnrollment){
+			homex_outcome.update_attributes(
+				:interview_outcome_on => Date.parse('Jan 15 2003'),
+				:interview_outcome    => InterviewOutcome['complete'])
+		}
 	end
 
 	test "should create operational event when sample kit sent" do
@@ -119,7 +126,7 @@ pending	#	TODO
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:sample_outcome_on => past_date,
-				:sample_outcome => SampleOutcome['sent'])
+				:sample_outcome    => SampleOutcome['sent'])
 		end
 		oe = OperationalEvent.last
 		assert_equal 'kit_sent', oe.operational_event_type.code
@@ -134,7 +141,7 @@ pending	#	TODO
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:sample_outcome_on => past_date,
-				:sample_outcome => SampleOutcome['received'])
+				:sample_outcome    => SampleOutcome['received'])
 		end
 		oe = OperationalEvent.last
 		assert_equal 'sample_received', oe.operational_event_type.code
@@ -149,7 +156,7 @@ pending	#	TODO
 		assert_difference('OperationalEvent.count',1) do
 			homex_outcome.update_attributes(
 				:sample_outcome_on => past_date,
-				:sample_outcome => SampleOutcome['complete'])
+				:sample_outcome    => SampleOutcome['complete'])
 		end
 		oe = OperationalEvent.last
 		assert_equal 'sample_complete', oe.operational_event_type.code
@@ -159,7 +166,14 @@ pending	#	TODO
 
 	test "should raise NoHomeExposureEnrollment on create_sample_outcome_update" <<
 			" if no enrollment in HomeExposures" do
-pending	#	TODO
+		study_subject = Factory(:study_subject)
+		homex_outcome = Factory(:homex_outcome,:study_subject => study_subject)
+		assert_nil study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+		assert_raises(HomexOutcome::NoHomeExposureEnrollment){
+			homex_outcome.update_attributes(
+				:sample_outcome_on => Date.parse('Jan 15 2003'),
+				:sample_outcome    => SampleOutcome['complete'])
+		}
 	end
 
 protected
@@ -178,7 +192,6 @@ protected
 			(options[:homex_outcome]||{}).merge(:study_subject => s,
 			:interview_outcome_on => nil,
 			:sample_outcome_on => nil))
-#			(options[:homex_outcome]||{}).merge(:study_subject => s))
 		h
 	end
 
