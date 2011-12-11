@@ -706,8 +706,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	#	Mostly delegated identifier fields except ... patid, orderno, case_control_type
-	%w( ssn childid state_id_no 
-			state_registrar_no local_registrar_no
+	%w( childid state_id_no state_registrar_no local_registrar_no
 		).each do |method_name|
 
 		test "should return nil #{method_name} without identifier" do
