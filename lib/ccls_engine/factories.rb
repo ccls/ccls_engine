@@ -218,7 +218,7 @@ Factory.define :icf_master_id do |f|
 end
 
 Factory.define :subjectless_identifier, :class => 'Identifier' do |f|
-	f.sequence(:ssn){|n| sprintf("%09d",n) }
+#	f.sequence(:ssn){|n| sprintf("%09d",n) }
 	#	technically, this makes this a control identifier
 	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
 	f.sequence(:state_id_no){|n| "#{n}"}

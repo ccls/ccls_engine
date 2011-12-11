@@ -26,8 +26,12 @@ class Identifier < ActiveRecordShared
 #	validates_presence_of   :subjectid
 #	validates_uniqueness_of :subjectid, :allow_nil => true
 
+	validates_length_of     :ssn, :maximum => 250, :allow_nil => true
+	validates_uniqueness_of :ssn, :allow_nil => true
+	validates_format_of     :ssn, :with => /\A\d{3}-\d{2}-\d{4}\z/,
+		:message => "should be formatted ###-##-####", :allow_nil => true
+
 	with_options :allow_nil => true do |n|
-		n.validates_uniqueness_of :ssn
 		n.validates_uniqueness_of :icf_master_id
 		n.validates_uniqueness_of :state_id_no
 		n.validates_uniqueness_of :state_registrar_no
@@ -46,7 +50,6 @@ class Identifier < ActiveRecordShared
 			o.validates_length_of :lab_no
 			o.validates_length_of :related_childid
 			o.validates_length_of :related_case_childid
-			o.validates_length_of :ssn
 		end
 		blank.validates_length_of :childidwho, :maximum => 10
 		blank.validates_length_of :newid, :maximum => 6
@@ -69,6 +72,7 @@ class Identifier < ActiveRecordShared
 
 	before_validation :prepare_fields_for_validation
 	before_create     :prepare_fields_for_creation
+#	before_update     :prepare_fields_for_update
 
 	after_save :trigger_update_matching_study_subjects_reference_date, 
 		:if => :matchingid_changed?
@@ -107,9 +111,11 @@ protected
 	end
 
 	def prepare_fields_for_validation
+		#	ssn is unique in database so only one could be blank, but all can be nil
+		self.ssn = nil if ssn.blank?
+
 		self.case_control_type = ( ( case_control_type.blank? 
 			) ? nil : case_control_type.to_s.upcase )
-		self.ssn = ( ( ssn.blank? ) ? nil : ssn.to_s.gsub(/\D/,'') )
 
 		#	NOTE ANY field that has a unique index in the database NEEDS
 		#	to NOT be blank.  Multiple nils are acceptable in index,
@@ -231,7 +237,13 @@ protected
 #			else nil
 #		end
 
+#		prepare_fields_for_update
 	end
+
+#	def prepare_fields_for_update
+#		#	ssn is unique in database so only one could be blank, but all can be nil
+#		self.ssn = nil if ssn.blank?
+#	end
 
 	#	made separate method so can stub it in testing
 	#	This only guarantees uniqueness before creation,

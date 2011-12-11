@@ -8,7 +8,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_not_require_attributes( :case_control_type )
 	assert_should_require_unique_attribute( 
-		:ssn,
+#		:ssn,
 		:state_id_no,
 		:state_registrar_no,
 		:local_registrar_no,
@@ -163,15 +163,6 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		identifier.update_attributes(:matchingid => 'somethingtotrigger')
 	end
 
-	test "should nullify blank ssn before validation" do
-		identifier = Factory.build(:identifier, :ssn => '')
-		assert  identifier.ssn.blank?
-		assert !identifier.ssn.nil?
-		identifier.valid?
-		assert  identifier.ssn.blank?
-		assert  identifier.ssn.nil?
-	end 
-
 	test "should nullify blank state_id_no before validation" do
 		identifier = Factory.build(:identifier, :state_id_no => '')
 		assert  identifier.state_id_no.blank?
@@ -225,51 +216,39 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_equal '0123', identifier.patid
 	end 
 
-	test "should create with all numeric ssn" do
-		assert_difference( "Identifier.count", 1 ) do
-			identifier = create_identifier(:ssn => 987654321)
-			assert !identifier.new_record?, 
-				"#{identifier.errors.full_messages.to_sentence}"
-			assert_equal '987654321', identifier.reload.ssn
-		end
+	#	remove ssn from factory and don't use class level test
+	test "should require unique ssn" do
+		Factory(:identifier,:ssn => '123-45-6789')
+		assert_difference('Identifier.count',0){
+			identifier = Factory.build(:identifier,:ssn => '123-45-6789')
+			identifier.save
+			assert identifier.errors.on_attr_and_type?(:ssn,:taken)
+		}
 	end
 
-	test "should create with string all numeric ssn" do
-		assert_difference( "Identifier.count", 1 ) do
-			identifier = create_identifier(:ssn => '987654321')
-			assert !identifier.new_record?, 
-				"#{identifier.errors.full_messages.to_sentence}"
-			assert_equal '987654321', identifier.reload.ssn
-		end
-	end
+	test "should nullify blank ssn" do
+		assert_difference('Identifier.count',1){
+			identifier = Factory(:identifier, :ssn => '')
+			assert  identifier.reload.ssn.nil?
+		}
+	end 
 
 	test "should create with string standard format ssn" do
 		assert_difference( "Identifier.count", 1 ) do
 			identifier = create_identifier(:ssn => '987-65-4321')
 			assert !identifier.new_record?, 
 				"#{identifier.errors.full_messages.to_sentence}"
-			assert_equal '987654321', identifier.reload.ssn
+			assert_equal '987-65-4321', identifier.reload.ssn
 		end
 	end
 
-	test "should remove non-numeric chars from ssn before validation" do
-		identifier = Factory.build(:identifier, :ssn => '1s2n3-4k5=6;7sdfg8  9  ')
-		assert identifier.ssn.length > 9
-		assert '123456789' != identifier.ssn
-		identifier.valid?
-		assert identifier.ssn.length == 9
-		assert '123456789' == identifier.ssn
-	end 
-
-	#	TODO "should require 9 digits in ssn" do
-	test "should require 9 digits in ssn" do
-pending
-#		%w( 12345678X 12345678 1-34-56-789 ).each do |invalid_ssn|
-#			assert_difference( "Identifier.count", 0 ) do
-#				identifier = create_identifier(:ssn => invalid_ssn)
-#				assert identifier.errors.on(:ssn)
-#			end
-#		end
+	test "should require standard formatted ssn" do
+		%w( 1s2n3-4k5=6;7sdfg89 123456789 12345678X 12345678 1-34-56-789 ).each do |invalid_ssn|
+			assert_difference( "Identifier.count", 0 ) do
+				identifier = create_identifier(:ssn => invalid_ssn)
+				assert identifier.errors.on_attr_and_type?(:ssn,:invalid)
+			end
+		end
 	end
 
 #	test "should increment Childid.next_id on get_next_childid" do
