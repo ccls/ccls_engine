@@ -296,50 +296,83 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		mother = candidate_control.study_subject.mother
 		assert_not_nil mother.identifier.familyid
-		assert_equal   candidate_control.study_subject.identifier.familyid, 
+		assert_equal candidate_control.study_subject.identifier.familyid, 
 										mother.identifier.familyid
 	end
 
 	#	icf_master_id isn't required as may not have any
 	test "should create mother from attributes and add icf_master_id if any" do
-		Factory(:icf_master_id,:icf_master_id => 'child')
-		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
+		child_imi = Factory(:icf_master_id,:icf_master_id => 'child')
+		mother_imi = Factory(:icf_master_id,:icf_master_id => 'mother')
 		case_study_subject = create_case_identifier.study_subject
 		candidate_control = create_candidate_control
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
+		assert_not_nil candidate_control.study_subject.identifier.icf_master_id
+		assert_equal   candidate_control.study_subject.identifier.icf_master_id, 'child'
 		assert_not_nil candidate_control.study_subject.mother.identifier.icf_master_id
-		assert_equal   candidate_control.study_subject.mother.identifier.icf_master_id, '123456789'
-		assert_not_nil imi.reload.study_subject
-		assert_equal   imi.study_subject, candidate_control.study_subject.mother
-		assert_not_nil imi.assigned_on
-		assert_equal   imi.assigned_on, Date.today
+		assert_equal   candidate_control.study_subject.mother.identifier.icf_master_id, 'mother'
+		assert_not_nil child_imi.reload.study_subject
+		assert_equal   child_imi.study_subject, candidate_control.study_subject
+		assert_not_nil child_imi.assigned_on
+		assert_equal   child_imi.assigned_on, Date.today
+		assert_not_nil mother_imi.reload.study_subject
+		assert_equal   mother_imi.study_subject, candidate_control.study_subject.mother
+		assert_not_nil mother_imi.assigned_on
+		assert_equal   mother_imi.assigned_on, Date.today
 	end
 
 	test "should rollback study subject creation of icf_master_id save fails" do
-pending #	TODO wrap in transaction.  Don't want this partially done.
-		Factory(:icf_master_id,:icf_master_id => 'child')
-		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
+		Factory(:icf_master_id,:icf_master_id => '123456789')
 		case_study_subject = create_case_identifier.study_subject
 		candidate_control = create_candidate_control
-		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-#	none of these are actually stopping this!
-#		IcfMasterId.any_instance.stubs(:create_or_update).returns(false)
-#		IcfMasterId.any_instance.stubs(:valid?).returns(false)
-#		IcfMasterId.any_instance.stubs(:save!).raises(ActiveRecord::RecordNotSaved)
+		assert_not_nil IcfMasterId.next_unused
+		IcfMasterId.any_instance.stubs(:save!).raises(ActiveRecord::RecordNotSaved)
 		assert_difference('Enrollment.count',0) {
 		assert_difference('Identifier.count',0) {
 		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
-#			candidate_control.create_study_subjects(case_study_subject)
-		} } } }
+		assert_raises(ActiveRecord::RecordNotSaved){
+			candidate_control.create_study_subjects(case_study_subject)
+		} } } } }
 	end
 
 	test "should rollback if create_mother raises error" do
-pending	#	TODO should test when create_mother fails
+		case_study_subject = create_case_identifier.study_subject
+		candidate_control = create_candidate_control
+		StudySubject.any_instance.stubs(:create_mother).raises(ActiveRecord::RecordNotSaved)
+		assert_difference('Enrollment.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('Pii.count',0) {
+		assert_difference('StudySubject.count',0) {
+		assert_raises(ActiveRecord::RecordNotSaved){
+			candidate_control.create_study_subjects(case_study_subject)
+		} } } } }
 	end
 
 	test "should rollback if assign_icf_master_id raises error" do
-pending	#	TODO should test when assign_icf_master_id fails
+		case_study_subject = create_case_identifier.study_subject
+		candidate_control = create_candidate_control
+		StudySubject.any_instance.stubs(:assign_icf_master_id).raises(ActiveRecord::RecordNotSaved)
+		assert_difference('Enrollment.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('Pii.count',0) {
+		assert_difference('StudySubject.count',0) {
+		assert_raises(ActiveRecord::RecordNotSaved){
+			candidate_control.create_study_subjects(case_study_subject)
+		} } } } }
+	end
+
+	test "should rollback if create_study_subject raises error" do
+		case_study_subject = create_case_identifier.study_subject
+		candidate_control = create_candidate_control
+		StudySubject.any_instance.stubs(:create_or_update).returns(false)
+		assert_difference('Enrollment.count',0) {
+		assert_difference('Identifier.count',0) {
+		assert_difference('Pii.count',0) {
+		assert_difference('StudySubject.count',0) {
+		assert_raises(ActiveRecord::RecordNotSaved){
+			candidate_control.create_study_subjects(case_study_subject)
+		} } } } }
 	end
 
 	#
