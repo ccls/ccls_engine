@@ -154,58 +154,119 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 		assert_equal "&nbsp;", y_n_o_dk()
 	end
 
-	test "_wrapped_adna_spans" do
+#	test "_wrapped_adna_spans" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			_wrapped_adna_spans(:some_model, :adna)).root
+##	TODO Question.  Why aren't they wrapped?
+#		assert_select response, 'span.label', 'adna', 1
+#		assert_select response, 'span.value', '&nbsp;', 1
+#	end
+
+	test "wrapped_adna_spans" do
 		@some_model = SomeModel.new
 		response = HTML::Document.new(
-			_wrapped_adna_spans(:some_model, :adna)).root
+			wrapped_adna_spans(:some_model, :adna)).root
 #	TODO Question.  Why aren't they wrapped?
-		assert_select response, 'span.label', 'adna', 1
-		assert_select response, 'span.value', '&nbsp;', 1
+		assert_select response, 'div.adna.field_wrapper', 1 do
+			assert_select 'span.label', 'adna', 1
+			assert_select 'span.value', '&nbsp;', 1
+		end
 	end
 
-	test "_wrapped_a_d_na_spans" do
+#	test "_wrapped_a_d_na_spans" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			_wrapped_a_d_na_spans(:some_model, :adna)).root
+##	TODO Question.  Why aren't they wrapped?
+#		assert_select response, 'span.label', 'adna', 1
+#		assert_select response, 'span.value', '&nbsp;', 1
+#	end
+
+	test "wrapped_a_d_na_spans" do
 		@some_model = SomeModel.new
 		response = HTML::Document.new(
-			_wrapped_a_d_na_spans(:some_model, :adna)).root
-#	TODO Question.  Why aren't they wrapped?
-		assert_select response, 'span.label', 'adna', 1
-		assert_select response, 'span.value', '&nbsp;', 1
+			wrapped_a_d_na_spans(:some_model, :adna)).root
+		assert_select response, 'div.adna.field_wrapper', 1 do
+			assert_select 'span.label', 'adna', 1
+			assert_select 'span.value', '&nbsp;', 1
+		end
 	end
 
-	test "_wrapped_yndk_spans" do
+#	test "_wrapped_yndk_spans" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			_wrapped_yndk_spans(:some_model, :yndk)).root
+##	TODO Question.  Why aren't they wrapped?
+#		assert_select response, 'span.label', 'yndk', 1
+#		assert_select response, 'span.value', '&nbsp;', 1
+#	end
+
+	test "wrapped_yndk_spans" do
 		@some_model = SomeModel.new
 		response = HTML::Document.new(
-			_wrapped_yndk_spans(:some_model, :yndk)).root
-#	TODO Question.  Why aren't they wrapped?
-		assert_select response, 'span.label', 'yndk', 1
-		assert_select response, 'span.value', '&nbsp;', 1
+			wrapped_yndk_spans(:some_model, :yndk)).root
+		assert_select response, 'div.yndk.field_wrapper', 1 do
+			assert_select 'span.label', 'yndk', 1
+			assert_select 'span.value', '&nbsp;', 1
+		end
 	end
 
-	test "_wrapped_y_n_dk_spans" do
+#	test "_wrapped_y_n_dk_spans" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			_wrapped_y_n_dk_spans(:some_model, :yndk)).root
+##	TODO Question.  Why aren't they wrapped?
+#		assert_select response, 'span.label', 'yndk', 1
+#		assert_select response, 'span.value', '&nbsp;', 1
+#	end
+
+	test "wrapped_y_n_dk_spans" do
 		@some_model = SomeModel.new
 		response = HTML::Document.new(
-			_wrapped_y_n_dk_spans(:some_model, :yndk)).root
-#	TODO Question.  Why aren't they wrapped?
-		assert_select response, 'span.label', 'yndk', 1
-		assert_select response, 'span.value', '&nbsp;', 1
+			wrapped_y_n_dk_spans(:some_model, :yndk)).root
+		assert_select response, 'div.yndk.field_wrapper', 1 do
+			assert_select 'span.label', 'yndk', 1
+			assert_select 'span.value', '&nbsp;', 1
+		end
 	end
 
-	test "_wrapped_ynodk_spans" do
+#	test "_wrapped_ynodk_spans" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			_wrapped_ynodk_spans(:some_model, :ynodk)).root
+##	TODO Question.  Why aren't they wrapped?
+#		assert_select response, 'span.label', 'ynodk', 1
+#		assert_select response, 'span.value', '&nbsp;', 1
+#	end
+
+	test "wrapped_ynodk_spans" do
 		@some_model = SomeModel.new
 		response = HTML::Document.new(
-			_wrapped_ynodk_spans(:some_model, :ynodk)).root
-#	TODO Question.  Why aren't they wrapped?
-		assert_select response, 'span.label', 'ynodk', 1
-		assert_select response, 'span.value', '&nbsp;', 1
+			wrapped_ynodk_spans(:some_model, :ynodk)).root
+		assert_select response, 'div.ynodk.field_wrapper', 1 do
+			assert_select 'span.label', 'ynodk', 1
+			assert_select 'span.value', '&nbsp;', 1
+		end
 	end
 
-	test "_wrapped_y_n_o_dk_spans" do
+#	test "_wrapped_y_n_o_dk_spans" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			_wrapped_y_n_o_dk_spans(:some_model, :ynodk)).root
+##	TODO Question.  Why aren't they wrapped?
+#		assert_select response, 'span.label', 'ynodk', 1
+#		assert_select response, 'span.value', '&nbsp;', 1
+#	end
+
+	test "wrapped_y_n_o_dk_spans" do
 		@some_model = SomeModel.new
 		response = HTML::Document.new(
-			_wrapped_y_n_o_dk_spans(:some_model, :ynodk)).root
-#	TODO Question.  Why aren't they wrapped?
-		assert_select response, 'span.label', 'ynodk', 1
-		assert_select response, 'span.value', '&nbsp;', 1
+			wrapped_y_n_o_dk_spans(:some_model, :ynodk)).root
+		assert_select response, 'div.ynodk.field_wrapper', 1 do
+			assert_select 'span.label', 'ynodk', 1
+			assert_select 'span.value', '&nbsp;', 1
+		end
 	end
 
 #	test "wrapped_adna_select" do
