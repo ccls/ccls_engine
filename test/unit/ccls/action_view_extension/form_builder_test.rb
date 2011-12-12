@@ -15,6 +15,8 @@ require 'common_lib/action_view_extension'
 
 class Ccls::ActionViewExtension::FormBuilderTest < ActionView::TestCase
 
+	#	needed for field_wrapper
+	include CommonLib::ActionViewExtension::Base
 	#	needed for wrapped_*_spans and wrapped_*_select
 	include CommonLib::ActionViewExtension::FormBuilder
 
