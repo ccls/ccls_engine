@@ -29,13 +29,13 @@ module Ccls::ActionViewExtension::Base
 		end
 		alias_method :_wrapped_ynodk_spans, :_wrapped_y_n_o_dk_spans
 
-		def y_n_o_dk_select(object_name, method, 
-				options={}, html_options={})
-			select(object_name, method,
-				[['Yes',1],['No',2],['Other',3],["Don't Know",999]],
-				{:include_blank => true}.merge(options), html_options)
-		end
-		alias_method :ynodk_select, :y_n_o_dk_select
+#		def y_n_o_dk_select(object_name, method, 
+#				options={}, html_options={})
+#			select(object_name, method,
+#				[['Yes',1],['No',2],['Other',3],["Don't Know",999]],
+#				{:include_blank => true}.merge(options), html_options)
+#		end
+#		alias_method :ynodk_select, :y_n_o_dk_select
 
 #	TODO now that this is in ccls_engine, perhaps use the YNDK hash in these helpers
 		def y_n_dk(value=nil)
@@ -55,13 +55,13 @@ module Ccls::ActionViewExtension::Base
 		end
 		alias_method :_wrapped_yndk_spans, :_wrapped_y_n_dk_spans
 
-		def y_n_dk_select(object_name, method, 
-				options={}, html_options={})
-			select(object_name, method,
-				[['Yes',1],['No',2],["Don't Know",999]],
-				{:include_blank => true}.merge(options), html_options)
-		end
-		alias_method :yndk_select, :y_n_dk_select
+#		def y_n_dk_select(object_name, method, 
+#				options={}, html_options={})
+#			select(object_name, method,
+#				[['Yes',1],['No',2],["Don't Know",999]],
+#				{:include_blank => true}.merge(options), html_options)
+#		end
+#		alias_method :yndk_select, :y_n_dk_select
 
 #	TODO perhaps add a ADNA hash in these helpers
 		def a_d_na(value=nil)
@@ -82,13 +82,13 @@ module Ccls::ActionViewExtension::Base
 		end
 		alias_method :_wrapped_adna_spans, :_wrapped_a_d_na_spans
 
-		def a_d_na_select(object_name, method, 
-				options={}, html_options={})
-			select(object_name, method,
-				[['Agree',1],['Do Not Agree',2],['N/A',888],["Don't Know",999]],
-				{:include_blank => true}.merge(options), html_options)
-		end
-		alias_method :adna_select, :a_d_na_select
+#		def a_d_na_select(object_name, method, 
+#				options={}, html_options={})
+#			select(object_name, method,
+#				[['Agree',1],['Do Not Agree',2],['N/A',888],["Don't Know",999]],
+#				{:include_blank => true}.merge(options), html_options)
+#		end
+#		alias_method :adna_select, :a_d_na_select
 
 	end	#	module InstanceMethods
 

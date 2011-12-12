@@ -208,162 +208,162 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 		assert_select response, 'span.value', '&nbsp;', 1
 	end
 
-	test "wrapped_adna_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			wrapped_adna_select(:some_model, :adna)).root
-		assert_select response, 'div.adna.field_wrapper', 1 do
-			assert_select 'label[for=some_model_adna]','Adna',1 
-			assert_select response, "select#some_model_adna[name='some_model[adna]']" do
-				assert_select 'option[value=1]', 'Agree'
-				assert_select 'option[value=2]', 'Do Not Agree'
-				assert_select 'option[value=888]', "N/A"
-				assert_select 'option[value=999]', "Don't Know"
-			end
-		end
-	end
-
-	test "wrapped_a_d_na_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			wrapped_a_d_na_select(:some_model, :adna)).root
-		assert_select response, 'div.adna.field_wrapper', 1 do
-			assert_select 'label[for=some_model_adna]','Adna',1 
-			assert_select response, "select#some_model_adna[name='some_model[adna]']" do
-				assert_select 'option[value=1]', 'Agree'
-				assert_select 'option[value=2]', 'Do Not Agree'
-				assert_select 'option[value=888]', "N/A"
-				assert_select 'option[value=999]', "Don't Know"
-			end
-		end
-	end
-
-	test "wrapped_y_n_dk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			wrapped_y_n_dk_select(:some_model, :yndk)).root
-		assert_select response, 'div.yndk.field_wrapper', 1 do
-			assert_select 'label[for=some_model_yndk]','Yndk',1 
-			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
-				assert_select 'option[value=1]', 'Yes'
-				assert_select 'option[value=2]', 'No'
-				assert_select 'option[value=999]', "Don't Know"
-			end
-		end
-	end
-
-	test "wrapped_yndk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			wrapped_yndk_select(:some_model, :yndk)).root
-		assert_select response, 'div.yndk.field_wrapper', 1 do
-			assert_select 'label[for=some_model_yndk]','Yndk',1 
-			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
-				assert_select 'option[value=1]', 'Yes'
-				assert_select 'option[value=2]', 'No'
-				assert_select 'option[value=999]', "Don't Know"
-			end
-		end
-	end
-
-	test "wrapped_y_n_o_dk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			wrapped_y_n_o_dk_select(:some_model, :ynodk)).root
-		assert_select response, 'div.ynodk.field_wrapper', 1 do
-			assert_select 'label[for=some_model_ynodk]','Ynodk',1 
-			assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
-				assert_select 'option[value=1]', 'Yes'
-				assert_select 'option[value=2]', 'No'
-				assert_select 'option[value=3]', 'Other'
-				assert_select 'option[value=999]', "Don't Know"
-			end
-		end
-	end
-
-	test "wrapped_ynodk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			wrapped_ynodk_select(:some_model, :ynodk)).root
-		assert_select response, 'div.ynodk.field_wrapper', 1 do
-			assert_select 'label[for=some_model_ynodk]','Ynodk',1 
-			assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
-				assert_select 'option[value=1]', 'Yes'
-				assert_select 'option[value=2]', 'No'
-				assert_select 'option[value=3]', 'Other'
-				assert_select 'option[value=999]', "Don't Know"
-			end
-		end
-	end
-
-	test "a_d_na_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			a_d_na_select(:some_model, :adna)).root
-		assert_select response, "select#some_model_adna[name='some_model[adna]']" do
-			assert_select 'option[value=1]', 'Agree'
-			assert_select 'option[value=2]', 'Do Not Agree'
-			assert_select 'option[value=888]', "N/A"
-			assert_select 'option[value=999]', "Don't Know"
-		end
-	end
-
-	test "adna_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			adna_select(:some_model, :adna)).root
-		assert_select response, "select#some_model_adna[name='some_model[adna]']" do
-			assert_select 'option[value=1]', 'Agree'
-			assert_select 'option[value=2]', 'Do Not Agree'
-			assert_select 'option[value=888]', "N/A"
-			assert_select 'option[value=999]', "Don't Know"
-		end
-	end
-
-	test "y_n_dk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			y_n_dk_select(:some_model, :yndk)).root
-		assert_select response, "select#some_model_yndk[name='some_model[yndk]']" do
-			assert_select 'option[value=1]', 'Yes'
-			assert_select 'option[value=2]', 'No'
-			assert_select 'option[value=999]', "Don't Know"
-		end
-	end
-
-	test "yndk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			yndk_select(:some_model, :yndk)).root
-		assert_select response,"select#some_model_yndk[name='some_model[yndk]']" do
-			assert_select 'option[value=1]', 'Yes'
-			assert_select 'option[value=2]', 'No'
-			assert_select 'option[value=999]', "Don't Know"
-		end
-	end
-
-	test "y_n_o_dk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			y_n_o_dk_select(:some_model, :ynodk)).root
-		assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
-			assert_select 'option[value=1]', 'Yes'
-			assert_select 'option[value=2]', 'No'
-			assert_select 'option[value=3]', 'Other'
-			assert_select 'option[value=999]', "Don't Know"
-		end
-	end
-
-	test "ynodk_select" do
-		@some_model = SomeModel.new
-		response = HTML::Document.new(
-			ynodk_select(:some_model, :ynodk)).root
-		assert_select response,"select#some_model_ynodk[name='some_model[ynodk]']" do
-			assert_select 'option[value=1]', 'Yes'
-			assert_select 'option[value=2]', 'No'
-			assert_select 'option[value=3]', 'Other'
-			assert_select 'option[value=999]', "Don't Know"
-		end
-	end
+#	test "wrapped_adna_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			wrapped_adna_select(:some_model, :adna)).root
+#		assert_select response, 'div.adna.field_wrapper', 1 do
+#			assert_select 'label[for=some_model_adna]','Adna',1 
+#			assert_select response, "select#some_model_adna[name='some_model[adna]']" do
+#				assert_select 'option[value=1]', 'Agree'
+#				assert_select 'option[value=2]', 'Do Not Agree'
+#				assert_select 'option[value=888]', "N/A"
+#				assert_select 'option[value=999]', "Don't Know"
+#			end
+#		end
+#	end
+#
+#	test "wrapped_a_d_na_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			wrapped_a_d_na_select(:some_model, :adna)).root
+#		assert_select response, 'div.adna.field_wrapper', 1 do
+#			assert_select 'label[for=some_model_adna]','Adna',1 
+#			assert_select response, "select#some_model_adna[name='some_model[adna]']" do
+#				assert_select 'option[value=1]', 'Agree'
+#				assert_select 'option[value=2]', 'Do Not Agree'
+#				assert_select 'option[value=888]', "N/A"
+#				assert_select 'option[value=999]', "Don't Know"
+#			end
+#		end
+#	end
+#
+#	test "wrapped_y_n_dk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			wrapped_y_n_dk_select(:some_model, :yndk)).root
+#		assert_select response, 'div.yndk.field_wrapper', 1 do
+#			assert_select 'label[for=some_model_yndk]','Yndk',1 
+#			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
+#				assert_select 'option[value=1]', 'Yes'
+#				assert_select 'option[value=2]', 'No'
+#				assert_select 'option[value=999]', "Don't Know"
+#			end
+#		end
+#	end
+#
+#	test "wrapped_yndk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			wrapped_yndk_select(:some_model, :yndk)).root
+#		assert_select response, 'div.yndk.field_wrapper', 1 do
+#			assert_select 'label[for=some_model_yndk]','Yndk',1 
+#			assert_select "select#some_model_yndk[name='some_model[yndk]']" do
+#				assert_select 'option[value=1]', 'Yes'
+#				assert_select 'option[value=2]', 'No'
+#				assert_select 'option[value=999]', "Don't Know"
+#			end
+#		end
+#	end
+#
+#	test "wrapped_y_n_o_dk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			wrapped_y_n_o_dk_select(:some_model, :ynodk)).root
+#		assert_select response, 'div.ynodk.field_wrapper', 1 do
+#			assert_select 'label[for=some_model_ynodk]','Ynodk',1 
+#			assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
+#				assert_select 'option[value=1]', 'Yes'
+#				assert_select 'option[value=2]', 'No'
+#				assert_select 'option[value=3]', 'Other'
+#				assert_select 'option[value=999]', "Don't Know"
+#			end
+#		end
+#	end
+#
+#	test "wrapped_ynodk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			wrapped_ynodk_select(:some_model, :ynodk)).root
+#		assert_select response, 'div.ynodk.field_wrapper', 1 do
+#			assert_select 'label[for=some_model_ynodk]','Ynodk',1 
+#			assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
+#				assert_select 'option[value=1]', 'Yes'
+#				assert_select 'option[value=2]', 'No'
+#				assert_select 'option[value=3]', 'Other'
+#				assert_select 'option[value=999]', "Don't Know"
+#			end
+#		end
+#	end
+#
+#	test "a_d_na_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			a_d_na_select(:some_model, :adna)).root
+#		assert_select response, "select#some_model_adna[name='some_model[adna]']" do
+#			assert_select 'option[value=1]', 'Agree'
+#			assert_select 'option[value=2]', 'Do Not Agree'
+#			assert_select 'option[value=888]', "N/A"
+#			assert_select 'option[value=999]', "Don't Know"
+#		end
+#	end
+#
+#	test "adna_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			adna_select(:some_model, :adna)).root
+#		assert_select response, "select#some_model_adna[name='some_model[adna]']" do
+#			assert_select 'option[value=1]', 'Agree'
+#			assert_select 'option[value=2]', 'Do Not Agree'
+#			assert_select 'option[value=888]', "N/A"
+#			assert_select 'option[value=999]', "Don't Know"
+#		end
+#	end
+#
+#	test "y_n_dk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			y_n_dk_select(:some_model, :yndk)).root
+#		assert_select response, "select#some_model_yndk[name='some_model[yndk]']" do
+#			assert_select 'option[value=1]', 'Yes'
+#			assert_select 'option[value=2]', 'No'
+#			assert_select 'option[value=999]', "Don't Know"
+#		end
+#	end
+#
+#	test "yndk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			yndk_select(:some_model, :yndk)).root
+#		assert_select response,"select#some_model_yndk[name='some_model[yndk]']" do
+#			assert_select 'option[value=1]', 'Yes'
+#			assert_select 'option[value=2]', 'No'
+#			assert_select 'option[value=999]', "Don't Know"
+#		end
+#	end
+#
+#	test "y_n_o_dk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			y_n_o_dk_select(:some_model, :ynodk)).root
+#		assert_select response, "select#some_model_ynodk[name='some_model[ynodk]']" do
+#			assert_select 'option[value=1]', 'Yes'
+#			assert_select 'option[value=2]', 'No'
+#			assert_select 'option[value=3]', 'Other'
+#			assert_select 'option[value=999]', "Don't Know"
+#		end
+#	end
+#
+#	test "ynodk_select" do
+#		@some_model = SomeModel.new
+#		response = HTML::Document.new(
+#			ynodk_select(:some_model, :ynodk)).root
+#		assert_select response,"select#some_model_ynodk[name='some_model[ynodk]']" do
+#			assert_select 'option[value=1]', 'Yes'
+#			assert_select 'option[value=2]', 'No'
+#			assert_select 'option[value=3]', 'Other'
+#			assert_select 'option[value=999]', "Don't Know"
+#		end
+#	end
 
 end
