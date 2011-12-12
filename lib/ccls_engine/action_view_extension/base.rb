@@ -22,20 +22,20 @@ module Ccls::ActionViewExtension::Base
 		end
 		alias_method :ynodk, :y_n_o_dk
 
-#		def _wrapped_y_n_o_dk_spans(object_name,method,options={})
-#			object = instance_variable_get("@#{object_name}")
-#			_wrapped_spans(object_name,method,options.update(
-#				:value => y_n_o_dk(object.send(method)) ) )
-#		end
-#		alias_method :_wrapped_ynodk_spans, :_wrapped_y_n_o_dk_spans
-
-#	unwrapped method
-		def y_n_o_dk_spans(object_name,method,options={})
+		def _wrapped_y_n_o_dk_spans(object_name,method,options={})
 			object = instance_variable_get("@#{object_name}")
 			_wrapped_spans(object_name,method,options.update(
 				:value => y_n_o_dk(object.send(method)) ) )
 		end
-		alias_method :ynodk_spans, :y_n_o_dk_spans
+		alias_method :_wrapped_ynodk_spans, :_wrapped_y_n_o_dk_spans
+
+#	unwrapped method
+#		def y_n_o_dk_spans(object_name,method,options={})
+#			object = instance_variable_get("@#{object_name}")
+#			_wrapped_spans(object_name,method,options.update(
+#				:value => y_n_o_dk(object.send(method)) ) )
+#		end
+#		alias_method :ynodk_spans, :y_n_o_dk_spans
 
 #		def y_n_o_dk_select(object_name, method, 
 #				options={}, html_options={})
@@ -56,19 +56,19 @@ module Ccls::ActionViewExtension::Base
 		end
 		alias_method :yndk, :y_n_dk
 
-#		def _wrapped_y_n_dk_spans(object_name,method,options={})
-#			object = instance_variable_get("@#{object_name}")
-#			_wrapped_spans(object_name,method,options.update(
-#				:value => y_n_dk(object.send(method)) ) )
-#		end
-#		alias_method :_wrapped_yndk_spans, :_wrapped_y_n_dk_spans
-
-		def y_n_dk_spans(object_name,method,options={})
+		def _wrapped_y_n_dk_spans(object_name,method,options={})
 			object = instance_variable_get("@#{object_name}")
 			_wrapped_spans(object_name,method,options.update(
 				:value => y_n_dk(object.send(method)) ) )
 		end
-		alias_method :yndk_spans, :y_n_dk_spans
+		alias_method :_wrapped_yndk_spans, :_wrapped_y_n_dk_spans
+
+#		def y_n_dk_spans(object_name,method,options={})
+#			object = instance_variable_get("@#{object_name}")
+#			_wrapped_spans(object_name,method,options.update(
+#				:value => y_n_dk(object.send(method)) ) )
+#		end
+#		alias_method :yndk_spans, :y_n_dk_spans
 
 #		def y_n_dk_select(object_name, method, 
 #				options={}, html_options={})
@@ -90,19 +90,19 @@ module Ccls::ActionViewExtension::Base
 		end
 		alias_method :adna, :a_d_na
 
-#		def _wrapped_a_d_na_spans(object_name,method,options={})
-#			object = instance_variable_get("@#{object_name}")
-#			_wrapped_spans(object_name,method,options.update(
-#				:value => a_d_na(object.send(method)) ) )
-#		end
-#		alias_method :_wrapped_adna_spans, :_wrapped_a_d_na_spans
-
-		def a_d_na_spans(object_name,method,options={})
+		def _wrapped_a_d_na_spans(object_name,method,options={})
 			object = instance_variable_get("@#{object_name}")
 			_wrapped_spans(object_name,method,options.update(
 				:value => a_d_na(object.send(method)) ) )
 		end
-		alias_method :adna_spans, :a_d_na_spans
+		alias_method :_wrapped_adna_spans, :_wrapped_a_d_na_spans
+
+#		def a_d_na_spans(object_name,method,options={})
+#			object = instance_variable_get("@#{object_name}")
+#			_wrapped_spans(object_name,method,options.update(
+#				:value => a_d_na(object.send(method)) ) )
+#		end
+#		alias_method :adna_spans, :a_d_na_spans
 
 #		def a_d_na_select(object_name, method, 
 #				options={}, html_options={})
