@@ -21,9 +21,15 @@ class Ccls::OperationalEventTypeTest < ActiveSupport::TestCase
 		}
 	end
 
-	test "should return event_category as to_s" do
+#	test "should return event_category as to_s" do
+#		operational_event_type = create_operational_event_type
+#		assert_equal operational_event_type.event_category, "#{operational_event_type}"
+#	end
+
+	test "should return event_category and description as to_s" do
 		operational_event_type = create_operational_event_type
-		assert_equal operational_event_type.event_category, "#{operational_event_type}"
+		assert_equal "#{operational_event_type}",
+			"#{operational_event_type.event_category}:#{operational_event_type.description}"
 	end
 
 	test "should find by code with ['string']" do
@@ -34,6 +40,16 @@ class Ccls::OperationalEventTypeTest < ActiveSupport::TestCase
 	test "should find by code with [:symbol]" do
 		operational_event_type = OperationalEventType[:ineligible]
 		assert operational_event_type.is_a?(OperationalEventType)
+	end
+
+	test "categories should return a unique, sorted array of event categories" do
+#["ascertainment", "compensation", "completions", "correspondence", "enrollments", "interviews", "operations", "recruitment", "samples"]
+		categories = OperationalEventType.categories
+		assert categories.is_a?(Array)
+		assert !categories.empty?
+		categories.each do |category|
+			assert category.is_a?(String)
+		end
 	end
 
 #	test "should raise error if not found by code with []" do

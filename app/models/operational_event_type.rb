@@ -26,10 +26,23 @@ class OperationalEventType < ActiveRecordShared
 		find_by_code(code.to_s) #|| raise(NotFound)
 	end
 
-	#	Returns event_category
+	#	Returns event_category.  TODO Why?  It is not unique?  Perhaps use both.
 	def to_s
 #		description
-		event_category
+#		event_category
+		"#{event_category}:#{description}"
+	end
+
+#	also, there is one type which does not have a category.
+#	probably should, but will exclude for now
+#>> OperationalEventType.find(:all,:conditions => ['event_category is null'])
+#=> [#<OperationalEventType id: 10, position: nil, code: "other", description: "other event - please specify", event_category: nil, created_at: "2011-12-08 14:39:51", updated_at: "2011-12-08 14:39:51">]
+	def self.categories
+		find(:all,
+			:conditions => 'event_category IS NOT NULL',
+			:order => 'event_category ASC',
+			:group => :event_category
+		).collect(&:event_category)
 	end
 
 end
