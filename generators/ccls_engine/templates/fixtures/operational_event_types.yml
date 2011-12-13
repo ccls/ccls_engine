@@ -51,7 +51,7 @@ completed:
 other:
   id: 10
   code: other
-  event_category:  
+  event_category:  other
   description: other event - please specify
 sample_complete:
   id: 11
