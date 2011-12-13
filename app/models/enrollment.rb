@@ -92,13 +92,19 @@ class Enrollment < ActiveRecordShared
 	validates_length_of :terminated_reason,         :maximum => 250, :allow_blank => true
 	validates_length_of :reason_closed,             :maximum => 250, :allow_blank => true
 
-	before_save :create_enrollment_update,
+	#	use after_save, rather than before_save,
+	#	so that enrollment exists and can be used to create
+	# the operational event as the enrollment is validated
+#	before_save :create_enrollment_update,
+	after_save :create_enrollment_update,
 		:if => :is_complete_changed?
 
-	before_save :create_subject_consents_operational_event,
+#	before_save :create_subject_consents_operational_event,
+	after_save :create_subject_consents_operational_event,
 		:if => :consented_changed?
 
-	before_save :create_subject_declines_operational_event,
+#	before_save :create_subject_declines_operational_event,
+	after_save :create_subject_declines_operational_event,
 		:if => :consented_changed?
 
 	#	Return boolean of comparison
@@ -155,7 +161,9 @@ protected
 			[nil, nil]
 		end
 		unless operational_event_type.nil?
-			operational_events << OperationalEvent.create!(
+#			operational_events << OperationalEvent.create!(
+			OperationalEvent.create!(
+				:enrollment => self,
 				:operational_event_type => operational_event_type,
 				:occurred_on => occurred_on
 			)
@@ -164,7 +172,9 @@ protected
 
 	def create_subject_consents_operational_event
 		if( ( consented == YNDK[:yes] ) and ( consented_was != YNDK[:yes] ) )
-			operational_events << OperationalEvent.create!(
+#			operational_events << OperationalEvent.create!(
+			OperationalEvent.create!(
+				:enrollment => self,
 				:operational_event_type => OperationalEventType['subjectConsents'],
 				:occurred_on            => consented_on
 			)
@@ -173,7 +183,9 @@ protected
 
 	def create_subject_declines_operational_event
 		if( ( consented == YNDK[:no] ) and ( consented_was != YNDK[:no] ) )
-			operational_events << OperationalEvent.create!(
+#			operational_events << OperationalEvent.create!(
+			OperationalEvent.create!(
+				:enrollment => self,
 				:operational_event_type => OperationalEventType['subjectDeclines'],
 				:occurred_on            => consented_on
 			)

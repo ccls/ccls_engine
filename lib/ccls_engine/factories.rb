@@ -293,6 +293,7 @@ Factory.define :language do |f|
 end
 
 Factory.define :operational_event do |f|
+	f.association :enrollment, :factory => :subjectless_enrollment
 	f.association :operational_event_type
 end
 

@@ -98,7 +98,9 @@ protected
 					:occurred_on => intro_letter_sent_on
 				)
 			else
-				hxe.operational_events << OperationalEvent.create!(
+#				hxe.operational_events << OperationalEvent.create!(
+				OperationalEvent.create!(
+					:enrollment => hxe,
 					:operational_event_type => oet,
 					:description => oet.description,
 					:occurred_on => intro_letter_sent_on

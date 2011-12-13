@@ -13,6 +13,7 @@ class StudySubject < ActiveRecordShared
 	has_and_belongs_to_many :analyses
 	has_many :addressings
 	has_many :enrollments
+	has_many :operational_events, :through => :enrollments
 	has_many :gift_cards
 	has_many :phone_numbers
 	has_many :samples
@@ -663,7 +664,9 @@ class StudySubject < ActiveRecordShared
 
 	def raf_duplicate_creation_attempted(attempted_subject)
 		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-		ccls_enrollment.operational_events << OperationalEvent.create!(
+#		ccls_enrollment.operational_events << OperationalEvent.create!(
+		OperationalEvent.create!(
+			:enrollment => ccls_enrollment,
 			:operational_event_type => OperationalEventType['DuplicateCase'],
 			:occurred_on            => Date.today,
 			:description            => "a new RAF for this subject was submitted by " <<
@@ -743,7 +746,9 @@ protected
 	#	I suspect that this'll be attached to the CCLS project enrollment.
 	def add_new_subject_operational_event
 		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-		ccls_enrollment.operational_events << OperationalEvent.create!(
+#		ccls_enrollment.operational_events << OperationalEvent.create!(
+		OperationalEvent.create!(
+			:enrollment => ccls_enrollment,
 			:operational_event_type => OperationalEventType['newSubject'],
 			:occurred_on            => Date.today
 		)
@@ -755,7 +760,9 @@ protected
 		if( ( vital_status_id == VitalStatus['deceased'].id ) && 
 				( vital_status_id_was != VitalStatus['deceased'].id ) )
 			ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-			ccls_enrollment.operational_events << OperationalEvent.create!(
+#			ccls_enrollment.operational_events << OperationalEvent.create!(
+			OperationalEvent.create!(
+				:enrollment => ccls_enrollment,
 				:operational_event_type => OperationalEventType['subjectDied'],
 				:occurred_on            => Date.today
 			)
