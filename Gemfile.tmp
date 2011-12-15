@@ -39,7 +39,7 @@ gem "jrails"
 #	NameError: `@[]' is not allowed as an instance variable name
 #    paperclip (2.4.5) lib/paperclip/options.rb:60:in `instance_variable_get'
 #    paperclip (2.4.5) lib/paperclip/options.rb:60:in `method_missing'
-gem "paperclip", '=2.4.2'	
+#gem "paperclip", '=2.4.2'	
 
 #	causes rails 2.3.2 and associated to be installed???
 #gem "rack"	
