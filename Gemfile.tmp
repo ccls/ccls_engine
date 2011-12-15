@@ -62,6 +62,9 @@ if RUBY_PLATFORM =~ /java/
 	gem "jdbc-sqlite3"
 	gem "activerecord-jdbcsqlite3-adapter"
 	gem "activerecord-jdbcmysql-adapter"
+
+#Java::JavaLang::ArrayIndexOutOfBoundsException: An error occured while installing rubyzip (0.9.5), and Bundler cannot continue.
+	gem 'rubyzip', '=0.9.4'	#	0.9.5 fails
 else
 	#	problems in jruby
 	gem "mysql"
