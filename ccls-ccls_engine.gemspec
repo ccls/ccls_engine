@@ -5,27 +5,17 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ccls-ccls_engine}
-  s.version = "3.9.23"
+  s.version = "3.10.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["George 'Jake' Wendt"]
-  s.date = %q{2011-11-14}
+  s.date = %q{2011-12-15}
   s.description = %q{longer description of your gem}
   s.email = %q{github@jakewendt.com}
   s.extra_rdoc_files = [
     "README.rdoc"
   ]
   s.files = [
-    "app/controllers/calendars_controller.rb",
-    "app/controllers/ineligible_reasons_controller.rb",
-    "app/controllers/javascripts_controller.rb",
-    "app/controllers/languages_controller.rb",
-    "app/controllers/people_controller.rb",
-    "app/controllers/races_controller.rb",
-    "app/controllers/refusal_reasons_controller.rb",
-    "app/controllers/sessions_controller.rb",
-    "app/controllers/stylesheets_controller.rb",
-    "app/controllers/zip_codes_controller.rb",
     "app/models/abstract.rb",
     "app/models/abstract_search.rb",
     "app/models/address.rb",
@@ -95,55 +85,50 @@ Gem::Specification.new do |s|
     "app/models/unit.rb",
     "app/models/vital_status.rb",
     "app/models/zip_code.rb",
-    "app/views/calendars/show.html.erb",
-    "app/views/ineligible_reasons/_form.html.erb",
-    "app/views/ineligible_reasons/_ineligible_reason.html.erb",
-    "app/views/ineligible_reasons/edit.html.erb",
-    "app/views/ineligible_reasons/index.html.erb",
-    "app/views/ineligible_reasons/new.html.erb",
-    "app/views/ineligible_reasons/show.html.erb",
-    "app/views/javascripts/cache_helper.js.erb",
-    "app/views/languages/_form.html.erb",
-    "app/views/languages/_language.html.erb",
-    "app/views/languages/edit.html.erb",
-    "app/views/languages/index.html.erb",
-    "app/views/languages/new.html.erb",
-    "app/views/languages/show.html.erb",
-    "app/views/people/_form.html.erb",
-    "app/views/people/_person.html.erb",
-    "app/views/people/edit.html.erb",
-    "app/views/people/index.html.erb",
-    "app/views/people/new.html.erb",
-    "app/views/people/show.html.erb",
-    "app/views/races/_form.html.erb",
-    "app/views/races/_race.html.erb",
-    "app/views/races/edit.html.erb",
-    "app/views/races/index.html.erb",
-    "app/views/races/new.html.erb",
-    "app/views/races/show.html.erb",
-    "app/views/refusal_reasons/_form.html.erb",
-    "app/views/refusal_reasons/_refusal_reason.html.erb",
-    "app/views/refusal_reasons/edit.html.erb",
-    "app/views/refusal_reasons/index.html.erb",
-    "app/views/refusal_reasons/new.html.erb",
-    "app/views/refusal_reasons/show.html.erb",
-    "app/views/stylesheets/dynamic.css.erb",
-    "app/views/user_sessions/new.html.erb",
-    "app/views/zip_codes/index.html.erb",
     "config/abstract_fields.yml",
     "config/abstract_sections.yml",
     "config/home_exposure_response_fields.yml",
-    "config/routes.rb",
     "config/shared_use_db.yml",
     "generators/ccls_engine/USAGE",
     "generators/ccls_engine/ccls_engine_generator.rb",
     "generators/ccls_engine/templates/autotest_ccls_engine.rb",
     "generators/ccls_engine/templates/ccls_engine.rake",
-    "generators/ccls_engine/templates/functional/javascripts_controller_test.rb",
+    "generators/ccls_engine/templates/fixtures/address_types.yml",
+    "generators/ccls_engine/templates/fixtures/analyses.yml",
+    "generators/ccls_engine/templates/fixtures/context_data_sources.yml",
+    "generators/ccls_engine/templates/fixtures/contexts.yml",
+    "generators/ccls_engine/templates/fixtures/data_sources.yml",
+    "generators/ccls_engine/templates/fixtures/diagnoses.yml",
+    "generators/ccls_engine/templates/fixtures/document_types.yml",
+    "generators/ccls_engine/templates/fixtures/document_versions.yml",
+    "generators/ccls_engine/templates/fixtures/follow_up_types.yml",
+    "generators/ccls_engine/templates/fixtures/gift_cards.yml",
+    "generators/ccls_engine/templates/fixtures/hospitals.yml",
+    "generators/ccls_engine/templates/fixtures/ineligible_reasons.yml",
+    "generators/ccls_engine/templates/fixtures/instrument_types.yml",
+    "generators/ccls_engine/templates/fixtures/instrument_versions.yml",
+    "generators/ccls_engine/templates/fixtures/instruments.yml",
+    "generators/ccls_engine/templates/fixtures/interview_methods.yml",
+    "generators/ccls_engine/templates/fixtures/interview_outcomes.yml",
+    "generators/ccls_engine/templates/fixtures/languages.yml",
+    "generators/ccls_engine/templates/fixtures/operational_event_types.yml",
+    "generators/ccls_engine/templates/fixtures/organizations.yml",
+    "generators/ccls_engine/templates/fixtures/people.yml",
+    "generators/ccls_engine/templates/fixtures/phone_types.yml",
+    "generators/ccls_engine/templates/fixtures/project_outcomes.yml",
+    "generators/ccls_engine/templates/fixtures/projects.yml",
+    "generators/ccls_engine/templates/fixtures/races.yml",
+    "generators/ccls_engine/templates/fixtures/refusal_reasons.yml",
+    "generators/ccls_engine/templates/fixtures/sample_outcomes.yml",
+    "generators/ccls_engine/templates/fixtures/sample_types.yml",
+    "generators/ccls_engine/templates/fixtures/sections.yml",
+    "generators/ccls_engine/templates/fixtures/states.yml",
+    "generators/ccls_engine/templates/fixtures/subject_relationships.yml",
+    "generators/ccls_engine/templates/fixtures/subject_types.yml",
+    "generators/ccls_engine/templates/fixtures/units.yml",
+    "generators/ccls_engine/templates/fixtures/vital_statuses.yml",
     "generators/ccls_engine/templates/functional/roles_controller_test.rb",
     "generators/ccls_engine/templates/functional/sessions_controller_test.rb",
-    "generators/ccls_engine/templates/functional/stylesheets_controller_test.rb",
-    "generators/ccls_engine/templates/functional/user_invitations_controller_test.rb",
     "generators/ccls_engine/templates/functional/users_controller_test.rb",
     "generators/ccls_engine/templates/images/sort_down.png",
     "generators/ccls_engine/templates/images/sort_up.png",
@@ -160,11 +145,13 @@ Gem::Specification.new do |s|
     "generators/ccls_engine/templates/stylesheets/users.css",
     "generators/ccls_engine/templates/unit/core_extension_test.rb",
     "generators/ccls_engine/templates/unit/role_test.rb",
-    "generators/ccls_engine/templates/unit/user_invitation_mailer_test.rb",
-    "generators/ccls_engine/templates/unit/user_invitation_test.rb",
     "generators/ccls_engine/templates/unit/user_test.rb",
     "lib/ccls-ccls_engine.rb",
     "lib/ccls_engine.rb",
+    "lib/ccls_engine/action_view_extension.rb",
+    "lib/ccls_engine/action_view_extension/base.rb",
+    "lib/ccls_engine/action_view_extension/form_builder.rb",
+    "lib/ccls_engine/active_record_shared.rb",
     "lib/ccls_engine/assertions.rb",
     "lib/ccls_engine/autotest.rb",
     "lib/ccls_engine/ccls_user.rb",
@@ -174,7 +161,6 @@ Gem::Specification.new do |s|
     "lib/ccls_engine/factory_test_helper.rb",
     "lib/ccls_engine/helper.rb",
     "lib/ccls_engine/package_test_helper.rb",
-    "lib/ccls_engine/shared.rb",
     "lib/ccls_engine/shared_database.rb",
     "lib/ccls_engine/tasks.rb",
     "lib/ccls_engine/test_tasks.rb",
@@ -196,7 +182,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{one-line summary of your gem}
-  s.test_files = ["test/config/routes.rb", "test/functional/ccls/calendars_controller_test.rb", "test/functional/ccls/ineligible_reasons_controller_test.rb", "test/functional/ccls/javascripts_controller_test.rb", "test/functional/ccls/languages_controller_test.rb", "test/functional/ccls/people_controller_test.rb", "test/functional/ccls/races_controller_test.rb", "test/functional/ccls/refusal_reasons_controller_test.rb", "test/functional/ccls/roles_controller_test.rb", "test/functional/ccls/sessions_controller_test.rb", "test/functional/ccls/stylesheets_controller_test.rb", "test/functional/ccls/users_controller_test.rb", "test/functional/ccls/zip_codes_controller_test.rb", "test/helpers/authlogic_test_helper.rb", "test/unit/ccls/abstract_search_test.rb", "test/unit/ccls/abstract_test.rb", "test/unit/ccls/address_test.rb", "test/unit/ccls/address_type_test.rb", "test/unit/ccls/addressing_test.rb", "test/unit/ccls/aliquot_sample_format_test.rb", "test/unit/ccls/aliquot_test.rb", "test/unit/ccls/analysis_test.rb", "test/unit/ccls/bc_request_test.rb", "test/unit/ccls/candidate_control_test.rb", "test/unit/ccls/childid_test.rb", "test/unit/ccls/context_data_source_test.rb", "test/unit/ccls/context_test.rb", "test/unit/ccls/core_extension_test.rb", "test/unit/ccls/county_test.rb", "test/unit/ccls/data_source_test.rb", "test/unit/ccls/diagnosis_test.rb", "test/unit/ccls/document_type_test.rb", "test/unit/ccls/document_version_test.rb", "test/unit/ccls/enrollment_test.rb", "test/unit/ccls/follow_up_test.rb", "test/unit/ccls/follow_up_type_test.rb", "test/unit/ccls/gift_card_search_test.rb", "test/unit/ccls/gift_card_test.rb", "test/unit/ccls/helpers/ccls_engine_helper_test.rb", "test/unit/ccls/home_exposure_response_test.rb", "test/unit/ccls/homex_outcome_test.rb", "test/unit/ccls/hospital_test.rb", "test/unit/ccls/icf_master_id_test.rb", "test/unit/ccls/identifier_test.rb", "test/unit/ccls/ineligible_reason_test.rb", "test/unit/ccls/instrument_test.rb", "test/unit/ccls/instrument_type_test.rb", "test/unit/ccls/instrument_version_test.rb", "test/unit/ccls/interview_method_test.rb", "test/unit/ccls/interview_outcome_test.rb", "test/unit/ccls/interview_test.rb", "test/unit/ccls/language_test.rb", "test/unit/ccls/operational_event_test.rb", "test/unit/ccls/operational_event_type_test.rb", "test/unit/ccls/organization_test.rb", "test/unit/ccls/package_test.rb", "test/unit/ccls/patid_test.rb", "test/unit/ccls/patient_test.rb", "test/unit/ccls/person_test.rb", "test/unit/ccls/phone_number_test.rb", "test/unit/ccls/phone_type_test.rb", "test/unit/ccls/pii_test.rb", "test/unit/ccls/project_outcome_test.rb", "test/unit/ccls/project_test.rb", "test/unit/ccls/race_test.rb", "test/unit/ccls/refusal_reason_test.rb", "test/unit/ccls/role_test.rb", "test/unit/ccls/sample_kit_test.rb", "test/unit/ccls/sample_outcome_test.rb", "test/unit/ccls/sample_test.rb", "test/unit/ccls/sample_type_test.rb", "test/unit/ccls/section_test.rb", "test/unit/ccls/state_test.rb", "test/unit/ccls/study_subject_search_test.rb", "test/unit/ccls/study_subject_test.rb", "test/unit/ccls/subject_language_test.rb", "test/unit/ccls/subject_race_test.rb", "test/unit/ccls/subject_relationship_test.rb", "test/unit/ccls/subject_type_test.rb", "test/unit/ccls/transfer_test.rb", "test/unit/ccls/unit_test.rb", "test/unit/ccls/user_test.rb", "test/unit/ccls/vital_status_test.rb", "test/unit/ccls/zip_code_test.rb"]
+  s.test_files = ["test/unit/ccls/abstract_search_test.rb", "test/unit/ccls/abstract_test.rb", "test/unit/ccls/address_test.rb", "test/unit/ccls/address_type_test.rb", "test/unit/ccls/addressing_test.rb", "test/unit/ccls/aliquot_sample_format_test.rb", "test/unit/ccls/aliquot_test.rb", "test/unit/ccls/analysis_test.rb", "test/unit/ccls/bc_request_test.rb", "test/unit/ccls/candidate_control_test.rb", "test/unit/ccls/childid_test.rb", "test/unit/ccls/context_data_source_test.rb", "test/unit/ccls/context_test.rb", "test/unit/ccls/core_extension_test.rb", "test/unit/ccls/county_test.rb", "test/unit/ccls/data_source_test.rb", "test/unit/ccls/diagnosis_test.rb", "test/unit/ccls/document_type_test.rb", "test/unit/ccls/document_version_test.rb", "test/unit/ccls/enrollment_test.rb", "test/unit/ccls/follow_up_test.rb", "test/unit/ccls/follow_up_type_test.rb", "test/unit/ccls/gift_card_search_test.rb", "test/unit/ccls/gift_card_test.rb", "test/unit/ccls/home_exposure_response_test.rb", "test/unit/ccls/homex_outcome_test.rb", "test/unit/ccls/hospital_test.rb", "test/unit/ccls/icf_master_id_test.rb", "test/unit/ccls/identifier_test.rb", "test/unit/ccls/ineligible_reason_test.rb", "test/unit/ccls/instrument_test.rb", "test/unit/ccls/instrument_type_test.rb", "test/unit/ccls/instrument_version_test.rb", "test/unit/ccls/interview_method_test.rb", "test/unit/ccls/interview_outcome_test.rb", "test/unit/ccls/interview_test.rb", "test/unit/ccls/language_test.rb", "test/unit/ccls/operational_event_test.rb", "test/unit/ccls/operational_event_type_test.rb", "test/unit/ccls/organization_test.rb", "test/unit/ccls/package_test.rb", "test/unit/ccls/patid_test.rb", "test/unit/ccls/patient_test.rb", "test/unit/ccls/person_test.rb", "test/unit/ccls/phone_number_test.rb", "test/unit/ccls/phone_type_test.rb", "test/unit/ccls/pii_test.rb", "test/unit/ccls/project_outcome_test.rb", "test/unit/ccls/project_test.rb", "test/unit/ccls/race_test.rb", "test/unit/ccls/refusal_reason_test.rb", "test/unit/ccls/role_test.rb", "test/unit/ccls/sample_kit_test.rb", "test/unit/ccls/sample_outcome_test.rb", "test/unit/ccls/sample_test.rb", "test/unit/ccls/sample_type_test.rb", "test/unit/ccls/section_test.rb", "test/unit/ccls/state_test.rb", "test/unit/ccls/study_subject_search_test.rb", "test/unit/ccls/study_subject_test.rb", "test/unit/ccls/subject_language_test.rb", "test/unit/ccls/subject_race_test.rb", "test/unit/ccls/subject_relationship_test.rb", "test/unit/ccls/subject_type_test.rb", "test/unit/ccls/transfer_test.rb", "test/unit/ccls/unit_test.rb", "test/unit/ccls/user_test.rb", "test/unit/ccls/vital_status_test.rb", "test/unit/ccls/zip_code_test.rb"]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -210,14 +196,18 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<jrails>, [">= 0"])
       s.add_runtime_dependency(%q<ccls-calnet_authenticated>, [">= 1.2.0"])
       s.add_runtime_dependency(%q<ccls-simply_authorized>, [">= 0"])
-      s.add_runtime_dependency(%q<chronic>, [">= 0"])
       s.add_runtime_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_runtime_dependency(%q<ryanb-acts-as-list>, [">= 0"])
-      s.add_runtime_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_runtime_dependency(%q<ucb_ldap>, [">= 1.4.2"])
       s.add_runtime_dependency(%q<rubycas-client>, [">= 2.2.1"])
       s.add_runtime_dependency(%q<ccls-use_db>, [">= 0"])
       s.add_runtime_dependency(%q<ccls-common_lib>, [">= 0"])
+      s.add_development_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
+      s.add_development_dependency(%q<ccls-html_test>, [">= 0"])
+      s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<mocha>, [">= 0"])
+      s.add_development_dependency(%q<autotest-rails>, [">= 0"])
+      s.add_development_dependency(%q<ZenTest>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 2"])
       s.add_dependency(%q<activerecord>, ["~> 2"])
@@ -227,14 +217,18 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<jrails>, [">= 0"])
       s.add_dependency(%q<ccls-calnet_authenticated>, [">= 1.2.0"])
       s.add_dependency(%q<ccls-simply_authorized>, [">= 0"])
-      s.add_dependency(%q<chronic>, [">= 0"])
       s.add_dependency(%q<ssl_requirement>, [">= 0"])
       s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
-      s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
       s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
       s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
       s.add_dependency(%q<ccls-use_db>, [">= 0"])
       s.add_dependency(%q<ccls-common_lib>, [">= 0"])
+      s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
+      s.add_dependency(%q<ccls-html_test>, [">= 0"])
+      s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<mocha>, [">= 0"])
+      s.add_dependency(%q<autotest-rails>, [">= 0"])
+      s.add_dependency(%q<ZenTest>, [">= 0"])
     end
   else
     s.add_dependency(%q<rails>, ["~> 2"])
@@ -245,14 +239,18 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<jrails>, [">= 0"])
     s.add_dependency(%q<ccls-calnet_authenticated>, [">= 1.2.0"])
     s.add_dependency(%q<ccls-simply_authorized>, [">= 0"])
-    s.add_dependency(%q<chronic>, [">= 0"])
     s.add_dependency(%q<ssl_requirement>, [">= 0"])
     s.add_dependency(%q<ryanb-acts-as-list>, [">= 0"])
-    s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
     s.add_dependency(%q<ucb_ldap>, [">= 1.4.2"])
     s.add_dependency(%q<rubycas-client>, [">= 2.2.1"])
     s.add_dependency(%q<ccls-use_db>, [">= 0"])
     s.add_dependency(%q<ccls-common_lib>, [">= 0"])
+    s.add_dependency(%q<thoughtbot-factory_girl>, [">= 0"])
+    s.add_dependency(%q<ccls-html_test>, [">= 0"])
+    s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<mocha>, [">= 0"])
+    s.add_dependency(%q<autotest-rails>, [">= 0"])
+    s.add_dependency(%q<ZenTest>, [">= 0"])
   end
 end
 
