@@ -2,6 +2,8 @@
 source "http://rubygems.org"
 source "http://gems.rubyforge.org"
 source "http://gemcutter.org"
+
+#	I don't believe that this source is active any longer.
 source "http://gems.github.com"
 
 
@@ -20,13 +22,15 @@ source "http://gems.github.com"
 #
 gem "rake", '=0.8.7'
 gem "rails", "~>2"
+
 gem "mongrel"
 gem "active_shipping"
+
+#	Why?  Can't remember.
 gem "RedCloth", '<4.2.8'
+
 gem "arel", "=2.0.2"
-gem "authlogic", "~>2"
-gem "aws-s3"
-gem "aws-sdb"
+
 #	Trying to remove Chronic usage
 #gem "chronic",	'>=0.6.2'
 gem "haml"
@@ -35,20 +39,12 @@ gem "i18n"
 gem "jeweler"
 gem "jrails"
 
-#	2.4.3, 2.4.5 causes a lot of ...
-#	NameError: `@[]' is not allowed as an instance variable name
-#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `instance_variable_get'
-#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `method_missing'
-#gem "paperclip", '=2.4.2'	
-
 #	causes rails 2.3.2 and associated to be installed???
 #gem "rack"	
 # (1.3.0, 1.2.2, 1.1.2, 1.1.0, 1.0.1)
 
-gem "rdoc"
 gem "ryanb-acts-as-list"
 gem "ssl_requirement"
-gem "thoughtbot-factory_girl"
 gem "will_paginate", "~>2"
 
 gem "ccls-calnet_authenticated"
@@ -69,14 +65,15 @@ if RUBY_PLATFORM =~ /java/
 else
 	#	problems in jruby
 	gem "mysql"
-	gem "rmagick"
 	gem "sqlite3", '!=1.3.4'
 end
 
+gem "packet"	#	don't remember why (think from backgroundrb)
+
+#	Used for cvs parsing on data import
+#	Also used to csv output.
 gem "fastercsv"
 
-
-gem "packet"	#	don't remember why (think from backgroundrb)
 
 #	These gems are not needed in production
 #	They will be skipped because of config file
@@ -85,6 +82,28 @@ gem "packet"	#	don't remember why (think from backgroundrb)
 #BUNDLE_WITHOUT: development:test
 #
 group :development do
+	unless RUBY_PLATFORM =~ /java/
+		gem "rmagick"	#	only used with paperclip on buffler and clic
+	end
+	#	rarely used
+	gem "rdoc"
+
+	#	only used by clic
+	gem "authlogic", "~>2"	
+
+	#	2.4.3, 2.4.5 causes a lot of ...
+	#	NameError: `@[]' is not allowed as an instance variable name
+	#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `instance_variable_get'
+	#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `method_missing'
+	gem "paperclip", '=2.4.2'	#	only used by buffler and clic
+
+	#	only used by buffler and clic
+	gem "aws-s3"
+
+	#	Never used anymore
+	#gem "aws-sdb"
+
+	#	sunspot is only used by clic, and that has even stopped
 	#	It seems that 1.3.0 will require some modifications.
 	gem "sunspot_rails", '=1.2.1'
 	gem "sunspot", '=1.2.1'
@@ -92,18 +111,27 @@ end
 
 
 group :test do
-	gem "autotest-rails"
-	gem "rcov"
-	gem "ccls-html_test"
 	#	used only by simply_authorized in testing (so I'd actually like to remove)
 	gem "ccls-simply_sessions"	
+
+	#	really only needed in test environment
+	#	but some of my gems still require it
+	gem "thoughtbot-factory_girl"	
+
+	#	My many testing gems
+	gem "ccls-html_test"
+	gem "autotest-rails"
+	gem "rcov"
 
 	gem 'ZenTest', '~>4.5.0'
 	#Fetching: ZenTest-4.6.2.gem (100%)
 	#ERROR:  Error installing ZenTest:
 	#	ZenTest requires RubyGems version ~> 1.8. (which is evil I tell you)
 
-	gem "webrat"
-	gem "capybara"
-	gem "capybara-webkit"
+#	I don't know why, but each of these will trigger
+#	the installation of rails 2.3.2 and I don't quite
+#	understand why.
+#	gem "webrat"
+#	gem "capybara"
+#	gem "capybara-webkit"
 end
