@@ -1,9 +1,6 @@
 require 'fastercsv'
 require 'chronic'
 
-#BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/Database/DataLists/jake/"
-#BASEDIR = "/Volumes/BUF-Fileshare/RestrictedData/StaffFolders/WendtJake/HomeExposuresImport_20110504/"
-#BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/Database/DataLists/HomeExposuresImport_20110504/"
 BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/DataMigration/"
 
 namespace :odms_destroy do
@@ -48,8 +45,7 @@ namespace :odms_import do
 #
 #
 			#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-#			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112311.csv", 'rb',{
-			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_120111.csv", 'rb',{
+			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_xxxxxx.csv", 'rb',{
 				:headers => true })).each do |line|
 #break if f.lineno > 10
 
@@ -181,9 +177,10 @@ namespace :odms_import do
 		'odms_destroy:csv_data',
 		'odms_import:subjects',
 		'odms_import:icf_master_ids',
+		'odms_import:enrollments',
 		'odms_import:operational_events',
-		'odms_import:create_dummy_candidate_controls'
-#		'odms_import:enrollments'
+		'odms_import:create_dummy_candidate_controls',
+		'ccls:data_report'
 	]
 
 
@@ -196,7 +193,7 @@ namespace :odms_import do
 		puts "Importing operational_events"
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Operational_Events_120811.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Operational_Events_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -207,17 +204,12 @@ namespace :odms_import do
 			study_subject = identifier.study_subject
 			ccls_enrollment = study_subject.enrollments.find_by_project_id(line['project_id'])
 			operational_event = OperationalEvent.create!({
-#			operational_event = OperationalEvent.new({
 				:enrollment_id => ccls_enrollment.id,
 				:operational_event_type_id => line['operational_event_id'],
 				:occurred_on => Time.parse(line['occurred_on']),
 				:description => line['description'],
 				:event_notes => line['event_notes']
 			})
-#			puts operational_event.inspect
-#			puts operational_event.valid?
-#			puts '---'
-#break if f.lineno > 10
 		end
 	end
 
@@ -301,7 +293,7 @@ namespace :odms_import do
 		error_file = File.open('enrollments_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_enrollments_111711_beta.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Enrollments_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -310,15 +302,35 @@ namespace :odms_import do
 			puts "Processing line #{f.lineno}"
 			puts line
 
-#	this is probably wrong as project_id is 7 (unspecified)
 #"ChildId","project_id","subjectID","consented","consented_on","refusal_reason_id","document_version_id","is_eligible"
-#1,7,"123412","2","1/1/1900","888",1,"true"
 
+			identifier = Identifier.find_by_subjectid(line['subjectID'])	#	misnamed field
+			unless identifier
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectID']} found."
+				error_file.puts line
+				error_file.puts
+				next
+			end
+			study_subject = identifier.study_subject
 
-#			subject = StudySubject.find ....
+			enrollment = study_subject.enrollments.find_or_create_by_project_id(
+				line['project_id'])
 
-#	which enrollment
-#			subject.enrollments.create <<
+			saved = enrollment.update_attributes(
+				:consented           => line['consented'],
+				:consented_on        => (( line['consented'].blank? ) ?
+														nil : Time.parse(line['consented']).to_date ),
+				:refusal_reason_id   => line['refusal_reason_id'],
+				:document_version_id => line['document_version_id'],
+				:is_eligible         => line['is_eligible']
+			)
+			unless saved
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: #{enrollment.errors.full_messages.to_sentence}"
+				error_file.puts line
+				error_file.puts
+			end
 
 		end
 	end
@@ -332,8 +344,7 @@ namespace :odms_import do
 		error_file = File.open('subjects_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-#		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_112311.csv", 'rb',{
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_120111.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -343,61 +354,6 @@ namespace :odms_import do
 			puts line
 
 #"subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"
-
-##	BEGIN anticipated errors
-#
-#			sex = line['sex']
-#			if sex.blank?
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: No sex selected"
-#				error_file.puts line
-#				sex = 'M'
-#			end
-#
-#			if line['subject_type_id'].blank?
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: No subject_type_id"
-#				error_file.puts line
-#			end
-#
-#			if line['subject_type_id'] != line['subjectType_id']
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: subject type id mismatch: " <<
-#					"subject_type_id:#{line['subject_type_id']}: " <<
-#					"subjectType_id:#{line['subjectType_id']}:"
-#				error_file.puts line
-#			end
-#
-#			if line['first_name'].blank?
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: No first_name"
-#				error_file.puts line
-#			end
-#
-#			if line['last_name'].blank?
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: No last_name"
-#				error_file.puts line
-#			end
-#
-#			raf_zip = line['Zipcode']
-#			if !raf_zip.blank? and ![5,10].include?(raf_zip.length)
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: Unexpected zipcode length :#{raf_zip}:"
-#				error_file.puts line
-#				raf_zip = '99999'
-#			end
-#
-#			state_id_no = line['state_id_no']
-#			if !state_id_no.blank? && Identifier.exists?(:state_id_no => state_id_no)
-#				error_file.puts 
-#				error_file.puts "Line #:#{f.lineno}: " <<
-#					"state_id_no is a duplicate:#{line['state_id_no']}:"
-#				error_file.puts line
-#				state_id_no = nil
-#			end
-#
-##	END anticipated errors
 
 #
 #		Models built in block mode to avoid protected attributes
@@ -417,27 +373,27 @@ namespace :odms_import do
 				m.father_first_name  = line['father_first_name']
 				m.father_last_name   = line['father_last_name']
 
-
-#				m.dob                = ( line['dob'].blank? 
-#						) ? nil : Time.parse(line['dob']).to_date
-#				if line['subject_type_id'].to_i == SubjectType['Mother'].id
-#					m.subject_is_mother = true
-#				end
-
+				m.dob                = ( line['dob'].blank? 
+						) ? nil : Time.parse(line['dob']).to_date
 				if line['subject_type_id'].to_i == SubjectType['Mother'].id
 					m.subject_is_mother = true
-					m.dob               = ( line['dob'].blank? 
-						) ? nil : Time.parse(line['dob']).to_date
-				else
-					#	blank dob only a problem if not mother
-					if line['dob'].blank?
-						error_file.puts 
-						error_file.puts "Line #:#{f.lineno}: No dob and not mother"
-						error_file.puts line
-					end
-					m.dob               = (( line['dob'].blank? 
-						) ? Time.parse('01-Jan-1900') : Time.parse(line['dob']) ).to_date
 				end
+
+#				if line['subject_type_id'].to_i == SubjectType['Mother'].id
+#					m.subject_is_mother = true
+#					m.dob               = ( line['dob'].blank? 
+#						) ? nil : Time.parse(line['dob']).to_date
+#				else
+##					#	blank dob only a problem if not mother
+##					if line['dob'].blank?
+##						error_file.puts 
+##						error_file.puts "Line #:#{f.lineno}: No dob and not mother"
+##						error_file.puts line
+##					end
+##					m.dob               = (( line['dob'].blank? 
+##						) ? Time.parse('01-Jan-1900') : Time.parse(line['dob']) ).to_date
+#					m.dob               = Time.parse(line['dob']).to_date
+#				end
 			end
 
 			identifier = Identifier.new do |m|
@@ -476,12 +432,10 @@ namespace :odms_import do
 						) ? nil : Time.parse(line['admit_date'])
 					m.diagnosis_id    = line['diagnosis_id']
 					m.other_diagnosis = line['other_diagnosis']
-#					m.organization_id = line['organization_id']||Organization['888'].id
 					m.organization_id = line['organization_id']
 					m.hospital_no     = line['hospital_no']
 					m.was_previously_treated = line['was_previously_treated']
 					m.was_under_15_at_dx     = line['was_under_15_at_dx']
-#					m.raf_zip                = raf_zip
 					m.raf_zip                = line['raf_zip']
 					m.raf_county             = line['raf_county']
 					m.created_at             = line['created_at']
@@ -498,36 +452,7 @@ namespace :odms_import do
 			end
 		end	#	FasterCSV.open
 		error_file.close
-
-		printf "%-19s %5d\n", "StudySubject.count:", StudySubject.count
-		printf "%-19s %5d\n", "Cases:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Case'].id })
-		printf "%-19s %5d\n", "Controls:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Control'].id })
-		printf "%-19s %5d\n", "Mothers:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Mother'].id })
-		printf "%-19s %5d\n", "Twins:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Twin'].id })
-		printf "%-19s %5d\n", "Identifier.count:", Identifier.count
-		printf "%-19s %5d\n", "case_control_type = C:", Identifier.count(
-			:conditions => { :case_control_type => 'C' })
-		printf "%-19s %5d\n", "case_control_type = B:", Identifier.count(
-			:conditions => { :case_control_type => 'B' })
-		printf "%-19s %5d\n", "case_control_type = F:", Identifier.count(
-			:conditions => { :case_control_type => 'F' })
-		printf "%-19s %5d\n", "case_control_type = 4:", Identifier.count(
-			:conditions => { :case_control_type => '4' })
-		printf "%-19s %5d\n", "case_control_type = 5:", Identifier.count(
-			:conditions => { :case_control_type => '5' })
-		printf "%-19s %5d\n", "childidwho = C:", Identifier.count(
-			:conditions => { :childidwho => 'C' })
-		printf "%-19s %5d\n", "childidwho = M:", Identifier.count(
-			:conditions => { :childidwho => 'M' })
-		printf "%-19s %5d\n", "childidwho = T:", Identifier.count(
-			:conditions => { :childidwho => 'T' })
-		printf "%-19s %5d\n", "Pii.count:", Pii.count
-		printf "%-19s %5d\n", "Patient.count:", Patient.count
-		printf "%-19s %5d\n", "Enrollment.count:", Enrollment.count
+#		Rake::Task["ccls:data_report"].invoke
 	end		#	task :subjects => :environment do
 
 end

@@ -1,5 +1,70 @@
 namespace :ccls do
 
+	desc "Report data counts in database"
+	task :data_report => :environment do
+
+		printf "%-25s %5d\n", "StudySubject.count:", StudySubject.count
+		printf "%-25s %5d\n", "Cases:", StudySubject.count(
+			:conditions => { :subject_type_id => SubjectType['Case'].id })
+		printf "%-25s %5d\n", "Controls:", StudySubject.count(
+			:conditions => { :subject_type_id => SubjectType['Control'].id })
+		printf "%-25s %5d\n", "Mothers:", StudySubject.count(
+			:conditions => { :subject_type_id => SubjectType['Mother'].id })
+		printf "%-25s %5d\n", "Twins:", StudySubject.count(
+			:conditions => { :subject_type_id => SubjectType['Twin'].id })
+		printf "%-25s %5d\n", "Identifier.count:", Identifier.count
+		printf "%-25s %5d\n", "case_control_type = C:", Identifier.count(
+			:conditions => { :case_control_type => 'C' })
+		printf "%-25s %5d\n", "case_control_type = B:", Identifier.count(
+			:conditions => { :case_control_type => 'B' })
+		printf "%-25s %5d\n", "case_control_type = F:", Identifier.count(
+			:conditions => { :case_control_type => 'F' })
+		printf "%-25s %5d\n", "case_control_type = 4:", Identifier.count(
+			:conditions => { :case_control_type => '4' })
+		printf "%-25s %5d\n", "case_control_type = 5:", Identifier.count(
+			:conditions => { :case_control_type => '5' })
+		printf "%-25s %5d\n", "childidwho = C:", Identifier.count(
+			:conditions => { :childidwho => 'C' })
+		printf "%-25s %5d\n", "childidwho = M:", Identifier.count(
+			:conditions => { :childidwho => 'M' })
+		printf "%-25s %5d\n", "childidwho = T:", Identifier.count(
+			:conditions => { :childidwho => 'T' })
+		printf "%-25s %5d\n", "Pii.count:", Pii.count
+		printf "%-25s %5d\n", "Patient.count:", Patient.count
+		printf "%-25s %5d\n", "Enrollment.count:", Enrollment.count
+		printf "%-25s %5d\n", "OperationalEvent.count:", OperationalEvent.count
+
+		printf "%-25s %5d\n", "CCLS Enrollments.count:", Enrollment.count(
+			:conditions => { :project_id => Project['ccls'].id })
+
+#
+#	I'm sure that I could use MySQL rollup and count to do this
+#
+
+		consenteds = Enrollment.all(:group => :consented,
+			:select => 'consented').collect(&:consented)
+		consenteds.each do |c|
+			printf "%-25s %5d\n", "consented(#{c}).count:", Enrollment.count(
+				:conditions => { :project_id => Project['ccls'].id,
+					:consented => c })
+		end
+		is_eligibles = Enrollment.all(:group => :is_eligible,
+			:select => 'is_eligible').collect(&:is_eligible)
+		is_eligibles.each do |c|
+			printf "%-25s %5d\n", "is_eligible(#{c}).count:", Enrollment.count(
+				:conditions => { :project_id => Project['ccls'].id,
+					:is_eligible => c })
+		end
+		refusal_reason_ids = Enrollment.all(:group => :refusal_reason_id,
+			:select => 'refusal_reason_id').collect(&:refusal_reason_id)
+		refusal_reason_ids.each do |c|
+			printf "%-25s %5d\n", "refusal_reason_id(#{c}).count:", Enrollment.count(
+				:conditions => { :project_id => Project['ccls'].id,
+					:refusal_reason_id => c })
+		end
+
+	end
+
 	task :sync_subject_type => :environment do
 		abort("Don't do this in production! Not unless you know exactly what you're doing anyway."
 			) if Rails.env == 'production'
