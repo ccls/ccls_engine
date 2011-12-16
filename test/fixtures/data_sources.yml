@@ -33,3 +33,11 @@ other:
   id:  5
   code:  other
   description:  Other Source
+t2k:
+  id:  6
+  code:  tracking2k
+  description:  Migrated from CCLS Legacy Tracking2k database
+src:
+  id:  7
+  code:  src
+  description:  Provided to CCLS by Survey Research Center ("SRC")
