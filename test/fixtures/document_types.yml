@@ -6,8 +6,8 @@
 homex_consents:
   id: 1
   position: 1
-  title: Home Exposures Consents
-  description: consent forms for the home exposures project
+  title: Consents
+  description: consent forms for the ccls study and related projects
 abstract:
   id: 2
   position: 2
