@@ -86,12 +86,12 @@ BCReceived:
 RAF:
   id: 17
   code: raf_entered
-  event_category:  operations
+  event_category:  recruitment
   description: RAF entered into system
 sentToICF:
   id: 18
   code: sentToICF
-  event_category:  operations
+  event_category:  recruitment
   description: Subject data was sent to ICF for recruitment and interview
 ChangeContactInfo:
   id: 19
@@ -106,7 +106,7 @@ DuplicateCase:
 newSubject:
   id: 21
   code: NewSubject
-  event_category: ascertainment
+  event_category: recruitment
   description:  New subject created by CCLS
 subjectDied:
   id: 22
@@ -128,3 +128,9 @@ sentToSRC:
   code: sentToSRC
   event_category:  operations
   description: Subject data was sent to SRC for recruitment and interview
+screener:
+  id: 26
+  code: screener_complete
+  event_category:  recruitment
+  description: ICF completed screening interview with respondent
+
