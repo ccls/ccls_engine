@@ -19,6 +19,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :reference_date )
 	assert_should_require_attributes_not_nil( :do_not_contact, :sex )
 	assert_should_not_require_attributes( :vital_status_id, :hispanicity_id, 
+		:mother_hispanicity_mex, :father_hispanicity_mex,
 		:reference_date, :mother_yrs_educ, :father_yrs_educ, 
 		:birth_type, :birth_county, :is_duplicate_of )
 
