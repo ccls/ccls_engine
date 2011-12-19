@@ -12,6 +12,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	assert_should_require_unique_attributes( :email )
 	assert_should_not_require_attributes( :first_name, :last_name,
 		:died_on, :birth_year,
+		:birth_city, :birth_state, :birth_country,
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
 		:father_first_name, :father_middle_name, :father_last_name,
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
@@ -25,6 +26,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		:father_first_name, :father_middle_name, :father_last_name,
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
 		:guardian_relationship_other,
+		:birth_city, :birth_state, :birth_country,
 			:maximum => 250 )
 
 	assert_should_require_attribute_length( :generational_suffix, :maximum => 10 )
