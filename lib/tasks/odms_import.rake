@@ -179,10 +179,174 @@ namespace :odms_import do
 		'odms_import:icf_master_ids',
 		'odms_import:enrollments',
 		'odms_import:operational_events',
+		'odms_import:phone_numbers',
+		'odms_import:addresses',
+		'odms_import:addressings',
 		'odms_import:create_dummy_candidate_controls',
 		'ccls:data_report'
 	]
 
+
+	task :addresses => :environment do 
+		puts "Destroying addresses"
+		Address.destroy_all
+		puts "Importing addresses"
+
+		error_file = File.open('addresses_errors.txt','w')	#	overwrite existing
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_addresses_121611.csv", 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+#"address_type_id","data_source_id","line_1","unit","city","state","zip","external_address_id","county","country","created_at"
+
+			address = Address.create({
+				:address_type_id => line["address_type_id"],
+				:data_source_id  => line["data_source_id"],
+				:line_1          => line["line_1"],
+				:unit            => line["unit"],
+				:city            => line["city"],
+				:state           => line["state"],
+				:zip             => line["zip"],
+				:external_address_id => line["external_address_id"],
+				:county          => line["county"],
+#				:country         => line["country"],
+				:created_at      => (( line['created_at'].blank? ) ?
+														nil : Time.parse(line['created_at']) )
+			})
+
+			if address.new_record?
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: #{address.errors.full_messages.to_sentence}"
+				error_file.puts line
+				error_file.puts
+			end
+
+		end
+		error_file.close
+	end
+
+	task :addressings => :environment do 
+		puts "Destroying addressings"
+		Addressing.destroy_all
+		puts "Importing addressings"
+
+		error_file = File.open('addressings_errors.txt','w')	#	overwrite existing
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addressings_121611.csv", 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+#"subjectid","external_address_id","current_address","address_at_diagnosis","valid_from","valid_to","data_source_id","created_at"
+
+			if line['subjectid'].blank?
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: subjectid blank."
+				error_file.puts line
+				error_file.puts
+				next
+			end
+			identifier = Identifier.find_by_subjectid(line['subjectid'])
+			unless identifier
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectid']} not found."
+				error_file.puts line
+				error_file.puts
+				next
+			end
+			study_subject = identifier.study_subject
+
+			address = Address.find_by_external_address_id(line['external_address_id'])
+			unless address
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: address with external id #{line['external_address_id']} not found."
+				error_file.puts line
+				error_file.puts
+				next
+			end
+
+			addressing = Addressing.create({
+				:study_subject_id => study_subject.id,
+				:address_id       => address.id,
+				:current_address  => line["current_address"],           # yndk integer
+				:address_at_diagnosis => line["address_at_diagnosis"],  # yndk integer
+				:valid_from       => (( line['valid_from'].blank? ) ?
+														nil : Time.parse(line['valid_from']).to_date ),
+				:valid_to         => (( line['valid_to'].blank? ) ?
+														nil : Time.parse(line['valid_to']).to_date ),
+				:data_source_id   => line["data_source_id"],
+				:created_at       => (( line['created_at'].blank? ) ?
+														nil : Time.parse(line['created_at']) )
+			})
+
+			if addressing.new_record?
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: #{addressing.errors.full_messages.to_sentence}"
+				error_file.puts line
+				error_file.puts
+			end
+
+		end
+		error_file.close
+	end
+
+	task :phone_numbers => :environment do 
+		puts "Destroying phone_numbers"
+		PhoneNumber.destroy_all
+		puts "Importing phone_numbers"
+
+		error_file = File.open('phone_numbers_errors.txt','w')	#	overwrite existing
+
+		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Phone_Numbers_121911.csv", 'rb',{
+			:headers => true })).each do |line|
+			puts "Processing line #{f.lineno}"
+			puts line
+
+#"subjectid","data_source_id","external_address_id","created_at","phone_number","is_primary","current_phone"
+
+			if line['subjectid'].blank?
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: subjectid blank."
+				error_file.puts line
+				error_file.puts
+				next
+			end
+			identifier = Identifier.find_by_subjectid(line['subjectid'])
+			unless identifier
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectid']} not found."
+				error_file.puts line
+				error_file.puts
+				next
+			end
+			study_subject = identifier.study_subject
+
+			phone_number = PhoneNumber.create({
+				:study_subject_id => study_subject.id,
+#				:phone_type_id    => line["phone_type_id"],
+				:data_source_id   => line["data_source_id"],
+				:phone_number     => line["phone_number"],
+				:is_primary       => line["is_primary"],         #	boolean
+				:current_phone    => line["current_phone"],      #	yndk integer
+				:created_at       => (( line['created_at'].blank? ) ?
+														nil : Time.parse(line['created_at']) )
+			})
+
+			if phone_number.new_record?
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: #{phone_number.errors.full_messages.to_sentence}"
+				error_file.puts line
+				error_file.puts
+			end
+
+		end
+		error_file.close
+	end
 
 	task :operational_events => :environment do 
 #	Can't destroy them as there will be some already
@@ -304,10 +468,18 @@ namespace :odms_import do
 
 #"ChildId","project_id","subjectID","consented","consented_on","refusal_reason_id","document_version_id","is_eligible"
 
+			if line['subjectID'].blank?
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: subjectid blank."
+				error_file.puts line
+				error_file.puts
+				next
+			end
+			study_subject = identifier.study_subject
 			identifier = Identifier.find_by_subjectid(line['subjectID'])	#	misnamed field
 			unless identifier
 				error_file.puts 
-				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectID']} found."
+				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectID']} not found."
 				error_file.puts line
 				error_file.puts
 				next
@@ -333,6 +505,7 @@ namespace :odms_import do
 			end
 
 		end
+		error_file.close
 	end
 
 

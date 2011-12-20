@@ -27,7 +27,7 @@ class Address < ActiveRecordShared
 
 	validates_format_of :zip,
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
-		:message => "should be 12345 or 12345-1234", :allow_blank => true
+		:message => "should be 12345, 123451234 or 12345-1234", :allow_blank => true
 
 	# TODO it would probably be better to do this before_validation
 	before_save :format_zip
