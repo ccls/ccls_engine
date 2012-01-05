@@ -12,4 +12,8 @@ class BcRequest < ActiveRecordShared
 		%w( active waitlist pending complete )
 	end
 
+	def to_s
+		( study_subject ) ? study_subject.studyid : self
+	end
+
 end

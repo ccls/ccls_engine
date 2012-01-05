@@ -22,4 +22,21 @@ class Ccls::BcRequestTest < ActiveSupport::TestCase
 		}
 	end
 
+	test "should return self for to_s if no study subject" do
+		assert_difference('BcRequest.count',1) {
+			bc_request = Factory(:bc_request)
+			assert_match /^#<BcRequest:0x.+>$/, "#{bc_request}"
+		}
+	end
+
+	test "should return study subject's studyid for to_s if study subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('BcRequest.count',1) {
+			study_subject = Factory(:complete_case_study_subject)
+			bc_request = Factory(:bc_request)
+			study_subject.bc_requests << bc_request
+			assert_equal study_subject.studyid, "#{bc_request}"
+		} }
+	end
+
 end
