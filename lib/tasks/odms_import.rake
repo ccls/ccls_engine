@@ -11,15 +11,15 @@ def format_time_to_date(time)
 	( time.blank? ) ? nil : format_date(Time.parse(time).to_date)
 end
 
-def yndk_to_boolean(yndk)
-#	This ignores the 9s so will have errors in comparison
-	( yndk.blank? ) ? nil : ( yndk.to_s == '1' )
-end
-
-def boolean_to_yndk(boolean)
-#					nil : YNDK[s.patient.was_previously_treated.to_s.to_sym]
-	( boolean.blank? ) ? nil : ( ( boolean ) ? 1 : 2 )
-end
+#def yndk_to_boolean(yndk)
+##	This ignores the 9s so will have errors in comparison
+#	( yndk.blank? ) ? nil : ( yndk.to_s == '1' )
+#end
+#
+#def boolean_to_yndk(boolean)
+##					nil : YNDK[s.patient.was_previously_treated.to_s.to_sym]
+#	( boolean.blank? ) ? nil : ( ( boolean ) ? 1 : 2 )
+#end
 
 namespace :odms_destroy do
 
@@ -145,8 +145,10 @@ namespace :odms_import do
 					s.pii.mother_last_name,
 					s.pii.father_first_name,
 					s.pii.father_last_name,
-					boolean_to_yndk(s.patient.try(:was_previously_treated)),
-					boolean_to_yndk(s.patient.try(:was_under_15_at_dx)),
+#					boolean_to_yndk(s.patient.try(:was_previously_treated)),
+#					boolean_to_yndk(s.patient.try(:was_under_15_at_dx)),
+					s.patient.try(:was_previously_treated),
+					s.patient.try(:was_under_15_at_dx),
 					s.patient.try(:raf_zip),
 					s.patient.try(:raf_county),
 					s.pii.birth_year,
@@ -593,8 +595,10 @@ namespace :odms_import do
 					m.other_diagnosis = line['other_diagnosis']
 					m.organization_id = line['organization_id']
 					m.hospital_no     = line['hospital_no']
-					m.was_previously_treated = yndk_to_boolean(line['was_previously_treated'])
-					m.was_under_15_at_dx     = yndk_to_boolean(line['was_under_15_at_dx'])
+#					m.was_previously_treated = yndk_to_boolean(line['was_previously_treated'])
+#					m.was_under_15_at_dx     = yndk_to_boolean(line['was_under_15_at_dx'])
+					m.was_previously_treated = line['was_previously_treated']
+					m.was_under_15_at_dx     = line['was_under_15_at_dx']
 					m.raf_zip                = line['raf_zip']
 					m.raf_county             = line['raf_county']
 					m.created_at             = line['created_at']
