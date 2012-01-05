@@ -1104,9 +1104,9 @@ Table: patients
 | treatment_began_on           | date         | YES  |     | NULL    |                |
 | sample_was_collected         | int(11)      | YES  |     | NULL    |                |
 | admitting_oncologist         | varchar(255) | YES  |     | NULL    |                |
-| was_ca_resident_at_diagnosis | tinyint(1)   | YES  |     | NULL    |                |
-| was_previously_treated       | tinyint(1)   | YES  |     | NULL    |                |
-| was_under_15_at_dx           | tinyint(1)   | YES  |     | NULL    |                |
+| was_ca_resident_at_diagnosis | int(11)      | YES  |     | NULL    |                |
+| was_previously_treated       | int(11)      | YES  |     | NULL    |                |
+| was_under_15_at_dx           | int(11)      | YES  |     | NULL    |                |
 | raf_zip                      | varchar(10)  | YES  |     | NULL    |                |
 | raf_county                   | varchar(255) | YES  |     | NULL    |                |
 | hospital_no                  | varchar(25)  | YES  | MUL | NULL    |                |

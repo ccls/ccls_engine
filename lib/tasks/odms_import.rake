@@ -462,7 +462,6 @@ namespace :odms_import do
 				error_file.puts
 				next
 			end
-			study_subject = identifier.study_subject
 			identifier = Identifier.find_by_subjectid(line['subjectID'])	#	misnamed field
 			unless identifier
 				error_file.puts 
