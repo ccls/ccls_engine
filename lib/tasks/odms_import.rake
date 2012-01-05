@@ -3,6 +3,24 @@ require 'chronic'
 
 BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/DataMigration/"
 
+def format_date(date)
+	( date.blank? ) ? nil : date.try(:strftime,"%m/%d/%Y")
+end
+
+def format_time_to_date(time)
+	( time.blank? ) ? nil : format_date(Time.parse(time).to_date)
+end
+
+def yndk_to_boolean(yndk)
+#	This ignores the 9s so will have errors in comparison
+	( yndk.blank? ) ? nil : ( yndk.to_s == '1' )
+end
+
+def boolean_to_yndk(boolean)
+#					nil : YNDK[s.patient.was_previously_treated.to_s.to_sym]
+	( boolean.blank? ) ? nil : ( ( boolean ) ? 1 : 2 )
+end
+
 namespace :odms_destroy do
 
 	desc "Destroy subject and address data"
@@ -35,59 +53,52 @@ end
 
 namespace :odms_import do
 
+	#
+	#	Generates subject_in.csv from Magee's input file.
+	#	This file will need sorted before comparison.
+	#
+	#
+	#	GONNA NEED TO SORT THESE TO COMPARE THEM, BUT BEWARE! OF MULTI-LINED ENTRIES
+	#
+	#
 	task :prepare_input_for_comparison do
+		#	Some columns are quoted and some aren't.  Quote all.
 		FasterCSV.open('subject_in.csv','w', {:force_quotes=>true}) do |out|
 			out.add_row ["subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"]
 	
-#
-#
-#	GONNA NEED TO SORT THESE TO COMPARE THEM, BUT BEWARE! OF MULTI-LINED ENTRIES
-#
-#
 			#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
 			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_xxxxxx.csv", 'rb',{
 				:headers => true })).each do |line|
 #break if f.lineno > 10
 
 #	
-#	Some columns are quoted and some aren't.
-#		quote all
 #	Some dates are dates and some are strings so the format is different.
-#	Some have created_at, some don't
 #
 
-#	TEMPORARY
-				line['was_previously_treated'] = nil
-				line['was_under_15_at_dx'] = nil
+#	TEMPORARILY NILLIFY
+#				line['was_previously_treated'] = nil
+#				line['was_under_15_at_dx'] = nil
 
-
+				#	Not all input records have created_at so nillify all
 				line['created_at'] = nil
-				line['reference_date'] = if line['reference_date'].blank?
-					nil
-				else
-					Time.parse(line['reference_date']).to_date.try(:strftime,"%m/%d/%Y")
-				end
-				line['admit_date'] = if line['admit_date'].blank?
-					nil
-				else
-					Time.parse(line['admit_date']).to_date.try(:strftime,"%m/%d/%Y")
-				end
-				line['dob'] = if line['dob'].blank?
-					nil
-				else
-					Time.parse(line['dob']).to_date.try(:strftime,"%m/%d/%Y")
-				end
-				line['died_on'] = if line['died_on'].blank?
-					nil
-				else
-					Time.parse(line['died_on']).to_date.try(:strftime,"%m/%d/%Y")
-				end
+
+				line['reference_date'] = format_time_to_date( line['reference_date'] )
+				line['admit_date'] = format_time_to_date( line['admit_date'] )
+				line['dob'] = format_time_to_date( line['dob'] )
+				line['died_on'] = format_time_to_date( line['died_on'] )
 				out.add_row line
 			end
 
 		end
 	end
 
+	#
+	#	Generates a subject_out.csv file from data in the database.
+	#
+	#
+	#	GONNA NEED TO SORT THESE TO COMPARE THEM
+	#
+	#
 	task :csv_dump => :environment do
 		puts "Dumping to csv for comparison"
 
@@ -96,29 +107,17 @@ namespace :odms_import do
 #			f.add_row "subjectID,subjectType_id,vital_status_id,do_not_contact,sex,refdate,ChildId,icf_master_id,matchingID,familyID,PatID,case_control_type,OrderNo,newID,studyID,related_case_childID,state_id_no,subject_type_id,admit_date,diagnosis_id,organization_id,ODMS_Patients_092611.created_at,was_previously_treated,was_under_15_at_dx,Zipcode,County,first_name,middle_name,last_name,maiden_name,dob,died_on,mother_first_name,mother_maiden_name,mother_last_name,father_first_name,father_last_name,ODMS_Identifiers_092611.created_at".split(',')
 			f.add_row ["subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"]
 
-#			StudySubject.find(:all, :limit => 9).each do |s|
-#
-#
-#	GONNA NEED TO SORT THESE TO COMPARE THEM
-#
-#
 			StudySubject.find(:all,
 					:include => :identifier, 
 					:order => 'identifiers.subjectid ASC' ).each do |s|
-				was_previously_treated = ( s.patient.try(:was_previously_treated).blank? ) ?
-					nil : YNDK[s.patient.was_previously_treated.to_s.to_sym]
-				was_under_15_at_dx = ( s.patient.try(:was_under_15_at_dx).blank? ) ?
-					nil : YNDK[s.patient.was_under_15_at_dx.to_s.to_sym]
+
 				f.add_row([
 					s.identifier.subjectid,
 					s.subject_type_id,
 					s.vital_status_id,
 					s.do_not_contact.to_s.upcase,	# FALSE
-#					s.do_not_contact,	#false
-#					(( s.do_not_contact ) ? 1 : 0 ),
 					s.sex,
-#					s.reference_date.try(:strftime,"%d-%b-%y"),
-					s.reference_date.try(:strftime,"%m/%d/%Y"),
+					format_date(s.reference_date),
 					s.identifier.childidwho,
 					s.hispanicity_id,
 					s.identifier.childid,
@@ -132,34 +131,22 @@ namespace :odms_import do
 					s.identifier.studyid,		
 					s.identifier.related_case_childid,
 					s.identifier.state_id_no,
-#					s.patient.try(:admit_date).try(:strftime,"%d-%b-%y"),
-					s.patient.try(:admit_date).try(:strftime,"%m/%d/%Y"),
+					format_date(s.patient.try(:admit_date)),
 					s.patient.try(:diagnosis_id),
-#					s.try(:created_at).try(:strftime,"%d-%b-%y"),
-#					s.try(:created_at).try(:strftime,"%m/%d/%Y"),
 					nil,
 					s.pii.first_name,
 					s.pii.middle_name,
 					s.pii.last_name,
 					s.pii.maiden_name,
-#					s.pii.dob.try(:strftime,"%d-%b-%y"),
-					s.pii.dob.try(:strftime,"%m/%d/%Y"),
-#					s.pii.died_on.try(:strftime,"%d-%b-%y"),
-					s.pii.died_on.try(:strftime,"%m/%d/%Y"),
+					format_date(s.pii.dob),
+					format_date(s.pii.died_on),
 					s.pii.mother_first_name,
 					s.pii.mother_maiden_name,
 					s.pii.mother_last_name,
 					s.pii.father_first_name,
 					s.pii.father_last_name,
-
-#	NOTE will cause issues due to data type difference
-#				line['was_previously_treated'] = nil
-#				line['was_under_15_at_dx'] = nil
-#					was_previously_treated,
-#					was_under_15_at_dx,
-					nil,
-					nil,
-
+					boolean_to_yndk(s.patient.try(:was_previously_treated)),
+					boolean_to_yndk(s.patient.try(:was_under_15_at_dx)),
 					s.patient.try(:raf_zip),
 					s.patient.try(:raf_county),
 					s.pii.birth_year,
@@ -607,8 +594,8 @@ namespace :odms_import do
 					m.other_diagnosis = line['other_diagnosis']
 					m.organization_id = line['organization_id']
 					m.hospital_no     = line['hospital_no']
-					m.was_previously_treated = line['was_previously_treated']
-					m.was_under_15_at_dx     = line['was_under_15_at_dx']
+					m.was_previously_treated = yndk_to_boolean(line['was_previously_treated'])
+					m.was_under_15_at_dx     = yndk_to_boolean(line['was_under_15_at_dx'])
 					m.raf_zip                = line['raf_zip']
 					m.raf_county             = line['raf_county']
 					m.created_at             = line['created_at']

@@ -37,7 +37,7 @@ Gemfile.lock
 /shared_database_tables.20111201
 /shared_development_20111201.20111209a.sql
 /shared_development_20111201.20111209b.sql
-/subject_differences_20111201.txt
+/subject_differences_*.txt
 /subject_in.csv
 /subject_in_sorted.csv
 /subject_out.csv
