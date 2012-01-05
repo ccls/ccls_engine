@@ -9,6 +9,8 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 		:state, 
 		:zip )
 	assert_should_not_require_attributes( 
+		:country, 
+		:county, 
 		:line_2, 
 		:unit,
 		:external_address_id )
