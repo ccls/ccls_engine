@@ -29,6 +29,11 @@ class Pii < ActiveRecordShared
 	validate :presence_of_guardian_relationship_other,
 		:if => :guardian_relationship_is_other?
 
+	validates_presence_of :birth_city,
+		:if => :birth_country_is_united_states?
+	validates_presence_of :birth_state,
+		:if => :birth_country_is_united_states?
+
 	validates_length_of :first_name, :last_name, 
 		:middle_name, :maiden_name, :guardian_relationship_other,
 		:father_first_name, :father_middle_name, :father_last_name,
@@ -41,6 +46,10 @@ class Pii < ActiveRecordShared
 		:maximum => 10, :allow_blank => true
 
  	validates_length_of :birth_year, :maximum => 4, :allow_blank => true
+
+	def birth_country_is_united_states?
+		birth_country == 'United States'
+	end
 
 	#	study_subject is not known at validation on creation
 	#	when using the accepts_nested_attributes feature

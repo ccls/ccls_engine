@@ -234,6 +234,20 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should require birth_city if birth_country is 'United States'" do
+		assert_difference( "Pii.count", 0 ) do
+			pii = create_pii( :birth_country => 'United States' )
+			assert pii.errors.on_attr_and_type?(:birth_city,:blank)
+		end
+	end
+
+	test "should require birth_state if birth_country is 'United States'" do
+		assert_difference( "Pii.count", 0 ) do
+			pii = create_pii( :birth_country => 'United States' )
+			assert pii.errors.on_attr_and_type?(:birth_state,:blank)
+		end
+	end
+
 #protected
 #
 #	def create_pii(options={})
