@@ -31,6 +31,18 @@ namespace :ccls do
 			:conditions => { :childidwho => 'T' })
 		printf "%-25s %5d\n", "Pii.count:", Pii.count
 		printf "%-25s %5d\n", "Patient.count:", Patient.count
+		was_under_15_at_dxs = Patient.all(:group => :was_under_15_at_dx,
+			:select => 'was_under_15_at_dx').collect(&:was_under_15_at_dx)
+		was_under_15_at_dxs.each do |c|
+			printf "%-25s %5d\n", "was_under_15_at_dx = #{c}:", 
+				Patient.count( :conditions => { :was_under_15_at_dx => c })
+		end
+		was_previously_treateds = Patient.all(:group => :was_previously_treated,
+			:select => 'was_previously_treated').collect(&:was_previously_treated)
+		was_previously_treateds.each do |c|
+			printf "%-25s %5d\n", "was_previously_treated = #{c}:", 
+				Patient.count( :conditions => { :was_previously_treated => c })
+		end
 		printf "%-25s %5d\n", "Enrollment.count:", Enrollment.count
 		printf "%-25s %5d\n", "OperationalEvent.count:", OperationalEvent.count
 
@@ -44,21 +56,21 @@ namespace :ccls do
 		consenteds = Enrollment.all(:group => :consented,
 			:select => 'consented').collect(&:consented)
 		consenteds.each do |c|
-			printf "%-25s %5d\n", "consented(#{c}).count:", Enrollment.count(
+			printf "%-25s %5d\n", "consented = #{c}:", Enrollment.count(
 				:conditions => { :project_id => Project['ccls'].id,
 					:consented => c })
 		end
 		is_eligibles = Enrollment.all(:group => :is_eligible,
 			:select => 'is_eligible').collect(&:is_eligible)
 		is_eligibles.each do |c|
-			printf "%-25s %5d\n", "is_eligible(#{c}).count:", Enrollment.count(
+			printf "%-25s %5d\n", "is_eligible = #{c}:", Enrollment.count(
 				:conditions => { :project_id => Project['ccls'].id,
 					:is_eligible => c })
 		end
 		refusal_reason_ids = Enrollment.all(:group => :refusal_reason_id,
 			:select => 'refusal_reason_id').collect(&:refusal_reason_id)
 		refusal_reason_ids.each do |c|
-			printf "%-25s %5d\n", "refusal_reason_id(#{c}).count:", Enrollment.count(
+			printf "%-25s %5d\n", "refusal_reason_id = #{c}:", Enrollment.count(
 				:conditions => { :project_id => Project['ccls'].id,
 					:refusal_reason_id => c })
 		end
