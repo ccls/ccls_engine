@@ -162,7 +162,6 @@ class StudySubject < ActiveRecordShared
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
 				:subject_type_id       => StudySubject.subject_type_father_id
-#				:subject_type_id       => SubjectType['Father'].id
 			}
 		)
 	end
@@ -170,7 +169,6 @@ class StudySubject < ActiveRecordShared
 	#	Find the subject with matching familyid except self.
 	#	TODO add a subject_type check here?  Otherwise, this could return any subject_type
 	def child
-#		if subject_type == SubjectType['Mother']
 		if subject_type_id == StudySubject.subject_type_mother_id
 			StudySubject.find(:first,
 				:include => [:pii,:identifier,:subject_type],
@@ -192,7 +190,6 @@ class StudySubject < ActiveRecordShared
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
 				:subject_type_id       => StudySubject.subject_type_mother_id
-#				:subject_type_id       => SubjectType['Mother'].id
 			}
 		)
 	end
@@ -232,7 +229,6 @@ class StudySubject < ActiveRecordShared
 			:conditions => [
 				"study_subjects.id != ? AND identifiers.patid = ? AND subject_type_id = ?", 
 					id, patid, StudySubject.subject_type_control_id ] 
-#					id, patid, SubjectType['Control'].id ] 
 		)
 	end
 
@@ -267,28 +263,24 @@ class StudySubject < ActiveRecordShared
 	#	Returns boolean of comparison
 	#	true only if type is Case
 	def is_case?
-#		subject_type == SubjectType['Case']
 		subject_type_id == StudySubject.subject_type_case_id
 	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Control
 	def is_control?
-#		subject_type == SubjectType['Control']
 		subject_type_id == StudySubject.subject_type_control_id
 	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Mother
 	def is_mother?
-#		subject_type == SubjectType['Mother']
 		subject_type_id == StudySubject.subject_type_mother_id
 	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Father
 	def is_father?
-#		subject_type == SubjectType['Father']
 		subject_type_id == StudySubject.subject_type_father_id
 	end
 
@@ -374,13 +366,15 @@ class StudySubject < ActiveRecordShared
 	end
 
 	##
-	#	triggered from patient and eventually from pii
+	#	triggered from patient and pii
 	def update_patient_was_under_15_at_dx
 		#	due to the high probability that self, pii and patient will not
 		#		yet be resolved, we have to get the associations manually.
 		my_pii     = Pii.find_by_study_subject_id(self.attributes['id'])
 		my_patient = Patient.find_by_study_subject_id(self.attributes['id'])
-		if my_pii and my_pii.dob and my_patient and my_patient.admit_date
+		if my_pii && my_pii.dob && my_patient && my_patient.admit_date &&
+				my_pii.dob.to_date != Date.parse('1/1/1900') &&
+				my_patient.admit_date.to_date != Date.parse('1/1/1900')
 			#
 			#	update_all(updates, conditions = nil, options = {})
 			#
@@ -716,7 +710,8 @@ protected
 	def patient_admit_date_is_after_dob
 		if !patient.nil? && !patient.admit_date.blank? && 
 			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob &&
-			patient.admit_date != Date.parse('1/1/1900')
+			pii.dob.to_date != Date.parse('1/1/1900') &&
+			patient.admit_date.to_date != Date.parse('1/1/1900')
 			errors.add('patient:admit_date', "is before study_subject's dob.") 
 		end
 	end
