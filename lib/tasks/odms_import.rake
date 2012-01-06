@@ -165,13 +165,13 @@ namespace :odms_import do
 	task :csv_data => [
 		'odms_destroy:csv_data',
 		'odms_import:subjects',
-#		'odms_import:icf_master_ids',
-#		'odms_import:enrollments',
-#		'odms_import:operational_events',
-#		'odms_import:phone_numbers',
-#		'odms_import:addresses',
-#		'odms_import:addressings',
-#		'odms_import:create_dummy_candidate_controls',
+		'odms_import:icf_master_ids',
+		'odms_import:enrollments',
+		'odms_import:operational_events',
+		'odms_import:phone_numbers',
+		'odms_import:addresses',
+		'odms_import:addressings',
+		'odms_import:create_dummy_candidate_controls',
 		'ccls:data_report'
 	]
 
