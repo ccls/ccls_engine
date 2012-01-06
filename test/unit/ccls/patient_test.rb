@@ -133,7 +133,8 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_difference( "Patient.count", 0 ) {
 			study_subject = create_study_subject(
 				:patient_attributes => Factory.attributes_for(:patient))
-			assert study_subject.errors.on(:patient)	#	raised from study_subject model, NOT patient
+			#	raised from study_subject model, NOT patient
+			assert study_subject.errors.on(:patient)
 		} }
 	end
 
@@ -234,7 +235,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 
-	test "should set was_under_15_at_dx to true using nested attributes" do
+	test "should set was_under_15_at_dx to YNDK[:yes] using nested attributes" do
 		assert_difference( "StudySubject.count", 1 ) {
 		assert_difference( "Pii.count", 1 ) {
 		assert_difference( "Patient.count", 1 ) {
@@ -254,11 +255,12 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			#	this is actually the default so I'm not really testing 
 			#	anything other than it wasn't explicitly set to false
 			#
-			assert study_subject.patient.was_under_15_at_dx
+#			assert study_subject.patient.was_under_15_at_dx
+			assert_equal YNDK[:yes], study_subject.patient.was_under_15_at_dx
 		} } }
 	end
 
-	test "should set was_under_15_at_dx to false using nested attributes" do
+	test "should set was_under_15_at_dx to YNDK[:no] using nested attributes" do
 		assert_difference( "StudySubject.count", 1 ) {
 		assert_difference( "Pii.count", 1 ) {
 		assert_difference( "Patient.count", 1 ) {
@@ -274,11 +276,12 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			).reload
 			assert_equal dob,        study_subject.pii.dob
 			assert_equal admit_date, study_subject.patient.admit_date
-			assert !study_subject.patient.was_under_15_at_dx
+#			assert !study_subject.patient.was_under_15_at_dx
+			assert_equal YNDK[:no], study_subject.patient.was_under_15_at_dx
 		} } }
 	end
 
-	test "should set was_under_15_at_dx to false not using nested attributes" do
+	test "should set was_under_15_at_dx to YNDK[:no] not using nested attributes" do
 		assert_difference( "StudySubject.count", 1 ) {
 		assert_difference( "Pii.count", 1 ) {
 		assert_difference( "Patient.count", 1 ) {
@@ -297,7 +300,8 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			study_subject.reload
 			assert_equal dob,        study_subject.pii.dob
 			assert_equal admit_date, study_subject.patient.admit_date
-			assert !study_subject.patient.was_under_15_at_dx
+#			assert !study_subject.patient.was_under_15_at_dx
+			assert_equal YNDK[:no], study_subject.patient.was_under_15_at_dx
 		} } }
 	end
 
@@ -310,9 +314,11 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 				:admit_date => 1.year.ago.to_date
 			})
 		).reload
-		assert !study_subject.patient.was_under_15_at_dx
+#		assert !study_subject.patient.was_under_15_at_dx
+		assert_equal YNDK[:no], study_subject.patient.was_under_15_at_dx
 		study_subject.pii.update_attributes(:dob => 10.years.ago.to_date)
-		assert  study_subject.patient.reload.was_under_15_at_dx
+#		assert  study_subject.patient.reload.was_under_15_at_dx
+		assert_equal YNDK[:yes], study_subject.patient.reload.was_under_15_at_dx
 	end
 
 	test "should set was_under_15_at_dx on admit_date change" do
@@ -324,9 +330,11 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 				:admit_date => 1.year.ago.to_date
 			})
 		).reload
-		assert !study_subject.patient.was_under_15_at_dx
+#		assert !study_subject.patient.was_under_15_at_dx
+		assert_equal YNDK[:no], study_subject.patient.was_under_15_at_dx
 		study_subject.patient.update_attributes(:admit_date => 10.years.ago.to_date)
-		assert  study_subject.patient.reload.was_under_15_at_dx
+#		assert  study_subject.patient.reload.was_under_15_at_dx
+		assert_equal YNDK[:yes], study_subject.patient.reload.was_under_15_at_dx
 	end
 
 	test "should require 5 or 9 digit raf_zip" do

@@ -390,14 +390,20 @@ class StudySubject < ActiveRecordShared
 			#		it straight to the database. It does not instantiate the involved 
 			#		models and it does not trigger Active Record callbacks. 
 			#
-			Patient.update_all({
-				:was_under_15_at_dx => (((
-					my_patient.admit_date.to_date - my_pii.dob.to_date 
-					) / 365 ) < 15 )}, { :id => my_patient.id })
-				#	crude and probably off by a couple days
-				#	would be better to compare year, month then day
+#			Patient.update_all({
+#				:was_under_15_at_dx => (((
+#					my_patient.admit_date.to_date - my_pii.dob.to_date 
+#					) / 365 ) < 15 )}, { :id => my_patient.id })
+
+			#	crude and probably off by a couple days
+			#	would be better to compare year, month then day
+			was_under_15 = (((
+				my_patient.admit_date.to_date - my_pii.dob.to_date 
+				) / 365 ) < 15 ) ? YNDK[:yes] : YNDK[:no]
+			Patient.update_all({ :was_under_15_at_dx => was_under_15 }, 
+				{ :id => my_patient.id })
 		end
-		#	make sure we return true
+		#	make sure we return true as is a callback
 		true
 	end
 
