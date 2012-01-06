@@ -715,7 +715,8 @@ protected
 	#	work if using nested attributes.  Don't like doing this.
 	def patient_admit_date_is_after_dob
 		if !patient.nil? && !patient.admit_date.blank? && 
-			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob
+			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob &&
+			patient.admit_date != Date.parse('1/1/1900')
 			errors.add('patient:admit_date', "is before study_subject's dob.") 
 		end
 	end

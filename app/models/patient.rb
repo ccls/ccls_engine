@@ -87,7 +87,8 @@ protected
 		if !admit_date.blank? && 
 			!study_subject.blank? && 
 			!study_subject.dob.blank? && 
-			admit_date < study_subject.dob
+			admit_date < study_subject.dob &&
+			admit_date != Date.parse('1/1/1900')
 			errors.add(:admit_date, "is before study_subject's dob.") 
 		end
 	end

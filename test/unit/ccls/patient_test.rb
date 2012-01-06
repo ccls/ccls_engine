@@ -139,7 +139,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 	test "should require admit_date be after DOB" do
-		assert_difference( "Patient.count", 0 ) do
+		assert_difference( "Patient.count", 0 ) {
 			study_subject = Factory(:case_study_subject)
 			pii = Factory(:pii,:study_subject => study_subject)
 			patient = create_patient(
@@ -149,7 +149,18 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 			assert patient.errors.on(:admit_date)
 			assert_match(/before.*dob/,
 				patient.errors.on(:admit_date))
-		end
+		}
+	end
+
+	test "should NOT require admit_date 1/1/1900 be after DOB" do
+		assert_difference( "Patient.count", 1 ) {
+			study_subject = Factory(:case_study_subject)
+			pii = Factory(:pii,:study_subject => study_subject)
+			patient = create_patient(
+				:study_subject => study_subject,
+				:admit_date => Date.parse('1/1/1900') )
+			assert !patient.errors.on(:admit_date)
+		}
 	end
 
 	test "should require admit_date be after DOB when using nested attributes" do
@@ -160,9 +171,25 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 				:pii_attributes => Factory.attributes_for(:pii),
 				:patient_attributes => Factory.attributes_for(:patient,{
 					# BEFORE my factory set dob to raise error
-					:admit_date => Date.jd(2430000),
+					:admit_date => Date.jd(2430000)
 				}))
 			assert study_subject.errors.on('patient:admit_date')
+			assert_match(/before.*dob/,
+				study_subject.errors.on('patient:admit_date'))
+		} } }
+	end
+
+	test "should NOT require admit_date 1/1/1900 be after DOB" <<
+			" when using nested attributes" do
+		assert_difference( "Pii.count", 1 ) {
+		assert_difference( "StudySubject.count", 1 ) {
+		assert_difference( "Patient.count", 1 ) {
+			study_subject = create_case_study_subject(
+				:pii_attributes => Factory.attributes_for(:pii),
+				:patient_attributes => Factory.attributes_for(:patient,{
+					:admit_date => Date.parse('1/1/1900')
+				}))
+			assert !study_subject.errors.on('patient:admit_date')
 		} } }
 	end
 
