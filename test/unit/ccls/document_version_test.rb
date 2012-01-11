@@ -5,9 +5,12 @@ class Ccls::DocumentVersionTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_initially_belong_to(:document_type)
-	assert_should_not_require_attributes( :position, :title, :description, :indicator )
+	assert_should_belong_to( :language )
+	assert_should_not_require_attributes( :position, :title, :description, :indicator,
+		:language_id, :began_use_on, :ended_use_on )
 	assert_should_require_attribute_length( :title, :description, :indicator,
 		:maximum => 250 )
+	assert_requires_complete_date( :began_use_on, :ended_use_on )
 
 	test "explicit Factory document_version test" do
 		assert_difference('DocumentType.count',1) {
