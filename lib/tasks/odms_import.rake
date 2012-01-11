@@ -51,7 +51,7 @@ namespace :odms_import do
 	#	GONNA NEED TO SORT THESE TO COMPARE THEM, BUT BEWARE! OF MULTI-LINED ENTRIES
 	#
 	#
-	task :prepare_input_for_comparison do
+	task :prepare_input_for_comparison => :environment do
 		#	Some columns are quoted and some aren't.  Quote all.
 		FasterCSV.open('subject_in.csv','w', {:force_quotes=>true}) do |out|
 			out.add_row ["subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"]
@@ -74,6 +74,21 @@ namespace :odms_import do
 #					#	1 record is missing organization_id so must do this.
 #					m.organization_id = ( line['organization_id'].blank? ) ?
 #						999 : line['organization_id']
+
+
+#	TODO deal with incorrect value 9 in was_* fields
+				if( line['was_previously_treated'].to_s == '9' )
+					puts "Converting was_previously_treated = 9 to 999"
+					puts line
+					line['was_previously_treated'] = '999' 
+					puts line
+				end
+				if( line['was_under_15_at_dx'].to_s == '9' )
+					puts "Converting was_under_15_at_dx = 9 to 999"
+					puts line
+					line['was_under_15_at_dx'] = '999' 
+					puts line
+				end
 
 				if line['subject_type_id'].to_i == StudySubject.subject_type_case_id &&
 						line['organization_id'].blank?
@@ -600,8 +615,22 @@ namespace :odms_import do
 						999 : line['organization_id']
 
 					m.hospital_no     = line['hospital_no']
-					m.was_previously_treated = line['was_previously_treated']
-					m.was_under_15_at_dx     = line['was_under_15_at_dx']
+
+
+#	TODO deal with incorrect value 9 in was_* fields
+
+#				line['was_previously_treated'] = '999' if( 
+#					line['was_previously_treated'].to_s == '9' )
+#				line['was_under_15_at_dx'] = '999' if(
+#					line['was_under_15_at_dx'].to_s == '9' )
+
+					m.was_previously_treated = ( line['was_previously_treated'].to_s == '9' ) ?
+						'999' : line['was_previously_treated']
+					m.was_under_15_at_dx     = ( line['was_under_15_at_dx'].to_s == '9' ) ?
+						'999' : line['was_under_15_at_dx']
+
+#					m.was_previously_treated = line['was_previously_treated']
+#					m.was_under_15_at_dx     = line['was_under_15_at_dx']
 					m.raf_zip                = line['raf_zip']
 					m.raf_county             = line['raf_county']
 					m.created_at             = line['created_at']
