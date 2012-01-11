@@ -12,6 +12,12 @@ class DocumentVersion < ActiveRecordShared
 	validates_length_of   :description, :maximum => 250, :allow_blank => true
 	validates_length_of   :indicator,   :maximum => 250, :allow_blank => true
 
+
+#	belongs_to :language
+#	validates_complete_date_for :began_use_on, :allow_nil => true
+#	validates_complete_date_for :ended_use_on, :allow_nil => true
+
+
 	#	Return title
 	def to_s
 		title
