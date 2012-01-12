@@ -34,4 +34,10 @@ class Race < ActiveRecordShared
 		find_by_key(key.to_s) #|| raise(NotFound)
 	end
 
+	#	Returns boolean of comparison
+	#	true only if key == 'other'
+	def is_other?
+		key == 'other'
+	end
+
 end

@@ -15,4 +15,20 @@ class Ccls::SubjectRaceTest < ActiveSupport::TestCase
 		} } }
 	end
 
+	test "should require other if race == other" do
+		assert_difference( "SubjectRace.count", 0 ) do
+			subject_race = create_subject_race(
+				:race_id => Race['other'].id )
+			assert subject_race.errors.on_attr_and_type?(:other,:blank)
+		end
+	end
+
+	test "should not require other if race != other" do
+		assert_difference( "SubjectRace.count", 1 ) do
+			subject_race = create_subject_race(
+				:race_id => Race['white'].id )
+			assert !subject_race.errors.on_attr_and_type?(:other,:blank)
+		end
+	end
+
 end
