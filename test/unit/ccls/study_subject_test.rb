@@ -1102,6 +1102,18 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert @study_subject.subject_races.empty?
 	end
 
+	test "should NOT create study_subject with subject_races_attributes " <<
+			"if race is other and no other given" do
+		assert Race.count > 0
+		assert_difference( 'SubjectRace.count', 0 ){
+		assert_difference( "StudySubject.count", 0 ) {
+			@study_subject = create_study_subject(:subject_races_attributes => {
+				:some_random_id => { :race_id => Race['other'].id }
+			})
+			assert @study_subject.errors.on_attr_and_type?("subject_races.other",:blank)
+		} }
+	end
+
 	test "should update study_subject with subject_races_attributes" do
 		assert Race.count > 0
 		assert_difference( 'SubjectRace.count', 0 ){
