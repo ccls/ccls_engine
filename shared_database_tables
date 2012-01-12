@@ -607,6 +607,9 @@ Table: document_versions
 | indicator        | varchar(255) | YES  |     | NULL    |                |
 | created_at       | datetime     | YES  |     | NULL    |                |
 | updated_at       | datetime     | YES  |     | NULL    |                |
+| language_id      | int(11)      | YES  |     | NULL    |                |
+| began_use_on     | date         | YES  |     | NULL    |                |
+| ended_use_on     | date         | YES  |     | NULL    |                |
 +------------------+--------------+------+-----+---------+----------------+
 
 Table: enrollments
@@ -1199,6 +1202,8 @@ Table: piis
 | birth_city                  | varchar(255) | YES  |     | NULL    |                |
 | birth_state                 | varchar(255) | YES  |     | NULL    |                |
 | birth_country               | varchar(255) | YES  |     | NULL    |                |
+| mother_race_other           | varchar(255) | YES  |     | NULL    |                |
+| father_race_other           | varchar(255) | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: project_outcomes
