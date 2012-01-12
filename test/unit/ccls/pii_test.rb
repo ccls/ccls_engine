@@ -18,6 +18,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
 		:guardian_relationship_other, :email,
 		:middle_name, :maiden_name,
+		:mother_race_other, :father_race_other,
 		:generational_suffix, :father_generational_suffix )
 
 	assert_should_require_attribute_length( 
@@ -27,6 +28,7 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
 		:guardian_relationship_other,
 		:birth_city, :birth_state, :birth_country,
+		:mother_race_other, :father_race_other,
 			:maximum => 250 )
 
 	assert_should_require_attribute_length( :generational_suffix, :maximum => 10 )

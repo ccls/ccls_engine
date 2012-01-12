@@ -39,6 +39,7 @@ class Pii < ActiveRecordShared
 		:father_first_name, :father_middle_name, :father_last_name,
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
 		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
+		:mother_race_other, :father_race_other,
 		:birth_city, :birth_state, :birth_country,
 			:maximum => 250, :allow_blank => true
 
