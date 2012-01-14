@@ -57,7 +57,7 @@ namespace :odms_import do
 			out.add_row ["subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"]
 	
 			#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_xxxxxx-20120116.csv", 'rb',{
+			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_011012.csv", 'rb',{
 				:headers => true })).each do |line|
 
 				#	Not all input records have created_at so nillify all
@@ -189,12 +189,14 @@ namespace :odms_import do
 		error_file = File.open('addresses_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_addresses_121611.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addresses_011012.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
 
 #"address_type_id","data_source_id","line_1","unit","city","state","zip","external_address_id","county","country","created_at"
+#	don't need subjectID
+#"subjectID","address_type_id","data_source_id","line_1","unit","city","state","zip","external_address_id","county","country","created_at"
 
 			address = Address.create({
 				:address_type_id => line["address_type_id"],
@@ -230,7 +232,7 @@ namespace :odms_import do
 		error_file = File.open('addressings_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addressings_121611.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addressings_011012.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -296,12 +298,12 @@ namespace :odms_import do
 		error_file = File.open('phone_numbers_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Phone_Numbers_121911.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Phone_Numbers_010912.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
 
-#"subjectid","data_source_id","external_address_id","created_at","phone_number","is_primary","current_phone"
+#"subjectid","data_source_id","external_address_id","created_at","phone_number","is_primary","current_phone","phone_type_id"
 
 			if line['subjectid'].blank?
 				error_file.puts 
@@ -322,7 +324,7 @@ namespace :odms_import do
 
 			phone_number = PhoneNumber.create({
 				:study_subject_id => study_subject.id,
-#				:phone_type_id    => line["phone_type_id"],
+				:phone_type_id    => line["phone_type_id"],
 				:data_source_id   => line["data_source_id"],
 				:phone_number     => line["phone_number"],
 				:is_primary       => line["is_primary"],         #	boolean
@@ -353,7 +355,7 @@ namespace :odms_import do
 		error_file = File.open('operational_events_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Operational_Events_xxxxxx.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Operational_Events_011012.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -461,7 +463,7 @@ namespace :odms_import do
 		error_file = File.open('enrollments_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Enrollments_xxxxxx.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Enrollments_011012.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -520,7 +522,7 @@ namespace :odms_import do
 		error_file = File.open('subjects_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_xxxxxx-20120116.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_011012.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -530,6 +532,7 @@ namespace :odms_import do
 			puts line
 
 #"subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"
+
 
 #
 #		Models built in block mode to avoid protected attributes

@@ -35,8 +35,7 @@ Gemfile.lock
 /enrollments_errors.txt.20111214
 /imported_20111201.sql
 /shared_database_tables.20111201
-/shared_development_20111201.20111209a.sql
-/shared_development_20111201.20111209b.sql
+/shared_development_20111201.*.sql
 /subject_differences_*.txt
 /subject_in.csv
 /subject_in_sorted.csv
