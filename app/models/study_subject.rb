@@ -448,7 +448,6 @@ class StudySubject < ActiveRecordShared
 		else
 			new_mother = StudySubject.create!({
 				:subject_type_id => StudySubject.subject_type_mother_id,
-#				:subject_type => SubjectType['Mother'],
 				:vital_status => VitalStatus['living'],
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
@@ -481,7 +480,6 @@ class StudySubject < ActiveRecordShared
 			existing_father
 		else
 			new_father = StudySubject.create!({
-#				:subject_type => SubjectType['Father'],
 				:subject_type_id => StudySubject.subject_type_father_id,
 				:vital_status => VitalStatus['living'],
 				:sex => 'M',			#	TODO M/F or male/female? have to check.
@@ -523,7 +521,6 @@ class StudySubject < ActiveRecordShared
 			:joins => :identifier, 
 			:order => 'identifiers.orderno DESC', 
 			:conditions => { 
-#				:subject_type_id => SubjectType['Control'].id,
 				:subject_type_id => StudySubject.subject_type_control_id,
 				'identifiers.case_control_type' => grouping,
 				'identifiers.matchingid' => self.identifier.subjectid
@@ -624,7 +621,6 @@ class StudySubject < ActiveRecordShared
 			:conditions => [
 				'study_subjects.subject_type_id = ? AND identifiers.patid = ?',
 				StudySubject.subject_type_case_id, patid
-#				SubjectType['Case'].id, patid
 			]
 		)
 	end
@@ -635,7 +631,6 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def childid
-#		if subject_type_id == SubjectType['Mother'].id
 		if subject_type_id == StudySubject.subject_type_mother_id
 			"#{child.try(:childid)} (mother)"
 		else
@@ -644,7 +639,6 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def studyid
-#		if subject_type_id == SubjectType['Mother'].id
 		if subject_type_id == StudySubject.subject_type_mother_id
 			"n/a"
 		else
@@ -664,7 +658,6 @@ class StudySubject < ActiveRecordShared
 
 	def raf_duplicate_creation_attempted(attempted_subject)
 		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-#		ccls_enrollment.operational_events << OperationalEvent.create!(
 		OperationalEvent.create!(
 			:enrollment => ccls_enrollment,
 			:operational_event_type => OperationalEventType['DuplicateCase'],
@@ -675,6 +668,26 @@ class StudySubject < ActiveRecordShared
 				"with hospital number: " <<
 				"#{attempted_subject.hospital_no}."
 		)
+	end
+
+#	operational_events.occurred_on where operational_event_type_id = 26 and enrollment_id is for any open project (where projects.ended_on is null) for study_subject_id
+
+	def screener_complete_date_for_open_project
+		OperationalEvent.find(:first,
+			:joins => [
+				'LEFT JOIN enrollments ON operational_events.enrollment_id = enrollments.id',
+				'LEFT JOIN projects ON enrollments.project_id = projects.id'
+			],
+			:conditions => [
+				"study_subject_id = :subject_id AND " <<
+				"operational_event_type_id = :screener_complete AND " <<
+				'projects.ended_on IS NULL', 
+				{
+					:subject_id => self.id,
+					:screener_complete => OperationalEventType['screener_complete'].id
+				}
+			]
+		).try(:occurred_on)
 	end
 
 protected
@@ -748,7 +761,6 @@ protected
 	#	I suspect that this'll be attached to the CCLS project enrollment.
 	def add_new_subject_operational_event
 		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-#		ccls_enrollment.operational_events << OperationalEvent.create!(
 		OperationalEvent.create!(
 			:enrollment => ccls_enrollment,
 			:operational_event_type => OperationalEventType['newSubject'],
@@ -762,7 +774,6 @@ protected
 		if( ( vital_status_id == VitalStatus['deceased'].id ) && 
 				( vital_status_id_was != VitalStatus['deceased'].id ) )
 			ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-#			ccls_enrollment.operational_events << OperationalEvent.create!(
 			OperationalEvent.create!(
 				:enrollment => ccls_enrollment,
 				:operational_event_type => OperationalEventType['subjectDied'],

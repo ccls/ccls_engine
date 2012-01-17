@@ -1463,6 +1463,24 @@ pending	#	TODO should do what for null familyid for family
 			OperationalEventType['subjectDied'].id )
 	end
 
+	test "should return nil for subject's screener_complete_date_for_open_project" <<
+			" when subject has no associated operational event type" do
+		study_subject = Factory(:study_subject)
+		assert_nil study_subject.screener_complete_date_for_open_project
+	end
+
+	test "should return date for subject's screener_complete_date_for_open_project" <<
+			" when subject has associated operational event type" do
+		study_subject = Factory(:study_subject)
+		assert_nil study_subject.screener_complete_date_for_open_project
+		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
+		ccls_enrollment.operational_events.create(
+			:operational_event_type_id => OperationalEventType['screener_complete'].id,
+			:occurred_on => Date.today)
+		date = study_subject.screener_complete_date_for_open_project
+		assert_equal date, Date.today
+	end
+
 protected
 
 #	def assert_no_duplicates_found
