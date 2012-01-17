@@ -1,0 +1,197 @@
+require 'test_helper'
+
+#	This is just a collection of language related tests 
+#	for StudySubject separated only for clarity due
+#	to the size of the StudySubjectTest class.
+class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
+
+	test "should create study_subject with language" do
+		assert_difference( 'Language.count', 1 ){
+		assert_difference( 'SubjectLanguage.count', 1 ){
+		assert_difference( "StudySubject.count", 1 ) {
+			study_subject = create_study_subject
+			study_subject.languages << Factory(:language)
+			assert !study_subject.new_record?, 
+				"#{study_subject.errors.full_messages.to_sentence}"
+		} } }
+	end
+
+	test "should NOT destroy languages with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('SubjectLanguage.count',1) {
+			@study_subject = Factory(:subject_language).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('SubjectLanguage.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should NOT destroy subject_languages with study_subject" do
+		assert_difference('StudySubject.count',1) {
+		assert_difference('SubjectLanguage.count',1) {
+			@study_subject = Factory(:subject_language).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('SubjectLanguage.count',0) {
+			@study_subject.destroy
+		} }
+	end
+
+	test "should create study_subject with empty subject_languages_attributes" do
+		assert_difference( 'SubjectLanguage.count', 0 ){
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_languages_attributes => { })
+			assert !@study_subject.new_record?, 
+				"#{@study_subject.errors.full_messages.to_sentence}"
+		} }
+		assert @study_subject.languages.empty?
+		assert @study_subject.subject_languages.empty?
+	end
+
+	test "should create study_subject with blank language_id" do
+		assert_difference( 'SubjectLanguage.count', 0 ){
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_languages_attributes => { 
+				:some_random_id => { :language_id => '' }
+			})
+			assert !@study_subject.new_record?, 
+				"#{@study_subject.errors.full_messages.to_sentence}"
+		} }
+		assert @study_subject.languages.empty?
+		assert @study_subject.subject_languages.empty?
+	end
+
+	test "should create study_subject with subject_languages_attributes language_id" do
+		assert Language.count > 0
+		assert_difference( 'SubjectLanguage.count', 1 ){
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language.first.id }
+			})
+			assert !@study_subject.new_record?, 
+				"#{@study_subject.errors.full_messages.to_sentence}"
+		} }
+		assert !@study_subject.languages.empty?
+		assert_equal 1, @study_subject.languages.length
+		assert !@study_subject.subject_languages.empty?
+		assert_equal 1, @study_subject.subject_languages.length
+	end
+
+	test "should create study_subject with subject_languages_attributes multiple languages" do
+		assert Language.count > 1
+		languages = Language.all
+		assert_difference( 'SubjectLanguage.count', 2 ){
+		assert_difference( "StudySubject.count", 1 ) {
+			@study_subject = create_study_subject(:subject_languages_attributes => {
+				:some_random_id1 => { :language_id => languages[0].id },
+				:some_random_id2 => { :language_id => languages[1].id }
+			})
+			assert !@study_subject.new_record?, 
+				"#{@study_subject.errors.full_messages.to_sentence}"
+		} }
+		assert !@study_subject.languages.empty?
+		assert_equal 2, @study_subject.languages.length
+		assert !@study_subject.subject_languages.empty?
+		assert_equal 2, @study_subject.subject_languages.length
+	end
+
+	test "should NOT create study_subject with subject_languages_attributes " <<
+			"if language is other and no other given" do
+		assert Language.count > 0
+		assert_difference( 'SubjectLanguage.count', 0 ){
+		assert_difference( "StudySubject.count", 0 ) {
+			@study_subject = create_study_subject(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language['other'].id }
+			})
+			assert @study_subject.errors.on_attr_and_type?("subject_languages.other",:blank)
+		} }
+	end
+
+	test "should update study_subject with subject_languages_attributes" do
+		study_subject = create_study_subject
+		assert_difference( 'SubjectLanguage.count', 1 ){
+			study_subject.update_attributes(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language.first.id }
+			})
+		}
+	end
+
+	test "should destroy subject_language on update with _destroy" do
+		study_subject = create_study_subject
+		assert_difference( 'SubjectLanguage.count', 1 ){
+			study_subject.update_attributes(:subject_languages_attributes => {
+				:some_random_id => { :language_id => Language.first.id }
+			})
+		}
+		subject_language = study_subject.subject_languages.first
+		assert_difference( 'SubjectLanguage.count', -1 ){
+			study_subject.update_attributes(:subject_languages_attributes => {
+				:some_random_id => { :id => subject_language.id, :_destroy => 1 }
+			})
+		}
+	end
+
+protected
+
+#	def assert_no_duplicates_found
+#		assert_not_nil @duplicates
+#		assert @duplicates.is_a?(Array)
+#		assert @duplicates.empty?
+#	end
+#
+#	def assert_duplicates_found
+#		assert_not_nil @duplicates
+#		assert @duplicates.is_a?(Array)
+#		assert !@duplicates.empty?
+#	end
+#
+##	def create_study_subject(options={})
+##		study_subject = Factory.build(:study_subject,options)
+##		study_subject.save
+##		study_subject
+##	end
+#
+#	def create_study_subject_with_matchingid(matchingid='12345')
+#		study_subject = create_study_subject( 
+#			:identifier_attributes => Factory.attributes_for(:identifier,
+#				{ :matchingid => matchingid })).reload
+#	end
+#
+#	def create_case_study_subject_for_duplicate_search(options={})
+#		Factory(:case_study_subject, { :sex => 'M',
+#			:pii_attributes => Factory.attributes_for(:pii,
+#				:dob => Date.yesterday),
+##	we no longer need the identifier in the check since hospital_no moved
+##			:identifier_attributes => Factory.attributes_for(:identifier),
+#			:patient_attributes => Factory.attributes_for(:patient,
+#				:hospital_no => 'matchthis',
+#				:admit_date => Date.yesterday ) }.deep_merge(options) )
+#	end
+#
+#	def new_case_study_subject_for_duplicate_search(options={})
+#		Factory.build(:case_study_subject, { :sex => 'F',
+#			:pii_attributes => Factory.attributes_for(:pii,
+#				:dob => Date.today),
+##	we no longer need the identifier in the check since hospital_no moved
+##			:identifier_attributes => Factory.attributes_for(:identifier),
+#			:patient_attributes => Factory.attributes_for(:patient,
+#				:hospital_no => 'somethingdifferent',
+##				:organization_id => 0,	#	Why 0? was for just matching admit_date
+#				:admit_date => Date.today ) }.deep_merge(options) )
+#	end
+#
+#	#	Used more than once so ...
+#	def create_case_study_subject_with_patient_and_identifier
+#		study_subject = create_case_study_subject( 
+#			:patient_attributes    => Factory.attributes_for(:patient,
+#				{ :admit_date => Date.yesterday }),
+#			:identifier_attributes => Factory.attributes_for(:identifier,
+#				{ :matchingid => '12345' })).reload
+#		assert_not_nil study_subject.reference_date
+#		assert_not_nil study_subject.patient.admit_date
+#		assert_equal study_subject.reference_date, study_subject.patient.admit_date
+#		study_subject
+#	end
+
+end
