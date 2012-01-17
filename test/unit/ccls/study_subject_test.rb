@@ -122,14 +122,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} } } }
 	end
 
-#	test "set organization for complete case study subject factory test" do
-#		#	Factory only does a merge, NOT a deep_merge, so this won' work
-#		s = Factory(:complete_case_study_subject,
-#			:patient_attributes => { :organization_id => Hospital.last.organization_id } )
-#		assert Hospital.first != Hospital.last
-#		assert_equal s.organization_id, Hospital.last.organization_id
-#	end
-
 	test "should require subject_type" do
 		assert_difference( "StudySubject.count", 0 ) do
 			study_subject = create_study_subject( :subject_type => nil)
@@ -283,24 +275,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should create study_subject and accept_nested_attributes_for pii" do
-		assert_difference( 'Pii.count', 1) {
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject(
-				:pii_attributes => Factory.attributes_for(:pii))
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} }
-	end
-
-	test "should NOT create study_subject with empty pii" do
-		assert_difference( 'Pii.count', 0) {
-		assert_difference( "StudySubject.count", 0 ) {
-			study_subject = create_study_subject( :pii_attributes => {})
-			assert study_subject.errors.on_attr_and_type?('pii.dob',:blank)
-		} }
-	end
-
 	test "should create study_subject and accept_nested_attributes_for homex_outcome" do
 		assert_difference( 'HomexOutcome.count', 1) {
 		assert_difference( "StudySubject.count", 1 ) {
@@ -318,102 +292,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference( 'StudySubject.count', 1) {
 			study_subject = create_study_subject( :homex_outcome_attributes => {})
 		} }
-	end
-
-	test "should create case study_subject and accept_nested_attributes_for patient" do
-		assert_difference( 'Patient.count', 1) {
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = Factory(:case_study_subject,
-				:patient_attributes => Factory.attributes_for(:patient))
-			assert  study_subject.is_case?
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} }
-	end
-
-	test "should NOT create non-case study_subject with patient" do
-		assert_difference( 'Patient.count', 0) {
-		assert_difference( "StudySubject.count", 0 ) {
-			study_subject = create_study_subject(
-				:patient_attributes => Factory.attributes_for(:patient))
-			assert !study_subject.is_case?
-			assert study_subject.errors.on(:patient)	#	no type
-			assert  study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} }
-	end
-
-	test "should create patient for case study_subject" do
-		assert_difference( 'Patient.count', 1) {
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = Factory(:case_study_subject)
-			assert study_subject.is_case?
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-			patient = Factory(:patient, :study_subject => study_subject)
-			assert !patient.new_record?, 
-				"#{patient.errors.full_messages.to_sentence}"
-		} }
-	end
-
-	test "should NOT create patient for non-case study_subject" do
-		assert_difference( 'Patient.count', 0) {
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject
-			assert !study_subject.is_case?
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-			patient = Factory.build(:patient, :study_subject => study_subject)
-			patient.save	#	avoid an exception being raised
-			assert patient.errors.on(:study_subject)
-		} }
-	end
-
-	test "should NOT create study_subject with empty patient" do
-		assert_difference( 'Patient.count', 0) {
-		assert_difference( "StudySubject.count", 0 ) {
-			study_subject = create_study_subject( :patient_attributes => {})
-			assert study_subject.errors.on('patient.diagnosis_id')
-			assert study_subject.errors.on_attr_and_type?('patient.diagnosis_id',:blank)
-			assert study_subject.errors.on('patient.hospital_no')
-			assert study_subject.errors.on_attr_and_type?('patient.hospital_no',:blank)
-			assert study_subject.errors.on('patient.admit_date')
-			assert study_subject.errors.on_attr_and_type?('patient.admit_date',:blank)
-			assert study_subject.errors.on('patient.organization_id')
-			assert study_subject.errors.on_attr_and_type?('patient.organization_id',:blank)
-		} }
-	end
-
-	test "should create study_subject and accept_nested_attributes_for identifier" do
-		assert_difference( 'Identifier.count', 1) {
-		assert_difference( 'StudySubject.count', 1) {
-			study_subject = create_study_subject(
-				:identifier_attributes => Factory.attributes_for(:identifier))
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} }
-	end
-
-	#	StudySubject currently accepts nested attributes for identifier,
-	#	but an empty identifier is no longer invalid.
-	test "should create study_subject with empty identifier" do
-		assert_difference( 'Identifier.count', 1) {
-		assert_difference( 'StudySubject.count', 1) {
-			study_subject = create_study_subject( :identifier_attributes => {} )
-			assert_not_nil study_subject.identifier.subjectid
-		} }
-	end
-
-	test "studyid should be patid, case_control_type and orderno" do
-		Identifier.any_instance.stubs(:get_next_patid).returns('123')
-		study_subject = Factory(:case_identifier).reload.study_subject
-#	why unstub here?
-#		Identifier.any_instance.unstub(:get_next_patid)
-		assert_not_nil study_subject.studyid
-		assert_not_nil study_subject.identifier.studyid
-		assert_nil study_subject.identifier.studyid_nohyphen
-		assert_nil study_subject.identifier.studyid_intonly_nohyphen
-		assert_equal "0123-C-0", study_subject.studyid
 	end
 
 	test "should belong to vital_status" do
@@ -445,18 +323,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	#	Because of this, associated records are neither nullfied nor destroyed
 	#	when the associated models is destroyed.
 	#
-
-	test "should NOT destroy abstracts with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Abstract.count',1) {
-			@study_subject = Factory(:study_subject)
-			Factory(:abstract, :study_subject => @study_subject)
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Abstract.count',0) {
-			@study_subject.destroy
-		} }
-	end
 
 	test "should NOT destroy addressings with study_subject" do
 		assert_difference('StudySubject.count',1) {
@@ -538,17 +404,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should NOT destroy identifier with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Identifier.count',1) {
-			@study_subject = Factory(:identifier).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Identifier.count',0) {
-			@study_subject.destroy
-		} }
-	end
-
 	test "should NOT destroy interviews with study_subject" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('Interview.count',1) {
@@ -560,17 +415,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should NOT destroy patient with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Patient.count',1) {
-			@study_subject = Factory(:patient).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Patient.count',0) {
-			@study_subject.destroy
-		} }
-	end
-
 	test "should NOT destroy phone_numbers with study_subject" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('PhoneNumber.count',1) {
@@ -578,17 +422,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 		assert_difference('StudySubject.count',-1) {
 		assert_difference('PhoneNumber.count',0) {
-			@study_subject.destroy
-		} }
-	end
-
-	test "should NOT destroy pii with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Pii.count',1) {
-			@study_subject = Factory(:pii).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Pii.count',0) {
 			@study_subject.destroy
 		} }
 	end
@@ -634,57 +467,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
 	end
 
-	#	Delegated patient fields
-	%w( admit_date organization 
-			organization_id hospital_no
-		).each do |method_name|
-
-		test "should return nil #{method_name} without patient" do
-			study_subject = create_study_subject
-			assert_nil study_subject.send(method_name)
-		end
-
-		test "should return #{method_name} with patient" do
-			study_subject = create_study_subject(
-				:patient_attributes => Factory.attributes_for(:patient))
-			assert_not_nil study_subject.send(method_name)
-		end
-
-	end
-
-	#	Mostly delegated identifier fields except ... patid, orderno, case_control_type
-	%w( childid state_id_no state_registrar_no local_registrar_no
-		).each do |method_name|
-
-		test "should return nil #{method_name} without identifier" do
-			study_subject = create_study_subject
-			assert_nil study_subject.send(method_name)
-		end
-
-		test "should return #{method_name} with identifier" do
-			study_subject = create_study_subject(
-				:identifier_attributes => Factory.attributes_for(:identifier))
-			assert_not_nil study_subject.send(method_name)
-		end
-
-	end
-
-	#	Delegated pii fields except ... first_name, last_name, mother_maiden_name
-	%w( initials fathers_name mothers_name email dob ).each do |method_name|
-
-		test "should return nil #{method_name} without pii" do
-			study_subject = create_study_subject
-			assert_nil study_subject.send(method_name)
-		end
-
-		test "should return #{method_name} with pii" do
-			study_subject = create_study_subject(
-				:pii_attributes => Factory.attributes_for(:pii))
-			assert_not_nil study_subject.send(method_name)
-		end
-
-	end
-
 	#	Delegated homex_outcome fields except ... interview_outcome, sample_outcome
 	%w( interview_outcome_on sample_outcome_on ).each do |method_name|
 
@@ -699,17 +481,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_not_nil study_subject.send(method_name)
 		end
 
-	end
-
-	test "should be ineligible for invitation without email" do
-		study_subject = create_study_subject
-		assert !study_subject.is_eligible_for_invitation?
-	end
-
-	test "should be eligible for invitation with email" do
-		study_subject = create_study_subject(
-			:pii_attributes => Factory.attributes_for(:pii))
-		assert study_subject.is_eligible_for_invitation?
 	end
 
 	test "should return subject_type description for string" do
@@ -761,45 +532,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			[study_subject.childid,'(',study_subject.studyid,study_subject.full_name,')'].compact.join(' ')
 	end
 
-	test "should return 'name not available' for study_subject without pii" do
-		study_subject = create_study_subject
-		assert_nil study_subject.pii
-		assert_equal '[name not available]', study_subject.full_name
-	end
-
-	test "should return 'no oncologist specified' for study_subject without patient" do
-		study_subject = create_study_subject.reload
-		assert_nil study_subject.patient
-		assert_equal '[no oncologist specified]', study_subject.admitting_oncologist
-	end
-
-	test "should return 'no oncologist specified' for study_subject with null patient#admitting_oncologist" do
-		assert_difference('Patient.count',1) {
-		assert_difference('StudySubject.count',1) {
-			study_subject = create_patient(:admitting_oncologist => nil
-				).study_subject.reload
-			assert_equal '[no oncologist specified]', study_subject.admitting_oncologist
-		} }
-	end
-
-	test "should return 'no oncologist specified' for study_subject with blank patient#admitting_oncologist" do
-		assert_difference('Patient.count',1) {
-		assert_difference('StudySubject.count',1) {
-			study_subject = create_patient(:admitting_oncologist => ''
-				).study_subject.reload
-			assert_equal '[no oncologist specified]', study_subject.admitting_oncologist
-		} }
-	end
-
-	test "should return admitting_oncologist for study_subject with patient#admitting_oncologist" do
-		assert_difference('Patient.count',1) {
-		assert_difference('StudySubject.count',1) {
-			study_subject = create_patient(:admitting_oncologist => 'Dr Jim'
-				).study_subject.reload
-			assert_equal 'Dr Jim', study_subject.admitting_oncologist
-		} }
-	end
-
 	test "should return hx_id" do
 		hx_id = Project['HomeExposures'].id
 		assert_not_nil hx_id
@@ -836,177 +568,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert study_subjects.is_a?(Array)
 	end
 
-	test "should raise StudySubject::NotTwoAbstracts with 0 abstracts" <<
-			" on abstracts_the_same?" do
-		study_subject = Factory(:study_subject)
-		assert_equal 0, study_subject.abstracts.length
-		assert_raise(StudySubject::NotTwoAbstracts) {
-			study_subject.abstracts_the_same?
-		}
-	end
-
-	test "should raise StudySubject::NotTwoAbstracts with 1 abstracts" <<
-			" on abstracts_the_same?" do
-		study_subject = Factory(:study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		study_subject.reload
-		assert_equal 1, study_subject.abstracts.length
-		assert_raise(StudySubject::NotTwoAbstracts) {
-			study_subject.abstracts_the_same?
-		}
-	end
-
-	test "should return true if abstracts are the same on abstracts_the_same?" do
-		study_subject = Factory(:study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		study_subject.reload
-		assert_equal 2, study_subject.abstracts.length
-		assert study_subject.abstracts_the_same?
-	end
-
-	test "should raise StudySubject::NotTwoAbstracts with 3 abstracts" <<
-			" on abstracts_the_same?" do
-		study_subject = Factory(:study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		study_subject.reload
-		assert_equal 3, study_subject.abstracts.length
-		assert_raise(StudySubject::NotTwoAbstracts) {
-			study_subject.abstracts_the_same?
-		}
-	end
-
-	test "should raise StudySubject::NotTwoAbstracts with 0 abstracts" <<
-			" on abstract_diffs" do
-		study_subject = Factory(:study_subject)
-		assert_equal 0, study_subject.abstracts.length
-		assert_raise(StudySubject::NotTwoAbstracts) {
-			study_subject.abstract_diffs
-		}
-	end
-
-	test "should raise StudySubject::NotTwoAbstracts with 1 abstracts" <<
-			" on abstract_diffs" do
-		study_subject = Factory(:study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		study_subject.reload
-		assert_equal 1, study_subject.abstracts.length
-		assert_raise(StudySubject::NotTwoAbstracts) {
-			study_subject.abstract_diffs
-		}
-	end
-
-	test "should return true if abstracts are the same on abstract_diffs" do
-		study_subject = Factory(:study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		study_subject.reload
-		assert_equal 2, study_subject.abstracts.length
-		assert_equal Hash.new, study_subject.abstract_diffs
-		assert       study_subject.abstract_diffs.empty?
-	end
-
-	test "should raise StudySubject::NotTwoAbstracts with 3 abstracts" <<
-			" on abstract_diffs" do
-		study_subject = Factory(:study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		Factory(:abstract, :study_subject => study_subject)
-		study_subject.reload
-		assert_equal 3, study_subject.abstracts.length
-		assert_raise(StudySubject::NotTwoAbstracts) {
-			study_subject.abstract_diffs
-		}
-	end
-
-
-	test "should set study_subject.reference_date to self.patient.admit_date on create" do
-		create_case_study_subject_with_patient_and_identifier
-	end
-
-	test "should create study subject with specified matchingid" do
-		#	just to make sure that this method is defined
-		#	get funny errors when accidentally comment out.
-		assert_difference('StudySubject.count',1) {
-			study_subject = create_study_subject_with_matchingid('54321')
-			assert_equal '054321', study_subject.reload.identifier.matchingid
-		}
-	end
-
-	test "should update all matching study_subjects' reference date " <<
-			"with updated admit date" do
-		study_subject = create_case_study_subject(
-			:patient_attributes    => Factory.attributes_for(:patient),
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => '12345' })).reload
-		other   = create_study_subject_with_matchingid
-		nobody  = create_study_subject_with_matchingid('54321')
-#	admit_date is now required, so will exist initially
-#		assert_nil study_subject.reference_date
-#		assert_nil study_subject.patient.admit_date
-#		assert_nil other.reference_date
-		assert_nil nobody.reference_date
-		study_subject.patient.update_attributes(
-			:admit_date => Date.yesterday )
-		assert_not_nil study_subject.patient.admit_date
-		assert_not_nil study_subject.reload.reference_date
-		assert_not_nil other.reload.reference_date
-		assert_nil     nobody.reload.reference_date
-		assert_equal study_subject.reference_date, study_subject.patient.admit_date
-		assert_equal study_subject.reference_date, other.reference_date
-	end
-
-	test "should set study_subject.reference_date to matching patient.admit_date " <<
-			"on create with patient created first" do
-		study_subject = create_case_study_subject_with_patient_and_identifier
-		other   = create_study_subject_with_matchingid
-		assert_not_nil other.reference_date
-		assert_equal   other.reference_date, study_subject.reference_date
-		assert_equal   other.reference_date, study_subject.patient.admit_date
-	end
-
-	test "should set study_subject.reference_date to matching patient.admit_date " <<
-			"on create with patient created last" do
-		other   = create_study_subject_with_matchingid
-		study_subject = create_case_study_subject_with_patient_and_identifier
-		assert_not_nil other.reload.reference_date
-		assert_equal   other.reference_date, study_subject.reference_date
-		assert_equal   other.reference_date, study_subject.patient.admit_date
-	end
-
-	test "should nullify study_subject.reference_date if matching patient changes matchingid" do
-		other   = create_study_subject_with_matchingid
-		study_subject = create_case_study_subject_with_patient_and_identifier
-		assert_not_nil other.reload.reference_date
-		study_subject.identifier.update_attributes(:matchingid => '12346')
-		assert_nil     other.reload.reference_date
-	end
-
-	test "should nullify study_subject.reference_date if matching patient nullifies matchingid" do
-		other   = create_study_subject_with_matchingid
-		study_subject = create_case_study_subject_with_patient_and_identifier
-		assert_not_nil other.reload.reference_date
-		study_subject.identifier.update_attributes(:matchingid => nil)
-		assert_nil     other.reload.reference_date
-	end
-
-	test "should nullify study_subject.reference_date if matching patient nullifies admit_date (admit_date now required)" do
-		other   = create_study_subject_with_matchingid
-		study_subject = create_case_study_subject_with_patient_and_identifier
-		assert_not_nil study_subject.patient.admit_date
-		assert_not_nil study_subject.reference_date
-		assert_not_nil other.reload.reference_date
-#	admit_date is now required, so can't nullify admit_date
-#	This actually now returns false
-		assert !study_subject.patient.update_attributes(:admit_date => nil)
-		assert_not_nil study_subject.patient.reload.admit_date
-		assert_not_nil study_subject.reference_date
-		assert_not_nil other.reload.reference_date
-#		assert_nil     other.reload.reference_date
-	end
-
 	test "should create_home_exposure_with_study_subject" do
 		study_subject = create_home_exposure_with_study_subject
 		assert study_subject.is_a?(StudySubject)
@@ -1015,50 +576,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	test "should create_home_exposure_with_study_subject with patient" do
 		study_subject = create_home_exposure_with_study_subject(:patient => true)
 		assert study_subject.is_a?(StudySubject)
-	end
-
-	test "should not require dob on creation for father with flag" do
-		assert_difference( "StudySubject.count", 1 ) {
-			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
-				:pii_attributes => Factory.attributes_for(:pii,
-					:subject_is_father => true,
-					:dob => nil )
-			)
-		}
-		assert_nil @study_subject.reload.dob
-	end
-
-	test "should not require dob on update for father" do
-		#	flag not necessary as study_subject.subject_type exists
-		assert_difference( "StudySubject.count", 1 ) {
-			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
-				:pii_attributes => Factory.attributes_for(:pii) )
-		}
-		assert_not_nil @study_subject.reload.dob
-		@study_subject.pii.update_attributes(:dob => nil)
-		assert_nil @study_subject.reload.dob
-	end
-
-	test "should not require dob on creation for mother with flag" do
-		assert_difference( "StudySubject.count", 1 ) {
-			@study_subject = create_study_subject(:subject_type => SubjectType['Mother'],
-				:pii_attributes => Factory.attributes_for(:pii,
-					:subject_is_mother => true,
-					:dob => nil )
-			)
-		}
-		assert_nil @study_subject.reload.dob
-	end
-
-	test "should not require dob on update for mother" do
-		#	flag not necessary as study_subject.subject_type exists
-		assert_difference( "StudySubject.count", 1 ) {
-			@study_subject = create_study_subject(:subject_type => SubjectType['Mother'],
-				:pii_attributes => Factory.attributes_for(:pii) )
-		}
-		assert_not_nil @study_subject.reload.dob
-		@study_subject.pii.update_attributes(:dob => nil)
-		assert_nil @study_subject.reload.dob
 	end
 
 	test "should return nil for next_control_orderno for control" do
@@ -1086,34 +603,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			:case_control_type => '6',	#	<- default used for next_control_orderno
 			:orderno    => case_study_subject.next_control_orderno ).study_subject
 		assert_equal 2, case_study_subject.next_control_orderno
-	end
-
-	test "should not assign icf_master_id when there are none" do
-		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		study_subject.assign_icf_master_id
-		assert_nil study_subject.identifier.icf_master_id
-	end
-
-	test "should not assign icf_master_id if already have one and one exists" do
-		study_subject = create_identifier.study_subject
-		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
-		icf_master_id = study_subject.identifier.reload.icf_master_id
-		assert_not_nil icf_master_id
-		study_subject.assign_icf_master_id
-		assert_equal icf_master_id, study_subject.identifier.reload.icf_master_id
-	end
-
-	test "should assign icf_master_id when there is one" do
-		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
-		study_subject.assign_icf_master_id
-		assert_not_nil study_subject.identifier.icf_master_id
-		assert_equal '123456789', study_subject.identifier.icf_master_id
-		imi.reload
-		assert_not_nil imi.assigned_on
-		assert_equal Date.today, imi.assigned_on
-		assert_not_nil imi.study_subject_id
-		assert_equal imi.study_subject_id, study_subject.id
 	end
 
 	test "should create mother when isn't one" do
@@ -1193,34 +682,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_equal study_subject, study_subject.create_mother
 	end
 
-	test "should assign icf_master_id to mother on creation if one exists" do
-		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
-		mother = study_subject.create_mother
-		assert_not_nil mother.reload.identifier.icf_master_id
-		assert_equal '123456789', mother.identifier.icf_master_id
-	end
-
-	test "should not assign icf_master_id to mother on creation if none exist" do
-		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		mother = study_subject.create_mother
-		assert_nil mother.reload.identifier.icf_master_id
-	end
-
-	test "should return 'no ID assigned' if study_subject has no icf_master_id" do
-		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		assert_nil     study_subject.identifier.icf_master_id
-		assert_not_nil study_subject.icf_master_id
-		assert_equal   study_subject.icf_master_id, '[no ID assigned]'
-	end
-
-	test "should return icf_master_id if study_subject has icf_master_id" do
-		study_subject = create_identifier.study_subject
-		assert_not_nil study_subject.identifier.icf_master_id
-		assert_not_nil study_subject.icf_master_id
-		assert_equal   study_subject.icf_master_id, study_subject.identifier.icf_master_id
-	end
-
 	test "should create father when isn't one" do
 		study_subject = create_identifier.study_subject
 		assert_nil study_subject.reload.father
@@ -1247,20 +708,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		study_subject = create_complete_father_study_subject
 		assert_equal study_subject, study_subject.father
 		assert_equal study_subject, study_subject.create_father
-	end
-
-	test "should assign icf_master_id to father on creation if one exists" do
-		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		imi = Factory(:icf_master_id,:icf_master_id => '123456789')
-		father = study_subject.create_father
-		assert_not_nil father.reload.identifier.icf_master_id
-		assert_equal '123456789', father.identifier.icf_master_id
-	end
-
-	test "should not assign icf_master_id to father on creation if none exist" do
-		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		father = study_subject.create_father
-		assert_nil father.reload.identifier.icf_master_id
 	end
 
 	test "should get control subjects for case subject" do
@@ -1479,68 +926,6 @@ pending	#	TODO should do what for null familyid for family
 			:occurred_on => Date.today)
 		date = study_subject.screener_complete_date_for_open_project
 		assert_equal date, Date.today
-	end
-
-protected
-
-#	def assert_no_duplicates_found
-#		assert_not_nil @duplicates
-#		assert @duplicates.is_a?(Array)
-#		assert @duplicates.empty?
-#	end
-
-#	def assert_duplicates_found
-#		assert_not_nil @duplicates
-#		assert @duplicates.is_a?(Array)
-#		assert !@duplicates.empty?
-#	end
-
-#	def create_study_subject(options={})
-#		study_subject = Factory.build(:study_subject,options)
-#		study_subject.save
-#		study_subject
-#	end
-
-	def create_study_subject_with_matchingid(matchingid='12345')
-		study_subject = create_study_subject( 
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => matchingid })).reload
-	end
-
-#	def create_case_study_subject_for_duplicate_search(options={})
-#		Factory(:case_study_subject, { :sex => 'M',
-#			:pii_attributes => Factory.attributes_for(:pii,
-#				:dob => Date.yesterday),
-##	we no longer need the identifier in the check since hospital_no moved
-##			:identifier_attributes => Factory.attributes_for(:identifier),
-#			:patient_attributes => Factory.attributes_for(:patient,
-#				:hospital_no => 'matchthis',
-#				:admit_date => Date.yesterday ) }.deep_merge(options) )
-#	end
-
-#	def new_case_study_subject_for_duplicate_search(options={})
-#		Factory.build(:case_study_subject, { :sex => 'F',
-#			:pii_attributes => Factory.attributes_for(:pii,
-#				:dob => Date.today),
-##	we no longer need the identifier in the check since hospital_no moved
-##			:identifier_attributes => Factory.attributes_for(:identifier),
-#			:patient_attributes => Factory.attributes_for(:patient,
-#				:hospital_no => 'somethingdifferent',
-##				:organization_id => 0,	#	Why 0? was for just matching admit_date
-#				:admit_date => Date.today ) }.deep_merge(options) )
-#	end
-
-	#	Used more than once so ...
-	def create_case_study_subject_with_patient_and_identifier
-		study_subject = create_case_study_subject( 
-			:patient_attributes    => Factory.attributes_for(:patient,
-				{ :admit_date => Date.yesterday }),
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => '12345' })).reload
-		assert_not_nil study_subject.reference_date
-		assert_not_nil study_subject.patient.admit_date
-		assert_equal study_subject.reference_date, study_subject.patient.admit_date
-		study_subject
 	end
 
 end
