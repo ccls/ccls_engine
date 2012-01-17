@@ -1389,6 +1389,8 @@ Table: study_subjects
 | updated_at             | datetime     | YES  |     | NULL    |                |
 | mother_hispanicity_mex | int(11)      | YES  |     | NULL    |                |
 | father_hispanicity_mex | int(11)      | YES  |     | NULL    |                |
+| mom_is_biomom          | int(11)      | YES  |     | NULL    |                |
+| dad_is_biodad          | int(11)      | YES  |     | NULL    |                |
 +------------------------+--------------+------+-----+---------+----------------+
 
 Table: subject_languages
@@ -1404,16 +1406,17 @@ Table: subject_languages
 +------------------+--------------+------+-----+---------+----------------+
 
 Table: subject_races
-+------------------+------------+------+-----+---------+----------------+
-| Field            | Type       | Null | Key | Default | Extra          |
-+------------------+------------+------+-----+---------+----------------+
-| id               | int(11)    | NO   | PRI | NULL    | auto_increment |
-| study_subject_id | int(11)    | YES  |     | NULL    |                |
-| race_id          | int(11)    | YES  |     | NULL    |                |
-| is_primary       | tinyint(1) | NO   |     | 0       |                |
-| created_at       | datetime   | YES  |     | NULL    |                |
-| updated_at       | datetime   | YES  |     | NULL    |                |
-+------------------+------------+------+-----+---------+----------------+
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| id               | int(11)      | NO   | PRI | NULL    | auto_increment |
+| study_subject_id | int(11)      | YES  |     | NULL    |                |
+| race_id          | int(11)      | YES  |     | NULL    |                |
+| is_primary       | tinyint(1)   | NO   |     | 0       |                |
+| created_at       | datetime     | YES  |     | NULL    |                |
+| updated_at       | datetime     | YES  |     | NULL    |                |
+| other            | varchar(255) | YES  |     | NULL    |                |
++------------------+--------------+------+-----+---------+----------------+
 
 Table: subject_relationships
 +-------------+--------------+------+-----+---------+----------------+
