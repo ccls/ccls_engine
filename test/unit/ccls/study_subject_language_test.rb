@@ -38,6 +38,13 @@ class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
 		} }
 	end
 
+#	add similar for languages?
+#	test "should return race name for string" do
+#		study_subject = create_study_subject
+#		assert_equal study_subject.race_names,
+#			"#{study_subject.races.first}"
+#	end 
+
 	test "should create study_subject with empty subject_languages_attributes" do
 		assert_difference( 'SubjectLanguage.count', 0 ){
 		assert_difference( "StudySubject.count", 1 ) {

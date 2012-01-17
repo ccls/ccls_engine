@@ -5,6 +5,17 @@ require 'test_helper'
 #	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectRaceTest < ActiveSupport::TestCase
 
+	test "should create study_subject with race" do
+		assert_difference( 'Race.count', 1 ){
+		assert_difference( 'SubjectRace.count', 1 ){
+		assert_difference( "StudySubject.count", 1 ) {
+			study_subject = create_study_subject
+			study_subject.races << Factory(:race)
+			assert !study_subject.new_record?,
+				"#{study_subject.errors.full_messages.to_sentence}"
+		} } }
+	end
+
 	test "should NOT destroy races with study_subject" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('Race.count',1) {

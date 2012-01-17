@@ -397,11 +397,11 @@ protected
 #		study_subject
 #	end
 
-	def create_study_subject_with_matchingid(matchingid='12345')
-		study_subject = create_study_subject( 
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => matchingid })).reload
-	end
+#	def create_study_subject_with_matchingid(matchingid='12345')
+#		study_subject = create_study_subject( 
+#			:identifier_attributes => Factory.attributes_for(:identifier,
+#				{ :matchingid => matchingid })).reload
+#	end
 
 	def create_case_study_subject_for_duplicate_search(options={})
 		Factory(:case_study_subject, { :sex => 'M',
@@ -426,17 +426,17 @@ protected
 				:admit_date => Date.today ) }.deep_merge(options) )
 	end
 
-	#	Used more than once so ...
-	def create_case_study_subject_with_patient_and_identifier
-		study_subject = create_case_study_subject( 
-			:patient_attributes    => Factory.attributes_for(:patient,
-				{ :admit_date => Date.yesterday }),
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				{ :matchingid => '12345' })).reload
-		assert_not_nil study_subject.reference_date
-		assert_not_nil study_subject.patient.admit_date
-		assert_equal study_subject.reference_date, study_subject.patient.admit_date
-		study_subject
-	end
+#	#	Used more than once so ...
+#	def create_case_study_subject_with_patient_and_identifier
+#		study_subject = create_case_study_subject( 
+#			:patient_attributes    => Factory.attributes_for(:patient,
+#				{ :admit_date => Date.yesterday }),
+#			:identifier_attributes => Factory.attributes_for(:identifier,
+#				{ :matchingid => '12345' })).reload
+#		assert_not_nil study_subject.reference_date
+#		assert_not_nil study_subject.patient.admit_date
+#		assert_equal study_subject.reference_date, study_subject.patient.admit_date
+#		study_subject
+#	end
 
 end

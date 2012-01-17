@@ -194,17 +194,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} } }
 	end
 
-#	test "should create study_subject with language" do
-#		assert_difference( 'Language.count', 1 ){
-#		assert_difference( 'SubjectLanguage.count', 1 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			study_subject = create_study_subject
-#			study_subject.languages << Factory(:language)
-#			assert !study_subject.new_record?, 
-#				"#{study_subject.errors.full_messages.to_sentence}"
-#		} } }
-#	end
-
 	test "should create study_subject and accept_nested_attributes_for addressings" do
 		assert_difference( 'Address.count', 1) {
 		assert_difference( 'Addressing.count', 1) {
@@ -571,17 +560,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-#	test "should NOT destroy languages with study_subject" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('SubjectLanguage.count',1) {
-#			@study_subject = Factory(:subject_language).study_subject
-#		} }
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('SubjectLanguage.count',0) {
-#			@study_subject.destroy
-#		} }
-#	end
-
 	test "should NOT destroy patient with study_subject" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('Patient.count',1) {
@@ -615,17 +593,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-#	test "should NOT destroy races with study_subject" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Race.count',1) {
-#			@study_subject = Factory(:subject_race).study_subject
-#		} }
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('Race.count',0) {
-#			@study_subject.destroy
-#		} }
-#	end
-
 	test "should NOT destroy samples with study_subject" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('Sample.count',1) {
@@ -636,28 +603,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			@study_subject.destroy
 		} }
 	end
-
-#	test "should NOT destroy subject_languages with study_subject" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('SubjectLanguage.count',1) {
-#			@study_subject = Factory(:subject_language).study_subject
-#		} }
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('SubjectLanguage.count',0) {
-#			@study_subject.destroy
-#		} }
-#	end
-
-#	test "should NOT destroy subject_races with study_subject" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('SubjectRace.count',1) {
-#			@study_subject = Factory(:subject_race).study_subject
-#		} }
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('SubjectRace.count',0) {
-#			@study_subject.destroy
-#		} }
-#	end
 
 	test "should have and belong to many analyses" do
 		study_subject = create_study_subject
@@ -766,12 +711,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			:pii_attributes => Factory.attributes_for(:pii))
 		assert study_subject.is_eligible_for_invitation?
 	end
-
-#	test "should return race name for string" do
-#		study_subject = create_study_subject
-#		assert_equal study_subject.race_names, 
-#			"#{study_subject.races.first}"
-#	end
 
 	test "should return subject_type description for string" do
 		study_subject = create_study_subject
@@ -897,262 +836,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert study_subjects.is_a?(Array)
 	end
 
-#	test "should create study_subject with empty subject_languages_attributes" do
-#		assert_difference( 'SubjectLanguage.count', 0 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_languages_attributes => { })
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert @study_subject.languages.empty?
-#		assert @study_subject.subject_languages.empty?
-#	end
-#
-#	test "should create study_subject with blank language_id" do
-#		assert_difference( 'SubjectLanguage.count', 0 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_languages_attributes => { 
-#				:some_random_id => { :language_id => '' }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert @study_subject.languages.empty?
-#		assert @study_subject.subject_languages.empty?
-#	end
-#
-#	test "should create study_subject with subject_languages_attributes language_id" do
-#		assert Language.count > 0
-#		assert_difference( 'SubjectLanguage.count', 1 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_languages_attributes => {
-#				:some_random_id => { :language_id => Language.first.id }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert !@study_subject.languages.empty?
-#		assert_equal 1, @study_subject.languages.length
-#		assert !@study_subject.subject_languages.empty?
-#		assert_equal 1, @study_subject.subject_languages.length
-#	end
-#
-#	test "should create study_subject with subject_languages_attributes multiple languages" do
-#		assert Language.count > 1
-#		languages = Language.all
-#		assert_difference( 'SubjectLanguage.count', 2 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_languages_attributes => {
-#				:some_random_id1 => { :language_id => languages[0].id },
-#				:some_random_id2 => { :language_id => languages[1].id }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert !@study_subject.languages.empty?
-#		assert_equal 2, @study_subject.languages.length
-#		assert !@study_subject.subject_languages.empty?
-#		assert_equal 2, @study_subject.subject_languages.length
-#	end
-#
-#	test "should NOT create study_subject with subject_languages_attributes " <<
-#			"if language is other and no other given" do
-#		assert Language.count > 0
-#		assert_difference( 'SubjectLanguage.count', 0 ){
-#		assert_difference( "StudySubject.count", 0 ) {
-#			@study_subject = create_study_subject(:subject_languages_attributes => {
-#				:some_random_id => { :language_id => Language['other'].id }
-#			})
-#			assert @study_subject.errors.on_attr_and_type?("subject_languages.other",:blank)
-#		} }
-#	end
-#
-#	test "should update study_subject with subject_languages_attributes" do
-#		study_subject = create_study_subject
-#		assert_difference( 'SubjectLanguage.count', 1 ){
-#			study_subject.update_attributes(:subject_languages_attributes => {
-#				:some_random_id => { :language_id => Language.first.id }
-#			})
-#		}
-#	end
-#
-#	test "should destroy subject_language on update with _destroy" do
-#		study_subject = create_study_subject
-#		assert_difference( 'SubjectLanguage.count', 1 ){
-#			study_subject.update_attributes(:subject_languages_attributes => {
-#				:some_random_id => { :language_id => Language.first.id }
-#			})
-#		}
-#		subject_language = study_subject.subject_languages.first
-#		assert_difference( 'SubjectLanguage.count', -1 ){
-#			study_subject.update_attributes(:subject_languages_attributes => {
-#				:some_random_id => { :id => subject_language.id, :_destroy => 1 }
-#			})
-#		}
-#	end
-
-
-
-
-
-#	test "should create study_subject with empty subject_races_attributes" do
-#		assert_difference( 'SubjectRace.count', 0 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => { })
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert @study_subject.races.empty?
-#		assert @study_subject.subject_races.empty?
-#	end
-#
-#	test "should create study_subject with blank race_id" do
-#		assert_difference( 'SubjectRace.count', 0 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => { 
-#				:some_random_id => { :race_id => '' }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert @study_subject.races.empty?
-#		assert @study_subject.subject_races.empty?
-#	end
-#
-#	test "should create study_subject with subject_races_attributes race_id" do
-#		assert Race.count > 0
-#		assert_difference( 'SubjectRace.count', 1 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => {
-#				:some_random_id => { :race_id => Race.first.id }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert !@study_subject.races.empty?
-#		assert !@study_subject.subject_races.empty?
-#		assert !@study_subject.subject_races.first.is_primary
-#	end
-#
-#	test "should create study_subject with subject_races_attributes race_id and is_primary" do
-#		assert Race.count > 0
-#		assert_difference( 'SubjectRace.count', 1 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => {
-#				:some_random_id => { :race_id => Race.first.id, :is_primary => 'true' }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert !@study_subject.races.empty?
-#		assert !@study_subject.subject_races.empty?
-#		assert  @study_subject.subject_races.first.is_primary
-#	end
-#
-#	test "should create study_subject with subject_races_attributes multiple races" do
-#		assert Race.count > 2
-#		races = Race.all
-#		assert_difference( 'SubjectRace.count', 3 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => {
-#				:some_random_id1 => { :race_id => races[1].id },
-#				:some_random_id2 => { :race_id => races[2].id },
-#				:some_random_id3 => { :race_id => races[3].id }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert !@study_subject.races.empty?
-#		assert_equal 3, @study_subject.races.length
-#		assert !@study_subject.subject_races.empty?
-#		assert_equal 3, @study_subject.subject_races.length
-#		assert !@study_subject.subject_races.collect(&:is_primary).any?
-#	end
-#
-#	test "should create study_subject with subject_races_attributes multiple races and is_primaries" do
-#		assert Race.count > 2
-#		races = Race.all
-#		assert_difference( 'SubjectRace.count', 3 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => {
-#				:some_random_id1 => { :race_id => races[1].id, :is_primary => 'true' },
-#				:some_random_id2 => { :race_id => races[2].id, :is_primary => 'true' },
-#				:some_random_id3 => { :race_id => races[3].id, :is_primary => 'true' }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert !@study_subject.races.empty?
-#		assert_equal 3, @study_subject.races.length
-#		assert !@study_subject.subject_races.empty?
-#		assert_equal 3, @study_subject.subject_races.length
-#		assert  @study_subject.subject_races.collect(&:is_primary).all?
-#	end
-#
-#	test "should create study_subject with subject_races_attributes with is_primary and no race_id" do
-#		assert Race.count > 0
-#		assert_difference( 'SubjectRace.count', 0 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => {
-#				:some_random_id => { :is_primary => 'true' }
-#			})
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert @study_subject.races.empty?
-#		assert @study_subject.subject_races.empty?
-#	end
-#
-#	test "should NOT create study_subject with subject_races_attributes " <<
-#			"if race is other and no other given" do
-#		assert Race.count > 0
-#		assert_difference( 'SubjectRace.count', 0 ){
-#		assert_difference( "StudySubject.count", 0 ) {
-#			@study_subject = create_study_subject(:subject_races_attributes => {
-#				:some_random_id => { :race_id => Race['other'].id }
-#			})
-#			assert @study_subject.errors.on_attr_and_type?("subject_races.other",:blank)
-#		} }
-#	end
-#
-#	test "should update study_subject with subject_races_attributes" do
-#		assert Race.count > 0
-#		assert_difference( 'SubjectRace.count', 0 ){
-#		assert_difference( "StudySubject.count", 1 ) {
-#			@study_subject = create_study_subject
-#			assert !@study_subject.new_record?, 
-#				"#{@study_subject.errors.full_messages.to_sentence}"
-#		} }
-#		assert @study_subject.races.empty?
-#		assert @study_subject.subject_races.empty?
-#		assert_difference( 'SubjectRace.count', 1 ){
-#		assert_difference( "StudySubject.count", 0 ) {
-#			@study_subject.update_attributes(:subject_races_attributes => {
-#				:some_random_id => { :race_id => Race.first.id, :is_primary => 'true' }
-#			})
-#		} }
-#		assert !@study_subject.races.empty?
-#		assert !@study_subject.subject_races.empty?
-#		assert  @study_subject.subject_races.first.is_primary
-#	end
-#
-#	test "should destroy subject_race on update with _destroy" do
-#		study_subject = create_study_subject
-#		assert_difference( 'SubjectRace.count', 1 ){
-#			study_subject.update_attributes(:subject_races_attributes => {
-#				:some_random_id => { :race_id => Race.first.id, :is_primary => 'true' }
-#			})
-#		}
-#		subject_race = study_subject.subject_races.first
-#		assert_difference( 'SubjectRace.count', -1 ){
-#			study_subject.update_attributes(:subject_races_attributes => {
-#				:some_random_id => { :id => subject_race.id, :_destroy => 1 }
-#			})
-#		}
-#	end
-
-
-	test "should raise StudySubject::NotTwoAbstracts with 0 abstracts on abstracts_the_same?" do
+	test "should raise StudySubject::NotTwoAbstracts with 0 abstracts" <<
+			" on abstracts_the_same?" do
 		study_subject = Factory(:study_subject)
 		assert_equal 0, study_subject.abstracts.length
 		assert_raise(StudySubject::NotTwoAbstracts) {
@@ -1160,7 +845,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		}
 	end
 
-	test "should raise StudySubject::NotTwoAbstracts with 1 abstracts on abstracts_the_same?" do
+	test "should raise StudySubject::NotTwoAbstracts with 1 abstracts" <<
+			" on abstracts_the_same?" do
 		study_subject = Factory(:study_subject)
 		Factory(:abstract, :study_subject => study_subject)
 		study_subject.reload
@@ -1179,7 +865,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert study_subject.abstracts_the_same?
 	end
 
-	test "should raise StudySubject::NotTwoAbstracts with 3 abstracts on abstracts_the_same?" do
+	test "should raise StudySubject::NotTwoAbstracts with 3 abstracts" <<
+			" on abstracts_the_same?" do
 		study_subject = Factory(:study_subject)
 		Factory(:abstract, :study_subject => study_subject)
 		Factory(:abstract, :study_subject => study_subject)
@@ -1191,7 +878,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		}
 	end
 
-	test "should raise StudySubject::NotTwoAbstracts with 0 abstracts on abstract_diffs" do
+	test "should raise StudySubject::NotTwoAbstracts with 0 abstracts" <<
+			" on abstract_diffs" do
 		study_subject = Factory(:study_subject)
 		assert_equal 0, study_subject.abstracts.length
 		assert_raise(StudySubject::NotTwoAbstracts) {
@@ -1199,7 +887,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		}
 	end
 
-	test "should raise StudySubject::NotTwoAbstracts with 1 abstracts on abstract_diffs" do
+	test "should raise StudySubject::NotTwoAbstracts with 1 abstracts" <<
+			" on abstract_diffs" do
 		study_subject = Factory(:study_subject)
 		Factory(:abstract, :study_subject => study_subject)
 		study_subject.reload
@@ -1219,7 +908,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert       study_subject.abstract_diffs.empty?
 	end
 
-	test "should raise StudySubject::NotTwoAbstracts with 3 abstracts on abstract_diffs" do
+	test "should raise StudySubject::NotTwoAbstracts with 3 abstracts" <<
+			" on abstract_diffs" do
 		study_subject = Factory(:study_subject)
 		Factory(:abstract, :study_subject => study_subject)
 		Factory(:abstract, :study_subject => study_subject)
@@ -1234,6 +924,15 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
 	test "should set study_subject.reference_date to self.patient.admit_date on create" do
 		create_case_study_subject_with_patient_and_identifier
+	end
+
+	test "should create study subject with specified matchingid" do
+		#	just to make sure that this method is defined
+		#	get funny errors when accidentally comment out.
+		assert_difference('StudySubject.count',1) {
+			study_subject = create_study_subject_with_matchingid('54321')
+			assert_equal '054321', study_subject.reload.identifier.matchingid
+		}
 	end
 
 	test "should update all matching study_subjects' reference date " <<
@@ -1661,387 +1360,6 @@ pending	#	TODO should do what for null familyid for family
 		assert_equal [], study_subject.rejected_controls
 	end
 
-######################################################################
-#
-#	BEGIN duplicates tests
-#
-#	test "should respond to duplicates" do
-#		@duplicates = StudySubject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "create_case_study_subject_for_duplicate_search test" do
-#		subject = create_case_study_subject_for_duplicate_search
-#		assert_equal subject.sex, 'M'
-#		assert_equal subject.subject_type, SubjectType['Case']
-#		assert_nil subject.identifier
-#		assert_not_nil subject.pii
-#		assert_not_nil subject.dob
-#		assert_not_nil subject.patient
-#		assert_not_nil subject.admit_date
-#		assert_equal 'matchthis', subject.hospital_no
-#		assert_nil subject.mother_maiden_name
-#	end
-#
-#	test "should return no subjects as duplicates with no params" do
-#		create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should return no subjects as duplicates with minimal params" do
-#		create_case_study_subject_for_duplicate_search
-#		@duplicates = Factory.build(:study_subject).duplicates
-#		assert_no_duplicates_found
-#	end
-#
-##	All subjects:  Have the same birth date (piis.dob) and sex (subject.sex) as the new subject and 
-##			(same mother’s maiden name or existing mother’s maiden name is null)
-#
-#	test "should return subject as duplicate if has matching " <<
-#			"dob and sex and blank mother_maiden_names" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => 'M',
-#			:pii_attributes => { :dob => study_subject.dob } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_duplicates_found
-#	end
-#
-#	test "should return subject as duplicate if has matching " <<
-#			"dob and sex and mother_maiden_name" do
-#		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => 'M',
-#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_duplicates_found
-#	end
-#
-#	test "should return subject as duplicate if has matching " <<
-#			"dob and sex and existing mother_maiden_name is nil" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => 'M',
-#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_duplicates_found
-#	end
-#
-#	test "should return subject as duplicate if has matching " <<
-#			"dob and sex and existing mother_maiden_name is blank" do
-#		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => '' })
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => 'M',
-#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if has matching " <<
-#			"dob and sex and explicitly excluded" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => 'M',
-#			:pii_attributes => { :dob => study_subject.dob } )
-#		@duplicates = new_study_subject.duplicates(:exclude_id => study_subject.id)
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if has matching " <<
-#			"dob and sex and differing mother_maiden_name" do
-#		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => 'M',
-#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Jones' } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if just has matching dob" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:pii_attributes => { :dob => study_subject.dob } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if has matching dob and blank sex" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => ' ', :pii_attributes => { :dob => study_subject.dob } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if just has matching sex" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => study_subject.sex )
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if just matching sex and blank dob" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:sex => study_subject.sex, :pii_attributes => { :dob => ' ' } )
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-##	Case subjects: Have the same hospital_no (patient.hospital_no) as the new subject
-##	Only cases have a patient record, so not explicit check for Case is done.
-#
-#	test "should return subject as duplicate if has matching hospital_no" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { :hospital_no => study_subject.hospital_no })
-#		@duplicates = new_study_subject.duplicates
-#		assert_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if has matching " <<
-#			"hospital_no and explicitly excluded" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { :hospital_no => study_subject.hospital_no })
-#		@duplicates = new_study_subject.duplicates(:exclude_id => study_subject.id)
-#		assert_no_duplicates_found
-#	end
-#
-##	Case subjects:  Are admitted the same admit date (patients.admit_date) at the same institution (patients.organization_id)
-##	Only cases have a patient record, so not explicit check for Case is done.
-#
-#	test "should return subject as duplicate if has matching " <<
-#			"admit_date and organization" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { 
-#				:admit_date => study_subject.admit_date,
-#				:organization_id => study_subject.organization_id })
-#		@duplicates = new_study_subject.duplicates
-#		assert_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if has matching " <<
-#			"admit_date and organization and explicitly excluded" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { 
-#				:admit_date => study_subject.admit_date,
-#				:organization_id => study_subject.organization_id })
-#		@duplicates = new_study_subject.duplicates(:exclude_id => study_subject.id)
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if just has matching admit_date" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { 
-#				:admit_date => study_subject.admit_date,
-#				:organization_id => '0' })
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if has matching " <<
-#			"admit_date and blank organization_id" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { 
-#				:admit_date => study_subject.admit_date,
-#				:organization_id => ' ' })
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if just has matching organization" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { 
-#				:organization_id => study_subject.organization_id })
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should NOT return subject as duplicate if has matching " <<
-#			"organization and blank admit_date" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { 
-#				:admit_date => ' ',
-#				:organization_id => study_subject.organization_id })
-#		@duplicates = new_study_subject.duplicates
-#		assert_no_duplicates_found
-#	end
-#
-#	test "should create operational event for raf duplicate" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		new_study_subject = new_case_study_subject_for_duplicate_search(
-#			:patient_attributes => { :hospital_no => study_subject.hospital_no })
-#		@duplicates = new_study_subject.duplicates
-#		assert_duplicates_found
-#		assert_difference('OperationalEvent.count',1) {
-#			study_subject.raf_duplicate_creation_attempted(new_study_subject)
-#		}
-#	end
-#
-##	class level duplicates search tests (used in candidate_control)
-#
-#	test "class should return subject as duplicate if has matching " <<
-#			"admit_date and organization_id" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:admit_date => study_subject.admit_date,
-#			:organization_id => study_subject.organization_id)
-#		assert_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate if has matching " <<
-#			"admit_date and organization_id if excluded" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:exclude_id => study_subject.id,
-#			:admit_date => study_subject.admit_date,
-#			:organization_id => study_subject.organization_id)
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should return subject as duplicate if has matching hospital_no" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:hospital_no => study_subject.hospital_no )
-#		assert_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate if has matching " <<
-#			"hospital_no if excluded" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:exclude_id => study_subject.id,
-#			:hospital_no => study_subject.hospital_no )
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should return subject as duplicate if has matching " <<
-#			"sex, dob and mother_maiden_name" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:sex => 'M',
-#			:dob => study_subject.dob,
-#			:mother_maiden_name => study_subject.mother_maiden_name )
-#		assert_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate if has matching " <<
-#			"sex, dob and mother_maiden_name if excluded" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:exclude_id => study_subject.id,
-#			:sex => 'M',
-#			:dob => study_subject.dob,
-#			:mother_maiden_name => study_subject.mother_maiden_name )
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should return subject as duplicate when all of these params " <<
-#			"are passed and all match" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:mother_maiden_name => study_subject.mother_maiden_name,
-#			:hospital_no => study_subject.hospital_no,
-#			:sex => 'M',
-#			:dob => study_subject.dob,
-#			:admit_date => study_subject.admit_date,
-#			:organization_id => study_subject.organization_id)
-#		assert_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate when all of these params " <<
-#			"are passed and all match if excluded" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:exclude_id => study_subject.id,
-#			:mother_maiden_name => study_subject.mother_maiden_name,
-#			:hospital_no => study_subject.hospital_no,
-#			:sex => 'M',
-#			:dob => study_subject.dob,
-#			:admit_date => study_subject.admit_date,
-#			:organization_id => study_subject.organization_id)
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate when all of these params " <<
-#			"are passed and none match" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:mother_maiden_name => 'somethingdifferent',
-#			:hospital_no => 'somethingdifferent',
-#			:sex => 'F',
-#			:dob => Date.today,
-#			:admit_date => Date.today,
-#			:organization_id => 0 )
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate when all of these params " <<
-#			"are passed only sex matches" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:mother_maiden_name => 'somethingdifferent',
-#			:hospital_no => 'somethingdifferent',
-#			:sex => 'M',
-#			:dob => Date.today,
-#			:admit_date => Date.today,
-#			:organization_id => 0 )
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate when all of these params " <<
-#			"are passed only dob matches" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:mother_maiden_name => 'somethingdifferent',
-#			:hospital_no => 'somethingdifferent',
-#			:sex => 'F',
-#			:dob => study_subject.dob,
-#			:admit_date => Date.today,
-#			:organization_id => 0 )
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate when all of these params " <<
-#			"are passed only admit_date matches" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:mother_maiden_name => 'somethingdifferent',
-#			:hospital_no => 'somethingdifferent',
-#			:sex => 'F',
-#			:dob => Date.today,
-#			:admit_date => study_subject.admit_date,
-#			:organization_id => 0 )
-#		assert_no_duplicates_found
-#	end
-#
-#	test "class should NOT return subject as duplicate when all of these params " <<
-#			"are passed only organization matches" do
-#		study_subject = create_case_study_subject_for_duplicate_search
-#		@duplicates = StudySubject.duplicates(
-#			:mother_maiden_name => 'somethingdifferent',
-#			:hospital_no => 'somethingdifferent',
-#			:sex => 'F',
-#			:dob => Date.today,
-#			:admit_date => Date.today,
-#			:organization_id => study_subject.organization_id )
-#		assert_no_duplicates_found
-#	end
-#
-#
-#	END duplicates tests
-#
-######################################################################
-
 	test "should return case by patid" do
 		Factory(:case_study_subject)	#	just another for noise
 		study_subject = Factory(:case_identifier).study_subject
@@ -2147,17 +1465,17 @@ pending	#	TODO should do what for null familyid for family
 
 protected
 
-	def assert_no_duplicates_found
-		assert_not_nil @duplicates
-		assert @duplicates.is_a?(Array)
-		assert @duplicates.empty?
-	end
+#	def assert_no_duplicates_found
+#		assert_not_nil @duplicates
+#		assert @duplicates.is_a?(Array)
+#		assert @duplicates.empty?
+#	end
 
-	def assert_duplicates_found
-		assert_not_nil @duplicates
-		assert @duplicates.is_a?(Array)
-		assert !@duplicates.empty?
-	end
+#	def assert_duplicates_found
+#		assert_not_nil @duplicates
+#		assert @duplicates.is_a?(Array)
+#		assert !@duplicates.empty?
+#	end
 
 #	def create_study_subject(options={})
 #		study_subject = Factory.build(:study_subject,options)
@@ -2171,28 +1489,28 @@ protected
 				{ :matchingid => matchingid })).reload
 	end
 
-	def create_case_study_subject_for_duplicate_search(options={})
-		Factory(:case_study_subject, { :sex => 'M',
-			:pii_attributes => Factory.attributes_for(:pii,
-				:dob => Date.yesterday),
-#	we no longer need the identifier in the check since hospital_no moved
-#			:identifier_attributes => Factory.attributes_for(:identifier),
-			:patient_attributes => Factory.attributes_for(:patient,
-				:hospital_no => 'matchthis',
-				:admit_date => Date.yesterday ) }.deep_merge(options) )
-	end
+#	def create_case_study_subject_for_duplicate_search(options={})
+#		Factory(:case_study_subject, { :sex => 'M',
+#			:pii_attributes => Factory.attributes_for(:pii,
+#				:dob => Date.yesterday),
+##	we no longer need the identifier in the check since hospital_no moved
+##			:identifier_attributes => Factory.attributes_for(:identifier),
+#			:patient_attributes => Factory.attributes_for(:patient,
+#				:hospital_no => 'matchthis',
+#				:admit_date => Date.yesterday ) }.deep_merge(options) )
+#	end
 
-	def new_case_study_subject_for_duplicate_search(options={})
-		Factory.build(:case_study_subject, { :sex => 'F',
-			:pii_attributes => Factory.attributes_for(:pii,
-				:dob => Date.today),
-#	we no longer need the identifier in the check since hospital_no moved
-#			:identifier_attributes => Factory.attributes_for(:identifier),
-			:patient_attributes => Factory.attributes_for(:patient,
-				:hospital_no => 'somethingdifferent',
-#				:organization_id => 0,	#	Why 0? was for just matching admit_date
-				:admit_date => Date.today ) }.deep_merge(options) )
-	end
+#	def new_case_study_subject_for_duplicate_search(options={})
+#		Factory.build(:case_study_subject, { :sex => 'F',
+#			:pii_attributes => Factory.attributes_for(:pii,
+#				:dob => Date.today),
+##	we no longer need the identifier in the check since hospital_no moved
+##			:identifier_attributes => Factory.attributes_for(:identifier),
+#			:patient_attributes => Factory.attributes_for(:patient,
+#				:hospital_no => 'somethingdifferent',
+##				:organization_id => 0,	#	Why 0? was for just matching admit_date
+#				:admit_date => Date.today ) }.deep_merge(options) )
+#	end
 
 	#	Used more than once so ...
 	def create_case_study_subject_with_patient_and_identifier
