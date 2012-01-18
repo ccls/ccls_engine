@@ -22,6 +22,17 @@ module Ccls::ActionViewExtension::FormBuilder
 		end
 		alias_method :yndk_select, :y_n_dk_select
 
+		def y_n_r_dk_select(method,options={},html_options={})
+#			@template.y_n_dk_select(
+#				@object_name, method, 
+#					objectify_options(options),
+#					html_options)
+			@template.select(object_name, method,
+				[['Yes',1],['No',2],["Don't Know",999],['Refused',0]],
+				{:include_blank => true}.merge(options), html_options)
+		end
+		alias_method :ynrdk_select, :y_n_r_dk_select
+
 		def y_n_o_dk_select(method,options={},html_options={})
 #			@template.y_n_o_dk_select(
 #				@object_name, method, 

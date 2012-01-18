@@ -11,23 +11,32 @@ module Ccls::ActionViewExtension::Base
 	module InstanceMethods
 
 #	TODO perhaps use the YNODK hash in these helpers
-		def y_n_o_dk(value=nil)
-			case value
-				when 1   then 'Yes'
-				when 2   then 'No'
-				when 3   then 'Other'
-				when 999 then "Don't Know"
+		def ynordk(value=nil)
+			case value.to_s
+				when '0'   then 'Refused'
+				when '1'   then 'Yes'
+				when '2'   then 'No'
+				when '3'   then 'Other'
+				when '999' then "Don't Know"
 				else '&nbsp;'
 			end
 		end
-		alias_method :ynodk, :y_n_o_dk
+		alias_method :yndk,     :ynordk
+		alias_method :y_n_dk,   :ynordk
+		alias_method :ynodk,    :ynordk
+		alias_method :y_n_o_dk, :ynordk
 
-		def _wrapped_y_n_o_dk_spans(object_name,method,options={})
+		def _wrapped_y_n_o_r_dk_spans(object_name,method,options={})
 			object = instance_variable_get("@#{object_name}")
 			_wrapped_spans(object_name,method,options.update(
-				:value => y_n_o_dk(object.send(method)) ) )
+				:value => ynordk(object.send(method)) ) )
 		end
-		alias_method :_wrapped_ynodk_spans, :_wrapped_y_n_o_dk_spans
+		alias_method :_wrapped_yndk_spans,     :_wrapped_y_n_o_r_dk_spans
+		alias_method :_wrapped_y_n_dk_spans,   :_wrapped_y_n_o_r_dk_spans
+		alias_method :_wrapped_ynodk_spans,    :_wrapped_y_n_o_r_dk_spans
+		alias_method :_wrapped_y_n_o_dk_spans, :_wrapped_y_n_o_r_dk_spans
+		alias_method :_wrapped_ynrdk_spans,    :_wrapped_y_n_o_r_dk_spans
+		alias_method :_wrapped_y_n_r_dk_spans, :_wrapped_y_n_o_r_dk_spans
 
 #	unwrapped method
 #		def y_n_o_dk_spans(object_name,method,options={})
@@ -46,22 +55,22 @@ module Ccls::ActionViewExtension::Base
 #		alias_method :ynodk_select, :y_n_o_dk_select
 
 #	TODO now that this is in ccls_engine, perhaps use the YNDK hash in these helpers
-		def y_n_dk(value=nil)
-			case value
-				when 1   then 'Yes'
-				when 2   then 'No'
-				when 999 then "Don't Know"
-				else '&nbsp;'
-			end
-		end
-		alias_method :yndk, :y_n_dk
+#		def y_n_dk(value=nil)
+#			case value
+#				when 1   then 'Yes'
+#				when 2   then 'No'
+#				when 999 then "Don't Know"
+#				else '&nbsp;'
+#			end
+#		end
+#		alias_method :yndk, :y_n_dk
 
-		def _wrapped_y_n_dk_spans(object_name,method,options={})
-			object = instance_variable_get("@#{object_name}")
-			_wrapped_spans(object_name,method,options.update(
-				:value => y_n_dk(object.send(method)) ) )
-		end
-		alias_method :_wrapped_yndk_spans, :_wrapped_y_n_dk_spans
+#		def _wrapped_y_n_dk_spans(object_name,method,options={})
+#			object = instance_variable_get("@#{object_name}")
+#			_wrapped_spans(object_name,method,options.update(
+#				:value => yndk(object.send(method)) ) )
+#		end
+#		alias_method :_wrapped_yndk_spans, :_wrapped_y_n_dk_spans
 
 #		def y_n_dk_spans(object_name,method,options={})
 #			object = instance_variable_get("@#{object_name}")
