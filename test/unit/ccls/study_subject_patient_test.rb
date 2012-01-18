@@ -1,5 +1,8 @@
 require 'test_helper'
 
+#	This is just a collection of patient related tests 
+#	for StudySubject separated only for clarity due
+#	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectPatientTest < ActiveSupport::TestCase
 
 #	test "set organization for complete case study subject factory test" do

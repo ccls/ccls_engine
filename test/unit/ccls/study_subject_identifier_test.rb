@@ -1,5 +1,8 @@
 require 'test_helper'
 
+#	This is just a collection of identifier related tests 
+#	for StudySubject separated only for clarity due
+#	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectIdentifierTest < ActiveSupport::TestCase
 
 	test "should create study_subject and accept_nested_attributes_for identifier" do

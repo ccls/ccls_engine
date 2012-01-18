@@ -1,6 +1,9 @@
 require 'test_helper'
 
-class Ccls::StudySubjectTest < ActiveSupport::TestCase
+#	This is just a collection of abstract related tests 
+#	for StudySubject separated only for clarity due
+#	to the size of the StudySubjectTest class.
+class Ccls::StudySubjectAbstractTest < ActiveSupport::TestCase
 
 	test "should NOT destroy abstracts with study_subject" do
 		assert_difference('StudySubject.count',1) {
