@@ -532,41 +532,41 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			[study_subject.childid,'(',study_subject.studyid,study_subject.full_name,')'].compact.join(' ')
 	end
 
-	test "should return hx_id" do
-		hx_id = Project['HomeExposures'].id
-		assert_not_nil hx_id
-		assert_equal StudySubject.hx_id, hx_id
-	end
-
-	test "should search for_hx" do
-		study_subjects = StudySubject.for_hx()
-		assert_not_nil study_subjects
-		assert study_subjects.is_a?(Array)
-	end
-
-	test "should search for_hx_interview" do
-		study_subjects = StudySubject.for_hx_interview()
-		assert_not_nil study_subjects
-		assert study_subjects.is_a?(Array)
-	end
-
-	test "should search need_gift_card" do
-		study_subjects = StudySubject.need_gift_card()
-		assert_not_nil study_subjects
-		assert study_subjects.is_a?(Array)
-	end
-
-	test "should search for_hx_followup" do
-		study_subjects = StudySubject.for_hx_followup()
-		assert_not_nil study_subjects
-		assert study_subjects.is_a?(Array)
-	end
-
-	test "should search for_hx_sample" do
-		study_subjects = StudySubject.for_hx_sample()
-		assert_not_nil study_subjects
-		assert study_subjects.is_a?(Array)
-	end
+#	test "should return hx_id" do
+#		hx_id = Project['HomeExposures'].id
+#		assert_not_nil hx_id
+#		assert_equal StudySubject.hx_id, hx_id
+#	end
+#
+#	test "should search for_hx" do
+#		study_subjects = StudySubject.for_hx()
+#		assert_not_nil study_subjects
+#		assert study_subjects.is_a?(Array)
+#	end
+#
+#	test "should search for_hx_interview" do
+#		study_subjects = StudySubject.for_hx_interview()
+#		assert_not_nil study_subjects
+#		assert study_subjects.is_a?(Array)
+#	end
+#
+#	test "should search need_gift_card" do
+#		study_subjects = StudySubject.need_gift_card()
+#		assert_not_nil study_subjects
+#		assert study_subjects.is_a?(Array)
+#	end
+#
+#	test "should search for_hx_followup" do
+#		study_subjects = StudySubject.for_hx_followup()
+#		assert_not_nil study_subjects
+#		assert study_subjects.is_a?(Array)
+#	end
+#
+#	test "should search for_hx_sample" do
+#		study_subjects = StudySubject.for_hx_sample()
+#		assert_not_nil study_subjects
+#		assert study_subjects.is_a?(Array)
+#	end
 
 	test "should create_home_exposure_with_study_subject" do
 		study_subject = create_home_exposure_with_study_subject

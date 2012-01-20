@@ -302,50 +302,50 @@ class StudySubject < ActiveRecordShared
 
 	#	NOTE don't forget that deep_merge DOES NOT WORK on HashWithIndifferentAccess
 
-	##
-	#	StudySubjects with an enrollment in HomeExposures
-	def self.for_hx(params={})
-		StudySubject.search(params.dup.deep_merge(
-			:projects=>{hx_id=>{}}
-		))
-	end
-
-	##
-	#	StudySubjects with an enrollment in HomeExposures and ...
-	def self.for_hx_interview(params={})
-		StudySubject.search(params.dup.deep_merge(
-			:projects=>{hx_id=>{:chosen=>true}}
-		))
-	end
-
-	##
-	#	StudySubjects with an enrollment in HomeExposures and ...
-	def self.need_gift_card(params={})
-		for_hx_followup(params.dup.merge({
-			:has_gift_card => false
-		}))
-	end
-
-	##
-	#	StudySubjects with an enrollment in HomeExposures and ...
-	def self.for_hx_followup(params={})
-		StudySubject.search( params.dup.deep_merge(
-			:projects=>{hx_id=>{}},
-			:search_gift_cards => true,
-			:sample_outcome => 'complete',
-			:interview_outcome => 'complete'
-		))
-	end
-
-	##
-	#	StudySubjects with an enrollment in HomeExposures and ...
-	def self.for_hx_sample(params={})
-		StudySubject.search(params.dup.deep_merge(
-			:projects=>{hx_id=>{}},
-#			:sample_outcome => 'incomplete',
-			:interview_outcome => 'complete'
-		))
-	end
+#	##
+#	#	StudySubjects with an enrollment in HomeExposures
+#	def self.for_hx(params={})
+#		StudySubject.search(params.dup.deep_merge(
+#			:projects=>{hx_id=>{}}
+#		))
+#	end
+#
+#	##
+#	#	StudySubjects with an enrollment in HomeExposures and ...
+#	def self.for_hx_interview(params={})
+#		StudySubject.search(params.dup.deep_merge(
+#			:projects=>{hx_id=>{:chosen=>true}}
+#		))
+#	end
+#
+#	##
+#	#	StudySubjects with an enrollment in HomeExposures and ...
+#	def self.need_gift_card(params={})
+#		for_hx_followup(params.dup.merge({
+#			:has_gift_card => false
+#		}))
+#	end
+#
+#	##
+#	#	StudySubjects with an enrollment in HomeExposures and ...
+#	def self.for_hx_followup(params={})
+#		StudySubject.search( params.dup.deep_merge(
+#			:projects=>{hx_id=>{}},
+#			:search_gift_cards => true,
+#			:sample_outcome => 'complete',
+#			:interview_outcome => 'complete'
+#		))
+#	end
+#
+#	##
+#	#	StudySubjects with an enrollment in HomeExposures and ...
+#	def self.for_hx_sample(params={})
+#		StudySubject.search(params.dup.deep_merge(
+#			:projects=>{hx_id=>{}},
+##			:sample_outcome => 'incomplete',
+#			:interview_outcome => 'complete'
+#		))
+#	end
 
 	def self.search(params={})
 		StudySubjectSearch.new(params).study_subjects
@@ -738,12 +738,12 @@ protected
 		end
 	end
 
-	def self.hx_id
-		#	added try and || for usage on empty db.  
-		#	It is highly likely that most tests will fail on an empty db so this is kinda moot.
-		#	TODO remove the usage of hx_id and other hx_* specific methods.
-		Project['HomeExposures'].try(:id)||0
-	end
+#	def self.hx_id
+#		#	added try and || for usage on empty db.  
+#		#	It is highly likely that most tests will fail on an empty db so this is kinda moot.
+#		#	TODO remove the usage of hx_id and other hx_* specific methods.
+#		Project['HomeExposures'].try(:id)||0
+#	end
 
 	def must_be_case_if_patient
 		if !patient.nil? and !is_case?
