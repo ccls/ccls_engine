@@ -43,6 +43,8 @@ class CandidateControl < ActiveRecordShared
 				:subject_type => SubjectType['Control'],
 				:vital_status => VitalStatus['living'],
 				:sex                   => sex,
+				:mom_is_biomom         => mom_is_biomom,
+				:dad_is_biodad         => dad_is_biodad,
 				:mother_hispanicity_id => mother_hispanicity_id,
 				:father_hispanicity_id => father_hispanicity_id,
 				:birth_type            => birth_type,
