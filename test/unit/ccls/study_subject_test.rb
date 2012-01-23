@@ -606,9 +606,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should create mother when isn't one" do
-		#	need an identifier when creating mother
-		study_subject = create_identifier.study_subject
-		assert_nil study_subject.reload.mother
+		study_subject = create_complete_control_study_subject
+		assert_nil study_subject.mother
 		assert_difference('Pii.count',1) {
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
@@ -666,7 +665,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should not create mother when one exists" do
-		study_subject = create_identifier.study_subject
+		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
 		assert_difference('Pii.count',0) {
 		assert_difference('Identifier.count',0) {
@@ -682,9 +681,13 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_equal study_subject, study_subject.create_mother
 	end
 
+	test "should not create mother for subject without identifier" do
+pending	#	TODO
+	end
+
 	test "should create father when isn't one" do
-		study_subject = create_identifier.study_subject
-		assert_nil study_subject.reload.father
+		study_subject = create_complete_control_study_subject
+		assert_nil study_subject.father
 		assert_difference('Pii.count',1) {
 		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
@@ -694,7 +697,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should not create father when one exists" do
-		study_subject = create_identifier.study_subject
+		study_subject = create_complete_control_study_subject
 		father = study_subject.create_father
 		assert_difference('Pii.count',0) {
 		assert_difference('Identifier.count',0) {
@@ -708,6 +711,10 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		study_subject = create_complete_father_study_subject
 		assert_equal study_subject, study_subject.father
 		assert_equal study_subject, study_subject.create_father
+	end
+
+	test "should not create father for subject without identifier" do
+pending	#	TODO
 	end
 
 	test "should get control subjects for case subject" do
@@ -726,24 +733,24 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should NOT include self in family" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		assert_equal 0, study_subject.family.length
 	end
 
 	test "should NOT include self in matching" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		assert_equal 0, study_subject.matching.length
 	end
 
 	test "should include mother in family" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
 		assert_equal      1, study_subject.family.length
 		assert_equal mother, study_subject.family.last
 	end
 
 	test "should include father in family" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		father = study_subject.create_father
 		assert_equal      1, study_subject.family.length
 		assert_equal father, study_subject.family.last
@@ -775,7 +782,7 @@ pending	#	TODO should do what for null familyid for family
 	end
 
 	test "should return mother if is one" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		assert_nil study_subject.mother
 		mother = study_subject.create_mother
 		assert_not_nil study_subject.mother
@@ -783,7 +790,7 @@ pending	#	TODO should do what for null familyid for family
 	end
 
 	test "should return father if is one" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		assert_nil study_subject.father
 		father = study_subject.create_father
 		assert_not_nil study_subject.father
@@ -794,7 +801,8 @@ pending	#	TODO should do what for null familyid for family
 		study_subject = create_complete_case_study_subject
 		assert study_subject.is_case?
 		assert study_subject.rejected_controls.empty?
-		candidate_control = create_rejected_candidate_control(:related_patid => study_subject.patid)
+		candidate_control = create_rejected_candidate_control(
+			:related_patid => study_subject.patid)
 		assert_equal [candidate_control], study_subject.rejected_controls
 	end
 
@@ -803,7 +811,8 @@ pending	#	TODO should do what for null familyid for family
 		assert !study_subject.is_case?
 		assert  study_subject.is_control?
 		assert study_subject.rejected_controls.empty?
-		candidate_control = create_rejected_candidate_control(:related_patid => study_subject.patid)
+		candidate_control = create_rejected_candidate_control(
+			:related_patid => study_subject.patid)
 		assert_equal [], study_subject.rejected_controls
 	end
 
@@ -822,19 +831,19 @@ pending	#	TODO should do what for null familyid for family
 	end
 
 	test "should return child if subject is mother" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
 		assert_equal mother, study_subject.mother
 		assert_equal mother.child, study_subject
 	end
 
 	test "should return nil for child if is not mother" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		assert_nil study_subject.child
 	end
 
 	test "should return appended child's childid if is mother" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
 		assert_not_nil study_subject.childid
 		assert_nil     mother.identifier.childid
@@ -856,7 +865,7 @@ pending	#	TODO should do what for null familyid for family
 #	end
 
 	test "should return n/a for mother's studyid" do
-		study_subject = create_identifier.study_subject.reload
+		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
 		assert_equal 'n/a', mother.studyid
 	end

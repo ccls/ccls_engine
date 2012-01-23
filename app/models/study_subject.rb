@@ -55,6 +55,7 @@ class StudySubject < ActiveRecordShared
 	has_many :unmerged_abstracts, :class_name => 'Abstract',
 		:conditions => [ "merged_by_uid IS NULL" ]
 
+#	after_create :assign_icf_master_id
 	after_create :add_new_subject_operational_event
 	after_save   :add_subject_died_operational_event
 
@@ -465,6 +466,8 @@ class StudySubject < ActiveRecordShared
 					i.familyid   = identifier.familyid
 				}
 			})
+# possibly put in a identifier#after_create ???
+#	or study_subject#after_create ???
 			new_mother.assign_icf_master_id
 			new_mother
 		end
@@ -497,11 +500,16 @@ class StudySubject < ActiveRecordShared
 					i.familyid   = identifier.familyid
 				}
 			})
+# possibly put in a identifier#after_create ???
+#	or study_subject#after_create ???
 			new_father.assign_icf_master_id
 			new_father
 		end
 	end
 
+# possibly put in a identifier#after_create ???
+#	or study_subject#after_create ???
+#	seems to cause all kinds of problems when calling as after_create?
 	def assign_icf_master_id
 		if self.identifier.icf_master_id.blank?
 			next_icf_master_id = IcfMasterId.next_unused

@@ -60,11 +60,17 @@ class CandidateControl < ActiveRecordShared
 					:mother_race_id     => mother_race_id,
 					:father_race_id     => father_race_id
 				},
-				:identifier => child_identifier,
-				:enrollments_attributes => [{
-					:project => Project['ccls']
-				}]
+
+#	not necessary as ccls enrollment is created in subject
+#				:enrollments_attributes => [{
+#					:project => Project['ccls']
+#				}],
+
+				:identifier => child_identifier
 			})
+
+#	possibly put in a identifier#after_create ???
+#	or study_subject#after_create ???
 			child.assign_icf_master_id
 
 			#	NOTE this may require passing info
