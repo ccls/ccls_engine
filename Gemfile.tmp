@@ -78,6 +78,14 @@ gem "packet"	#	don't remember why (think from backgroundrb)
 gem "fastercsv"
 
 
+#	2.4.3, 2.4.5 causes a lot of ...
+#	NameError: `@[]' is not allowed as an instance variable name
+#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `instance_variable_get'
+#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `method_missing'
+gem "paperclip", '=2.4.2'	#	only used by buffler and clic
+#	actually, now will be used for live_birth_data, so all apps need it
+
+
 #	These gems are not needed in production
 #	They will be skipped because of config file
 #	/my/ruby/.bundle/config 
@@ -93,12 +101,6 @@ group :development do
 
 	#	only used by clic
 	gem "authlogic", "~>2"	
-
-	#	2.4.3, 2.4.5 causes a lot of ...
-	#	NameError: `@[]' is not allowed as an instance variable name
-	#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `instance_variable_get'
-	#    paperclip (2.4.5) lib/paperclip/options.rb:60:in `method_missing'
-	gem "paperclip", '=2.4.2'	#	only used by buffler and clic
 
 	#	only used by buffler and clic
 	gem "aws-s3"

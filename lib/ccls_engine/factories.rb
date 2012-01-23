@@ -286,6 +286,9 @@ Factory.define :interview do |f|
 	f.association :study_subject
 end
 
+Factory.define :live_birth_data do |f|
+end
+
 Factory.define :language do |f|
 	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:code)        { |n| "Code#{n}" }

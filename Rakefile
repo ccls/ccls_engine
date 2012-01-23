@@ -35,6 +35,7 @@ begin
 		gem.files += FileList['config/abstract_fields.yml']
 		gem.files += FileList['config/abstract_sections.yml']
 		gem.files += FileList['config/shared_use_db.yml']
+		gem.files += FileList['config/live_birth_data.yml']
 #	This may eventually have user/password info, so don't include.
 #	It will need to be manually maintained and copied to apps.
 #		gem.files += FileList['config/shared_database.yml']

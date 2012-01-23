@@ -44,6 +44,10 @@ Rails::Initializer.run do |config|
 	config.gem 'will_paginate'
 	config.gem 'fastercsv'
 
+	#	2.4.3 causes a lot of ...
+	#	NameError: `@[]' is not allowed as an instance variable name
+	config.gem 'paperclip', '=2.4.2'
+
 	config.after_initialize do
 		load File.expand_path(File.join(File.dirname(__FILE__),'../lib/ccls_engine.rb'))
 	end
