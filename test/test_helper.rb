@@ -8,8 +8,8 @@ class ActiveSupport::TestCase
 
 end
 
-class ActionController::TestCase
-
-	setup :turn_https_on
-
-end
+#class ActionController::TestCase
+#
+#	setup :turn_https_on
+#
+#end

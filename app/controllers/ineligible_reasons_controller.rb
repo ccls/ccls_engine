@@ -1,5 +1,5 @@
 class IneligibleReasonsController < ApplicationController
 
-	resourceful
+#	resourceful
 
 end

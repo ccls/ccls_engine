@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
 
-	resourceful
+#	resourceful
 
 end

@@ -1,5 +1,5 @@
 class RacesController < ApplicationController
 
-	resourceful
+#	resourceful
 
 end

@@ -1,5 +1,5 @@
 class RefusalReasonsController < ApplicationController
 
-	resourceful
+#	resourceful
 
 end

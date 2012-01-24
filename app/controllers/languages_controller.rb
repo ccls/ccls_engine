@@ -1,5 +1,5 @@
 class LanguagesController < ApplicationController
 
-	resourceful
+#	resourceful
 
 end
