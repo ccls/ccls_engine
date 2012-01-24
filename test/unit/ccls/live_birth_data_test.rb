@@ -70,20 +70,17 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 
 #	and then???
 
-#		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-#		(f=FasterCSV.open( test_file_name , 'rb',{
-#			:headers => true })).each do |line|
-#puts line.inspect
-#<FasterCSV::Row "masterid":"1234FAKE" "ca_co_status":"case" "biomom":"1" "biodad":nil "date":"1/18/2012" "mother_full_name":"Jane Smith" "mother_maiden_name":"Jones" "father_full_name":"John Smith" "child_full_name":"Jimmy Smith" "child_dobm":"1" "child_dobd":"6" "child_doby":"2009" "child_gender":"M" "birthplace_country":"United States" "birthplace_state":"CA" "birthplace_city":"Bakersfield" "mother_hispanicity":"2" "mother_hispanicity_mex":"2" "mother_race":"1" "mother_race_other":nil "father_hispanicity":"2" "father_hispanicity_mex":"2" "father_race":"1" "father_race_other":nil>
-#<FasterCSV::Row "masterid":"1234FAKE" "ca_co_status":"control" "biomom":"1" "biodad":nil "date":nil "mother_full_name":"Jill Johnson" "mother_maiden_name":"Jackson" "father_full_name":"Jack Johnson" "child_full_name":"Michael Johnson" "child_dobm":"1" "child_dobd":"6" "child_doby":"2009" "child_gender":"M" "birthplace_country":"United States" "birthplace_state":"CA" "birthplace_city":"Oakland" "mother_hispanicity":"2" "mother_hispanicity_mex":"2" "mother_race":"1" "mother_race_other":nil "father_hispanicity":"2" "father_hispanicity_mex":"2" "father_race":"1" "father_race_other":nil>
-#		end
-
-
 		#	explicit destroy to remove attachment
 		live_birth_data.destroy	
 		#	explicit delete to remove test file
 		File.delete(test_file_name)	
 	end
+
+	test "should convert attached csv_file to candidate controls with missing case" do
+pending	#	TODO
+	end
+
+protected
 
 	def create_test_file
 		test_file_name = "live_birth_data_test_file.csv"
