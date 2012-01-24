@@ -463,7 +463,7 @@ namespace :odms_import do
 		error_file = File.open('enrollments_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Enrollments_011012.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Enrollments_012412.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -473,6 +473,8 @@ namespace :odms_import do
 			puts line
 
 #"ChildId","project_id","subjectID","consented","consented_on","refusal_reason_id","document_version_id","is_eligible"
+
+#"childid","project_id","subjectID","consented","consented_on","tPatientInfo_DeclineReason","refusal_reason_id","document_version_id","is_eligible","refusalReasonID"
 
 			if line['subjectID'].blank?
 				error_file.puts 
@@ -496,8 +498,8 @@ namespace :odms_import do
 
 			saved = enrollment.update_attributes(
 				:consented           => line['consented'],
-				:consented_on        => (( line['consented'].blank? ) ?
-														nil : Time.parse(line['consented']).to_date ),
+				:consented_on        => (( line['consented_on'].blank? ) ?
+														nil : Time.parse(line['consented_on']).to_date ),
 				:refusal_reason_id   => line['refusal_reason_id'],
 				:document_version_id => line['document_version_id'],
 				:is_eligible         => line['is_eligible']
@@ -506,6 +508,7 @@ namespace :odms_import do
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: #{enrollment.errors.full_messages.to_sentence}"
 				error_file.puts line
+				error_file.puts enrollment.inspect
 				error_file.puts
 			end
 
