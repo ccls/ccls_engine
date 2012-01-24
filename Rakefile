@@ -77,6 +77,13 @@ begin
 		gem.add_dependency('ccls-use_db')
 		gem.add_dependency('ccls-common_lib')
 
+
+		#	2.4.3 causes a lot of ...
+		#	NameError: `@[]' is not allowed as an instance variable name
+		#	Paperclip is used in the LiveBirthData
+		gem.add_dependency('paperclip', '= 2.4.2')
+
+
 #	moved to 'development' dependency to see if it makes any difference
 
 #	It appears that a development dependency won't install,

@@ -112,12 +112,16 @@ ActionView::Helpers::AssetTagHelper.register_javascript_expansion(
 #		since anything is possible, I'm just commenting it
 #		out in case something funky should occur.
 #
-#require 'paperclip'
-#if defined? ::Paperclip::Glue
-#	ActiveRecord::Base.send(:include, ::Paperclip::Glue)
-#else
-#	ActiveRecord::Base.send(:include, ::Paperclip)
-#end
+#	Yay, add paperclip for LiveBirthData uploads so
+#		I'm glad that I kept this.
+#
+gem 'paperclip', '= 2.4.2'
+require 'paperclip'
+if defined? ::Paperclip::Glue
+	ActiveRecord::Base.send(:include, ::Paperclip::Glue)
+else
+	ActiveRecord::Base.send(:include, ::Paperclip)
+end
 
 
 
