@@ -63,6 +63,9 @@ class CandidateControl < ActiveRecordShared
 					:middle_name        => middle_name,
 					:last_name          => last_name,
 					:dob                => dob,
+					:mother_first_name  => mother_first_name,
+					:mother_middle_name => mother_middle_name,
+					:mother_last_name   => mother_last_name,
 					:mother_maiden_name => mother_maiden_name,
 					:mother_race_id     => mother_race_id,
 					:father_race_id     => father_race_id

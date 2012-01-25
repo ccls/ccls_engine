@@ -321,6 +321,36 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		assert_equal attribute, control_subject.dob
 	end
 
+	test "should create control from attributes and copy mother_first_name" do
+		attribute = 'SomeName'
+		case_study_subject = Factory(:complete_case_study_subject)
+		candidate_control = Factory(:candidate_control, :mother_first_name => attribute )
+		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
+		control_subject = candidate_control.study_subject
+		assert_equal attribute, candidate_control.mother_first_name
+		assert_equal attribute, control_subject.pii.mother_first_name
+	end
+
+	test "should create control from attributes and copy mother_middle_name" do
+		attribute = 'SomeName'
+		case_study_subject = Factory(:complete_case_study_subject)
+		candidate_control = Factory(:candidate_control, :mother_middle_name => attribute )
+		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
+		control_subject = candidate_control.study_subject
+		assert_equal attribute, candidate_control.mother_middle_name
+		assert_equal attribute, control_subject.pii.mother_middle_name
+	end
+
+	test "should create control from attributes and copy mother_last_name" do
+		attribute = 'SomeName'
+		case_study_subject = Factory(:complete_case_study_subject)
+		candidate_control = Factory(:candidate_control, :mother_last_name => attribute )
+		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
+		control_subject = candidate_control.study_subject
+		assert_equal attribute, candidate_control.mother_last_name
+		assert_equal attribute, control_subject.pii.mother_last_name
+	end
+
 	test "should create control from attributes and copy mother_maiden_name" do
 		attribute = 'SomeName'
 		case_study_subject = Factory(:complete_case_study_subject)
