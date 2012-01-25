@@ -509,6 +509,8 @@ Table: candidate_controls
 | mother_dob            | date         | YES  |     | NULL    |                |
 | created_at            | datetime     | YES  |     | NULL    |                |
 | updated_at            | datetime     | YES  |     | NULL    |                |
+| mom_is_biomom         | int(11)      | YES  |     | NULL    |                |
+| dad_is_biodad         | int(11)      | YES  |     | NULL    |                |
 +-----------------------+--------------+------+-----+---------+----------------+
 
 Table: childids
@@ -1030,6 +1032,19 @@ Table: languages
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
+
+Table: live_birth_datas
++-----------------------+--------------+------+-----+---------+----------------+
+| Field                 | Type         | Null | Key | Default | Extra          |
++-----------------------+--------------+------+-----+---------+----------------+
+| id                    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| created_at            | datetime     | YES  |     | NULL    |                |
+| updated_at            | datetime     | YES  |     | NULL    |                |
+| csv_file_file_name    | varchar(255) | YES  |     | NULL    |                |
+| csv_file_content_type | varchar(255) | YES  |     | NULL    |                |
+| csv_file_file_size    | int(11)      | YES  |     | NULL    |                |
+| csv_file_updated_at   | datetime     | YES  |     | NULL    |                |
++-----------------------+--------------+------+-----+---------+----------------+
 
 Table: operational_event_types
 +----------------+--------------+------+-----+---------+----------------+
