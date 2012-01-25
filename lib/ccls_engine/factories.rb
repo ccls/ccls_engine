@@ -228,7 +228,7 @@ Factory.define :subjectless_identifier, :class => 'Identifier' do |f|
 	f.sequence(:accession_no){|n| "#{n}"}
 	f.sequence(:lab_no_wiemels){|n| "#{n}"}
 	f.sequence(:idno_wiemels){|n| "#{n}"}
-	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
+#	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
 end
 Factory.define :identifier, :parent => :subjectless_identifier do |f|
 	f.association :study_subject

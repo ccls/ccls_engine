@@ -93,9 +93,34 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 
 	test "should return join of candidate's name" do
 		candidate_control = Factory(:candidate_control,
-			:first_name => "John",
-			:last_name  => "Smith" )
+			:first_name  => "John",
+			:middle_name => "Michael",
+			:last_name   => "Smith" )
+		assert_equal 'John Michael Smith', candidate_control.full_name 
+	end
+
+	test "should return join of candidate's name with blank middle name" do
+		candidate_control = Factory(:candidate_control,
+			:first_name  => "John",
+			:middle_name => "",
+			:last_name   => "Smith" )
 		assert_equal 'John Smith', candidate_control.full_name 
+	end
+
+	test "should return join of candidate's mother's name" do
+		candidate_control = Factory(:candidate_control,
+			:mother_first_name  => "Jane",
+			:mother_middle_name => "Anne",
+			:mother_last_name   => "Smith" )
+		assert_equal 'Jane Anne Smith', candidate_control.mother_full_name 
+	end
+
+	test "should return join of candidate's mother's name with blank mother's middle name" do
+		candidate_control = Factory(:candidate_control,
+			:mother_first_name  => "Jane",
+			:mother_middle_name => "",
+			:mother_last_name   => "Smith" )
+		assert_equal 'Jane Smith', candidate_control.mother_full_name 
 	end
 
 	################################################################################

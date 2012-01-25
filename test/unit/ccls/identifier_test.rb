@@ -15,8 +15,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		:gbid,
 		:lab_no_wiemels,
 		:accession_no,
-		:idno_wiemels,
-		:icf_master_id )
+#		:icf_master_id,
+		:idno_wiemels )
 	assert_should_initially_belong_to( :study_subject )
 	assert_should_protect( :study_subject_id )
 	assert_should_not_require_attributes( 
@@ -161,6 +161,17 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_nil identifier.study_subject
 		#	trigger_update_matching_study_subjects_reference_date
 		identifier.update_attributes(:matchingid => 'somethingtotrigger')
+	end
+
+	test "should require unique icf_master_id" do
+		assert_difference('Identifier.count',1){
+			Factory(:subjectless_identifier, :icf_master_id => 'Fake1234')
+		}
+		assert_difference('Identifier.count',0){
+			identifier = Factory.build(:subjectless_identifier, :icf_master_id => 'Fake1234')
+			identifier.save
+			assert identifier.errors.on_attr_and_type(:icf_master_id, :taken)
+		}
 	end
 
 	test "should nullify blank state_id_no before validation" do

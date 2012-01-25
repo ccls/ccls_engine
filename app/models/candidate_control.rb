@@ -21,7 +21,12 @@ class CandidateControl < ActiveRecordShared
 
 	#	Returns string containing candidates's first, middle and last name
 	def full_name
-		[first_name, middle_name, last_name].compact.join(' ')
+		[first_name, middle_name, last_name].delete_if(&:blank?).join(' ')
+	end
+
+	#	Returns string containing candidates's mother's first, middle and last name
+	def mother_full_name
+		[mother_first_name, mother_middle_name, mother_last_name].delete_if(&:blank?).join(' ')
 	end
 
 	def create_study_subjects(case_subject,grouping = '6')
