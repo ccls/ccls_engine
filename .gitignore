@@ -40,3 +40,6 @@ Gemfile.lock
 /subject_in.csv
 /subject_in_sorted.csv
 /subject_out.csv
+
+test-livebirthdata_011912.csv
+test/live_birth_data/

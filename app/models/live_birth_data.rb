@@ -6,7 +6,7 @@ class LiveBirthData < ActiveRecordShared
 		))).result)[Rails.env]
 
 	def to_candidate_controls
-		candidate_control_ids = []
+		results = []
 		if !self.csv_file_file_name.blank? &&
 				File.exists?(self.csv_file.path)
 			(f=FasterCSV.open( self.csv_file.path, 'rb',{
@@ -16,19 +16,33 @@ class LiveBirthData < ActiveRecordShared
 #<FasterCSV::Row "masterid":"1234FAKE" "ca_co_status":"control" "biomom":"1" "biodad":nil "date":nil "mother_full_name":"Jill Johnson" "mother_maiden_name":"Jackson" "father_full_name":"Jack Johnson" "child_full_name":"Michael Johnson" "child_dobm":"1" "child_dobd":"6" "child_doby":"2009" "child_gender":"M" "birthplace_country":"United States" "birthplace_state":"CA" "birthplace_city":"Oakland" "mother_hispanicity":"2" "mother_hispanicity_mex":"2" "mother_race":"1" "mother_race_other":nil "father_hispanicity":"2" "father_hispanicity_mex":"2" "father_race":"1" "father_race_other":nil>
 
 				#	just skip the case lines
-				if line['ca_co_status'] == 'control'
+				if line['ca_co_status'] == 'case'
+					identifier = Identifier.find_by_icf_master_id(line['masterid'])
+					if identifier
+#						puts "Found identifier with masterid #{line['masterid']}"
+						results.push(identifier.study_subject)
+					else
+#						puts "Could not find identifier with masterid #{line['masterid']}"
+						results.push(nil)
+						next
+					end
+				elsif line['ca_co_status'] == 'control'
 					identifier = Identifier.find_by_icf_master_id(line['masterid'])
 					if identifier
 #						puts "Found identifier with masterid #{line['masterid']}"
 					else
 #						puts "Could not find identifier with masterid #{line['masterid']}"
+						results.push(nil)
 						next
 					end
 
 					dob = Date.new(line['child_doby'].to_i, line['child_dobm'].to_i, line['child_dobd'].to_i)
-					child_names  = split_name(line["child_full_name"])
-					father_names = split_name(line["father_full_name"])
-					mother_names = split_name(line["mother_full_name"])
+#					child_names  = split_name(line["child_full_name"])
+#					father_names = split_name(line["father_full_name"])
+#					mother_names = split_name(line["mother_full_name"])
+					child_names  = line["child_full_name"].split_name
+					father_names = line["father_full_name"].split_name
+					mother_names = line["mother_full_name"].split_name
 #"mother_full_name":"Jill Johnson" 	#	parse into first, middle and last
 #"father_full_name":"Jack Johnson" 	#	parse into first, middle and last
 #"child_full_name":"Michael Johnson" 	#	parse into first, middle and last
@@ -70,24 +84,35 @@ class LiveBirthData < ActiveRecordShared
 						candidate_control = CandidateControl.create( candidate_control_options )
 						#	TODO what if there's an error?
 					end
-					unless candidate_control.new_record?
-						candidate_control_ids.push(candidate_control.id)
-					end
+#					unless candidate_control.new_record?
+#						results.push(candidate_control.id)
+#					end
+					results.push(candidate_control)
 
-
-				end	#	if line['ca_co_status'] == 'control'
+				else
+#	TODO don't know this ca_co_status
+					results.push(nil)
+				end	#	elsif line['ca_co_status'] == 'control'
 			end	#	(f=FasterCSV.open( self.csv_file.path, 'rb',{ :headers => true })).each do |line|
 		end	#	if !self.csv_file_file_name.blank? && File.exists?(self.csv_file.path)
-		candidate_control_ids	#	TODO why am I returning anything?  will I use this later?
+		results	#	TODO why am I returning anything?  will I use this later?
 	end	#	def to_candidate_controls
 
-protected
+end
 
-	def split_name(name='')
-		names  = name.split
-		first  = names.shift
-		last   = names.pop
-		middle = names.join(' ')
+
+#	Probably better to move this somewhere more appropriate
+#	Perhaps CommonLib::StringExtension
+
+String.class_eval do
+
+	def split_name
+		#	Really only want to split on spaces so just remove the problem chars.
+		#	May have to add others later.
+		names  = self.gsub(/\240/,' ').split
+		first  = names.shift.squish
+		last   = names.pop.squish
+		middle = names.join(' ').squish
 		[first,middle,last]
 	end
 

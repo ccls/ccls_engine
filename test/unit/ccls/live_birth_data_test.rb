@@ -6,6 +6,52 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
+#	These are String tests and these tests and this method should 
+#	be moved into StringExtension
+
+	test "should split persons name into 3 names without middle name" do
+		names = "John Smith".split_name
+		assert_equal 3, names.length
+		assert_equal ['John','','Smith'], names
+	end
+
+	test "should split persons name into 3 names with middle name" do
+		names = "John Herbert Smith".split_name
+		assert_equal 3, names.length
+		assert_equal ['John','Herbert','Smith'], names
+	end
+
+	test "should split persons name into 3 names with 2 middle names" do
+		names = "John Herbert Walker Smith".split_name
+		assert_equal 3, names.length
+		assert_equal ['John','Herbert Walker','Smith'], names
+	end
+
+	test "should split persons name into 3 names with middle initial" do
+		names = "John H. Smith".split_name
+		assert_equal 3, names.length
+		assert_equal ['John','H.','Smith'], names
+	end
+
+	test "should split persons name into 3 names even with \\240 codes" do
+		names = "John\240Herbert\240Smith".split_name
+		assert_equal 3, names.length
+		assert_equal ["John","Herbert","Smith"], names
+	end
+
+	test "should split persons name into 3 names even with apostrophe" do
+		names = "John Herbert O'Grady".split_name
+		assert_equal 3, names.length
+		assert_equal ["John","Herbert","O'Grady"], names
+	end
+
+#	TODO test for name with period like Mary Elizabeth St. James
+#	TODO test for name with 2 last names
+#	TODO test for name with 2 first names
+
+
+
+
 	test "should create without attached csv_file" do
 		assert_difference('LiveBirthData.count',1) {
 			@object = Factory(:live_birth_data)
@@ -32,8 +78,8 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		live_birth_data = Factory(:live_birth_data)
 		assert_nil live_birth_data.csv_file_file_name
 		assert_difference('CandidateControl.count',0) {
-			candidate_control_ids = live_birth_data.to_candidate_controls
-			assert_equal [], candidate_control_ids
+			results = live_birth_data.to_candidate_controls
+			assert_equal [], results
 		}
 	end
 
@@ -43,8 +89,8 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		File.delete(live_birth_data.csv_file.path)					#	TODO will leave directories
 		assert !File.exists?(live_birth_data.csv_file.path)
 		assert_difference('CandidateControl.count',0) {
-			candidate_control_ids = live_birth_data.to_candidate_controls
-			assert_equal [], candidate_control_ids
+			results = live_birth_data.to_candidate_controls
+			assert_equal [], results
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
@@ -53,9 +99,12 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		create_case_for_live_birth_data
 		live_birth_data = create_test_file_and_live_birth_data
 		assert_difference('CandidateControl.count',1) {
-			candidate_control_ids = live_birth_data.to_candidate_controls
-			assert_equal 1,  candidate_control_ids.length
-#			assert_equal [], candidate_control_ids
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+			assert results[0].is_a?(StudySubject)
+			assert results[0].is_case?
+			assert results[1].is_a?(CandidateControl)
+#			assert_equal [], results
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
@@ -63,8 +112,8 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 	test "should convert attached csv_file to candidate controls with missing case" do
 		live_birth_data = create_test_file_and_live_birth_data
 		assert_difference('CandidateControl.count',0) {
-			candidate_control_ids = live_birth_data.to_candidate_controls
-			assert_equal [], candidate_control_ids
+			results = live_birth_data.to_candidate_controls
+			assert_equal [nil,nil], results
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
@@ -72,21 +121,30 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 	test "should convert attached csv_file to candidate controls with existing candidate control" do
 		create_case_for_live_birth_data
 		live_birth_data = create_test_file_and_live_birth_data
-		candidate_control_ids = nil
+		results = nil
 		assert_difference('CandidateControl.count',1) {
-			candidate_control_ids = live_birth_data.to_candidate_controls
-			assert_equal 1,  candidate_control_ids.length
-#			assert_equal [], candidate_control_ids
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+			assert results[0].is_a?(StudySubject)
+			assert results[0].is_case?
+			assert results[1].is_a?(CandidateControl)
+#			assert_equal [], results
 		}
 		assert_difference('CandidateControl.count',0) {
-			new_candidate_control_ids = live_birth_data.to_candidate_controls
-			assert_equal 1,  new_candidate_control_ids.length
-			assert_equal candidate_control_ids, new_candidate_control_ids
+			new_results = live_birth_data.to_candidate_controls
+#			assert_equal 1,  new_results.length
+			assert_equal 2,  new_results.length
+			assert new_results[0].is_a?(StudySubject)
+			assert new_results[0].is_case?
+			assert new_results[1].is_a?(CandidateControl)
+			assert_equal results, new_results
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
 
-#	TODO CandidateControl has the following potential validation failures.  What to do for these?
+#	TODO CandidateControl has the following potential validation failures.  
+#	What to do for these?
+#	Force them with default values?
 #
 #	validates_presence_of   :first_name
 #	validates_presence_of   :last_name
@@ -99,9 +157,10 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		study_subject = create_case_for_live_birth_data
 		live_birth_data = create_test_file_and_live_birth_data
 		assert_difference('CandidateControl.count',1) {
-			candidate_control_ids = live_birth_data.to_candidate_controls
-			assert_equal 1,  candidate_control_ids.length
-			candidate_control = CandidateControl.find(candidate_control_ids.first)
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+#			candidate_control = CandidateControl.find(results.first)
+			candidate_control = results.last
 			assert_equal candidate_control.related_patid, study_subject.patid
 			assert_equal candidate_control.mom_is_biomom, control[:biomom]
 			assert_equal candidate_control.dad_is_biodad, control[:biodad]
@@ -126,6 +185,57 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 #control[:father_race_other]}} }
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+
+
+	test "should test with real data file" do
+		#	real data and won't be in repository
+		unless File.exists?('test-livebirthdata_011912.csv')
+			puts
+			puts "-- Real data test file does not exist. Skipping."
+			return 
+		end
+
+		#	minimal semi-real case creation
+		s1 = Factory(:case_study_subject,:sex => 'F')
+		s1.create_identifier(:case_control_type => 'C')
+		s1.create_pii(:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
+			:dob => Date.parse('10/16/1977'))
+		#	s1 has no icf_master_id, so should be ignored
+
+		s2 = Factory(:case_study_subject,:sex => 'F')
+		s2.create_identifier(:case_control_type => 'C')
+		s2.create_pii(:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
+			:dob => Date.parse('9/21/1988'))
+		Factory(:icf_master_id,:icf_master_id => '48882638A')
+		s2.assign_icf_master_id
+
+		s3 = Factory(:case_study_subject,:sex => 'M')
+		s3.create_identifier(:case_control_type => 'C')
+		s3.create_pii(:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
+			:dob => Date.parse('6/1/2009'))
+		Factory(:icf_master_id,:icf_master_id => '16655682G')
+		s3.assign_icf_master_id
+
+		live_birth_data = Factory(:live_birth_data,
+			:csv_file => File.open('test-livebirthdata_011912.csv') )
+		assert_not_nil live_birth_data.csv_file_file_name
+
+		#	35 lines - 1 header - 3 cases = 31
+		assert_difference('CandidateControl.count',31){
+			results = live_birth_data.to_candidate_controls
+			assert results[0].nil?
+			assert results[1].is_a?(StudySubject)
+			assert results[2].is_a?(StudySubject)
+			results.each { |r|
+				if r.is_a?(CandidateControl) and r.new_record?
+					puts r.inspect
+					puts r.errors.full_messages.to_sentence
+				end
+			}
+		}
+
 	end
 
 protected
@@ -162,6 +272,7 @@ protected
 #1234FAKE,control,1,,,Jill Johnson,Jackson,Jack Johnson,Michael Johnson,1,6,2009,M,United States,CA,Oakland,2,2,1,,2,2,1,} }
 	end
 
+	#	broke it down like this so that can access and compare the attributes
 	def control
 		{	:masterid => '1234FAKE',
 			:ca_co_status => 'control',

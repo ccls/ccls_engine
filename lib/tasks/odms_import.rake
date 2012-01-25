@@ -176,7 +176,7 @@ namespace :odms_import do
 		'odms_import:phone_numbers',
 		'odms_import:addresses',
 		'odms_import:addressings',
-		'odms_import:create_dummy_candidate_controls',
+#		'odms_import:create_dummy_candidate_controls',
 		'ccls:data_report'
 	]
 
