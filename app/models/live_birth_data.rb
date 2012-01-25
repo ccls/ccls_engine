@@ -23,7 +23,8 @@ class LiveBirthData < ActiveRecordShared
 						results.push(identifier.study_subject)
 					else
 #						puts "Could not find identifier with masterid #{line['masterid']}"
-						results.push(nil)
+#						results.push(nil)
+						results.push("Could not find identifier with masterid #{line['masterid']}")
 						next
 					end
 				elsif line['ca_co_status'] == 'control'
@@ -32,7 +33,8 @@ class LiveBirthData < ActiveRecordShared
 #						puts "Found identifier with masterid #{line['masterid']}"
 					else
 #						puts "Could not find identifier with masterid #{line['masterid']}"
-						results.push(nil)
+#						results.push(nil)
+						results.push("Could not find identifier with masterid #{line['masterid']}")
 						next
 					end
 
@@ -90,8 +92,9 @@ class LiveBirthData < ActiveRecordShared
 					results.push(candidate_control)
 
 				else
-#	TODO don't know this ca_co_status
-					results.push(nil)
+#	TODO TEST don't know this ca_co_status
+#					results.push(nil)
+					results.push("Unexpected ca_co_status :#{line['ca_co_status']}:")
 				end	#	elsif line['ca_co_status'] == 'control'
 			end	#	(f=FasterCSV.open( self.csv_file.path, 'rb',{ :headers => true })).each do |line|
 		end	#	if !self.csv_file_file_name.blank? && File.exists?(self.csv_file.path)

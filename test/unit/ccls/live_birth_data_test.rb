@@ -113,7 +113,10 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		live_birth_data = create_test_file_and_live_birth_data
 		assert_difference('CandidateControl.count',0) {
 			results = live_birth_data.to_candidate_controls
-			assert_equal [nil,nil], results
+#			assert_equal [nil,nil], results
+			assert_equal results,
+				["Could not find identifier with masterid 1234FAKE",
+				"Could not find identifier with masterid 1234FAKE"]
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
@@ -225,7 +228,10 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		#	35 lines - 1 header - 3 cases = 31
 		assert_difference('CandidateControl.count',31){
 			results = live_birth_data.to_candidate_controls
-			assert results[0].nil?
+#			assert results[0].nil?
+			assert results[0].is_a?(String)
+			assert_equal results[0],
+				"Could not find identifier with masterid [no ID assigned]"
 			assert results[1].is_a?(StudySubject)
 			assert results[2].is_a?(StudySubject)
 			results.each { |r|
@@ -235,8 +241,9 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 				end
 			}
 		}
-
 	end
+
+#	TODO test unknown ca_co_status
 
 protected
 
