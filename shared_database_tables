@@ -867,6 +867,19 @@ Table: icf_master_ids
 | updated_at       | datetime   | YES  |     | NULL    |                |
 +------------------+------------+------+-----+---------+----------------+
 
+Table: icf_master_trackers
++-----------------------+--------------+------+-----+---------+----------------+
+| Field                 | Type         | Null | Key | Default | Extra          |
++-----------------------+--------------+------+-----+---------+----------------+
+| id                    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| created_at            | datetime     | YES  |     | NULL    |                |
+| updated_at            | datetime     | YES  |     | NULL    |                |
+| csv_file_file_name    | varchar(255) | YES  |     | NULL    |                |
+| csv_file_content_type | varchar(255) | YES  |     | NULL    |                |
+| csv_file_file_size    | int(11)      | YES  |     | NULL    |                |
+| csv_file_updated_at   | datetime     | YES  |     | NULL    |                |
++-----------------------+--------------+------+-----+---------+----------------+
+
 Table: identifiers
 +--------------------------+--------------+------+-----+---------+----------------+
 | Field                    | Type         | Null | Key | Default | Extra          |
