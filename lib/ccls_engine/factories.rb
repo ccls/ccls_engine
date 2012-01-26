@@ -217,6 +217,9 @@ end
 Factory.define :icf_master_id do |f|
 end
 
+Factory.define :icf_master_tracker do |f|
+end
+
 Factory.define :subjectless_identifier, :class => 'Identifier' do |f|
 #	f.sequence(:ssn){|n| sprintf("%09d",n) }
 	#	technically, this makes this a control identifier

@@ -1,0 +1,49 @@
+#
+#	This is an erb.yml file containing the environment specific options for 
+#		a Paperclip#has_attached_file call.
+#	The main purpose for putting these in a separate file was for coverage testing.
+#	If all of this were left in the model, not all of it would be tested.
+#	It has become my preferred convention to use erb.yml files for this.
+#
+#	If the attachment is not to have direct access from the browser,
+#		like the document's and group_document's document attachment,
+#		there is no url set.  As these two models both have an attachment
+#		of the same name, but do not have explicit urls set, Paperclip
+#		will show the following warnings ..
+#	[paperclip] Saving attachments.
+#	[paperclip] Duplicate URL for document with /system/:attachment/:id/:style/:filename. This will clash with attachment defined in Document class
+#	[paperclip] Duplicate URL for document with /system/:attachment/:id/:style/:filename. This will clash with attachment defined in GroupDocument class
+#
+#	As they aren't accessed directly, this has not created any problems.
+#	May want to include the url in these options to quell the following errors
+#	even though it is never actually used. (no direct access to these files)
+#
+#DEFAULTS: &DEFAULTS
+#  :styles:
+#    :full: '900'
+#    :large: '800'
+#    :medium: '600'
+#    :small: '150x50'
+#
+#	A trailing '>' after a size means DO NOT enlarge, only shrink
+#	See the documentation for ImageMagick for other size conversion information.
+#
+#	In the url definition, ...
+#		:attachment is the attachment name NOT the model name
+#			( for document they are the same )
+#
+#	The url or path definitions are parsed and anything that begins with a ':' will be
+#		treated special, ie. :id, :attachment, :style, :filename.  Take care to not
+#		accidentally include any ':' characters.
+#
+
+<% common = "icf_master_tracker/:id/:filename" %>
+
+development:
+  :path: <%= "#{Rails.root}/development/#{common}" %>
+
+test:
+  :path: <%= "#{Rails.root}/test/#{common}" %>
+
+production:
+  :path: <%= "/my/ruby/#{common}" %>
