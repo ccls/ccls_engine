@@ -104,7 +104,6 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 			assert results[0].is_a?(StudySubject)
 			assert results[0].is_case?
 			assert results[1].is_a?(CandidateControl)
-#			assert_equal [], results
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
@@ -113,7 +112,6 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		live_birth_data = create_test_file_and_live_birth_data
 		assert_difference('CandidateControl.count',0) {
 			results = live_birth_data.to_candidate_controls
-#			assert_equal [nil,nil], results
 			assert_equal results,
 				["Could not find identifier with masterid 1234FAKE",
 				"Could not find identifier with masterid 1234FAKE"]
@@ -131,11 +129,9 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 			assert results[0].is_a?(StudySubject)
 			assert results[0].is_case?
 			assert results[1].is_a?(CandidateControl)
-#			assert_equal [], results
 		}
 		assert_difference('CandidateControl.count',0) {
 			new_results = live_birth_data.to_candidate_controls
-#			assert_equal 1,  new_results.length
 			assert_equal 2,  new_results.length
 			assert new_results[0].is_a?(StudySubject)
 			assert new_results[0].is_case?
@@ -162,7 +158,6 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		assert_difference('CandidateControl.count',1) {
 			results = live_birth_data.to_candidate_controls
 			assert_equal 2,  results.length
-#			candidate_control = CandidateControl.find(results.first)
 			candidate_control = results.last
 			assert_equal candidate_control.related_patid, study_subject.patid
 			assert_equal candidate_control.mom_is_biomom, control[:biomom]
@@ -189,8 +184,6 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
-
-
 
 	test "should test with real data file" do
 		#	real data and won't be in repository
@@ -228,7 +221,6 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		#	35 lines - 1 header - 3 cases = 31
 		assert_difference('CandidateControl.count',31){
 			results = live_birth_data.to_candidate_controls
-#			assert results[0].nil?
 			assert results[0].is_a?(String)
 			assert_equal results[0],
 				"Could not find identifier with masterid [no ID assigned]"
@@ -241,14 +233,59 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 				end
 			}
 		}
+		live_birth_data.destroy
+#		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end
 
-#	TODO test unknown ca_co_status
+	test "should return a StudySubject in results for case" do
+		study_subject = create_case_for_live_birth_data
+		File.open(test_file_name,'w'){|f|
+			f.puts csv_file_header
+			f.puts csv_file_case_study_subject }
+		live_birth_data = create_live_birth_data
+		assert_difference('CandidateControl.count',0){
+			results = live_birth_data.to_candidate_controls
+			assert results[0].is_a?(StudySubject)
+			assert_equal results[0], study_subject
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+	test "should return a CandidateControl in results for control" do
+		study_subject = create_case_for_live_birth_data
+		File.open(test_file_name,'w'){|f|
+			f.puts csv_file_header
+			f.puts csv_file_control }
+		live_birth_data = create_live_birth_data
+		assert_difference('CandidateControl.count',1){
+			results = live_birth_data.to_candidate_controls
+			assert results[0].is_a?(CandidateControl)
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+	test "should return a String in results for unknown ca_co_status" do
+		study_subject = create_case_for_live_birth_data
+		File.open(test_file_name,'w'){|f|
+			f.puts csv_file_header
+			f.puts csv_file_unknown }
+		live_birth_data = create_live_birth_data
+		assert_difference('CandidateControl.count',0){
+			results = live_birth_data.to_candidate_controls
+			assert results[0].is_a?(String)
+			assert_equal results[0], "Unexpected ca_co_status :unknown:"
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
 
 protected
 
 	def create_test_file_and_live_birth_data
 		create_test_file
+		live_birth_data = create_live_birth_data
+	end
+
+	def create_live_birth_data
 		live_birth_data = Factory(:live_birth_data,
 			:csv_file => File.open(test_file_name) )
 		assert_not_nil live_birth_data.csv_file_file_name
@@ -272,11 +309,27 @@ protected
 		study_subject
 	end
 
+	def csv_file_header
+		"masterid,ca_co_status,biomom,biodad,date,mother_full_name,mother_maiden_name,father_full_name,child_full_name,child_dobm,child_dobd,child_doby,child_gender,birthplace_country,birthplace_state,birthplace_city,mother_hispanicity,mother_hispanicity_mex,mother_race,mother_race_other,father_hispanicity,father_hispanicity_mex,father_race,father_race_other"
+	end
+
+	def csv_file_unknown
+		"1234FAKE,unknown,1,,1/18/2012,Jane Smith,Jones,John Smith,Jimmy Smith,1,6,2009,M,United States,CA,Bakersfield,2,2,1,,2,2,1,"
+	end
+
+	def csv_file_case_study_subject
+		"1234FAKE,case,1,,1/18/2012,Jane Smith,Jones,John Smith,Jimmy Smith,1,6,2009,M,United States,CA,Bakersfield,2,2,1,,2,2,1,"
+	end
+
+	def csv_file_control
+		"#{control[:masterid]},#{control[:ca_co_status]},#{control[:biomom]},#{control[:biodad]},#{control[:date]},#{control[:mother_full_name]},#{control[:mother_maiden_name]},#{control[:father_full_name]},#{control[:child_full_name]},#{control[:child_dobm]},#{control[:child_dobd]},#{control[:child_doby]},#{control[:child_gender]},#{control[:birthplace_country]},#{control[:birthplace_state]},#{control[:birthplace_city]},#{control[:mother_hispanicity]},#{control[:mother_hispanicity_mex]},#{control[:mother_race]},#{control[:mother_race_other]},#{control[:father_hispanicity]},#{control[:father_hispanicity_mex]},#{control[:father_race]},#{control[:father_race_other]}"
+	end
+
 	def create_test_file
-		File.open(test_file_name,'w'){|f|f.puts %{masterid,ca_co_status,biomom,biodad,date,mother_full_name,mother_maiden_name,father_full_name,child_full_name,child_dobm,child_dobd,child_doby,child_gender,birthplace_country,birthplace_state,birthplace_city,mother_hispanicity,mother_hispanicity_mex,mother_race,mother_race_other,father_hispanicity,father_hispanicity_mex,father_race,father_race_other
-1234FAKE,case,1,,1/18/2012,Jane Smith,Jones,John Smith,Jimmy Smith,1,6,2009,M,United States,CA,Bakersfield,2,2,1,,2,2,1,
-#{control[:masterid]},#{control[:ca_co_status]},#{control[:biomom]},#{control[:biodad]},#{control[:date]},#{control[:mother_full_name]},#{control[:mother_maiden_name]},#{control[:father_full_name]},#{control[:child_full_name]},#{control[:child_dobm]},#{control[:child_dobd]},#{control[:child_doby]},#{control[:child_gender]},#{control[:birthplace_country]},#{control[:birthplace_state]},#{control[:birthplace_city]},#{control[:mother_hispanicity]},#{control[:mother_hispanicity_mex]},#{control[:mother_race]},#{control[:mother_race_other]},#{control[:father_hispanicity]},#{control[:father_hispanicity_mex]},#{control[:father_race]},#{control[:father_race_other]}} }
-#1234FAKE,control,1,,,Jill Johnson,Jackson,Jack Johnson,Michael Johnson,1,6,2009,M,United States,CA,Oakland,2,2,1,,2,2,1,} }
+		File.open(test_file_name,'w'){|f|
+			f.puts csv_file_header
+			f.puts csv_file_case_study_subject
+			f.puts csv_file_control }
 	end
 
 	#	broke it down like this so that can access and compare the attributes
