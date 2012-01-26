@@ -4,7 +4,10 @@ ActionController::Routing::Routes.draw do |map|
 #	however, the helper tests actually need the routes defined
 #	by the following ...
 
-	map.resources :users, :only => [:index]
+	map.resources :users, :only => [:index] do |user|
+#		:collection => { :menu => :get } do |user|
+		user.resources :roles, :only => [:update,:destroy]
+	end
 
 
 #
