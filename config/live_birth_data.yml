@@ -37,13 +37,20 @@
 #		accidentally include any ':' characters.
 #
 
+#	url is set just to avoid the "Duplicate URL" message
+DEFAULTS: &DEFAULTS
+  :url: /system/live_birth_data/:attachment/:id/:filename
+
 <% common = "live_birth_data/:id/:filename" %>
 
 development:
   :path: <%= "#{Rails.root}/development/#{common}" %>
+  <<: *DEFAULTS
 
 test:
   :path: <%= "#{Rails.root}/test/#{common}" %>
+  <<: *DEFAULTS
 
 production:
   :path: <%= "/my/ruby/#{common}" %>
+  <<: *DEFAULTS

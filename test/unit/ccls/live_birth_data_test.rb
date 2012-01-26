@@ -242,7 +242,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		File.open(test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_case_study_subject }
-		live_birth_data = create_live_birth_data
+		live_birth_data = create_live_birth_data_with_file
 		assert_difference('CandidateControl.count',0){
 			results = live_birth_data.to_candidate_controls
 			assert results[0].is_a?(StudySubject)
@@ -256,7 +256,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		File.open(test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_control }
-		live_birth_data = create_live_birth_data
+		live_birth_data = create_live_birth_data_with_file
 		assert_difference('CandidateControl.count',1){
 			results = live_birth_data.to_candidate_controls
 			assert results[0].is_a?(CandidateControl)
@@ -269,7 +269,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		File.open(test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_unknown }
-		live_birth_data = create_live_birth_data
+		live_birth_data = create_live_birth_data_with_file
 		assert_difference('CandidateControl.count',0){
 			results = live_birth_data.to_candidate_controls
 			assert results[0].is_a?(String)
@@ -282,10 +282,10 @@ protected
 
 	def create_test_file_and_live_birth_data
 		create_test_file
-		live_birth_data = create_live_birth_data
+		live_birth_data = create_live_birth_data_with_file
 	end
 
-	def create_live_birth_data
+	def create_live_birth_data_with_file
 		live_birth_data = Factory(:live_birth_data,
 			:csv_file => File.open(test_file_name) )
 		assert_not_nil live_birth_data.csv_file_file_name
