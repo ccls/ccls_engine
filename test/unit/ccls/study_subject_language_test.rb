@@ -60,7 +60,7 @@ class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
 		assert_difference( 'SubjectLanguage.count', 0 ){
 		assert_difference( "StudySubject.count", 1 ) {
 			@study_subject = create_study_subject(:subject_languages_attributes => { 
-				:some_random_id => { :language_id => '' }
+				'0' => { :language_id => '' }
 			})
 			assert !@study_subject.new_record?, 
 				"#{@study_subject.errors.full_messages.to_sentence}"
@@ -74,7 +74,7 @@ class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
 		assert_difference( 'SubjectLanguage.count', 1 ){
 		assert_difference( "StudySubject.count", 1 ) {
 			@study_subject = create_study_subject(:subject_languages_attributes => {
-				:some_random_id => { :language_id => Language.first.id }
+				'0' => { :language_id => Language.first.id }
 			})
 			assert !@study_subject.new_record?, 
 				"#{@study_subject.errors.full_messages.to_sentence}"
@@ -91,8 +91,8 @@ class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
 		assert_difference( 'SubjectLanguage.count', 2 ){
 		assert_difference( "StudySubject.count", 1 ) {
 			@study_subject = create_study_subject(:subject_languages_attributes => {
-				:some_random_id1 => { :language_id => languages[0].id },
-				:some_random_id2 => { :language_id => languages[1].id }
+				'0' => { :language_id => languages[0].id },
+				'1' => { :language_id => languages[1].id }
 			})
 			assert !@study_subject.new_record?, 
 				"#{@study_subject.errors.full_messages.to_sentence}"
@@ -109,7 +109,7 @@ class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
 		assert_difference( 'SubjectLanguage.count', 0 ){
 		assert_difference( "StudySubject.count", 0 ) {
 			@study_subject = create_study_subject(:subject_languages_attributes => {
-				:some_random_id => { :language_id => Language['other'].id }
+				'0' => { :language_id => Language['other'].id }
 			})
 			assert @study_subject.errors.on_attr_and_type?("subject_languages.other",:blank)
 		} }
@@ -119,7 +119,7 @@ class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
 		study_subject = create_study_subject
 		assert_difference( 'SubjectLanguage.count', 1 ){
 			study_subject.update_attributes(:subject_languages_attributes => {
-				:some_random_id => { :language_id => Language.first.id }
+				'0' => { :language_id => Language.first.id }
 			})
 		}
 	end
@@ -128,13 +128,13 @@ class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
 		study_subject = create_study_subject
 		assert_difference( 'SubjectLanguage.count', 1 ){
 			study_subject.update_attributes(:subject_languages_attributes => {
-				:some_random_id => { :language_id => Language.first.id }
+				'0' => { :language_id => Language.first.id }
 			})
 		}
 		subject_language = study_subject.subject_languages.first
 		assert_difference( 'SubjectLanguage.count', -1 ){
 			study_subject.update_attributes(:subject_languages_attributes => {
-				:some_random_id => { :id => subject_language.id, :_destroy => 1 }
+				'0' => { :id => subject_language.id, :_destroy => 1 }
 			})
 		}
 	end
