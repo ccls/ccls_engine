@@ -87,6 +87,13 @@ if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@co
 	require 'ccls_engine/assertions'
 	require 'factory_girl'
 	require 'ccls_engine/factories'
+
+	#	There are not automatically included as they
+	#		contain duplicate methods names.
+	#	They must be explicitly included in the test classes
+	#		that use them.
+	require 'ccls_engine/icf_master_tracker_test_helper'
+	require 'ccls_engine/live_birth_data_test_helper'
 end
 
 ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 

@@ -49,7 +49,9 @@ begin
 		gem.files -= FileList['**/versions/*']
 		gem.files -= FileList['lib/ccls_engine/warble.rb']
 
-		gem.test_files = FileList['test/unit/ccls/*.rb']
+		gem.test_files  = FileList['test/unit/ccls/*.rb']
+		#	include
+		gem.test_files += FileList['test/*_test_helper.rb']
 
 		gem.add_dependency('rails', '~> 2')
 #	had to explicitly add rails components as greater
