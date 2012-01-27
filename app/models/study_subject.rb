@@ -511,7 +511,7 @@ class StudySubject < ActiveRecordShared
 #	or study_subject#after_create ???
 #	seems to cause all kinds of problems when calling as after_create?
 	def assign_icf_master_id
-		if self.identifier.icf_master_id.blank?
+		if self.identifier and self.identifier.icf_master_id.blank?
 			next_icf_master_id = IcfMasterId.next_unused
 			if next_icf_master_id
 				self.identifier.update_attribute(:icf_master_id, next_icf_master_id.to_s)
