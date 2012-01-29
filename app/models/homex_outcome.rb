@@ -15,7 +15,7 @@ class HomexOutcome < ActiveRecordShared
 	#	study_subject_id is not known until before_save
 	#		so cannot be validated on creation
 	#
-	validates_presence_of   :study_subject_id, :on => :update
+#	validates_presence_of   :study_subject_id, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 	validates_presence_of   :sample_outcome_on,    :if => :sample_outcome_id?
 	validates_presence_of   :interview_outcome_on, :if => :interview_outcome_id?
@@ -44,7 +44,6 @@ protected
 		end
 		unless operational_event_type.nil?
 			if hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
-#				hxe.operational_events << OperationalEvent.create!(
 				OperationalEvent.create!(
 					:enrollment => hxe,
 					:operational_event_type => operational_event_type,
@@ -69,7 +68,6 @@ protected
 		end
 		unless operational_event_type.nil?
 			if hxe = study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
-#				hxe.operational_events << OperationalEvent.create!(
 				OperationalEvent.create!(
 					:enrollment => hxe,
 					:operational_event_type => operational_event_type,

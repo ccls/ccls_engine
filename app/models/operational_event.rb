@@ -6,14 +6,8 @@ class OperationalEvent < ActiveRecordShared
 	belongs_to :enrollment
 	belongs_to :operational_event_type
 
-
-#
-#	No validation for presence of enrollment ????
-#	TODO I think that this may be an oversight.
-#
 	validates_presence_of :enrollment_id
 	validates_presence_of :enrollment, :if => :enrollment_id
-
 
 	validates_presence_of :operational_event_type_id
 	validates_presence_of :operational_event_type, :if => :operational_event_type_id

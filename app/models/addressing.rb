@@ -52,7 +52,7 @@ class Addressing < ActiveRecordShared
 
 	#	Returns boolean of comparison of is_valid == 2 or 999
 	def is_not_valid?
-		[2,999].include?(is_valid)
+		[2,999].include?(is_valid.to_i)
 	end
 
 protected
@@ -92,7 +92,6 @@ protected
 				raise ActiveRecord::RecordNotSaved
 			end
 
-#			hxe.operational_events << OperationalEvent.create!(
 			OperationalEvent.create!(
 				:enrollment => hxe,
 				:operational_event_type => oet,
@@ -115,7 +114,6 @@ protected
 				address.address_type == AddressType['residence']
 			ccls_enrollment = study_subject.enrollments.find_or_create_by_project_id(
 				Project['ccls'].id)
-#			ccls_enrollment.operational_events << OperationalEvent.create!(
 			OperationalEvent.create!(
 				:enrollment => ccls_enrollment,
 				:operational_event_type => OperationalEventType['subject_moved'],

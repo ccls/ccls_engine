@@ -3,17 +3,11 @@ require 'test_helper'
 class Ccls::OperationalEventTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
-#	assert_should_belong_to(:enrollment)
 	assert_should_initially_belong_to(:enrollment)
 	assert_should_initially_belong_to(:operational_event_type)
 
-
 	assert_should_require_attributes( :enrollment_id )
-#	assert_should_not_require_attributes( :occurred_on, :enrollment_id, :description,
-	assert_should_not_require_attributes( :occurred_on, :description,
-		:event_notes )
-
-
+	assert_should_not_require_attributes( :occurred_on, :description, :event_notes )
 
 	assert_requires_complete_date(:occurred_on)
 	assert_should_require_attribute_length( :description, :maximum => 250 )
@@ -42,7 +36,6 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 			assert  operational_event.errors.on_attr_and_type?(:operational_event_type,:blank)
 		end
 	end
-
 
 	#	description is not required so ...
 	test "should return description as to_s if not nil" do

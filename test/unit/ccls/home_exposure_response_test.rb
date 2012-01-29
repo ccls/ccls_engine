@@ -16,21 +16,21 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should require study_subject" do
-		assert_difference( "HomeExposureResponse.count", 0 ) do
-			home_exposure_response = create_home_exposure_response( :study_subject => nil)
-			assert !home_exposure_response.errors.on(:study_subject)
-			assert  home_exposure_response.errors.on_attr_and_type?(:study_subject_id, :blank)
-		end
-	end
-
-	test "should require valid study_subject" do
-		assert_difference( "HomeExposureResponse.count", 0 ) do
-			home_exposure_response = create_home_exposure_response( :study_subject_id => 0)
-			assert !home_exposure_response.errors.on(:study_subject_id)
-			assert  home_exposure_response.errors.on_attr_and_type?(:study_subject,:blank)
-		end
-	end
+#	test "should require study_subject" do
+#		assert_difference( "HomeExposureResponse.count", 0 ) do
+#			home_exposure_response = create_home_exposure_response( :study_subject => nil)
+#			assert !home_exposure_response.errors.on(:study_subject)
+#			assert  home_exposure_response.errors.on_attr_and_type?(:study_subject_id, :blank)
+#		end
+#	end
+#
+#	test "should require valid study_subject" do
+#		assert_difference( "HomeExposureResponse.count", 0 ) do
+#			home_exposure_response = create_home_exposure_response( :study_subject_id => 0)
+#			assert !home_exposure_response.errors.on(:study_subject_id)
+#			assert  home_exposure_response.errors.on_attr_and_type?(:study_subject,:blank)
+#		end
+#	end
 
 	test "should require unique study_subject_id" do
 		o = create_home_exposure_response
@@ -55,20 +55,20 @@ class Ccls::HomeExposureResponseTest < ActiveSupport::TestCase
 		assert db_field_names.first.is_a?(String)
 	end
 
-	test "should return array of field_names" do
-		field_names = HomeExposureResponse.field_names
-		assert field_names.is_a?(Array)
-		assert field_names.length > 100
-	end
+#	test "should return array of field_names" do
+#		field_names = HomeExposureResponse.field_names
+#		assert field_names.is_a?(Array)
+#		assert field_names.length > 100
+#	end
 
 #	temporary? It's been here a while.
-	test "should return the same array for field_names and db_field_names" do
-		db_field_names = HomeExposureResponse.db_field_names
-		field_names = HomeExposureResponse.field_names
-		assert_equal field_names, db_field_names
-	end
+#	test "should return the same array for field_names and db_field_names" do
+#		db_field_names = HomeExposureResponse.db_field_names
+#		field_names = HomeExposureResponse.field_names
+#		assert_equal field_names, db_field_names
+#	end
 
-	assert_should_not_require_attributes( *HomeExposureResponse.field_names )
+	assert_should_not_require_attributes( *HomeExposureResponse.db_field_names )
 
 #protected
 #

@@ -2,18 +2,16 @@ class CandidateControl < ActiveRecordShared
 
 	belongs_to :study_subject
 
-	attr_protected :study_subject_id
+	validates_presence_of  :first_name
+	validates_presence_of  :last_name
+	validates_presence_of  :dob
+	validates_inclusion_of :reject_candidate, :in => [true, false]
+	validates_presence_of  :rejection_reason, :if => :reject_candidate
+	validates_length_of    :related_patid, :is => 4, :allow_blank => true
+	validates_length_of    :state_registrar_no, :maximum => 25, :allow_blank => true
+	validates_length_of    :local_registrar_no, :maximum => 25, :allow_blank => true
 
-	validates_presence_of   :first_name
-	validates_presence_of   :last_name
-	validates_presence_of   :dob
-	validates_inclusion_of  :reject_candidate, :in => [true, false]
-	validates_presence_of   :rejection_reason, :if => :reject_candidate
-	validates_length_of     :related_patid, :is => 4, :allow_blank => true
-	validates_length_of     :state_registrar_no, :maximum => 25, :allow_blank => true
-	validates_length_of     :local_registrar_no, :maximum => 25, :allow_blank => true
-
-	validates_length_of     :first_name, :middle_name, :last_name,
+	validates_length_of    :first_name, :middle_name, :last_name,
 		:birth_county, :birth_type, :mother_maiden_name,
 		:rejection_reason, :maximum => 250, :allow_blank => true
 
