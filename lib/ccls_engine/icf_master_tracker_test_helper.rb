@@ -20,6 +20,10 @@ module Ccls::IcfMasterTrackerTestHelper
 			unless icf_master_tracker_file.blank?
 				assert !File.exists?(icf_master_tracker_file)
 			end
+			if File.exists?("test/icf_master_tracker/#{icf_master_tracker.id}") &&
+				File.directory?("test/icf_master_tracker/#{icf_master_tracker.id}")
+				Dir.delete("test/icf_master_tracker/#{icf_master_tracker.id}")
+			end
 		end
 		if File.exists?(test_file_name)
 			#	explicit delete to remove test file

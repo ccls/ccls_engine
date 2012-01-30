@@ -20,6 +20,10 @@ module Ccls::LiveBirthDataTestHelper
 			unless live_birth_data_file.blank?
 				assert !File.exists?(live_birth_data_file)
 			end
+			if File.exists?("test/live_birth_data/#{live_birth_data.id}") &&
+				File.directory?("test/live_birth_data/#{live_birth_data.id}")
+				Dir.delete("test/live_birth_data/#{live_birth_data.id}")
+			end
 		end
 		if File.exists?(test_file_name)
 			#	explicit delete to remove test file
