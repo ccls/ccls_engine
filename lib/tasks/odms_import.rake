@@ -496,12 +496,34 @@ namespace :odms_import do
 			enrollment = study_subject.enrollments.find_or_create_by_project_id(
 				line['project_id'])
 
+
+			#	TEMPORARY
+			consented           = line['consented']
+			consented_on        = if [nil,999,'','999'].include?(consented)
+				nil
+			else
+				(( line['consented_on'].blank? ) ?
+					nil : Time.parse(line['consented_on']).to_date )
+			end
+			refusal_reason_id   = if consented.to_i == 2
+				line['refusal_reason_id']
+			else
+				nil
+			end
+			document_version_id = if [nil,999,'','999'].include?(consented)
+				nil
+			else
+				line['document_version_id']
+			end
+
+
+
+
 			saved = enrollment.update_attributes(
-				:consented           => line['consented'],
-				:consented_on        => (( line['consented_on'].blank? ) ?
-														nil : Time.parse(line['consented_on']).to_date ),
-				:refusal_reason_id   => line['refusal_reason_id'],
-				:document_version_id => line['document_version_id'],
+				:consented           => consented,
+				:consented_on        => consented_on,
+				:refusal_reason_id   => refusal_reason_id,
+				:document_version_id => document_version_id,
 				:is_eligible         => line['is_eligible']
 			)
 			unless saved
