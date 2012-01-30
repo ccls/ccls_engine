@@ -12,43 +12,30 @@ class LiveBirthData < ActiveRecordShared
 			(f=FasterCSV.open( self.csv_file.path, 'rb',{
 				:headers => true })).each do |line|
 
-#<FasterCSV::Row "masterid":"1234FAKE" "ca_co_status":"case" "biomom":"1" "biodad":nil "date":"1/18/2012" "mother_full_name":"Jane Smith" "mother_maiden_name":"Jones" "father_full_name":"John Smith" "child_full_name":"Jimmy Smith" "child_dobm":"1" "child_dobd":"6" "child_doby":"2009" "child_gender":"M" "birthplace_country":"United States" "birthplace_state":"CA" "birthplace_city":"Bakersfield" "mother_hispanicity":"2" "mother_hispanicity_mex":"2" "mother_race":"1" "mother_race_other":nil "father_hispanicity":"2" "father_hispanicity_mex":"2" "father_race":"1" "father_race_other":nil>
-#<FasterCSV::Row "masterid":"1234FAKE" "ca_co_status":"control" "biomom":"1" "biodad":nil "date":nil "mother_full_name":"Jill Johnson" "mother_maiden_name":"Jackson" "father_full_name":"Jack Johnson" "child_full_name":"Michael Johnson" "child_dobm":"1" "child_dobd":"6" "child_doby":"2009" "child_gender":"M" "birthplace_country":"United States" "birthplace_state":"CA" "birthplace_city":"Oakland" "mother_hispanicity":"2" "mother_hispanicity_mex":"2" "mother_race":"1" "mother_race_other":nil "father_hispanicity":"2" "father_hispanicity_mex":"2" "father_race":"1" "father_race_other":nil>
+#	masterid,ca_co_status,biomom,biodad,date,mother_full_name,mother_maiden_name,father_full_name,child_full_name,child_dobm,child_dobd,child_doby,child_gender,birthplace_country,birthplace_state,birthplace_city,mother_hispanicity,mother_hispanicity_mex,mother_race,mother_race_other,father_hispanicity,father_hispanicity_mex,father_race,father_race_other
 
-				#	just skip the case lines
 				if line['ca_co_status'] == 'case'
 					identifier = Identifier.find_by_icf_master_id(line['masterid'])
 					if identifier
-#						puts "Found identifier with masterid #{line['masterid']}"
 						results.push(identifier.study_subject)
 					else
-#						puts "Could not find identifier with masterid #{line['masterid']}"
-#						results.push(nil)
 						results.push("Could not find identifier with masterid #{line['masterid']}")
 						next
 					end
 				elsif line['ca_co_status'] == 'control'
 					identifier = Identifier.find_by_icf_master_id(line['masterid'])
-					if identifier
-#						puts "Found identifier with masterid #{line['masterid']}"
-					else
-#						puts "Could not find identifier with masterid #{line['masterid']}"
-#						results.push(nil)
+					unless identifier
 						results.push("Could not find identifier with masterid #{line['masterid']}")
 						next
 					end
 
-					dob = Date.new(line['child_doby'].to_i, line['child_dobm'].to_i, line['child_dobd'].to_i)
-#					child_names  = split_name(line["child_full_name"])
-#					father_names = split_name(line["father_full_name"])
-#					mother_names = split_name(line["mother_full_name"])
+					dob = Date.new(
+						line['child_doby'].to_i, 
+						line['child_dobm'].to_i, 
+						line['child_dobd'].to_i)
 					child_names  = line["child_full_name"].split_name
 					father_names = line["father_full_name"].split_name
 					mother_names = line["mother_full_name"].split_name
-#"mother_full_name":"Jill Johnson" 	#	parse into first, middle and last
-#"father_full_name":"Jack Johnson" 	#	parse into first, middle and last
-#"child_full_name":"Michael Johnson" 	#	parse into first, middle and last
-
 					candidate_control_options = {
 						:related_patid => identifier.patid,
 						:mom_is_biomom => line["biomom"],
@@ -81,7 +68,6 @@ class LiveBirthData < ActiveRecordShared
 					candidate_control = CandidateControl.find(:first,
 						:conditions => candidate_control_options )
 
-
 					if candidate_control.nil?
 						candidate_control = CandidateControl.create( candidate_control_options )
 						#	TODO what if there's an error?
@@ -92,11 +78,9 @@ class LiveBirthData < ActiveRecordShared
 					results.push(candidate_control)
 
 				else
-#	TODO TEST don't know this ca_co_status
-#					results.push(nil)
 					results.push("Unexpected ca_co_status :#{line['ca_co_status']}:")
 				end	#	elsif line['ca_co_status'] == 'control'
-			end	#	(f=FasterCSV.open( self.csv_file.path, 'rb',{ :headers => true })).each do |line|
+			end	#	(f=FasterCSV.open( self.csv_file.path, 'rb',{ :headers => true })).each
 		end	#	if !self.csv_file_file_name.blank? && File.exists?(self.csv_file.path)
 		results	#	TODO why am I returning anything?  will I use this later?
 	end	#	def to_candidate_controls
