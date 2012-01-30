@@ -1,7 +1,7 @@
 module Ccls::LiveBirthDataTestHelper
 
 	def create_test_file_and_live_birth_data
-		create_test_file
+		create_live_birth_data_test_file
 		live_birth_data = create_live_birth_data_with_file
 	end
 
@@ -12,12 +12,19 @@ module Ccls::LiveBirthDataTestHelper
 		live_birth_data
 	end
 
-	def cleanup_live_birth_data_and_test_file(live_birth_data)
-		#	explicit destroy to remove attachment
-		live_birth_data.destroy	
-#		assert !File.exists?(live_birth_data.csv_file.path)
-		#	explicit delete to remove test file
-		File.delete(test_file_name)	
+	def cleanup_live_birth_data_and_test_file(live_birth_data=nil)
+		if live_birth_data
+			live_birth_data_file = live_birth_data.csv_file.path
+			#	explicit destroy to remove attachment
+			live_birth_data.destroy	
+			unless live_birth_data_file.blank?
+				assert !File.exists?(live_birth_data_file)
+			end
+		end
+		if File.exists?(test_file_name)
+			#	explicit delete to remove test file
+			File.delete(test_file_name)	
+		end
 		assert !File.exists?(test_file_name)
 	end
 
@@ -45,7 +52,7 @@ module Ccls::LiveBirthDataTestHelper
 		"#{control[:masterid]},#{control[:ca_co_status]},#{control[:biomom]},#{control[:biodad]},#{control[:date]},#{control[:mother_full_name]},#{control[:mother_maiden_name]},#{control[:father_full_name]},#{control[:child_full_name]},#{control[:child_dobm]},#{control[:child_dobd]},#{control[:child_doby]},#{control[:child_gender]},#{control[:birthplace_country]},#{control[:birthplace_state]},#{control[:birthplace_city]},#{control[:mother_hispanicity]},#{control[:mother_hispanicity_mex]},#{control[:mother_race]},#{control[:mother_race_other]},#{control[:father_hispanicity]},#{control[:father_hispanicity_mex]},#{control[:father_race]},#{control[:father_race_other]}"
 	end
 
-	def create_test_file
+	def create_live_birth_data_test_file
 		File.open(test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_case_study_subject

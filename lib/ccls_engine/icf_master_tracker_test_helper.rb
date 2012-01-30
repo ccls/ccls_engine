@@ -1,7 +1,7 @@
 module Ccls::IcfMasterTrackerTestHelper
 
 	def create_test_file_and_icf_master_tracker
-		create_test_file
+		create_icf_master_tracker_test_file
 		icf_master_tracker = create_icf_master_tracker_with_file
 	end
 
@@ -12,12 +12,19 @@ module Ccls::IcfMasterTrackerTestHelper
 		icf_master_tracker
 	end
 
-	def cleanup_icf_master_tracker_and_test_file(icf_master_tracker)
-		#	explicit destroy to remove attachment
-		icf_master_tracker.destroy	
-#		assert !File.exists?(icf_master_tracker.csv_file.path)
-		#	explicit delete to remove test file
-		File.delete(test_file_name)	
+	def cleanup_icf_master_tracker_and_test_file(icf_master_tracker=nil)
+		if icf_master_tracker
+			icf_master_tracker_file = icf_master_tracker.csv_file.path
+			#	explicit destroy to remove attachment
+			icf_master_tracker.destroy	
+			unless icf_master_tracker_file.blank?
+				assert !File.exists?(icf_master_tracker_file)
+			end
+		end
+		if File.exists?(test_file_name)
+			#	explicit delete to remove test file
+			File.delete(test_file_name)	
+		end
 		assert !File.exists?(test_file_name)
 	end
 
@@ -46,7 +53,7 @@ module Ccls::IcfMasterTrackerTestHelper
 #		"#{control[:masterid]},#{control[:ca_co_status]},#{control[:biomom]},#{control[:biodad]},#{control[:date]},#{control[:mother_full_name]},#{control[:mother_maiden_name]},#{control[:father_full_name]},#{control[:child_full_name]},#{control[:child_dobm]},#{control[:child_dobd]},#{control[:child_doby]},#{control[:child_gender]},#{control[:birthplace_country]},#{control[:birthplace_state]},#{control[:birthplace_city]},#{control[:mother_hispanicity]},#{control[:mother_hispanicity_mex]},#{control[:mother_race]},#{control[:mother_race_other]},#{control[:father_hispanicity]},#{control[:father_hispanicity_mex]},#{control[:father_race]},#{control[:father_race_other]}"
 #	end
 
-	def create_test_file
+	def create_icf_master_tracker_test_file
 		File.open(test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_study_subject
