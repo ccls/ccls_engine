@@ -4,75 +4,42 @@ namespace :ccls do
 	task :data_report => :environment do
 
 		printf "%-25s %5d\n", "StudySubject.count:", StudySubject.count
-		printf "%-25s %5d\n", "Cases:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Case'].id })
-		printf "%-25s %5d\n", "Controls:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Control'].id })
-		printf "%-25s %5d\n", "Mothers:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Mother'].id })
-		printf "%-25s %5d\n", "Twins:", StudySubject.count(
-			:conditions => { :subject_type_id => SubjectType['Twin'].id })
+
+		StudySubject.all(:select => "subject_type_id, COUNT(*) AS count",
+				:group => :subject_type_id ).each do |e|
+			printf "%-25s %5d\n", "subject_type = #{e.subject_type}:", e.count
+		end
+
 		printf "%-25s %5d\n", "Identifier.count:", Identifier.count
-		printf "%-25s %5d\n", "case_control_type = C:", Identifier.count(
-			:conditions => { :case_control_type => 'C' })
-		printf "%-25s %5d\n", "case_control_type = B:", Identifier.count(
-			:conditions => { :case_control_type => 'B' })
-		printf "%-25s %5d\n", "case_control_type = F:", Identifier.count(
-			:conditions => { :case_control_type => 'F' })
-		printf "%-25s %5d\n", "case_control_type = 4:", Identifier.count(
-			:conditions => { :case_control_type => '4' })
-		printf "%-25s %5d\n", "case_control_type = 5:", Identifier.count(
-			:conditions => { :case_control_type => '5' })
-		printf "%-25s %5d\n", "childidwho = C:", Identifier.count(
-			:conditions => { :childidwho => 'C' })
-		printf "%-25s %5d\n", "childidwho = M:", Identifier.count(
-			:conditions => { :childidwho => 'M' })
-		printf "%-25s %5d\n", "childidwho = T:", Identifier.count(
-			:conditions => { :childidwho => 'T' })
+		%w{ case_control_type childidwho }.each do |field|
+			Identifier.all(:select => "#{field}, COUNT(*) AS count",
+					:group => field ).each do |e|
+				printf "%-25s %5d\n", "#{field} = #{e.send(field)}:", e.count
+			end
+		end
+
 		printf "%-25s %5d\n", "Pii.count:", Pii.count
 		printf "%-25s %5d\n", "Patient.count:", Patient.count
-		was_under_15_at_dxs = Patient.all(:group => :was_under_15_at_dx,
-			:select => 'was_under_15_at_dx').collect(&:was_under_15_at_dx)
-		was_under_15_at_dxs.each do |c|
-			printf "%-25s %5d\n", "was_under_15_at_dx = #{c}:", 
-				Patient.count( :conditions => { :was_under_15_at_dx => c })
+		%w{ was_under_15_at_dx was_previously_treated was_ca_resident_at_diagnosis 
+		}.each do |field|
+			Patient.all(:select => "#{field}, COUNT(*) AS count",
+					:group => field ).each do |e|
+				printf "%-25s %5d\n", "#{field} = #{e.send(field)}:", e.count
+			end
 		end
-		was_previously_treateds = Patient.all(:group => :was_previously_treated,
-			:select => 'was_previously_treated').collect(&:was_previously_treated)
-		was_previously_treateds.each do |c|
-			printf "%-25s %5d\n", "was_previously_treated = #{c}:", 
-				Patient.count( :conditions => { :was_previously_treated => c })
-		end
+
 		printf "%-25s %5d\n", "Enrollment.count:", Enrollment.count
 		printf "%-25s %5d\n", "OperationalEvent.count:", OperationalEvent.count
 
 		printf "%-25s %5d\n", "CCLS Enrollments.count:", Enrollment.count(
 			:conditions => { :project_id => Project['ccls'].id })
-
-#
-#	I'm sure that I could use MySQL rollup and count to do this
-#
-
-		consenteds = Enrollment.all(:group => :consented,
-			:select => 'consented').collect(&:consented)
-		consenteds.each do |c|
-			printf "%-25s %5d\n", "consented = #{c}:", Enrollment.count(
-				:conditions => { :project_id => Project['ccls'].id,
-					:consented => c })
-		end
-		is_eligibles = Enrollment.all(:group => :is_eligible,
-			:select => 'is_eligible').collect(&:is_eligible)
-		is_eligibles.each do |c|
-			printf "%-25s %5d\n", "is_eligible = #{c}:", Enrollment.count(
-				:conditions => { :project_id => Project['ccls'].id,
-					:is_eligible => c })
-		end
-		refusal_reason_ids = Enrollment.all(:group => :refusal_reason_id,
-			:select => 'refusal_reason_id').collect(&:refusal_reason_id)
-		refusal_reason_ids.each do |c|
-			printf "%-25s %5d\n", "refusal_reason_id = #{c}:", Enrollment.count(
-				:conditions => { :project_id => Project['ccls'].id,
-					:refusal_reason_id => c })
+		%w{ consented is_eligible refusal_reason_id document_version_id
+		}.each do |field|
+			Enrollment.all(:select => "#{field}, COUNT(*) AS count",
+					:conditions => { :project_id => Project['ccls'].id },
+					:group      => field ).each do |e|
+				printf "%-25s %5d\n", "#{field} = #{e.send(field)}:", e.count
+			end
 		end
 
 	end
