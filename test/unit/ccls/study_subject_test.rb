@@ -20,6 +20,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	assert_should_require_attributes_not_nil( :do_not_contact, :sex )
 	assert_should_not_require_attributes( :vital_status_id, :hispanicity_id, 
 		:mom_is_biomom, :dad_is_biodad,
+		:mother_hispanicity_id, :father_hispanicity_id,
 		:mother_hispanicity_mex, :father_hispanicity_mex,
 		:reference_date, :mother_yrs_educ, :father_yrs_educ, 
 		:birth_type, :birth_county, :is_duplicate_of )
@@ -300,14 +301,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		study_subject.vital_status = Factory(:vital_status)
 		assert_not_nil study_subject.vital_status
 	end
-
-#	test "should belong to hispanicity" do
-#		study_subject = create_study_subject
-#pending	#	TODO apparently hispanicity_id will just be a code
-#		assert_nil study_subject.vital_status
-#		study_subject.vital_status = Factory(:vital_status)
-#		assert_not_nil study_subject.vital_status
-#	end
 
 #	test "should NOT destroy dust_kit with study_subject" do
 #		study_subject = create_study_subject
@@ -682,40 +675,50 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should not create mother for subject without identifier" do
-pending	#	TODO
+		study_subject = Factory(:study_subject)
+		assert_nil study_subject.identifier
+#	TODO raise an error?
+#		mother = study_subject.create_mother
+#flunk
 	end
 
-	test "should create father when isn't one" do
-		study_subject = create_complete_control_study_subject
-		assert_nil study_subject.father
-		assert_difference('Pii.count',1) {
-		assert_difference('Identifier.count',1) {
-		assert_difference('StudySubject.count',1) {
-			@father = study_subject.create_father
-		} } }
-		assert_equal @father, study_subject.father
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should create father when isn't one" do
+#		study_subject = create_complete_control_study_subject
+#		assert_nil study_subject.father
+#		assert_difference('Pii.count',1) {
+#		assert_difference('Identifier.count',1) {
+#		assert_difference('StudySubject.count',1) {
+#			@father = study_subject.create_father
+#		} } }
+#		assert_equal @father, study_subject.father
+#	end
 
-	test "should not create father when one exists" do
-		study_subject = create_complete_control_study_subject
-		father = study_subject.create_father
-		assert_difference('Pii.count',0) {
-		assert_difference('Identifier.count',0) {
-		assert_difference('StudySubject.count',0) {
-			@father = study_subject.create_father
-		} } }
-		assert_equal @father, father
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should not create father when one exists" do
+#		study_subject = create_complete_control_study_subject
+#		father = study_subject.create_father
+#		assert_difference('Pii.count',0) {
+#		assert_difference('Identifier.count',0) {
+#		assert_difference('StudySubject.count',0) {
+#			@father = study_subject.create_father
+#		} } }
+#		assert_equal @father, father
+#	end
 
-	test "should not create father for father" do
-		study_subject = create_complete_father_study_subject
-		assert_equal study_subject, study_subject.father
-		assert_equal study_subject, study_subject.create_father
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should not create father for father" do
+#		study_subject = create_complete_father_study_subject
+#		assert_equal study_subject, study_subject.father
+#		assert_equal study_subject, study_subject.create_father
+#	end
 
-	test "should not create father for subject without identifier" do
-pending	#	TODO
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should not create father for subject without identifier" do
+#		study_subject = Factory(:study_subject)
+#		assert_nil study_subject.identifier
+##		father = study_subject.create_father
+#	end
 
 	test "should get control subjects for case subject" do
 		study_subject = create_complete_case_study_subject
@@ -732,56 +735,106 @@ pending	#	TODO
 		assert_equal [], study_subject.controls
 	end
 
-	test "should NOT include self in family" do
-		study_subject = create_complete_control_study_subject
-		assert_equal 0, study_subject.family.length
-	end
 
-	test "should NOT include self in matching" do
-		study_subject = create_complete_control_study_subject
+#
+#	matching/matchingid is for matching cases and controls
+#		This will also include case's family
+#
+	test "should NOT include self in matching for case" do
+		study_subject = create_complete_case_study_subject
+		assert study_subject.is_case?
 		assert_equal 0, study_subject.matching.length
 	end
 
-	test "should include mother in family" do
+	test "should NOT include self in matching for control" do
 		study_subject = create_complete_control_study_subject
-		mother = study_subject.create_mother
-		assert_equal      1, study_subject.family.length
-		assert_equal mother, study_subject.family.last
+		assert study_subject.is_control?
+		assert_equal 0, study_subject.matching.length
 	end
 
-	test "should include father in family" do
-		study_subject = create_complete_control_study_subject
-		father = study_subject.create_father
-		assert_equal      1, study_subject.family.length
-		assert_equal father, study_subject.family.last
-	end
-
-#	I think that matchingid is only for matching controls with cases
 	test "should include mother in matching for case" do
-#	TODO what if matchingid is null (as is for non-case)?
-		study_subject = create_case_identifier.study_subject.reload
+		study_subject = create_complete_case_study_subject
+		assert study_subject.is_case?
+		assert_not_nil study_subject.identifier.matchingid
 		mother = study_subject.create_mother
-		assert_equal      1, study_subject.matching.length
-		assert_equal mother, study_subject.matching.last
+		assert_equal study_subject.matching.length, 1
+		assert       study_subject.matching.include?(mother)
 	end
 
-	test "should include father in matching for case" do
-#	TODO what if matchingid is null (as is for non-case)?
-		study_subject = create_case_identifier.study_subject.reload
-		father = study_subject.create_father
-		assert_equal      1, study_subject.matching.length
-		assert_equal father, study_subject.matching.last
+	test "should NOT include mother in matching for control" do
+		study_subject = create_complete_control_study_subject
+		assert study_subject.is_control?
+		assert_nil study_subject.identifier.matchingid
+		mother = study_subject.create_mother
+		assert_equal 0, study_subject.matching.length
 	end
 
-	test "should do what for null matchingid for matching" do
-pending	#	TODO should do what for null matchingid for matching
+	test "should return nothing for null identifier for matching" do
+		study_subject = Factory(:study_subject)
+		assert_nil study_subject.identifier
+		assert_equal study_subject.matching.length, 0
 	end
 
-	test "should do what for null familyid for family" do
-pending	#	TODO should do what for null familyid for family
+#	Father seems to be irrelevant so commenting out code.
+#	test "should include father in matching for case" do
+##	TODO what if matchingid is null (as is for non-case)?
+##		study_subject = create_case_identifier.study_subject.reload
+#		study_subject = create_complete_case_study_subject
+#		father = study_subject.create_father
+#		assert_equal      1, study_subject.matching.length
+#		assert_equal father, study_subject.matching.last
+#	end
+
+
+#
+#	family/familyid is for matching subject to family members
+#
+	test "should NOT include self in family for case" do
+		study_subject = create_complete_case_study_subject
+		assert study_subject.is_case?
+		assert_equal 0, study_subject.family.length
 	end
+
+	test "should NOT include self in family for control" do
+		study_subject = create_complete_control_study_subject
+		assert study_subject.is_control?
+		assert_equal 0, study_subject.family.length
+	end
+
+	test "should include mother in family for case" do
+		study_subject = create_complete_case_study_subject
+		assert study_subject.is_case?
+		mother = study_subject.create_mother
+		assert_equal study_subject.family.length, 1
+		assert       study_subject.family.include?(mother)
+	end
+
+	test "should include mother in family for control" do
+		study_subject = create_complete_control_study_subject
+		assert study_subject.is_control?
+		mother = study_subject.create_mother
+		assert_equal study_subject.family.length, 1
+		assert       study_subject.family.include?(mother)
+	end
+
+	test "should return nothing for null identifier for family" do
+		study_subject = Factory(:study_subject)
+		assert_nil study_subject.identifier
+		assert_equal study_subject.family.length, 0
+	end
+
+#	Father seems to be irrelevant so commenting out code.
+#	test "should include father in family" do
+#		study_subject = create_complete_control_study_subject
+#		father = study_subject.create_father
+#		assert_equal      1, study_subject.family.length
+#		assert_equal father, study_subject.family.last
+#	end
+
+
 
 	test "should return mother if is one" do
+#	TODO maybe return nil instead of self
 		study_subject = create_complete_control_study_subject
 		assert_nil study_subject.mother
 		mother = study_subject.create_mother
@@ -789,13 +842,14 @@ pending	#	TODO should do what for null familyid for family
 		assert_equal mother, study_subject.mother
 	end
 
-	test "should return father if is one" do
-		study_subject = create_complete_control_study_subject
-		assert_nil study_subject.father
-		father = study_subject.create_father
-		assert_not_nil study_subject.father
-		assert_equal father, study_subject.father
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should return father if is one" do
+#		study_subject = create_complete_control_study_subject
+#		assert_nil study_subject.father
+#		father = study_subject.create_father
+#		assert_not_nil study_subject.father
+#		assert_equal father, study_subject.father
+#	end
 
 	test "should return rejected controls for case subject" do
 		study_subject = create_complete_case_study_subject
@@ -830,7 +884,14 @@ pending	#	TODO should do what for null familyid for family
 		assert_nil found_study_subject
 	end
 
-	test "should return child if subject is mother" do
+	test "should return child if subject is mother of case" do
+		study_subject = create_complete_case_study_subject
+		mother = study_subject.create_mother
+		assert_equal mother, study_subject.mother
+		assert_equal mother.child, study_subject
+	end
+
+	test "should return child if subject is mother of control" do
 		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
 		assert_equal mother, study_subject.mother

@@ -156,27 +156,32 @@ class StudySubject < ActiveRecordShared
 	#	Father's don't seem to be even remotely important in any of our study data.
 	#	Nevertheless, ...
 	#	Find the subject with matching familyid and subject_type of Father.
-	def father
-		StudySubject.find(:first,
-			:include => [:pii,:identifier,:subject_type],
-			:joins => :identifier,
-			:conditions => { 
-				'identifiers.familyid' => identifier.familyid,
-				:subject_type_id       => StudySubject.subject_type_father_id
-			}
-		)
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	def father
+#		StudySubject.find(:first,
+#			:include => [:pii,:identifier,:subject_type],
+#			:joins => :identifier,
+#			:conditions => { 
+#				'identifiers.familyid' => identifier.familyid,
+#				:subject_type_id       => StudySubject.subject_type_father_id
+#			}
+#		)
+#	end
 
-	#	Find the subject with matching familyid except self.
-	#	TODO add a subject_type check here?  Otherwise, this could return any subject_type
+	#	Find the case or control subject with matching familyid except self.
 	def child
+#	TODO what if identifier is NULL?
+#	TODO what if familyid is NULL?
 		if subject_type_id == StudySubject.subject_type_mother_id
+#	&& !identifier.nil? && !identifier.familyid.blank?
 			StudySubject.find(:first,
 				:include => [:pii,:identifier,:subject_type],
 				:joins => :identifier,
 				:conditions => [
-					"study_subjects.id != ? AND identifiers.subjectid = ?", 
-						id, identifier.familyid ]
+#					"study_subjects.id != ? AND identifiers.subjectid = ?", 
+					"study_subjects.id != ? AND identifiers.subjectid = ? AND subject_type_id IN (?)", 
+						id, identifier.familyid, [
+							StudySubject.subject_type_case_id,StudySubject.subject_type_control_id] ]
 			)
 		else
 			nil
@@ -185,6 +190,9 @@ class StudySubject < ActiveRecordShared
 
 	#	Find the subject with matching familyid and subject_type of Mother.
 	def mother
+#	TODO what if identifier is NULL?
+#	TODO what if familyid is NULL?
+#	if !identifier.nil? && !identifier.familyid.blank?
 		StudySubject.find(:first,
 			:include => [:pii,:identifier,:subject_type],
 			:joins => :identifier,
@@ -197,31 +205,37 @@ class StudySubject < ActiveRecordShared
 
 	#	Find all the subjects with matching familyid except self.
 	def family
-#	TODO what if familyid is NULL?
-		StudySubject.find(:all,
-			:include => [:pii,:identifier,:subject_type],
-			:joins => :identifier,
-			:conditions => [
-				"study_subjects.id != ? AND identifiers.familyid = ?", 
-					id, identifier.familyid ]
-		)
+		if !identifier.nil? && !identifier.familyid.blank?
+			StudySubject.find(:all,
+				:include => [:pii,:identifier,:subject_type],
+				:joins => :identifier,
+				:conditions => [
+					"study_subjects.id != ? AND identifiers.familyid = ?", 
+						id, identifier.familyid ]
+			)
+		else
+			[]
+		end
 	end
 
 	#	Find all the subjects with matching matchingid except self.
-	#	If matchingid is nil, this sql doesn't work.  Could fix, but this situation is unlikely.
 	def matching
-#	TODO what if matchingid is NULL?
-		StudySubject.find(:all,
-			:include => [:pii,:identifier,:subject_type],
-			:joins => :identifier,
-			:conditions => [
-				"study_subjects.id != ? AND identifiers.matchingid = ?", 
-					id, identifier.matchingid ]
-		)
+		if !identifier.nil? && !identifier.matchingid.blank?
+			StudySubject.find(:all,
+				:include => [:pii,:identifier,:subject_type],
+				:joins => :identifier,
+				:conditions => [
+					"study_subjects.id != ? AND identifiers.matchingid = ?", 
+						id, identifier.matchingid ]
+			)
+		else
+			[]
+		end
 	end
 
 	#	Find all the subjects with matching patid with subject_type Control except self.
-	#	If patid is nil, this sql doesn't work.  Could fix, but this situation is unlikely.
+	#	If patid is nil, this sql doesn't work.  
+	#			TODO Could fix, but this situation is unlikely.
 	def controls
 		return [] unless is_case?
 		StudySubject.find(:all, 
@@ -281,9 +295,10 @@ class StudySubject < ActiveRecordShared
 
 	#	Returns boolean of comparison
 	#	true only if type is Father
-	def is_father?
-		subject_type_id == StudySubject.subject_type_father_id
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	def is_father?
+#		subject_type_id == StudySubject.subject_type_father_id
+#	end
 
 	def race_names
 		races.collect(&:to_s).join(', ')
@@ -476,36 +491,37 @@ class StudySubject < ActiveRecordShared
 	#	Father's don't seem to be even remotely important in any of our study data.
 	#	Nevertheless, ...
 	#	Create (or just return father) a father subject based on subject's own data.
-	def create_father
-		#	The father method will effectively find and itself.
-		existing_father = father
-		if existing_father
-			existing_father
-		else
-			new_father = StudySubject.create!({
-				:subject_type_id => StudySubject.subject_type_father_id,
-				:vital_status => VitalStatus['living'],
-				:sex => 'M',			#	TODO M/F or male/female? have to check.
-#				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
-				:pii_attributes => {
-					:first_name  => father_first_name,
-					:middle_name => father_middle_name,
-					:last_name   => father_last_name,
-					#	flag to not require the dob as won't have one
-					:subject_is_father => true  
-				},
-				:identifier => Identifier.new { |i|
-					#	protected attributes!
-					i.matchingid = identifier.matchingid
-					i.familyid   = identifier.familyid
-				}
-			})
-# possibly put in a identifier#after_create ???
-#	or study_subject#after_create ???
-			new_father.assign_icf_master_id
-			new_father
-		end
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	def create_father
+#		#	The father method will effectively find and itself.
+#		existing_father = father
+#		if existing_father
+#			existing_father
+#		else
+#			new_father = StudySubject.create!({
+#				:subject_type_id => StudySubject.subject_type_father_id,
+#				:vital_status => VitalStatus['living'],
+#				:sex => 'M',			#	TODO M/F or male/female? have to check.
+##				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
+#				:pii_attributes => {
+#					:first_name  => father_first_name,
+#					:middle_name => father_middle_name,
+#					:last_name   => father_last_name,
+#					#	flag to not require the dob as won't have one
+#					:subject_is_father => true  
+#				},
+#				:identifier => Identifier.new { |i|
+#					#	protected attributes!
+#					i.matchingid = identifier.matchingid
+#					i.familyid   = identifier.familyid
+#				}
+#			})
+## possibly put in a identifier#after_create ???
+##	or study_subject#after_create ???
+#			new_father.assign_icf_master_id
+#			new_father
+#		end
+#	end
 
 # possibly put in a identifier#after_create ???
 #	or study_subject#after_create ???
@@ -570,7 +586,8 @@ class StudySubject < ActiveRecordShared
 		if params.has_key?(:dob) and !params[:dob].blank? and
 				params.has_key?(:sex) and !params[:sex].blank? and 
 				params.has_key?(:mother_maiden_name)
-			conditions[0] << '(dob = :dob AND sex = :sex AND ( mother_maiden_name IS NULL OR mother_maiden_name = :mother_maiden_name ))'
+#	since remove nullify of name fields, added comparison to ""
+			conditions[0] << '(dob = :dob AND sex = :sex AND ( mother_maiden_name IS NULL OR mother_maiden_name = "" OR mother_maiden_name = :mother_maiden_name ))'
 			conditions[1][:dob] = params[:dob]
 			conditions[1][:sex] = params[:sex]
 			#	added to_s as may be null so sql is valid and has '' rather than a blank
