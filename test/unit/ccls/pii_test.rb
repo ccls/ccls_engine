@@ -64,19 +64,26 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		} }
 	end
 
-	%w( email first_name middle_name last_name 
-		father_first_name father_middle_name father_last_name
-		mother_first_name mother_middle_name 
-		mother_maiden_name mother_last_name 
-		guardian_first_name guardian_middle_name 
-		guardian_last_name ).each do |field|
-		test "should nullify blank #{field}" do
-			assert_difference("Pii.count",1) do
-				pii = create_pii(field => ' ')
-				assert_nil pii.reload.send(field)
-			end
+	test "should nullify blank email" do
+		assert_difference("Pii.count",1) do
+			pii = create_pii(:email => ' ')
+			assert_nil pii.reload.email
 		end
 	end
+
+#	%w( email first_name middle_name last_name 
+#		father_first_name father_middle_name father_last_name
+#		mother_first_name mother_middle_name 
+#		mother_maiden_name mother_last_name 
+#		guardian_first_name guardian_middle_name 
+#		guardian_last_name ).each do |field|
+#		test "should nullify blank #{field}" do
+#			assert_difference("Pii.count",1) do
+#				pii = create_pii(field => ' ')
+#				assert_nil pii.reload.send(field)
+#			end
+#		end
+#	end
 
 	test "should allow multiple blank email" do
 		create_pii(:email => '  ')
@@ -124,6 +131,22 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	test "should return join of study_subject's initials" do
 		pii = create_pii(
 			:first_name => "John",
+			:middle_name => "X",
+			:last_name  => "Smith" )
+		assert_equal 'JXS', pii.initials 
+	end
+
+	test "should return join of study_subject's initials without middle name" do
+		pii = create_pii(
+			:first_name => "John",
+			:last_name  => "Smith" )
+		assert_equal 'JS', pii.initials 
+	end
+
+	test "should return join of study_subject's initials with blank middle name" do
+		pii = create_pii(
+			:first_name => "John",
+			:middle_name => "",
 			:last_name  => "Smith" )
 		assert_equal 'JS', pii.initials 
 	end
@@ -131,6 +154,22 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	test "should return join of study_subject's name" do
 		pii = create_pii(
 			:first_name => "John",
+			:middle_name => "Xavier",
+			:last_name  => "Smith" )
+		assert_equal 'John Xavier Smith', pii.full_name 
+	end
+
+	test "should return join of study_subject's name without middle name" do
+		pii = create_pii(
+			:first_name => "John",
+			:last_name  => "Smith" )
+		assert_equal 'John Smith', pii.full_name 
+	end
+
+	test "should return join of study_subject's name with blank middle name" do
+		pii = create_pii(
+			:first_name => "John",
+			:middle_name => "",
 			:last_name  => "Smith" )
 		assert_equal 'John Smith', pii.full_name 
 	end
@@ -158,6 +197,22 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	test "should return join of father's name" do
 		pii = create_pii(
 			:father_first_name => "Santa",
+			:father_middle_name => "X.",
+			:father_last_name => "Claus" )
+		assert_equal 'Santa X. Claus', pii.fathers_name 
+	end
+
+	test "should return join of father's name without middle name" do
+		pii = create_pii(
+			:father_first_name => "Santa",
+			:father_last_name => "Claus" )
+		assert_equal 'Santa Claus', pii.fathers_name 
+	end
+
+	test "should return join of father's name with blank middle name" do
+		pii = create_pii(
+			:father_first_name => "Santa",
+			:father_middle_name => "",
 			:father_last_name => "Claus" )
 		assert_equal 'Santa Claus', pii.fathers_name 
 	end
@@ -165,6 +220,22 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	test "should return join of mother's name" do
 		pii = create_pii(
 			:mother_first_name => "Ms",
+			:mother_middle_name => "X.",
+			:mother_last_name => "Claus" )
+		assert_equal 'Ms X. Claus', pii.mothers_name 
+	end
+
+	test "should return join of mother's name without middle name" do
+		pii = create_pii(
+			:mother_first_name => "Ms",
+			:mother_last_name => "Claus" )
+		assert_equal 'Ms Claus', pii.mothers_name 
+	end
+
+	test "should return join of mother's name with blank middle name" do
+		pii = create_pii(
+			:mother_first_name => "Ms",
+			:mother_middle_name => "",
 			:mother_last_name => "Claus" )
 		assert_equal 'Ms Claus', pii.mothers_name 
 	end
@@ -172,6 +243,22 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 	test "should return join of guardian's name" do
 		pii = create_pii(
 			:guardian_first_name => "Jack",
+			:guardian_middle_name => "X.",
+			:guardian_last_name => "Frost" )
+		assert_equal 'Jack X. Frost', pii.guardians_name 
+	end
+
+	test "should return join of guardian's name without middle name" do
+		pii = create_pii(
+			:guardian_first_name => "Jack",
+			:guardian_last_name => "Frost" )
+		assert_equal 'Jack Frost', pii.guardians_name 
+	end
+
+	test "should return join of guardian's name with blank middle name" do
+		pii = create_pii(
+			:guardian_first_name => "Jack",
+			:guardian_middle_name => "",
 			:guardian_last_name => "Frost" )
 		assert_equal 'Jack Frost', pii.guardians_name 
 	end
@@ -222,19 +309,21 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should not require dob if subject_is_father flag is true" do
-		assert_difference('Pii.count',1) do
-			pii = create_pii( :subject_is_father => true, :dob => nil )
-			assert pii.dob_not_required?
-		end
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should not require dob if subject_is_father flag is true" do
+#		assert_difference('Pii.count',1) do
+#			pii = create_pii( :subject_is_father => true, :dob => nil )
+#			assert pii.dob_not_required?
+#		end
+#	end
 
-	test "should require dob if subject_is_father flag is false" do
-		assert_difference('Pii.count',0) do
-			pii = create_pii( :subject_is_father => false, :dob => nil )
-			assert !pii.dob_not_required?
-		end
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should require dob if subject_is_father flag is false" do
+#		assert_difference('Pii.count',0) do
+#			pii = create_pii( :subject_is_father => false, :dob => nil )
+#			assert !pii.dob_not_required?
+#		end
+#	end
 
 	test "should require birth_city if birth_country is 'United States'" do
 		assert_difference( "Pii.count", 0 ) do

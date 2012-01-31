@@ -11,7 +11,10 @@ class Pii < ActiveRecordShared
 
 	#	Basically, this is only used as a flag during nested creation
 	#	to determine if the dob is required.
-	attr_accessor :subject_is_mother, :subject_is_father
+	attr_accessor :subject_is_mother
+	
+	#	Father seems to be irrelevant so commenting out code.
+	#	attr_accessor :subject_is_father
 
 	attr_protected :study_subject_id
 
@@ -56,40 +59,42 @@ class Pii < ActiveRecordShared
 	#	when using the accepts_nested_attributes feature
 	#	so we must explicitly set a flag.
 	def dob_not_required?
-		subject_is_mother || subject_is_father || 
-			( subject_type == SubjectType['Mother'] ) ||
-			( subject_type == SubjectType['Father'] )
+		subject_is_mother || ( subject_type == SubjectType['Mother'] )
+#		subject_is_mother || subject_is_father || 
+#			( subject_type == SubjectType['Mother'] ) ||
+#			( subject_type == SubjectType['Father'] )
 #			( study_subject.try(:subject_type) == SubjectType['Mother'] ) ||
 #			( study_subject.try(:subject_type) == SubjectType['Father'] )
 	end
 
 	#	Returns string containing study_subject's first, middle and last initials
 	def initials
-		[first_name, middle_name, last_name].compact.collect{|s|s.chars.first}.join()
+		[first_name, middle_name, last_name].delete_if(&:blank?).collect{|s|s.chars.first}.join()
 	end
 
 	#	Returns string containing study_subject's first, middle and last name
 	#	TODO include maiden_name just in case is mother???
+	#	Use delete_if(&:blank?) instead of compact, which only removes nils.
 	def full_name
-		fullname = [first_name, middle_name, last_name].compact.join(' ')
+		fullname = [first_name, middle_name, last_name ].delete_if(&:blank?).join(' ')
 		( fullname.blank? ) ? '[name not available]' : fullname
 	end
 
 	#	Returns string containing study_subject's father's first, middle and last name
 	def fathers_name
-		fathersname = [father_first_name, father_middle_name, father_last_name].compact.join(' ')
+		fathersname = [father_first_name, father_middle_name, father_last_name ].delete_if(&:blank?).join(' ')
 		( fathersname.blank? ) ? '[name not available]' : fathersname
 	end
 
 	#	Returns string containing study_subject's mother's first, middle and last name
 	def mothers_name
-		mothersname = [mother_first_name, mother_middle_name, mother_last_name].compact.join(' ')
+		mothersname = [mother_first_name, mother_middle_name, mother_last_name ].delete_if(&:blank?).join(' ')
 		( mothersname.blank? ) ? '[name not available]' : mothersname
 	end
 
 	#	Returns string containing study_subject's guardian's first, middle and last name
 	def guardians_name
-		guardiansname = [guardian_first_name, guardian_middle_name, guardian_last_name].compact.join(' ')
+		guardiansname = [guardian_first_name, guardian_middle_name, guardian_last_name ].delete_if(&:blank?).join(' ')
 		( guardiansname.blank? ) ? '[name not available]' : guardiansname
 	end
 
@@ -127,19 +132,21 @@ protected
 	def nullify_blank_fields
 		#	An empty form field is not NULL to MySQL so ...
 		self.email = nil if email.blank?
-		self.first_name = nil if first_name.blank?
-		self.middle_name = nil if middle_name.blank?
-		self.last_name = nil if last_name.blank?
-		self.father_first_name = nil if father_first_name.blank?
-		self.father_middle_name = nil if father_middle_name.blank?
-		self.father_last_name = nil if father_last_name.blank?
-		self.mother_first_name = nil if mother_first_name.blank?
-		self.mother_middle_name = nil if mother_middle_name.blank?
-		self.mother_maiden_name = nil if mother_maiden_name.blank?
-		self.mother_last_name = nil if mother_last_name.blank?
-		self.guardian_first_name = nil if guardian_first_name.blank?
-		self.guardian_middle_name = nil if guardian_middle_name.blank?
-		self.guardian_last_name = nil if guardian_last_name.blank?
+
+#	Why did these matter?
+#		self.first_name = nil if first_name.blank?
+#		self.middle_name = nil if middle_name.blank?
+#		self.last_name = nil if last_name.blank?
+#		self.father_first_name = nil if father_first_name.blank?
+#		self.father_middle_name = nil if father_middle_name.blank?
+#		self.father_last_name = nil if father_last_name.blank?
+#		self.mother_first_name = nil if mother_first_name.blank?
+#		self.mother_middle_name = nil if mother_middle_name.blank?
+#		self.mother_maiden_name = nil if mother_maiden_name.blank?
+#		self.mother_last_name = nil if mother_last_name.blank?
+#		self.guardian_first_name = nil if guardian_first_name.blank?
+#		self.guardian_middle_name = nil if guardian_middle_name.blank?
+#		self.guardian_last_name = nil if guardian_last_name.blank?
 	end
 
 	#	custom validation for custom message without standard attribute prefix
