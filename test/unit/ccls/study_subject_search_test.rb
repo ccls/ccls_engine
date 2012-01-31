@@ -48,15 +48,16 @@ class Ccls::StudySubjectSearchTest < ActiveSupport::TestCase
 		assert !study_subjects.include?(s3)
 	end
 
-	test "should include study_subject by hispanicity" do
-		s1,s2,s3 = create_study_subjects(3)
-pending
+#	Don't think that this'll need to be searchable
+#	test "should include study_subject by hispanicity" do
+#		s1,s2,s3 = create_study_subjects(3)
+#pending
 #		study_subjects = StudySubject.search(
 #			:races => [s1,s2].collect{|s|s.race.name})
 #		assert  study_subjects.include?(s1)
 #		assert  study_subjects.include?(s2)
 #		assert !study_subjects.include?(s3)
-	end
+#	end
 
 	test "should include study_subject by vital_statuses" do
 		s1,s2,s3 = create_study_subjects(3)
