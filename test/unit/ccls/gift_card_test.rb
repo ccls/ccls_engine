@@ -28,12 +28,6 @@ class Ccls::GiftCardTest < ActiveSupport::TestCase
 		assert_equal gift_card.number, "#{gift_card}"
 	end
 
-#	Add search tests
-
-	test "should search for stuff" do
-pending	#	TODO should add some search tests
-	end
-
 #protected
 #
 #	def create_gift_card(options={})

@@ -110,18 +110,15 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 
 #	somehow
 
-	test "should belong to organization" do
+#	TODO haven't really implemented organization samples yet
+#	test "should belong to organization" do
 #		sample = create_sample
 #		assert_nil sample.organization
 #		sample.organization = Factory(:organization)
 #		assert_not_nil sample.organization
-
-#	TODO haven't really implemented organization samples yet
-
-		#	this is not clear in my UML diagram
-
-		pending
-	end
+#		#	this is not clear in my UML diagram
+#		pending
+#	end
 
 	test "should require sent_to_subject_on if collected_on" do
 		assert_difference( 'Sample.count', 0 ) do

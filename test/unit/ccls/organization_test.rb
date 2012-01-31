@@ -44,17 +44,11 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 		assert_equal organization.id, transfer.from_organization_id
 	end
 
-	test "should have many samples" do
-#		somehow
-
-#		flunk samples
-
 #	TODO haven't really implemented organization samples yet
-
-		#	this is unclear in my diagram
-		pending
-
-	end
+#	test "should have many samples" do
+#		#	this is unclear in my diagram
+#		pending
+#	end
 
 	test "should return name as to_s" do
 		organization = create_organization
