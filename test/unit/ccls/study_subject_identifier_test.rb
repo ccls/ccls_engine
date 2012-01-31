@@ -152,22 +152,24 @@ class Ccls::StudySubjectIdentifierTest < ActiveSupport::TestCase
 		assert_equal   study_subject.icf_master_id, imi.icf_master_id
 	end
 
-	test "should assign icf_master_id to father on creation if one exists" do
-#		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		study_subject = create_identifier.study_subject
-		imi = Factory(:icf_master_id,:icf_master_id => '12345678A')
-		father = study_subject.create_father
-		assert_not_nil father.reload.identifier.icf_master_id
-		assert_equal '12345678A', father.icf_master_id
-		assert_equal '12345678A', father.identifier.icf_master_id
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should assign icf_master_id to father on creation if one exists" do
+##		study_subject = create_identifier(:icf_master_id => nil).study_subject
+#		study_subject = create_identifier.study_subject
+#		imi = Factory(:icf_master_id,:icf_master_id => '12345678A')
+#		father = study_subject.create_father
+#		assert_not_nil father.reload.identifier.icf_master_id
+#		assert_equal '12345678A', father.icf_master_id
+#		assert_equal '12345678A', father.identifier.icf_master_id
+#	end
 
-	test "should not assign icf_master_id to father on creation if none exist" do
-#		study_subject = create_identifier(:icf_master_id => nil).study_subject
-		study_subject = create_identifier.study_subject
-		father = study_subject.create_father
-		assert_nil father.reload.identifier.icf_master_id
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should not assign icf_master_id to father on creation if none exist" do
+##		study_subject = create_identifier(:icf_master_id => nil).study_subject
+#		study_subject = create_identifier.study_subject
+#		father = study_subject.create_father
+#		assert_nil father.reload.identifier.icf_master_id
+#	end
 
 protected
 
