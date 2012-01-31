@@ -29,13 +29,20 @@ class LiveBirthData < ActiveRecordShared
 						next
 					end
 
-					dob = Date.new(
-						line['child_doby'].to_i, 
-						line['child_dobm'].to_i, 
-						line['child_dobd'].to_i)
-					child_names  = line["child_full_name"].split_name
-					father_names = line["father_full_name"].split_name
-					mother_names = line["mother_full_name"].split_name
+					dob = unless( 
+							line['child_doby'].blank? || 
+							line['child_dobm'].blank? ||
+							line['child_dobd'].blank? )
+						Date.new(
+							line['child_doby'].to_i, 
+							line['child_dobm'].to_i, 
+							line['child_dobd'].to_i)
+					else
+						nil
+					end
+					child_names  = line["child_full_name"].to_s.split_name
+					father_names = line["father_full_name"].to_s.split_name
+					mother_names = line["mother_full_name"].to_s.split_name
 					candidate_control_options = {
 						:related_patid => identifier.patid,
 						:mom_is_biomom => line["biomom"],
@@ -97,8 +104,8 @@ String.class_eval do
 		#	Really only want to split on spaces so just remove the problem chars.
 		#	May have to add others later.
 		names  = self.gsub(/\240/,' ').split
-		first  = names.shift.squish
-		last   = names.pop.squish
+		first  = names.shift.to_s.squish
+		last   = names.pop.to_s.squish
 		middle = names.join(' ').squish
 		[first,middle,last]
 	end

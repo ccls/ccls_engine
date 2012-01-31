@@ -87,7 +87,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 	test "should convert non-existant attached csv_file to candidate controls" do
 		live_birth_data = create_test_file_and_live_birth_data
 		assert  File.exists?(live_birth_data.csv_file.path)
-		File.delete(live_birth_data.csv_file.path)					#	TODO will leave directories
+		File.delete(live_birth_data.csv_file.path)
 		assert !File.exists?(live_birth_data.csv_file.path)
 		assert_difference('CandidateControl.count',0) {
 			results = live_birth_data.to_candidate_controls
@@ -138,6 +138,82 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 			assert new_results[0].is_case?
 			assert new_results[1].is_a?(CandidateControl)
 			assert_equal results, new_results
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+	test "should convert attached csv_file to candidate controls with blank child_full_name" do
+		create_case_for_live_birth_data
+		live_birth_data = create_test_file_and_live_birth_data(:child_full_name => '')
+		results = nil
+		assert_difference('CandidateControl.count',0) {
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+			assert results[0].is_a?(StudySubject)
+			assert results[0].is_case?
+			assert results[1].is_a?(CandidateControl)
+			assert results[1].errors.on_attr_and_type(:first_name, :blank)
+			assert results[1].errors.on_attr_and_type(:last_name,  :blank)
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+	test "should convert attached csv_file to candidate controls with blank child_dobm" do
+		create_case_for_live_birth_data
+		live_birth_data = create_test_file_and_live_birth_data(:child_dobm => '')
+		results = nil
+		assert_difference('CandidateControl.count',0) {
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+			assert results[0].is_a?(StudySubject)
+			assert results[0].is_case?
+			assert results[1].is_a?(CandidateControl)
+			assert results[1].errors.on_attr_and_type(:dob, :blank)
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+	test "should convert attached csv_file to candidate controls with blank child_dobd" do
+		create_case_for_live_birth_data
+		live_birth_data = create_test_file_and_live_birth_data(:child_dobd => '')
+		results = nil
+		assert_difference('CandidateControl.count',0) {
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+			assert results[0].is_a?(StudySubject)
+			assert results[0].is_case?
+			assert results[1].is_a?(CandidateControl)
+			assert results[1].errors.on_attr_and_type(:dob, :blank)
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+	test "should convert attached csv_file to candidate controls with blank child_doby" do
+		create_case_for_live_birth_data
+		live_birth_data = create_test_file_and_live_birth_data(:child_doby => '')
+		results = nil
+		assert_difference('CandidateControl.count',0) {
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+			assert results[0].is_a?(StudySubject)
+			assert results[0].is_case?
+			assert results[1].is_a?(CandidateControl)
+			assert results[1].errors.on_attr_and_type(:dob, :blank)
+		}
+		cleanup_live_birth_data_and_test_file(live_birth_data)
+	end
+
+	test "should convert attached csv_file to candidate controls with blank child_gender" do
+		create_case_for_live_birth_data
+		live_birth_data = create_test_file_and_live_birth_data(:child_gender => '')
+		results = nil
+		assert_difference('CandidateControl.count',0) {
+			results = live_birth_data.to_candidate_controls
+			assert_equal 2,  results.length
+			assert results[0].is_a?(StudySubject)
+			assert results[0].is_case?
+			assert results[1].is_a?(CandidateControl)
+			assert results[1].errors.on_attr_and_type(:sex, :inclusion)
 		}
 		cleanup_live_birth_data_and_test_file(live_birth_data)
 	end

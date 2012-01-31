@@ -1,7 +1,7 @@
 module Ccls::LiveBirthDataTestHelper
 
-	def create_test_file_and_live_birth_data
-		create_live_birth_data_test_file
+	def create_test_file_and_live_birth_data(options={})
+		create_live_birth_data_test_file(options)
 		live_birth_data = create_live_birth_data_with_file
 	end
 
@@ -52,15 +52,16 @@ module Ccls::LiveBirthDataTestHelper
 		"1234FAKE,case,1,,1/18/2012,Jane Smith,Jones,John Smith,Jimmy Smith,1,6,2009,M,United States,CA,Bakersfield,2,2,1,,2,2,1,"
 	end
 
-	def csv_file_control
-		"#{control[:masterid]},#{control[:ca_co_status]},#{control[:biomom]},#{control[:biodad]},#{control[:date]},#{control[:mother_full_name]},#{control[:mother_maiden_name]},#{control[:father_full_name]},#{control[:child_full_name]},#{control[:child_dobm]},#{control[:child_dobd]},#{control[:child_doby]},#{control[:child_gender]},#{control[:birthplace_country]},#{control[:birthplace_state]},#{control[:birthplace_city]},#{control[:mother_hispanicity]},#{control[:mother_hispanicity_mex]},#{control[:mother_race]},#{control[:mother_race_other]},#{control[:father_hispanicity]},#{control[:father_hispanicity_mex]},#{control[:father_race]},#{control[:father_race_other]}"
+	def csv_file_control(options={})
+		c = control.merge(options)
+		"#{c[:masterid]},#{c[:ca_co_status]},#{c[:biomom]},#{c[:biodad]},#{c[:date]},#{c[:mother_full_name]},#{c[:mother_maiden_name]},#{c[:father_full_name]},#{c[:child_full_name]},#{c[:child_dobm]},#{c[:child_dobd]},#{c[:child_doby]},#{c[:child_gender]},#{c[:birthplace_country]},#{c[:birthplace_state]},#{c[:birthplace_city]},#{c[:mother_hispanicity]},#{c[:mother_hispanicity_mex]},#{c[:mother_race]},#{c[:mother_race_other]},#{c[:father_hispanicity]},#{c[:father_hispanicity_mex]},#{c[:father_race]},#{c[:father_race_other]}"
 	end
 
-	def create_live_birth_data_test_file
+	def create_live_birth_data_test_file(options={})
 		File.open(test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_case_study_subject
-			f.puts csv_file_control }
+			f.puts csv_file_control(options) }
 	end
 
 	#	broke it down like this so that can access and compare the attributes
