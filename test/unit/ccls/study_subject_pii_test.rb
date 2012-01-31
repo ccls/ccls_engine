@@ -67,27 +67,29 @@ class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
 		assert_equal '[name not available]', study_subject.full_name
 	end
 
-	test "should not require dob on creation for father with flag" do
-		assert_difference( "StudySubject.count", 1 ) {
-			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
-				:pii_attributes => Factory.attributes_for(:pii,
-					:subject_is_father => true,
-					:dob => nil )
-			)
-		}
-		assert_nil @study_subject.reload.dob
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should not require dob on creation for father with flag" do
+#		assert_difference( "StudySubject.count", 1 ) {
+#			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
+#				:pii_attributes => Factory.attributes_for(:pii,
+#					:subject_is_father => true,
+#					:dob => nil )
+#			)
+#		}
+#		assert_nil @study_subject.reload.dob
+#	end
 
-	test "should not require dob on update for father" do
-		#	flag not necessary as study_subject.subject_type exists
-		assert_difference( "StudySubject.count", 1 ) {
-			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
-				:pii_attributes => Factory.attributes_for(:pii) )
-		}
-		assert_not_nil @study_subject.reload.dob
-		@study_subject.pii.update_attributes(:dob => nil)
-		assert_nil @study_subject.reload.dob
-	end
+#	Father seems to be irrelevant so commenting out code.
+#	test "should not require dob on update for father" do
+#		#	flag not necessary as study_subject.subject_type exists
+#		assert_difference( "StudySubject.count", 1 ) {
+#			@study_subject = create_study_subject(:subject_type => SubjectType['Father'],
+#				:pii_attributes => Factory.attributes_for(:pii) )
+#		}
+#		assert_not_nil @study_subject.reload.dob
+#		@study_subject.pii.update_attributes(:dob => nil)
+#		assert_nil @study_subject.reload.dob
+#	end
 
 	test "should not require dob on creation for mother with flag" do
 		assert_difference( "StudySubject.count", 1 ) {
