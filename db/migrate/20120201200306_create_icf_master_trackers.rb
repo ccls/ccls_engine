@@ -1,6 +1,7 @@
 class CreateIcfMasterTrackers < SharedMigration
 	def self.up
 		create_table :icf_master_trackers do |t|
+			t.integer :study_subject_id
 			t.string :Masterid
 			t.string :Motherid
 			t.string :Record_Owner

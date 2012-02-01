@@ -32,85 +32,57 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 	test "should parse nil attached csv_file" do
 		icf_master_tracker_update = Factory(:icf_master_tracker_update)
 		assert_nil icf_master_tracker_update.csv_file_file_name
-#		assert_difference('CandidateControl.count',0) {
+		assert_difference('IcfMasterTracker.count',0) {
 			results = icf_master_tracker_update.parse
 			assert_equal [], results
-#		}
+		}
 	end
 
 	test "should parse non-existant attached csv_file" do
 		icf_master_tracker_update = create_test_file_and_icf_master_tracker_update
 		assert  File.exists?(icf_master_tracker_update.csv_file.path)
-		File.delete(icf_master_tracker_update.csv_file.path)					#	TODO will leave directories
+		File.delete(icf_master_tracker_update.csv_file.path)
 		assert !File.exists?(icf_master_tracker_update.csv_file.path)
-#		assert_difference('CandidateControl.count',0) {
+		assert_difference('IcfMasterTracker.count',0) {
 			results = icf_master_tracker_update.parse
 			assert_equal [], results
-#		}
+		}
 		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
 	end
 
-	test "should parse attached csv_file with matching case" do
-		study_subject = create_case_for_icf_master_tracker_update
+	test "should parse attached csv_file" do
 		icf_master_tracker_update = create_test_file_and_icf_master_tracker_update
-#		assert_difference('CandidateControl.count',1) {
+		assert_difference('IcfMasterTracker.count',1) {
 			results = icf_master_tracker_update.parse
-#			assert_equal 2,  results.length
-			assert_equal 1,  results.length
-			assert       results[0].is_a?(StudySubject)
-			assert       results[0].is_case?
-			assert_equal results[0], study_subject
-#			assert results[1].is_a?(CandidateControl)
-#		}
+			assert_equal results.length, 1
+			assert       results[0].is_a?(IcfMasterTracker)
+		}
 		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
 	end
 
-	test "should parse attached csv_file with missing case" do
-		icf_master_tracker_update = create_test_file_and_icf_master_tracker_update
-#		assert_difference('CandidateControl.count',0) {
-			results = icf_master_tracker_update.parse
-			assert_equal results,
-				["Could not find identifier with masterid 1234FAKE"]
-#			assert_equal results,
-#				["Could not find identifier with masterid 1234FAKE",
-#				"Could not find identifier with masterid 1234FAKE"]
-#		}
-		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
-	end
-
-	test "should parse attached csv_file with existing candidate control" do
-		study_subject = create_case_for_icf_master_tracker_update
+	test "should parse attached csv_file with existing icf_master_tracker" do
 		icf_master_tracker_update = create_test_file_and_icf_master_tracker_update
 		results = nil
-#		assert_difference('CandidateControl.count',1) {
+		assert_difference('IcfMasterTracker.count',1) {
 			results = icf_master_tracker_update.parse
-#			assert_equal 2,  results.length
-			assert_equal 1,  results.length
-			assert       results[0].is_a?(StudySubject)
-			assert       results[0].is_case?
-			assert_equal results[0], study_subject
-#			assert results[1].is_a?(CandidateControl)
-#		}
-#		assert_difference('CandidateControl.count',0) {
+			assert_equal results.length, 1
+			assert       results[0].is_a?(IcfMasterTracker)
+		}
+		assert_difference('IcfMasterTracker.count',0) {
 			new_results = icf_master_tracker_update.parse
-#			assert_equal 2,  new_results.length
-			assert_equal 1,  new_results.length
-			assert       new_results[0].is_a?(StudySubject)
-			assert       new_results[0].is_case?
-			assert_equal new_results[0], study_subject
-#			assert new_results[1].is_a?(CandidateControl)
+			assert_equal new_results.length, 1
+			assert       new_results[0].is_a?(IcfMasterTracker)
 			assert_equal results, new_results
-#		}
+		}
 		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
 	end
 
-#	test "should copy attributes when csv_file converted to candidate control" do
-#		study_subject = create_case_for_icf_master_tracker_update
-#		icf_master_tracker_update = create_test_file_and_icf_master_tracker_update
-#		assert_difference('CandidateControl.count',1) {
-#			results = icf_master_tracker_update.to_candidate_controls
-#			assert_equal 2,  results.length
-#			candidate_control = results.last
+	test "should copy attributes when csv_file converted to icf_master_tracker" do
+		icf_master_tracker_update = create_test_file_and_icf_master_tracker_update
+		assert_difference('IcfMasterTracker.count',1) {
+			results = icf_master_tracker_update.parse
+			assert_equal 1,  results.length
+			icf_master_tracker = results.last
 #			assert_equal candidate_control.related_patid, study_subject.patid
 #			assert_equal candidate_control.mom_is_biomom, control[:biomom]
 #			assert_equal candidate_control.dad_is_biodad, control[:biodad]
@@ -133,9 +105,21 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 ##control[:father_hispanicity_mex]},#{
 #			assert_equal candidate_control.father_race_id, control[:father_race]
 ##control[:father_race_other]}} }
-#		}
-#		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
-#	end
+		}
+		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
+	end
+
+	test "should parse attached csv_file and attach tracker to subject" do
+		study_subject = create_case_for_icf_master_tracker_update
+		icf_master_tracker_update = create_test_file_and_icf_master_tracker_update
+		assert_difference('IcfMasterTracker.count',1) {
+			results = icf_master_tracker_update.parse
+			assert_equal results.length, 1
+			assert       results[0].is_a?(IcfMasterTracker)
+			assert_equal results[0].study_subject, study_subject
+		}
+		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
+	end
 
 	test "should test with real data file" do
 		#	real data and won't be in repository
@@ -147,96 +131,43 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 		end
 
 		#	minimal semi-real case creation
-#		s1 = Factory(:case_study_subject,:sex => 'F')
-		s1 = Factory(:study_subject,:sex => 'F')
-#		s1.create_identifier(:case_control_type => 'C')
-#		s1.create_identifier
-		s1.create_pii(:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
+		s0 = Factory(:study_subject,:sex => 'F')
+		s0.create_pii(:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
 			:dob => Date.parse('10/16/1977'))
 
-#		s2 = Factory(:case_study_subject,:sex => 'F')
-		s2 = Factory(:study_subject,:sex => 'F')
-#		s2.create_identifier(:case_control_type => 'C')
-		s2.create_identifier
-		s2.create_pii(:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
+		s1 = Factory(:study_subject,:sex => 'F')
+		s1.create_identifier
+		s1.create_pii(:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
 			:dob => Date.parse('9/21/1988'))
 		Factory(:icf_master_id,:icf_master_id => '15270110G')
-		s2.assign_icf_master_id
+		s1.assign_icf_master_id
 
-#		s3 = Factory(:case_study_subject,:sex => 'M')
-		s3 = Factory(:study_subject,:sex => 'M')
-#		s3.create_identifier(:case_control_type => 'C')
-		s3.create_identifier
-		s3.create_pii(:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
+		s2 = Factory(:study_subject,:sex => 'M')
+		s2.create_identifier
+		s2.create_pii(:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
 			:dob => Date.parse('6/1/2009'))
 		Factory(:icf_master_id,:icf_master_id => '15397125B')
-		s3.assign_icf_master_id
+		s2.assign_icf_master_id
 
 		icf_master_tracker_update = Factory(:icf_master_tracker_update,
 			:csv_file => File.open(real_data_file) )
 		assert_not_nil icf_master_tracker_update.csv_file_file_name
 
-#		#	35 lines - 1 header - 3 cases = 31
-#		assert_difference('CandidateControl.count',31){
+		assert_difference('IcfMasterTracker.count',62){
 			results = icf_master_tracker_update.parse
 			assert_equal results.length, 62
-			assert results[0].is_a?(String)
-			assert_equal results[0],
-				"Could not find identifier with masterid 10054956K"
-			assert       results[1].is_a?(StudySubject)
-			assert_equal results[1], s2
-			assert       results[2].is_a?(StudySubject)
-			assert_equal results[2], s3
-#			results.each { |r|
-#				if r.is_a?(CandidateControl) and r.new_record?
-#					puts r.inspect
-#					puts r.errors.full_messages.to_sentence
-#				end
-#			}
-#		}
-		icf_master_tracker_update.destroy
-#		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
-	end
-
-	test "should return a StudySubject in results for case" do
-		study_subject = create_case_for_icf_master_tracker_update
-		File.open(test_file_name,'w'){|f|
-			f.puts csv_file_header
-			f.puts csv_file_study_subject }
-		icf_master_tracker_update = create_icf_master_tracker_update_with_file
-#		assert_difference('CandidateControl.count',0){
-			results = icf_master_tracker_update.parse
-			assert results[0].is_a?(StudySubject)
-			assert_equal results[0], study_subject
-#		}
-		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
-	end
-
-#	test "should return a CandidateControl in results for control" do
-#		study_subject = create_case_for_icf_master_tracker_update
-#		File.open(test_file_name,'w'){|f|
-#			f.puts csv_file_header
-#			f.puts csv_file_control }
-#		icf_master_tracker_update = create_icf_master_tracker_update_with_file
-#		assert_difference('CandidateControl.count',1){
-#			results = icf_master_tracker_update.to_candidate_controls
-#			assert results[0].is_a?(CandidateControl)
-#		}
-#		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
-#	end
+			assert_nil   results[0].study_subject
+			assert_equal results[1].study_subject, s1
+			assert_equal results[2].study_subject, s2
+			results.each { |r|
+				assert  r.is_a?(IcfMasterTracker)
+				assert !r.new_record?
+			}
+		}
 #
-#	test "should return a String in results for unknown ca_co_status" do
-#		study_subject = create_case_for_icf_master_tracker_update
-#		File.open(test_file_name,'w'){|f|
-#			f.puts csv_file_header
-#			f.puts csv_file_unknown }
-#		icf_master_tracker_update = create_icf_master_tracker_update_with_file
-#		assert_difference('CandidateControl.count',0){
-#			results = icf_master_tracker_update.to_candidate_controls
-#			assert results[0].is_a?(String)
-#			assert_equal results[0], "Unexpected ca_co_status :unknown:"
-#		}
-#		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
-#	end
+#	TODO add some tests to see if anything was updated
+#
+		icf_master_tracker_update.destroy
+	end
 
 end

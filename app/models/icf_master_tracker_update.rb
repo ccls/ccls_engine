@@ -16,13 +16,13 @@ class IcfMasterTrackerUpdate < ActiveRecordShared
 
 #	"Masterid","Motherid","Record_Owner","Datereceived","Lastatt","Lastdisp","Currphone","Vacauthrecd","Recollect","Needpreincentive","Active_Phone","Recordsentformatching","Recordreceivedfrommatching","Sentpreincentive","Releasedtocati","Confirmedcaticontact","Refused","Deceasednotification","Eligible","Confirmationpacketsent","Catiprotocolexhausted","Newphonenumreleasedtocati","Pleanotificationsent","Casereturnedtoberkeleyfornewinf","Casereturnedfromberkeley","Caticomplete","Kitmothersent","Kitinfantsent","Kitchildsent","Kitadolescentsent","Kitmotherrefusedcode","Kitchildrefusedcode","Noresponsetoplea","Responsereceivedfromplea","Senttoinpersonfollowup","Kitmotherrecd","Kitchildrecvd","Thankyousent","Physrequestsent","Physresponsereceived"
 
-				identifier = Identifier.find_by_icf_master_id(line['Masterid'])
-				if identifier
-					results.push(identifier.study_subject)
-				else
-					results.push("Could not find identifier with masterid #{line['Masterid']}")
-					next
-				end
+#				identifier = Identifier.find_by_icf_master_id(line['Masterid'])
+#				if identifier
+#					results.push(identifier.study_subject)
+#				else
+#					results.push("Could not find identifier with masterid #{line['Masterid']}")
+#					next
+#				end
 
 
 #
@@ -54,7 +54,9 @@ class IcfMasterTrackerUpdate < ActiveRecordShared
 #	add update_errors column
 #		icf_master_tracker.update_attribute(:update_errors, errors)
 #
+#	perhaps add a study_subject_id field as well?
 
+				results.push(icf_master_tracker)
 
 			end	#	(f=FasterCSV.open( self.csv_file.path, 'rb',{ :headers => true })).each
 		end	#	if !self.csv_file_file_name.blank? && File.exists?(self.csv_file.path)

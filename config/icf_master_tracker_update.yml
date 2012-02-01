@@ -39,9 +39,9 @@
 
 #	url is set just to avoid the "Duplicate URL" message
 DEFAULTS: &DEFAULTS
-  :url: /system/icf_master_tracker/:attachment/:id/:filename
+  :url: /system/icf_master_tracker_update/:attachment/:id/:filename
 
-<% common = "icf_master_tracker/:id/:filename" %>
+<% common = "icf_master_tracker_update/:id/:filename" %>
 
 development:
   :path: <%= "#{Rails.root}/development/#{common}" %>
