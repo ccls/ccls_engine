@@ -1,28 +1,28 @@
-module Ccls::IcfMasterTrackerTestHelper
+module Ccls::IcfMasterTrackerUpdateTestHelper
 
-	def create_test_file_and_icf_master_tracker
-		create_icf_master_tracker_test_file
-		icf_master_tracker = create_icf_master_tracker_with_file
+	def create_test_file_and_icf_master_tracker_update
+		create_icf_master_tracker_update_test_file
+		icf_master_tracker_update = create_icf_master_tracker_update_with_file
 	end
 
-	def create_icf_master_tracker_with_file
-		icf_master_tracker = Factory(:icf_master_tracker,
+	def create_icf_master_tracker_update_with_file
+		icf_master_tracker_update = Factory(:icf_master_tracker_update,
 			:csv_file => File.open(test_file_name) )
-		assert_not_nil icf_master_tracker.csv_file_file_name
-		icf_master_tracker
+		assert_not_nil icf_master_tracker_update.csv_file_file_name
+		icf_master_tracker_update
 	end
 
-	def cleanup_icf_master_tracker_and_test_file(icf_master_tracker=nil)
-		if icf_master_tracker
-			icf_master_tracker_file = icf_master_tracker.csv_file.path
+	def cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update=nil)
+		if icf_master_tracker_update
+			icf_master_tracker_update_file = icf_master_tracker_update.csv_file.path
 			#	explicit destroy to remove attachment
-			icf_master_tracker.destroy	
-			unless icf_master_tracker_file.blank?
-				assert !File.exists?(icf_master_tracker_file)
+			icf_master_tracker_update.destroy	
+			unless icf_master_tracker_update_file.blank?
+				assert !File.exists?(icf_master_tracker_update_file)
 			end
-			if File.exists?("test/icf_master_tracker/#{icf_master_tracker.id}") &&
-				File.directory?("test/icf_master_tracker/#{icf_master_tracker.id}")
-				Dir.delete("test/icf_master_tracker/#{icf_master_tracker.id}")
+			if File.exists?("test/icf_master_tracker_update/#{icf_master_tracker_update.id}") &&
+				File.directory?("test/icf_master_tracker_update/#{icf_master_tracker_update.id}")
+				Dir.delete("test/icf_master_tracker_update/#{icf_master_tracker_update.id}")
 			end
 		end
 		if File.exists?(test_file_name)
@@ -32,7 +32,7 @@ module Ccls::IcfMasterTrackerTestHelper
 		assert !File.exists?(test_file_name)
 	end
 
-	def create_case_for_icf_master_tracker
+	def create_case_for_icf_master_tracker_update
 		icf_master_id = Factory(:icf_master_id,:icf_master_id => '1234FAKE')
 		study_subject = Factory(:complete_case_study_subject)
 		study_subject.assign_icf_master_id
@@ -57,7 +57,7 @@ module Ccls::IcfMasterTrackerTestHelper
 #		"#{control[:masterid]},#{control[:ca_co_status]},#{control[:biomom]},#{control[:biodad]},#{control[:date]},#{control[:mother_full_name]},#{control[:mother_maiden_name]},#{control[:father_full_name]},#{control[:child_full_name]},#{control[:child_dobm]},#{control[:child_dobd]},#{control[:child_doby]},#{control[:child_gender]},#{control[:birthplace_country]},#{control[:birthplace_state]},#{control[:birthplace_city]},#{control[:mother_hispanicity]},#{control[:mother_hispanicity_mex]},#{control[:mother_race]},#{control[:mother_race_other]},#{control[:father_hispanicity]},#{control[:father_hispanicity_mex]},#{control[:father_race]},#{control[:father_race_other]}"
 #	end
 
-	def create_icf_master_tracker_test_file
+	def create_icf_master_tracker_update_test_file
 		File.open(test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_study_subject
@@ -100,7 +100,7 @@ module Ccls::IcfMasterTrackerTestHelper
 	end
 
 	def test_file_name
-		"icf_master_tracker_test_file.csv"
+		"icf_master_tracker_update_test_file.csv"
 	end
 
 end

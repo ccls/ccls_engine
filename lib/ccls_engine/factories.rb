@@ -217,7 +217,7 @@ end
 Factory.define :icf_master_id do |f|
 end
 
-Factory.define :icf_master_tracker do |f|
+Factory.define :icf_master_tracker_update do |f|
 end
 
 Factory.define :subjectless_identifier, :class => 'Identifier' do |f|

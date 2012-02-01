@@ -1,8 +1,8 @@
-class IcfMasterTracker < ActiveRecordShared
+class IcfMasterTrackerUpdate < ActiveRecordShared
 
 	has_attached_file :csv_file,
 		YAML::load(ERB.new(IO.read(File.expand_path(
-			File.join(File.dirname(__FILE__),'../..','config/icf_master_tracker.yml')
+			File.join(File.dirname(__FILE__),'../..','config/icf_master_tracker_update.yml')
 		))).result)[Rails.env]
 
 
@@ -23,6 +23,21 @@ class IcfMasterTracker < ActiveRecordShared
 					results.push("Could not find identifier with masterid #{line['Masterid']}")
 					next
 				end
+
+
+#
+#	I think that I am going to create a table and model IcfMasterTracker
+#	which will basically be identical to this file.  I will find or create
+#	by masterid and then update all of the columns.
+#
+#	The IcfMasterTracker will include an after_save or something that will
+#	determine what has changed and update appropriately.  It may also
+#	Create OperationalEvents to document the data changes.  As it is
+#	theoretically possible that the masterid does not exist in the identifiers
+#	table, perhaps add a successfully_updated_models flag which could
+#	be used?
+#
+
 
 			end	#	(f=FasterCSV.open( self.csv_file.path, 'rb',{ :headers => true })).each
 		end	#	if !self.csv_file_file_name.blank? && File.exists?(self.csv_file.path)
