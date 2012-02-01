@@ -271,25 +271,25 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 		end
 
 		#	minimal semi-real case creation
+		s0 = Factory(:case_study_subject,:sex => 'F')
+		s0.create_identifier(:case_control_type => 'C')
+		s0.create_pii(:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
+			:dob => Date.parse('10/16/1977'))
+		#	s0 has no icf_master_id, so should be ignored
+
 		s1 = Factory(:case_study_subject,:sex => 'F')
 		s1.create_identifier(:case_control_type => 'C')
-		s1.create_pii(:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
-			:dob => Date.parse('10/16/1977'))
-		#	s1 has no icf_master_id, so should be ignored
-
-		s2 = Factory(:case_study_subject,:sex => 'F')
-		s2.create_identifier(:case_control_type => 'C')
-		s2.create_pii(:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
+		s1.create_pii(:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
 			:dob => Date.parse('9/21/1988'))
 		Factory(:icf_master_id,:icf_master_id => '48882638A')
-		s2.assign_icf_master_id
+		s1.assign_icf_master_id
 
-		s3 = Factory(:case_study_subject,:sex => 'M')
-		s3.create_identifier(:case_control_type => 'C')
-		s3.create_pii(:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
+		s2 = Factory(:case_study_subject,:sex => 'M')
+		s2.create_identifier(:case_control_type => 'C')
+		s2.create_pii(:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
 			:dob => Date.parse('6/1/2009'))
 		Factory(:icf_master_id,:icf_master_id => '16655682G')
-		s3.assign_icf_master_id
+		s2.assign_icf_master_id
 
 		live_birth_data = Factory(:live_birth_data,
 			:csv_file => File.open('test-livebirthdata_011912.csv') )
@@ -303,6 +303,8 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 				"Could not find identifier with masterid [no ID assigned]"
 			assert results[1].is_a?(StudySubject)
 			assert results[2].is_a?(StudySubject)
+			assert_equal results[1], s1
+			assert_equal results[2], s2
 			results.each { |r|
 				if r.is_a?(CandidateControl) and r.new_record?
 					puts r.inspect
