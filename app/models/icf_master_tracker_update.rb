@@ -37,6 +37,23 @@ class IcfMasterTrackerUpdate < ActiveRecordShared
 #	table, perhaps add a successfully_updated_models flag which could
 #	be used?
 #
+#	line.to_hash will return a nice string keyed hash for updating.
+#
+	icf_master_tracker = IcfMasterTracker.find_or_create_by_Masterid(line['Masterid'])
+#	NO BANG? Don't want to raise any errors.
+	successfully_updated = icf_master_tracker.update_attributes(line.to_hash)
+#
+#	errors = icf_master_tracker.errors.full_messages.to_sentence
+#	these won't be validation errors as there shouldn't be any
+#	perhaps no column by that name errors?
+#
+#	add successfully_updated value
+#		icf_master_tracker.update_attribute(:sucessfully_updated, successfully_updated)
+#	will the above include the line's attributes?
+#
+#	add update_errors column
+#		icf_master_tracker.update_attribute(:update_errors, errors)
+#
 
 
 			end	#	(f=FasterCSV.open( self.csv_file.path, 'rb',{ :headers => true })).each
