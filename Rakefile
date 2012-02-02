@@ -35,7 +35,7 @@ begin
 		gem.files += FileList['config/abstract_fields.yml']
 		gem.files += FileList['config/abstract_sections.yml']
 		gem.files += FileList['config/shared_use_db.yml']
-		gem.files += FileList['config/live_birth_data.yml']
+		gem.files += FileList['config/live_birth_data_update.yml']
 		gem.files += FileList['config/icf_master_tracker_update.yml']
 #	This may eventually have user/password info, so don't include.
 #	It will need to be manually maintained and copied to apps.

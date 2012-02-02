@@ -292,7 +292,7 @@ Factory.define :interview do |f|
 	f.association :study_subject
 end
 
-Factory.define :live_birth_data do |f|
+Factory.define :live_birth_data_update do |f|
 end
 
 Factory.define :language do |f|

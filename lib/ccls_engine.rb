@@ -93,7 +93,7 @@ if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@co
 	#	They must be explicitly included in the test classes
 	#		that use them.
 	require 'ccls_engine/icf_master_tracker_update_test_helper'
-	require 'ccls_engine/live_birth_data_test_helper'
+	require 'ccls_engine/live_birth_data_update_test_helper'
 end
 
 ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion( 

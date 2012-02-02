@@ -1,28 +1,28 @@
-module Ccls::LiveBirthDataTestHelper
+module Ccls::LiveBirthDataUpdateTestHelper
 
-	def create_test_file_and_live_birth_data(options={})
-		create_live_birth_data_test_file(options)
-		live_birth_data = create_live_birth_data_with_file
+	def create_test_file_and_live_birth_data_update(options={})
+		create_live_birth_data_update_test_file(options)
+		live_birth_data_update = create_live_birth_data_update_with_file
 	end
 
-	def create_live_birth_data_with_file
-		live_birth_data = Factory(:live_birth_data,
+	def create_live_birth_data_update_with_file
+		live_birth_data_update = Factory(:live_birth_data_update,
 			:csv_file => File.open(csv_test_file_name) )
-		assert_not_nil live_birth_data.csv_file_file_name
-		live_birth_data
+		assert_not_nil live_birth_data_update.csv_file_file_name
+		live_birth_data_update
 	end
 
-	def cleanup_live_birth_data_and_test_file(live_birth_data=nil)
-		if live_birth_data
-			live_birth_data_file = live_birth_data.csv_file.path
+	def cleanup_live_birth_data_update_and_test_file(live_birth_data_update=nil)
+		if live_birth_data_update
+			live_birth_data_update_file = live_birth_data_update.csv_file.path
 			#	explicit destroy to remove attachment
-			live_birth_data.destroy	
-			unless live_birth_data_file.blank?
-				assert !File.exists?(live_birth_data_file)
+			live_birth_data_update.destroy	
+			unless live_birth_data_update_file.blank?
+				assert !File.exists?(live_birth_data_update_file)
 			end
-			if File.exists?("test/live_birth_data/#{live_birth_data.id}") &&
-				File.directory?("test/live_birth_data/#{live_birth_data.id}")
-				Dir.delete("test/live_birth_data/#{live_birth_data.id}")
+			if File.exists?("test/live_birth_data_update/#{live_birth_data_update.id}") &&
+				File.directory?("test/live_birth_data_update/#{live_birth_data_update.id}")
+				Dir.delete("test/live_birth_data_update/#{live_birth_data_update.id}")
 			end
 		end
 		if File.exists?(csv_test_file_name)
@@ -32,7 +32,7 @@ module Ccls::LiveBirthDataTestHelper
 		assert !File.exists?(csv_test_file_name)
 	end
 
-	def create_case_for_live_birth_data
+	def create_case_for_live_birth_data_update
 		icf_master_id = Factory(:icf_master_id,:icf_master_id => '1234FAKE')
 		study_subject = Factory(:complete_case_study_subject)
 		study_subject.assign_icf_master_id
@@ -61,7 +61,7 @@ module Ccls::LiveBirthDataTestHelper
 		csv_file_header_array.collect{|s|"\"#{c[s.to_sym]}\""}.join(',')
 	end
 
-	def create_live_birth_data_test_file(options={})
+	def create_live_birth_data_update_test_file(options={})
 		File.open(csv_test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_case_study_subject
@@ -104,7 +104,7 @@ module Ccls::LiveBirthDataTestHelper
 
 #	shouldn't be called test_... as makes it a test method!
 	def csv_test_file_name
-		"live_birth_data_test_file.csv"
+		"live_birth_data_update_test_file.csv"
 	end
 
 end

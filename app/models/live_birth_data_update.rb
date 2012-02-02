@@ -1,8 +1,8 @@
-class LiveBirthData < ActiveRecordShared
+class LiveBirthDataUpdate < ActiveRecordShared
 
 	has_attached_file :csv_file,
 		YAML::load(ERB.new(IO.read(File.expand_path(
-			File.join(File.dirname(__FILE__),'../..','config/live_birth_data.yml')
+			File.join(File.dirname(__FILE__),'../..','config/live_birth_data_update.yml')
 		))).result)[Rails.env]
 
 	def to_candidate_controls
