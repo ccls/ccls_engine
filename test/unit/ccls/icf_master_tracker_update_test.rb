@@ -22,7 +22,7 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 			@object = create_test_file_and_icf_master_tracker_update
 		}
 		assert_not_nil @object.csv_file_file_name
-		assert_equal   @object.csv_file_file_name, test_file_name
+		assert_equal   @object.csv_file_file_name, csv_test_file_name
 		assert_not_nil @object.csv_file_content_type
 		assert_not_nil @object.csv_file_file_size
 		assert_not_nil @object.csv_file_updated_at

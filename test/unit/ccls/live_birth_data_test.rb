@@ -68,7 +68,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 			@object = create_test_file_and_live_birth_data
 		}
 		assert_not_nil @object.csv_file_file_name
-		assert_equal   @object.csv_file_file_name, test_file_name
+		assert_equal   @object.csv_file_file_name, csv_test_file_name
 		assert_not_nil @object.csv_file_content_type
 		assert_not_nil @object.csv_file_file_size
 		assert_not_nil @object.csv_file_updated_at
@@ -245,7 +245,8 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 #control[:father_full_name]},#{
 			assert_equal candidate_control.full_name, control[:child_full_name]
 			assert_equal candidate_control.dob, 
-				Date.new(control[:child_doby].to_i, control[:child_dobm].to_i, control[:child_dobd].to_i)
+				Date.new(control[:child_doby], control[:child_dobm], control[:child_dobd])
+#				Date.new(control[:child_doby].to_i, control[:child_dobm].to_i, control[:child_dobd].to_i)
 			assert_equal candidate_control.sex, control[:child_gender]
 #control[:birthplace_country]},#{
 #control[:birthplace_state]},#{
@@ -318,7 +319,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 
 	test "should return a StudySubject in results for case" do
 		study_subject = create_case_for_live_birth_data
-		File.open(test_file_name,'w'){|f|
+		File.open(csv_test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_case_study_subject }
 		live_birth_data = create_live_birth_data_with_file
@@ -332,7 +333,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 
 	test "should return a CandidateControl in results for control" do
 		study_subject = create_case_for_live_birth_data
-		File.open(test_file_name,'w'){|f|
+		File.open(csv_test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_control }
 		live_birth_data = create_live_birth_data_with_file
@@ -345,7 +346,7 @@ class Ccls::LiveBirthDataTest < ActiveSupport::TestCase
 
 	test "should return a String in results for unknown ca_co_status" do
 		study_subject = create_case_for_live_birth_data
-		File.open(test_file_name,'w'){|f|
+		File.open(csv_test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_unknown }
 		live_birth_data = create_live_birth_data_with_file

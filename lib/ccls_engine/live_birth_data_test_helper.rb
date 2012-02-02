@@ -7,7 +7,7 @@ module Ccls::LiveBirthDataTestHelper
 
 	def create_live_birth_data_with_file
 		live_birth_data = Factory(:live_birth_data,
-			:csv_file => File.open(test_file_name) )
+			:csv_file => File.open(csv_test_file_name) )
 		assert_not_nil live_birth_data.csv_file_file_name
 		live_birth_data
 	end
@@ -25,11 +25,11 @@ module Ccls::LiveBirthDataTestHelper
 				Dir.delete("test/live_birth_data/#{live_birth_data.id}")
 			end
 		end
-		if File.exists?(test_file_name)
+		if File.exists?(csv_test_file_name)
 			#	explicit delete to remove test file
-			File.delete(test_file_name)	
+			File.delete(csv_test_file_name)	
 		end
-		assert !File.exists?(test_file_name)
+		assert !File.exists?(csv_test_file_name)
 	end
 
 	def create_case_for_live_birth_data
@@ -40,8 +40,12 @@ module Ccls::LiveBirthDataTestHelper
 		study_subject
 	end
 
+	def csv_file_header_array
+		"masterid,ca_co_status,biomom,biodad,date,mother_full_name,mother_maiden_name,father_full_name,child_full_name,child_dobm,child_dobd,child_doby,child_gender,birthplace_country,birthplace_state,birthplace_city,mother_hispanicity,mother_hispanicity_mex,mother_race,mother_race_other,father_hispanicity,father_hispanicity_mex,father_race,father_race_other".split(',')
+	end
+
 	def csv_file_header
-		"masterid,ca_co_status,biomom,biodad,date,mother_full_name,mother_maiden_name,father_full_name,child_full_name,child_dobm,child_dobd,child_doby,child_gender,birthplace_country,birthplace_state,birthplace_city,mother_hispanicity,mother_hispanicity_mex,mother_race,mother_race_other,father_hispanicity,father_hispanicity_mex,father_race,father_race_other"
+		csv_file_header_array.collect{|s|"\"#{s}\""}.join(',')
 	end
 
 	def csv_file_unknown
@@ -54,11 +58,11 @@ module Ccls::LiveBirthDataTestHelper
 
 	def csv_file_control(options={})
 		c = control.merge(options)
-		"#{c[:masterid]},#{c[:ca_co_status]},#{c[:biomom]},#{c[:biodad]},#{c[:date]},#{c[:mother_full_name]},#{c[:mother_maiden_name]},#{c[:father_full_name]},#{c[:child_full_name]},#{c[:child_dobm]},#{c[:child_dobd]},#{c[:child_doby]},#{c[:child_gender]},#{c[:birthplace_country]},#{c[:birthplace_state]},#{c[:birthplace_city]},#{c[:mother_hispanicity]},#{c[:mother_hispanicity_mex]},#{c[:mother_race]},#{c[:mother_race_other]},#{c[:father_hispanicity]},#{c[:father_hispanicity_mex]},#{c[:father_race]},#{c[:father_race_other]}"
+		csv_file_header_array.collect{|s|"\"#{c[s.to_sym]}\""}.join(',')
 	end
 
 	def create_live_birth_data_test_file(options={})
-		File.open(test_file_name,'w'){|f|
+		File.open(csv_test_file_name,'w'){|f|
 			f.puts csv_file_header
 			f.puts csv_file_case_study_subject
 			f.puts csv_file_control(options) }
@@ -98,7 +102,8 @@ module Ccls::LiveBirthDataTestHelper
 		#	Is there I way to capture the paperclip output for comparison?  Don't know.
 	end
 
-	def test_file_name
+#	shouldn't be called test_... as makes it a test method!
+	def csv_test_file_name
 		"live_birth_data_test_file.csv"
 	end
 

@@ -43,10 +43,27 @@ class LiveBirthData < ActiveRecordShared
 					child_names  = line["child_full_name"].to_s.split_name
 					father_names = line["father_full_name"].to_s.split_name
 					mother_names = line["mother_full_name"].to_s.split_name
+#
+#	incoming data may be strings, but 
+#		nil DOES NOT EQUAL "" for integer comparison
+#	so MUST nilify blank integer fields or will never find
+#	the record and will create duplicates every time.
+#
+#					biomom = ( ( line["biomom"].blank? ) ? nil : line["biomom"] )
+#					biodad = ( ( line["biodad"].blank? ) ? nil : line["biodad"] )
+#					mother_hispanicity = ( (line["mother_hispanicity"].blank? ) ?
+#						nil : line["mother_hispanicity"] )
+#					mother_race = ( (line["mother_race"].blank? ) ?
+#						nil : line["mother_race"] )
+#					father_hispanicity = ( (line["father_hispanicity"].blank? ) ?
+#						nil : line["father_hispanicity"] )
+#					father_race = ( (line["father_race"].blank? ) ?
+#						nil : line["father_race"] )
+
 					candidate_control_options = {
 						:related_patid => identifier.patid,
-						:mom_is_biomom => line["biomom"],
-						:dad_is_biodad => line["biodad"],
+						:mom_is_biomom => line["biomom"].nilify_blank,
+						:dad_is_biodad => line["biodad"].nilify_blank,
 #"date":nil 	#	some event's occurred on
 						:first_name  => child_names[0],
 						:middle_name => child_names[1],
@@ -63,13 +80,13 @@ class LiveBirthData < ActiveRecordShared
 #"birthplace_country":"United States" 	#	doesn't exist
 #"birthplace_state":"CA" 	#	doesn't exist
 #"birthplace_city":"Oakland" 	#	doesn't exist
-						:mother_hispanicity_id => line["mother_hispanicity"],
+						:mother_hispanicity_id => line["mother_hispanicity"].nilify_blank,
 #"mother_hispanicity_mex":"2" 	#	doesn't exist
-						:mother_race_id => line["mother_race"],
+						:mother_race_id => line["mother_race"].nilify_blank,
 #"mother_race_other":nil 	#	doesn't exist
-						:father_hispanicity_id => line["father_hispanicity"],
+						:father_hispanicity_id => line["father_hispanicity"].nilify_blank,
 #"father_hispanicity_mex":"2" 	#	doesn't exist
-						:father_race_id => line["father_race"]
+						:father_race_id => line["father_race"].nilify_blank
 #"father_race_other":nil	#	doesn't exist
 					}
 					candidate_control = CandidateControl.find(:first,
@@ -108,6 +125,15 @@ String.class_eval do
 		last   = names.pop.to_s.squish
 		middle = names.join(' ').squish
 		[first,middle,last]
+	end
+
+end
+
+#	Object and not String because could be NilClass
+Object.class_eval do
+
+	def nilify_blank
+		( self.blank? ) ? nil : self
 	end
 
 end
