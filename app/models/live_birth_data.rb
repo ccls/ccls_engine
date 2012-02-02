@@ -114,6 +114,8 @@ end
 
 #	Probably better to move this somewhere more appropriate
 #	Perhaps CommonLib::StringExtension
+#	Trying to get actual names from hospital, so, hopefully,
+#	this won't be needed.
 
 String.class_eval do
 
