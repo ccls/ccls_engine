@@ -40,11 +40,30 @@ class IcfMasterTracker < ActiveRecordShared
 #			update models
 #		end
 
-		if study_subject_id and self.changed?
+		if study_subject_id and changed?
 #			puts
 #			puts "Tracker has subject and has changed so begin updating"
 #			puts self.changes
 #			which changes matter?
+			ignore = %w{id study_subject_id Masterid created_at updated_at}
+			unignored_changes = changes.dup.delete_keys!(*ignore)
+			unless unignored_changes.empty?
+#				description = []
+#				unignored_changes.each { |field,values|
+#					description << "#{field} changed from #{values[0]} to #{values[1]}"
+#				}
+				OperationalEvent.create!(
+					:enrollment => study_subject.enrollments.find_or_create_by_project_id(
+						Project[:ccls].id),
+					:operational_event_type => OperationalEventType[:other],
+#
+#	description can only be 250 chars so this fails in testing
+#		when creating new tracker as everything has changed.
+#
+#					:description => description.join("\n")
+					:description => "Icf Master Tracker caused changes."
+				)
+			end
 		else
 #			puts
 #			puts "Tracker has no subject so skipping updating"
