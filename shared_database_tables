@@ -867,7 +867,7 @@ Table: icf_master_ids
 | updated_at       | datetime   | YES  |     | NULL    |                |
 +------------------+------------+------+-----+---------+----------------+
 
-Table: icf_master_trackers
+Table: icf_master_tracker_updates
 +-----------------------+--------------+------+-----+---------+----------------+
 | Field                 | Type         | Null | Key | Default | Extra          |
 +-----------------------+--------------+------+-----+---------+----------------+
@@ -879,6 +879,56 @@ Table: icf_master_trackers
 | csv_file_file_size    | int(11)      | YES  |     | NULL    |                |
 | csv_file_updated_at   | datetime     | YES  |     | NULL    |                |
 +-----------------------+--------------+------+-----+---------+----------------+
+
+Table: icf_master_trackers
++---------------------------------+--------------+------+-----+---------+----------------+
+| Field                           | Type         | Null | Key | Default | Extra          |
++---------------------------------+--------------+------+-----+---------+----------------+
+| id                              | int(11)      | NO   | PRI | NULL    | auto_increment |
+| study_subject_id                | int(11)      | YES  |     | NULL    |                |
+| Masterid                        | varchar(255) | YES  | UNI | NULL    |                |
+| Motherid                        | varchar(255) | YES  |     | NULL    |                |
+| Record_Owner                    | varchar(255) | YES  |     | NULL    |                |
+| Datereceived                    | varchar(255) | YES  |     | NULL    |                |
+| Lastatt                         | varchar(255) | YES  |     | NULL    |                |
+| Lastdisp                        | varchar(255) | YES  |     | NULL    |                |
+| Currphone                       | varchar(255) | YES  |     | NULL    |                |
+| Vacauthrecd                     | varchar(255) | YES  |     | NULL    |                |
+| Recollect                       | varchar(255) | YES  |     | NULL    |                |
+| Needpreincentive                | varchar(255) | YES  |     | NULL    |                |
+| Active_Phone                    | varchar(255) | YES  |     | NULL    |                |
+| Recordsentformatching           | varchar(255) | YES  |     | NULL    |                |
+| Recordreceivedfrommatching      | varchar(255) | YES  |     | NULL    |                |
+| Sentpreincentive                | varchar(255) | YES  |     | NULL    |                |
+| Releasedtocati                  | varchar(255) | YES  |     | NULL    |                |
+| Confirmedcaticontact            | varchar(255) | YES  |     | NULL    |                |
+| Refused                         | varchar(255) | YES  |     | NULL    |                |
+| Deceasednotification            | varchar(255) | YES  |     | NULL    |                |
+| Eligible                        | varchar(255) | YES  |     | NULL    |                |
+| Confirmationpacketsent          | varchar(255) | YES  |     | NULL    |                |
+| Catiprotocolexhausted           | varchar(255) | YES  |     | NULL    |                |
+| Newphonenumreleasedtocati       | varchar(255) | YES  |     | NULL    |                |
+| Pleanotificationsent            | varchar(255) | YES  |     | NULL    |                |
+| Casereturnedtoberkeleyfornewinf | varchar(255) | YES  |     | NULL    |                |
+| Casereturnedfromberkeley        | varchar(255) | YES  |     | NULL    |                |
+| Caticomplete                    | varchar(255) | YES  |     | NULL    |                |
+| Kitmothersent                   | varchar(255) | YES  |     | NULL    |                |
+| Kitinfantsent                   | varchar(255) | YES  |     | NULL    |                |
+| Kitchildsent                    | varchar(255) | YES  |     | NULL    |                |
+| Kitadolescentsent               | varchar(255) | YES  |     | NULL    |                |
+| Kitmotherrefusedcode            | varchar(255) | YES  |     | NULL    |                |
+| Kitchildrefusedcode             | varchar(255) | YES  |     | NULL    |                |
+| Noresponsetoplea                | varchar(255) | YES  |     | NULL    |                |
+| Responsereceivedfromplea        | varchar(255) | YES  |     | NULL    |                |
+| Senttoinpersonfollowup          | varchar(255) | YES  |     | NULL    |                |
+| Kitmotherrecd                   | varchar(255) | YES  |     | NULL    |                |
+| Kitchildrecvd                   | varchar(255) | YES  |     | NULL    |                |
+| Thankyousent                    | varchar(255) | YES  |     | NULL    |                |
+| Physrequestsent                 | varchar(255) | YES  |     | NULL    |                |
+| Physresponsereceived            | varchar(255) | YES  |     | NULL    |                |
+| created_at                      | datetime     | YES  |     | NULL    |                |
+| updated_at                      | datetime     | YES  |     | NULL    |                |
++---------------------------------+--------------+------+-----+---------+----------------+
 
 Table: identifiers
 +--------------------------+--------------+------+-----+---------+----------------+
@@ -1046,7 +1096,7 @@ Table: languages
 | updated_at  | datetime     | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 
-Table: live_birth_datas
+Table: live_birth_data_updates
 +-----------------------+--------------+------+-----+---------+----------------+
 | Field                 | Type         | Null | Key | Default | Extra          |
 +-----------------------+--------------+------+-----+---------+----------------+

@@ -42,6 +42,12 @@ namespace :ccls do
 			end
 		end
 
+		printf "%-25s %5d\n", "IcfMasterId.count:", IcfMasterId.count
+		printf "%-25s %5d\n", "Used IcfMasterId.count:", IcfMasterId.count(
+			:conditions => [ 'study_subject_id IS NOT NULL' ])
+		printf "%-25s %5d\n", "Unused IcfMasterId.count:", IcfMasterId.count(
+			:conditions => [ 'study_subject_id IS NULL' ])
+
 	end
 
 	task :sync_subject_type => :environment do
