@@ -106,12 +106,14 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 	end
 
 	test "should require non-residence address type with pobox in line" do
-		assert_difference( "Address.count", 0 ) do
-			address = create_address( 
-				:line_1 => "P.O. Box 123",
-				:address_type => AddressType['residence']
-			)
-			assert address.errors.on(:address_type_id)
+		["P.O. Box 123","PO Box 123","P O Box 123","Post Office Box 123"].each do |pobox|
+			assert_difference( "Address.count", 0 ) do
+				address = create_address( 
+					:line_1 => pobox,
+					:address_type => AddressType['residence']
+				)
+				assert address.errors.on(:address_type_id)
+			end
 		end
 	end
 

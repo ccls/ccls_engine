@@ -152,8 +152,8 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 			assert results[0].is_a?(StudySubject)
 			assert results[0].is_case?
 			assert results[1].is_a?(CandidateControl)
-			assert results[1].errors.on_attr_and_type(:first_name, :blank)
-			assert results[1].errors.on_attr_and_type(:last_name,  :blank)
+			assert results[1].errors.on_attr_and_type?(:first_name, :blank)
+			assert results[1].errors.on_attr_and_type?(:last_name,  :blank)
 		}
 		cleanup_live_birth_data_update_and_test_file(live_birth_data_update)
 	end
@@ -168,7 +168,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 			assert results[0].is_a?(StudySubject)
 			assert results[0].is_case?
 			assert results[1].is_a?(CandidateControl)
-			assert results[1].errors.on_attr_and_type(:dob, :blank)
+			assert results[1].errors.on_attr_and_type?(:dob, :blank)
 		}
 		cleanup_live_birth_data_update_and_test_file(live_birth_data_update)
 	end
@@ -183,7 +183,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 			assert results[0].is_a?(StudySubject)
 			assert results[0].is_case?
 			assert results[1].is_a?(CandidateControl)
-			assert results[1].errors.on_attr_and_type(:dob, :blank)
+			assert results[1].errors.on_attr_and_type?(:dob, :blank)
 		}
 		cleanup_live_birth_data_update_and_test_file(live_birth_data_update)
 	end
@@ -198,7 +198,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 			assert results[0].is_a?(StudySubject)
 			assert results[0].is_case?
 			assert results[1].is_a?(CandidateControl)
-			assert results[1].errors.on_attr_and_type(:dob, :blank)
+			assert results[1].errors.on_attr_and_type?(:dob, :blank)
 		}
 		cleanup_live_birth_data_update_and_test_file(live_birth_data_update)
 	end
@@ -213,7 +213,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 			assert results[0].is_a?(StudySubject)
 			assert results[0].is_case?
 			assert results[1].is_a?(CandidateControl)
-			assert results[1].errors.on_attr_and_type(:sex, :inclusion)
+			assert results[1].errors.on_attr_and_type?(:sex, :inclusion)
 		}
 		cleanup_live_birth_data_update_and_test_file(live_birth_data_update)
 	end

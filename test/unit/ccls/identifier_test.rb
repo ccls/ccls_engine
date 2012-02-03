@@ -170,7 +170,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert_difference('Identifier.count',0){
 			identifier = Factory.build(:subjectless_identifier, :icf_master_id => 'Fake1234')
 			identifier.save
-			assert identifier.errors.on_attr_and_type(:icf_master_id, :taken)
+			assert identifier.errors.on_attr_and_type?(:icf_master_id, :taken)
 		}
 	end
 
