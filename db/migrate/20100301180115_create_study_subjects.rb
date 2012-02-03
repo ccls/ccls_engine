@@ -15,6 +15,10 @@ class CreateStudySubjects < SharedMigration
 			t.integer :father_hispanicity_id
 			t.string  :birth_county
 			t.string  :is_duplicate_of, :limit => 6
+			t.integer :mother_hispanicity_mex
+			t.integer :father_hispanicity_mex
+			t.integer :mom_is_biomom
+			t.integer :dad_is_biodad
 			t.timestamps
 		end
 	end

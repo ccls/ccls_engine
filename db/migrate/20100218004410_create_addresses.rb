@@ -11,6 +11,7 @@ class CreateAddresses < SharedMigration
 			t.integer :external_address_id
 			t.string  :county
 			t.string  :unit
+			t.string  :country
 			t.timestamps
 		end
 	end

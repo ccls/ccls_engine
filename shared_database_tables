@@ -378,9 +378,9 @@ Table: addresses
 | external_address_id | int(11)      | YES  |     | NULL    |                |
 | county              | varchar(255) | YES  |     | NULL    |                |
 | unit                | varchar(255) | YES  |     | NULL    |                |
+| country             | varchar(255) | YES  |     | NULL    |                |
 | created_at          | datetime     | YES  |     | NULL    |                |
 | updated_at          | datetime     | YES  |     | NULL    |                |
-| country             | varchar(255) | YES  |     | NULL    |                |
 +---------------------+--------------+------+-----+---------+----------------+
 
 Table: addressings
@@ -507,20 +507,11 @@ Table: candidate_controls
 | mother_middle_name    | varchar(255) | YES  |     | NULL    |                |
 | mother_last_name      | varchar(255) | YES  |     | NULL    |                |
 | mother_dob            | date         | YES  |     | NULL    |                |
-| created_at            | datetime     | YES  |     | NULL    |                |
-| updated_at            | datetime     | YES  |     | NULL    |                |
 | mom_is_biomom         | int(11)      | YES  |     | NULL    |                |
 | dad_is_biodad         | int(11)      | YES  |     | NULL    |                |
+| created_at            | datetime     | YES  |     | NULL    |                |
+| updated_at            | datetime     | YES  |     | NULL    |                |
 +-----------------------+--------------+------+-----+---------+----------------+
-
-Table: childids
-+------------+----------+------+-----+---------+----------------+
-| Field      | Type     | Null | Key | Default | Extra          |
-+------------+----------+------+-----+---------+----------------+
-| id         | int(11)  | NO   | PRI | NULL    | auto_increment |
-| created_at | datetime | YES  |     | NULL    |                |
-| updated_at | datetime | YES  |     | NULL    |                |
-+------------+----------+------+-----+---------+----------------+
 
 Table: context_data_sources
 +----------------+----------+------+-----+---------+----------------+
@@ -607,11 +598,11 @@ Table: document_versions
 | title            | varchar(255) | YES  |     | NULL    |                |
 | description      | varchar(255) | YES  |     | NULL    |                |
 | indicator        | varchar(255) | YES  |     | NULL    |                |
-| created_at       | datetime     | YES  |     | NULL    |                |
-| updated_at       | datetime     | YES  |     | NULL    |                |
 | language_id      | int(11)      | YES  |     | NULL    |                |
 | began_use_on     | date         | YES  |     | NULL    |                |
 | ended_use_on     | date         | YES  |     | NULL    |                |
+| created_at       | datetime     | YES  |     | NULL    |                |
+| updated_at       | datetime     | YES  |     | NULL    |                |
 +------------------+--------------+------+-----+---------+----------------+
 
 Table: enrollments
@@ -1163,15 +1154,6 @@ Table: packages
 | latest_event    | varchar(255) | YES  |     | NULL    |                |
 +-----------------+--------------+------+-----+---------+----------------+
 
-Table: patids
-+------------+----------+------+-----+---------+----------------+
-| Field      | Type     | Null | Key | Default | Extra          |
-+------------+----------+------+-----+---------+----------------+
-| id         | int(11)  | NO   | PRI | NULL    | auto_increment |
-| created_at | datetime | YES  |     | NULL    |                |
-| updated_at | datetime | YES  |     | NULL    |                |
-+------------+----------+------+-----+---------+----------------+
-
 Table: patients
 +------------------------------+--------------+------+-----+---------+----------------+
 | Field                        | Type         | Null | Key | Default | Extra          |
@@ -1275,13 +1257,13 @@ Table: piis
 | generational_suffix         | varchar(10)  | YES  |     | NULL    |                |
 | father_generational_suffix  | varchar(10)  | YES  |     | NULL    |                |
 | birth_year                  | varchar(4)   | YES  |     | NULL    |                |
-| created_at                  | datetime     | YES  |     | NULL    |                |
-| updated_at                  | datetime     | YES  |     | NULL    |                |
 | birth_city                  | varchar(255) | YES  |     | NULL    |                |
 | birth_state                 | varchar(255) | YES  |     | NULL    |                |
 | birth_country               | varchar(255) | YES  |     | NULL    |                |
 | mother_race_other           | varchar(255) | YES  |     | NULL    |                |
 | father_race_other           | varchar(255) | YES  |     | NULL    |                |
+| created_at                  | datetime     | YES  |     | NULL    |                |
+| updated_at                  | datetime     | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: project_outcomes
@@ -1463,12 +1445,12 @@ Table: study_subjects
 | father_hispanicity_id  | int(11)      | YES  |     | NULL    |                |
 | birth_county           | varchar(255) | YES  |     | NULL    |                |
 | is_duplicate_of        | varchar(6)   | YES  |     | NULL    |                |
-| created_at             | datetime     | YES  |     | NULL    |                |
-| updated_at             | datetime     | YES  |     | NULL    |                |
 | mother_hispanicity_mex | int(11)      | YES  |     | NULL    |                |
 | father_hispanicity_mex | int(11)      | YES  |     | NULL    |                |
 | mom_is_biomom          | int(11)      | YES  |     | NULL    |                |
 | dad_is_biodad          | int(11)      | YES  |     | NULL    |                |
+| created_at             | datetime     | YES  |     | NULL    |                |
+| updated_at             | datetime     | YES  |     | NULL    |                |
 +------------------------+--------------+------+-----+---------+----------------+
 
 Table: subject_languages
@@ -1491,9 +1473,9 @@ Table: subject_races
 | study_subject_id | int(11)      | YES  |     | NULL    |                |
 | race_id          | int(11)      | YES  |     | NULL    |                |
 | is_primary       | tinyint(1)   | NO   |     | 0       |                |
+| other            | varchar(255) | YES  |     | NULL    |                |
 | created_at       | datetime     | YES  |     | NULL    |                |
 | updated_at       | datetime     | YES  |     | NULL    |                |
-| other            | varchar(255) | YES  |     | NULL    |                |
 +------------------+--------------+------+-----+---------+----------------+
 
 Table: subject_relationships

@@ -4,6 +4,7 @@ class CreateSubjectRaces < SharedMigration
 			t.integer :study_subject_id
 			t.integer :race_id
 			t.boolean :is_primary, :default => false, :null => false
+			t.string  :other
 			t.timestamps
 		end
 	end

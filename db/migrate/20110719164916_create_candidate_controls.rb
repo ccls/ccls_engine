@@ -27,6 +27,8 @@ class CreateCandidateControls < SharedMigration
 			t.string  :mother_middle_name
 			t.string  :mother_last_name
 			t.date    :mother_dob
+			t.integer :mom_is_biomom
+			t.integer :dad_is_biodad
 			t.timestamps
 		end
 	end

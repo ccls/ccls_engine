@@ -6,6 +6,7 @@ class CreateCounties < SharedMigration
 			t.string :state_abbrev, :limit => 2
 			t.timestamps
 		end
+		add_index :counties, :state_abbrev
 	end
 
 	def self.down

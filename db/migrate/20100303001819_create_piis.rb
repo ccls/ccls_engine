@@ -26,6 +26,11 @@ class CreatePiis < SharedMigration
 			t.string  :generational_suffix, :limit => 10
 			t.string  :father_generational_suffix, :limit => 10
 			t.string  :birth_year, :limit => 4
+			t.string  :birth_city
+			t.string  :birth_state
+			t.string  :birth_country
+			t.string  :mother_race_other
+			t.string  :father_race_other
 			t.timestamps
 		end
 		add_index :piis, :email, :unique => true

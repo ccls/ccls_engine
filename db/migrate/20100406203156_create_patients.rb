@@ -9,9 +9,9 @@ class CreatePatients < SharedMigration
 			t.date    :treatment_began_on
 			t.integer :sample_was_collected
 			t.string  :admitting_oncologist
-			t.boolean :was_ca_resident_at_diagnosis, :default => nil
-			t.boolean :was_previously_treated, :default => nil
-			t.boolean :was_under_15_at_dx, :default => nil
+			t.integer :was_ca_resident_at_diagnosis
+			t.integer :was_previously_treated
+			t.integer :was_under_15_at_dx
 			t.string  :raf_zip, :limit => 10
 			t.string  :raf_county
 			t.string  :hospital_no, :limit => 25
