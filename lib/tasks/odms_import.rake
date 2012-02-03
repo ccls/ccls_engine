@@ -394,6 +394,8 @@ namespace :odms_import do
 			puts "Processing line #{f.lineno}"
 			puts line
 
+			raise "Given icf_master_id is blank?" if line['icf_master_id'].blank?
+
 			attributes = {
 				:icf_master_id => line['icf_master_id']
 			}
@@ -435,6 +437,9 @@ namespace :odms_import do
 				identifiers = Identifier.find(:all,
 					:conditions => { :icf_master_id => line['icf_master_id'] } )
 				case 
+#
+#	icf_master_id is unique, so should NEVER find more than 1 unless it is nil.
+#
 					when identifiers.length > 1
 						raise "More than one identifier found matching icf_master_id:#{line['icf_master_id']}:"
 #					when identifiers.length == 0
