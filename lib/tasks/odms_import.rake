@@ -384,8 +384,8 @@ namespace :odms_import do
 	end
 
 	task :icf_master_ids => :environment do 
-#		puts "Destroying icf_master_ids"
-#		IcfMasterId.destroy_all
+		puts "Destroying icf_master_ids"
+		IcfMasterId.destroy_all
 		puts "Importing icf_master_ids"
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
@@ -409,7 +409,24 @@ namespace :odms_import do
 					else
 						puts "Found identifier matching subjectid:#{line['subjectid']}:"
 				end
-				attributes[:study_subject_id] = identifiers.first.study_subject_id
+
+				identifier = identifiers.first
+
+
+				#	Fortunately, these never happen
+				if identifier.icf_master_id.blank?
+					#	assign it?
+					raise "ICF Master ID isn't actually set in the Identifier!"
+				else
+					#	different?
+					if identifier.icf_master_id != line['icf_master_id']
+						raise "ICF Master ID is different than that set in the Identifier!\n" <<
+							"#{identifier.icf_master_id}:#{line['icf_master_id']}"
+					end
+				end
+
+
+				attributes[:study_subject_id] = identifier.study_subject_id
 				attributes[:assigned_on] = Time.parse(line['assigned_on'])
 			else
 				#	I just noticed that some of the icf_master_ids are actually
