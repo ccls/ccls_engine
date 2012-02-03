@@ -156,24 +156,12 @@ protected
 
 	#	made separate method so can be stubbed
 	def get_next_childid
-#	TODO I think that we may need to not use the Childid table and just
-#		do something similar to subjectid.  Find the maximum existing
-#		childid and increment it. (to_i first for when nil, blank or string)
-#	This may work, but again, this will rely on the existance of the
-#		data and that it won't be removed (or it may be duplicated)
-#		Childid.create!.destroy.id
 #		(Identifier.maximum(:childid).to_i||0) + 1
 		Identifier.maximum(:childid).to_i + 1
 	end
 
 	#	made separate method so can be stubbed
 	def get_next_patid
-#	TODO I think that we may need to not use the Patid table and just
-#		do something similar to subjectid.  Find the maximum existing
-#		patid and increment it. (to_i first for when nil, blank or string)
-#	This may work, but again, this will rely on the existance of the
-#		data and that it won't be removed (or it may be duplicated)
-#		Patid.create!.destroy.id
 #		(Identifier.maximum(:patid).to_i||0) + 1
 		Identifier.maximum(:patid).to_i + 1
 #
