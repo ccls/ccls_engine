@@ -3,6 +3,8 @@ class IcfMasterTracker < ActiveRecordShared
 	validates_presence_of   :Masterid
 	validates_uniqueness_of :Masterid, :allow_blank => true
 
+#	validate all string field lengths ?
+
 	belongs_to :study_subject
 
 	before_save :attach_study_subject
@@ -36,7 +38,8 @@ class IcfMasterTracker < ActiveRecordShared
 
 	def ignorable_changes
 #		%w{id flagged_for_update study_subject_id Masterid created_at updated_at}
-		%w{id flagged_for_update created_at updated_at}
+		%w{ id created_at updated_at
+			flagged_for_update last_update_attempt_errors last_update_attempted_at }
 	end
 
 	def unignorable_changes
@@ -48,7 +51,29 @@ class IcfMasterTracker < ActiveRecordShared
 	end
 
 	def self.update_models_flagged_for_update
-		self.have_changed.each do |icf_master_tracker|
+		puts "Searching for changed Icf Master Tracker records."
+		changed_records = self.have_changed
+		if changed_records.empty?
+			puts "- Found no changed records."
+		else
+			puts "- Found #{changed_records} changed records."
+			changed_records.each do |record|
+#				record.last_update_attempted_at = Time.now
+#				unless record.study_subject_id.nil?
+#					try to update models
+#					if successful
+#						record.flagged_for_update = false
+#						record.last_update_attempt_errors = nil
+#					else
+#						set last_update_attempt_error
+#						leave flagged_for_update as true
+#					end
+#				else
+#					record.last_update_attempt_errors = "study_subject is nil.  Nothing to update."
+#					leave flagged_for_update as true
+#				end
+#				record.save
+			end
 		end
 	end
 

@@ -878,6 +878,8 @@ Table: icf_master_trackers
 | id                              | int(11)      | NO   | PRI | NULL    | auto_increment |
 | study_subject_id                | int(11)      | YES  |     | NULL    |                |
 | flagged_for_update              | tinyint(1)   | YES  |     | 0       |                |
+| last_update_attempt_errors      | text         | YES  |     | NULL    |                |
+| last_update_attempted_at        | datetime     | YES  |     | NULL    |                |
 | Masterid                        | varchar(255) | YES  | UNI | NULL    |                |
 | Motherid                        | varchar(255) | YES  |     | NULL    |                |
 | Record_Owner                    | varchar(255) | YES  |     | NULL    |                |

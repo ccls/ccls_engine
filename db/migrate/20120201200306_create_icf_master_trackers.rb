@@ -1,8 +1,11 @@
 class CreateIcfMasterTrackers < SharedMigration
 	def self.up
 		create_table :icf_master_trackers do |t|
-			t.integer :study_subject_id
-			t.boolean :flagged_for_update, :default => false
+			t.integer  :study_subject_id
+			t.boolean  :flagged_for_update, :default => false
+			t.text     :last_update_attempt_errors
+			t.datetime :last_update_attempted_at
+
 			t.string :Masterid
 			t.string :Motherid
 			t.string :Record_Owner
