@@ -56,6 +56,7 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 			results = icf_master_tracker_update.parse
 			assert_equal results.length, 1
 			assert       results[0].is_a?(IcfMasterTracker)
+			assert       results[0].flagged_for_update
 		}
 		cleanup_icf_master_tracker_update_and_test_file(icf_master_tracker_update)
 	end
@@ -67,6 +68,7 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 			results = icf_master_tracker_update.parse
 			assert_equal results.length, 1
 			assert       results[0].is_a?(IcfMasterTracker)
+			assert       results[0].flagged_for_update
 		}
 		assert_difference('IcfMasterTracker.count',0) {
 			new_results = icf_master_tracker_update.parse
@@ -82,6 +84,7 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 		assert_difference('IcfMasterTracker.count',1) {
 			results = icf_master_tracker_update.parse
 			assert_equal 1,  results.length
+			assert       results[0].flagged_for_update
 			icf_master_tracker = results.last
 #			assert_equal candidate_control.related_patid, study_subject.patid
 #			assert_equal candidate_control.mom_is_biomom, control[:biomom]
@@ -115,6 +118,7 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 		assert_difference('IcfMasterTracker.count',1) {
 			results = icf_master_tracker_update.parse
 			assert_equal results.length, 1
+			assert       results[0].flagged_for_update
 			assert       results[0].is_a?(IcfMasterTracker)
 			assert_equal results[0].study_subject, study_subject
 		}
@@ -162,6 +166,7 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 			results.each { |r|
 				assert  r.is_a?(IcfMasterTracker)
 				assert !r.new_record?
+				assert  r.flagged_for_update
 			}
 		}
 #
