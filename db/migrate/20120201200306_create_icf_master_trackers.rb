@@ -2,6 +2,7 @@ class CreateIcfMasterTrackers < SharedMigration
 	def self.up
 		create_table :icf_master_trackers do |t|
 			t.integer :study_subject_id
+			t.boolean :flagged_for_update, :default => false
 			t.string :Masterid
 			t.string :Motherid
 			t.string :Record_Owner
@@ -43,8 +44,6 @@ class CreateIcfMasterTrackers < SharedMigration
 			t.string :Physrequestsent
 			t.string :Physresponsereceived
 			t.timestamps
-#	doesn't seem to work
-#			t.index :Masterid, :unique => true
 		end
 		add_index :icf_master_trackers, :Masterid, :unique => true
 	end

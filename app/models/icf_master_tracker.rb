@@ -6,6 +6,11 @@ class IcfMasterTracker < ActiveRecordShared
 	belongs_to :study_subject
 
 	before_save :attach_study_subject
+	before_save :flag_for_update
+
+	named_scope :have_changed, :conditions => {
+		:flagged_for_update => true
+	}
 
 	#	This may not be the best way to update.
 	#	We may have to implement something like BackgrounDRb.
@@ -18,7 +23,7 @@ class IcfMasterTracker < ActiveRecordShared
 	#	column to flag has having been updated to be set in
 	#	a before_save callback.  This would then need unset by
 	#	the BackgrounDRb worker when complete.
-	after_save  :update_models
+#	after_save  :update_models
 
 	def attach_study_subject
 		unless study_subject_id
@@ -28,6 +33,27 @@ class IcfMasterTracker < ActiveRecordShared
 			end
 		end
 	end
+
+	def ignorable_changes
+#		%w{id flagged_for_update study_subject_id Masterid created_at updated_at}
+		%w{id flagged_for_update created_at updated_at}
+	end
+
+	def unignorable_changes
+		changes.dup.delete_keys!(*ignorable_changes)
+	end
+
+	def flag_for_update
+		self.flagged_for_update = true unless unignorable_changes.empty?
+	end
+
+	def self.update_models_flagged_for_update
+		self.have_changed.each do |icf_master_tracker|
+		end
+	end
+
+
+
 
 	def update_models
 #
@@ -90,25 +116,24 @@ class IcfMasterTracker < ActiveRecordShared
 #				is assigned to a subject by us, meaning the subject exists
 #				before giving it to ICF.
 
-			ignore = %w{id study_subject_id Masterid created_at updated_at}
-			unignored_changes = changes.dup.delete_keys!(*ignore)
-			unless unignored_changes.empty?
+#			unignored_changes = changes.dup.delete_keys!(*ignorable_changes)
+			unless unignorable_changes.empty?
 #				description = []
-#				unignored_changes.each { |field,values|
+#				unignorable_changes.each { |field,values|
 #					description << "#{field} changed from #{values[0]} to #{values[1]}"
 #				}
-				OperationalEvent.create!(
-					:enrollment => study_subject.enrollments.find_or_create_by_project_id(
-						Project[:ccls].id),
-					:operational_event_type => OperationalEventType[:other],
-#
-#	description can only be 250 chars so this fails in testing
-#		when creating new tracker as everything has changed.
-#	Change description to text?  Will 65000 chars be enough?
-#
-#					:description => description.join("\n")
-					:description => "Icf Master Tracker caused changes."
-				)
+#				OperationalEvent.create!(
+#					:enrollment => study_subject.enrollments.find_or_create_by_project_id(
+#						Project[:ccls].id),
+#					:operational_event_type => OperationalEventType[:other],
+##
+##	description can only be 250 chars so this fails in testing
+##		when creating new tracker as everything has changed.
+##	Change description to text?  Will 65000 chars be enough?
+##
+##					:description => description.join("\n")
+#					:description => "Icf Master Tracker caused changes."
+#				)
 			end
 #		else
 #			puts
