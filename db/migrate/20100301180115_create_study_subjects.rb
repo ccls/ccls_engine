@@ -2,7 +2,10 @@ class CreateStudySubjects < SharedMigration
 	def self.up
 		create_table :study_subjects do |t|
 			t.references :subject_type
-			t.references :vital_status
+
+			# 1 = VitalStatus['living']
+			t.integer :vital_status_id, :default => 1
+
 			t.references :hispanicity
 			t.date :reference_date
 			t.string :sex
