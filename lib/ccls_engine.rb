@@ -1,5 +1,10 @@
 require 'ccls_engine/shared_database'
 
+#gem 'delayed_job', '~>2.0.4'
+#Delayed::Backend::ActiveRecord::Job.class_eval do
+#	use_db :prefix => "shared_"
+#end
+
 require 'active_record'
 require 'active_support'
 require 'action_controller'
@@ -88,7 +93,7 @@ if defined?(Rails) && Rails.env == 'test' && Rails.class_variable_defined?("@@co
 	require 'factory_girl'
 	require 'ccls_engine/factories'
 
-	#	There are not automatically included as they
+	#	These are not automatically included as they
 	#		contain duplicate methods names.
 	#	They must be explicitly included in the test classes
 	#		that use them.
@@ -113,15 +118,7 @@ ActionView::Helpers::AssetTagHelper.register_javascript_expansion(
 #			File.dirname(__FILE__), '../app/views'))
 
 
-#
-#	None of the models included in this gem use Paperclip
-#		so removing this shouldn't break anything.  However,
-#		since anything is possible, I'm just commenting it
-#		out in case something funky should occur.
-#
-#	Yay, add paperclip for LiveBirthData uploads so
-#		I'm glad that I kept this.
-#
+
 gem 'paperclip', '= 2.4.2'
 require 'paperclip'
 if defined? ::Paperclip::Glue
@@ -134,21 +131,6 @@ end
 
 #	While a HWIA does not differentiate strings and symbols,
 #	it does not differentiate between strings and numbers.
-
-#YNDK = HashWithIndifferentAccess.new({
-#	:yes   => 1,
-#	:true  => 1,
-#	:no    => 2,
-#	:false => 2,
-#	:dk    => 999,
-#	'1'    => 'Yes',
-#	'2'    => 'No',
-#	'999'  => "Don't Know",
-#	1      => 'Yes',
-#	2      => 'No',
-#	999    => "Don't Know"
-#}).freeze
-
 YNORDK = HashWithIndifferentAccess.new({
 	:yes   => 1,
 	:true  => 1,

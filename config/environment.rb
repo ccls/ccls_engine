@@ -44,6 +44,13 @@ Rails::Initializer.run do |config|
 	config.gem 'will_paginate'
 	config.gem 'fastercsv'
 
+
+#	Rails 2 requires us to not use the latest version of delayed_job.
+#	delayed_job depends upon version 1.0.10 of the daemons gem. 
+#	delayed_job is incompatible with the newest (1.1.0) daemons gem.
+#	config.gem 'delayed_job', :version => '~>2.0.4'
+
+
 	config.after_initialize do
 		load File.expand_path(File.join(File.dirname(__FILE__),'../lib/ccls_engine.rb'))
 	end

@@ -113,3 +113,10 @@ RCOV_EXCLUDES = ['lib/ccls_engine.rb','lib/ccls_engine/shared_database.rb',
 	'app/models/search.rb','lib/ccls_engine/factories.rb',
 	'lib/ccls_engine/controller.rb']
 
+
+#begin
+#	gem 'delayed_job', '~>2.0.4'
+#	require 'delayed/tasks'
+#rescue LoadError
+#	STDERR.puts "Run `rake gems:install` to install delayed_job"
+#end

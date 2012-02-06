@@ -86,6 +86,14 @@ gem "paperclip", '=2.4.2'	#	only used by buffler and clic
 #	actually, now will be used for live_birth_data, so all apps need it
 
 
+#	Rails 2 requires us to not use the latest version of delayed_job.
+#	delayed_job depends upon version 1.0.10 of the daemons gem.
+#	delayed_job is incompatible with the newest (1.1.0) daemons gem.
+#Installing daemons (1.0.10) 
+#Installing delayed_job (2.0.7) 
+#gem 'delayed_job', '~>2.0.4'
+
+
 #	These gems are not needed in production
 #	They will be skipped because of config file
 #	/my/ruby/.bundle/config 
