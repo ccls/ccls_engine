@@ -11,6 +11,15 @@ def format_time_to_date(time)
 	( time.blank? ) ? nil : format_date(Time.parse(time).to_date)
 end
 
+#	Object and not String because could be NilClass
+Object.class_eval do
+
+	def nilify_blank
+		( self.blank? ) ? nil : self
+	end
+
+end
+
 namespace :odms_destroy do
 
 	desc "Destroy subject and address data"
@@ -642,7 +651,6 @@ namespace :odms_import do
 			attributes = {
 				:created_at      => line['created_at'],
 				:subject_type_id => line['subject_type_id'],
-				:vital_status_id => line['vital_status_id'],
 				:hispanicity_id  => line['hispanicity_id'],
 				:do_not_contact  => line['do_not_contact'],
 				:sex             => line['sex'],
@@ -651,6 +659,10 @@ namespace :odms_import do
 				:pii             => pii,
 				:identifier      => identifier
 			}
+			unless line['vital_status_id'].blank?
+				attributes[:vital_status_id] = line['vital_status_id']
+#			else leave as database default
+			end
 
 #			if line['subject_type_id'].to_i == SubjectType['Case'].id
 			if line['subject_type_id'].to_i == StudySubject.subject_type_case_id
