@@ -337,7 +337,13 @@ namespace :odms_import do
 				:data_source_id   => line["data_source_id"],
 				:phone_number     => line["phone_number"],
 				:is_primary       => line["is_primary"],         #	boolean
+
+
+#	This is actually boolean in the csv file.
 				:current_phone    => line["current_phone"],      #	yndk integer
+
+
+
 				:created_at       => (( line['created_at'].blank? ) ?
 														nil : Time.parse(line['created_at']) )
 			})
