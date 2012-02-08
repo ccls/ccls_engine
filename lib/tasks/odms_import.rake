@@ -1,6 +1,15 @@
 require 'fastercsv'
 require 'chronic'
 
+#
+#	The purpose of these tasks is to import data extracted from the previous
+#	database tables.  THEY ARE DESTRUCTIVE!
+#
+#	This collection of rake tasks will only be used once.  After its successful 
+#	initial usage, I will comment it all out rather than destroy it so that it 
+#	can be referenced.  
+#
+
 BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/DataMigration/"
 
 def format_date(date)
@@ -11,13 +20,51 @@ def format_time_to_date(time)
 	( time.blank? ) ? nil : format_date(Time.parse(time).to_date)
 end
 
+#	gonna start asserting that everything is as expected.
+#	will slow down import, but I want to make sure I get it right.
+def assert(expression,message = 'Assertion failed.')
+	raise "#{message} :\n #{caller[0]}" unless expression
+end
+
 #	Object and not String because could be NilClass
 Object.class_eval do
-
 	def nilify_blank
 		( self.blank? ) ? nil : self
 	end
-
+	def to_nil_or_boolean
+		if self.blank?
+			nil
+		else
+			( self.to_i == 1 or self.to_s.upcase == 'TRUE' ) ? true : false
+		end
+	end
+	def to_nil_or_yndk
+		if self.blank?
+			nil
+		else
+			( self.upcase == 'TRUE' ) ? YNDK[:yes] : YNDK[:no]
+		end
+	end
+	def to_nil_or_i
+		( self.blank? ) ? nil : self.to_i
+	end
+	def to_dk_or_i
+		( self.blank? ) ? 999 : self.to_i
+	end
+	def only_numeric
+		self.to_s.gsub(/\D/,'')
+	end
+	def to_nil_or_999
+		if self.blank?
+			nil
+		else
+			if self.to_s == '9'
+				999
+			else
+				self.to_i
+			end
+		end
+	end
 end
 
 namespace :odms_destroy do
@@ -80,10 +127,6 @@ namespace :odms_import do
 				line['dob'] = format_time_to_date( line['dob'] )
 				line['died_on'] = format_time_to_date( line['died_on'] )
 
-#					#	1 record is missing organization_id so must do this.
-#					m.organization_id = ( line['organization_id'].blank? ) ?
-#						999 : line['organization_id']
-
 
 #	TODO deal with incorrect value 9 in was_* fields
 				if( line['was_previously_treated'].to_s == '9' )
@@ -101,6 +144,11 @@ namespace :odms_import do
 
 				if line['subject_type_id'].to_i == StudySubject.subject_type_case_id &&
 						line['organization_id'].blank?
+
+#					#	1 record is missing organization_id so must do this.
+#					m.organization_id = ( line['organization_id'].blank? ) ?
+#						999 : line['organization_id']
+
 					line['organization_id'] = 999 
 				end
 
@@ -227,6 +275,30 @@ namespace :odms_import do
 				error_file.puts "Line #:#{f.lineno}: #{address.errors.full_messages.to_sentence}"
 				error_file.puts line
 				error_file.puts
+			else
+				address.reload
+				assert address.address_type_id == line["address_type_id"].to_nil_or_i,
+					'Address Type mismatch'
+				assert address.data_source_id  == line["data_source_id"].to_nil_or_i,
+					'Data Source mismatch'
+				assert address.line_1          == line["line_1"],
+					'Line 1 mismatch'
+				assert address.line_2.blank?
+					'Line 2 mismatch'
+				assert address.unit            == line["unit"],
+					'Unit mismatch'
+				assert address.city            == line["city"],
+					'City mismatch'
+				assert address.state           == line["state"],
+					'State mismatch'
+				assert address.zip             == line["zip"],
+					'Zip mismatch'
+				assert address.external_address_id == line["external_address_id"].to_nil_or_i,
+					'External Address mismatch'
+				assert address.county          == line["county"],
+					'County mismatch'
+				assert address.country         == line["country"],
+					'Country mismatch'
 			end
 
 		end
@@ -293,6 +365,32 @@ namespace :odms_import do
 				error_file.puts "Line #:#{f.lineno}: #{addressing.errors.full_messages.to_sentence}"
 				error_file.puts line
 				error_file.puts
+			else
+				addressing.reload
+				assert addressing.study_subject_id == study_subject.id,
+					'Study Subject mismatch'
+				assert addressing.address_id       == address.id,
+					'Address mismatch'
+				assert addressing.current_address  == line["current_address"].to_nil_or_i,
+					'Current Address mismatch'
+				assert addressing.address_at_diagnosis == line["address_at_diagnosis"].to_nil_or_i,
+					'Address at Diagnosis mismatch'
+				assert addressing.data_source_id == line["data_source_id"].to_nil_or_i,
+					'Data Source mismatch'
+				if line['valid_from'].blank?
+					assert addressing.valid_from.nil?, 'Valid From not nil'
+				else
+					assert !addressing.valid_from.nil?, 'Valid From is nil'
+					assert addressing.valid_from == Time.parse(line['valid_from']).to_date,
+						"Valid From mismatch"
+				end
+				if line['valid_to'].blank?
+					assert addressing.valid_to.nil?, 'Valid To not nil'
+				else
+					assert !addressing.valid_to.nil?, 'Valid To is nil'
+					assert addressing.valid_to == Time.parse(line['valid_to']).to_date,
+						"Valid To mismatch"
+				end
 			end
 
 		end
@@ -338,10 +436,12 @@ namespace :odms_import do
 				:phone_number     => line["phone_number"],
 				:is_primary       => line["is_primary"],         #	boolean
 
-
-#	This is actually boolean in the csv file.
-				:current_phone    => line["current_phone"],      #	yndk integer
-
+#	This is actually boolean string in the csv file.
+#	It would convert correctly to a boolean field, but that's mysql, not ruby.
+#				:current_phone    => line["current_phone"],      #	yndk integer
+				:current_phone    => line["current_phone"].to_nil_or_yndk,
+#				:current_phone    => ( ( line["current_phone"].blank? ) ? nil :
+#					( line["current_phone"] == 'TRUE' ) ? YNDK[:yes] : YNDK[:no] ),
 
 
 				:created_at       => (( line['created_at'].blank? ) ?
@@ -353,6 +453,21 @@ namespace :odms_import do
 				error_file.puts "Line #:#{f.lineno}: #{phone_number.errors.full_messages.to_sentence}"
 				error_file.puts line
 				error_file.puts
+			else
+				phone_number.reload
+				assert phone_number.study_subject_id == study_subject.id, 
+					"Study Subject mismatch"
+				assert phone_number.phone_type_id == line["phone_type_id"].to_nil_or_i,
+					"phone_type_id mismatch:#{phone_number.phone_type_id}:#{line["phone_type_id"]}:"
+				assert phone_number.data_source_id == line["data_source_id"].to_nil_or_i,
+					"data_source_id mismatch:#{phone_number.data_source_id}:#{line["data_source_id"]}:"
+				#	import will change format of phone number (adds () and - )
+				assert phone_number.phone_number.only_numeric == line["phone_number"].only_numeric,
+					"phone_number mismatch:#{phone_number.phone_number}:#{line["phone_number"]}:"
+				assert phone_number.current_phone == line["current_phone"].to_nil_or_yndk,
+					"current_phone mismatch:#{phone_number.current_phone}:#{line["current_phone"]}:"
+				assert phone_number.is_primary       == line["is_primary"].to_nil_or_boolean, 
+					"is_primary mismatch:#{phone_number.is_primary}:#{line["is_primary"]}:"
 			end
 
 		end
@@ -387,13 +502,31 @@ namespace :odms_import do
 			end
 			study_subject = identifier.study_subject
 			ccls_enrollment = study_subject.enrollments.find_by_project_id(line['project_id'])
-			operational_event = OperationalEvent.create!({
+			operational_event = OperationalEvent.create({
 				:enrollment_id => ccls_enrollment.id,
-				:operational_event_type_id => line['operational_event_id'],
-				:occurred_on => Time.parse(line['occurred_on']),
+				:operational_event_type_id => line['operational_event_id'],	#	NOTE misnamed field
+				:occurred_on => Time.parse(line['occurred_on']).to_date,
 				:description => line['description'],
 				:event_notes => line['event_notes']
 			})
+			if operational_event.new_record?
+				error_file.puts 
+				error_file.puts "Line #:#{f.lineno}: #{operational_event.errors.full_messages.to_sentence}"
+				error_file.puts line
+				error_file.puts
+			else
+				operational_event.reload
+				assert operational_event.enrollment_id == ccls_enrollment.id,
+					"Enrollment mismatch"
+				assert operational_event.operational_event_type_id == line['operational_event_id'].to_nil_or_i, 
+					"operational_event_type mismatch:#{operational_event.operational_event_type_id}:#{line["operational_event_id"]}:"
+				assert operational_event.occurred_on == Time.parse(line['occurred_on']).to_date,
+					"occurred_on mismatch:#{operational_event.occurred_on}:#{line["occurred_on"]}:"
+				assert operational_event.description == line['description'],
+					"description mismatch:#{operational_event.description}:#{line["description"]}:"
+				assert operational_event.event_notes == line['event_notes'],
+					"event_notes mismatch:#{operational_event.event_notes}:#{line["event_notes"]}:"
+			end
 		end
 		error_file.close
 	end
@@ -533,8 +666,8 @@ namespace :odms_import do
 			enrollment = study_subject.enrollments.find_or_create_by_project_id(
 				line['project_id'])
 
+			#	TEMPORARY "FIXES" to get most enrollments imported
 
-			#	TEMPORARY
 			consented           = line['consented']
 			consented_on        = if [nil,999,'','999'].include?(consented)
 				nil
@@ -556,12 +689,18 @@ namespace :odms_import do
 
 
 
+
+
+
 			saved = enrollment.update_attributes(
 				:consented           => consented,
 				:consented_on        => consented_on,
 				:refusal_reason_id   => refusal_reason_id,
 				:document_version_id => document_version_id,
-				:is_eligible         => line['is_eligible']
+#	This is actually boolean string in the csv file.
+#	It would convert correctly to a boolean field, but that's mysql, not ruby.
+#				:is_eligible         => line['is_eligible']
+				:is_eligible         => line['is_eligible'].to_nil_or_yndk
 			)
 			unless saved
 				error_file.puts 
@@ -569,6 +708,18 @@ namespace :odms_import do
 				error_file.puts line
 				error_file.puts enrollment.inspect
 				error_file.puts
+			else
+				enrollment.reload
+				assert enrollment.consented == line['consented'].to_nil_or_i,
+					"consented mismatch:#{enrollment.consented}:#{line["consented"]}:"
+				assert enrollment.consented_on        == consented_on,
+					"consented_on mismatch:#{enrollment.consented_on}:#{line["consented_on"]}:"
+				assert enrollment.refusal_reason_id   == refusal_reason_id.to_nil_or_i,
+					"refusal_reason_id mismatch:#{enrollment.refusal_reason_id}:#{line["refusal_reason_id"]}:"
+				assert enrollment.document_version_id == document_version_id.to_nil_or_i,
+					"document_version_id mismatch:#{enrollment.document_version_id}:#{line["document_version_id"]}:"
+				assert enrollment.is_eligible == line['is_eligible'].to_nil_or_yndk,
+					"is_eligible mismatch:#{enrollment.is_eligible}:#{line['is_eligible']}:"
 			end
 
 		end
@@ -602,9 +753,9 @@ namespace :odms_import do
 			pii = Pii.new do |m|
 				m.birth_year         = line['birth_year']
 				m.created_at         = line['created_at']
-				m.first_name         = line['first_name'] #|| "FIXME"	#	TODO
+				m.first_name         = line['first_name']
 				m.middle_name        = line['middle_name']
-				m.last_name          = line['last_name'] #|| "FIXME"	#	TODO
+				m.last_name          = line['last_name']
 				m.maiden_name        = line['maiden_name']
 				m.died_on            = ( line['died_on'].blank? 
 					) ? nil : Time.parse(line['died_on'])
@@ -620,21 +771,6 @@ namespace :odms_import do
 					m.subject_is_mother = true
 				end
 
-#				if line['subject_type_id'].to_i == SubjectType['Mother'].id
-#					m.subject_is_mother = true
-#					m.dob               = ( line['dob'].blank? 
-#						) ? nil : Time.parse(line['dob']).to_date
-#				else
-##					#	blank dob only a problem if not mother
-##					if line['dob'].blank?
-##						error_file.puts 
-##						error_file.puts "Line #:#{f.lineno}: No dob and not mother"
-##						error_file.puts line
-##					end
-##					m.dob               = (( line['dob'].blank? 
-##						) ? Time.parse('01-Jan-1900') : Time.parse(line['dob']) ).to_date
-#					m.dob               = Time.parse(line['dob']).to_date
-#				end
 			end
 
 			identifier = Identifier.new do |m|
@@ -658,6 +794,9 @@ namespace :odms_import do
 				:created_at      => line['created_at'],
 				:subject_type_id => line['subject_type_id'],
 				:hispanicity_id  => line['hispanicity_id'],
+#
+#	do_not_contact is a boolean string in the csv file.
+#	It does seem to convert correctly in the database.
 				:do_not_contact  => line['do_not_contact'],
 				:sex             => line['sex'],
 				:reference_date  => ( line['reference_date'].blank?
@@ -670,7 +809,6 @@ namespace :odms_import do
 #			else leave as database default
 			end
 
-#			if line['subject_type_id'].to_i == SubjectType['Case'].id
 			if line['subject_type_id'].to_i == StudySubject.subject_type_case_id
 				patient = Patient.new do |m|
 					m.admit_date = ( line['admit_date'].blank?
@@ -679,26 +817,20 @@ namespace :odms_import do
 					m.other_diagnosis = line['other_diagnosis']
 
 					#	1 record is missing organization_id so must do this.
-					m.organization_id = ( line['organization_id'].blank? ) ?
-						999 : line['organization_id']
-
+					m.organization_id = line['organization_id'].to_dk_or_i
 					m.hospital_no     = line['hospital_no']
 
 
 #	TODO deal with incorrect value 9 in was_* fields
 
-#				line['was_previously_treated'] = '999' if( 
-#					line['was_previously_treated'].to_s == '9' )
-#				line['was_under_15_at_dx'] = '999' if(
-#					line['was_under_15_at_dx'].to_s == '9' )
+					m.was_previously_treated = line['was_previously_treated'].to_nil_or_999
+#	kinda pointless as is set in callback
+					m.was_under_15_at_dx     = line['was_under_15_at_dx'].to_nil_or_999
+#					m.was_previously_treated = (( line['was_previously_treated'].to_s == '9' ) ?
+#						'999' : line['was_previously_treated'] )
+#					m.was_under_15_at_dx     = (( line['was_under_15_at_dx'].to_s == '9' ) ?
+#						'999' : line['was_under_15_at_dx'] )
 
-					m.was_previously_treated = ( line['was_previously_treated'].to_s == '9' ) ?
-						'999' : line['was_previously_treated']
-					m.was_under_15_at_dx     = ( line['was_under_15_at_dx'].to_s == '9' ) ?
-						'999' : line['was_under_15_at_dx']
-
-#					m.was_previously_treated = line['was_previously_treated']
-#					m.was_under_15_at_dx     = line['was_under_15_at_dx']
 					m.raf_zip                = line['raf_zip']
 					m.raf_county             = line['raf_county']
 					m.created_at             = line['created_at']
@@ -712,10 +844,141 @@ namespace :odms_import do
 				error_file.puts "Line #:#{f.lineno}: #{s.errors.full_messages.to_sentence}"
 				error_file.puts line
 				error_file.puts
+			else
+				s.reload
+
+				assert s.subject_type_id == line['subject_type_id'].to_nil_or_i,
+					"subject_type_id mismatch:#{s.subject_type_id}:#{line['subject_type_id']}:"
+
+				if line['vital_status_id'].blank?
+					assert s.vital_status_id == 1,
+						"Vital Status not set to default"
+				else
+					assert s.vital_status_id.to_s == line['vital_status_id'],
+						"Vital Status mismatch:#{s.vital_status_id}:#{line['vital_status_id']}:"
+				end
+
+#	TODO 	TRUE / FALSE
+				assert s.do_not_contact == line['do_not_contact'].to_nil_or_boolean,
+					'Do Not Contact mismatch'
+				assert s.sex == line['sex'],
+					"sex mismatch:#{s.sex}:#{line['sex']}:"
+				assert s.hispanicity_id == line['hispanicity_id'].to_nil_or_i,
+					"hispanicity_id mismatch:#{s.hispanicity_id}:#{line['hispanicity_id']}:"
+
+#	TODO not always be true due to callbacks
+#				if line['reference_date'].blank?
+#					assert s.reference_date.nil?, 'reference_date not nil'
+#				else
+#					assert !s.reference_date.nil?, 'reference_date nil'
+#					assert s.reference_date == Time.parse(line['reference_date']),
+#						"reference_date mismatch:#{s.reference_date}:#{line['reference_date']}:"
+#				end
+
+				pi = s.pii.reload
+				assert pi.first_name == line['first_name'],
+					"first_name mismatch:#{pi.first_name}:#{line['first_name']}:"
+				assert pi.middle_name == line['middle_name'],
+					"middle_name mismatch:#{pi.middle_name}:#{line['middle_name']}:"
+				assert pi.last_name == line['last_name'],
+					"last_name mismatch:#{pi.last_name}:#{line['last_name']}:"
+				assert pi.maiden_name == line['maiden_name'],
+					"maiden_name mismatch:#{pi.maiden_name}:#{line['maiden_name']}:"
+
+				if line['dob'].blank?
+					assert pi.dob.nil?, 'dob not nil'
+				else
+					assert !pi.dob.nil?, 'dob nil'
+					assert pi.dob == Time.parse(line['dob']).to_date,
+						"dob mismatch:#{pi.dob}:#{line['dob']}:"
+				end
+				if line['died_on'].blank?
+					assert pi.died_on.nil?, 'died_on not nil'
+				else
+					assert !pi.died_on.nil?, 'died_on nil'
+					assert pi.died_on == Time.parse(line['died_on']).to_date,
+						"died_on mismatch:#{pi.died_on}:#{line['died_on']}:"
+				end
+
+				assert pi.mother_first_name == line['mother_first_name'],
+					"mother_first_name mismatch:#{pi.mother_first_name}:#{line['mother_first_name']}:"
+				assert pi.mother_maiden_name == line['mother_maiden_name'],
+					"mother_maiden_name mismatch:#{pi.mother_maiden_name}:#{line['mother_maiden_name']}:"
+				assert pi.mother_last_name == line['mother_last_name'],
+					"mother_last_name mismatch:#{pi.mother_last_name}:#{line['mother_last_name']}:"
+				assert pi.father_first_name == line['father_first_name'],
+					"father_first_name mismatch:#{pi.father_first_name}:#{line['father_first_name']}:"
+				assert pi.father_last_name == line['father_last_name'],
+					"father_last_name mismatch:#{pi.father_last_name}:#{line['father_last_name']}:"
+				assert pi.birth_year == line['birth_year'],
+					"birth_year mismatch:#{pi.birth_year}:#{line['birth_year']}:"
+
+
+				pa = s.patient
+				if s.subject_type == SubjectType['case']
+					pa.reload
+#	TODO may not always be true
+#					if line['admit_date'].blank?
+#						assert pa.admit_date.nil?, 'admit_date not nil'
+#					else
+#						assert !pa.admit_date.nil?, 'admit_date nil'
+#						assert pa.admit_date == Time.parse(line['admit_date']),
+#							'admit_date mismatch'
+#					end
+					assert pa.diagnosis_id == line['diagnosis_id'].to_nil_or_i,
+						"diagnosis_id mismatch:#{pa.diagnosis_id}:#{line['diagnosis_id']}:"
+					assert pa.raf_zip == line['raf_zip'],
+						"raf_zip mismatch:#{pa.raf_zip}:#{line['raf_zip']}:"
+					assert pa.raf_county == line['raf_county'],
+						"raf_county mismatch:#{pa.raf_county}:#{line['raf_county']}:"
+					assert pa.hospital_no == line['hospital_no'],
+						"hospital_no mismatch:#{pa.hospital_no}:#{line['hospital_no']}:"
+					assert pa.organization_id == line['organization_id'].to_dk_or_i,
+						"organization_id mismatch:#{pa.organization_id}:#{line['organization_id']}:"
+					assert pa.other_diagnosis == line['other_diagnosis'],
+						"other_diagnosis mismatch:#{pa.other_diagnosis}:#{line['other_diagnosis']}:"
+
+#	TODO problem with the 9 and 999 issue as well
+#					assert pa.was_previously_treated.to_s == line['was_previously_treated'],
+					assert pa.was_previously_treated == line['was_previously_treated'].to_nil_or_999,
+						"was_previously_treated mismatch:#{pa.was_previously_treated}:#{line['was_previously_treated']}:"
+#	TODO probably won't be true all the time
+#					assert pa.was_under_15_at_dx == line['was_under_15_at_dx'],
+#						'was_under_15_at_dx mismatch'
+				else
+					assert pa.nil?, 'Patient for non-case'
+				end
+
+				id = s.identifier.reload
+				assert id.subjectid == line['subjectid'],
+					"subjectid mismatch:#{id.subjectid}:#{line['subjectid']}:"
+				assert id.childid.to_s == line['childid'],
+					"childid mismatch:#{id.childid}:#{line['childid']}:"
+				assert id.icf_master_id == line['icf_master_id'],
+					"icf_master_id mismatch:#{id.icf_master_id}:#{line['icf_master_id']}:"
+				assert id.childidwho == line['childidwho'],
+					"childidwho mismatch:#{id.childidwho}:#{line['childidwho']}:"
+				assert id.familyid == line['familyid'],
+					"familyid mismatch:#{id.familyid}:#{line['familyid']}:"
+				assert id.matchingid == line['matchingid'],
+					"matchingid mismatch:#{id.matchingid}:#{line['matchingid']}:"
+				assert id.patid == line['patid'],
+					"patid mismatch:#{id.patid}:#{line['patid']}:"
+				assert id.case_control_type == line['case_control_type'],
+					"case_control_type mismatch:#{id.case_control_type}:#{line['case_control_type']}:"
+				assert id.orderno == line['orderno'].to_nil_or_i,
+					"orderno mismatch:#{id.orderno}:#{line['orderno']}:"
+				assert id.newid == line['newid'],
+					"newid mismatch:#{id.newid}:#{line['newid']}:"
+				assert id.studyid == line['studyid'],
+					"studyid mismatch:#{id.studyid}:#{line['studyid']}:"
+				assert id.related_case_childid == line['related_case_childid'],
+					"related_case_childid mismatch:#{id.related_case_childid}:#{line['related_case_childid']}:"
+				assert id.state_id_no == line['state_id_no'],
+					"state_id_no mismatch:#{id.state_id_no}:#{line['state_id_no']}:"
 			end
 		end	#	FasterCSV.open
 		error_file.close
-#		Rake::Task["ccls:data_report"].invoke
 	end		#	task :subjects => :environment do
 
 end
