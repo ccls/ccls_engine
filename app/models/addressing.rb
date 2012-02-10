@@ -5,6 +5,13 @@ class Addressing < ActiveRecordShared
 	belongs_to :address
 	belongs_to :data_source
 
+	#	TODO test this.  Also may not need current_user now.
+#	This works in the console and such, but ActiveScaffold tries
+#	to use it in a join, but it is in a different database so fails.
+#	May be able to make it work in AS, but need to fiddle.
+#	belongs_to :verified_by, :foreign_key => 'verified_by_uid',
+#		:class_name => 'User', :primary_key => 'uid'
+
 	delegate :is_other?, :to => :data_source, :allow_nil => true, :prefix => true
 	delegate :address_type, :address_type_id,
 		:line_1,:line_2,:unit,:city,:state,:zip,:csz,:county,
