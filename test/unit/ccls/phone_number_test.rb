@@ -29,6 +29,11 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 		} } }
 	end
 
+	test "should return phone number as to_s" do
+		phone_number = create_phone_number
+		assert_equal phone_number.phone_number, "#{phone_number}"
+	end
+
 	test "should require data_source_other if data_source is other" do
 		assert_difference( "PhoneNumber.count", 0 ) do
 			phone_number = create_phone_number( :data_source => DataSource['Other'])
