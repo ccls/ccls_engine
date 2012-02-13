@@ -80,23 +80,24 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		end
 	end
 
-
-	test "should require that kit and sample tracking " <<
-		"numbers are different" do
-		assert_difference( 'Sample.count', 0 ) do
-			sample = create_sample(:sample_kit_attributes => {
-				:kit_package_attributes => {
-					:tracking_number => 'bogus_tracking_number'
-				},
-				:sample_package_attributes => {
-					:tracking_number => 'bogus_tracking_number'
-				}
-			})
-			assert sample.errors.on(:base)
-			assert_match(/Tracking numbers MUST be different/,
-				sample.errors.on(:base) )
-		end
-	end
+#	20120213 - No more packages. 
+#	MAY maintain tracking numbers in kit later.
+#	test "should require that kit and sample tracking " <<
+#		"numbers are different" do
+#		assert_difference( 'Sample.count', 0 ) do
+#			sample = create_sample(:sample_kit_attributes => {
+#				:kit_package_attributes => {
+#					:tracking_number => 'bogus_tracking_number'
+#				},
+#				:sample_package_attributes => {
+#					:tracking_number => 'bogus_tracking_number'
+#				}
+#			})
+#			assert sample.errors.on(:base)
+#			assert_match(/Tracking numbers MUST be different/,
+#				sample.errors.on(:base) )
+#		end
+#	end
 
 	test "should default order_no to 1" do
 		sample = create_sample
@@ -321,29 +322,31 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		assert sample_type_parent.is_a?(SampleType)
 	end
 
-	test "should respond to kit_sent_on" do
-		sample = create_sample
-		assert sample.respond_to? :kit_sent_on
-		assert_nil sample.kit_sent_on
-	end
-
-	test "should respond to kit_received_on" do
-		sample = create_sample
-		assert sample.respond_to? :kit_received_on
-		assert_nil sample.kit_received_on
-	end
-
-	test "should respond to sample_sent_on" do
-		sample = create_sample
-		assert sample.respond_to? :sample_sent_on
-		assert_nil sample.sample_sent_on
-	end
-
-	test "should respond to sample_received_on" do
-		sample = create_sample
-		assert sample.respond_to? :sample_received_on
-		assert_nil sample.sample_received_on
-	end
+#	20120213 - were delegated to packages.
+#	MAY keep this data in kit later.
+#	test "should respond to kit_sent_on" do
+#		sample = create_sample
+#		assert sample.respond_to? :kit_sent_on
+#		assert_nil sample.kit_sent_on
+#	end
+#
+#	test "should respond to kit_received_on" do
+#		sample = create_sample
+#		assert sample.respond_to? :kit_received_on
+#		assert_nil sample.kit_received_on
+#	end
+#
+#	test "should respond to sample_sent_on" do
+#		sample = create_sample
+#		assert sample.respond_to? :sample_sent_on
+#		assert_nil sample.sample_sent_on
+#	end
+#
+#	test "should respond to sample_received_on" do
+#		sample = create_sample
+#		assert sample.respond_to? :sample_received_on
+#		assert_nil sample.sample_received_on
+#	end
 
 #protected
 #

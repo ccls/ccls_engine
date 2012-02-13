@@ -28,7 +28,9 @@ gem "rake", '=0.8.7'
 gem "rails", "~>2"
 
 gem "mongrel"
-gem "active_shipping"
+
+#	20120213 - Removing this feature
+#gem "active_shipping"
 
 #	Why?  Can't remember.
 gem "RedCloth", '<4.2.8'

@@ -40,7 +40,9 @@ Rails::Initializer.run do |config|
 
 	#		http://chronic.rubyforge.org/
 #	config.gem "chronic"
-	config.gem 'active_shipping'
+
+#	20120213 - Removing this feature
+#	config.gem 'active_shipping'
 	config.gem 'will_paginate'
 	config.gem 'fastercsv'
 
