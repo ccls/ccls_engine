@@ -3,6 +3,7 @@ class SampleKit < ActiveRecordShared
 
 #	add tracking numbers to kit?
 #	used to be in packages
+#	20120213 - Removing FedEx API, Packages and Tracks.
 
 	belongs_to :sample
 #	belongs_to :kit_package,    :class_name => 'Package'
