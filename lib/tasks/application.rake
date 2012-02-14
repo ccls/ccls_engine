@@ -1,5 +1,33 @@
 namespace :ccls do
 
+	desc "Dump data to xml files"
+	task :export_to_xml => :environment do
+		outdir = if Rails.env == 'production'
+			"/my/ruby/xml"
+		else
+			"."
+		end
+
+		File.open("#{outdir}/projects.xml",'w'){|f| 
+			f.puts Project.all.to_xml }
+		File.open("#{outdir}/enrollments.xml",'w'){|f| 
+			f.puts Enrollment.all.to_xml }
+		File.open("#{outdir}/study_subjects.xml",'w'){|f| 
+			f.puts StudySubject.all.to_xml }
+		File.open("#{outdir}/piis.xml",'w'){|f| 
+			f.puts Pii.all.to_xml }
+		File.open("#{outdir}/identifiers.xml",'w'){|f| 
+			f.puts Identifier.all.to_xml }
+		File.open("#{outdir}/patients.xml",'w'){|f| 
+			f.puts Patient.all.to_xml }
+		File.open("#{outdir}/phone_numbers.xml",'w'){|f| 
+			f.puts PhoneNumber.all.to_xml }
+		File.open("#{outdir}/addresses.xml",'w'){|f| 
+			f.puts Address.all.to_xml }
+		File.open("#{outdir}/addressing.xml",'w'){|f| 
+			f.puts Addressing.all.to_xml }
+	end
+
 	desc "Report data counts in database"
 	task :data_report => :environment do
 
