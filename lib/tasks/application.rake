@@ -7,25 +7,12 @@ namespace :ccls do
 		else
 			"."
 		end
-
-		File.open("#{outdir}/projects.xml",'w'){|f| 
-			f.puts Project.all.to_xml }
-		File.open("#{outdir}/enrollments.xml",'w'){|f| 
-			f.puts Enrollment.all.to_xml }
-		File.open("#{outdir}/study_subjects.xml",'w'){|f| 
-			f.puts StudySubject.all.to_xml }
-		File.open("#{outdir}/piis.xml",'w'){|f| 
-			f.puts Pii.all.to_xml }
-		File.open("#{outdir}/identifiers.xml",'w'){|f| 
-			f.puts Identifier.all.to_xml }
-		File.open("#{outdir}/patients.xml",'w'){|f| 
-			f.puts Patient.all.to_xml }
-		File.open("#{outdir}/phone_numbers.xml",'w'){|f| 
-			f.puts PhoneNumber.all.to_xml }
-		File.open("#{outdir}/addresses.xml",'w'){|f| 
-			f.puts Address.all.to_xml }
-		File.open("#{outdir}/addressings.xml",'w'){|f| 
-			f.puts Addressing.all.to_xml }
+		%w( project enrollment study_subject pii identifier
+				patient phone_number address addressing ).each do |model|
+			puts "Exporting #{model.pluralize} ..."
+			File.open("#{outdir}/#{model.pluralize}.xml",'w'){|f| 
+				f.puts model.camelize.constantize.all.to_xml }
+		end
 	end
 
 	desc "Report data counts in database"
