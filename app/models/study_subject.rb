@@ -10,116 +10,6 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectValidations
 	include StudySubjectDelegations
 
-#	belongs_to :subject_type
-#	belongs_to :vital_status
-#
-#	has_many :subject_races
-#	has_many :subject_languages
-#	has_and_belongs_to_many :analyses
-#	has_many :addressings
-#	has_many :enrollments
-#	has_many :operational_events, :through => :enrollments
-#	has_many :gift_cards
-#	has_many :phone_numbers
-#	has_many :samples
-#	has_many :interviews
-#	has_one :home_exposure_response
-#	has_one :homex_outcome
-#	has_many :bc_requests
-#
-###########
-##
-##	Declaration order does matter.  Because of a patient callback that 
-##	references the study_subject's dob when using nested attributes, 
-##	pii NEEDS to be BEFORE patient.
-##
-##	identifier should also be before patient
-##
-#	has_one :identifier
-#	has_one :pii
-#	has_one :patient
-##
-###########
-#
-#	has_many :races,     :through => :subject_races
-#	has_many :languages, :through => :subject_languages
-#	has_many :addresses, :through => :addressings
-#
-#	has_many :abstracts
-#	has_one :first_abstract, :class_name => 'Abstract',
-#		:conditions => [
-#			"entry_1_by_uid IS NOT NULL AND " <<
-#			"entry_2_by_uid IS NULL AND " <<
-#			"merged_by_uid  IS NULL" ]
-#	has_one :second_abstract, :class_name => 'Abstract',
-#		:conditions => [
-#			"entry_2_by_uid IS NOT NULL AND " <<
-#			"merged_by_uid  IS NULL" ]
-#	has_one :merged_abstract, :class_name => 'Abstract',
-#		:conditions => [ "merged_by_uid IS NOT NULL" ]
-#	has_many :unmerged_abstracts, :class_name => 'Abstract',
-#		:conditions => [ "merged_by_uid IS NULL" ]
-
-#	after_create :assign_icf_master_id
-	after_create :add_new_subject_operational_event
-	after_save   :add_subject_died_operational_event
-
-	validates_presence_of :subject_type_id
-	validates_presence_of :subject_type, :if => :subject_type_id
-
-	validate :presence_of_sex
-	validates_inclusion_of :sex, :in => %w( M F DK ), :allow_blank => true
-	validates_inclusion_of :do_not_contact, :in => [ true, false ]
-
-	validate :must_be_case_if_patient
-	validate :patient_admit_date_is_after_dob
-	validate :patient_diagnosis_date_is_after_dob
-	validates_complete_date_for :reference_date, :allow_nil => true
-
-#	with_options :allow_nil => true do |n|
-#		n.with_options :to => :patient do |o|
-#			o.delegate :admit_date
-#			o.delegate :organization
-#			o.delegate :organization_id
-#			o.delegate :hospital_no
-#		end
-#		n.with_options :to => :pii do |o|
-#			o.delegate :initials
-#			o.delegate :email
-#			o.delegate :first_name
-#			o.delegate :middle_name
-#			o.delegate :last_name
-#			o.delegate :maiden_name
-#			o.delegate :dob
-#			o.delegate :fathers_name
-#			o.delegate :father_first_name
-#			o.delegate :father_middle_name
-#			o.delegate :father_last_name
-#			o.delegate :mothers_name
-#			o.delegate :mother_first_name
-#			o.delegate :mother_middle_name
-#			o.delegate :mother_last_name
-#			o.delegate :mother_maiden_name
-#		end
-#		n.with_options :to => :identifier do |o|
-#			o.delegate :state_id_no
-#			o.delegate :state_registrar_no
-#			o.delegate :local_registrar_no
-#			o.delegate :ssn
-#			o.delegate :patid
-#			o.delegate :orderno
-#			o.delegate :case_control_type
-#			o.delegate :subjectid
-##			o.delegate :familyid
-##			o.delegate :matchingid
-#		end
-#		n.with_options :to => :homex_outcome do |o|
-#			o.delegate :interview_outcome
-#			o.delegate :interview_outcome_on
-#			o.delegate :sample_outcome
-#			o.delegate :sample_outcome_on
-#		end
-#	end
 
 	#	can lead to multiple piis in db for study_subject
 	#	if not done correctly
@@ -158,20 +48,6 @@ class StudySubject < ActiveRecordShared
 	accepts_nested_attributes_for :identifier
 	accepts_nested_attributes_for :patient
 
-	#	Father's don't seem to be even remotely important in any of our study data.
-	#	Nevertheless, ...
-	#	Find the subject with matching familyid and subject_type of Father.
-#	Father seems to be irrelevant so commenting out code.
-#	def father
-#		StudySubject.find(:first,
-#			:include => [:pii,:identifier,:subject_type],
-#			:joins => :identifier,
-#			:conditions => { 
-#				'identifiers.familyid' => identifier.familyid,
-#				:subject_type_id       => StudySubject.subject_type_father_id
-#			}
-#		)
-#	end
 
 	#	Find the case or control subject with matching familyid except self.
 	def child
@@ -321,53 +197,6 @@ class StudySubject < ActiveRecordShared
 		!self.email.blank?
 	end
 
-	#	NOTE don't forget that deep_merge DOES NOT WORK on HashWithIndifferentAccess
-
-#	##
-#	#	StudySubjects with an enrollment in HomeExposures
-#	def self.for_hx(params={})
-#		StudySubject.search(params.dup.deep_merge(
-#			:projects=>{hx_id=>{}}
-#		))
-#	end
-#
-#	##
-#	#	StudySubjects with an enrollment in HomeExposures and ...
-#	def self.for_hx_interview(params={})
-#		StudySubject.search(params.dup.deep_merge(
-#			:projects=>{hx_id=>{:chosen=>true}}
-#		))
-#	end
-#
-#	##
-#	#	StudySubjects with an enrollment in HomeExposures and ...
-#	def self.need_gift_card(params={})
-#		for_hx_followup(params.dup.merge({
-#			:has_gift_card => false
-#		}))
-#	end
-#
-#	##
-#	#	StudySubjects with an enrollment in HomeExposures and ...
-#	def self.for_hx_followup(params={})
-#		StudySubject.search( params.dup.deep_merge(
-#			:projects=>{hx_id=>{}},
-#			:search_gift_cards => true,
-#			:sample_outcome => 'complete',
-#			:interview_outcome => 'complete'
-#		))
-#	end
-#
-#	##
-#	#	StudySubjects with an enrollment in HomeExposures and ...
-#	def self.for_hx_sample(params={})
-#		StudySubject.search(params.dup.deep_merge(
-#			:projects=>{hx_id=>{}},
-##			:sample_outcome => 'incomplete',
-#			:interview_outcome => 'complete'
-#		))
-#	end
-
 	def self.search(params={})
 		StudySubjectSearch.new(params).study_subjects
 	end
@@ -384,80 +213,6 @@ class StudySubject < ActiveRecordShared
 		#	abstracts.inject(:diff) was nice
 		#	but using inject is ruby >= 1.8.7
 		return abstracts[0].diff(abstracts[1])
-	end
-
-	##
-	#	triggered from patient and pii
-	def update_patient_was_under_15_at_dx
-		#	due to the high probability that self, pii and patient will not
-		#		yet be resolved, we have to get the associations manually.
-		my_pii     = Pii.find_by_study_subject_id(self.attributes['id'])
-		my_patient = Patient.find_by_study_subject_id(self.attributes['id'])
-		if my_pii && my_pii.dob && my_patient && my_patient.admit_date &&
-				my_pii.dob.to_date != Date.parse('1/1/1900') &&
-				my_patient.admit_date.to_date != Date.parse('1/1/1900')
-			#
-			#	update_all(updates, conditions = nil, options = {})
-			#
-			#		Updates all records with details given if they match a set of 
-			#		conditions supplied, limits and order can also be supplied. 
-			#		This method constructs a single SQL UPDATE statement and sends 
-			#		it straight to the database. It does not instantiate the involved 
-			#		models and it does not trigger Active Record callbacks. 
-			#
-#			Patient.update_all({
-#				:was_under_15_at_dx => (((
-#					my_patient.admit_date.to_date - my_pii.dob.to_date 
-#					) / 365 ) < 15 )}, { :id => my_patient.id })
-
-			#	crude and probably off by a couple days
-			#	would be better to compare year, month then day
-			was_under_15 = (((
-				my_patient.admit_date.to_date - my_pii.dob.to_date 
-				) / 365 ) < 15 ) ? YNDK[:yes] : YNDK[:no]
-			Patient.update_all({ :was_under_15_at_dx => was_under_15 }, 
-				{ :id => my_patient.id })
-		end
-		#	make sure we return true as is a callback
-		true
-	end
-
-	##
-	#	
-	def update_study_subjects_reference_date_matching(*matchingids)
-		logger.debug "DEBUG: In update_study_subjects_reference_date_matching(*matchingids)"
-		logger.debug "DEBUG: update_study_subjects_reference_date_matching(#{matchingids.join(',')})"
-#	if matchingids ~ [nil,12345]
-#		identifier was either just created or matchingid added (compact as nil not needed)
-#	if matchingids ~ [12345,nil]
-#		matchingid was removed (compact as nil not needed)
-#	if matchingids ~ [12345,54321]
-#		matchingid was just changed
-#	if matchingids ~ []
-#		trigger came from Patient so need to find matchingid
-
-		#	due to the high probability that self and identifier will not
-		#		yet be resolved, we have to get the associations manually.
-		my_identifier = Identifier.find_by_study_subject_id(self.attributes['id'])
-		matchingids.compact.push(my_identifier.try(:matchingid)).uniq.each do |matchingid|
-			study_subject_ids = if( !matchingid.nil? )
-				Identifier.find_all_by_matchingid(matchingid
-					).collect(&:study_subject_id)
-			else
-				[id]
-			end
-
-			#	SHOULD only ever be 1 patient found amongst the study_subject_ids although there is
-			#		currently no validation applied to the uniqueness of matchingid
-			#	If there is more than one patient for a given matchingid, this'll just be wrong.
-
-			matching_patient = Patient.find_by_study_subject_id(study_subject_ids)
-			admit_date = matching_patient.try(:admit_date)
-
-			logger.debug "DEBUG: calling StudySubject.update_study_subjects_reference_date(#{study_subject_ids.join(',')},#{admit_date})"
-			StudySubject.update_study_subjects_reference_date( study_subject_ids, admit_date )
-		end
-		true
 	end
 
 	#	Create (or just return mother) a mother subject based on subject's own data.
@@ -492,41 +247,6 @@ class StudySubject < ActiveRecordShared
 			new_mother
 		end
 	end
-
-	#	Father's don't seem to be even remotely important in any of our study data.
-	#	Nevertheless, ...
-	#	Create (or just return father) a father subject based on subject's own data.
-#	Father seems to be irrelevant so commenting out code.
-#	def create_father
-#		#	The father method will effectively find and itself.
-#		existing_father = father
-#		if existing_father
-#			existing_father
-#		else
-#			new_father = StudySubject.create!({
-#				:subject_type_id => StudySubject.subject_type_father_id,
-#				:vital_status => VitalStatus['living'],
-#				:sex => 'M',			#	TODO M/F or male/female? have to check.
-##				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
-#				:pii_attributes => {
-#					:first_name  => father_first_name,
-#					:middle_name => father_middle_name,
-#					:last_name   => father_last_name,
-#					#	flag to not require the dob as won't have one
-#					:subject_is_father => true  
-#				},
-#				:identifier => Identifier.new { |i|
-#					#	protected attributes!
-#					i.matchingid = identifier.matchingid
-#					i.familyid   = identifier.familyid
-#				}
-#			})
-## possibly put in a identifier#after_create ???
-##	or study_subject#after_create ???
-#			new_father.assign_icf_master_id
-#			new_father
-#		end
-#	end
 
 # possibly put in a identifier#after_create ???
 #	or study_subject#after_create ???
@@ -734,91 +454,6 @@ protected
 	end
 	def self.subject_type_case_id
 		@@subject_type_case_id ||= SubjectType['Case'].id
-	end
-
-	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)
-		logger.debug "DEBUG: In StudySubject.update_study_subjects_reference_date"
-		logger.debug "DEBUG: update_study_subjects_reference_date(#{study_subject_ids.join(',')},#{new_reference_date})"
-		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
-		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
-		unless study_subject_ids.empty?
-			StudySubject.update_all(
-				{:reference_date => new_reference_date },
-				{ :id => study_subject_ids })
-		end
-	end
-
-	#	This is a duplication of a patient validation that won't
-	#	work if using nested attributes.  Don't like doing this.
-	def patient_admit_date_is_after_dob
-		if !patient.nil? && !patient.admit_date.blank? && 
-			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob &&
-			pii.dob.to_date != Date.parse('1/1/1900') &&
-			patient.admit_date.to_date != Date.parse('1/1/1900')
-			errors.add('patient:admit_date', "is before study_subject's dob.") 
-		end
-	end
-
-	#	This is a duplication of a patient validation that won't
-	#	work if using nested attributes.  Don't like doing this.
-	def patient_diagnosis_date_is_after_dob
-		if !patient.nil? && !patient.diagnosis_date.blank? && 
-			!pii.nil? && !pii.dob.blank? && patient.diagnosis_date < pii.dob
-			errors.add('patient:diagnosis_date', "is before study_subject's dob.") 
-		end
-	end
-
-#	def self.hx_id
-#		#	added try and || for usage on empty db.  
-#		#	It is highly likely that most tests will fail on an empty db so this is kinda moot.
-#		#	TODO remove the usage of hx_id and other hx_* specific methods.
-#		Project['HomeExposures'].try(:id)||0
-#	end
-
-	def must_be_case_if_patient
-		if !patient.nil? and !is_case?
-			errors.add(:patient ,"must be case to have patient info")
-		end
-	end
-
-#
-#	NOTE be advised that these will no doubt break some tests
-#		that are not expecting any operational events.
-#
-
-	#	All subjects are to have a CCLS project enrollment, so create after create.
-	#	All subjects are to have this operational event, so create after create.
-	#	I suspect that this'll be attached to the CCLS project enrollment.
-	def add_new_subject_operational_event
-		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-		OperationalEvent.create!(
-			:enrollment => ccls_enrollment,
-			:operational_event_type => OperationalEventType['newSubject'],
-			:occurred_on            => Date.today
-		)
-	end
-
-	#	Add this if the vital status changes to deceased.
-	#	I suspect that this'll be attached to the CCLS project enrollment.
-	def add_subject_died_operational_event
-		if( ( vital_status_id == VitalStatus['deceased'].id ) && 
-				( vital_status_id_was != VitalStatus['deceased'].id ) )
-			ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-			OperationalEvent.create!(
-				:enrollment => ccls_enrollment,
-				:operational_event_type => OperationalEventType['subjectDied'],
-				:occurred_on            => Date.today
-			)
-		end
-	end
-
-	# custom validation for custom message without standard attribute prefix
-	def presence_of_sex
-		if sex.blank?
-			errors.add(:sex, ActiveRecord::Error.new(
-				self, :base, :blank, {
-					:message => "No sex has been chosen." } ) )
-		end
 	end
 
 end
