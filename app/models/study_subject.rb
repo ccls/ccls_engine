@@ -5,55 +5,60 @@ class StudySubject < ActiveRecordShared
 	class NotTwoAbstracts < StandardError; end
 	class DuplicatesFound < StandardError; end
 
-	belongs_to :subject_type
-	belongs_to :vital_status
+	include StudySubjectAssociations
+	include StudySubjectCallbacks
+	include StudySubjectValidations
+	include StudySubjectDelegations
 
-	has_many :subject_races
-	has_many :subject_languages
-	has_and_belongs_to_many :analyses
-	has_many :addressings
-	has_many :enrollments
-	has_many :operational_events, :through => :enrollments
-	has_many :gift_cards
-	has_many :phone_numbers
-	has_many :samples
-	has_many :interviews
-	has_one :home_exposure_response
-	has_one :homex_outcome
-	has_many :bc_requests
-
-##########
+#	belongs_to :subject_type
+#	belongs_to :vital_status
 #
-#	Declaration order does matter.  Because of a patient callback that 
-#	references the study_subject's dob when using nested attributes, 
-#	pii NEEDS to be BEFORE patient.
+#	has_many :subject_races
+#	has_many :subject_languages
+#	has_and_belongs_to_many :analyses
+#	has_many :addressings
+#	has_many :enrollments
+#	has_many :operational_events, :through => :enrollments
+#	has_many :gift_cards
+#	has_many :phone_numbers
+#	has_many :samples
+#	has_many :interviews
+#	has_one :home_exposure_response
+#	has_one :homex_outcome
+#	has_many :bc_requests
 #
-#	identifier should also be before patient
+###########
+##
+##	Declaration order does matter.  Because of a patient callback that 
+##	references the study_subject's dob when using nested attributes, 
+##	pii NEEDS to be BEFORE patient.
+##
+##	identifier should also be before patient
+##
+#	has_one :identifier
+#	has_one :pii
+#	has_one :patient
+##
+###########
 #
-	has_one :identifier
-	has_one :pii
-	has_one :patient
+#	has_many :races,     :through => :subject_races
+#	has_many :languages, :through => :subject_languages
+#	has_many :addresses, :through => :addressings
 #
-##########
-
-	has_many :races,     :through => :subject_races
-	has_many :languages, :through => :subject_languages
-	has_many :addresses, :through => :addressings
-
-	has_many :abstracts
-	has_one :first_abstract, :class_name => 'Abstract',
-		:conditions => [
-			"entry_1_by_uid IS NOT NULL AND " <<
-			"entry_2_by_uid IS NULL AND " <<
-			"merged_by_uid  IS NULL" ]
-	has_one :second_abstract, :class_name => 'Abstract',
-		:conditions => [
-			"entry_2_by_uid IS NOT NULL AND " <<
-			"merged_by_uid  IS NULL" ]
-	has_one :merged_abstract, :class_name => 'Abstract',
-		:conditions => [ "merged_by_uid IS NOT NULL" ]
-	has_many :unmerged_abstracts, :class_name => 'Abstract',
-		:conditions => [ "merged_by_uid IS NULL" ]
+#	has_many :abstracts
+#	has_one :first_abstract, :class_name => 'Abstract',
+#		:conditions => [
+#			"entry_1_by_uid IS NOT NULL AND " <<
+#			"entry_2_by_uid IS NULL AND " <<
+#			"merged_by_uid  IS NULL" ]
+#	has_one :second_abstract, :class_name => 'Abstract',
+#		:conditions => [
+#			"entry_2_by_uid IS NOT NULL AND " <<
+#			"merged_by_uid  IS NULL" ]
+#	has_one :merged_abstract, :class_name => 'Abstract',
+#		:conditions => [ "merged_by_uid IS NOT NULL" ]
+#	has_many :unmerged_abstracts, :class_name => 'Abstract',
+#		:conditions => [ "merged_by_uid IS NULL" ]
 
 #	after_create :assign_icf_master_id
 	after_create :add_new_subject_operational_event
@@ -71,50 +76,50 @@ class StudySubject < ActiveRecordShared
 	validate :patient_diagnosis_date_is_after_dob
 	validates_complete_date_for :reference_date, :allow_nil => true
 
-	with_options :allow_nil => true do |n|
-		n.with_options :to => :patient do |o|
-			o.delegate :admit_date
-			o.delegate :organization
-			o.delegate :organization_id
-			o.delegate :hospital_no
-		end
-		n.with_options :to => :pii do |o|
-			o.delegate :initials
-			o.delegate :email
-			o.delegate :first_name
-			o.delegate :middle_name
-			o.delegate :last_name
-			o.delegate :maiden_name
-			o.delegate :dob
-			o.delegate :fathers_name
-			o.delegate :father_first_name
-			o.delegate :father_middle_name
-			o.delegate :father_last_name
-			o.delegate :mothers_name
-			o.delegate :mother_first_name
-			o.delegate :mother_middle_name
-			o.delegate :mother_last_name
-			o.delegate :mother_maiden_name
-		end
-		n.with_options :to => :identifier do |o|
-			o.delegate :state_id_no
-			o.delegate :state_registrar_no
-			o.delegate :local_registrar_no
-			o.delegate :ssn
-			o.delegate :patid
-			o.delegate :orderno
-			o.delegate :case_control_type
-			o.delegate :subjectid
-#			o.delegate :familyid
-#			o.delegate :matchingid
-		end
-		n.with_options :to => :homex_outcome do |o|
-			o.delegate :interview_outcome
-			o.delegate :interview_outcome_on
-			o.delegate :sample_outcome
-			o.delegate :sample_outcome_on
-		end
-	end
+#	with_options :allow_nil => true do |n|
+#		n.with_options :to => :patient do |o|
+#			o.delegate :admit_date
+#			o.delegate :organization
+#			o.delegate :organization_id
+#			o.delegate :hospital_no
+#		end
+#		n.with_options :to => :pii do |o|
+#			o.delegate :initials
+#			o.delegate :email
+#			o.delegate :first_name
+#			o.delegate :middle_name
+#			o.delegate :last_name
+#			o.delegate :maiden_name
+#			o.delegate :dob
+#			o.delegate :fathers_name
+#			o.delegate :father_first_name
+#			o.delegate :father_middle_name
+#			o.delegate :father_last_name
+#			o.delegate :mothers_name
+#			o.delegate :mother_first_name
+#			o.delegate :mother_middle_name
+#			o.delegate :mother_last_name
+#			o.delegate :mother_maiden_name
+#		end
+#		n.with_options :to => :identifier do |o|
+#			o.delegate :state_id_no
+#			o.delegate :state_registrar_no
+#			o.delegate :local_registrar_no
+#			o.delegate :ssn
+#			o.delegate :patid
+#			o.delegate :orderno
+#			o.delegate :case_control_type
+#			o.delegate :subjectid
+##			o.delegate :familyid
+##			o.delegate :matchingid
+#		end
+#		n.with_options :to => :homex_outcome do |o|
+#			o.delegate :interview_outcome
+#			o.delegate :interview_outcome_on
+#			o.delegate :sample_outcome
+#			o.delegate :sample_outcome_on
+#		end
+#	end
 
 	#	can lead to multiple piis in db for study_subject
 	#	if not done correctly
