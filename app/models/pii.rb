@@ -72,29 +72,46 @@ class Pii < ActiveRecordShared
 		[first_name, middle_name, last_name].delete_if(&:blank?).collect{|s|s.chars.first}.join()
 	end
 
+	def childs_names
+		[first_name, middle_name, last_name ]
+	end
+
 	#	Returns string containing study_subject's first, middle and last name
 	#	TODO include maiden_name just in case is mother???
 	#	Use delete_if(&:blank?) instead of compact, which only removes nils.
 	def full_name
-		fullname = [first_name, middle_name, last_name ].delete_if(&:blank?).join(' ')
+		fullname = childs_names.delete_if(&:blank?).join(' ')
 		( fullname.blank? ) ? '[name not available]' : fullname
+	end
+
+	def fathers_names
+		[father_first_name, father_middle_name, father_last_name ]
 	end
 
 	#	Returns string containing study_subject's father's first, middle and last name
 	def fathers_name
-		fathersname = [father_first_name, father_middle_name, father_last_name ].delete_if(&:blank?).join(' ')
+		fathersname = fathers_names.delete_if(&:blank?).join(' ')
 		( fathersname.blank? ) ? '[name not available]' : fathersname
 	end
 
+	def mothers_names
+		[mother_first_name, mother_middle_name, mother_last_name ]
+	end
+
 	#	Returns string containing study_subject's mother's first, middle and last name
+	#	TODO what? no maiden name?
 	def mothers_name
-		mothersname = [mother_first_name, mother_middle_name, mother_last_name ].delete_if(&:blank?).join(' ')
+		mothersname = mothers_names.delete_if(&:blank?).join(' ')
 		( mothersname.blank? ) ? '[name not available]' : mothersname
+	end
+
+	def guardians_names
+		[guardian_first_name, guardian_middle_name, guardian_last_name ]
 	end
 
 	#	Returns string containing study_subject's guardian's first, middle and last name
 	def guardians_name
-		guardiansname = [guardian_first_name, guardian_middle_name, guardian_last_name ].delete_if(&:blank?).join(' ')
+		guardiansname = guardians_names.delete_if(&:blank?).join(' ')
 		( guardiansname.blank? ) ? '[name not available]' : guardiansname
 	end
 
