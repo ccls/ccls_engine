@@ -24,7 +24,7 @@ namespace :ccls do
 			f.puts PhoneNumber.all.to_xml }
 		File.open("#{outdir}/addresses.xml",'w'){|f| 
 			f.puts Address.all.to_xml }
-		File.open("#{outdir}/addressing.xml",'w'){|f| 
+		File.open("#{outdir}/addressings.xml",'w'){|f| 
 			f.puts Addressing.all.to_xml }
 	end
 
