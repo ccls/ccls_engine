@@ -505,6 +505,7 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		assert identifiers.include?(subject.identifier)
 	end
 
+#	TODO what about both studyid and icf_master_id?
 
 
 
