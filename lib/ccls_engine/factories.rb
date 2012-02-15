@@ -250,10 +250,10 @@ Factory.define :mother_identifier, :parent => :identifier do |f|
 	f.association :study_subject, :factory => :mother_study_subject
 	f.case_control_type 'm'
 end
-Factory.define :father_identifier, :parent => :identifier do |f|
-	f.association :study_subject, :factory => :father_study_subject
-#	f.case_control_type 'm'
-end
+#Factory.define :father_identifier, :parent => :identifier do |f|
+#	f.association :study_subject, :factory => :father_study_subject
+##	f.case_control_type 'm'
+#end
 
 Factory.define :ineligible_reason do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
@@ -505,15 +505,15 @@ Factory.define :complete_mother_study_subject, :parent => :mother_study_subject 
 	f.pii_attributes { Factory.attributes_for(:pii) }	
 	f.identifier_attributes { Factory.attributes_for(:mother_identifier) }
 end
-Factory.define :father_study_subject, :parent => :study_subject do |f|
-	f.subject_type { SubjectType['Father'] }
-	f.sex 'M'
-end
-Factory.define :complete_father_study_subject, :parent => :father_study_subject do |f|
-	#	as these are attributes_for, don't need to be "subjectless_*"
-	f.pii_attributes { Factory.attributes_for(:pii) }	
-	f.identifier_attributes { Factory.attributes_for(:father_identifier) }
-end
+#Factory.define :father_study_subject, :parent => :study_subject do |f|
+#	f.subject_type { SubjectType['Father'] }
+#	f.sex 'M'
+#end
+#Factory.define :complete_father_study_subject, :parent => :father_study_subject do |f|
+#	#	as these are attributes_for, don't need to be "subjectless_*"
+#	f.pii_attributes { Factory.attributes_for(:pii) }	
+#	f.identifier_attributes { Factory.attributes_for(:father_identifier) }
+#end
 
 Factory.define :subject_language do |f|
 	f.association :study_subject

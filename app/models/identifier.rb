@@ -93,6 +93,19 @@ class Identifier < ActiveRecordShared
 		!is_case? and !is_mother?
 	end
 
+	def self.find_all_by_studyid_or_icf_master_id(studyid,icf_master_id)
+#	if decide to use LIKE, will need to NOT include nils so
+#	will need to add some conditions to the conditions.
+		Identifier.find( :all, 
+			:conditions => [
+#				"studyid LIKE '%:studyid%' OR icf_master_id LIKE '%:icf_master_id%'",
+#				{ :studyid => studyid, :icf_master_id => icf_master_id }
+				"studyid = :studyid OR icf_master_id = :icf_master_id",
+				{ :studyid => studyid, :icf_master_id => icf_master_id }
+			]
+		)
+	end
+
 protected
 
 	#

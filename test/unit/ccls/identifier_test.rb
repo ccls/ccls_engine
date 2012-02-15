@@ -444,6 +444,78 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		}
 	end
 
+	test "should find by studyid or icf_master_id with studyid" do
+		identifier1 = Factory(:identifier)
+		identifier2 = Factory(:identifier)
+		identifiers = Identifier.find_all_by_studyid_or_icf_master_id(
+			identifier1.studyid, nil )
+#	NOTE due to missing patid and orderno, may not be true (case_control_type should be diff)
+		assert  identifiers.include?(identifier1)
+		assert !identifiers.include?(identifier2)
+	end
+
+	test "should find by studyid or icf_master_id with case studyid" do
+		subject = Factory(:complete_case_study_subject)
+		identifiers = Identifier.find_all_by_studyid_or_icf_master_id(
+			subject.studyid, nil )
+		assert identifiers.include?(subject.identifier)
+	end
+
+	test "should find by studyid or icf_master_id with case icf_master_id" do
+		subject = Factory(:complete_case_study_subject)
+		Factory(:icf_master_id, :icf_master_id => '123456789' )
+		subject.assign_icf_master_id
+		identifiers = Identifier.find_all_by_studyid_or_icf_master_id(
+			nil, subject.identifier.icf_master_id )
+		assert identifiers.include?(subject.identifier)
+	end
+
+	test "should find by studyid or icf_master_id with control studyid" do
+		subject = Factory(:complete_control_study_subject)
+#	NOTE studyid will be missing patid and orderno
+		identifiers = Identifier.find_all_by_studyid_or_icf_master_id(
+			subject.studyid, nil )
+		assert identifiers.include?(subject.identifier)
+	end
+
+	test "should find by studyid or icf_master_id with control icf_master_id" do
+		subject = Factory(:complete_control_study_subject)
+		Factory(:icf_master_id, :icf_master_id => '123456789' )
+		subject.assign_icf_master_id
+		identifiers = Identifier.find_all_by_studyid_or_icf_master_id(
+			nil, subject.identifier.icf_master_id )
+		assert identifiers.include?(subject.identifier)
+	end
+
+#	Mothers won't have a studyid
+#	test "should find by studyid or icf_master_id with mother studyid" do
+#		subject = Factory(:complete_mother_study_subject)
+#		puts subject.identifier.studyid
+#		identifiers = Identifier.find_all_by_studyid_or_icf_master_id(
+#			subject.identifier.studyid, nil )
+#		assert identifiers.include?(subject.identifier)
+#	end
+
+	test "should find by studyid or icf_master_id with mother icf_master_id" do
+		subject = Factory(:complete_mother_study_subject)
+		Factory(:icf_master_id, :icf_master_id => '123456789' )
+		subject.assign_icf_master_id
+		identifiers = Identifier.find_all_by_studyid_or_icf_master_id(
+			nil, subject.identifier.icf_master_id )
+		assert identifiers.include?(subject.identifier)
+	end
+
+
+
+
+
+
+
+
+
+
+
+
 #	The problems with autogeneration of childid, patid and subjectid are
 #	that they cannot be validated automatically.  Validation would simply
 #	return this failure to the user, whom can do nothing about it.
