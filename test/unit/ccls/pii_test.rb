@@ -5,68 +5,6 @@ require 'test_helper'
 #		only my class level assertions immediately matter.
 
 class Ccls::PiiTest < ActiveSupport::TestCase
-#
-#	assert_should_create_default_object
-#
-#	assert_should_initially_belong_to(:study_subject)
-#	assert_should_protect( :study_subject_id )
-#
-#	assert_should_belong_to( :guardian_relationship, :class_name => 'SubjectRelationship' )
-#	assert_should_require_attributes( :dob )
-#	assert_should_require_unique_attributes( :email )
-#	assert_should_not_require_attributes( :first_name, :last_name,
-#		:died_on, :birth_year,
-#		:birth_city, :birth_state, :birth_country,
-#		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
-#		:father_first_name, :father_middle_name, :father_last_name,
-#		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
-#		:guardian_relationship_other, :email,
-#		:middle_name, :maiden_name,
-#		:mother_race_other, :father_race_other,
-#		:generational_suffix, :father_generational_suffix )
-#
-#	assert_should_require_attribute_length( 
-#		:first_name, :middle_name, :maiden_name, :last_name,
-#		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
-#		:father_first_name, :father_middle_name, :father_last_name,
-#		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
-#		:guardian_relationship_other,
-#		:birth_city, :birth_state, :birth_country,
-#		:mother_race_other, :father_race_other,
-#			:maximum => 250 )
-#
-#	assert_should_require_attribute_length( :generational_suffix, :maximum => 10 )
-#	assert_should_require_attribute_length( :father_generational_suffix, :maximum => 10 )
-#	assert_should_require_attribute_length( :birth_year, :maximum => 4 )
-#	assert_requires_complete_date( :dob )
-#	assert_requires_complete_date( :died_on )
-#
-#	test "explicit Factory subjectless pii test" do
-#		assert_difference('StudySubject.count',0) {
-#		assert_difference('Pii.count',1) {
-#			pii = Factory(:subjectless_pii)
-#			assert_nil pii.study_subject
-#			assert_not_nil pii.email
-#			assert_not_nil pii.dob
-#		} }
-#	end
-#
-#	test "explicit Factory pii test" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Pii.count',1) {
-#			pii = Factory(:pii)
-#			assert_not_nil pii.study_subject
-#		} }
-#	end
-#
-#	test "explicit Factory case pii test" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Pii.count',1) {
-#			pii = Factory(:case_pii)
-#			assert_not_nil pii.study_subject
-#			assert_equal pii.study_subject.subject_type, SubjectType['Case']
-#		} }
-#	end
 
 	test "should nullify blank email" do
 		assert_difference("StudySubject.count",1) do
@@ -285,17 +223,31 @@ class Ccls::PiiTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should not require dob if subject_is_mother flag is true" do
+#	test "should not require dob if subject_is_mother flag is true" do
+#		assert_difference('StudySubject.count',1) do
+#			study_subject = create_study_subject( :subject_is_mother => true, :dob => nil )
+#			assert study_subject.dob_not_required?
+#		end
+#	end
+#
+#	test "should require dob if subject_is_mother flag is false" do
+#		assert_difference('StudySubject.count',0) do
+#			study_subject = create_study_subject( :subject_is_mother => false, :dob => nil )
+#			assert !study_subject.dob_not_required?
+#		end
+#	end
+
+	test "should not require dob if subject is mother" do
 		assert_difference('StudySubject.count',1) do
-			study_subject = create_study_subject( :subject_is_mother => true, :dob => nil )
-			assert study_subject.dob_not_required?
+			study_subject = create_mother_study_subject( :dob => nil )
+#			assert study_subject.dob_not_required?
 		end
 	end
 
-	test "should require dob if subject_is_mother flag is false" do
+	test "should require dob if subject is not mother" do
 		assert_difference('StudySubject.count',0) do
-			study_subject = create_study_subject( :subject_is_mother => false, :dob => nil )
-			assert !study_subject.dob_not_required?
+			study_subject = create_study_subject( :dob => nil )
+#			assert !study_subject.dob_not_required?
 		end
 	end
 

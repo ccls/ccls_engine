@@ -6,51 +6,6 @@ require 'test_helper'
 #	for StudySubject separated only for clarity due
 #	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
-#
-#	test "should create study_subject and accept_nested_attributes_for pii" do
-#		assert_difference( 'Pii.count', 1) {
-#		assert_difference( "StudySubject.count", 1 ) {
-#			study_subject = create_study_subject(
-#				:pii_attributes => Factory.attributes_for(:pii))
-#			assert !study_subject.new_record?, 
-#				"#{study_subject.errors.full_messages.to_sentence}"
-#		} }
-#	end
-#
-#	test "should NOT create study_subject with empty pii" do
-#		assert_difference( 'Pii.count', 0) {
-#		assert_difference( "StudySubject.count", 0 ) {
-#			study_subject = create_study_subject( :pii_attributes => {})
-#			assert study_subject.errors.on_attr_and_type?('pii.dob',:blank)
-#		} }
-#	end
-#
-#	test "should NOT destroy pii with study_subject" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Pii.count',1) {
-#			@study_subject = Factory(:pii).study_subject
-#		} }
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('Pii.count',0) {
-#			@study_subject.destroy
-#		} }
-#	end
-#
-#	#	Delegated pii fields except ... first_name, last_name, mother_maiden_name
-#	%w( initials fathers_name mothers_name email dob ).each do |method_name|
-#
-#		test "should return nil #{method_name} without pii" do
-#			study_subject = create_study_subject
-#			assert_nil study_subject.send(method_name)
-#		end
-#
-#		test "should return #{method_name} with pii" do
-#			study_subject = create_study_subject(
-#				:pii_attributes => Factory.attributes_for(:pii))
-#			assert_not_nil study_subject.send(method_name)
-#		end
-#
-#	end
 
 	test "should be ineligible for invitation without email" do
 		study_subject = create_study_subject(:email => nil)
@@ -72,13 +27,11 @@ class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
 		assert_equal '[name not available]', study_subject.full_name
 	end
 
-	test "should not require dob on creation for mother with flag" do
+	test "should not require dob on creation for mother without flag" do
 		assert_difference( "StudySubject.count", 1 ) {
-			@study_subject = create_study_subject(:subject_type => SubjectType['Mother'],
-#				:pii_attributes => Factory.attributes_for(:pii,
-					:subject_is_mother => true,
-					:dob => nil )
-#			)
+			@study_subject = create_study_subject(
+				:subject_type => SubjectType['Mother'],
+				:dob => nil )
 		}
 		assert_nil @study_subject.reload.dob
 	end
@@ -87,10 +40,8 @@ class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
 		#	flag not necessary as study_subject.subject_type exists
 		assert_difference( "StudySubject.count", 1 ) {
 			@study_subject = create_study_subject(:subject_type => SubjectType['Mother'] )
-#				:pii_attributes => Factory.attributes_for(:pii) )
 		}
 		assert_not_nil @study_subject.reload.dob
-#		@study_subject.pii.update_attributes(:dob => nil)
 		@study_subject.update_attributes(:dob => nil)
 		assert_nil @study_subject.reload.dob
 	end

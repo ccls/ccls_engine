@@ -8,8 +8,6 @@ class AbstractSearch < Search
 	})
 
 	def abstracts
-#		require_dependency 'pii.rb'	unless Pii
-#		require_dependency 'identifier.rb' unless Identifier
 		@abstracts ||= Abstract.send(
 			(paginate?)?'paginate':'all',{
 				:order => search_order,
@@ -41,7 +39,8 @@ private	#	THIS IS REQUIRED
 		unless q.blank?
 			study_subjects = StudySubject.search(:q => q, :paginate => false)
 			study_subject_ids = study_subjects.collect(&:id)
-			['abstracts.study_subject_id IN (:study_subject_ids)', { :study_subject_ids => study_subject_ids } ]
+			['abstracts.study_subject_id IN (:study_subject_ids)', 
+				{ :study_subject_ids => study_subject_ids } ]
 		end
 	end
 

@@ -396,7 +396,8 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert_equal 30, abstract.response_day_28_days_since_diagnosis
 	end
 
-	test "should NOT set days since treatment_began fields on create without treatment_began_on" do
+	test "should NOT set days since treatment_began fields on create" <<
+			" without treatment_began_on" do
 		abstract = Factory(:abstract)
 		assert_nil abstract.treatment_began_on
 		assert_nil abstract.response_day_7_days_since_treatment_began
@@ -404,7 +405,8 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert_nil abstract.response_day_28_days_since_treatment_began
 	end
 
-	test "should NOT set days since treatment_began fields on create without response_report_on" do
+	test "should NOT set days since treatment_began fields on create" <<
+			" without response_report_on" do
 		abstract = Factory(:abstract,
 			:treatment_began_on        => ( Date.today - 10 ),
 			:response_report_on_day_7  => nil,
@@ -417,7 +419,8 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert_nil abstract.response_day_28_days_since_treatment_began
 	end
 
-	test "should set days since treatment_began fields on create with treatment_began_on" do
+	test "should set days since treatment_began fields on create" <<
+			" with treatment_began_on" do
 		today = Date.today	
 		abstract = Factory(:abstract,
 			:treatment_began_on        => ( today - 40 ),
@@ -459,11 +462,10 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	end
 
 	test "should create first abstract for study_subject with current_user" do
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
-		} #}
+		}
 		@current_user = Factory(:user)
 		assert_difference('Abstract.count',1) {
 			abstract = create_abstract(:current_user => @current_user,
@@ -475,11 +477,10 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 	end
 
 	test "should create second abstract for study_subject with current_user" do
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
-		} #}
+		}
 		@current_user = Factory(:user)
 		abstract = create_abstract(:current_user => @current_user,
 			:study_subject => @study_subject)
@@ -494,11 +495,10 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 
 	test "should NOT create third abstract for study_subject with current_user " <<
 			"without merging flag" do
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
-		} #}
+		}
 		@current_user = Factory(:user)
 		abstract = create_abstract(:current_user => @current_user,
 			:study_subject => @study_subject)
@@ -513,11 +513,10 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 
 	test "should create third abstract for study_subject with current_user " <<
 			"with merging flag" do
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@study_subject = create_case_study_subject_with_patid(1234)
 			assert_equal '1234', @study_subject.patid
-		} #}
+		}
 		@current_user = Factory(:user)
 		abstract = create_abstract(:current_user => @current_user,
 			:study_subject => @study_subject)

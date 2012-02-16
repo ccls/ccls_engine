@@ -30,19 +30,10 @@ class CandidateControl < ActiveRecordShared
 	def create_study_subjects(case_subject,grouping = '6')
 		next_orderno = case_subject.next_control_orderno(grouping)
 
-#		#	Use a block so can assign all attributes without concern for attr_protected
-#		child_identifier = Identifier.new do |i|
-#			i.case_control_type  = grouping
-#			i.state_registrar_no = state_registrar_no
-#			i.local_registrar_no = local_registrar_no
-#			i.orderno            = next_orderno
-#			i.matchingid         = case_subject.identifier.subjectid
-#			i.patid              = case_subject.patid
-#		end
 
 		CandidateControl.transaction do
 
-#			child = StudySubject.create!({
+			#	Use a block so can assign all attributes without concern for attr_protected
 			child = StudySubject.new do |s|
 				s.subject_type = SubjectType['Control']
 				s.vital_status = VitalStatus['living']
@@ -72,47 +63,11 @@ class CandidateControl < ActiveRecordShared
 				s.state_registrar_no = state_registrar_no
 				s.local_registrar_no = local_registrar_no
 				s.orderno            = next_orderno
-#				s.matchingid         = case_subject.identifier.subjectid
 				s.matchingid         = case_subject.subjectid
 				s.patid              = case_subject.patid
 			end
 			child.save!
 
-#			child = StudySubject.create!({
-#				:subject_type => SubjectType['Control'],
-#				:vital_status => VitalStatus['living'],
-#				:sex                   => sex,
-#				:mom_is_biomom         => mom_is_biomom,
-#				:dad_is_biodad         => dad_is_biodad,
-#				:mother_hispanicity_id => mother_hispanicity_id,
-#				:father_hispanicity_id => father_hispanicity_id,
-#				:birth_type            => birth_type,
-#				:mother_yrs_educ       => mother_yrs_educ,
-#				:father_yrs_educ       => father_yrs_educ,
-#				:birth_county          => birth_county,
-#				:hispanicity_id        => ( 
-#					( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
-##				:pii_attributes => {
-#					:first_name         => first_name,
-#					:middle_name        => middle_name,
-#					:last_name          => last_name,
-#					:dob                => dob,
-#					:mother_first_name  => mother_first_name,
-#					:mother_middle_name => mother_middle_name,
-#					:mother_last_name   => mother_last_name,
-#					:mother_maiden_name => mother_maiden_name,
-#					:mother_race_id     => mother_race_id,
-#					:father_race_id     => father_race_id,
-##				},
-#				:identifier => child_identifier
-#			})
-#	not necessary as ccls enrollment is created in subject
-#				:enrollments_attributes => [{
-#					:project => Project['ccls']
-#				}],
-
-#	possibly put in a identifier#after_create ???
-#	or study_subject#after_create ???
 			child.assign_icf_master_id
 
 			#	NOTE this may require passing info

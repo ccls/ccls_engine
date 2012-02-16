@@ -148,9 +148,6 @@ class Ccls::StudySubjectPatientTest < ActiveSupport::TestCase
 		study_subject = create_case_study_subject(
 			:matchingid => '12345',
 			:patient_attributes    => Factory.attributes_for(:patient)).reload
-#			:patient_attributes    => Factory.attributes_for(:patient),
-#			:identifier_attributes => Factory.attributes_for(:identifier,
-#				{ :matchingid => '12345' })).reload
 		other   = create_study_subject( :matchingid => '12345' )
 		nobody  = create_study_subject( :matchingid => '54321' )
 #	admit_date is now required, so will exist initially
@@ -232,9 +229,6 @@ protected
 			:matchingid => '12345',		#	NOTE expected
 			:patient_attributes    => Factory.attributes_for(:patient,
 				{ :admit_date => Date.yesterday })).reload
-#				{ :admit_date => Date.yesterday }),
-#			:identifier_attributes => Factory.attributes_for(:identifier,
-#				{ :matchingid => '12345' })).reload
 		assert_not_nil study_subject.reference_date
 		assert_not_nil study_subject.patient.admit_date
 		assert_equal study_subject.reference_date, study_subject.patient.admit_date

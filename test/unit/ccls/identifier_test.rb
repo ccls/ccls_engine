@@ -1,167 +1,6 @@
 require 'test_helper'
 
 class Ccls::IdentifierTest < ActiveSupport::TestCase
-#
-##	assert_should_require :hospital_no
-##	assert_should_not_require :hospital_no
-#
-#	assert_should_create_default_object
-#	assert_should_not_require_attributes( :case_control_type )
-#	assert_should_require_unique_attribute( 
-##		:ssn,
-#		:state_id_no,
-#		:state_registrar_no,
-#		:local_registrar_no,
-#		:gbid,
-#		:lab_no_wiemels,
-#		:accession_no,
-##		:icf_master_id,
-#		:idno_wiemels )
-#	assert_should_initially_belong_to( :study_subject )
-#	assert_should_protect( :study_subject_id )
-#	assert_should_not_require_attributes( 
-#		:ssn,
-#		:subjectid,
-#		:lab_no,
-#		:related_childid,
-#		:related_case_childid,
-#		:state_id_no,
-#		:state_registrar_no,
-#		:local_registrar_no,
-#		:matchingid,
-#		:gbid,
-#		:lab_no_wiemels,
-#		:accession_no,
-#		:idno_wiemels,
-#		:familyid )
-#	assert_should_require_attribute_length( 
-#		:state_id_no,
-#		:state_registrar_no,
-#		:local_registrar_no,
-#		:lab_no,
-#		:related_childid,
-#		:related_case_childid,
-#			:maximum => 250 )
-#	assert_should_require_attribute_length :childidwho, :maximum => 10
-#	assert_should_require_attribute_length :newid, :maximum => 6
-#	assert_should_require_attribute_length :gbid, :maximum => 26
-#	assert_should_require_attribute_length :lab_no_wiemels, :maximum => 25
-#	assert_should_require_attribute_length :idno_wiemels, :maximum => 10
-#	assert_should_require_attribute_length :accession_no, :maximum => 25
-#	assert_should_require_attribute_length :icf_master_id, :maximum => 9
-#
-#	assert_should_protect_attributes(
-#		:studyid,
-#		:studyid_nohyphen,
-#		:studyid_intonly_nohyphen,
-#		:familyid,
-#		:childid,
-#		:subjectid,
-#		:patid )
-#
-#	test "explicit Factory subjectless identifier test" do
-#		assert_difference('StudySubject.count',0) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:subjectless_identifier)
-#			assert_nil identifier.study_subject
-#			assert_not_nil identifier.studyid
-#			assert_match /-\d-/, identifier.studyid			#	no patid or orderno
-#		} }
-#	end
-#
-#	test "explicit Factory subjectless identifier test with patid and orderno" do
-#		assert_difference('StudySubject.count',0) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:subjectless_identifier,:patid => '123', :orderno => 7)
-#			assert_nil identifier.study_subject
-#			assert_not_nil identifier.studyid
-#			assert_match /0123-\d-7/, identifier.studyid
-#		} }
-#	end
-#
-#	test "explicit Factory identifier test" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:identifier)
-#			assert_not_nil identifier.study_subject
-#			assert_not_nil identifier.studyid
-#			assert_not_nil identifier.study_subject.studyid
-#			assert_match /-\d-/, identifier.studyid										#	no patid or orderno
-#			assert_match /-\d-/, identifier.study_subject.studyid			#	no patid or orderno
-#		} }
-#	end
-#
-#	test "explicit Factory identifier test with patid and orderno" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:identifier,:patid => '123', :orderno => 7)
-#			assert_not_nil identifier.study_subject
-#			assert_not_nil identifier.studyid
-#			assert_not_nil identifier.study_subject.studyid
-#			assert_match /0123-\d-7/, identifier.studyid
-#			assert_match /0123-\d-7/, identifier.study_subject.studyid
-#		} }
-#	end
-#
-#	test "explicit Factory case identifier test" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:case_identifier)
-#			assert_not_nil identifier.study_subject
-#			assert_equal identifier.case_control_type, 'C'
-#			assert_equal identifier.study_subject.subject_type, SubjectType['Case']
-#			assert_not_nil identifier.studyid
-#			assert_not_nil identifier.study_subject.studyid
-#			assert_match /\d{4}-C-0/, identifier.studyid
-#			assert_match /\d{4}-C-0/, identifier.study_subject.studyid
-#		} }
-#	end
-#
-#	test "explicit Factory control identifier test" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:control_identifier)
-#			assert_not_nil identifier.study_subject
-#			assert_equal identifier.study_subject.subject_type, SubjectType['Control']
-#			assert_not_nil identifier.studyid
-#			assert_not_nil identifier.study_subject.studyid
-#			assert_match /-\d-/, identifier.studyid										#	no patid or orderno
-#			assert_match /-\d-/, identifier.study_subject.studyid			#	no patid or orderno
-#		} }
-#	end
-#
-#	test "explicit Factory control identifier test with patid and orderno" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:control_identifier,:patid => '123', :orderno => 7)
-#			assert_not_nil identifier.study_subject
-#			assert_equal identifier.study_subject.subject_type, SubjectType['Control']
-#			assert_not_nil identifier.studyid
-#			assert_not_nil identifier.study_subject.studyid
-#			assert_match /0123-\d-7/, identifier.studyid
-#			assert_match /0123-\d-7/, identifier.study_subject.studyid
-#		} }
-#	end
-#
-#	test "explicit Factory mother identifier test" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Identifier.count',1) {
-#			identifier = Factory(:mother_identifier)
-#			assert_not_nil identifier.study_subject
-#			assert_equal identifier.case_control_type, 'M'
-#			assert_equal identifier.study_subject.subject_type, SubjectType['Mother']
-#			assert_nil identifier.studyid
-#			assert_not_nil identifier.study_subject.studyid
-#			assert_equal 'n/a', identifier.study_subject.studyid
-#		} }
-#	end
-#
-#	test "explicit Factory subjectless identifier test to after_save change" do
-#		identifier = Factory(:subjectless_identifier)
-#		assert_nil identifier.study_subject
-#		#	trigger_update_matching_study_subjects_reference_date
-#		identifier.update_attributes(:matchingid => 'somethingtotrigger')
-#	end
 
 	test "should require unique icf_master_id" do
 		assert_difference('StudySubject.count',1){
@@ -262,56 +101,53 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should be case with case_control_type == 'C'" do
-pending	#	TODO uses SubjectType
-		study_subject = StudySubject.new(:case_control_type => 'C')
+#	test "should be case with case_control_type == 'C'" do
+#		study_subject = StudySubject.new(:case_control_type => 'C')
 #		assert study_subject.is_case?
-	end
-
-	test "should be mother with case_control_type == 'M'" do
-pending	#	TODO uses SubjectType
-		study_subject = StudySubject.new(:case_control_type => 'M')
+#	end
+#
+#	test "should be mother with case_control_type == 'M'" do
+#		study_subject = StudySubject.new(:case_control_type => 'M')
 #		assert study_subject.is_mother?
-	end
-
-	test "should be mother with case_control_type == nil" do
-pending	#	TODO uses SubjectType
-		study_subject = StudySubject.new(:case_control_type => nil )
+#	end
+#
+#	test "should be mother with case_control_type == nil" do
+#		study_subject = StudySubject.new(:case_control_type => nil )
 #		assert study_subject.is_mother?
-	end
-
-	%w( B F 4 5 6 ).each do |cct|
-		test "should be control with case_control_type == '#{cct}'" do
-pending	#	TODO uses SubjectType
-			study_subject = StudySubject.new(:case_control_type => cct )
+#	end
+#
+#	%w( B F 4 5 6 ).each do |cct|
+#		test "should be control with case_control_type == '#{cct}'" do
+#			study_subject = StudySubject.new(:case_control_type => cct )
 #			assert study_subject.is_control?
-		end
-
-		test "should NOT generate patid on creation of case_control_type == '#{cct}'" do
-			assert_difference('StudySubject.maximum(:patid).to_i', 0) {
-				study_subject = Factory(:study_subject, :case_control_type => cct )
-				assert_nil study_subject.patid
-			}
-		end
-	end
-
-	test "should NOT generate patid on creation of case_control_type == nil" do
-		assert_difference('StudySubject.maximum(:patid).to_i', 0) {
-			study_subject = Factory(:study_subject, :case_control_type => nil )
-			assert_nil study_subject.patid
-		}
-	end
-
-	test "should NOT generate patid on creation of case_control_type == 'M'" do
-		assert_difference('StudySubject.maximum(:patid).to_i', 0) {
-			study_subject = Factory(:study_subject, :case_control_type => 'M' )
-			assert_nil study_subject.patid
-		}
-	end
+#		end
+#
+#		test "should NOT generate patid on creation of case_control_type == '#{cct}'" do
+#			assert_difference('StudySubject.maximum(:patid).to_i', 0) {
+#				study_subject = Factory(:study_subject, :case_control_type => cct )
+#				assert_nil study_subject.patid
+#			}
+#		end
+#	end
+#
+#	test "should NOT generate patid on creation of case_control_type == nil" do
+#		assert_difference('StudySubject.maximum(:patid).to_i', 0) {
+#			study_subject = Factory(:study_subject, :case_control_type => nil )
+#			assert_nil study_subject.patid
+#		}
+#	end
+#
+#	test "should NOT generate patid on creation of case_control_type == 'M'" do
+#		assert_difference('StudySubject.maximum(:patid).to_i', 0) {
+#			study_subject = Factory(:study_subject, :case_control_type => 'M' )
+#			assert_nil study_subject.patid
+#		}
+#	end
 
 #	patid and childid should be protected as they are generated values
 
 	test "should generate orderno = 0 for case_control_type == 'c'" do
+		#	case_control_type is NOT the trigger.  SubjectType is.
 		study_subject = Factory(:case_study_subject).reload
 		assert_equal 0, study_subject.orderno
 	end

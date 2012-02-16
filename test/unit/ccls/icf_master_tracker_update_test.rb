@@ -135,30 +135,19 @@ class Ccls::IcfMasterTrackerUpdateTest < ActiveSupport::TestCase
 		end
 
 		#	minimal semi-real case creation
-#		s0 = Factory(:study_subject,:sex => 'F')
-#		s0.create_pii(:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
-#			:dob => Date.parse('10/16/1977'))
 		s0 = Factory(:study_subject,:sex => 'F',
 			:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
 			:dob => Date.parse('10/16/1977'))
 
-#		s1 = Factory(:study_subject,:sex => 'F')
-#		s1.create_pii(:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
-#			:dob => Date.parse('9/21/1988'))
 		s1 = Factory(:study_subject,:sex => 'F',
 			:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
 			:dob => Date.parse('9/21/1988'))
-#		s1.create_identifier
 		Factory(:icf_master_id,:icf_master_id => '15270110G')
 		s1.assign_icf_master_id
 
-#		s2 = Factory(:study_subject,:sex => 'M')
-#		s2.create_pii(:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
-#			:dob => Date.parse('6/1/2009'))
 		s2 = Factory(:study_subject,:sex => 'M',
 			:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
 			:dob => Date.parse('6/1/2009'))
-#		s2.create_identifier
 		Factory(:icf_master_id,:icf_master_id => '15397125B')
 		s2.assign_icf_master_id
 

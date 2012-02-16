@@ -15,21 +15,14 @@ class LiveBirthDataUpdate < ActiveRecordShared
 #	masterid,ca_co_status,biomom,biodad,date,mother_full_name,mother_maiden_name,father_full_name,child_full_name,child_dobm,child_dobd,child_doby,child_gender,birthplace_country,birthplace_state,birthplace_city,mother_hispanicity,mother_hispanicity_mex,mother_race,mother_race_other,father_hispanicity,father_hispanicity_mex,father_race,father_race_other
 
 				if line['ca_co_status'] == 'case'
-#					identifier = Identifier.find_by_icf_master_id(line['masterid'])
-#					if identifier
-#						results.push(identifier.study_subject)
 					study_subject = StudySubject.find_by_icf_master_id(line['masterid'])
 					if study_subject
 						results.push(study_subject)
 					else
-#						results.push("Could not find identifier with masterid #{line['masterid']}")
 						results.push("Could not find study_subject with masterid #{line['masterid']}")
 						next
 					end
 				elsif line['ca_co_status'] == 'control'
-#					identifier = Identifier.find_by_icf_master_id(line['masterid'])
-#					unless identifier
-#						results.push("Could not find identifier with masterid #{line['masterid']}")
 					study_subject = StudySubject.find_by_icf_master_id(line['masterid'])
 					unless study_subject
 						results.push("Could not find study_subject with masterid #{line['masterid']}")

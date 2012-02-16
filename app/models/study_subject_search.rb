@@ -35,13 +35,9 @@ class StudySubjectSearch < Search
 	})
 
 	def study_subjects
-#		require_dependency 'pii.rb'	unless Pii
-#		require_dependency 'identifier.rb' unless Identifier
 		require_dependency 'gift_card.rb' unless GiftCard
 		@subjects ||= StudySubject.send(
 			(paginate?)?'paginate':'all',{
-#				:include => [:pii,:identifier],
-#				:include => [:identifier],
 				:select  => select,
 				:group   => group,
 				:having  => having,
@@ -130,8 +126,6 @@ private	#	THIS IS REQUIRED
 			c = []
 			v = {}
 			q.to_s.split(/\s+/).each_with_index do |t,i|
-#				c.push("piis.first_name LIKE :t#{i}")
-#				c.push("piis.last_name LIKE :t#{i}")
 				c.push("first_name LIKE :t#{i}")
 				c.push("last_name LIKE :t#{i}")
 				c.push("patid LIKE :t#{i}")

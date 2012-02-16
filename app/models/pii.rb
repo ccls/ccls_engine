@@ -22,7 +22,7 @@ base.class_eval do
 
 	#	Basically, this is only used as a flag during nested creation
 	#	to determine if the dob is required.
-	attr_accessor :subject_is_mother
+#	attr_accessor :subject_is_mother
 	
 	#	Father seems to be irrelevant so commenting out code.
 	#	attr_accessor :subject_is_father

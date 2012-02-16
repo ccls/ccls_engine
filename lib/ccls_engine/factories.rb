@@ -223,38 +223,6 @@ end
 Factory.define :icf_master_tracker_update do |f|
 end
 
-#Factory.define :subjectless_identifier, :class => 'Identifier' do |f|
-##	f.sequence(:ssn){|n| sprintf("%09d",n) }
-#	#	technically, this makes this a control identifier
-#	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
-#	f.sequence(:state_id_no){|n| "#{n}"}
-#	f.sequence(:state_registrar_no){|n| "#{n}"}
-#	f.sequence(:local_registrar_no){|n| "#{n}"}
-#	f.sequence(:gbid){|n| "#{n}"}
-#	f.sequence(:accession_no){|n| "#{n}"}
-#	f.sequence(:lab_no_wiemels){|n| "#{n}"}
-#	f.sequence(:idno_wiemels){|n| "#{n}"}
-##	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
-#end
-#Factory.define :identifier, :parent => :subjectless_identifier do |f|
-#	f.association :study_subject
-#end
-#Factory.define :case_identifier, :parent => :identifier do |f|
-#	f.association :study_subject, :factory => :case_study_subject
-#	f.case_control_type 'c'
-#end
-#Factory.define :control_identifier, :parent => :identifier do |f|
-#	f.association :study_subject, :factory => :control_study_subject
-#end
-#Factory.define :mother_identifier, :parent => :identifier do |f|
-#	f.association :study_subject, :factory => :mother_study_subject
-#	f.case_control_type 'm'
-#end
-#Factory.define :father_identifier, :parent => :identifier do |f|
-#	f.association :study_subject, :factory => :father_study_subject
-##	f.case_control_type 'm'
-#end
-
 Factory.define :ineligible_reason do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
@@ -317,11 +285,6 @@ Factory.define :organization do |f|
 	f.sequence(:name) { |n| "Name #{n}" }
 end
 
-#Factory.define :package do |f|
-##	f.carrier "FedEx"
-#	f.sequence(:tracking_number) { |n| "ABC123#{n}" }
-#end
-
 Factory.define :subjectless_patient, :class => 'Patient' do |f|
 	#	Today should always be after the dob.
 	#	However, with all of the date chronology tests, still may cause problems.
@@ -374,17 +337,6 @@ Factory.define :phone_type do |f|
 	f.sequence(:code) { |n| "Code#{n}" }
 #	f.sequence(:description) { |n| "Desc#{n}" }
 end
-
-#Factory.define :subjectless_pii, :class => 'Pii' do |f|
-#	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
-#	f.dob { random_date }	#Date.jd(2440000+rand(15000))
-#end
-#Factory.define :pii, :parent => :subjectless_pii do |f|
-#	f.association :study_subject
-#end
-#Factory.define :case_pii, :parent => :pii do |f|
-#	f.association :study_subject, :factory => :case_study_subject
-#end
 
 Factory.define :project_outcome do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
@@ -456,7 +408,6 @@ Factory.define :study_subject do |f|
 	f.sex { random_sex }
 	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
 	f.dob { random_date }	#Date.jd(2440000+rand(15000))
-
 	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
 	f.sequence(:state_id_no){|n| "#{n}"}
 	f.sequence(:state_registrar_no){|n| "#{n}"}
@@ -465,7 +416,6 @@ Factory.define :study_subject do |f|
 	f.sequence(:accession_no){|n| "#{n}"}
 	f.sequence(:lab_no_wiemels){|n| "#{n}"}
 	f.sequence(:idno_wiemels){|n| "#{n}"}
-
 end
 Factory.define :case_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
@@ -476,13 +426,7 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 	#	when the fixtures have been loaded and these will work.
 	#	Only really needed for patient as gets Hospital and Diagnosis.
 
-#	in parent so shouldn't be needed here
-#	f.subject_type { SubjectType['Case'] }
-
-#	f.pii { Factory.build(:subjectless_pii) }
 #	f.patient { Factory.build(:subjectless_patient) }
-#	f.identifier { Factory.build(:subjectless_identifier,
-#		:case_control_type => 'C' ) }
 #	Either by building subjectless versions(above) or 
 #		with nested attributes(below). Both seem to work.
 #	The model must be set to accept nested attributes for
@@ -491,9 +435,7 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 #	Actually, this mucks up sequencing.  Calling this factory twice results in uniqueness validation failures.
 #	If these calls are wrapped in {}, the sequencing is fine.  Its all about when its called
 #		and the {} delay the execution of the Factory.attributes_for
-#	f.pii_attributes { Factory.attributes_for(:pii) }	#	as this is attributes_for, doesn't need to be "subjectless_pii"
 	f.patient_attributes { Factory.attributes_for(:patient) }
-#	f.identifier_attributes { Factory.attributes_for(:case_identifier) }
 end
 Factory.define :complete_waivered_case_study_subject, :parent => :complete_case_study_subject do |f|
 	f.patient_attributes { Factory.attributes_for(:waivered_patient) }
@@ -505,9 +447,6 @@ Factory.define :control_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Control'] }
 end
 Factory.define :complete_control_study_subject, :parent => :control_study_subject do |f|
-	#	as these are attributes_for, don't need to be "subjectless_*"
-#	f.pii_attributes { Factory.attributes_for(:pii) }	
-#	f.identifier_attributes { Factory.attributes_for(:control_identifier) }
 end
 Factory.define :mother_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Mother'] }
@@ -515,19 +454,8 @@ Factory.define :mother_study_subject, :parent => :study_subject do |f|
 	f.case_control_type 'm'
 end
 Factory.define :complete_mother_study_subject, :parent => :mother_study_subject do |f|
-	#	as these are attributes_for, don't need to be "subjectless_*"
-#	f.pii_attributes { Factory.attributes_for(:pii) }	
-#	f.identifier_attributes { Factory.attributes_for(:mother_identifier) }
 end
-#Factory.define :father_study_subject, :parent => :study_subject do |f|
-#	f.subject_type { SubjectType['Father'] }
-#	f.sex 'M'
-#end
-#Factory.define :complete_father_study_subject, :parent => :father_study_subject do |f|
-#	#	as these are attributes_for, don't need to be "subjectless_*"
-#	f.pii_attributes { Factory.attributes_for(:pii) }	
-#	f.identifier_attributes { Factory.attributes_for(:father_identifier) }
-#end
+
 
 Factory.define :subject_language do |f|
 	f.association :study_subject
@@ -548,12 +476,6 @@ Factory.define :subject_type do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
-
-#Factory.define :track do |f|
-#	f.association :trackable, :factory => :package
-#	f.name "Name"
-#	f.time Time.now
-#end
 
 Factory.define :transfer do |f|
 	f.association :from_organization, :factory => :organization

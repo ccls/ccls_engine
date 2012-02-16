@@ -14,8 +14,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:gift_cards, :phone_numbers, :samples, :interviews, :bc_requests )
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome )
-#		:identifier )
-#		:identifier, :pii )
 	assert_should_habtm(:analyses)
 	assert_requires_complete_date( :reference_date )
 	assert_should_require_attributes_not_nil( :do_not_contact, :sex )
@@ -68,7 +66,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 #	assert_should_require :hospital_no
 #	assert_should_not_require :hospital_no
 
-#	assert_should_create_default_object
 	assert_should_not_require_attributes( :case_control_type )
 	assert_should_require_unique_attribute( 
 #		:ssn,
@@ -80,8 +77,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:accession_no,
 #		:icf_master_id,
 		:idno_wiemels )
-#	assert_should_initially_belong_to( :study_subject )
-#	assert_should_protect( :study_subject_id )
 	assert_should_not_require_attributes( 
 		:ssn,
 		:subjectid,
@@ -158,25 +153,20 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			s = Factory(:mother_study_subject)
 			assert_equal s.subject_type, SubjectType['Mother']
 			assert_equal s.sex, 'F'
-#			assert_nil s.identifier
 			assert_not_nil s.studyid
 			assert_equal 'n/a', s.studyid
 		}
 	end
 
 	test "explicit Factory complete case study subject build test" do
-#		assert_difference('Pii.count',0) {
 		assert_difference('Patient.count',0) {
-#		assert_difference('Identifier.count',0) {
 		assert_difference('StudySubject.count',0) {
 			s = Factory.build(:complete_case_study_subject)
-		} } #} #}
+		} }
 	end
 
 	test "explicit Factory complete case study subject test" do
-#		assert_difference('Pii.count',1) {
 		assert_difference('Patient.count',1) {
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			s = Factory(:complete_case_study_subject)
 			assert_equal s.subject_type, SubjectType['Case']
@@ -190,13 +180,11 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_match /\d{4}-C-0/, s.studyid
 #	New sequencing make the value of this relatively unpredictable
 #			assert_equal s.organization_id, Hospital.first.organization_id
-		} } #} #}
+		} }
 	end
 
 	test "explicit Factory complete waivered case study subject test" do
-#		assert_difference('Pii.count',1) {
 		assert_difference('Patient.count',1) {
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			s = Factory(:complete_waivered_case_study_subject)
 			assert_equal s.subject_type, SubjectType['Case']
@@ -206,13 +194,11 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_not_nil s.patid
 			assert_not_nil s.organization_id
 			assert s.organization.hospital.has_irb_waiver
-		} } #} #}
+		} }
 	end
 
 	test "explicit Factory complete nonwaivered case study subject test" do
-#		assert_difference('Pii.count',1) {
 		assert_difference('Patient.count',1) {
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			s = Factory(:complete_nonwaivered_case_study_subject)
 			assert_equal s.subject_type, SubjectType['Case']
@@ -222,7 +208,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_not_nil s.patid
 			assert_not_nil s.organization_id
 			assert !s.organization.hospital.has_irb_waiver
-		} } #} #}
+		} }
 	end
 
 	test "should require subject_type" do
@@ -703,28 +689,19 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	test "should create mother when isn't one" do
 		study_subject = create_complete_control_study_subject
 		assert_nil study_subject.mother
-#		assert_difference('Pii.count',1) {
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@mother = study_subject.create_mother
-		} #} #}
+		}
 		assert_equal @mother, study_subject.mother
 	end
 
 	test "should copy mothers names when create mother for case" do
 		study_subject = create_complete_case_study_subject(
-				:mother_first_name  => 'First',
-				:mother_middle_name => 'Middle',
-				:mother_last_name   => 'Last',
-				:mother_maiden_name => 'Maiden')
-#			:pii_attributes => Factory.attributes_for(:pii,
-#				:mother_first_name  => 'First',
-#				:mother_middle_name => 'Middle',
-#				:mother_last_name   => 'Last',
-#				:mother_maiden_name => 'Maiden'))
+			:mother_first_name  => 'First',
+			:mother_middle_name => 'Middle',
+			:mother_last_name   => 'Last',
+			:mother_maiden_name => 'Maiden')
 		assert_nil study_subject.reload.mother
-#		assert_difference('Pii.count',1) {
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@mother = study_subject.create_mother
 			assert_equal @mother.first_name,  'First'
@@ -735,24 +712,17 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_equal @mother.middle_name, study_subject.mother_middle_name
 			assert_equal @mother.last_name,   study_subject.mother_last_name
 			assert_equal @mother.maiden_name, study_subject.mother_maiden_name
-		} #} #}
+		}
 		assert_equal @mother, study_subject.mother
 	end
 
 	test "should copy mothers names when create mother for control" do
 		study_subject = create_complete_control_study_subject(
-				:mother_first_name  => 'First',
-				:mother_middle_name => 'Middle',
-				:mother_last_name   => 'Last',
-				:mother_maiden_name => 'Maiden')
-#			:pii_attributes => Factory.attributes_for(:pii,
-#				:mother_first_name  => 'First',
-#				:mother_middle_name => 'Middle',
-#				:mother_last_name   => 'Last',
-#				:mother_maiden_name => 'Maiden'))
+			:mother_first_name  => 'First',
+			:mother_middle_name => 'Middle',
+			:mother_last_name   => 'Last',
+			:mother_maiden_name => 'Maiden')
 		assert_nil study_subject.reload.mother
-#		assert_difference('Pii.count',1) {
-#		assert_difference('Identifier.count',1) {
 		assert_difference('StudySubject.count',1) {
 			@mother = study_subject.create_mother
 			assert_equal @mother.first_name,  'First'
@@ -763,18 +733,16 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			assert_equal @mother.middle_name, study_subject.mother_middle_name
 			assert_equal @mother.last_name,   study_subject.mother_last_name
 			assert_equal @mother.maiden_name, study_subject.mother_maiden_name
-		} #} #}
+		}
 		assert_equal @mother, study_subject.mother
 	end
 
 	test "should not create mother when one exists" do
 		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
-#		assert_difference('Pii.count',0) {
-#		assert_difference('Identifier.count',0) {
 		assert_difference('StudySubject.count',0) {
 			@mother = study_subject.create_mother
-		} #} #}
+		}
 		assert_equal @mother, mother
 	end
 
@@ -833,7 +801,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	test "should get control subjects for case subject" do
 		study_subject = create_complete_case_study_subject
 		assert_equal [], study_subject.controls	#	aren't any controls, yet
-#		control = create_control_identifier(:patid => study_subject.patid).study_subject.reload
 		control = create_control_study_subject(
 			:patid => study_subject.patid).reload
 		assert_equal [control], study_subject.controls
@@ -883,7 +850,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
 	test "should return nothing for null identifier for matching" do
 		study_subject = Factory(:study_subject)
-#		assert_nil study_subject.identifier
 		assert_nil study_subject.matchingid
 		assert_equal study_subject.matching.length, 0
 	end

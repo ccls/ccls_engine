@@ -50,25 +50,12 @@ private	#	THIS IS REQUIRED
 
 	def study_subjects_joins
 		"LEFT JOIN study_subjects ON gift_cards.study_subject_id = study_subjects.id"
-#		"LEFT JOIN study_subjects ON gift_cards.study_subject_id = study_subjects.id " <<
-#			"LEFT JOIN piis ON piis.study_subject_id = study_subjects.id " <<
-#			"LEFT JOIN identifiers ON identifiers.study_subject_id = study_subjects.id"
 	end
 
 #	#	must come before other study_subject related joins
 #	def a_subjects_joins
 #		"LEFT JOIN study_subjects ON gift_cards.study_subject_id = study_subjects.id" if(
 #			%w(childid studyid last_name first_name).include?(@order) )
-#	end
-#
-#	def identifiers_joins
-#		"LEFT JOIN identifiers ON identifiers.study_subject_id = study_subjects.id" if (
-#			%w(childid studyid).include?(@order) )
-#	end
-#
-#	def piis_joins
-#		"LEFT JOIN piis ON piis.study_subject_id = study_subjects.id" if (
-#			%w(last_name first_name).include?(@order) )
 #	end
 
 end
