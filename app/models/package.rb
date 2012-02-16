@@ -3,7 +3,8 @@
 #	==	named_scopes (don't get parsed by rdoc???)
 #	*	delivered
 #	*	undelivered
-class Package < ActiveRecordShared
+class Package 	# < ActiveRecordShared
+#	unsubclassed from ActiveRecord so not expecting a database table
 #
 #	has_one :o_sample_kit, :class_name => 'SampleKit', :foreign_key => 'kit_package_id'
 #	has_one :i_sample_kit, :class_name => 'SampleKit', :foreign_key => 'sample_package_id'

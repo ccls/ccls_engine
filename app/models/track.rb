@@ -1,4 +1,5 @@
-class Track < ActiveRecordShared
+class Track 	# < ActiveRecordShared
+#	unsubclassed from ActiveRecord so not expecting a database table
 #
 #	default_scope :order => :time
 #	belongs_to :trackable, 
