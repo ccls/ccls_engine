@@ -25,9 +25,12 @@ base.class_eval do
 	#	This is a duplication of a patient validation that won't
 	#	work if using nested attributes.  Don't like doing this.
 	def patient_admit_date_is_after_dob
+#		if !patient.nil? && !patient.admit_date.blank? && 
+#			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob &&
+#			pii.dob.to_date != Date.parse('1/1/1900') &&
 		if !patient.nil? && !patient.admit_date.blank? && 
-			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob &&
-			pii.dob.to_date != Date.parse('1/1/1900') &&
+			!dob.blank? && patient.admit_date < dob &&
+			dob.to_date != Date.parse('1/1/1900') &&
 			patient.admit_date.to_date != Date.parse('1/1/1900')
 			errors.add('patient:admit_date', "is before study_subject's dob.") 
 		end
@@ -37,7 +40,8 @@ base.class_eval do
 	#	work if using nested attributes.  Don't like doing this.
 	def patient_diagnosis_date_is_after_dob
 		if !patient.nil? && !patient.diagnosis_date.blank? && 
-			!pii.nil? && !pii.dob.blank? && patient.diagnosis_date < pii.dob
+			!dob.blank? && patient.diagnosis_date < dob
+#			!pii.nil? && !pii.dob.blank? && patient.diagnosis_date < pii.dob
 			errors.add('patient:diagnosis_date', "is before study_subject's dob.") 
 		end
 	end

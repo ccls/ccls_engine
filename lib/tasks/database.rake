@@ -19,7 +19,7 @@ namespace :db do
 		Interview.destroy_all
 		Identifier.destroy_all
 		Patient.destroy_all
-		Pii.destroy_all
+#		Pii.destroy_all
 #		ResponseSet.destroy_all
 #		Response.destroy_all
 		Sample.destroy_all
@@ -105,26 +105,26 @@ namespace :db do
 		end
 	end
 
-	desc "Import subjecit data from CSV file"
-	task :import_subjectid => :environment do
-		require 'fastercsv'
-		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/dummy_subject_pii_etc.csv', 'rb',{
-			:headers => true })).each do |line|
-#	Childid,patID,Type,OrderNo,subjectID,sex,DOB,RefDate,InterviewDate,First_Name,Middle_Name,Last_Name,Mother_First_Name,Mother_Middle_Name,Mother_Maiden_Name,Mother_Last_Name,Father_First_Name,Father_Middle_Name,Father_Last_Name,Primary_Phone,Alternate_phone1,Alternate_phone2,Alternate_phone3
-			puts "Processing line #{f.lineno}"
-			puts line
-
-			#	due to padding it with zeros, NEED this to be an Integer
-			#	doesn't work correctly in sqlite so just pad it before search
-			identifier = Identifier.find_by_childid(
-				sprintf("%06d",line['Childid'].to_i))
-			raise ActiveRecord::RecordNotFound unless identifier
-
-			identifier.update_attributes!(:subjectid => line['subjectID'])
-
-		end
-	end
+#	desc "Import subject data from CSV file"
+#	task :import_subjectid => :environment do
+#		require 'fastercsv'
+#		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+#		(f=FasterCSV.open('misc/dummy_subject_pii_etc.csv', 'rb',{
+#			:headers => true })).each do |line|
+##	Childid,patID,Type,OrderNo,subjectID,sex,DOB,RefDate,InterviewDate,First_Name,Middle_Name,Last_Name,Mother_First_Name,Mother_Middle_Name,Mother_Maiden_Name,Mother_Last_Name,Father_First_Name,Father_Middle_Name,Father_Last_Name,Primary_Phone,Alternate_phone1,Alternate_phone2,Alternate_phone3
+#			puts "Processing line #{f.lineno}"
+#			puts line
+#
+#			#	due to padding it with zeros, NEED this to be an Integer
+#			#	doesn't work correctly in sqlite so just pad it before search
+#			identifier = Identifier.find_by_childid(
+#				sprintf("%06d",line['Childid'].to_i))
+#			raise ActiveRecord::RecordNotFound unless identifier
+#
+#			identifier.update_attributes!(:subjectid => line['subjectID'])
+#
+#		end
+#	end
 
 	desc "Import matchingid and familyid data from CSV file"
 	task :import_matchingid_and_familyid => :environment do
@@ -192,58 +192,42 @@ namespace :db do
 		end
 	end
 
-	desc "Import subject data from CSV file"
-	task :import_subject_data => :environment do
-		require 'fastercsv'
-		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/dummy_subject_pii_etc.csv', 'rb',{
-			:headers => true })).each do |line|
-#	Childid,patID,Type,OrderNo,subjectID,sex,DOB,RefDate,InterviewDate,First_Name,Middle_Name,Last_Name,Mother_First_Name,Mother_Middle_Name,Mother_Maiden_Name,Mother_Last_Name,Father_First_Name,Father_Middle_Name,Father_Last_Name,Primary_Phone,Alternate_phone1,Alternate_phone2,Alternate_phone3
-			puts "Processing line #{f.lineno}"
-			puts line
-
-#			subject_type = SubjectType['Case']
-			subject_type = SubjectType.random()
-
-			#	TODO	(not included in csv)
-#			race = Race[1]
-			race = Race.random()
-
-			dob = (line['DOB'].blank?)?'':Time.parse(line['DOB'])
-			refdate = (line['RefDate'].blank?)?'':Time.parse(line['RefDate'])
-			interview_date = (line['InterviewDate'].blank?)?'':Time.parse(line['InterviewDate'])
-			study_subject = StudySubject.create!({
-#				:patient_attributes  => { },										#	TODO (patid)
-				:pii_attributes => {
-					:first_name  => line['First_Name'],
-					:middle_name => line['Middle_Name'],
-					:last_name   => line['Last_Name'],
-					:father_first_name  => line['Father_First_Name'],
-					:father_middle_name => line['Father_Middle_Name'],
-					:father_last_name   => line['Father_Last_Name'],
-					:mother_first_name  => line['Mother_First_Name'],
-					:mother_middle_name => line['Mother_Middle_Name'],
-					:mother_maiden_name => line['Mother_Maiden_Name'],
-					:mother_last_name   => line['Mother_Last_Name'],
-					:dob => dob
-				},
-				:identifier_attributes => {
-					:state_id_no       => sprintf('%09d',line['Childid']),			#	TODO
-					:subjectid         => line['subjectID'],
-					:ssn               => sprintf('%09d',line['Childid']),							#	TODO
-					:patid             => line['patID'],
-					:case_control_type => line['Type'],
-					:orderno           => line['OrderNo'],
-					:childid           => line['Childid'] 
-				},
-				:subject_type => subject_type,
-				:sex => line['sex'],
-				:reference_date => refdate
-			})
-			study_subject.races = [race]
-
-#			Identifier.create!({
-#					:study_subject_id        => study_subject.id,
+#	desc "Import subject data from CSV file"
+#	task :import_subject_data => :environment do
+#		require 'fastercsv'
+#		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+#		(f=FasterCSV.open('misc/dummy_subject_pii_etc.csv', 'rb',{
+#			:headers => true })).each do |line|
+##	Childid,patID,Type,OrderNo,subjectID,sex,DOB,RefDate,InterviewDate,First_Name,Middle_Name,Last_Name,Mother_First_Name,Mother_Middle_Name,Mother_Maiden_Name,Mother_Last_Name,Father_First_Name,Father_Middle_Name,Father_Last_Name,Primary_Phone,Alternate_phone1,Alternate_phone2,Alternate_phone3
+#			puts "Processing line #{f.lineno}"
+#			puts line
+#
+##			subject_type = SubjectType['Case']
+#			subject_type = SubjectType.random()
+#
+#			#	TODO	(not included in csv)
+##			race = Race[1]
+#			race = Race.random()
+#
+#			dob = (line['DOB'].blank?)?'':Time.parse(line['DOB'])
+#			refdate = (line['RefDate'].blank?)?'':Time.parse(line['RefDate'])
+#			interview_date = (line['InterviewDate'].blank?)?'':Time.parse(line['InterviewDate'])
+#			study_subject = StudySubject.create!({
+##				:patient_attributes  => { },										#	TODO (patid)
+#				:pii_attributes => {
+#					:first_name  => line['First_Name'],
+#					:middle_name => line['Middle_Name'],
+#					:last_name   => line['Last_Name'],
+#					:father_first_name  => line['Father_First_Name'],
+#					:father_middle_name => line['Father_Middle_Name'],
+#					:father_last_name   => line['Father_Last_Name'],
+#					:mother_first_name  => line['Mother_First_Name'],
+#					:mother_middle_name => line['Mother_Middle_Name'],
+#					:mother_maiden_name => line['Mother_Maiden_Name'],
+#					:mother_last_name   => line['Mother_Last_Name'],
+#					:dob => dob
+#				},
+#				:identifier_attributes => {
 #					:state_id_no       => sprintf('%09d',line['Childid']),			#	TODO
 #					:subjectid         => line['subjectID'],
 #					:ssn               => sprintf('%09d',line['Childid']),							#	TODO
@@ -251,38 +235,54 @@ namespace :db do
 #					:case_control_type => line['Type'],
 #					:orderno           => line['OrderNo'],
 #					:childid           => line['Childid'] 
-#				})
-
-			(19..22).each do |i|
-#				PhoneNumber.create!({
-				study_subject.phone_numbers.create!({
-#					:study_subject_id    => study_subject.id,
-					:phone_type_id => 1,
-					:phone_number  => line[i]
-				}) unless line[i].blank?
-			end
-
-			options = {
-#				:identifier_id => study_subject.identifier.id,
-				:interview_method => InterviewMethod.random(),
-				:interviewer => Person.random(),
-				:language   => Language.random(),
-				:instrument_version => InstrumentVersion.random(),
-				:began_on   => interview_date,
-				:ended_on   => interview_date
-			}
-			options[:subject_relationship] = SubjectRelationship.random()
-			if options[:subject_relationship].is_other?
-				options[:subject_relationship_other] = 'super unknown god buddy'
-			end
-			
-#			Interview.create!(options)
-			study_subject.interviews.create!(options)
-			
-#	use Time.parse to parse all dates (better than Date.parse)
-
-#	need ssn, state_id_no in data (making it up now)
-
-		end
-	end
+#				},
+#				:subject_type => subject_type,
+#				:sex => line['sex'],
+#				:reference_date => refdate
+#			})
+#			study_subject.races = [race]
+#
+##			Identifier.create!({
+##					:study_subject_id        => study_subject.id,
+##					:state_id_no       => sprintf('%09d',line['Childid']),			#	TODO
+##					:subjectid         => line['subjectID'],
+##					:ssn               => sprintf('%09d',line['Childid']),							#	TODO
+##					:patid             => line['patID'],
+##					:case_control_type => line['Type'],
+##					:orderno           => line['OrderNo'],
+##					:childid           => line['Childid'] 
+##				})
+#
+#			(19..22).each do |i|
+##				PhoneNumber.create!({
+#				study_subject.phone_numbers.create!({
+##					:study_subject_id    => study_subject.id,
+#					:phone_type_id => 1,
+#					:phone_number  => line[i]
+#				}) unless line[i].blank?
+#			end
+#
+#			options = {
+##				:identifier_id => study_subject.identifier.id,
+#				:interview_method => InterviewMethod.random(),
+#				:interviewer => Person.random(),
+#				:language   => Language.random(),
+#				:instrument_version => InstrumentVersion.random(),
+#				:began_on   => interview_date,
+#				:ended_on   => interview_date
+#			}
+#			options[:subject_relationship] = SubjectRelationship.random()
+#			if options[:subject_relationship].is_other?
+#				options[:subject_relationship_other] = 'super unknown god buddy'
+#			end
+#			
+##			Interview.create!(options)
+#			study_subject.interviews.create!(options)
+#			
+##	use Time.parse to parse all dates (better than Date.parse)
+#
+##	need ssn, state_id_no in data (making it up now)
+#
+#		end
+#	end
 end

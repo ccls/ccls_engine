@@ -16,9 +16,12 @@ class StudySubjectSearch < Search
 	self.valid_orders = self.valid_orders.merge({
 		:id => 'study_subjects.id',	#	must remove any possible ambiguity
 		:childid => 'identifiers.childid',
-		:last_name => 'piis.last_name',
-		:first_name => 'piis.first_name',
-		:dob => 'piis.dob',
+#		:last_name => 'piis.last_name',
+#		:first_name => 'piis.first_name',
+#		:dob => 'piis.dob',
+		:last_name => 'last_name',
+		:first_name => 'first_name',
+		:dob => 'dob',
 		:studyid => 'identifiers.patid',
 		:priority => 'recruitment_priority',
 		:sample_outcome => 'homex_outcomes.sample_outcome_id',
@@ -35,12 +38,13 @@ class StudySubjectSearch < Search
 	})
 
 	def study_subjects
-		require_dependency 'pii.rb'	unless Pii
+#		require_dependency 'pii.rb'	unless Pii
 		require_dependency 'identifier.rb' unless Identifier
 		require_dependency 'gift_card.rb' unless GiftCard
 		@subjects ||= StudySubject.send(
 			(paginate?)?'paginate':'all',{
-				:include => [:pii,:identifier],
+#				:include => [:pii,:identifier],
+				:include => [:identifier],
 				:select  => select,
 				:group   => group,
 				:having  => having,
@@ -129,8 +133,10 @@ private	#	THIS IS REQUIRED
 			c = []
 			v = {}
 			q.to_s.split(/\s+/).each_with_index do |t,i|
-				c.push("piis.first_name LIKE :t#{i}")
-				c.push("piis.last_name LIKE :t#{i}")
+#				c.push("piis.first_name LIKE :t#{i}")
+#				c.push("piis.last_name LIKE :t#{i}")
+				c.push("first_name LIKE :t#{i}")
+				c.push("last_name LIKE :t#{i}")
 				c.push("identifiers.patid LIKE :t#{i}")
 				c.push("identifiers.childid LIKE :t#{i}")
 				c.push("gift_cards.number LIKE :t#{i}") if search_gift_cards

@@ -375,16 +375,16 @@ Factory.define :phone_type do |f|
 #	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
-Factory.define :subjectless_pii, :class => 'Pii' do |f|
-	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
-	f.dob { random_date }	#Date.jd(2440000+rand(15000))
-end
-Factory.define :pii, :parent => :subjectless_pii do |f|
-	f.association :study_subject
-end
-Factory.define :case_pii, :parent => :pii do |f|
-	f.association :study_subject, :factory => :case_study_subject
-end
+#Factory.define :subjectless_pii, :class => 'Pii' do |f|
+#	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
+#	f.dob { random_date }	#Date.jd(2440000+rand(15000))
+#end
+#Factory.define :pii, :parent => :subjectless_pii do |f|
+#	f.association :study_subject
+#end
+#Factory.define :case_pii, :parent => :pii do |f|
+#	f.association :study_subject, :factory => :case_study_subject
+#end
 
 Factory.define :project_outcome do |f|
 	f.sequence(:code)        { |n| "Code#{n}" }
@@ -454,6 +454,8 @@ Factory.define :study_subject do |f|
 	f.association :subject_type
 	f.association :vital_status
 	f.sex { random_sex }
+	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
+	f.dob { random_date }	#Date.jd(2440000+rand(15000))
 end
 Factory.define :case_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
@@ -478,7 +480,7 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 #	Actually, this mucks up sequencing.  Calling this factory twice results in uniqueness validation failures.
 #	If these calls are wrapped in {}, the sequencing is fine.  Its all about when its called
 #		and the {} delay the execution of the Factory.attributes_for
-	f.pii_attributes { Factory.attributes_for(:pii) }	#	as this is attributes_for, doesn't need to be "subjectless_pii"
+#	f.pii_attributes { Factory.attributes_for(:pii) }	#	as this is attributes_for, doesn't need to be "subjectless_pii"
 	f.patient_attributes { Factory.attributes_for(:patient) }
 	f.identifier_attributes { Factory.attributes_for(:case_identifier) }
 end
@@ -493,7 +495,7 @@ Factory.define :control_study_subject, :parent => :study_subject do |f|
 end
 Factory.define :complete_control_study_subject, :parent => :control_study_subject do |f|
 	#	as these are attributes_for, don't need to be "subjectless_*"
-	f.pii_attributes { Factory.attributes_for(:pii) }	
+#	f.pii_attributes { Factory.attributes_for(:pii) }	
 	f.identifier_attributes { Factory.attributes_for(:control_identifier) }
 end
 Factory.define :mother_study_subject, :parent => :study_subject do |f|
@@ -502,7 +504,7 @@ Factory.define :mother_study_subject, :parent => :study_subject do |f|
 end
 Factory.define :complete_mother_study_subject, :parent => :mother_study_subject do |f|
 	#	as these are attributes_for, don't need to be "subjectless_*"
-	f.pii_attributes { Factory.attributes_for(:pii) }	
+#	f.pii_attributes { Factory.attributes_for(:pii) }	
 	f.identifier_attributes { Factory.attributes_for(:mother_identifier) }
 end
 #Factory.define :father_study_subject, :parent => :study_subject do |f|

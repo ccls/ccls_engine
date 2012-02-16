@@ -16,24 +16,24 @@ base.class_eval do
 			o.delegate :organization_id
 			o.delegate :hospital_no
 		end
-		n.with_options :to => :pii do |o|
-			o.delegate :initials
-			o.delegate :email
-			o.delegate :first_name
-			o.delegate :middle_name
-			o.delegate :last_name
-			o.delegate :maiden_name
-			o.delegate :dob
-			o.delegate :fathers_name
-			o.delegate :father_first_name
-			o.delegate :father_middle_name
-			o.delegate :father_last_name
-			o.delegate :mothers_name
-			o.delegate :mother_first_name
-			o.delegate :mother_middle_name
-			o.delegate :mother_last_name
-			o.delegate :mother_maiden_name
-		end
+#		n.with_options :to => :pii do |o|
+#			o.delegate :initials
+#			o.delegate :email
+#			o.delegate :first_name
+#			o.delegate :middle_name
+#			o.delegate :last_name
+#			o.delegate :maiden_name
+#			o.delegate :dob
+#			o.delegate :fathers_name
+#			o.delegate :father_first_name
+#			o.delegate :father_middle_name
+#			o.delegate :father_last_name
+#			o.delegate :mothers_name
+#			o.delegate :mother_first_name
+#			o.delegate :mother_middle_name
+#			o.delegate :mother_last_name
+#			o.delegate :mother_maiden_name
+#		end
 		n.with_options :to => :identifier do |o|
 			o.delegate :state_id_no
 			o.delegate :state_registrar_no

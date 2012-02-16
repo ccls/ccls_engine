@@ -328,7 +328,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		control_subject = candidate_control.study_subject
 		assert_equal attribute, candidate_control.mother_first_name
-		assert_equal attribute, control_subject.pii.mother_first_name
+#		assert_equal attribute, control_subject.pii.mother_first_name
+		assert_equal attribute, control_subject.mother_first_name
 	end
 
 	test "should create control from attributes and copy mother_middle_name" do
@@ -338,7 +339,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		control_subject = candidate_control.study_subject
 		assert_equal attribute, candidate_control.mother_middle_name
-		assert_equal attribute, control_subject.pii.mother_middle_name
+#		assert_equal attribute, control_subject.pii.mother_middle_name
+		assert_equal attribute, control_subject.mother_middle_name
 	end
 
 	test "should create control from attributes and copy mother_last_name" do
@@ -348,7 +350,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		control_subject = candidate_control.study_subject
 		assert_equal attribute, candidate_control.mother_last_name
-		assert_equal attribute, control_subject.pii.mother_last_name
+#		assert_equal attribute, control_subject.pii.mother_last_name
+		assert_equal attribute, control_subject.mother_last_name
 	end
 
 	test "should create control from attributes and copy mother_maiden_name" do
@@ -368,7 +371,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		control_subject = candidate_control.study_subject
 		assert_equal attribute, candidate_control.mother_race_id
-		assert_equal attribute, control_subject.pii.mother_race_id
+#		assert_equal attribute, control_subject.pii.mother_race_id
+		assert_equal attribute, control_subject.mother_race_id
 	end
 
 	test "should create control from attributes and copy father_race_id" do
@@ -378,7 +382,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		control_subject = candidate_control.study_subject
 		assert_equal attribute, candidate_control.father_race_id
-		assert_equal attribute, control_subject.pii.father_race_id
+#		assert_equal attribute, control_subject.pii.father_race_id
+		assert_equal attribute, control_subject.father_race_id
 	end
 
 	test "should create control from attributes and copy mom_is_biomom" do
@@ -579,11 +584,11 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 			).raises(ActiveRecord::RecordNotSaved)
 		assert_difference('Enrollment.count',0) {
 		assert_difference('Identifier.count',0) {
-		assert_difference('Pii.count',0) {
+#		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } }
+		} } } } #}
 	end
 
 	test "should rollback if create_mother raises error" do
@@ -593,11 +598,11 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 			).raises(ActiveRecord::RecordNotSaved)
 		assert_difference('Enrollment.count',0) {
 		assert_difference('Identifier.count',0) {
-		assert_difference('Pii.count',0) {
+#		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } }
+		} } } } #}
 	end
 
 	test "should rollback if assign_icf_master_id raises error" do
@@ -607,11 +612,11 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 			).raises(ActiveRecord::RecordNotSaved)
 		assert_difference('Enrollment.count',0) {
 		assert_difference('Identifier.count',0) {
-		assert_difference('Pii.count',0) {
+#		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } }
+		} } } } #}
 	end
 
 	test "should rollback if create_study_subject raises error" do
@@ -620,11 +625,11 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		StudySubject.any_instance.stubs(:create_or_update).returns(false)
 		assert_difference('Enrollment.count',0) {
 		assert_difference('Identifier.count',0) {
-		assert_difference('Pii.count',0) {
+#		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } }
+		} } } } #}
 	end
 
 	#
@@ -637,10 +642,10 @@ protected
 	def create_study_subjects_for_candidate_control(candidate,case_subject)
 		assert_difference('Enrollment.count',2) {	#	both get auto-created ccls enrollment
 		assert_difference('Identifier.count',2) {
-		assert_difference('Pii.count',2) {
+#		assert_difference('Pii.count',2) {
 		assert_difference('StudySubject.count',2) {
 			candidate.create_study_subjects(case_subject)
-		} } } }
+		} } } #}
 	end
 
 #	def create_patient_for_subject(subject)

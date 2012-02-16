@@ -80,7 +80,7 @@ namespace :odms_destroy do
 		Interview.destroy_all
 		Identifier.destroy_all
 		Patient.destroy_all
-		Pii.destroy_all
+#		Pii.destroy_all
 		Sample.destroy_all
 		SampleKit.destroy_all
 		Package.destroy_all
@@ -198,22 +198,22 @@ namespace :odms_import do
 					format_date(s.patient.try(:admit_date)),
 					s.patient.try(:diagnosis_id),
 					nil,
-					s.pii.first_name,
-					s.pii.middle_name,
-					s.pii.last_name,
-					s.pii.maiden_name,
-					format_date(s.pii.dob),
-					format_date(s.pii.died_on),
-					s.pii.mother_first_name,
-					s.pii.mother_maiden_name,
-					s.pii.mother_last_name,
-					s.pii.father_first_name,
-					s.pii.father_last_name,
+					s.first_name,
+					s.middle_name,
+					s.last_name,
+					s.maiden_name,
+					format_date(s.dob),
+					format_date(s.died_on),
+					s.mother_first_name,
+					s.mother_maiden_name,
+					s.mother_last_name,
+					s.father_first_name,
+					s.father_last_name,
 					s.patient.try(:was_previously_treated),
 					s.patient.try(:was_under_15_at_dx),
 					s.patient.try(:raf_zip),
 					s.patient.try(:raf_county),
-					s.pii.birth_year,
+					s.birth_year,
 					s.patient.try(:hospital_no),
 					s.patient.try(:organization_id),
 					s.patient.try(:other_diagnosis)
@@ -750,28 +750,28 @@ namespace :odms_import do
 #
 #		Models built in block mode to avoid protected attributes
 #
-			pii = Pii.new do |m|
-				m.birth_year         = line['birth_year']
-				m.created_at         = line['created_at']
-				m.first_name         = line['first_name']
-				m.middle_name        = line['middle_name']
-				m.last_name          = line['last_name']
-				m.maiden_name        = line['maiden_name']
-				m.died_on            = ( line['died_on'].blank? 
-					) ? nil : Time.parse(line['died_on'])
-				m.mother_first_name  = line['mother_first_name']
-				m.mother_maiden_name = line['mother_maiden_name']
-				m.mother_last_name   = line['mother_last_name']
-				m.father_first_name  = line['father_first_name']
-				m.father_last_name   = line['father_last_name']
-
-				m.dob                = ( line['dob'].blank? 
-						) ? nil : Time.parse(line['dob']).to_date
-				if line['subject_type_id'].to_i == SubjectType['Mother'].id
-					m.subject_is_mother = true
-				end
-
-			end
+#			pii = Pii.new do |m|
+#				m.birth_year         = line['birth_year']
+#				m.created_at         = line['created_at']
+#				m.first_name         = line['first_name']
+#				m.middle_name        = line['middle_name']
+#				m.last_name          = line['last_name']
+#				m.maiden_name        = line['maiden_name']
+#				m.died_on            = ( line['died_on'].blank? 
+#					) ? nil : Time.parse(line['died_on'])
+#				m.mother_first_name  = line['mother_first_name']
+#				m.mother_maiden_name = line['mother_maiden_name']
+#				m.mother_last_name   = line['mother_last_name']
+#				m.father_first_name  = line['father_first_name']
+#				m.father_last_name   = line['father_last_name']
+#
+#				m.dob                = ( line['dob'].blank? 
+#						) ? nil : Time.parse(line['dob']).to_date
+#				if line['subject_type_id'].to_i == SubjectType['Mother'].id
+#					m.subject_is_mother = true
+#				end
+#
+#			end
 
 			identifier = Identifier.new do |m|
 				m.subjectid     = line['subjectid']
@@ -801,9 +801,29 @@ namespace :odms_import do
 				:sex             => line['sex'],
 				:reference_date  => ( line['reference_date'].blank?
 						) ? nil : Time.parse(line['reference_date']),
-				:pii             => pii,
+
+				:birth_year         => line['birth_year'],
+				:first_name         => line['first_name'],
+				:middle_name        => line['middle_name'],
+				:last_name          => line['last_name'],
+				:maiden_name        => line['maiden_name'],
+				:died_on            => ( line['died_on'].blank? 
+					) ? nil : Time.parse(line['died_on']),
+				:mother_first_name  => line['mother_first_name'],
+				:mother_maiden_name => line['mother_maiden_name'],
+				:mother_last_name   => line['mother_last_name'],
+				:father_first_name  => line['father_first_name'],
+				:father_last_name   => line['father_last_name'],
+
+				:dob                => ( line['dob'].blank? 
+						) ? nil : Time.parse(line['dob']).to_date,
+
+#				:pii             => pii,
 				:identifier      => identifier
 			}
+			if line['subject_type_id'].to_i == SubjectType['Mother'].id
+				attributes[:subject_is_mother] = true
+			end
 			unless line['vital_status_id'].blank?
 				attributes[:vital_status_id] = line['vital_status_id']
 #			else leave as database default
@@ -875,43 +895,43 @@ namespace :odms_import do
 #						"reference_date mismatch:#{s.reference_date}:#{line['reference_date']}:"
 #				end
 
-				pi = s.pii.reload
-				assert pi.first_name == line['first_name'],
-					"first_name mismatch:#{pi.first_name}:#{line['first_name']}:"
-				assert pi.middle_name == line['middle_name'],
-					"middle_name mismatch:#{pi.middle_name}:#{line['middle_name']}:"
-				assert pi.last_name == line['last_name'],
-					"last_name mismatch:#{pi.last_name}:#{line['last_name']}:"
-				assert pi.maiden_name == line['maiden_name'],
-					"maiden_name mismatch:#{pi.maiden_name}:#{line['maiden_name']}:"
+#				pi = s.pii.reload
+				assert s.first_name == line['first_name'],
+					"first_name mismatch:#{s.first_name}:#{line['first_name']}:"
+				assert s.middle_name == line['middle_name'],
+					"middle_name mismatch:#{s.middle_name}:#{line['middle_name']}:"
+				assert s.last_name == line['last_name'],
+					"last_name mismatch:#{s.last_name}:#{line['last_name']}:"
+				assert s.maiden_name == line['maiden_name'],
+					"maiden_name mismatch:#{s.maiden_name}:#{line['maiden_name']}:"
 
 				if line['dob'].blank?
-					assert pi.dob.nil?, 'dob not nil'
+					assert s.dob.nil?, 'dob not nil'
 				else
-					assert !pi.dob.nil?, 'dob nil'
-					assert pi.dob == Time.parse(line['dob']).to_date,
-						"dob mismatch:#{pi.dob}:#{line['dob']}:"
+					assert !s.dob.nil?, 'dob nil'
+					assert s.dob == Time.parse(line['dob']).to_date,
+						"dob mismatch:#{s.dob}:#{line['dob']}:"
 				end
 				if line['died_on'].blank?
-					assert pi.died_on.nil?, 'died_on not nil'
+					assert s.died_on.nil?, 'died_on not nil'
 				else
-					assert !pi.died_on.nil?, 'died_on nil'
-					assert pi.died_on == Time.parse(line['died_on']).to_date,
-						"died_on mismatch:#{pi.died_on}:#{line['died_on']}:"
+					assert !s.died_on.nil?, 'died_on nil'
+					assert s.died_on == Time.parse(line['died_on']).to_date,
+						"died_on mismatch:#{s.died_on}:#{line['died_on']}:"
 				end
 
-				assert pi.mother_first_name == line['mother_first_name'],
-					"mother_first_name mismatch:#{pi.mother_first_name}:#{line['mother_first_name']}:"
-				assert pi.mother_maiden_name == line['mother_maiden_name'],
-					"mother_maiden_name mismatch:#{pi.mother_maiden_name}:#{line['mother_maiden_name']}:"
-				assert pi.mother_last_name == line['mother_last_name'],
-					"mother_last_name mismatch:#{pi.mother_last_name}:#{line['mother_last_name']}:"
-				assert pi.father_first_name == line['father_first_name'],
-					"father_first_name mismatch:#{pi.father_first_name}:#{line['father_first_name']}:"
-				assert pi.father_last_name == line['father_last_name'],
-					"father_last_name mismatch:#{pi.father_last_name}:#{line['father_last_name']}:"
-				assert pi.birth_year == line['birth_year'],
-					"birth_year mismatch:#{pi.birth_year}:#{line['birth_year']}:"
+				assert s.mother_first_name == line['mother_first_name'],
+					"mother_first_name mismatch:#{s.mother_first_name}:#{line['mother_first_name']}:"
+				assert s.mother_maiden_name == line['mother_maiden_name'],
+					"mother_maiden_name mismatch:#{s.mother_maiden_name}:#{line['mother_maiden_name']}:"
+				assert s.mother_last_name == line['mother_last_name'],
+					"mother_last_name mismatch:#{s.mother_last_name}:#{line['mother_last_name']}:"
+				assert s.father_first_name == line['father_first_name'],
+					"father_first_name mismatch:#{s.father_first_name}:#{line['father_first_name']}:"
+				assert s.father_last_name == line['father_last_name'],
+					"father_last_name mismatch:#{s.father_last_name}:#{line['father_last_name']}:"
+				assert s.birth_year == line['birth_year'],
+					"birth_year mismatch:#{s.birth_year}:#{line['birth_year']}:"
 
 
 				pa = s.patient

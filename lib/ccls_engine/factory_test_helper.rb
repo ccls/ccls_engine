@@ -140,9 +140,10 @@ module Ccls::FactoryTestHelper
 		:three_study_subjects_with_patid
 
 	def create_study_subject_with_last_name(last_name)
-		create_study_subject(
-			:pii_attributes => Factory.attributes_for(:pii, 
-				:last_name => last_name ))
+#		create_study_subject(
+#			:pii_attributes => Factory.attributes_for(:pii, 
+#				:last_name => last_name ))
+		create_study_subject( :last_name => last_name )
 	end
 	
 	def three_study_subjects_with_last_name
@@ -150,9 +151,10 @@ module Ccls::FactoryTestHelper
 	end
 
 	def create_study_subject_with_first_name(first_name)
-		create_study_subject(
-			:pii_attributes => Factory.attributes_for(:pii, 
-				:first_name => first_name ))
+#		create_study_subject(
+#			:pii_attributes => Factory.attributes_for(:pii, 
+#				:first_name => first_name ))
+		create_study_subject( :first_name => first_name )
 	end
 	
 	def three_study_subjects_with_first_name
@@ -160,9 +162,11 @@ module Ccls::FactoryTestHelper
 	end
 
 	def create_study_subject_with_dob(dob)
-		create_study_subject(
-			:pii_attributes => Factory.attributes_for(:pii, 
-				:dob => Time.parse(dob) ))	#	Time.parse?  Why not Date?
+#		create_study_subject(
+#			:pii_attributes => Factory.attributes_for(:pii, 
+#				:dob => Time.parse(dob) ))	#	Time.parse?  Why not Date?
+		#	Time.parse?  Why not Date? Time.parse parses better.
+		create_study_subject( :dob => Time.parse(dob) )	
 	end
 
 	def three_study_subjects_with_dob

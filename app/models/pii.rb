@@ -1,13 +1,24 @@
+#
+#	Simply extracted some code to clean up model.
+#	I'd like to do this to all of the really big classes
+#	but let's see how this goes first.
+#
+module Pii
+def self.included(base)
+#	Must delay the calls to these ActiveRecord methods
+#	or it will raise many "undefined method"s.
+base.class_eval do
+
 # == PII (Personally Identifiable Information)
 #	==	requires
 #	*	study_subject_id
-class Pii < ActiveRecordShared
+#class Pii < ActiveRecordShared
 
-	belongs_to :study_subject
+#	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
 	delegate :is_other?,    :to => :guardian_relationship, :allow_nil => true, :prefix => true
-	delegate :subject_type, :to => :study_subject, :allow_nil => true
+#	delegate :subject_type, :to => :study_subject, :allow_nil => true
 
 	#	Basically, this is only used as a flag during nested creation
 	#	to determine if the dob is required.
@@ -16,7 +27,7 @@ class Pii < ActiveRecordShared
 	#	Father seems to be irrelevant so commenting out code.
 	#	attr_accessor :subject_is_father
 
-	attr_protected :study_subject_id
+#	attr_protected :study_subject_id
 
 	before_validation :nullify_blank_fields
 
@@ -90,16 +101,19 @@ protected
 #
 # logger levels are ... debug, info, warn, error, and fatal.
 #
+
+#	TODO this will need uncommented and checkec
 	def trigger_setting_was_under_15_at_dx
-		logger.debug "DEBUG: calling update_patient_was_under_15_at_dx from Pii:#{self.attributes['id']}"
+		logger.debug "DEBUG: calling update_patient_was_under_15_at_dx from StudySubject:#{self.attributes['id']}"
 		logger.debug "DEBUG: DOB changed from:#{dob_was}:to:#{dob}"
-		if study_subject
-			logger.debug "DEBUG: study_subject:#{study_subject.id}"
-			study_subject.update_patient_was_under_15_at_dx
-		else
-			# This should never happen, except in testing.
-			logger.warn "WARNING: Pii(#{self.attributes['id']}) is missing study_subject"
-		end
+		update_patient_was_under_15_at_dx
+#		if study_subject
+#			logger.debug "DEBUG: study_subject:#{study_subject.id}"
+#			study_subject.update_patient_was_under_15_at_dx
+#		else
+#			# This should never happen, except in testing.
+#			logger.warn "WARNING: Pii(#{self.attributes['id']}) is missing study_subject"
+#		end
 	end
 
 	def nullify_blank_fields
@@ -122,4 +136,7 @@ protected
 #		self.guardian_last_name = nil if guardian_last_name.blank?
 	end
 
-end
+
+end	#	class_eval
+end	#	included
+end	#	Pii

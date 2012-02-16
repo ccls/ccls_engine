@@ -15,7 +15,7 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 		assert_equal subject.sex, 'M'
 		assert_equal subject.subject_type, SubjectType['Case']
 		assert_nil subject.identifier
-		assert_not_nil subject.pii
+#		assert_not_nil subject.pii
 		assert_not_nil subject.dob
 		assert_not_nil subject.patient
 		assert_not_nil subject.admit_date
@@ -43,17 +43,21 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:sex => 'M',
-			:pii_attributes => { :dob => study_subject.dob } )
+			:dob => study_subject.dob )
+#			:pii_attributes => { :dob => study_subject.dob } )
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
 
 	test "should return subject as duplicate if has matching " <<
 			"dob and sex and mother_maiden_name" do
-		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
+#		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
+		study_subject = create_case_study_subject_for_duplicate_search(
+			:mother_maiden_name => 'Smith' )
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:sex => 'M',
-			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+			:dob => study_subject.dob, :mother_maiden_name => 'Smith' )
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
@@ -63,17 +67,21 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:sex => 'M',
-			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+			:dob => study_subject.dob, :mother_maiden_name => 'Smith' )
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
 
 	test "should return subject as duplicate if has matching " <<
 			"dob and sex and existing mother_maiden_name is blank" do
-		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => '' })
+#		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => '' })
+		study_subject = create_case_study_subject_for_duplicate_search(
+			:mother_maiden_name => '' )
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:sex => 'M',
-			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Smith' } )
+			:dob => study_subject.dob, :mother_maiden_name => 'Smith' )
 		@duplicates = new_study_subject.duplicates
 		assert_duplicates_found
 	end
@@ -83,17 +91,21 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:sex => 'M',
-			:pii_attributes => { :dob => study_subject.dob } )
+			:dob => study_subject.dob )
+#			:pii_attributes => { :dob => study_subject.dob } )
 		@duplicates = new_study_subject.duplicates(:exclude_id => study_subject.id)
 		assert_no_duplicates_found
 	end
 
 	test "should NOT return subject as duplicate if has matching " <<
 			"dob and sex and differing mother_maiden_name" do
-		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
+#		study_subject = create_case_study_subject_for_duplicate_search(:pii_attributes => { :mother_maiden_name => 'Smith' })
+		study_subject = create_case_study_subject_for_duplicate_search(
+			:mother_maiden_name => 'Smith' )
 		new_study_subject = new_case_study_subject_for_duplicate_search(
 			:sex => 'M',
-			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Jones' } )
+#			:pii_attributes => { :dob => study_subject.dob, :mother_maiden_name => 'Jones' } )
+			:dob => study_subject.dob, :mother_maiden_name => 'Jones' )
 		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
@@ -101,7 +113,8 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 	test "should NOT return subject as duplicate if just has matching dob" do
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
-			:pii_attributes => { :dob => study_subject.dob } )
+			:dob => study_subject.dob )
+#			:pii_attributes => { :dob => study_subject.dob } )
 		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
@@ -109,7 +122,8 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 	test "should NOT return subject as duplicate if has matching dob and blank sex" do
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
-			:sex => ' ', :pii_attributes => { :dob => study_subject.dob } )
+			:sex => ' ', :dob => study_subject.dob )
+#			:sex => ' ', :pii_attributes => { :dob => study_subject.dob } )
 		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
@@ -125,7 +139,8 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 	test "should NOT return subject as duplicate if just matching sex and blank dob" do
 		study_subject = create_case_study_subject_for_duplicate_search
 		new_study_subject = new_case_study_subject_for_duplicate_search(
-			:sex => study_subject.sex, :pii_attributes => { :dob => ' ' } )
+			:sex => study_subject.sex, :dob => ' ' )
+#			:sex => study_subject.sex, :pii_attributes => { :dob => ' ' } )
 		@duplicates = new_study_subject.duplicates
 		assert_no_duplicates_found
 	end
@@ -405,8 +420,9 @@ protected
 
 	def create_case_study_subject_for_duplicate_search(options={})
 		Factory(:case_study_subject, { :sex => 'M',
-			:pii_attributes => Factory.attributes_for(:pii,
-				:dob => Date.yesterday),
+			:dob => Date.yesterday,
+#			:pii_attributes => Factory.attributes_for(:pii,
+#				:dob => Date.yesterday),
 #	we no longer need the identifier in the check since hospital_no moved
 #			:identifier_attributes => Factory.attributes_for(:identifier),
 			:patient_attributes => Factory.attributes_for(:patient,
@@ -416,8 +432,9 @@ protected
 
 	def new_case_study_subject_for_duplicate_search(options={})
 		Factory.build(:case_study_subject, { :sex => 'F',
-			:pii_attributes => Factory.attributes_for(:pii,
-				:dob => Date.today),
+			:dob => Date.today,
+#			:pii_attributes => Factory.attributes_for(:pii,
+#				:dob => Date.today),
 #	we no longer need the identifier in the check since hospital_no moved
 #			:identifier_attributes => Factory.attributes_for(:identifier),
 			:patient_attributes => Factory.attributes_for(:patient,

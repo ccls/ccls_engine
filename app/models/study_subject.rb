@@ -9,6 +9,7 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectCallbacks
 	include StudySubjectValidations
 	include StudySubjectDelegations
+	include Pii
 
 
 	#	can lead to multiple piis in db for study_subject
@@ -43,7 +44,7 @@ class StudySubject < ActiveRecordShared
 	accepts_nested_attributes_for :subject_languages, 
 		:allow_destroy => true,
 		:reject_if => proc{|attributes| attributes['language_id'].blank? }
-	accepts_nested_attributes_for :pii
+#	accepts_nested_attributes_for :pii
 	accepts_nested_attributes_for :homex_outcome
 	accepts_nested_attributes_for :identifier
 	accepts_nested_attributes_for :patient
@@ -56,7 +57,8 @@ class StudySubject < ActiveRecordShared
 		if subject_type_id == StudySubject.subject_type_mother_id
 #	&& !identifier.nil? && !identifier.familyid.blank?
 			StudySubject.find(:first,
-				:include => [:pii,:identifier,:subject_type],
+#				:include => [:pii,:identifier,:subject_type],
+				:include => [:identifier,:subject_type],
 				:joins => :identifier,
 				:conditions => [
 #					"study_subjects.id != ? AND identifiers.subjectid = ?", 
@@ -75,7 +77,8 @@ class StudySubject < ActiveRecordShared
 #	TODO what if familyid is NULL?
 #	if !identifier.nil? && !identifier.familyid.blank?
 		StudySubject.find(:first,
-			:include => [:pii,:identifier,:subject_type],
+#			:include => [:pii,:identifier,:subject_type],
+			:include => [:identifier,:subject_type],
 			:joins => :identifier,
 			:conditions => { 
 				'identifiers.familyid' => identifier.familyid,
@@ -88,7 +91,8 @@ class StudySubject < ActiveRecordShared
 	def family
 		if !identifier.nil? && !identifier.familyid.blank?
 			StudySubject.find(:all,
-				:include => [:pii,:identifier,:subject_type],
+#				:include => [:pii,:identifier,:subject_type],
+				:include => [:identifier,:subject_type],
 				:joins => :identifier,
 				:conditions => [
 					"study_subjects.id != ? AND identifiers.familyid = ?", 
@@ -103,7 +107,8 @@ class StudySubject < ActiveRecordShared
 	def matching
 		if !identifier.nil? && !identifier.matchingid.blank?
 			StudySubject.find(:all,
-				:include => [:pii,:identifier,:subject_type],
+#				:include => [:pii,:identifier,:subject_type],
+				:include => [:identifier,:subject_type],
 				:joins => :identifier,
 				:conditions => [
 					"study_subjects.id != ? AND identifiers.matchingid = ?", 
@@ -120,7 +125,8 @@ class StudySubject < ActiveRecordShared
 	def controls
 		return [] unless is_case?
 		StudySubject.find(:all, 
-			:include => [:pii,:identifier,:subject_type],
+#			:include => [:pii,:identifier,:subject_type],
+			:include => [:identifier,:subject_type],
 			:joins => :identifier,
 			:conditions => [
 				"study_subjects.id != ? AND identifiers.patid = ? AND subject_type_id = ?", 
@@ -145,16 +151,17 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def to_s
-		require_dependency 'pii.rb' unless Pii
+#		require_dependency 'pii.rb' unless Pii
 		#	interesting that I don't have to load 'identifier.rb' ???
 		[childid,'(',studyid,full_name,')'].compact.join(' ')
 	end
 
-	#	The default full_name if non-existant is ALSO in pii.
-	#	Can't delegate this or won't get '[name not available]' if no pii
-	def full_name
-		pii.try(:full_name) || '[name not available]'
-	end
+#	#	The default full_name if non-existant is ALSO in pii.
+#	#	Can't delegate this or won't get '[name not available]' if no pii
+#	def full_name
+##		pii.try(:full_name) || '[name not available]'
+#		full_name || '[name not available]'
+#	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Case
@@ -227,14 +234,14 @@ class StudySubject < ActiveRecordShared
 				:vital_status => VitalStatus['living'],
 				:sex => 'F',			#	TODO M/F or male/female? have to check.
 #				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
-				:pii_attributes => {
+#				:pii_attributes => {
 					:first_name  => mother_first_name,
 					:middle_name => mother_middle_name,
 					:last_name   => mother_last_name,
 					:maiden_name => mother_maiden_name,
 					#	flag to not require the dob as won't have one
-					:subject_is_mother => true  
-				},
+					:subject_is_mother => true,
+#				},
 				:identifier => Identifier.new { |i|
 					#	protected attributes!
 					i.matchingid = identifier.matchingid
@@ -341,7 +348,7 @@ class StudySubject < ActiveRecordShared
 				#	otherwise would only include subjects with pii, patient and identifier,
 				#	which would effectively exclude controls. (maybe that's ok?. NOT OK.)
 				:joins => [
-					'LEFT JOIN piis ON study_subjects.id = piis.study_subject_id',
+#					'LEFT JOIN piis ON study_subjects.id = piis.study_subject_id',
 					'LEFT JOIN patients ON study_subjects.id = patients.study_subject_id',
 					'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id'
 				],

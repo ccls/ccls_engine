@@ -45,10 +45,13 @@ base.class_eval do
 	def update_patient_was_under_15_at_dx
 		#	due to the high probability that self, pii and patient will not
 		#		yet be resolved, we have to get the associations manually.
-		my_pii     = Pii.find_by_study_subject_id(self.attributes['id'])
+#		my_pii     = Pii.find_by_study_subject_id(self.attributes['id'])
 		my_patient = Patient.find_by_study_subject_id(self.attributes['id'])
-		if my_pii && my_pii.dob && my_patient && my_patient.admit_date &&
-				my_pii.dob.to_date != Date.parse('1/1/1900') &&
+#		if my_pii && my_pii.dob && my_patient && my_patient.admit_date &&
+#				my_pii.dob.to_date != Date.parse('1/1/1900') &&
+#				my_patient.admit_date.to_date != Date.parse('1/1/1900')
+		if dob && my_patient && my_patient.admit_date &&
+				dob.to_date != Date.parse('1/1/1900') &&
 				my_patient.admit_date.to_date != Date.parse('1/1/1900')
 			#
 			#	update_all(updates, conditions = nil, options = {})
@@ -67,7 +70,8 @@ base.class_eval do
 			#	crude and probably off by a couple days
 			#	would be better to compare year, month then day
 			was_under_15 = (((
-				my_patient.admit_date.to_date - my_pii.dob.to_date 
+#				my_patient.admit_date.to_date - my_pii.dob.to_date 
+				my_patient.admit_date.to_date - dob.to_date 
 				) / 365 ) < 15 ) ? YNDK[:yes] : YNDK[:no]
 			Patient.update_all({ :was_under_15_at_dx => was_under_15 }, 
 				{ :id => my_patient.id })

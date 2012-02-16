@@ -56,7 +56,7 @@ class CandidateControl < ActiveRecordShared
 				:birth_county          => birth_county,
 				:hispanicity_id        => ( 
 					( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
-				:pii_attributes => {
+#				:pii_attributes => {
 					:first_name         => first_name,
 					:middle_name        => middle_name,
 					:last_name          => last_name,
@@ -66,8 +66,8 @@ class CandidateControl < ActiveRecordShared
 					:mother_last_name   => mother_last_name,
 					:mother_maiden_name => mother_maiden_name,
 					:mother_race_id     => mother_race_id,
-					:father_race_id     => father_race_id
-				},
+					:father_race_id     => father_race_id,
+#				},
 				:identifier => child_identifier
 			})
 #	not necessary as ccls enrollment is created in subject

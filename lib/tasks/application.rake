@@ -7,7 +7,8 @@ namespace :ccls do
 		else
 			"."
 		end
-		%w( project enrollment study_subject pii identifier
+#		%w( project enrollment study_subject pii identifier
+		%w( project enrollment study_subject identifier
 				patient phone_number address addressing ).each do |model|
 			puts "Exporting #{model.pluralize} ..."
 			File.open("#{outdir}/#{model.pluralize}.xml",'w'){|f| 
@@ -33,7 +34,7 @@ namespace :ccls do
 			end
 		end
 
-		printf "%-25s %5d\n", "Pii.count:", Pii.count
+#		printf "%-25s %5d\n", "Pii.count:", Pii.count
 		printf "%-25s %5d\n", "Patient.count:", Patient.count
 		%w{ was_under_15_at_dx was_previously_treated was_ca_resident_at_diagnosis 
 		}.each do |field|
