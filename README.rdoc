@@ -66,7 +66,7 @@ When validating the presence of associations, validate on foreign key rather tha
 This seems to work ...
  validates_presence_of :project, :if => :project_id
  validates_presence_of :project_id
-... but is a bit of a misnomer.  The association validation will raise a 'blank' error, rather than a more appropriate 'non-existant' error.
+... but is a bit of a misnomer.  The association validation will raise a 'blank' error, rather than a more appropriate 'non-existant' error, although the message could be altered.
 
 
 Still some models and associations may need done due to priorities and the fact that some never end up in a view and the association may be problematic. (Aliquot,HomexOutcome,Patient)
@@ -134,9 +134,19 @@ Also need to manually add a shared_database.yml with matching configuration.
 
 == Production Installation
 
+Initial database setup (should already be done so don't do this)
 
+ drop the shared production database
+ create the shared production database
+ rake db:migrate RAILS_ENV=production
 
+ # import all the test AND production fixtures
+ rake ccls:full_update RAILS_ENV=production
 
+ # DESTRUCTIVE.  Destroy existing data and parse the csv
+ # files on the "S Drive". These tasks should be
+ # commented out to prevent this from happening.
+ rake odms_import:csv_data
 
 
 
@@ -149,12 +159,11 @@ Also need to manually add a shared_database.yml with matching configuration.
  rake db:migrate RAILS_ENV=production
 
 
-== Testing (as an app)
+== Testing
 
  rake db:migrate
- rake db:fixtures:load
- rake test
- script/server
+ rake test and/or autotest
+ 
 
 == Gemified with Jeweler
 
