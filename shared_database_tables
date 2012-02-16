@@ -924,40 +924,6 @@ Table: icf_master_trackers
 | updated_at                      | datetime     | YES  |     | NULL    |                |
 +---------------------------------+--------------+------+-----+---------+----------------+
 
-Table: identifiers
-+--------------------------+--------------+------+-----+---------+----------------+
-| Field                    | Type         | Null | Key | Default | Extra          |
-+--------------------------+--------------+------+-----+---------+----------------+
-| id                       | int(11)      | NO   | PRI | NULL    | auto_increment |
-| study_subject_id         | int(11)      | YES  | UNI | NULL    |                |
-| childid                  | int(11)      | YES  | UNI | NULL    |                |
-| patid                    | varchar(4)   | YES  | MUL | NULL    |                |
-| case_control_type        | varchar(1)   | YES  |     | NULL    |                |
-| orderno                  | int(11)      | YES  |     | NULL    |                |
-| lab_no                   | varchar(255) | YES  |     | NULL    |                |
-| related_childid          | varchar(255) | YES  |     | NULL    |                |
-| related_case_childid     | varchar(255) | YES  |     | NULL    |                |
-| ssn                      | varchar(255) | YES  | UNI | NULL    |                |
-| subjectid                | varchar(6)   | YES  | UNI | NULL    |                |
-| matchingid               | varchar(6)   | YES  |     | NULL    |                |
-| familyid                 | varchar(6)   | YES  |     | NULL    |                |
-| state_id_no              | varchar(255) | YES  | UNI | NULL    |                |
-| childidwho               | varchar(10)  | YES  |     | NULL    |                |
-| studyid                  | varchar(14)  | YES  | UNI | NULL    |                |
-| newid                    | varchar(6)   | YES  |     | NULL    |                |
-| gbid                     | varchar(26)  | YES  | UNI | NULL    |                |
-| lab_no_wiemels           | varchar(25)  | YES  | UNI | NULL    |                |
-| idno_wiemels             | varchar(10)  | YES  | UNI | NULL    |                |
-| accession_no             | varchar(25)  | YES  | UNI | NULL    |                |
-| studyid_nohyphen         | varchar(12)  | YES  | UNI | NULL    |                |
-| studyid_intonly_nohyphen | varchar(12)  | YES  | UNI | NULL    |                |
-| icf_master_id            | varchar(9)   | YES  | UNI | NULL    |                |
-| state_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |
-| local_registrar_no       | varchar(255) | YES  | UNI | NULL    |                |
-| created_at               | datetime     | YES  |     | NULL    |                |
-| updated_at               | datetime     | YES  |     | NULL    |                |
-+--------------------------+--------------+------+-----+---------+----------------+
-
 Table: ineligible_reasons
 +--------------------+--------------+------+-----+---------+----------------+
 | Field              | Type         | Null | Key | Default | Extra          |
@@ -1216,45 +1182,6 @@ Table: phone_types
 | updated_at  | datetime     | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 
-Table: piis
-+-----------------------------+--------------+------+-----+---------+----------------+
-| Field                       | Type         | Null | Key | Default | Extra          |
-+-----------------------------+--------------+------+-----+---------+----------------+
-| id                          | int(11)      | NO   | PRI | NULL    | auto_increment |
-| study_subject_id            | int(11)      | YES  | UNI | NULL    |                |
-| first_name                  | varchar(255) | YES  |     | NULL    |                |
-| middle_name                 | varchar(255) | YES  |     | NULL    |                |
-| last_name                   | varchar(255) | YES  |     | NULL    |                |
-| dob                         | date         | YES  |     | NULL    |                |
-| died_on                     | date         | YES  |     | NULL    |                |
-| mother_first_name           | varchar(255) | YES  |     | NULL    |                |
-| mother_middle_name          | varchar(255) | YES  |     | NULL    |                |
-| mother_maiden_name          | varchar(255) | YES  |     | NULL    |                |
-| mother_last_name            | varchar(255) | YES  |     | NULL    |                |
-| father_first_name           | varchar(255) | YES  |     | NULL    |                |
-| father_middle_name          | varchar(255) | YES  |     | NULL    |                |
-| father_last_name            | varchar(255) | YES  |     | NULL    |                |
-| email                       | varchar(255) | YES  | UNI | NULL    |                |
-| guardian_first_name         | varchar(255) | YES  |     | NULL    |                |
-| guardian_middle_name        | varchar(255) | YES  |     | NULL    |                |
-| guardian_last_name          | varchar(255) | YES  |     | NULL    |                |
-| guardian_relationship_id    | int(11)      | YES  |     | NULL    |                |
-| guardian_relationship_other | varchar(255) | YES  |     | NULL    |                |
-| mother_race_id              | int(11)      | YES  |     | NULL    |                |
-| father_race_id              | int(11)      | YES  |     | NULL    |                |
-| maiden_name                 | varchar(255) | YES  |     | NULL    |                |
-| generational_suffix         | varchar(10)  | YES  |     | NULL    |                |
-| father_generational_suffix  | varchar(10)  | YES  |     | NULL    |                |
-| birth_year                  | varchar(4)   | YES  |     | NULL    |                |
-| birth_city                  | varchar(255) | YES  |     | NULL    |                |
-| birth_state                 | varchar(255) | YES  |     | NULL    |                |
-| birth_country               | varchar(255) | YES  |     | NULL    |                |
-| mother_race_other           | varchar(255) | YES  |     | NULL    |                |
-| father_race_other           | varchar(255) | YES  |     | NULL    |                |
-| created_at                  | datetime     | YES  |     | NULL    |                |
-| updated_at                  | datetime     | YES  |     | NULL    |                |
-+-----------------------------+--------------+------+-----+---------+----------------+
-
 Table: project_outcomes
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
@@ -1416,31 +1343,84 @@ Table: states
 +-------------------+--------------+------+-----+---------+----------------+
 
 Table: study_subjects
-+------------------------+--------------+------+-----+---------+----------------+
-| Field                  | Type         | Null | Key | Default | Extra          |
-+------------------------+--------------+------+-----+---------+----------------+
-| id                     | int(11)      | NO   | PRI | NULL    | auto_increment |
-| subject_type_id        | int(11)      | YES  |     | NULL    |                |
-| vital_status_id        | int(11)      | YES  |     | 1       |                |
-| hispanicity_id         | int(11)      | YES  |     | NULL    |                |
-| reference_date         | date         | YES  |     | NULL    |                |
-| sex                    | varchar(255) | YES  |     | NULL    |                |
-| do_not_contact         | tinyint(1)   | NO   |     | 0       |                |
-| abstracts_count        | int(11)      | YES  |     | 0       |                |
-| mother_yrs_educ        | int(11)      | YES  |     | NULL    |                |
-| father_yrs_educ        | int(11)      | YES  |     | NULL    |                |
-| birth_type             | varchar(255) | YES  |     | NULL    |                |
-| mother_hispanicity_id  | int(11)      | YES  |     | NULL    |                |
-| father_hispanicity_id  | int(11)      | YES  |     | NULL    |                |
-| birth_county           | varchar(255) | YES  |     | NULL    |                |
-| is_duplicate_of        | varchar(6)   | YES  |     | NULL    |                |
-| mother_hispanicity_mex | int(11)      | YES  |     | NULL    |                |
-| father_hispanicity_mex | int(11)      | YES  |     | NULL    |                |
-| mom_is_biomom          | int(11)      | YES  |     | NULL    |                |
-| dad_is_biodad          | int(11)      | YES  |     | NULL    |                |
-| created_at             | datetime     | YES  |     | NULL    |                |
-| updated_at             | datetime     | YES  |     | NULL    |                |
-+------------------------+--------------+------+-----+---------+----------------+
++-----------------------------+--------------+------+-----+---------+----------------+
+| Field                       | Type         | Null | Key | Default | Extra          |
++-----------------------------+--------------+------+-----+---------+----------------+
+| id                          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| subject_type_id             | int(11)      | YES  |     | NULL    |                |
+| vital_status_id             | int(11)      | YES  |     | 1       |                |
+| hispanicity_id              | int(11)      | YES  |     | NULL    |                |
+| reference_date              | date         | YES  |     | NULL    |                |
+| sex                         | varchar(255) | YES  |     | NULL    |                |
+| do_not_contact              | tinyint(1)   | NO   |     | 0       |                |
+| abstracts_count             | int(11)      | YES  |     | 0       |                |
+| mother_yrs_educ             | int(11)      | YES  |     | NULL    |                |
+| father_yrs_educ             | int(11)      | YES  |     | NULL    |                |
+| birth_type                  | varchar(255) | YES  |     | NULL    |                |
+| mother_hispanicity_id       | int(11)      | YES  |     | NULL    |                |
+| father_hispanicity_id       | int(11)      | YES  |     | NULL    |                |
+| birth_county                | varchar(255) | YES  |     | NULL    |                |
+| is_duplicate_of             | varchar(6)   | YES  |     | NULL    |                |
+| mother_hispanicity_mex      | int(11)      | YES  |     | NULL    |                |
+| father_hispanicity_mex      | int(11)      | YES  |     | NULL    |                |
+| mom_is_biomom               | int(11)      | YES  |     | NULL    |                |
+| dad_is_biodad               | int(11)      | YES  |     | NULL    |                |
+| first_name                  | varchar(255) | YES  |     | NULL    |                |
+| middle_name                 | varchar(255) | YES  |     | NULL    |                |
+| last_name                   | varchar(255) | YES  |     | NULL    |                |
+| dob                         | date         | YES  |     | NULL    |                |
+| died_on                     | date         | YES  |     | NULL    |                |
+| mother_first_name           | varchar(255) | YES  |     | NULL    |                |
+| mother_middle_name          | varchar(255) | YES  |     | NULL    |                |
+| mother_maiden_name          | varchar(255) | YES  |     | NULL    |                |
+| mother_last_name            | varchar(255) | YES  |     | NULL    |                |
+| father_first_name           | varchar(255) | YES  |     | NULL    |                |
+| father_middle_name          | varchar(255) | YES  |     | NULL    |                |
+| father_last_name            | varchar(255) | YES  |     | NULL    |                |
+| email                       | varchar(255) | YES  | UNI | NULL    |                |
+| guardian_first_name         | varchar(255) | YES  |     | NULL    |                |
+| guardian_middle_name        | varchar(255) | YES  |     | NULL    |                |
+| guardian_last_name          | varchar(255) | YES  |     | NULL    |                |
+| guardian_relationship_id    | int(11)      | YES  |     | NULL    |                |
+| guardian_relationship_other | varchar(255) | YES  |     | NULL    |                |
+| mother_race_id              | int(11)      | YES  |     | NULL    |                |
+| father_race_id              | int(11)      | YES  |     | NULL    |                |
+| maiden_name                 | varchar(255) | YES  |     | NULL    |                |
+| generational_suffix         | varchar(10)  | YES  |     | NULL    |                |
+| father_generational_suffix  | varchar(10)  | YES  |     | NULL    |                |
+| birth_year                  | varchar(4)   | YES  |     | NULL    |                |
+| birth_city                  | varchar(255) | YES  |     | NULL    |                |
+| birth_state                 | varchar(255) | YES  |     | NULL    |                |
+| birth_country               | varchar(255) | YES  |     | NULL    |                |
+| mother_race_other           | varchar(255) | YES  |     | NULL    |                |
+| father_race_other           | varchar(255) | YES  |     | NULL    |                |
+| childid                     | int(11)      | YES  | UNI | NULL    |                |
+| patid                       | varchar(4)   | YES  | MUL | NULL    |                |
+| case_control_type           | varchar(1)   | YES  |     | NULL    |                |
+| orderno                     | int(11)      | YES  |     | NULL    |                |
+| lab_no                      | varchar(255) | YES  |     | NULL    |                |
+| related_childid             | varchar(255) | YES  |     | NULL    |                |
+| related_case_childid        | varchar(255) | YES  |     | NULL    |                |
+| ssn                         | varchar(255) | YES  | UNI | NULL    |                |
+| subjectid                   | varchar(6)   | YES  | UNI | NULL    |                |
+| matchingid                  | varchar(6)   | YES  |     | NULL    |                |
+| familyid                    | varchar(6)   | YES  |     | NULL    |                |
+| state_id_no                 | varchar(255) | YES  | UNI | NULL    |                |
+| childidwho                  | varchar(10)  | YES  |     | NULL    |                |
+| studyid                     | varchar(14)  | YES  | UNI | NULL    |                |
+| newid                       | varchar(6)   | YES  |     | NULL    |                |
+| gbid                        | varchar(26)  | YES  | UNI | NULL    |                |
+| lab_no_wiemels              | varchar(25)  | YES  | UNI | NULL    |                |
+| idno_wiemels                | varchar(10)  | YES  | UNI | NULL    |                |
+| accession_no                | varchar(25)  | YES  | UNI | NULL    |                |
+| studyid_nohyphen            | varchar(12)  | YES  | UNI | NULL    |                |
+| studyid_intonly_nohyphen    | varchar(12)  | YES  | UNI | NULL    |                |
+| icf_master_id               | varchar(9)   | YES  | UNI | NULL    |                |
+| state_registrar_no          | varchar(255) | YES  | UNI | NULL    |                |
+| local_registrar_no          | varchar(255) | YES  | UNI | NULL    |                |
+| created_at                  | datetime     | YES  |     | NULL    |                |
+| updated_at                  | datetime     | YES  |     | NULL    |                |
++-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: subject_languages
 +------------------+--------------+------+-----+---------+----------------+

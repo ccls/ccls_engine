@@ -29,10 +29,11 @@ class IcfMasterTracker < ActiveRecordShared
 
 	def attach_study_subject
 		unless study_subject_id
-			identifier = Identifier.find_by_icf_master_id(self.Masterid)
-			if identifier and !identifier.study_subject_id.blank?
-				self.study_subject_id = identifier.study_subject_id
-			end
+#			identifier = Identifier.find_by_icf_master_id(self.Masterid)
+#			if identifier and !identifier.study_subject_id.blank?
+#				self.study_subject_id = identifier.study_subject_id
+#			end
+			self.study_subject = StudySubject.find_by_icf_master_id(self.Masterid)
 		end
 	end
 

@@ -9,7 +9,7 @@ class AbstractSearch < Search
 
 	def abstracts
 #		require_dependency 'pii.rb'	unless Pii
-		require_dependency 'identifier.rb' unless Identifier
+#		require_dependency 'identifier.rb' unless Identifier
 		@abstracts ||= Abstract.send(
 			(paginate?)?'paginate':'all',{
 				:order => search_order,

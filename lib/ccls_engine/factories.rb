@@ -223,33 +223,33 @@ end
 Factory.define :icf_master_tracker_update do |f|
 end
 
-Factory.define :subjectless_identifier, :class => 'Identifier' do |f|
-#	f.sequence(:ssn){|n| sprintf("%09d",n) }
-	#	technically, this makes this a control identifier
-	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
-	f.sequence(:state_id_no){|n| "#{n}"}
-	f.sequence(:state_registrar_no){|n| "#{n}"}
-	f.sequence(:local_registrar_no){|n| "#{n}"}
-	f.sequence(:gbid){|n| "#{n}"}
-	f.sequence(:accession_no){|n| "#{n}"}
-	f.sequence(:lab_no_wiemels){|n| "#{n}"}
-	f.sequence(:idno_wiemels){|n| "#{n}"}
-#	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
-end
-Factory.define :identifier, :parent => :subjectless_identifier do |f|
-	f.association :study_subject
-end
-Factory.define :case_identifier, :parent => :identifier do |f|
-	f.association :study_subject, :factory => :case_study_subject
-	f.case_control_type 'c'
-end
-Factory.define :control_identifier, :parent => :identifier do |f|
-	f.association :study_subject, :factory => :control_study_subject
-end
-Factory.define :mother_identifier, :parent => :identifier do |f|
-	f.association :study_subject, :factory => :mother_study_subject
-	f.case_control_type 'm'
-end
+#Factory.define :subjectless_identifier, :class => 'Identifier' do |f|
+##	f.sequence(:ssn){|n| sprintf("%09d",n) }
+#	#	technically, this makes this a control identifier
+#	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
+#	f.sequence(:state_id_no){|n| "#{n}"}
+#	f.sequence(:state_registrar_no){|n| "#{n}"}
+#	f.sequence(:local_registrar_no){|n| "#{n}"}
+#	f.sequence(:gbid){|n| "#{n}"}
+#	f.sequence(:accession_no){|n| "#{n}"}
+#	f.sequence(:lab_no_wiemels){|n| "#{n}"}
+#	f.sequence(:idno_wiemels){|n| "#{n}"}
+##	f.sequence(:icf_master_id){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
+#end
+#Factory.define :identifier, :parent => :subjectless_identifier do |f|
+#	f.association :study_subject
+#end
+#Factory.define :case_identifier, :parent => :identifier do |f|
+#	f.association :study_subject, :factory => :case_study_subject
+#	f.case_control_type 'c'
+#end
+#Factory.define :control_identifier, :parent => :identifier do |f|
+#	f.association :study_subject, :factory => :control_study_subject
+#end
+#Factory.define :mother_identifier, :parent => :identifier do |f|
+#	f.association :study_subject, :factory => :mother_study_subject
+#	f.case_control_type 'm'
+#end
 #Factory.define :father_identifier, :parent => :identifier do |f|
 #	f.association :study_subject, :factory => :father_study_subject
 ##	f.case_control_type 'm'
@@ -456,9 +456,20 @@ Factory.define :study_subject do |f|
 	f.sex { random_sex }
 	f.sequence(:email){|n| "email#{n}@example.com"}	#	required here only to test uniqueness
 	f.dob { random_date }	#Date.jd(2440000+rand(15000))
+
+	f.sequence(:case_control_type){|n| '123456789'.split('')[n%9] }
+	f.sequence(:state_id_no){|n| "#{n}"}
+	f.sequence(:state_registrar_no){|n| "#{n}"}
+	f.sequence(:local_registrar_no){|n| "#{n}"}
+	f.sequence(:gbid){|n| "#{n}"}
+	f.sequence(:accession_no){|n| "#{n}"}
+	f.sequence(:lab_no_wiemels){|n| "#{n}"}
+	f.sequence(:idno_wiemels){|n| "#{n}"}
+
 end
 Factory.define :case_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Case'] }
+	f.case_control_type 'c'
 end
 Factory.define :complete_case_study_subject, :parent => :case_study_subject do |f|
 	#	wrap in {} so is a proc/lambda and runs at runtime NOT at definition
@@ -482,7 +493,7 @@ Factory.define :complete_case_study_subject, :parent => :case_study_subject do |
 #		and the {} delay the execution of the Factory.attributes_for
 #	f.pii_attributes { Factory.attributes_for(:pii) }	#	as this is attributes_for, doesn't need to be "subjectless_pii"
 	f.patient_attributes { Factory.attributes_for(:patient) }
-	f.identifier_attributes { Factory.attributes_for(:case_identifier) }
+#	f.identifier_attributes { Factory.attributes_for(:case_identifier) }
 end
 Factory.define :complete_waivered_case_study_subject, :parent => :complete_case_study_subject do |f|
 	f.patient_attributes { Factory.attributes_for(:waivered_patient) }
@@ -496,16 +507,17 @@ end
 Factory.define :complete_control_study_subject, :parent => :control_study_subject do |f|
 	#	as these are attributes_for, don't need to be "subjectless_*"
 #	f.pii_attributes { Factory.attributes_for(:pii) }	
-	f.identifier_attributes { Factory.attributes_for(:control_identifier) }
+#	f.identifier_attributes { Factory.attributes_for(:control_identifier) }
 end
 Factory.define :mother_study_subject, :parent => :study_subject do |f|
 	f.subject_type { SubjectType['Mother'] }
 	f.sex 'F'
+	f.case_control_type 'm'
 end
 Factory.define :complete_mother_study_subject, :parent => :mother_study_subject do |f|
 	#	as these are attributes_for, don't need to be "subjectless_*"
 #	f.pii_attributes { Factory.attributes_for(:pii) }	
-	f.identifier_attributes { Factory.attributes_for(:mother_identifier) }
+#	f.identifier_attributes { Factory.attributes_for(:mother_identifier) }
 end
 #Factory.define :father_study_subject, :parent => :study_subject do |f|
 #	f.subject_type { SubjectType['Father'] }

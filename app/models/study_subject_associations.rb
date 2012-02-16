@@ -34,7 +34,7 @@ base.class_eval do
 #
 #	identifier should also be before patient
 #
-	has_one :identifier
+#	has_one :identifier
 #	has_one :pii
 	has_one :patient
 #

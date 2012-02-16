@@ -1,7 +1,8 @@
 module Ccls::FactoryTestHelper
 
 	def create_home_exposure_with_study_subject(options={})
-		study_subject = identifier = project = nil
+#		study_subject = identifier = project = nil
+		study_subject = project = nil
 		unless options[:patient].nil?
 			options[:study_subject] ||= {}
 			options[:study_subject][:subject_type] = SubjectType['Case']
@@ -10,19 +11,19 @@ module Ccls::FactoryTestHelper
 			study_subject    = Factory(:study_subject,options[:study_subject]||{})
 		}
 		assert_difference('StudySubject.count',0) {
-		assert_difference('Identifier.count',1) {
-			identifier = Factory(:identifier, 
-				(options[:identifier]||{}).merge(
-					:study_subject => study_subject))
-		} }
+#		assert_difference('Identifier.count',1) {
+#			identifier = Factory(:identifier, 
+#				(options[:identifier]||{}).merge(
+#					:study_subject => study_subject))
+		}# }
 		project = Project.find_or_create_by_code('HomeExposures')
 		assert_not_nil project
 		assert_difference('StudySubject.count',0) {
-		assert_difference('Identifier.count',0) {
+#		assert_difference('Identifier.count',0) {
 		assert_difference('Enrollment.count',1) {
 			Factory(:enrollment, (options[:enrollment]||{}).merge(
 				:study_subject => study_subject, :project => project ))
-		} } }
+		} } #}
 		unless options[:patient].nil?
 			assert_difference('StudySubject.count',0) {
 			assert_difference('Patient.count',1) {
@@ -110,12 +111,18 @@ module Ccls::FactoryTestHelper
 	end
 
 	def create_study_subject_with_childid(childid)
-		Identifier.any_instance.stubs(:get_next_childid).returns(childid)
-		identifier = Factory(:identifier)
-		Identifier.any_instance.unstub(:get_next_childid)
-		assert_not_nil identifier.childid
-		assert_equal childid.to_s, identifier.childid.to_s
-		identifier.study_subject
+#		Identifier.any_instance.stubs(:get_next_childid).returns(childid)
+#		identifier = Factory(:identifier)
+#		Identifier.any_instance.unstub(:get_next_childid)
+#		assert_not_nil identifier.childid
+#		assert_equal childid.to_s, identifier.childid.to_s
+#		identifier.study_subject
+		StudySubject.any_instance.stubs(:get_next_childid).returns(childid)
+		study_subject = Factory(:study_subject)
+		StudySubject.any_instance.unstub(:get_next_childid)
+		assert_not_nil study_subject.childid
+		assert_equal childid.to_s, study_subject.childid.to_s
+		study_subject
 	end
 
 	def three_study_subjects_with_childid
@@ -123,12 +130,18 @@ module Ccls::FactoryTestHelper
 	end
 
 	def create_study_subject_with_patid(patid)
-		identifier = Factory(:identifier)	#not case so shouldn't create patid
-		assert_nil     identifier.patid
-		identifier.update_attribute(:patid, patid)
-		assert_not_nil identifier.patid
-		assert_equal patid.to_s, identifier.patid.to_s
-		identifier.study_subject
+#		identifier = Factory(:identifier)	#not case so shouldn't create patid
+#		assert_nil     identifier.patid
+#		identifier.update_attribute(:patid, patid)
+#		assert_not_nil identifier.patid
+#		assert_equal patid.to_s, identifier.patid.to_s
+#		identifier.study_subject
+		study_subject = Factory(:study_subject)	#not case so shouldn't create patid
+		assert_nil     study_subject.patid
+		study_subject.update_attribute(:patid, patid)
+		assert_not_nil study_subject.patid
+		assert_equal patid.to_s, study_subject.patid.to_s
+		study_subject
 	end
 	alias_method :create_study_subject_with_studyid,
 		:create_study_subject_with_patid
@@ -202,13 +215,16 @@ module Ccls::FactoryTestHelper
 	end
 
 	def create_case_study_subject_with_patid(patid)
-		Identifier.any_instance.stubs(:get_next_patid).returns(patid)
-		study_subject = create_study_subject( 
-			:subject_type => SubjectType['Case'],
-			:identifier_attributes => Factory.attributes_for(:identifier,
-				:case_control_type => 'c')
-		)
-		Identifier.any_instance.unstub(:get_next_patid)
+#		Identifier.any_instance.stubs(:get_next_patid).returns(patid)
+		StudySubject.any_instance.stubs(:get_next_patid).returns(patid)
+		study_subject = create_case_study_subject
+#		study_subject = create_study_subject( 
+#			:subject_type => SubjectType['Case'],
+#			:identifier_attributes => Factory.attributes_for(:identifier,
+#				:case_control_type => 'c')
+#		)
+#		Identifier.any_instance.unstub(:get_next_patid)
+		StudySubject.any_instance.unstub(:get_next_patid)
 		study_subject.reload
 	end
 

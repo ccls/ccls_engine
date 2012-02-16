@@ -87,7 +87,8 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 	test "should include abstract by q childid" do
 		a1,a2 = create_abstracts_with_childids(999999,'1')
 		assert_equal 999999, a1.study_subject.childid
-		abstracts = Abstract.search(:q => a1.study_subject.identifier.childid)
+#		abstracts = Abstract.search(:q => a1.study_subject.identifier.childid)
+		abstracts = Abstract.search(:q => a1.study_subject.childid)
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
 	end
@@ -95,7 +96,8 @@ class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 	test "should include abstract by q patid" do
 		a1,a2 = create_abstracts_with_patids(9999,'1')
 		assert_equal '9999', a1.study_subject.patid
-		abstracts = Abstract.search(:q => a1.study_subject.identifier.patid)
+#		abstracts = Abstract.search(:q => a1.study_subject.identifier.patid)
+		abstracts = Abstract.search(:q => a1.study_subject.patid)
 		assert  abstracts.include?(a1)
 		assert !abstracts.include?(a2)
 	end

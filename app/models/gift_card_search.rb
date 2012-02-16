@@ -7,12 +7,10 @@ class GiftCardSearch < Search
 #	@valid_orders.merge!({      #	NO!
 	self.valid_orders = self.valid_orders.merge({
 		:id => nil,
-		:childid => 'identifiers.childid',
-#		:last_name => 'piis.last_name',
-#		:first_name => 'piis.first_name',
+		:childid => 'study_subjects.childid',
 		:last_name => 'study_subjects.last_name',
 		:first_name => 'study_subjects.first_name',
-		:studyid => 'identifiers.patid',
+		:studyid => 'study_subjects.patid',
 		:number => nil,
 		:issued_on => nil
 	})
@@ -40,12 +38,10 @@ private	#	THIS IS REQUIRED
 			v = {}
 			q.to_s.split(/\s+/).each_with_index do |t,i|
 				c.push("gift_cards.number LIKE :t#{i}")
-#				c.push("piis.first_name LIKE :t#{i}")
-#				c.push("piis.last_name LIKE :t#{i}")
 				c.push("study_subjects.first_name LIKE :t#{i}")
 				c.push("study_subjects.last_name LIKE :t#{i}")
-				c.push("identifiers.patid LIKE :t#{i}")
-				c.push("identifiers.childid LIKE :t#{i}")
+				c.push("study_subjects.patid LIKE :t#{i}")
+				c.push("study_subjects.childid LIKE :t#{i}")
 				v["t#{i}".to_sym] = "%#{t}%"
 			end
 			[ "( #{c.join(' OR ')} )", v ]
@@ -53,9 +49,10 @@ private	#	THIS IS REQUIRED
 	end
 
 	def study_subjects_joins
-		"LEFT JOIN study_subjects ON gift_cards.study_subject_id = study_subjects.id " <<
+		"LEFT JOIN study_subjects ON gift_cards.study_subject_id = study_subjects.id"
+#		"LEFT JOIN study_subjects ON gift_cards.study_subject_id = study_subjects.id " <<
 #			"LEFT JOIN piis ON piis.study_subject_id = study_subjects.id " <<
-			"LEFT JOIN identifiers ON identifiers.study_subject_id = study_subjects.id"
+#			"LEFT JOIN identifiers ON identifiers.study_subject_id = study_subjects.id"
 	end
 
 #	#	must come before other study_subject related joins

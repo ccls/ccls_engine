@@ -1,17 +1,28 @@
+#
+#	Simply extracted some code to clean up model.
+#	I'd like to do this to all of the really big classes
+#	but let's see how this goes first.
+#
+module Identifier
+def self.included(base)
+#	Must delay the calls to these ActiveRecord methods
+#	or it will raise many "undefined method"s.
+base.class_eval do
+
 #	==	requires
 #	*	childid (unique)
 #	*	study_subject_id (unique)
 #	*	state_id_no ( unique )
-class Identifier < ActiveRecordShared
+#class Identifier < ActiveRecordShared
 
-	belongs_to :study_subject
+#	belongs_to :study_subject
 
 	#	Very cool that this doesn't stop factory girl from using them.
 	#	it will stop the study_subject nested_attribute tests though
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
 
-	attr_protected :study_subject_id
+#	attr_protected :study_subject_id
 
 	include IdentifierValidations
 
@@ -31,26 +42,29 @@ class Identifier < ActiveRecordShared
 	after_save :trigger_update_matching_study_subjects_reference_date, 
 		:if => :matchingid_changed?
 
-	def is_mother?
-		case_control_type.blank? or case_control_type == 'M'
-	end
+#	NOT ANY MORE
+#	def is_mother?
+#		case_control_type.blank? or case_control_type == 'M'
+#	end
 
-	def is_case?
-		if study_subject 
-			study_subject.is_case?   # primary check
-		else
-			case_control_type == 'C' # secondary check
-		end
-	end
+#	def is_case?
+#		if study_subject 
+#			study_subject.is_case?   # primary check
+#		else
+#			case_control_type == 'C' # secondary check
+#		end
+#	end
 
-	def is_control?
-		!is_case? and !is_mother?
-	end
+#	NOT ANY MORE
+#	def is_control?
+#		!is_case? and !is_mother?
+#	end
 
 	def self.find_all_by_studyid_or_icf_master_id(studyid,icf_master_id)
 #	if decide to use LIKE, will need to NOT include nils so
 #	will need to add some conditions to the conditions.
-		Identifier.find( :all, 
+#		Identifier.find( :all, 
+		self.find( :all, 
 			:conditions => [
 #				"studyid LIKE '%:studyid%' OR icf_master_id LIKE '%:icf_master_id%'",
 #				{ :studyid => studyid, :icf_master_id => icf_master_id }
@@ -65,17 +79,25 @@ protected
 	#
 	# logger levels are ... debug, info, warn, error, and fatal.
 	#
+
+#	TODO FIX ME
 	def trigger_update_matching_study_subjects_reference_date
-		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from Identifier:#{self.attributes['id']}"
+		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from StudySubject:#{self.attributes['id']}"
 		logger.debug "DEBUG: matchingid changed from:#{matchingid_was}:to:#{matchingid}"
-		if study_subject
-			logger.debug "DEBUG: study_subject:#{study_subject.id}"
-			study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
-		else
-			# This should never happen, except in testing.
-			logger.warn "WARNING: Identifier(#{self.attributes['id']}) is missing study_subject"
-		end
+		self.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
+
+#		if study_subject
+#			logger.debug "DEBUG: study_subject:#{study_subject.id}"
+#			study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
+#		else
+#			# This should never happen, except in testing.
+#			logger.warn "WARNING: Identifier(#{self.attributes['id']}) is missing study_subject"
+#		end
 	end
+
+
+
+
 
 	def prepare_fields_for_validation
 		#	ssn is unique in database so only one could be blank, but all can be nil
@@ -124,13 +146,15 @@ protected
 	#	made separate method so can be stubbed
 	def get_next_childid
 #		(Identifier.maximum(:childid).to_i||0) + 1
-		Identifier.maximum(:childid).to_i + 1
+#		Identifier.maximum(:childid).to_i + 1
+		self.class.maximum(:childid).to_i + 1
 	end
 
 	#	made separate method so can be stubbed
 	def get_next_patid
 #		(Identifier.maximum(:patid).to_i||0) + 1
-		Identifier.maximum(:patid).to_i + 1
+#		Identifier.maximum(:patid).to_i + 1
+		self.class.maximum(:patid).to_i + 1
 #
 #	What happens if/when this goes over 4 digits? 
 #	The database field is only 4 chars.
@@ -209,7 +233,8 @@ protected
 	#	How to rescue from ActiveRecord::RecordInvalid here?
 	#		or would it be RecordNotSaved?
 	def generate_subjectid
-		subjectids = ( (1..999999).to_a - Identifier.find(:all,:select => 'subjectid'
+#		subjectids = ( (1..999999).to_a - Identifier.find(:all,:select => 'subjectid'
+		subjectids = ( (1..999999).to_a - self.class.find(:all,:select => 'subjectid'
 			).collect(&:subjectid).collect(&:to_i) )
 		#	CANNOT have leading 0' as it thinks its octal and converts
 		#>> sprintf("%06d","0001234")
@@ -224,4 +249,7 @@ protected
 		sprintf("%06d",subjectids[rand(subjectids.length)].to_i)
 	end
 
-end
+
+end	#	class_eval
+end	#	included
+end	#	Identifier

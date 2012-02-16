@@ -14,7 +14,7 @@ class Ccls::StudySubjectDuplicatesTest < ActiveSupport::TestCase
 		subject = create_case_study_subject_for_duplicate_search
 		assert_equal subject.sex, 'M'
 		assert_equal subject.subject_type, SubjectType['Case']
-		assert_nil subject.identifier
+#		assert_nil subject.identifier
 #		assert_not_nil subject.pii
 		assert_not_nil subject.dob
 		assert_not_nil subject.patient

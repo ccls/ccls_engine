@@ -149,7 +149,8 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	end
 
 	test "should create control from attributes without patient" do
-		case_study_subject = create_case_identifier.study_subject
+#		case_study_subject = create_case_identifier.study_subject
+		case_study_subject = create_case_study_subject
 		assert_nil case_study_subject.patient
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
@@ -433,42 +434,54 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_not_nil candidate_control.study_subject.identifier.subjectid
-		assert_equal   candidate_control.study_subject.identifier.subjectid.length, 6
+#		assert_not_nil candidate_control.study_subject.identifier.subjectid
+#		assert_equal   candidate_control.study_subject.identifier.subjectid.length, 6
+		assert_not_nil candidate_control.study_subject.subjectid
+		assert_equal   candidate_control.study_subject.subjectid.length, 6
 	end
 
 	test "should create control from attributes and add familyid" do
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_not_nil candidate_control.study_subject.identifier.familyid
-		assert_equal   candidate_control.study_subject.identifier.familyid.length, 6
+#		assert_not_nil candidate_control.study_subject.identifier.familyid
+#		assert_equal   candidate_control.study_subject.identifier.familyid.length, 6
+		assert_not_nil candidate_control.study_subject.familyid
+		assert_equal   candidate_control.study_subject.familyid.length, 6
 	end
 
 	test "should create control from attributes and subjectid should equal familyid" do
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_equal   candidate_control.study_subject.identifier.familyid, 
-										candidate_control.study_subject.identifier.subjectid
+#		assert_equal   candidate_control.study_subject.identifier.familyid, 
+#										candidate_control.study_subject.identifier.subjectid
+		assert_equal   candidate_control.study_subject.familyid, 
+										candidate_control.study_subject.subjectid
 	end
 
 	test "should create control from attributes and copy case matchingid" do
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_not_nil candidate_control.study_subject.identifier.matchingid
-		assert_equal   candidate_control.study_subject.identifier.matchingid, 
-									case_study_subject.identifier.matchingid
+#		assert_not_nil candidate_control.study_subject.identifier.matchingid
+#		assert_equal   candidate_control.study_subject.identifier.matchingid, 
+#									case_study_subject.identifier.matchingid
+		assert_not_nil candidate_control.study_subject.matchingid
+		assert_equal   candidate_control.study_subject.matchingid, 
+									case_study_subject.matchingid
 	end
 
 	test "should create control from attributes and add orderno = 1" do
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_not_nil candidate_control.study_subject.identifier.orderno
+#		assert_not_nil candidate_control.study_subject.identifier.orderno
+#		#	As this will be the first control here ...
+#		assert_equal   candidate_control.study_subject.identifier.orderno, 1		
+		assert_not_nil candidate_control.study_subject.orderno
 		#	As this will be the first control here ...
-		assert_equal   candidate_control.study_subject.identifier.orderno, 1		
+		assert_equal   candidate_control.study_subject.orderno, 1		
 	end
 
 	test "should create second control from attributes and add orderno = 2" do
@@ -477,17 +490,22 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control_1,case_study_subject)
 		candidate_control_2 = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control_2,case_study_subject)
-		assert_not_nil candidate_control_2.study_subject.identifier.orderno
+#		assert_not_nil candidate_control_2.study_subject.identifier.orderno
+#		#	As this will be the second control here ...
+#		assert_equal   candidate_control_2.study_subject.identifier.orderno, 2		
+		assert_not_nil candidate_control_2.study_subject.orderno
 		#	As this will be the second control here ...
-		assert_equal   candidate_control_2.study_subject.identifier.orderno, 2		
+		assert_equal   candidate_control_2.study_subject.orderno, 2		
 	end
 
 	test "should create control from attributes and add studyid" do
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_not_nil candidate_control.study_subject.identifier.studyid		
-		assert_match /\d{4}-\d-\d/, candidate_control.study_subject.identifier.studyid
+#		assert_not_nil candidate_control.study_subject.identifier.studyid		
+#		assert_match /\d{4}-\d-\d/, candidate_control.study_subject.identifier.studyid
+		assert_not_nil candidate_control.study_subject.studyid		
+		assert_match /\d{4}-\d-\d/, candidate_control.study_subject.studyid
 	end
 
 	#	icf_master_id isn't required as may not have any
@@ -496,8 +514,10 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_not_nil candidate_control.study_subject.identifier.icf_master_id
-		assert_equal   candidate_control.study_subject.identifier.icf_master_id, '123456789'
+#		assert_not_nil candidate_control.study_subject.identifier.icf_master_id
+#		assert_equal   candidate_control.study_subject.identifier.icf_master_id, '123456789'
+		assert_not_nil candidate_control.study_subject.icf_master_id
+		assert_equal   candidate_control.study_subject.icf_master_id, '123456789'
 		assert_not_nil imi.reload.study_subject
 		assert_equal   imi.study_subject, candidate_control.study_subject
 		assert_not_nil imi.assigned_on
@@ -510,8 +530,10 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		assert_not_nil candidate_control.study_subject.mother
 		mother = candidate_control.study_subject.mother
-		assert_nil mother.identifier.case_control_type
-		assert_nil mother.identifier.orderno
+#		assert_nil mother.identifier.case_control_type
+#		assert_nil mother.identifier.orderno
+		assert_nil mother.case_control_type
+		assert_nil mother.orderno
 	end
 
 	test "should create mother from attributes and NOT copy case patid" do
@@ -539,9 +561,12 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		mother = candidate_control.study_subject.mother
-		assert_not_nil mother.identifier.matchingid
-		assert_equal   mother.identifier.matchingid, 
-									case_study_subject.identifier.matchingid
+#		assert_not_nil mother.identifier.matchingid
+#		assert_equal   mother.identifier.matchingid, 
+#									case_study_subject.identifier.matchingid
+		assert_not_nil mother.matchingid
+		assert_equal   mother.matchingid, 
+									case_study_subject.matchingid
 	end
 
 	test "should create mother from attributes and copy child familyid" do
@@ -549,9 +574,12 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
 		mother = candidate_control.study_subject.mother
-		assert_not_nil mother.identifier.familyid
-		assert_equal candidate_control.study_subject.identifier.familyid, 
-										mother.identifier.familyid
+#		assert_not_nil mother.identifier.familyid
+#		assert_equal candidate_control.study_subject.identifier.familyid, 
+#										mother.identifier.familyid
+		assert_not_nil mother.familyid
+		assert_equal candidate_control.study_subject.familyid, 
+										mother.familyid
 	end
 
 	#	icf_master_id isn't required as may not have any
@@ -561,10 +589,14 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control)
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
-		assert_not_nil candidate_control.study_subject.identifier.icf_master_id
-		assert_equal   candidate_control.study_subject.identifier.icf_master_id, 'child'
-		assert_not_nil candidate_control.study_subject.mother.identifier.icf_master_id
-		assert_equal   candidate_control.study_subject.mother.identifier.icf_master_id, 'mother'
+#		assert_not_nil candidate_control.study_subject.identifier.icf_master_id
+#		assert_equal   candidate_control.study_subject.identifier.icf_master_id, 'child'
+#		assert_not_nil candidate_control.study_subject.mother.identifier.icf_master_id
+#		assert_equal   candidate_control.study_subject.mother.identifier.icf_master_id, 'mother'
+		assert_not_nil candidate_control.study_subject.icf_master_id
+		assert_equal   candidate_control.study_subject.icf_master_id, 'child'
+		assert_not_nil candidate_control.study_subject.mother.icf_master_id
+		assert_equal   candidate_control.study_subject.mother.icf_master_id, 'mother'
 		assert_not_nil child_imi.reload.study_subject
 		assert_equal   child_imi.study_subject, candidate_control.study_subject
 		assert_not_nil child_imi.assigned_on
@@ -583,12 +615,12 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		IcfMasterId.any_instance.stubs(:save!
 			).raises(ActiveRecord::RecordNotSaved)
 		assert_difference('Enrollment.count',0) {
-		assert_difference('Identifier.count',0) {
+#		assert_difference('Identifier.count',0) {
 #		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } #}
+		} } } #} #}
 	end
 
 	test "should rollback if create_mother raises error" do
@@ -597,12 +629,12 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		StudySubject.any_instance.stubs(:create_mother
 			).raises(ActiveRecord::RecordNotSaved)
 		assert_difference('Enrollment.count',0) {
-		assert_difference('Identifier.count',0) {
+#		assert_difference('Identifier.count',0) {
 #		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } #}
+		} } } #} #}
 	end
 
 	test "should rollback if assign_icf_master_id raises error" do
@@ -611,12 +643,12 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		StudySubject.any_instance.stubs(:assign_icf_master_id
 			).raises(ActiveRecord::RecordNotSaved)
 		assert_difference('Enrollment.count',0) {
-		assert_difference('Identifier.count',0) {
+#		assert_difference('Identifier.count',0) {
 #		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } #}
+		} } } #} #}
 	end
 
 	test "should rollback if create_study_subject raises error" do
@@ -624,12 +656,12 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		candidate_control = Factory(:candidate_control)
 		StudySubject.any_instance.stubs(:create_or_update).returns(false)
 		assert_difference('Enrollment.count',0) {
-		assert_difference('Identifier.count',0) {
+#		assert_difference('Identifier.count',0) {
 #		assert_difference('Pii.count',0) {
 		assert_difference('StudySubject.count',0) {
 		assert_raises(ActiveRecord::RecordNotSaved){
 			candidate_control.create_study_subjects(case_study_subject)
-		} } } } #}
+		} } } #} #}
 	end
 
 	#
@@ -641,11 +673,11 @@ protected
 
 	def create_study_subjects_for_candidate_control(candidate,case_subject)
 		assert_difference('Enrollment.count',2) {	#	both get auto-created ccls enrollment
-		assert_difference('Identifier.count',2) {
+#		assert_difference('Identifier.count',2) {
 #		assert_difference('Pii.count',2) {
 		assert_difference('StudySubject.count',2) {
 			candidate.create_study_subjects(case_subject)
-		} } } #}
+		} } #} #}
 	end
 
 #	def create_patient_for_subject(subject)

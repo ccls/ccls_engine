@@ -96,11 +96,12 @@ base.class_eval do
 
 		#	due to the high probability that self and identifier will not
 		#		yet be resolved, we have to get the associations manually.
-		my_identifier = Identifier.find_by_study_subject_id(self.attributes['id'])
-		matchingids.compact.push(my_identifier.try(:matchingid)).uniq.each do |matchingid|
-			study_subject_ids = if( !matchingid.nil? )
-				Identifier.find_all_by_matchingid(matchingid
-					).collect(&:study_subject_id)
+#		my_identifier = Identifier.find_by_study_subject_id(self.attributes['id'])
+#		matchingids.compact.push(my_identifier.try(:matchingid)).uniq.each do |matchingid|
+		matchingids.compact.push(matchingid).uniq.each do |mid|
+			study_subject_ids = if( !mid.nil? )
+#				Identifier.find_all_by_matchingid(mid).collect(&:study_subject_id)
+				StudySubject.find_all_by_matchingid(mid).collect(&:id)
 			else
 				[id]
 			end
@@ -134,4 +135,4 @@ protected
 
 end	#	class_eval
 end	#	included
-end
+end	#	StudySubjectCallbacks

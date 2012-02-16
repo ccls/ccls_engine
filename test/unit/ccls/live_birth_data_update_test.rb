@@ -114,8 +114,8 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 		assert_difference('CandidateControl.count',0) {
 			results = live_birth_data_update.to_candidate_controls
 			assert_equal results,
-				["Could not find identifier with masterid 1234FAKE",
-				"Could not find identifier with masterid 1234FAKE"]
+				["Could not find study_subject with masterid 1234FAKE",
+				"Could not find study_subject with masterid 1234FAKE"]
 		}
 		cleanup_live_birth_data_update_and_test_file(live_birth_data_update)
 	end
@@ -278,7 +278,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 		s0 = Factory(:case_study_subject,:sex => 'F',
 			:first_name => 'FakeFirst1',:last_name => 'FakeLast1', 
 			:dob => Date.parse('10/16/1977'))
-		s0.create_identifier(:case_control_type => 'C')
+#		s0.create_identifier(:case_control_type => 'C')
 		#	s0 has no icf_master_id, so should be ignored
 
 #		s1 = Factory(:case_study_subject,:sex => 'F')
@@ -287,7 +287,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 		s1 = Factory(:case_study_subject,:sex => 'F',
 			:first_name => 'FakeFirst2',:last_name => 'FakeLast2', 
 			:dob => Date.parse('9/21/1988'))
-		s1.create_identifier(:case_control_type => 'C')
+#		s1.create_identifier(:case_control_type => 'C')
 		Factory(:icf_master_id,:icf_master_id => '48882638A')
 		s1.assign_icf_master_id
 
@@ -297,7 +297,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 		s2 = Factory(:case_study_subject,:sex => 'M',
 			:first_name => 'FakeFirst3',:last_name => 'FakeLast3', 
 			:dob => Date.parse('6/1/2009'))
-		s2.create_identifier(:case_control_type => 'C')
+#		s2.create_identifier(:case_control_type => 'C')
 		Factory(:icf_master_id,:icf_master_id => '16655682G')
 		s2.assign_icf_master_id
 
@@ -310,7 +310,7 @@ class Ccls::LiveBirthDataUpdateTest < ActiveSupport::TestCase
 			results = live_birth_data_update.to_candidate_controls
 			assert results[0].is_a?(String)
 			assert_equal results[0],
-				"Could not find identifier with masterid [no ID assigned]"
+				"Could not find study_subject with masterid [no ID assigned]"
 			assert results[1].is_a?(StudySubject)
 			assert results[2].is_a?(StudySubject)
 			assert_equal results[1], s1

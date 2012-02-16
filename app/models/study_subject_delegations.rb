@@ -34,18 +34,18 @@ base.class_eval do
 #			o.delegate :mother_last_name
 #			o.delegate :mother_maiden_name
 #		end
-		n.with_options :to => :identifier do |o|
-			o.delegate :state_id_no
-			o.delegate :state_registrar_no
-			o.delegate :local_registrar_no
-			o.delegate :ssn
-			o.delegate :patid
-			o.delegate :orderno
-			o.delegate :case_control_type
-			o.delegate :subjectid
-#			o.delegate :familyid
-#			o.delegate :matchingid
-		end
+#		n.with_options :to => :identifier do |o|
+#			o.delegate :state_id_no
+#			o.delegate :state_registrar_no
+#			o.delegate :local_registrar_no
+#			o.delegate :ssn
+#			o.delegate :patid
+#			o.delegate :orderno
+#			o.delegate :case_control_type
+#			o.delegate :subjectid
+##			o.delegate :familyid
+##			o.delegate :matchingid
+#		end
 		n.with_options :to => :homex_outcome do |o|
 			o.delegate :interview_outcome
 			o.delegate :interview_outcome_on

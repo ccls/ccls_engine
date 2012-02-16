@@ -531,14 +531,14 @@ class Ccls::StudySubjectSearchTest < ActiveSupport::TestCase
 
 	test "should include study_subject by q childid" do
 		s1,s2 = create_study_subjects_with_childids(999999,'1')
-		study_subjects = StudySubject.search(:q => s1.identifier.childid)
+		study_subjects = StudySubject.search(:q => s1.childid)
 		assert  study_subjects.include?(s1)
 		assert !study_subjects.include?(s2)
 	end
 
 	test "should include study_subject by q patid" do
 		s1,s2 = create_study_subjects_with_patids(999999,'1')
-		study_subjects = StudySubject.search(:q => s1.identifier.patid)
+		study_subjects = StudySubject.search(:q => s1.reload.patid)
 		assert  study_subjects.include?(s1)
 		assert !study_subjects.include?(s2)
 	end

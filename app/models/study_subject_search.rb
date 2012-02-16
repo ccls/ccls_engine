@@ -15,18 +15,15 @@ class StudySubjectSearch < Search
 #	@valid_orders.merge!({      #	NO!
 	self.valid_orders = self.valid_orders.merge({
 		:id => 'study_subjects.id',	#	must remove any possible ambiguity
-		:childid => 'identifiers.childid',
-#		:last_name => 'piis.last_name',
-#		:first_name => 'piis.first_name',
-#		:dob => 'piis.dob',
+		:childid => 'childid',
 		:last_name => 'last_name',
 		:first_name => 'first_name',
 		:dob => 'dob',
-		:studyid => 'identifiers.patid',
+		:studyid => 'patid',
 		:priority => 'recruitment_priority',
 		:sample_outcome => 'homex_outcomes.sample_outcome_id',
 		:sample_outcome_on => 'homex_outcomes.sample_outcome_on',
-		:patid => 'identifiers.patid',
+		:patid => 'patid',
 		:abstracts_count => nil,
 		:interview_outcome_on => 'homex_outcomes.interview_outcome_on',
 		:sample_sent_on => nil,
@@ -39,12 +36,12 @@ class StudySubjectSearch < Search
 
 	def study_subjects
 #		require_dependency 'pii.rb'	unless Pii
-		require_dependency 'identifier.rb' unless Identifier
+#		require_dependency 'identifier.rb' unless Identifier
 		require_dependency 'gift_card.rb' unless GiftCard
 		@subjects ||= StudySubject.send(
 			(paginate?)?'paginate':'all',{
 #				:include => [:pii,:identifier],
-				:include => [:identifier],
+#				:include => [:identifier],
 				:select  => select,
 				:group   => group,
 				:having  => having,
@@ -79,7 +76,7 @@ private	#	THIS IS REQUIRED
 	end
 
 	def patid_conditions
-		['identifiers.patid = :patid', {:patid => patid}] unless patid.blank?
+		['patid = :patid', {:patid => patid}] unless patid.blank?
 	end
 
 
@@ -137,8 +134,8 @@ private	#	THIS IS REQUIRED
 #				c.push("piis.last_name LIKE :t#{i}")
 				c.push("first_name LIKE :t#{i}")
 				c.push("last_name LIKE :t#{i}")
-				c.push("identifiers.patid LIKE :t#{i}")
-				c.push("identifiers.childid LIKE :t#{i}")
+				c.push("patid LIKE :t#{i}")
+				c.push("childid LIKE :t#{i}")
 				c.push("gift_cards.number LIKE :t#{i}") if search_gift_cards
 				v["t#{i}".to_sym] = "%#{t}%"
 			end

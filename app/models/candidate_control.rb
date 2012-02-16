@@ -30,46 +30,82 @@ class CandidateControl < ActiveRecordShared
 	def create_study_subjects(case_subject,grouping = '6')
 		next_orderno = case_subject.next_control_orderno(grouping)
 
-		#	Use a block so can assign all attributes without concern for attr_protected
-		child_identifier = Identifier.new do |i|
-			i.case_control_type  = grouping
-			i.state_registrar_no = state_registrar_no
-			i.local_registrar_no = local_registrar_no
-			i.orderno            = next_orderno
-			i.matchingid         = case_subject.identifier.subjectid
-			i.patid              = case_subject.patid
-		end
+#		#	Use a block so can assign all attributes without concern for attr_protected
+#		child_identifier = Identifier.new do |i|
+#			i.case_control_type  = grouping
+#			i.state_registrar_no = state_registrar_no
+#			i.local_registrar_no = local_registrar_no
+#			i.orderno            = next_orderno
+#			i.matchingid         = case_subject.identifier.subjectid
+#			i.patid              = case_subject.patid
+#		end
 
 		CandidateControl.transaction do
 
-			child = StudySubject.create!({
-				:subject_type => SubjectType['Control'],
-				:vital_status => VitalStatus['living'],
-				:sex                   => sex,
-				:mom_is_biomom         => mom_is_biomom,
-				:dad_is_biodad         => dad_is_biodad,
-				:mother_hispanicity_id => mother_hispanicity_id,
-				:father_hispanicity_id => father_hispanicity_id,
-				:birth_type            => birth_type,
-				:mother_yrs_educ       => mother_yrs_educ,
-				:father_yrs_educ       => father_yrs_educ,
-				:birth_county          => birth_county,
-				:hispanicity_id        => ( 
-					( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
-#				:pii_attributes => {
-					:first_name         => first_name,
-					:middle_name        => middle_name,
-					:last_name          => last_name,
-					:dob                => dob,
-					:mother_first_name  => mother_first_name,
-					:mother_middle_name => mother_middle_name,
-					:mother_last_name   => mother_last_name,
-					:mother_maiden_name => mother_maiden_name,
-					:mother_race_id     => mother_race_id,
-					:father_race_id     => father_race_id,
-#				},
-				:identifier => child_identifier
-			})
+#			child = StudySubject.create!({
+			child = StudySubject.new do |s|
+				s.subject_type = SubjectType['Control']
+				s.vital_status = VitalStatus['living']
+				s.sex                   = sex
+				s.mom_is_biomom         = mom_is_biomom
+				s.dad_is_biodad         = dad_is_biodad
+				s.mother_hispanicity_id = mother_hispanicity_id
+				s.father_hispanicity_id = father_hispanicity_id
+				s.birth_type            = birth_type
+				s.mother_yrs_educ       = mother_yrs_educ
+				s.father_yrs_educ       = father_yrs_educ
+				s.birth_county          = birth_county
+				s.hispanicity_id        = ( 
+					( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil )
+				s.first_name         = first_name
+				s.middle_name        = middle_name
+				s.last_name          = last_name
+				s.dob                = dob
+				s.mother_first_name  = mother_first_name
+				s.mother_middle_name = mother_middle_name
+				s.mother_last_name   = mother_last_name
+				s.mother_maiden_name = mother_maiden_name
+				s.mother_race_id     = mother_race_id
+				s.father_race_id     = father_race_id
+
+				s.case_control_type  = grouping
+				s.state_registrar_no = state_registrar_no
+				s.local_registrar_no = local_registrar_no
+				s.orderno            = next_orderno
+#				s.matchingid         = case_subject.identifier.subjectid
+				s.matchingid         = case_subject.subjectid
+				s.patid              = case_subject.patid
+			end
+			child.save!
+
+#			child = StudySubject.create!({
+#				:subject_type => SubjectType['Control'],
+#				:vital_status => VitalStatus['living'],
+#				:sex                   => sex,
+#				:mom_is_biomom         => mom_is_biomom,
+#				:dad_is_biodad         => dad_is_biodad,
+#				:mother_hispanicity_id => mother_hispanicity_id,
+#				:father_hispanicity_id => father_hispanicity_id,
+#				:birth_type            => birth_type,
+#				:mother_yrs_educ       => mother_yrs_educ,
+#				:father_yrs_educ       => father_yrs_educ,
+#				:birth_county          => birth_county,
+#				:hispanicity_id        => ( 
+#					( [mother_hispanicity_id,father_hispanicity_id].include?(1) ) ? 1 : nil ),
+##				:pii_attributes => {
+#					:first_name         => first_name,
+#					:middle_name        => middle_name,
+#					:last_name          => last_name,
+#					:dob                => dob,
+#					:mother_first_name  => mother_first_name,
+#					:mother_middle_name => mother_middle_name,
+#					:mother_last_name   => mother_last_name,
+#					:mother_maiden_name => mother_maiden_name,
+#					:mother_race_id     => mother_race_id,
+#					:father_race_id     => father_race_id,
+##				},
+#				:identifier => child_identifier
+#			})
 #	not necessary as ccls enrollment is created in subject
 #				:enrollments_attributes => [{
 #					:project => Project['ccls']
