@@ -78,12 +78,9 @@ namespace :odms_destroy do
 		Address.destroy_all
 		PhoneNumber.destroy_all
 		Interview.destroy_all
-#		Identifier.destroy_all
 		Patient.destroy_all
-#		Pii.destroy_all
 		Sample.destroy_all
 		SampleKit.destroy_all
-#		Package.destroy_all
 		HomexOutcome.destroy_all
 		HomeExposureResponse.destroy_all
 		OperationalEvent.destroy_all
@@ -113,7 +110,7 @@ namespace :odms_import do
 			out.add_row ["subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"]
 	
 			#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_011012.csv", 'rb',{
+			(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_xxxxxx.csv", 'rb',{
 				:headers => true })).each do |line|
 
 				#	Not all input records have created_at so nillify all
@@ -245,14 +242,12 @@ namespace :odms_import do
 		error_file = File.open('addresses_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addresses_011012.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addresses_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
 
 #"address_type_id","data_source_id","line_1","unit","city","state","zip","external_address_id","county","country","created_at"
-#	don't need subjectID
-#"subjectID","address_type_id","data_source_id","line_1","unit","city","state","zip","external_address_id","county","country","created_at"
 
 			address = Address.create({
 				:address_type_id => line["address_type_id"],
@@ -312,12 +307,13 @@ namespace :odms_import do
 		error_file = File.open('addressings_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addressings_011012.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Addressings_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
 
 #"subjectid","external_address_id","current_address","address_at_diagnosis","valid_from","valid_to","data_source_id","created_at"
+
 
 			if line['subjectid'].blank?
 				error_file.puts 
@@ -403,7 +399,7 @@ namespace :odms_import do
 		error_file = File.open('phone_numbers_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Phone_Numbers_010912.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Phone_Numbers_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -482,7 +478,7 @@ namespace :odms_import do
 		error_file = File.open('operational_events_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Operational_Events_011012.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Operational_Events_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -611,25 +607,25 @@ namespace :odms_import do
 	end
 
 
-	task :create_dummy_candidate_controls => :environment do
-#		puts "Destroying candidate controls"
-#		CandidateControl.destroy_all
-		puts "Creating dummy candidate controls"
-		SubjectType['Case'].study_subjects.each do |s|
-			rand(5).times do |i|
-				puts "Creating candidate control for study_subject_id:#{s.id}"
-				CandidateControl.create!({
-					:related_patid => s.patid,
-					:first_name => "First#{i}",
-					:last_name  => "Last#{s.id}",
-					:sex        => ['M','F'][rand(2)],
-					:dob        => Date.jd(2440000+rand(15000))
-				})
-			end
-		end
-		
-		printf "%-19s %5d\n", "CandidateControl.count:", CandidateControl.count
-	end
+#	task :create_dummy_candidate_controls => :environment do
+##		puts "Destroying candidate controls"
+##		CandidateControl.destroy_all
+#		puts "Creating dummy candidate controls"
+#		SubjectType['Case'].study_subjects.each do |s|
+#			rand(5).times do |i|
+#				puts "Creating candidate control for study_subject_id:#{s.id}"
+#				CandidateControl.create!({
+#					:related_patid => s.patid,
+#					:first_name => "First#{i}",
+#					:last_name  => "Last#{s.id}",
+#					:sex        => ['M','F'][rand(2)],
+#					:dob        => Date.jd(2440000+rand(15000))
+#				})
+#			end
+#		end
+#		
+#		printf "%-19s %5d\n", "CandidateControl.count:", CandidateControl.count
+#	end
 
 	desc "Import data from enrollments.csv file"
 	task :enrollments => :environment do
@@ -639,7 +635,7 @@ namespace :odms_import do
 		error_file = File.open('enrollments_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_Enrollments_012412.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_Enrollments_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -648,9 +644,12 @@ namespace :odms_import do
 			puts "Processing line #{f.lineno}"
 			puts line
 
-#"ChildId","project_id","subjectID","consented","consented_on","refusal_reason_id","document_version_id","is_eligible"
-
 #"childid","project_id","subjectID","consented","consented_on","tPatientInfo_DeclineReason","refusal_reason_id","document_version_id","is_eligible","refusalReasonID"
+
+#	Don't need all of this and don't know exactly what to do with the DeclineReasons
+#	also is_eligible changed and ineligible_reason_id added
+#"subjectType-donotimprot","ChildId","project_id","subjectID","consented","consented_on","tPatientInfo_DeclineReason","tlDeclineReasons_DeclineReason","refusal_reason_id","document_version_id","is_eligible","ineligible_reason_id"
+
 
 			if line['subjectID'].blank?
 				error_file.puts 
@@ -674,38 +673,37 @@ namespace :odms_import do
 			#	TEMPORARY "FIXES" to get most enrollments imported
 
 			consented           = line['consented']
-			consented_on        = if [nil,999,'','999'].include?(consented)
-				nil
-			else
-				(( line['consented_on'].blank? ) ?
+			consented_on        = (( line['consented_on'].blank? ) ?
 					nil : Time.parse(line['consented_on']).to_date )
-			end
-			refusal_reason_id   = if consented.to_i == 2
-				line['refusal_reason_id']
-			else
-				nil
-			end
-			document_version_id = if [nil,999,'','999'].include?(consented)
-				nil
-			else
-				line['document_version_id']
-			end
+#			consented_on        = if [nil,999,'','999'].include?(consented)
+#				nil
+#			else
+#				(( line['consented_on'].blank? ) ?
+#					nil : Time.parse(line['consented_on']).to_date )
+#			end
+			refusal_reason_id   = line['refusal_reason_id']
+#			refusal_reason_id   = if consented.to_i == 2
+#				line['refusal_reason_id']
+#			else
+#				nil
+#			end
+			document_version_id = line['document_version_id']
+#			document_version_id = if [nil,999,'','999'].include?(consented)
+#				nil
+#			else
+#				line['document_version_id']
+#			end
 
-
-
-
-
-
+			#	END	TEMPORARY "FIXES" to get most enrollments imported
 
 			saved = enrollment.update_attributes(
 				:consented           => consented,
 				:consented_on        => consented_on,
 				:refusal_reason_id   => refusal_reason_id,
+#				:other_refusal_reason => line['tlDeclineReasons_DeclineReason'],
 				:document_version_id => document_version_id,
-#	This is actually boolean string in the csv file.
-#	It would convert correctly to a boolean field, but that's mysql, not ruby.
-#				:is_eligible         => line['is_eligible']
-				:is_eligible         => line['is_eligible'].to_nil_or_yndk
+				:is_eligible         => line['is_eligible'],
+				:ineligible_reason_id => line['ineligible_reason_id']
 			)
 			unless saved
 				error_file.puts 
@@ -723,8 +721,10 @@ namespace :odms_import do
 					"refusal_reason_id mismatch:#{enrollment.refusal_reason_id}:#{line["refusal_reason_id"]}:"
 				assert enrollment.document_version_id == document_version_id.to_nil_or_i,
 					"document_version_id mismatch:#{enrollment.document_version_id}:#{line["document_version_id"]}:"
-				assert enrollment.is_eligible == line['is_eligible'].to_nil_or_yndk,
+				assert enrollment.is_eligible == line['is_eligible'].to_nil_or_i,
 					"is_eligible mismatch:#{enrollment.is_eligible}:#{line['is_eligible']}:"
+				assert enrollment.ineligible_reason_id   == line['ineligible_reason_id'].to_nil_or_i,
+					"ineligible_reason_id mismatch:#{enrollment.ineligible_reason_id}:#{line["ineligible_reason_id"]}:"
 			end
 
 		end
@@ -740,7 +740,7 @@ namespace :odms_import do
 		error_file = File.open('subjects_errors.txt','w')	#	overwrite existing
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_011012.csv", 'rb',{
+		(f=FasterCSV.open("#{BASEDIR}/ODMS_SubjectData_Combined_xxxxxx.csv", 'rb',{
 			:headers => true })).each do |line|
 
 #	skip until ...
@@ -752,69 +752,10 @@ namespace :odms_import do
 #"subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"
 
 
+
 #
 #		Models built in block mode to avoid protected attributes
 #
-
-#			identifier = Identifier.new do |m|
-#				m.subjectid     = line['subjectid']
-#				m.childid       = line['childid']
-#				m.childidwho    = line['childidwho']
-#				m.icf_master_id = line['icf_master_id']
-#				m.matchingid    = line['matchingid']
-#				m.familyid      = line['familyid']
-#				m.patid         = line['patid']
-#				m.orderno       = line['orderno']
-#				m.newid         = line['newid']
-#				m.studyid       = line['studyid']
-#				m.state_id_no   = line['state_id_no']
-#				m.case_control_type = line['case_control_type']
-#				m.related_case_childid = line['related_case_childid']
-#				m.created_at         = line['created_at']
-#			end
-#
-##	TODO incorporate the identifier stuff and use block mode for subject
-#
-#			attributes = {
-#				:created_at      => line['created_at'],
-#				:subject_type_id => line['subject_type_id'],
-#				:hispanicity_id  => line['hispanicity_id'],
-##
-##	do_not_contact is a boolean string in the csv file.
-##	It does seem to convert correctly in the database.
-#				:do_not_contact  => line['do_not_contact'],
-#				:sex             => line['sex'],
-#				:reference_date  => ( line['reference_date'].blank?
-#						) ? nil : Time.parse(line['reference_date']),
-#
-#				:birth_year         => line['birth_year'],
-#				:first_name         => line['first_name'],
-#				:middle_name        => line['middle_name'],
-#				:last_name          => line['last_name'],
-#				:maiden_name        => line['maiden_name'],
-#				:died_on            => ( line['died_on'].blank? 
-#					) ? nil : Time.parse(line['died_on']),
-#				:mother_first_name  => line['mother_first_name'],
-#				:mother_maiden_name => line['mother_maiden_name'],
-#				:mother_last_name   => line['mother_last_name'],
-#				:father_first_name  => line['father_first_name'],
-#				:father_last_name   => line['father_last_name'],
-#
-#				:dob                => ( line['dob'].blank? 
-#						) ? nil : Time.parse(line['dob']).to_date,
-#
-#				:identifier      => identifier
-#			}
-#			if line['subject_type_id'].to_i == SubjectType['Mother'].id
-#				attributes[:subject_is_mother] = true
-#			end
-#			unless line['vital_status_id'].blank?
-#				attributes[:vital_status_id] = line['vital_status_id']
-##			else leave as database default
-#			end
-
-
-
 
 			s = StudySubject.new do |x|
 				x.subject_type_id = line['subject_type_id']
@@ -909,6 +850,11 @@ namespace :odms_import do
 				error_file.puts
 			else
 				s.reload
+
+#
+#	TODO Add a "warnings" file containing some of these changes?
+#			Some may actually occur on the import of another subject though.
+#
 
 				assert s.subject_type_id == line['subject_type_id'].to_nil_or_i,
 					"subject_type_id mismatch:#{s.subject_type_id}:#{line['subject_type_id']}:"
