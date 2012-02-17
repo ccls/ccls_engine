@@ -83,7 +83,7 @@ namespace :odms_destroy do
 #		Pii.destroy_all
 		Sample.destroy_all
 		SampleKit.destroy_all
-		Package.destroy_all
+#		Package.destroy_all
 		HomexOutcome.destroy_all
 		HomeExposureResponse.destroy_all
 		OperationalEvent.destroy_all
@@ -172,29 +172,28 @@ namespace :odms_import do
 			f.add_row ["subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"]
 
 			StudySubject.find(:all,
-					:include => :identifier, 
-					:order => 'identifiers.subjectid ASC' ).each do |s|
+					:order => 'subjectid ASC' ).each do |s|
 
 				f.add_row([
-					s.identifier.subjectid,
+					s.subjectid,
 					s.subject_type_id,
 					s.vital_status_id,
 					s.do_not_contact.to_s.upcase,	# FALSE
 					s.sex,
 					format_date(s.reference_date),
-					s.identifier.childidwho,
+					s.childidwho,
 					s.hispanicity_id,
-					s.identifier.childid,
-					s.identifier.icf_master_id,
-					s.identifier.matchingid,
-					s.identifier.familyid,
-					s.identifier.patid,
-					s.identifier.case_control_type,
-					s.identifier.orderno,
-					s.identifier.newid,
-					s.identifier.studyid,		
-					s.identifier.related_case_childid,
-					s.identifier.state_id_no,
+					s.childid,
+					s.icf_master_id,
+					s.matchingid,
+					s.familyid,
+					s.patid,
+					s.case_control_type,
+					s.orderno,
+					s.newid,
+					s.studyid,		
+					s.related_case_childid,
+					s.state_id_no,
 					format_date(s.patient.try(:admit_date)),
 					s.patient.try(:diagnosis_id),
 					nil,
@@ -757,61 +756,113 @@ namespace :odms_import do
 #		Models built in block mode to avoid protected attributes
 #
 
-			identifier = Identifier.new do |m|
-				m.subjectid     = line['subjectid']
-				m.childid       = line['childid']
-				m.childidwho    = line['childidwho']
-				m.icf_master_id = line['icf_master_id']
-				m.matchingid    = line['matchingid']
-				m.familyid      = line['familyid']
-				m.patid         = line['patid']
-				m.orderno       = line['orderno']
-				m.newid         = line['newid']
-				m.studyid       = line['studyid']
-				m.state_id_no   = line['state_id_no']
-				m.case_control_type = line['case_control_type']
-				m.related_case_childid = line['related_case_childid']
-				m.created_at         = line['created_at']
-			end
+#			identifier = Identifier.new do |m|
+#				m.subjectid     = line['subjectid']
+#				m.childid       = line['childid']
+#				m.childidwho    = line['childidwho']
+#				m.icf_master_id = line['icf_master_id']
+#				m.matchingid    = line['matchingid']
+#				m.familyid      = line['familyid']
+#				m.patid         = line['patid']
+#				m.orderno       = line['orderno']
+#				m.newid         = line['newid']
+#				m.studyid       = line['studyid']
+#				m.state_id_no   = line['state_id_no']
+#				m.case_control_type = line['case_control_type']
+#				m.related_case_childid = line['related_case_childid']
+#				m.created_at         = line['created_at']
+#			end
+#
+##	TODO incorporate the identifier stuff and use block mode for subject
+#
+#			attributes = {
+#				:created_at      => line['created_at'],
+#				:subject_type_id => line['subject_type_id'],
+#				:hispanicity_id  => line['hispanicity_id'],
+##
+##	do_not_contact is a boolean string in the csv file.
+##	It does seem to convert correctly in the database.
+#				:do_not_contact  => line['do_not_contact'],
+#				:sex             => line['sex'],
+#				:reference_date  => ( line['reference_date'].blank?
+#						) ? nil : Time.parse(line['reference_date']),
+#
+#				:birth_year         => line['birth_year'],
+#				:first_name         => line['first_name'],
+#				:middle_name        => line['middle_name'],
+#				:last_name          => line['last_name'],
+#				:maiden_name        => line['maiden_name'],
+#				:died_on            => ( line['died_on'].blank? 
+#					) ? nil : Time.parse(line['died_on']),
+#				:mother_first_name  => line['mother_first_name'],
+#				:mother_maiden_name => line['mother_maiden_name'],
+#				:mother_last_name   => line['mother_last_name'],
+#				:father_first_name  => line['father_first_name'],
+#				:father_last_name   => line['father_last_name'],
+#
+#				:dob                => ( line['dob'].blank? 
+#						) ? nil : Time.parse(line['dob']).to_date,
+#
+#				:identifier      => identifier
+#			}
+#			if line['subject_type_id'].to_i == SubjectType['Mother'].id
+#				attributes[:subject_is_mother] = true
+#			end
+#			unless line['vital_status_id'].blank?
+#				attributes[:vital_status_id] = line['vital_status_id']
+##			else leave as database default
+#			end
 
-#	TODO incorporate the identifier stuff and use block mode for subject
 
-			attributes = {
-				:created_at      => line['created_at'],
-				:subject_type_id => line['subject_type_id'],
-				:hispanicity_id  => line['hispanicity_id'],
+
+
+			s = StudySubject.new do |x|
+				x.subject_type_id = line['subject_type_id']
+				x.hispanicity_id  = line['hispanicity_id']
 #
 #	do_not_contact is a boolean string in the csv file.
 #	It does seem to convert correctly in the database.
-				:do_not_contact  => line['do_not_contact'],
-				:sex             => line['sex'],
-				:reference_date  => ( line['reference_date'].blank?
-						) ? nil : Time.parse(line['reference_date']),
+				x.do_not_contact  = line['do_not_contact']
+				x.sex             = line['sex']
+				x.reference_date  = ( line['reference_date'].blank?
+						) ? nil : Time.parse(line['reference_date'])
 
-				:birth_year         => line['birth_year'],
-				:first_name         => line['first_name'],
-				:middle_name        => line['middle_name'],
-				:last_name          => line['last_name'],
-				:maiden_name        => line['maiden_name'],
-				:died_on            => ( line['died_on'].blank? 
-					) ? nil : Time.parse(line['died_on']),
-				:mother_first_name  => line['mother_first_name'],
-				:mother_maiden_name => line['mother_maiden_name'],
-				:mother_last_name   => line['mother_last_name'],
-				:father_first_name  => line['father_first_name'],
-				:father_last_name   => line['father_last_name'],
+				x.birth_year         = line['birth_year']
+				x.first_name         = line['first_name']
+				x.middle_name        = line['middle_name']
+				x.last_name          = line['last_name']
+				x.maiden_name        = line['maiden_name']
+				x.died_on            = ( line['died_on'].blank? 
+					) ? nil : Time.parse(line['died_on'])
+				x.mother_first_name  = line['mother_first_name']
+				x.mother_maiden_name = line['mother_maiden_name']
+				x.mother_last_name   = line['mother_last_name']
+				x.father_first_name  = line['father_first_name']
+				x.father_last_name   = line['father_last_name']
 
-				:dob                => ( line['dob'].blank? 
-						) ? nil : Time.parse(line['dob']).to_date,
+				x.dob                = ( line['dob'].blank? 
+						) ? nil : Time.parse(line['dob']).to_date
 
-				:identifier      => identifier
-			}
-			if line['subject_type_id'].to_i == SubjectType['Mother'].id
-				attributes[:subject_is_mother] = true
-			end
-			unless line['vital_status_id'].blank?
-				attributes[:vital_status_id] = line['vital_status_id']
-#			else leave as database default
+				x.subjectid     = line['subjectid']
+				x.childid       = line['childid']
+				x.childidwho    = line['childidwho']
+				x.icf_master_id = line['icf_master_id']
+				x.matchingid    = line['matchingid']
+				x.familyid      = line['familyid']
+				x.patid         = line['patid']
+				x.orderno       = line['orderno']
+				x.newid         = line['newid']
+				x.studyid       = line['studyid']
+				x.state_id_no   = line['state_id_no']
+				x.case_control_type = line['case_control_type']
+				x.related_case_childid = line['related_case_childid']
+				x.created_at         = line['created_at']
+
+				unless line['vital_status_id'].blank?
+#					attributes[:vital_status_id] = line['vital_status_id']
+					x.vital_status_id = line['vital_status_id']
+#				else leave as database default
+				end
 			end
 
 			if line['subject_type_id'].to_i == StudySubject.subject_type_case_id
@@ -824,7 +875,6 @@ namespace :odms_import do
 					#	1 record is missing organization_id so must do this.
 					m.organization_id = line['organization_id'].to_dk_or_i
 					m.hospital_no     = line['hospital_no']
-
 
 #	TODO deal with incorrect value 9 in was_* fields
 
@@ -840,10 +890,11 @@ namespace :odms_import do
 					m.raf_county             = line['raf_county']
 					m.created_at             = line['created_at']
 				end
-				attributes[:patient] = patient
+#				attributes[:patient] = patient
+				s.patient = patient
 			end
 
-			s = StudySubject.create(attributes)
+			s.save
 
 
 
@@ -961,33 +1012,32 @@ namespace :odms_import do
 					assert pa.nil?, 'Patient for non-case'
 				end
 
-				id = s.identifier.reload
-				assert id.subjectid == line['subjectid'],
-					"subjectid mismatch:#{id.subjectid}:#{line['subjectid']}:"
-				assert id.childid.to_s == line['childid'],
-					"childid mismatch:#{id.childid}:#{line['childid']}:"
-				assert id.icf_master_id == line['icf_master_id'],
-					"icf_master_id mismatch:#{id.icf_master_id}:#{line['icf_master_id']}:"
-				assert id.childidwho == line['childidwho'],
-					"childidwho mismatch:#{id.childidwho}:#{line['childidwho']}:"
-				assert id.familyid == line['familyid'],
-					"familyid mismatch:#{id.familyid}:#{line['familyid']}:"
-				assert id.matchingid == line['matchingid'],
-					"matchingid mismatch:#{id.matchingid}:#{line['matchingid']}:"
-				assert id.patid == line['patid'],
-					"patid mismatch:#{id.patid}:#{line['patid']}:"
-				assert id.case_control_type == line['case_control_type'],
-					"case_control_type mismatch:#{id.case_control_type}:#{line['case_control_type']}:"
-				assert id.orderno == line['orderno'].to_nil_or_i,
-					"orderno mismatch:#{id.orderno}:#{line['orderno']}:"
-				assert id.newid == line['newid'],
-					"newid mismatch:#{id.newid}:#{line['newid']}:"
-				assert id.studyid == line['studyid'],
-					"studyid mismatch:#{id.studyid}:#{line['studyid']}:"
-				assert id.related_case_childid == line['related_case_childid'],
-					"related_case_childid mismatch:#{id.related_case_childid}:#{line['related_case_childid']}:"
-				assert id.state_id_no == line['state_id_no'],
-					"state_id_no mismatch:#{id.state_id_no}:#{line['state_id_no']}:"
+				assert s.subjectid == line['subjectid'],
+					"subjectid mismatch:#{s.subjectid}:#{line['subjectid']}:"
+				assert s.childid.to_s == line['childid'],
+					"childid mismatch:#{s.childid}:#{line['childid']}:"
+				assert s.icf_master_id == line['icf_master_id'],
+					"icf_master_id mismatch:#{s.icf_master_id}:#{line['icf_master_id']}:"
+				assert s.childidwho == line['childidwho'],
+					"childidwho mismatch:#{s.childidwho}:#{line['childidwho']}:"
+				assert s.familyid == line['familyid'],
+					"familyid mismatch:#{s.familyid}:#{line['familyid']}:"
+				assert s.matchingid == line['matchingid'],
+					"matchingid mismatch:#{s.matchingid}:#{line['matchingid']}:"
+				assert s.patid == line['patid'],
+					"patid mismatch:#{s.patid}:#{line['patid']}:"
+				assert s.case_control_type == line['case_control_type'],
+					"case_control_type mismatch:#{s.case_control_type}:#{line['case_control_type']}:"
+				assert s.orderno == line['orderno'].to_nil_or_i,
+					"orderno mismatch:#{s.orderno}:#{line['orderno']}:"
+				assert s.newid == line['newid'],
+					"newid mismatch:#{s.newid}:#{line['newid']}:"
+				assert s.studyid == line['studyid'],
+					"studyid mismatch:#{s.studyid}:#{line['studyid']}:"
+				assert s.related_case_childid == line['related_case_childid'],
+					"related_case_childid mismatch:#{s.related_case_childid}:#{line['related_case_childid']}:"
+				assert s.state_id_no == line['state_id_no'],
+					"state_id_no mismatch:#{s.state_id_no}:#{line['state_id_no']}:"
 			end
 		end	#	FasterCSV.open
 		error_file.close
