@@ -136,7 +136,6 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def to_s
-		#	interesting that I don't have to load 'identifier.rb' ???
 		[childid,'(',studyid,full_name,')'].compact.join(' ')
 	end
 
@@ -221,7 +220,6 @@ class StudySubject < ActiveRecordShared
 
 	def assign_icf_master_id
 		if icf_master_id.blank?
-#		if read_attribute(:icf_master_id).blank?
 			next_icf_master_id = IcfMasterId.next_unused
 			if next_icf_master_id
 				self.update_attribute(:icf_master_id, next_icf_master_id.to_s)
@@ -342,19 +340,21 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def childid_to_s
-		if subject_type_id == StudySubject.subject_type_mother_id
-			"#{child.try(:childid)} (mother)"
-		else
-			childid
-		end
+#		if subject_type_id == StudySubject.subject_type_mother_id
+#			"#{child.try(:childid)} (mother)"
+#		else
+#			childid
+#		end
+		( is_mother? ) ? "#{child.try(:childid)} (mother)" : childid
 	end
 
 	def studyid_to_s
-		if subject_type_id == StudySubject.subject_type_mother_id
-			"n/a"
-		else
-			studyid
-		end
+#		if subject_type_id == StudySubject.subject_type_mother_id
+#			"n/a"
+#		else
+#			studyid
+#		end
+		( is_mother? ) ? "n/a" : studyid
 	end
 
 	def admitting_oncologist
