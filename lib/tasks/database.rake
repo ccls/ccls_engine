@@ -1,13 +1,13 @@
 namespace :db do
 
-	desc "Import subject and address data from CSV files"
-	task :import_csv_data => [
-		:destroy_csv_data,
-		:import_subject_data,
-		:import_matchingid_and_familyid,
-		:import_address_data,
-		:random_enrollments_data
-	]
+#	desc "Import subject and address data from CSV files"
+#	task :import_csv_data => [
+#		:destroy_csv_data,
+#		:import_subject_data,
+#		:import_matchingid_and_familyid,
+#		:import_address_data,
+#		:random_enrollments_data
+#	]
 
 	desc "Destroy subject and address data"
 	task :destroy_csv_data => :environment do
@@ -17,21 +17,21 @@ namespace :db do
 		Address.destroy_all
 		PhoneNumber.destroy_all
 		Interview.destroy_all
-		Identifier.destroy_all
+#		Identifier.destroy_all
 		Patient.destroy_all
 #		Pii.destroy_all
 #		ResponseSet.destroy_all
 #		Response.destroy_all
 		Sample.destroy_all
 		SampleKit.destroy_all
-		Package.destroy_all
+#		Package.destroy_all
 		HomexOutcome.destroy_all
 		InterviewOutcome.destroy_all
 		HomeExposureResponse.destroy_all
 		OperationalEvent.destroy_all
 		ProjectOutcome.destroy_all
 		SampleOutcome.destroy_all
-		Track.destroy_all
+#		Track.destroy_all
 		Transfer.destroy_all
 #		SurveyInvitation.destroy_all
 	end
@@ -125,73 +125,73 @@ namespace :db do
 #
 #		end
 #	end
-
-	desc "Import matchingid and familyid data from CSV file"
-	task :import_matchingid_and_familyid => :environment do
-		require 'fastercsv'
-		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/subjectmatchingfamilyids_xref.csv', 'rb',{
-			:headers => true })).each do |line|
-#	subjectID,matchingID,familyid
-			puts "Processing line #{f.lineno}"
-			puts line
-			if line['subjectID'] =~ /^\s*#/
-				puts "skipping as subjectid not found"
-				next 
-			end
-
-			#	due to padding it with zeros, NEED this to be an Integer
-			#	doesn't work correctly in sqlite so just pad it before search
-			identifier = Identifier.find_by_subjectid(
-				sprintf("%06d",line['subjectID'].to_i))
-			raise ActiveRecord::RecordNotFound unless identifier
-
-			identifier.update_attributes!(
-				:matchingid => line['matchingID'],
-				:familyid   => line['familyid']
-			)
-
-		end
-	end
-
-	desc "Import address data from CSV file"
-	task :import_address_data => :environment do
-		require 'fastercsv'
-		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
-		(f=FasterCSV.open('misc/dummy_addresses.csv', 'rb',{
-			:headers => true })).each do |line|
-#	subjectID,Address_Type_ID,Address_Line1,Address_City,Address_State,Address_Zip
-			puts "Processing line #{f.lineno}"
-			puts line
-
-			#	due to padding it with zeros, NEED this to be an Integer
-			#	doesn't work correctly in sqlite so just pad it before search
-			study_subject = Identifier.find_by_subjectid(
-				sprintf("%06d",line['subjectID'].to_i)).study_subject
-			raise ActiveRecord::RecordNotFound unless study_subject
-
-#			address_type = AddressType.find(line[1].to_s)
-#			address_type = AddressType.find_by_code(
-#				(line[1].to_s == '1')?'Home':'Mailing')
-#			raise ActiveRecord::RecordNotFound unless address_type
-
-#			study_subject.addressings << Addressing.create!(
-#				:study_subject_id  => study_subject.id,
-			study_subject.addressings.create!(
-				:current_address => 1,		#	Yes
-				:is_valid    => true,
-				:is_verified => false,
-				:address_attributes => {
-					:address_type_id => line['Address_Type_ID'].to_i,
-					:line_1 => line['Address_Line1']||"FAKE LINE 1",
-					:city => line['Address_City']||"FAKE CITY",
-					:state => line['Address_State']||"FAKE STATE",
-					:zip => line['Address_Zip']||"12345-6789"
-				}
-			)
-		end
-	end
-
+#
+#	desc "Import matchingid and familyid data from CSV file"
+#	task :import_matchingid_and_familyid => :environment do
+#		require 'fastercsv'
+#		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+#		(f=FasterCSV.open('misc/subjectmatchingfamilyids_xref.csv', 'rb',{
+#			:headers => true })).each do |line|
+##	subjectID,matchingID,familyid
+#			puts "Processing line #{f.lineno}"
+#			puts line
+#			if line['subjectID'] =~ /^\s*#/
+#				puts "skipping as subjectid not found"
+#				next 
+#			end
+#
+#			#	due to padding it with zeros, NEED this to be an Integer
+#			#	doesn't work correctly in sqlite so just pad it before search
+#			identifier = Identifier.find_by_subjectid(
+#				sprintf("%06d",line['subjectID'].to_i))
+#			raise ActiveRecord::RecordNotFound unless identifier
+#
+#			identifier.update_attributes!(
+#				:matchingid => line['matchingID'],
+#				:familyid   => line['familyid']
+#			)
+#
+#		end
+#	end
+#
+#	desc "Import address data from CSV file"
+#	task :import_address_data => :environment do
+#		require 'fastercsv'
+#		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
+#		(f=FasterCSV.open('misc/dummy_addresses.csv', 'rb',{
+#			:headers => true })).each do |line|
+##	subjectID,Address_Type_ID,Address_Line1,Address_City,Address_State,Address_Zip
+#			puts "Processing line #{f.lineno}"
+#			puts line
+#
+#			#	due to padding it with zeros, NEED this to be an Integer
+#			#	doesn't work correctly in sqlite so just pad it before search
+#			study_subject = Identifier.find_by_subjectid(
+#				sprintf("%06d",line['subjectID'].to_i)).study_subject
+#			raise ActiveRecord::RecordNotFound unless study_subject
+#
+##			address_type = AddressType.find(line[1].to_s)
+##			address_type = AddressType.find_by_code(
+##				(line[1].to_s == '1')?'Home':'Mailing')
+##			raise ActiveRecord::RecordNotFound unless address_type
+#
+##			study_subject.addressings << Addressing.create!(
+##				:study_subject_id  => study_subject.id,
+#			study_subject.addressings.create!(
+#				:current_address => 1,		#	Yes
+#				:is_valid    => true,
+#				:is_verified => false,
+#				:address_attributes => {
+#					:address_type_id => line['Address_Type_ID'].to_i,
+#					:line_1 => line['Address_Line1']||"FAKE LINE 1",
+#					:city => line['Address_City']||"FAKE CITY",
+#					:state => line['Address_State']||"FAKE STATE",
+#					:zip => line['Address_Zip']||"12345-6789"
+#				}
+#			)
+#		end
+#	end
+#
 #	desc "Import subject data from CSV file"
 #	task :import_subject_data => :environment do
 #		require 'fastercsv'

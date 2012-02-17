@@ -8,7 +8,7 @@ namespace :ccls do
 			"."
 		end
 #		%w( project enrollment study_subject pii identifier
-		%w( project enrollment study_subject identifier
+		%w( project enrollment study_subject 
 				patient phone_number address addressing ).each do |model|
 			puts "Exporting #{model.pluralize} ..."
 			File.open("#{outdir}/#{model.pluralize}.xml",'w'){|f| 
@@ -26,15 +26,13 @@ namespace :ccls do
 			printf "%-25s %5d\n", "subject_type = #{e.subject_type}:", e.count
 		end
 
-		printf "%-25s %5d\n", "Identifier.count:", Identifier.count
 		%w{ case_control_type childidwho }.each do |field|
-			Identifier.all(:select => "#{field}, COUNT(*) AS count",
+			StudySubject.all(:select => "#{field}, COUNT(*) AS count",
 					:group => field ).each do |e|
 				printf "%-25s %5d\n", "#{field} = #{e.send(field)}:", e.count
 			end
 		end
 
-#		printf "%-25s %5d\n", "Pii.count:", Pii.count
 		printf "%-25s %5d\n", "Patient.count:", Patient.count
 		%w{ was_under_15_at_dx was_previously_treated was_ca_resident_at_diagnosis 
 		}.each do |field|
@@ -66,27 +64,27 @@ namespace :ccls do
 
 	end
 
-	task :sync_subject_type => :environment do
-		abort("Don't do this in production! Not unless you know exactly what you're doing anyway."
-			) if Rails.env == 'production'
-		Identifier.find(:all).each_with_index do |identifier,index|
-			puts "Processing #{index}"
-			study_subject = identifier.study_subject
-			if study_subject.nil?
-				puts "No study_subject on this identifier" 
-				next
-			end
-			puts "case_control_type #{identifier.case_control_type}"
-			puts "subject_type #{study_subject.subject_type}"
-			if study_subject.subject_type.to_s == 'Case' and identifier.case_control_type != 'C'
-				puts "subject_type == 'Case' and case_control_type != 'C'"
-				study_subject.patient.destroy unless study_subject.patient.nil?
-				study_subject.reload.subject_type = SubjectType['Control']
-				study_subject.save!
-				puts "NEW subject_type #{study_subject.reload.subject_type}"
-			end
-		end
-	end
+#	task :sync_subject_type => :environment do
+#		abort("Don't do this in production! Not unless you know exactly what you're doing anyway."
+#			) if Rails.env == 'production'
+#		Identifier.find(:all).each_with_index do |identifier,index|
+#			puts "Processing #{index}"
+#			study_subject = identifier.study_subject
+#			if study_subject.nil?
+#				puts "No study_subject on this identifier" 
+#				next
+#			end
+#			puts "case_control_type #{identifier.case_control_type}"
+#			puts "subject_type #{study_subject.subject_type}"
+#			if study_subject.subject_type.to_s == 'Case' and identifier.case_control_type != 'C'
+#				puts "subject_type == 'Case' and case_control_type != 'C'"
+#				study_subject.patient.destroy unless study_subject.patient.nil?
+#				study_subject.reload.subject_type = SubjectType['Control']
+#				study_subject.save!
+#				puts "NEW subject_type #{study_subject.reload.subject_type}"
+#			end
+#		end
+#	end
 
 	desc "Load some fixtures to database for application"
 	task :update => :environment do

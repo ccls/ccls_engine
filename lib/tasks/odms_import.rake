@@ -78,7 +78,7 @@ namespace :odms_destroy do
 		Address.destroy_all
 		PhoneNumber.destroy_all
 		Interview.destroy_all
-		Identifier.destroy_all
+#		Identifier.destroy_all
 		Patient.destroy_all
 #		Pii.destroy_all
 		Sample.destroy_all
@@ -327,15 +327,14 @@ namespace :odms_import do
 				error_file.puts
 				next
 			end
-			identifier = Identifier.find_by_subjectid(line['subjectid'])
-			unless identifier
+			study_subject = StudySubject.find_by_subjectid(line['subjectid'])
+			unless study_subject
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectid']} not found."
 				error_file.puts line
 				error_file.puts
 				next
 			end
-			study_subject = identifier.study_subject
 
 			address = Address.find_by_external_address_id(line['external_address_id'])
 			unless address
@@ -419,15 +418,14 @@ namespace :odms_import do
 				error_file.puts
 				next
 			end
-			identifier = Identifier.find_by_subjectid(line['subjectid'])
-			unless identifier
+			study_subject = StudySubject.find_by_subjectid(line['subjectid'])
+			unless study_subject
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectid']} not found."
 				error_file.puts line
 				error_file.puts
 				next
 			end
-			study_subject = identifier.study_subject
 
 			phone_number = PhoneNumber.create({
 				:study_subject_id => study_subject.id,
@@ -492,15 +490,15 @@ namespace :odms_import do
 
 #"subjectID","project_id","operational_event_id","occurred_on","description","enrollment_id","event_notes"
 
-			identifier = Identifier.find_by_subjectid(line['subjectID'])	#	misnamed field
-			unless identifier
+			study_subject = StudySubject.find_by_subjectid(line['subjectID'])	#	misnamed field
+			unless study_subject
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectID']} not found."
 				error_file.puts line
 				error_file.puts
 				next
 			end
-			study_subject = identifier.study_subject
+
 			ccls_enrollment = study_subject.enrollments.find_by_project_id(line['project_id'])
 			operational_event = OperationalEvent.create({
 				:enrollment_id => ccls_enrollment.id,
@@ -548,53 +546,62 @@ namespace :odms_import do
 				:icf_master_id => line['icf_master_id']
 			}
 
+
+
+
+#
+#	subjectid is unique so this should NEVER happen
+#
 			if line['subjectid'] and !line['subjectid'].blank?
-				identifiers = Identifier.find(:all,
+				study_subjects = StudySubject.find(:all,
 					:conditions => { :subjectid => line['subjectid'] } )
 				case 
-					when identifiers.length > 1
-						raise "More than one identifier found matching subjectid:#{line['subjectid']}:"
-					when identifiers.length == 0
-						raise "No identifier found matching subjectid:#{line['subjectid']}:"
+					when study_subjects.length > 1
+						raise "More than one study_subject found matching subjectid:#{line['subjectid']}:"
+					when study_subjects.length == 0
+						raise "No study_subject found matching subjectid:#{line['subjectid']}:"
 					else
-						puts "Found identifier matching subjectid:#{line['subjectid']}:"
+						puts "Found study_subject matching subjectid:#{line['subjectid']}:"
 				end
+				study_subject = study_subjects.first
 
-				identifier = identifiers.first
+
+
+
 
 
 				#	Fortunately, these never happen
-				if identifier.icf_master_id.blank?
+				if study_subject.icf_master_id.blank?
 					#	assign it?
-					raise "ICF Master ID isn't actually set in the Identifier!"
+					raise "ICF Master ID isn't actually set in the StudySubject!"
 				else
 					#	different?
-					if identifier.icf_master_id != line['icf_master_id']
-						raise "ICF Master ID is different than that set in the Identifier!\n" <<
-							"#{identifier.icf_master_id}:#{line['icf_master_id']}"
+					if study_subject.icf_master_id != line['icf_master_id']
+						raise "ICF Master ID is different than that set in the StudySubject!\n" <<
+							"#{study_subject.icf_master_id}:#{line['icf_master_id']}"
 					end
 				end
 
 
-				attributes[:study_subject_id] = identifier.study_subject_id
+				attributes[:study_subject_id] = study_subject.id
 				attributes[:assigned_on] = Time.parse(line['assigned_on'])
 			else
 				#	I just noticed that some of the icf_master_ids are actually
 				#	assigned in the subject data, but not marked as being
 				#	assigned in the icf_master_id list.  So, search for them.
-				identifiers = Identifier.find(:all,
+				study_subjects = StudySubject.find(:all,
 					:conditions => { :icf_master_id => line['icf_master_id'] } )
 				case 
 #
 #	icf_master_id is unique, so should NEVER find more than 1 unless it is nil.
 #
-					when identifiers.length > 1
-						raise "More than one identifier found matching icf_master_id:#{line['icf_master_id']}:"
-#					when identifiers.length == 0
-#						raise "No identifier found matching icf_master_id:#{line['icf_master_id']}:"
-					when identifiers.length == 1
-						puts "Found identifier matching icf_master_id:#{line['icf_master_id']}:"
-						attributes[:study_subject_id] = identifiers.first.study_subject_id
+					when study_subjects.length > 1
+						raise "More than one study_subject found matching icf_master_id:#{line['icf_master_id']}:"
+#					when study_subjects.length == 0
+#						raise "No study_subject found matching icf_master_id:#{line['icf_master_id']}:"
+					when study_subjects.length == 1
+						puts "Found study_subject matching icf_master_id:#{line['icf_master_id']}:"
+						attributes[:study_subject_id] = study_subjects.first.id
 						attributes[:assigned_on] = Date.today
 				end
 			end
@@ -653,15 +660,14 @@ namespace :odms_import do
 				error_file.puts
 				next
 			end
-			identifier = Identifier.find_by_subjectid(line['subjectID'])	#	misnamed field
-			unless identifier
+			study_subject = StudySubject.find_by_subjectid(line['subjectID'])	#	misnamed field
+			unless study_subject
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: subjectid #{line['subjectID']} not found."
 				error_file.puts line
 				error_file.puts
 				next
 			end
-			study_subject = identifier.study_subject
 
 			enrollment = study_subject.enrollments.find_or_create_by_project_id(
 				line['project_id'])
@@ -750,28 +756,6 @@ namespace :odms_import do
 #
 #		Models built in block mode to avoid protected attributes
 #
-#			pii = Pii.new do |m|
-#				m.birth_year         = line['birth_year']
-#				m.created_at         = line['created_at']
-#				m.first_name         = line['first_name']
-#				m.middle_name        = line['middle_name']
-#				m.last_name          = line['last_name']
-#				m.maiden_name        = line['maiden_name']
-#				m.died_on            = ( line['died_on'].blank? 
-#					) ? nil : Time.parse(line['died_on'])
-#				m.mother_first_name  = line['mother_first_name']
-#				m.mother_maiden_name = line['mother_maiden_name']
-#				m.mother_last_name   = line['mother_last_name']
-#				m.father_first_name  = line['father_first_name']
-#				m.father_last_name   = line['father_last_name']
-#
-#				m.dob                = ( line['dob'].blank? 
-#						) ? nil : Time.parse(line['dob']).to_date
-#				if line['subject_type_id'].to_i == SubjectType['Mother'].id
-#					m.subject_is_mother = true
-#				end
-#
-#			end
 
 			identifier = Identifier.new do |m|
 				m.subjectid     = line['subjectid']
@@ -789,6 +773,8 @@ namespace :odms_import do
 				m.related_case_childid = line['related_case_childid']
 				m.created_at         = line['created_at']
 			end
+
+#	TODO incorporate the identifier stuff and use block mode for subject
 
 			attributes = {
 				:created_at      => line['created_at'],
@@ -818,7 +804,6 @@ namespace :odms_import do
 				:dob                => ( line['dob'].blank? 
 						) ? nil : Time.parse(line['dob']).to_date,
 
-#				:pii             => pii,
 				:identifier      => identifier
 			}
 			if line['subject_type_id'].to_i == SubjectType['Mother'].id
@@ -859,6 +844,13 @@ namespace :odms_import do
 			end
 
 			s = StudySubject.create(attributes)
+
+
+
+
+
+
+
 			if s.new_record?
 				error_file.puts 
 				error_file.puts "Line #:#{f.lineno}: #{s.errors.full_messages.to_sentence}"
