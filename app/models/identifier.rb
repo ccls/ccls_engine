@@ -15,14 +15,10 @@ base.class_eval do
 #	*	state_id_no ( unique )
 #class Identifier < ActiveRecordShared
 
-#	belongs_to :study_subject
-
 	#	Very cool that this doesn't stop factory girl from using them.
 	#	it will stop the study_subject nested_attribute tests though
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
-
-#	attr_protected :study_subject_id
 
 	include IdentifierValidations
 
@@ -37,37 +33,15 @@ base.class_eval do
 
 	before_validation :prepare_fields_for_validation
 	before_create     :prepare_fields_for_creation
-#	before_update     :prepare_fields_for_update
 
 	after_save :trigger_update_matching_study_subjects_reference_date, 
 		:if => :matchingid_changed?
 
-#	NOT ANY MORE
-#	def is_mother?
-#		case_control_type.blank? or case_control_type == 'M'
-#	end
-
-#	def is_case?
-#		if study_subject 
-#			study_subject.is_case?   # primary check
-#		else
-#			case_control_type == 'C' # secondary check
-#		end
-#	end
-
-#	NOT ANY MORE
-#	def is_control?
-#		!is_case? and !is_mother?
-#	end
-
 	def self.find_all_by_studyid_or_icf_master_id(studyid,icf_master_id)
 #	if decide to use LIKE, will need to NOT include nils so
 #	will need to add some conditions to the conditions.
-#		Identifier.find( :all, 
 		self.find( :all, 
 			:conditions => [
-#				"studyid LIKE '%:studyid%' OR icf_master_id LIKE '%:icf_master_id%'",
-#				{ :studyid => studyid, :icf_master_id => icf_master_id }
 				"studyid = :studyid OR icf_master_id = :icf_master_id",
 				{ :studyid => studyid, :icf_master_id => icf_master_id }
 			]
@@ -80,7 +54,6 @@ protected
 	# logger levels are ... debug, info, warn, error, and fatal.
 	#
 
-#	TODO FIX ME
 	def trigger_update_matching_study_subjects_reference_date
 		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from StudySubject:#{self.attributes['id']}"
 		logger.debug "DEBUG: matchingid changed from:#{matchingid_was}:to:#{matchingid}"
@@ -145,15 +118,11 @@ protected
 
 	#	made separate method so can be stubbed
 	def get_next_childid
-#		(Identifier.maximum(:childid).to_i||0) + 1
-#		Identifier.maximum(:childid).to_i + 1
 		self.class.maximum(:childid).to_i + 1
 	end
 
 	#	made separate method so can be stubbed
 	def get_next_patid
-#		(Identifier.maximum(:patid).to_i||0) + 1
-#		Identifier.maximum(:patid).to_i + 1
 		self.class.maximum(:patid).to_i + 1
 #
 #	What happens if/when this goes over 4 digits? 
@@ -216,13 +185,7 @@ protected
 #			else nil
 #		end
 
-#		prepare_fields_for_update
 	end
-
-#	def prepare_fields_for_update
-#		#	ssn is unique in database so only one could be blank, but all can be nil
-#		self.ssn = nil if ssn.blank?
-#	end
 
 	#	made separate method so can stub it in testing
 	#	This only guarantees uniqueness before creation,
@@ -248,7 +211,6 @@ protected
 		# from (irb):24
 		sprintf("%06d",subjectids[rand(subjectids.length)].to_i)
 	end
-
 
 end	#	class_eval
 end	#	included

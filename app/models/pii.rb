@@ -14,37 +14,24 @@ base.class_eval do
 #	*	study_subject_id
 #class Pii < ActiveRecordShared
 
-#	belongs_to :study_subject
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
 	delegate :is_other?,    :to => :guardian_relationship, :allow_nil => true, :prefix => true
-#	delegate :subject_type, :to => :study_subject, :allow_nil => true
-
-	#	Basically, this is only used as a flag during nested creation
-	#	to determine if the dob is required.
-#	attr_accessor :subject_is_mother
-	
-	#	Father seems to be irrelevant so commenting out code.
-	#	attr_accessor :subject_is_father
-
-#	attr_protected :study_subject_id
-
 	before_validation :nullify_blank_fields
 
 	include PiiValidations
 
-	#	Returns string containing study_subject's first, middle and last initials
-	def initials
-#		[first_name, middle_name, last_name]
-		childs_names.delete_if(&:blank?).collect{|s|s.chars.first}.join()
-	end
-
+	#	TODO include maiden_name just in case is mother???
 	def childs_names
 		[first_name, middle_name, last_name ]
 	end
 
+	#	Returns string containing study_subject's first, middle and last initials
+	def initials
+		childs_names.delete_if(&:blank?).collect{|s|s.chars.first}.join()
+	end
+
 	#	Returns string containing study_subject's first, middle and last name
-	#	TODO include maiden_name just in case is mother???
 	#	Use delete_if(&:blank?) instead of compact, which only removes nils.
 	def full_name
 		fullname = childs_names.delete_if(&:blank?).join(' ')
@@ -98,11 +85,10 @@ base.class_eval do
 		:if => :dob_changed?
 
 protected
-#
-# logger levels are ... debug, info, warn, error, and fatal.
-#
 
-#	TODO this will need uncommented and checkec
+	#
+	# logger levels are ... debug, info, warn, error, and fatal.
+	#
 	def trigger_setting_was_under_15_at_dx
 		logger.debug "DEBUG: calling update_patient_was_under_15_at_dx from StudySubject:#{self.attributes['id']}"
 		logger.debug "DEBUG: DOB changed from:#{dob_was}:to:#{dob}"
@@ -135,7 +121,6 @@ protected
 #		self.guardian_middle_name = nil if guardian_middle_name.blank?
 #		self.guardian_last_name = nil if guardian_last_name.blank?
 	end
-
 
 end	#	class_eval
 end	#	included

@@ -38,10 +38,8 @@ base.class_eval do
 		end
 	end
 
-
-
 	##
-	#	triggered from patient and pii
+	#	triggered from patient and self
 	def update_patient_was_under_15_at_dx
 		#	due to the high probability that self, pii and patient will not
 		#		yet be resolved, we have to get the associations manually.

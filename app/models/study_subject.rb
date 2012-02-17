@@ -45,30 +45,21 @@ class StudySubject < ActiveRecordShared
 	accepts_nested_attributes_for :subject_languages, 
 		:allow_destroy => true,
 		:reject_if => proc{|attributes| attributes['language_id'].blank? }
-#	accepts_nested_attributes_for :pii
 	accepts_nested_attributes_for :homex_outcome
-#	accepts_nested_attributes_for :identifier
 	accepts_nested_attributes_for :patient
 
 
 	#	Find the case or control subject with matching familyid except self.
 	def child
-#	TODO what if identifier is NULL?
 #	TODO what if familyid is NULL?
 		if subject_type_id == StudySubject.subject_type_mother_id
 #	&& !identifier.nil? && !identifier.familyid.blank?
 			StudySubject.find(:first,
-#				:include => [:pii,:identifier,:subject_type],
-#				:include => [:identifier,:subject_type],
 				:include => [:subject_type],
-#				:joins => :identifier,
 				:conditions => [
-#					"study_subjects.id != ? AND identifiers.subjectid = ?", 
-#					"study_subjects.id != ? AND identifiers.subjectid = ? AND subject_type_id IN (?)", 
 					"study_subjects.id != ? AND subjectid = ? AND subject_type_id IN (?)", 
-#						id, identifier.familyid, [
-						id, familyid, [
-							StudySubject.subject_type_case_id,StudySubject.subject_type_control_id] ]
+						id, familyid, 
+						[StudySubject.subject_type_case_id,StudySubject.subject_type_control_id] ]
 			)
 		else
 			nil
@@ -77,16 +68,11 @@ class StudySubject < ActiveRecordShared
 
 	#	Find the subject with matching familyid and subject_type of Mother.
 	def mother
-#	TODO what if identifier is NULL?
 #	TODO what if familyid is NULL?
 #	if !identifier.nil? && !identifier.familyid.blank?
 		StudySubject.find(:first,
-#			:include => [:pii,:identifier,:subject_type],
-#			:include => [:identifier,:subject_type],
 			:include => [:subject_type],
-#			:joins => :identifier,
 			:conditions => { 
-#				'identifiers.familyid' => identifier.familyid,
 				:familyid        => familyid,
 				:subject_type_id => StudySubject.subject_type_mother_id
 			}
@@ -95,15 +81,10 @@ class StudySubject < ActiveRecordShared
 
 	#	Find all the subjects with matching familyid except self.
 	def family
-#		if !identifier.nil? && !identifier.familyid.blank?
 		if !familyid.blank?
 			StudySubject.find(:all,
-#				:include => [:pii,:identifier,:subject_type],
-#				:include => [:identifier,:subject_type],
 				:include => [:subject_type],
-#				:joins => :identifier,
 				:conditions => [
-#					"study_subjects.id != ? AND identifiers.familyid = ?", id, identifier.familyid ]
 					"study_subjects.id != ? AND familyid = ?", id, familyid ]
 			)
 		else
@@ -113,16 +94,10 @@ class StudySubject < ActiveRecordShared
 
 	#	Find all the subjects with matching matchingid except self.
 	def matching
-#		if !identifier.nil? && !identifier.matchingid.blank?
 		if !matchingid.blank?
 			StudySubject.find(:all,
-#				:include => [:pii,:identifier,:subject_type],
-#				:include => [:identifier,:subject_type],
 				:include => [:subject_type],
-#				:joins => :identifier,
 				:conditions => [
-#					"study_subjects.id != ? AND identifiers.matchingid = ?", 
-#						id, identifier.matchingid ]
 					"study_subjects.id != ? AND matchingid = ?", 
 						id, matchingid ]
 			)
@@ -137,12 +112,8 @@ class StudySubject < ActiveRecordShared
 	def controls
 		return [] unless is_case?
 		StudySubject.find(:all, 
-#			:include => [:pii,:identifier,:subject_type],
-#			:include => [:identifier,:subject_type],
 			:include => [:subject_type],
-#			:joins => :identifier,
 			:conditions => [
-#				"study_subjects.id != ? AND identifiers.patid = ? AND subject_type_id = ?", 
 				"study_subjects.id != ? AND patid = ? AND subject_type_id = ?", 
 					id, patid, StudySubject.subject_type_control_id ] 
 		)
@@ -165,32 +136,14 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def to_s
-#		require_dependency 'pii.rb' unless Pii
 		#	interesting that I don't have to load 'identifier.rb' ???
 		[childid,'(',studyid,full_name,')'].compact.join(' ')
 	end
-
-#	#	The default full_name if non-existant is ALSO in pii.
-#	#	Can't delegate this or won't get '[name not available]' if no pii
-#	def full_name
-##		pii.try(:full_name) || '[name not available]'
-#		full_name || '[name not available]'
-#	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Case
 	def is_case?
 		subject_type_id == StudySubject.subject_type_case_id
-
-#	from identifier
-# def is_case?
-#   if study_subject 
-#     study_subject.is_case?   # primary check
-#   else
-#     case_control_type == 'C' # secondary check
-#   end
-# end
-
 	end
 
 	#	Returns boolean of comparison
@@ -204,13 +157,6 @@ class StudySubject < ActiveRecordShared
 	def is_mother?
 		subject_type_id == StudySubject.subject_type_mother_id
 	end
-
-	#	Returns boolean of comparison
-	#	true only if type is Father
-#	Father seems to be irrelevant so commenting out code.
-#	def is_father?
-#		subject_type_id == StudySubject.subject_type_father_id
-#	end
 
 	def race_names
 		races.collect(&:to_s).join(', ')
@@ -253,26 +199,6 @@ class StudySubject < ActiveRecordShared
 		if existing_mother
 			existing_mother
 		else
-#			new_mother = StudySubject.create!({
-#				:subject_type_id => StudySubject.subject_type_mother_id,
-#				:vital_status => VitalStatus['living'],
-#				:sex => 'F',			#	TODO M/F or male/female? have to check.
-##				:hispanicity_id => mother_hispanicity_id,	#	TODO where from? 
-##				:pii_attributes => {
-#					:first_name  => mother_first_name,
-#					:middle_name => mother_middle_name,
-#					:last_name   => mother_last_name,
-#					:maiden_name => mother_maiden_name,
-#					#	flag to not require the dob as won't have one
-#					:subject_is_mother => true,
-##				},
-#				:identifier => Identifier.new { |i|
-#					#	protected attributes!
-#					i.matchingid = identifier.matchingid
-#					i.familyid   = identifier.familyid
-#				}
-#			})
-
 			new_mother = StudySubject.new do |s|
 				s.subject_type_id = StudySubject.subject_type_mother_id
 				s.vital_status_id = VitalStatus['living'].id
@@ -282,36 +208,22 @@ class StudySubject < ActiveRecordShared
 				s.middle_name = mother_middle_name
 				s.last_name   = mother_last_name
 				s.maiden_name = mother_maiden_name
-				#	flag to not require the dob as won't have one
-				s.subject_is_mother = true
 
 				#	protected attributes!
 				s.matchingid = matchingid
 				s.familyid   = familyid
 			end
 			new_mother.save!
-
-
-# possibly put in a identifier#after_create ???
-#	or study_subject#after_create ???
 			new_mother.assign_icf_master_id
 			new_mother
 		end
 	end
 
-# possibly put in a identifier#after_create ???
-#	or study_subject#after_create ???
-#	seems to cause all kinds of problems when calling as after_create?
-
-
-#	NOTE icf_master_id may need changed to read_attribute(:icf_master_id)
 	def assign_icf_master_id
-#		if self.identifier and self.identifier.icf_master_id.blank?
-#		if icf_master_id.blank?
-		if read_attribute(:icf_master_id).blank?
+		if icf_master_id.blank?
+#		if read_attribute(:icf_master_id).blank?
 			next_icf_master_id = IcfMasterId.next_unused
 			if next_icf_master_id
-#				self.identifier.update_attribute(:icf_master_id, next_icf_master_id.to_s)
 				self.update_attribute(:icf_master_id, next_icf_master_id.to_s)
 				next_icf_master_id.study_subject = self
 				next_icf_master_id.assigned_on   = Date.today
@@ -324,18 +236,13 @@ class StudySubject < ActiveRecordShared
 	def next_control_orderno(grouping='6')
 		return nil unless is_case?
 		last_control = StudySubject.find(:first, 
-#			:joins => :identifier, 
-#			:order => 'identifiers.orderno DESC', 
 			:order => 'orderno DESC', 
 			:conditions => { 
 				:subject_type_id => StudySubject.subject_type_control_id,
 				'case_control_type' => grouping,
 				'matchingid' => self.subjectid
-#				'identifiers.case_control_type' => grouping,
-#				'identifiers.matchingid' => self.identifier.subjectid
 			}
 		)
-		#	identifier.orderno is delegated to subject for simplicity
 		( last_control.try(:orderno) || 0 ) + 1
 	end
 
@@ -401,9 +308,7 @@ class StudySubject < ActiveRecordShared
 				#	otherwise would only include subjects with pii, patient and identifier,
 				#	which would effectively exclude controls. (maybe that's ok?. NOT OK.)
 				:joins => [
-#					'LEFT JOIN piis ON study_subjects.id = piis.study_subject_id',
 					'LEFT JOIN patients ON study_subjects.id = patients.study_subject_id'
-#					'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id'
 				],
 				:conditions => conditions_array
 			) 
@@ -425,46 +330,30 @@ class StudySubject < ActiveRecordShared
 
 	def self.find_case_by_patid(patid)
 		StudySubject.find(:first,	#	patid is unique so better only be 1
-#			:joins => [ 
-#				'LEFT JOIN identifiers ON study_subjects.id = identifiers.study_subject_id' 
-#			],
 			:conditions => [
-#				'study_subjects.subject_type_id = ? AND identifiers.patid = ?',
 				'study_subjects.subject_type_id = ? AND patid = ?',
 				StudySubject.subject_type_case_id, patid
 			]
 		)
 	end
 
-#	NOTE probably will cause a problem
-#
-#	the validation calls this method rather than "read_attribute"
-#		so when blank returns "[no ID assigned]" which is 16 chars (max is 9)
-#
-#	TODO Make this a view helper instead of a model method???
-#
-#	def icf_master_id
-##		( identifier.try(:icf_master_id).blank? ) ? 
-##			"[no ID assigned]" : identifier.icf_master_id
-##		( icf_master_id.blank? ) ?  "[no ID assigned]" : icf_master_id
-#		( read_attribute(:icf_master_id).blank? ) ?  "[no ID assigned]" : read_attribute(:icf_master_id)
-#	end
+	def icf_master_id_to_s
+		( icf_master_id.blank? ) ?  "[no ID assigned]" : icf_master_id
+	end
 
-	def childid
+	def childid_to_s
 		if subject_type_id == StudySubject.subject_type_mother_id
 			"#{child.try(:childid)} (mother)"
 		else
-#			identifier.try(:childid)
-			read_attribute(:childid)
+			childid
 		end
 	end
 
-	def studyid
+	def studyid_to_s
 		if subject_type_id == StudySubject.subject_type_mother_id
 			"n/a"
 		else
-#			identifier.try(:studyid)
-			read_attribute(:studyid)
+			studyid
 		end
 	end
 
@@ -514,10 +403,7 @@ class StudySubject < ActiveRecordShared
 
 protected
 
-	#	Use this to stop the constant checking.
-	def self.subject_type_father_id
-		@@subject_type_father_id ||= SubjectType['Father'].id
-	end
+	#	Use these to stop the constant checking.
 	def self.subject_type_mother_id
 		@@subject_type_mother_id ||= SubjectType['Mother'].id
 	end

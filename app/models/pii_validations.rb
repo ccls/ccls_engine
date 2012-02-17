@@ -9,7 +9,6 @@ def self.included(base)
 #	or it will raise many "undefined method"s.
 base.class_eval do
 
-#	validate :presence_of_dob, :unless => :dob_not_required?
 	validate :presence_of_dob, :unless => :is_mother?
 	validates_complete_date_for :dob,     :allow_nil => true
 	validates_complete_date_for :died_on, :allow_nil => true
@@ -40,19 +39,6 @@ base.class_eval do
 		:maximum => 10, :allow_blank => true
 
  	validates_length_of :birth_year, :maximum => 4, :allow_blank => true
-
-#	#	study_subject is not known at validation on creation
-#	#	when using the accepts_nested_attributes feature
-#	#	so we must explicitly set a flag.
-#	#	the subject_is_mother flag is no longer necessary
-#	def dob_not_required?
-#		subject_is_mother || ( subject_type == SubjectType['Mother'] )
-##		subject_is_mother || subject_is_father || 
-##			( subject_type == SubjectType['Mother'] ) ||
-##			( subject_type == SubjectType['Father'] )
-##			( study_subject.try(:subject_type) == SubjectType['Mother'] ) ||
-##			( study_subject.try(:subject_type) == SubjectType['Father'] )
-#	end
 
 protected
 

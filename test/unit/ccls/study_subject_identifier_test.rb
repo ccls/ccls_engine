@@ -69,38 +69,21 @@ class Ccls::StudySubjectIdentifierTest < ActiveSupport::TestCase
 		assert_nil mother.reload.icf_master_id
 	end
 
-
-#
-#	TODO as is not delegated, these will need changed,
-#		possibly to just a view helper?
-#
 	test "should return 'no ID assigned' if study_subject has no icf_master_id" do
-pending
-#		study_subject = create_study_subject
-#		assert_nil     study_subject.read_attribute(:icf_master_id)
-#		assert_not_nil study_subject.icf_master_id
-#		assert_equal   study_subject.icf_master_id, '[no ID assigned]'
+		study_subject = create_study_subject
+		assert_nil   study_subject.icf_master_id
+		assert_equal study_subject.icf_master_id_to_s, '[no ID assigned]'
 	end
 
 	test "should return icf_master_id if study_subject has icf_master_id" do
-pending
-#		study_subject = create_study_subject
-#		assert_nil     study_subject.read_attribute(:icf_master_id)
-#		assert_not_nil study_subject.icf_master_id
-#		assert_equal   study_subject.icf_master_id, '[no ID assigned]'
-#		imi = Factory(:icf_master_id,:icf_master_id => '12345678A')
-#		study_subject.assign_icf_master_id
-#		assert_not_nil study_subject.icf_master_id
-#		assert_equal   study_subject.icf_master_id, imi.icf_master_id
+		study_subject = create_study_subject
+		assert_nil   study_subject.icf_master_id
+		assert_equal study_subject.icf_master_id_to_s, '[no ID assigned]'
+		imi = Factory(:icf_master_id,:icf_master_id => '12345678A')
+		study_subject.assign_icf_master_id
+		assert_not_nil study_subject.icf_master_id
+		assert_equal   study_subject.icf_master_id, imi.icf_master_id
+		assert_equal   study_subject.icf_master_id_to_s, imi.icf_master_id
 	end
-
-protected
-
-#	def create_study_subject_with_matchingid(matchingid='12345')
-##		study_subject = create_study_subject( 
-##			:identifier_attributes => Factory.attributes_for(:identifier,
-##				{ :matchingid => matchingid })).reload
-#		study_subject = create_study_subject( :matchingid => matchingid )
-#	end
 
 end

@@ -153,8 +153,9 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			s = Factory(:mother_study_subject)
 			assert_equal s.subject_type, SubjectType['Mother']
 			assert_equal s.sex, 'F'
-			assert_not_nil s.studyid
-			assert_equal 'n/a', s.studyid
+			assert_nil     s.studyid
+			assert_not_nil s.studyid_to_s
+			assert_equal 'n/a', s.studyid_to_s
 		}
 	end
 
@@ -987,9 +988,9 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
 		assert_not_nil study_subject.childid
-		assert_nil     mother.read_attribute(:childid)
-		assert_not_nil mother.childid	#	1 (mother)
-		assert_equal "#{study_subject.childid} (mother)", mother.childid
+		assert_nil     mother.childid
+		assert_not_nil mother.childid_to_s
+		assert_equal "#{study_subject.childid} (mother)", mother.childid_to_s
 	end
 
 #
@@ -1008,7 +1009,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	test "should return n/a for mother's studyid" do
 		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
-		assert_equal 'n/a', mother.studyid
+		assert_nil          mother.studyid
+		assert_equal 'n/a', mother.studyid_to_s
 	end
 
 	test "should create ccls project enrollment on creation" do
