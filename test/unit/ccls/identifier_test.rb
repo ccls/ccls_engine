@@ -162,6 +162,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 		StudySubject.any_instance.stubs(:get_next_patid).returns('123')
 		study_subject = Factory(:case_study_subject).reload
 		assert_equal "0123", study_subject.patid
+		assert_equal "C", study_subject.case_control_type
+		assert_equal "0", study_subject.orderno.to_s
 		assert_not_nil study_subject.studyid
 		assert_nil study_subject.studyid_nohyphen
 		assert_nil study_subject.studyid_intonly_nohyphen
@@ -285,11 +287,10 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	end
 
 	test "should find by studyid or icf_master_id with studyid" do
-		study_subject1 = Factory(:study_subject)
-		study_subject2 = Factory(:study_subject)
+		study_subject1 = Factory(:case_study_subject)
+		study_subject2 = Factory(:case_study_subject)
 		study_subjects = StudySubject.find_all_by_studyid_or_icf_master_id(
 			study_subject1.studyid, nil )
-#	NOTE due to missing patid and orderno, may not be true (case_control_type should be diff)
 		assert  study_subjects.include?(study_subject1)
 		assert !study_subjects.include?(study_subject2)
 	end
@@ -315,7 +316,8 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 #	NOTE studyid will be missing patid and orderno
 		study_subjects = StudySubject.find_all_by_studyid_or_icf_master_id(
 			subject.studyid, nil )
-		assert study_subjects.include?(subject)
+pending	#	TODO not making partial studyid anymore
+#		assert study_subjects.include?(subject)
 	end
 
 	test "should find by studyid or icf_master_id with control icf_master_id" do

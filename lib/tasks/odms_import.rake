@@ -1032,8 +1032,19 @@ namespace :odms_import do
 					"orderno mismatch:#{s.orderno}:#{line['orderno']}:"
 				assert s.newid == line['newid'],
 					"newid mismatch:#{s.newid}:#{line['newid']}:"
+
+
+#
+#	Blank studyid, patid, case_control_type and orderno will
+#		result in a studyid = '--'
+#	What to do? TODO Don't make partial studyid
+#
 				assert s.studyid == line['studyid'],
 					"studyid mismatch:#{s.studyid}:#{line['studyid']}:"
+
+
+
+
 				assert s.related_case_childid == line['related_case_childid'],
 					"related_case_childid mismatch:#{s.related_case_childid}:#{line['related_case_childid']}:"
 				assert s.state_id_no == line['state_id_no'],

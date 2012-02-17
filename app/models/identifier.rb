@@ -147,7 +147,11 @@ protected
 		self.orderno = 0 if is_case? and orderno.blank?
 
 		#	don't assign if given or is mother (studyid is currently protected)
-		self.studyid = "#{patid}-#{case_control_type}-#{orderno}" if !is_mother? and studyid.blank?
+		#	or if can't make complete studyid
+		if !is_mother? and studyid.blank? and
+				!patid.blank? and !case_control_type.blank? and !orderno.blank?
+			self.studyid = "#{patid}-#{case_control_type}-#{orderno}" 
+		end
 
 		#	perhaps put in an after_save with an update_attribute(s)
 		#	and simply generate a new one until all is well
