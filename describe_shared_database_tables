@@ -5,12 +5,12 @@ for table in `\
 	--user=root \
 	--column-names=false \
 	--execute='show tables;' \
-	--database=shared_development_20111201`
+	--database=shared_development`
 do 
 	echo "\nTable: $table"
 	mysql \
 	--user=root \
 	--table=true \
 	--execute="describe $table;" \
-	--database=shared_development_20111201
+	--database=shared_development
 done
