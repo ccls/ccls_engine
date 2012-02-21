@@ -3,24 +3,16 @@
 #	I'd like to do this to all of the really big classes
 #	but let's see how this goes first.
 #
-module Identifier
+module StudySubjectIdentifier
 def self.included(base)
 #	Must delay the calls to these ActiveRecord methods
 #	or it will raise many "undefined method"s.
 base.class_eval do
 
-#	==	requires
-#	*	childid (unique)
-#	*	study_subject_id (unique)
-#	*	state_id_no ( unique )
-#class Identifier < ActiveRecordShared
-
 	#	Very cool that this doesn't stop factory girl from using them.
 	#	it will stop the study_subject nested_attribute tests though
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
-
-#	include IdentifierValidations
 
 #
 #	TODO why before_validation and not just before_save?
@@ -53,19 +45,10 @@ protected
 	#
 	# logger levels are ... debug, info, warn, error, and fatal.
 	#
-
 	def trigger_update_matching_study_subjects_reference_date
 		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from StudySubject:#{self.attributes['id']}"
 		logger.debug "DEBUG: matchingid changed from:#{matchingid_was}:to:#{matchingid}"
 		self.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
-
-#		if study_subject
-#			logger.debug "DEBUG: study_subject:#{study_subject.id}"
-#			study_subject.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
-#		else
-#			# This should never happen, except in testing.
-#			logger.warn "WARNING: Identifier(#{self.attributes['id']}) is missing study_subject"
-#		end
 	end
 
 
@@ -218,4 +201,4 @@ protected
 
 end	#	class_eval
 end	#	included
-end	#	Identifier
+end	#	StudySubjectIdentifier

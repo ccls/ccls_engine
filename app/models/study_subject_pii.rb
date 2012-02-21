@@ -3,23 +3,11 @@
 #	I'd like to do this to all of the really big classes
 #	but let's see how this goes first.
 #
-module Pii
+module StudySubjectPii
 def self.included(base)
 #	Must delay the calls to these ActiveRecord methods
 #	or it will raise many "undefined method"s.
 base.class_eval do
-
-# == PII (Personally Identifiable Information)
-#	==	requires
-#	*	study_subject_id
-#class Pii < ActiveRecordShared
-
-#	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
-
-#	delegate :is_other?,    :to => :guardian_relationship, :allow_nil => true, :prefix => true
-#	before_validation :nullify_blank_fields
-
-#	include PiiValidations
 
 	#	TODO include maiden_name just in case is mother???
 	def childs_names
@@ -81,47 +69,6 @@ base.class_eval do
 		read_attribute(:dob).try(:to_s,:dob).try(:to_date)
 	end
 
-#	after_save :trigger_setting_was_under_15_at_dx,
-#		:if => :dob_changed?
-
-protected
-
-	#
-	# logger levels are ... debug, info, warn, error, and fatal.
-	#
-#	def trigger_setting_was_under_15_at_dx
-#		logger.debug "DEBUG: calling update_patient_was_under_15_at_dx from StudySubject:#{self.attributes['id']}"
-#		logger.debug "DEBUG: DOB changed from:#{dob_was}:to:#{dob}"
-#		update_patient_was_under_15_at_dx
-##		if study_subject
-##			logger.debug "DEBUG: study_subject:#{study_subject.id}"
-##			study_subject.update_patient_was_under_15_at_dx
-##		else
-##			# This should never happen, except in testing.
-##			logger.warn "WARNING: Pii(#{self.attributes['id']}) is missing study_subject"
-##		end
-#	end
-
-#	def nullify_blank_fields
-#		#	An empty form field is not NULL to MySQL so ...
-#		self.email = nil if email.blank?
-#
-##	Why did these matter?
-##		self.first_name = nil if first_name.blank?
-##		self.middle_name = nil if middle_name.blank?
-##		self.last_name = nil if last_name.blank?
-##		self.father_first_name = nil if father_first_name.blank?
-##		self.father_middle_name = nil if father_middle_name.blank?
-##		self.father_last_name = nil if father_last_name.blank?
-##		self.mother_first_name = nil if mother_first_name.blank?
-##		self.mother_middle_name = nil if mother_middle_name.blank?
-##		self.mother_maiden_name = nil if mother_maiden_name.blank?
-##		self.mother_last_name = nil if mother_last_name.blank?
-##		self.guardian_first_name = nil if guardian_first_name.blank?
-##		self.guardian_middle_name = nil if guardian_middle_name.blank?
-##		self.guardian_last_name = nil if guardian_last_name.blank?
-#	end
-
 end	#	class_eval
 end	#	included
-end	#	Pii
+end	#	StudySubjectPii

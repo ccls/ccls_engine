@@ -9,8 +9,8 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectCallbacks
 	include StudySubjectValidations
 	include StudySubjectDelegations
-	include Pii
-	include Identifier
+	include StudySubjectPii
+	include StudySubjectIdentifier
 
 
 	#	can lead to multiple piis in db for study_subject
