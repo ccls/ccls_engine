@@ -312,12 +312,15 @@ class Ccls::IdentifierTest < ActiveSupport::TestCase
 	end
 
 	test "should find by studyid or icf_master_id with control studyid" do
-		subject = Factory(:complete_control_study_subject)
-#	NOTE studyid will be missing patid and orderno
+		subject = Factory(:complete_control_study_subject,
+			:patid => '1234', :case_control_type => 'X', :orderno => 9)
+		assert_equal subject.patid, '1234'
+		assert_equal subject.case_control_type, 'X'
+		assert_equal subject.orderno, 9
+		assert_equal subject.studyid, '1234-X-9'
 		study_subjects = StudySubject.find_all_by_studyid_or_icf_master_id(
 			subject.studyid, nil )
-pending	#	TODO not making partial studyid anymore
-#		assert study_subjects.include?(subject)
+		assert study_subjects.include?(subject)
 	end
 
 	test "should find by studyid or icf_master_id with control icf_master_id" do
