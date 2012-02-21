@@ -26,7 +26,7 @@ RAILS_ENV=production
 #
 #	Can I have a series of commands in crontab, or should I put it all in one script.
 #
-@hourly cd /my/ruby/ccls_engine-for_maintaining_shared_database/ ; rake ccls:export_to_xml >> /my/ruby/export_to_xml.log
+@daily cd /my/ruby/ccls_engine-for_maintaining_shared_database/ ; rake ccls:export_to_xml >> /my/ruby/export_to_xml.log
 #@daily cd /my/ruby/ccls_engine-for_maintaining_shared_database/ ; rake ccls:export_to_xml
 #* * * * * cd /my/ruby/ccls_engine-for_maintaining_shared_database/ ; rake ccls:export_to_xml
 #* * * * * echo $RAILS_ENV >> /my/ruby/rails_env_check
