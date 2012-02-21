@@ -103,7 +103,8 @@ base.class_eval do
 		matchingids.compact.push(matchingid).uniq.each do |mid|
 			study_subject_ids = if( !mid.nil? )
 #				Identifier.find_all_by_matchingid(mid).collect(&:study_subject_id)
-				StudySubject.find_all_by_matchingid(mid).collect(&:id)
+#				StudySubject.find_all_by_matchingid(mid).collect(&:id)
+				self.class.find_all_by_matchingid(mid).collect(&:id)
 			else
 				[id]
 			end
@@ -116,7 +117,8 @@ base.class_eval do
 			admit_date = matching_patient.try(:admit_date)
 
 			logger.debug "DEBUG: calling StudySubject.update_study_subjects_reference_date(#{study_subject_ids.join(',')},#{admit_date})"
-			StudySubject.update_study_subjects_reference_date( study_subject_ids, admit_date )
+#			StudySubject.update_study_subjects_reference_date( study_subject_ids, admit_date )
+			self.class.update_study_subjects_reference_date( study_subject_ids, admit_date )
 		end
 		true
 	end
@@ -143,7 +145,8 @@ protected
 		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (1,2)) 
 		# UPDATE `study_subjects` SET `reference_date` = '2011-06-02' WHERE (`subjects`.`id` IN (NULL)) 
 		unless study_subject_ids.empty?
-			StudySubject.update_all(
+#			StudySubject.update_all(
+			self.update_all(
 				{:reference_date => new_reference_date },
 				{ :id => study_subject_ids })
 		end

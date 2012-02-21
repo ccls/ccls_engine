@@ -51,15 +51,13 @@ class StudySubject < ActiveRecordShared
 
 	#	Find the case or control subject with matching familyid except self.
 	def child
-#	TODO what if familyid is NULL?
-		if subject_type_id == StudySubject.subject_type_mother_id
-#	&& !identifier.nil? && !identifier.familyid.blank?
-			StudySubject.find(:first,
+		if (subject_type_id == self.class.subject_type_mother_id) && !familyid.blank?
+			self.class.find(:first,
 				:include => [:subject_type],
 				:conditions => [
 					"study_subjects.id != ? AND subjectid = ? AND subject_type_id IN (?)", 
 						id, familyid, 
-						[StudySubject.subject_type_case_id,StudySubject.subject_type_control_id] ]
+						[self.class.subject_type_case_id,self.class.subject_type_control_id] ]
 			)
 		else
 			nil
@@ -69,41 +67,35 @@ class StudySubject < ActiveRecordShared
 	#	Find the subject with matching familyid and subject_type of Mother.
 	def mother
 #	TODO what if familyid is NULL?
-#	if !identifier.nil? && !identifier.familyid.blank?
-		StudySubject.find(:first,
+#		return nil if familyid.blank?
+		self.class.find(:first,
 			:include => [:subject_type],
 			:conditions => { 
 				:familyid        => familyid,
-				:subject_type_id => StudySubject.subject_type_mother_id
+				:subject_type_id => self.class.subject_type_mother_id
 			}
 		)
 	end
 
 	#	Find all the subjects with matching familyid except self.
 	def family
-		if !familyid.blank?
-			StudySubject.find(:all,
-				:include => [:subject_type],
-				:conditions => [
-					"study_subjects.id != ? AND familyid = ?", id, familyid ]
-			)
-		else
-			[]
-		end
+		return [] if familyid.blank?
+		self.class.find(:all,
+			:include => [:subject_type],
+			:conditions => [
+				"study_subjects.id != ? AND familyid = ?", id, familyid ]
+		)
 	end
 
 	#	Find all the subjects with matching matchingid except self.
 	def matching
-		if !matchingid.blank?
-			StudySubject.find(:all,
-				:include => [:subject_type],
-				:conditions => [
-					"study_subjects.id != ? AND matchingid = ?", 
-						id, matchingid ]
-			)
-		else
-			[]
-		end
+		return [] if matchingid.blank?
+		self.class.find(:all,
+			:include => [:subject_type],
+			:conditions => [
+				"study_subjects.id != ? AND matchingid = ?", 
+					id, matchingid ]
+		)
 	end
 
 	#	Find all the subjects with matching patid with subject_type Control except self.
@@ -111,11 +103,11 @@ class StudySubject < ActiveRecordShared
 	#			TODO Could fix, but this situation is unlikely.
 	def controls
 		return [] unless is_case?
-		StudySubject.find(:all, 
+		self.class.find(:all, 
 			:include => [:subject_type],
 			:conditions => [
 				"study_subjects.id != ? AND patid = ? AND subject_type_id = ?", 
-					id, patid, StudySubject.subject_type_control_id ] 
+					id, patid, self.class.subject_type_control_id ] 
 		)
 	end
 
@@ -142,19 +134,19 @@ class StudySubject < ActiveRecordShared
 	#	Returns boolean of comparison
 	#	true only if type is Case
 	def is_case?
-		subject_type_id == StudySubject.subject_type_case_id
+		subject_type_id == self.class.subject_type_case_id
 	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Control
 	def is_control?
-		subject_type_id == StudySubject.subject_type_control_id
+		subject_type_id == self.class.subject_type_control_id
 	end
 
 	#	Returns boolean of comparison
 	#	true only if type is Mother
 	def is_mother?
-		subject_type_id == StudySubject.subject_type_mother_id
+		subject_type_id == self.class.subject_type_mother_id
 	end
 
 	def race_names
@@ -198,8 +190,10 @@ class StudySubject < ActiveRecordShared
 		if existing_mother
 			existing_mother
 		else
-			new_mother = StudySubject.new do |s|
-				s.subject_type_id = StudySubject.subject_type_mother_id
+#			new_mother = StudySubject.new do |s|
+			new_mother = self.class.new do |s|
+#				s.subject_type_id = StudySubject.subject_type_mother_id
+				s.subject_type_id = self.class.subject_type_mother_id
 				s.vital_status_id = VitalStatus['living'].id
 				s.sex = 'F'			#	TODO M/F or male/female? have to check.
 #				s.hispanicity_id = mother_hispanicity_id	#	TODO where from? 
@@ -233,12 +227,16 @@ class StudySubject < ActiveRecordShared
 
 	def next_control_orderno(grouping='6')
 		return nil unless is_case?
-		last_control = StudySubject.find(:first, 
+#		last_control = StudySubject.find(:first, 
+		last_control = self.class.find(:first, 
 			:order => 'orderno DESC', 
 			:conditions => { 
-				:subject_type_id => StudySubject.subject_type_control_id,
-				'case_control_type' => grouping,
-				'matchingid' => self.subjectid
+#				:subject_type_id => StudySubject.subject_type_control_id,
+#				'case_control_type' => grouping,
+#				'matchingid' => self.subjectid
+				:subject_type_id => self.class.subject_type_control_id,
+				:case_control_type => grouping,
+				:matchingid => self.subjectid
 			}
 		)
 		( last_control.try(:orderno) || 0 ) + 1
@@ -316,7 +314,8 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def duplicates(options={})
-		StudySubject.duplicates({
+#		StudySubject.duplicates({
+		self.class.duplicates({
 			:mother_maiden_name => self.mother_maiden_name,
 			:hospital_no => self.hospital_no,
 			:dob => self.dob,
@@ -327,10 +326,12 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def self.find_case_by_patid(patid)
-		StudySubject.find(:first,	#	patid is unique so better only be 1
+#		StudySubject.find(:first,	#	patid is unique so better only be 1
+#		self.class.find(:first,	#	patid is unique so better only be 1
+		self.find(:first,	#	patid is unique so better only be 1
 			:conditions => [
 				'study_subjects.subject_type_id = ? AND patid = ?',
-				StudySubject.subject_type_case_id, patid
+				subject_type_case_id, patid
 			]
 		)
 	end
@@ -340,20 +341,10 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def childid_to_s
-#		if subject_type_id == StudySubject.subject_type_mother_id
-#			"#{child.try(:childid)} (mother)"
-#		else
-#			childid
-#		end
 		( is_mother? ) ? "#{child.try(:childid)} (mother)" : childid
 	end
 
 	def studyid_to_s
-#		if subject_type_id == StudySubject.subject_type_mother_id
-#			"n/a"
-#		else
-#			studyid
-#		end
 		( is_mother? ) ? "n/a" : studyid
 	end
 
