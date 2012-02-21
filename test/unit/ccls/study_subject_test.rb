@@ -528,7 +528,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_equal 2, study_subject.reload.analyses.length
 	end
 
-	#	All delegated fields
+	#	All delegated fields	(actually not all are delegated anymore)
 	%w( 
 		admit_date organization 
 			organization_id hospital_no
@@ -613,42 +613,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_equal "#{study_subject}",
 			[study_subject.childid,'(',study_subject.studyid,study_subject.full_name,')'].compact.join(' ')
 	end
-
-#	test "should return hx_id" do
-#		hx_id = Project['HomeExposures'].id
-#		assert_not_nil hx_id
-#		assert_equal StudySubject.hx_id, hx_id
-#	end
-#
-#	test "should search for_hx" do
-#		study_subjects = StudySubject.for_hx()
-#		assert_not_nil study_subjects
-#		assert study_subjects.is_a?(Array)
-#	end
-#
-#	test "should search for_hx_interview" do
-#		study_subjects = StudySubject.for_hx_interview()
-#		assert_not_nil study_subjects
-#		assert study_subjects.is_a?(Array)
-#	end
-#
-#	test "should search need_gift_card" do
-#		study_subjects = StudySubject.need_gift_card()
-#		assert_not_nil study_subjects
-#		assert study_subjects.is_a?(Array)
-#	end
-#
-#	test "should search for_hx_followup" do
-#		study_subjects = StudySubject.for_hx_followup()
-#		assert_not_nil study_subjects
-#		assert study_subjects.is_a?(Array)
-#	end
-#
-#	test "should search for_hx_sample" do
-#		study_subjects = StudySubject.for_hx_sample()
-#		assert_not_nil study_subjects
-#		assert study_subjects.is_a?(Array)
-#	end
 
 	test "should create_home_exposure_with_study_subject" do
 		study_subject = create_home_exposure_with_study_subject
@@ -748,8 +712,9 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should not create mother for mother" do
-		study_subject = create_complete_mother_study_subject
-		assert_equal study_subject, study_subject.mother
+		study_subject = Factory(:complete_mother_study_subject)
+		assert_nil study_subject.familyid
+		assert_nil study_subject.mother
 		assert_equal study_subject, study_subject.create_mother
 	end
 
@@ -759,44 +724,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 ##	TODO raise an error?
 ##		mother = study_subject.create_mother
 ##flunk
-#	end
-
-#	Father seems to be irrelevant so commenting out code.
-#	test "should create father when isn't one" do
-#		study_subject = create_complete_control_study_subject
-#		assert_nil study_subject.father
-#		assert_difference('Pii.count',1) {
-#		assert_difference('Identifier.count',1) {
-#		assert_difference('StudySubject.count',1) {
-#			@father = study_subject.create_father
-#		} } }
-#		assert_equal @father, study_subject.father
-#	end
-
-#	Father seems to be irrelevant so commenting out code.
-#	test "should not create father when one exists" do
-#		study_subject = create_complete_control_study_subject
-#		father = study_subject.create_father
-#		assert_difference('Pii.count',0) {
-#		assert_difference('Identifier.count',0) {
-#		assert_difference('StudySubject.count',0) {
-#			@father = study_subject.create_father
-#		} } }
-#		assert_equal @father, father
-#	end
-
-#	Father seems to be irrelevant so commenting out code.
-#	test "should not create father for father" do
-#		study_subject = create_complete_father_study_subject
-#		assert_equal study_subject, study_subject.father
-#		assert_equal study_subject, study_subject.create_father
-#	end
-
-#	Father seems to be irrelevant so commenting out code.
-#	test "should not create father for subject without identifier" do
-#		study_subject = Factory(:study_subject)
-#		assert_nil study_subject.identifier
-##		father = study_subject.create_father
 #	end
 
 	test "should get control subjects for case subject" do
@@ -849,21 +776,12 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_equal 0, study_subject.matching.length
 	end
 
-	test "should return nothing for null identifier for matching" do
+	test "should return nothing for null matchingid for matching" do
+		#	only case is auto-assigned a matchingid
 		study_subject = Factory(:study_subject)
 		assert_nil study_subject.matchingid
 		assert_equal study_subject.matching.length, 0
 	end
-
-#	Father seems to be irrelevant so commenting out code.
-#	test "should include father in matching for case" do
-##	TODO what if matchingid is null (as is for non-case)?
-##		study_subject = create_case_identifier.study_subject.reload
-#		study_subject = create_complete_case_study_subject
-#		father = study_subject.create_father
-#		assert_equal      1, study_subject.matching.length
-#		assert_equal father, study_subject.matching.last
-#	end
 
 
 #
@@ -897,43 +815,33 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert       study_subject.family.include?(mother)
 	end
 
-#	test "should return nothing for null identifier for family" do
-#		study_subject = Factory(:study_subject)
-##		assert_nil study_subject.identifier
-#		assert_nil study_subject.familyid
-#		assert_equal study_subject.family.length, 0
-#	end
-
-#	Father seems to be irrelevant so commenting out code.
-#	test "should include father in family" do
-#		study_subject = create_complete_control_study_subject
-#		father = study_subject.create_father
-#		assert_equal      1, study_subject.family.length
-#		assert_equal father, study_subject.family.last
-#	end
+	test "should return nothing for null familyid for family" do
+		#	only a mother won't be assigned a familyid
+		study_subject = Factory(:mother_study_subject)
+		assert_nil study_subject.familyid
+		assert_equal study_subject.family.length, 0
+	end
 
 
+	test "should return nil for mother with nil familyid" do
+		#	only a mother won't be assigned a familyid
+		study_subject = Factory(:mother_study_subject)
+		assert_nil study_subject.familyid
+		assert_nil study_subject.mother
+	end
 
 	test "should return mother if is one" do
-#	TODO maybe return nil instead of self
-		study_subject = create_complete_control_study_subject
+#	TODO maybe return nil instead of self?
+		study_subject = Factory(:complete_control_study_subject)
 		assert_nil study_subject.mother
 		mother = study_subject.create_mother
 		assert_not_nil study_subject.mother
 		assert_equal mother, study_subject.mother
 	end
 
-#	Father seems to be irrelevant so commenting out code.
-#	test "should return father if is one" do
-#		study_subject = create_complete_control_study_subject
-#		assert_nil study_subject.father
-#		father = study_subject.create_father
-#		assert_not_nil study_subject.father
-#		assert_equal father, study_subject.father
-#	end
 
 	test "should return rejected controls for case subject" do
-		study_subject = create_complete_case_study_subject
+		study_subject = Factory(:complete_case_study_subject)
 		assert study_subject.is_case?
 		assert study_subject.rejected_controls.empty?
 		candidate_control = create_rejected_candidate_control(
@@ -942,7 +850,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should return rejected controls for control subject" do
-		study_subject = create_complete_control_study_subject
+		study_subject = Factory(:complete_control_study_subject)
 		assert !study_subject.is_case?
 		assert  study_subject.is_control?
 		assert study_subject.rejected_controls.empty?
@@ -966,26 +874,26 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should return child if subject is mother of case" do
-		study_subject = create_complete_case_study_subject
+		study_subject = Factory(:complete_case_study_subject)
 		mother = study_subject.create_mother
 		assert_equal mother, study_subject.mother
 		assert_equal mother.child, study_subject
 	end
 
 	test "should return child if subject is mother of control" do
-		study_subject = create_complete_control_study_subject
+		study_subject = Factory(:complete_control_study_subject)
 		mother = study_subject.create_mother
 		assert_equal mother, study_subject.mother
 		assert_equal mother.child, study_subject
 	end
 
 	test "should return nil for child if is not mother" do
-		study_subject = create_complete_control_study_subject
+		study_subject = Factory(:complete_control_study_subject)
 		assert_nil study_subject.child
 	end
 
 	test "should return appended child's childid if is mother" do
-		study_subject = create_complete_control_study_subject
+		study_subject = Factory(:complete_control_study_subject)
 		mother = study_subject.create_mother
 		assert_not_nil study_subject.childid
 		assert_nil     mother.childid
@@ -1007,7 +915,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 #	end
 
 	test "should return n/a for mother's studyid" do
-		study_subject = create_complete_control_study_subject
+		study_subject = Factory(:complete_control_study_subject)
 		mother = study_subject.create_mother
 		assert_nil          mother.studyid
 		assert_equal 'n/a', mother.studyid_to_s
@@ -1040,7 +948,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference('OperationalEventType.count',0) {	#	make sure it didn't create it
 		assert_difference('OperationalEvent.count',1) {
 		assert_difference('StudySubject.count',1) {
-			study_subject = create_study_subject
+			study_subject = Factory(:study_subject)
 		} } }
 		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
 		assert_not_nil ccls_enrollment
@@ -1049,7 +957,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	end
 
 	test "should create subjectDied operational event when vital status changed to deceased" do
-		study_subject = create_study_subject.reload		#	reload.  sometimes you need it?
+		study_subject = Factory(:study_subject).reload
 		assert_not_nil study_subject.vital_status
 		assert_difference('OperationalEventType.count',0) {	#	make sure it didn't create it
 		assert_difference('OperationalEvent.count',1) {

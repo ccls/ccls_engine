@@ -66,8 +66,7 @@ class StudySubject < ActiveRecordShared
 
 	#	Find the subject with matching familyid and subject_type of Mother.
 	def mother
-#	TODO what if familyid is NULL?
-#		return nil if familyid.blank?
+		return nil if familyid.blank?
 		self.class.find(:first,
 			:include => [:subject_type],
 			:conditions => { 
@@ -185,14 +184,13 @@ class StudySubject < ActiveRecordShared
 
 	#	Create (or just return mother) a mother subject based on subject's own data.
 	def create_mother
+		return self if is_mother?
 		#	The mother method will effectively find and itself.
 		existing_mother = mother
 		if existing_mother
 			existing_mother
 		else
-#			new_mother = StudySubject.new do |s|
 			new_mother = self.class.new do |s|
-#				s.subject_type_id = StudySubject.subject_type_mother_id
 				s.subject_type_id = self.class.subject_type_mother_id
 				s.vital_status_id = VitalStatus['living'].id
 				s.sex = 'F'			#	TODO M/F or male/female? have to check.
@@ -227,16 +225,12 @@ class StudySubject < ActiveRecordShared
 
 	def next_control_orderno(grouping='6')
 		return nil unless is_case?
-#		last_control = StudySubject.find(:first, 
 		last_control = self.class.find(:first, 
 			:order => 'orderno DESC', 
 			:conditions => { 
-#				:subject_type_id => StudySubject.subject_type_control_id,
-#				'case_control_type' => grouping,
-#				'matchingid' => self.subjectid
-				:subject_type_id => self.class.subject_type_control_id,
+				:subject_type_id   => self.class.subject_type_control_id,
 				:case_control_type => grouping,
-				:matchingid => self.subjectid
+				:matchingid        => self.subjectid
 			}
 		)
 		( last_control.try(:orderno) || 0 ) + 1
@@ -314,7 +308,6 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def duplicates(options={})
-#		StudySubject.duplicates({
 		self.class.duplicates({
 			:mother_maiden_name => self.mother_maiden_name,
 			:hospital_no => self.hospital_no,
@@ -326,8 +319,6 @@ class StudySubject < ActiveRecordShared
 	end
 
 	def self.find_case_by_patid(patid)
-#		StudySubject.find(:first,	#	patid is unique so better only be 1
-#		self.class.find(:first,	#	patid is unique so better only be 1
 		self.find(:first,	#	patid is unique so better only be 1
 			:conditions => [
 				'study_subjects.subject_type_id = ? AND patid = ?',
