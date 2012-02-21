@@ -1,0 +1,134 @@
+#
+#	crontab some_crontab_text_file.txt
+#		will overwrite the entire existing crontab setup.
+#
+#	crontab -e 
+#		will open up an editor
+#
+#	crontab -l
+#		will display the crontab file
+#
+#
+#
+#	Gonna use this to dump the database into xml files.
+#
+#	Probably also gonna use it for icf_master_tracker data updates.
+#
+#
+#
+#	Which shell?	Setting must include path apparently
+#
+SHELL=/bin/tcsh
+#
+#	What is RAILS_ENV?	seems unset (is set in .tcshrc so if tcsh is shell is set)
+#	Could also explicitly set it (too)
+RAILS_ENV=production
+#
+#	Can I have a series of commands in crontab, or should I put it all in one script.
+#
+@hourly cd /my/ruby/ccls_engine-for_maintaining_shared_database/ ; rake ccls:export_to_xml >> /my/ruby/export_to_xml.log
+#@daily cd /my/ruby/ccls_engine-for_maintaining_shared_database/ ; rake ccls:export_to_xml
+#* * * * * cd /my/ruby/ccls_engine-for_maintaining_shared_database/ ; rake ccls:export_to_xml
+#* * * * * echo $RAILS_ENV >> /my/ruby/rails_env_check
+
+
+
+
+#	Help ( from http://en.wikipedia.org/wiki/Cron )
+#	
+#	*    *    *    *    *  command to be executed
+#	┬    ┬    ┬    ┬    ┬
+#	│    │    │    │    │
+#	│    │    │    │    │
+#	│    │    │    │    └───── day of week (0 - 7) (0 or 7 is Sun, or use names)
+#	│    │    │    └────────── month (1 - 12)
+#	│    │    └─────────────── day of month (1 - 31)
+#	│    └──────────────────── hour (0 - 23)
+#	└───────────────────────── min (0 - 59)
+#	
+#	
+#	@yearly (or @annually) 	Run once a year, midnight, Jan. 1st 	0 0 1 1 *
+#	@monthly  Run once a month, midnight, first of month 	0 0 1 * *
+#	@weekly   Run once a week, midnight on Sunday 	0 0 * * 0
+#	@daily    Run once a day, midnight 	0 0 * * *
+#	@hourly   Run once an hour, beginning of hour 	0 * * * *
+#	@reboot   Run at startup
+#	
+#	
+#	
+#	The following line specifies that the Apache error log is to be cleared at one minute past midnight (00:01) of every day of the month, of every day of the week, assuming that the default shell for the cron user is Bourne shell compliant:
+#	
+#	1 0 * * *  printf > /www/apache/logs/error_log
+#	
+#	
+#	The following line causes the user program test.pl – possibly a Perl script – to be run every two hours, namely at midnight, 2am, 4am, 6am, 8am, and so on:
+#	
+#	0 */2 * * *  /home/username/test.pl
+#	
+#	
+#	
+#	
+#	CRON expression
+#	
+#	A CRON expression is a string comprising 5 or 6 fields separated by white space[4] that represents a set of times, normally as a schedule to execute some routine.
+#	[edit] Format
+#	Field name 	Mandatory? 	Allowed values 	Allowed special characters
+#	Minutes 	Yes 	0-59 	* / , -
+#	Hours 	Yes 	0-23 	* / , -
+#	Day of month 	Yes 	1-31 	* / , - ? L W
+#	Month 	Yes 	1-12 or JAN-DEC 	* / , -
+#	Day of week 	Yes 	0-6 or SUN-SAT 	* / , - ? L #
+#	Year 	No 	1970–2099 	* / , -
+#	
+#	In some uses of the CRON format there is also a seconds field at the beginning of the pattern.[5]
+#	[edit] Special characters
+#	
+#	Asterisk ( * )
+#	    The asterisk indicates that the cron expression will match for all values of the field; e.g., using an asterisk in the 4th field (month) would indicate every month.
+#	
+#	Slash ( / )
+#	    Slashes are used to describe increments of ranges. For example 3-59/15 in the 1st field (minutes) would indicate the 3rd minute of the hour and every 15 minutes thereafter. The form "*/..." is equivalent to the form "0-59/...".
+#	
+#	Percent ( % )
+#	    Percent-signs (%) in the command, unless escaped with backslash (\), will be changed into newline characters, and all data after the first % will be sent to the command as standard input. [6]
+#	
+#	Comma ( , )
+#	    Commas are used to separate items of a list. For example, using "MON,WED,FRI" in the 5th field (day of week) would mean Mondays, Wednesdays and Fridays.
+#	
+#	Hyphen ( - )
+#	    Hyphens are used to define ranges. For example, 2000-2010 would indicate every year between 2000 and 2010 CE inclusive.
+#	
+#	L
+#	    'L' stands for "last". When used in the day-of-week field, it allows you to specify constructs such as "the last Friday" ("5L") of a given month. In the day-of-month field, it specifies the last day of the month.
+#	
+#	W
+#	    The 'W' character is allowed for the day-of-month field. This character is used to specify the weekday (Monday-Friday) nearest the given day. As an example, if you were to specify "15W" as the value for the day-of-month field, the meaning is: "the nearest weekday to the 15th of the month". So if the 15th is a Saturday, the trigger will fire on Friday the 14th. If the 15th is a Sunday, the trigger will fire on Monday the 16th. If the 15th is a Tuesday, then it will fire on Tuesday the 15th. However if you specify "1W" as the value for day-of-month, and the 1st is a Saturday, the trigger will fire on Monday the 3rd, as it will not 'jump' over the boundary of a month's days. The 'W' character can only be specified when the day-of-month is a single day, not a range or list of days.
+#	
+#	Hash ( # )
+#	    '#' is allowed for the day-of-week field, and must be followed by a number between one and five. It allows you to specify constructs such as "the second Friday" of a given month.[citation needed]
+#	
+#	Question mark ( ? )
+#	    Note: Question mark is a non-standard character and only exists in some cron implementations. It is used instead of '*' for leaving either day-of-month or day-of-week blank.
+#	
+#	[edit] Examples
+#	
+#	Every minute
+#	
+#	* * * * *
+#	
+#	Every 1 minute
+#	
+#	*/1 * * * *
+#	
+#	or
+#	
+#	0 0/1 * * * ?
+#	
+#	23:00:00 every weekday night
+#	
+#	0 23 ? * MON-FRI
+#	
+#	In 2003 on the 11th to 26th of each month from January to June every third minute starting from 2 past 1am, 9am and 10pm
+#	
+#	2-59/3 1,9,22 11-26 1-6 ? 2003
+#	
