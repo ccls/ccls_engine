@@ -25,6 +25,7 @@ base.class_eval do
 	has_one :home_exposure_response
 	has_one :homex_outcome
 	has_many :bc_requests
+	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 
 ##########
 #

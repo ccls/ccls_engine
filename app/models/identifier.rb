@@ -20,7 +20,7 @@ base.class_eval do
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
 
-	include IdentifierValidations
+#	include IdentifierValidations
 
 #
 #	TODO why before_validation and not just before_save?

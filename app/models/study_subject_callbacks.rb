@@ -9,8 +9,12 @@ def self.included(base)
 #	or it will raise many "undefined method"s.
 base.class_eval do
 
+	before_validation :nullify_blank_fields
+
 	after_create :add_new_subject_operational_event
 	after_save   :add_subject_died_operational_event
+	after_save   :trigger_setting_was_under_15_at_dx,
+		:if => :dob_changed?
 
 	#	All subjects are to have a CCLS project enrollment, so create after create.
 	#	All subjects are to have this operational event, so create after create.
@@ -119,6 +123,27 @@ base.class_eval do
 
 protected
 
+	#
+	# logger levels are ... debug, info, warn, error, and fatal.
+	#
+	def trigger_setting_was_under_15_at_dx
+		logger.debug "DEBUG: calling update_patient_was_under_15_at_dx from StudySubject:#{self.attributes['id']}"
+		logger.debug "DEBUG: DOB changed from:#{dob_was}:to:#{dob}"
+		update_patient_was_under_15_at_dx
+#		if study_subject
+#			logger.debug "DEBUG: study_subject:#{study_subject.id}"
+#			study_subject.update_patient_was_under_15_at_dx
+#		else
+#			# This should never happen, except in testing.
+#			logger.warn "WARNING: Pii(#{self.attributes['id']}) is missing study_subject"
+#		end
+	end
+
+	def nullify_blank_fields
+		#	An empty form field is blank, not NULL, to MySQL so ...
+		self.email = nil if email.blank?
+	end
+
 	def self.update_study_subjects_reference_date(study_subject_ids,new_reference_date)
 		logger.debug "DEBUG: In StudySubject.update_study_subjects_reference_date"
 		logger.debug "DEBUG: update_study_subjects_reference_date(#{study_subject_ids.join(',')},#{new_reference_date})"
@@ -134,3 +159,4 @@ protected
 end	#	class_eval
 end	#	included
 end	#	StudySubjectCallbacks
+__END__

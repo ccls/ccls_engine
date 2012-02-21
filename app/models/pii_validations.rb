@@ -4,66 +4,66 @@
 #	but let's see how this goes first.
 #
 module PiiValidations
-def self.included(base)
-#	Must delay the calls to these ActiveRecord methods
-#	or it will raise many "undefined method"s.
-base.class_eval do
-
-	validate :presence_of_dob, :unless => :is_mother?
-	validates_complete_date_for :dob,     :allow_nil => true
-	validates_complete_date_for :died_on, :allow_nil => true
-	validates_uniqueness_of     :email,   :allow_nil => true
-
-	validates_format_of :email,
-	  :with => /\A([-a-z0-9!\#$%&'*+\/=?^_`{|}~]+\.)*[-a-z0-9!\#$%&'*+\/=?^_`{|}~]+@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, 
-		:allow_blank => true
-
-	validate :presence_of_guardian_relationship_other,
-		:if => :guardian_relationship_is_other?
-
-	validates_presence_of :birth_city,
-		:if => :birth_country_is_united_states?
-	validates_presence_of :birth_state,
-		:if => :birth_country_is_united_states?
-
-	validates_length_of :first_name, :last_name, 
-		:middle_name, :maiden_name, :guardian_relationship_other,
-		:father_first_name, :father_middle_name, :father_last_name,
-		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
-		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
-		:mother_race_other, :father_race_other,
-		:birth_city, :birth_state, :birth_country,
-			:maximum => 250, :allow_blank => true
-
- 	validates_length_of :generational_suffix, :father_generational_suffix, 
-		:maximum => 10, :allow_blank => true
-
- 	validates_length_of :birth_year, :maximum => 4, :allow_blank => true
-
-protected
-
-	def birth_country_is_united_states?
-		birth_country == 'United States'
-	end
-
-	#	custom validation for custom message without standard attribute prefix
-	def presence_of_guardian_relationship_other
-		if guardian_relationship_other.blank?
-			errors.add(:guardian_relationship_other, ActiveRecord::Error.new(
-				self, :base, :blank, { 
-					:message => "You must specify a relationship with 'other relationship' is selected." } ) )
-		end
-	end
-
-	#	custom validation for custom message without standard attribute prefix
-	def presence_of_dob
-		if dob.blank?
-			errors.add(:dob, ActiveRecord::Error.new(
-				self, :base, :blank, { 
-					:message => "Date of birth can't be blank." } ) )
-		end
-	end
-
-end	#	class_eval
-end	#	included
+#def self.included(base)
+##	Must delay the calls to these ActiveRecord methods
+##	or it will raise many "undefined method"s.
+#base.class_eval do
+#
+#	validate :presence_of_dob, :unless => :is_mother?
+#	validates_complete_date_for :dob,     :allow_nil => true
+#	validates_complete_date_for :died_on, :allow_nil => true
+#	validates_uniqueness_of     :email,   :allow_nil => true
+#
+#	validates_format_of :email,
+#	  :with => /\A([-a-z0-9!\#$%&'*+\/=?^_`{|}~]+\.)*[-a-z0-9!\#$%&'*+\/=?^_`{|}~]+@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, 
+#		:allow_blank => true
+#
+#	validate :presence_of_guardian_relationship_other,
+#		:if => :guardian_relationship_is_other?
+#
+#	validates_presence_of :birth_city,
+#		:if => :birth_country_is_united_states?
+#	validates_presence_of :birth_state,
+#		:if => :birth_country_is_united_states?
+#
+#	validates_length_of :first_name, :last_name, 
+#		:middle_name, :maiden_name, :guardian_relationship_other,
+#		:father_first_name, :father_middle_name, :father_last_name,
+#		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
+#		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
+#		:mother_race_other, :father_race_other,
+#		:birth_city, :birth_state, :birth_country,
+#			:maximum => 250, :allow_blank => true
+#
+# 	validates_length_of :generational_suffix, :father_generational_suffix, 
+#		:maximum => 10, :allow_blank => true
+#
+# 	validates_length_of :birth_year, :maximum => 4, :allow_blank => true
+#
+#protected
+#
+#	def birth_country_is_united_states?
+#		birth_country == 'United States'
+#	end
+#
+#	#	custom validation for custom message without standard attribute prefix
+#	def presence_of_guardian_relationship_other
+#		if guardian_relationship_other.blank?
+#			errors.add(:guardian_relationship_other, ActiveRecord::Error.new(
+#				self, :base, :blank, { 
+#					:message => "You must specify a relationship with 'other relationship' is selected." } ) )
+#		end
+#	end
+#
+#	#	custom validation for custom message without standard attribute prefix
+#	def presence_of_dob
+#		if dob.blank?
+#			errors.add(:dob, ActiveRecord::Error.new(
+#				self, :base, :blank, { 
+#					:message => "Date of birth can't be blank." } ) )
+#		end
+#	end
+#
+#end	#	class_eval
+#end	#	included
 end	#	PiiValidations

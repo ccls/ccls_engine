@@ -24,6 +24,8 @@ base.class_eval do
 		end
 	end
 
+	delegate :is_other?, :to => :guardian_relationship, :allow_nil => true, :prefix => true 
+
 end	#	class_eval
 end	#	included
 end	#	StudySubjectDelegations
