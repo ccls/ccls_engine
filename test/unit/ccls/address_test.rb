@@ -89,6 +89,15 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should format 9 digit zip" do
+		assert_difference( "Address.count", 1 ) do
+			address = create_address( :zip => '123456789' )
+			assert !address.errors.on(:zip)
+			assert address.zip =~ /\A\d{5}(-)?(\d{4})?\z/
+			assert_equal '12345-6789', address.zip
+		end
+	end
+
 	test "should order address chronologically reversed" do
 		a1 = Factory(:address, :created_at => Date.jd(2440000) ).id
 		a2 = Factory(:address, :created_at => Date.jd(2450000) ).id
@@ -99,12 +108,14 @@ class Ccls::AddressTest < ActiveSupport::TestCase
 
 	test "should return city state and zip with csz" do
 		address = Factory(:address,
-			:city => 'City',
+			:city  => 'City',
 			:state => 'CA',
 			:zip   => '12345')
 		assert_equal "City, CA 12345", address.csz
 	end
 
+	#	Note that there are probably legitimate address line 1's 
+	#	that will match the p.*o.*box regex.
 	test "should require non-residence address type with pobox in line" do
 		["P.O. Box 123","PO Box 123","P O Box 123","Post Office Box 123"].each do |pobox|
 			assert_difference( "Address.count", 0 ) do

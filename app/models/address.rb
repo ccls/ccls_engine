@@ -29,8 +29,8 @@ class Address < ActiveRecordShared
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
 		:message => "should be 12345, 123451234 or 12345-1234", :allow_blank => true
 
-	# TODO it would probably be better to do this before_validation
-	before_save :format_zip
+	# Would it be better to do this before_validation?
+	before_save :format_zip, :if => :zip_changed?
 
 	#	Returns a string with the city, state and zip
 	def csz
@@ -43,6 +43,7 @@ protected
 	#	require that the address type NOT be a residence.
 	def address_type_matches_line
 		#	It is inevitable that this will match too much
+		#	Pobox Street?
 		if(( line_1 =~ /p.*o.*box/i ) &&
 			( address_type_id.to_s == '1' ))	#	1 is 'residence'
 			errors.add(:address_type_id,
@@ -51,9 +52,16 @@ protected
 	end
 
 	#	Simply squish the zip removing leading and trailing spaces.
+	#	zip MUST be a string or this won't work. Will always be
+	#	a string when sent from a form.
 	def format_zip
 		#	zip was nil during import and skipping validations
 		self.zip.squish! unless zip.nil?
+		#	convert to 12345-1234
+		if !self.zip.nil? and self.zip.length > 5
+			old = self.zip.gsub(/\D/,'')
+			self.zip = "#{old[0..4]}-#{old[5..8]}"
+		end
 	end
 
 end

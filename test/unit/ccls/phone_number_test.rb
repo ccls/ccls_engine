@@ -113,9 +113,20 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 				phone_number = create_phone_number(:phone_number => good_phone)
 				assert !phone_number.errors.on_attr_and_type?(:phone_number,:invalid)
 				assert phone_number.reload.phone_number =~ /\A\(\d{3}\)\s+\d{3}-\d{4}\z/
+				assert_equal '(123) 456-7890', phone_number.phone_number
 			end
 		end
 	end
+
+	test "should format phone number" do
+		assert_difference( "PhoneNumber.count", 1 ) do
+			phone_number = create_phone_number( :phone_number => '1234567890' )
+			assert !phone_number.errors.on(:phone_number)
+			assert phone_number.phone_number =~ /\A\(\d{3}\)\s+\d{3}-\d{4}\z/
+			assert_equal '(123) 456-7890', phone_number.phone_number
+		end
+	end
+
 
 	[:yes,:nil].each do |yndk|
 		test "should NOT require why_invalid if is_valid is #{yndk}" do

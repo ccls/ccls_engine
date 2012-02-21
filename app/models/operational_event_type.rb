@@ -26,7 +26,7 @@ class OperationalEventType < ActiveRecordShared
 		find_by_code(code.to_s) #|| raise(NotFound)
 	end
 
-	#	Returns event_category.  TODO Why?  It is not unique?  Perhaps use both.
+	#	Returns event_category.
 	def to_s
 		"#{event_category}:#{description}"
 	end

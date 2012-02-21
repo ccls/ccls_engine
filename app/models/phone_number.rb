@@ -25,6 +25,9 @@ class PhoneNumber < ActiveRecordShared
 	validates_presence_of :data_source_other, :if => :data_source_is_other?
 	validates_length_of   :why_invalid,  :maximum => 250, :allow_blank => true
 	validates_length_of   :how_verified, :maximum => 250, :allow_blank => true
+
+	#	Want to ensure contains 10 digits.
+	#	I'm kinda surprised that this regex works.
 	validates_format_of   :phone_number, :with => /\A(\D*\d\D*){10}\z/,
 		:allow_blank => true
 
@@ -36,7 +39,7 @@ class PhoneNumber < ActiveRecordShared
 		'current_phone IS NULL OR current_phone = 2'
 	]
 
-	before_save :format_phone_number
+	before_save :format_phone_number, :if => :phone_number_changed?
 
 	before_save :set_verifier, 
 		:if => :is_verified?, 
@@ -55,8 +58,9 @@ class PhoneNumber < ActiveRecordShared
 
 	#	Returns boolean of comparison
 	#	true only if is_valid == 2 or 999
+	#	Beware of strings from forms
 	def is_not_valid?
-		[2,999].include?(is_valid)
+		[2,999].include?(is_valid.to_i)
 	end
 
 protected

@@ -8,14 +8,6 @@ class HomexOutcome < ActiveRecordShared
 	belongs_to :sample_outcome
 	belongs_to :interview_outcome
 
-	##	TODO - find a way to do this
-	# because study_subject accepts_nested_attributes for homex_outcome
-	# we can't require study_subject_id on create
-	#
-	#	study_subject_id is not known until before_save
-	#		so cannot be validated on creation
-	#
-#	validates_presence_of   :study_subject_id, :on => :update
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 	validates_presence_of   :sample_outcome_on,    :if => :sample_outcome_id?
 	validates_presence_of   :interview_outcome_on, :if => :interview_outcome_id?

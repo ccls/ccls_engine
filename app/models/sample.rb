@@ -47,7 +47,6 @@ class Sample < ActiveRecordShared
 	validates_past_date_for :aliquotted_on
 	validates_past_date_for :receipt_confirmed_on
 
-#	validate :tracking_numbers_are_different
 	validate :date_chronology
 
 	#	Returns the parent of this sample type
@@ -55,55 +54,9 @@ class Sample < ActiveRecordShared
 		sample_type.parent
 	end
 
-#	delegate :kit_package,    :to => :sample_kit, :allow_nil => true
-#	delegate :sample_package, :to => :sample_kit, :allow_nil => true
-#
-##
-##	TODO can I delegate these? Delegate to something that is delegated?
-##
-#	#	Returns tracking number of the kit package
-#	def kit_tracking_number
-#		kit_package.try(:tracking_number)
-#	end
-#
-#	#	Returns sent on of the kit package
-#	def kit_sent_on
-#		kit_package.try(:sent_on)
-#	end
-#
-#	#	Returns received on of the kit package
-#	def kit_received_on
-#		kit_package.try(:received_on)
-#	end
-#
-#	#	Returns tracking number of the sample package
-#	def sample_tracking_number
-#		sample_package.try(:tracking_number)
-#	end
-#
-#	#	Returns sent on of the sample package
-#	def sample_sent_on
-#		sample_package.try(:sent_on)
-#	end
-#
-#	#	Returns received on of the sample package
-#	def sample_received_on
-#		sample_package.try(:received_on)
-#	end
-
 	before_save :update_sample_outcome
 
 protected
-
-#	def tracking_numbers_are_different
-#		errors.add(:base, "Tracking numbers MUST be different."
-#			) if tracking_numbers_are_the_same?
-#	end
-#
-#	def tracking_numbers_are_the_same?
-#		(( kit_tracking_number == sample_tracking_number ) &&
-#			( !kit_tracking_number.blank? || !sample_tracking_number.blank? ))
-#	end
 
 	def date_chronology
 		errors.add(:collected_on,        "must be after sent_to_subject_on"

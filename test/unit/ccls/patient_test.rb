@@ -430,6 +430,15 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "should format 9 digit zip" do
+		assert_difference( "Patient.count", 1 ) do
+			patient = create_patient( :raf_zip => '123456789' )
+			assert !patient.errors.on(:raf_zip)
+			assert patient.raf_zip =~ /\A\d{5}(-)?(\d{4})?\z/
+			assert_equal '12345-6789', patient.raf_zip
+		end
+	end
+
 	test "should require other_diagnosis if diagnosis == other" do
 		assert_difference( "Patient.count", 0 ) do
 			patient = create_patient(:diagnosis => Diagnosis['other'])

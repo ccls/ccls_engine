@@ -11,8 +11,8 @@ class Patient < ActiveRecordShared
 
 	include PatientValidations
 
-	#	TODO it would probably be better to do this before_validation
-	before_save :format_zip
+	#	Would it be better to do this before_validation?
+	before_save :format_raf_zip, :if => :raf_zip_changed?
 
 	after_save :trigger_update_matching_study_subjects_reference_date,
 		:if => :admit_date_changed?
@@ -23,9 +23,14 @@ class Patient < ActiveRecordShared
 protected
 
 	#	Simply squish the zip removing leading and trailing spaces.
-	def format_zip
+	def format_raf_zip
 		#	zip was nil during import and skipping validations
 		self.raf_zip.squish! unless raf_zip.nil?
+		# convert to 12345-1234
+		if !self.raf_zip.nil? and self.raf_zip.length > 5
+			old = self.raf_zip.gsub(/\D/,'')
+			self.raf_zip = "#{old[0..4]}-#{old[5..8]}"
+		end
 	end
 
 	def trigger_setting_was_under_15_at_dx

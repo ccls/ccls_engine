@@ -32,15 +32,13 @@ class OperationalEvent < ActiveRecordShared
 
 	before_save :copy_operational_event_type_description
 
-#	TODO make protected?
+protected
 
 	def copy_operational_event_type_description
 		if self.description.blank?
 			self.description = operational_event_type.description
 		end
 	end
-
-protected
 
 	def self.valid_orders
 		%w( id occurred_on description type )
