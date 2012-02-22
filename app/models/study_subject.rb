@@ -21,6 +21,7 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectAbstracts
 	include StudySubjectRaces
 	include StudySubjectLanguages
+	include StudySubjectAddresses
 
 	delegate :interview_outcome, :interview_outcome_on,
 		:sample_outcome, :sample_outcome_on,
@@ -42,16 +43,6 @@ class StudySubject < ActiveRecordShared
 	#	Newer versions of rails actually nullify the old record
 
 	accepts_nested_attributes_for :enrollments
-	accepts_nested_attributes_for :addressings,
-		:reject_if => proc { |attrs|
-			!attrs[:address_required] &&
-			attrs[:address_attributes][:line_1].blank? &&
-			attrs[:address_attributes][:line_2].blank? &&
-			attrs[:address_attributes][:unit].blank? &&
-			attrs[:address_attributes][:city].blank? &&
-			attrs[:address_attributes][:zip].blank? &&
-			attrs[:address_attributes][:county].blank?
-		}
 	accepts_nested_attributes_for :phone_numbers,
 		:reject_if => proc { |attrs| attrs[:phone_number].blank? }
 	accepts_nested_attributes_for :gift_cards
@@ -127,12 +118,6 @@ class StudySubject < ActiveRecordShared
 				:reject_candidate => true
 			}
 		)
-	end
-
-	#	Returns number of addresses with 
-	#	address_type.code == 'residence'
-	def residence_addresses_count
-		addresses.count(:conditions => { :address_type_id => AddressType['residence'].id })
 	end
 
 	def to_s

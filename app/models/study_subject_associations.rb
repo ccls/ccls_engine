@@ -13,7 +13,6 @@ base.class_eval do
 	belongs_to :vital_status
 
 	has_and_belongs_to_many :analyses
-	has_many :addressings
 	has_many :enrollments
 	has_many :gift_cards
 	has_many :phone_numbers
@@ -36,8 +35,6 @@ base.class_eval do
 #	has_one :pii
 #
 ##########
-
-	has_many :addresses, :through => :addressings
 
 end	#	class_eval
 end	#	included

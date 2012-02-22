@@ -10,7 +10,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 #	in the creation of the enrollment so not really needed.
 #		:enrollments,
 
-	assert_should_have_many( :abstracts, :addressings, 
+	assert_should_have_many( 
 		:gift_cards, :phone_numbers, :samples, :interviews, :bc_requests )
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome )
@@ -276,62 +276,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} } }
 	end
 
-	test "should create study_subject and accept_nested_attributes_for addressings" do
-		assert_difference( 'Address.count', 1) {
-		assert_difference( 'Addressing.count', 1) {
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject(
-				:addressings_attributes => [Factory.attributes_for(:addressing,
-					:address_attributes => Factory.attributes_for(:address,
-					:address_type => AddressType['residence'] ) )])
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} } }
-	end
-
-	test "should create study_subject and ignore blank address" do
-		assert_difference( 'Address.count', 0) {
-		assert_difference( 'Addressing.count', 0) {
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject(
-				:addressings_attributes => [Factory.attributes_for(:addressing,
-					:address_attributes => { :address_type => AddressType['residence'] } )])
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} } }
-	end
-
-	test "should create study_subject and require address with flag" do
-		assert_difference( 'Address.count', 0) {
-		assert_difference( 'Addressing.count', 0) {
-		assert_difference( "StudySubject.count", 0 ) {
-			study_subject = create_study_subject(
-				:addressings_attributes => [Factory.attributes_for(:addressing,
-					:address_required   => true,
-					:address_attributes => { :address_type => AddressType['residence'] } )])
-			assert study_subject.errors.on_attr_and_type?('addressings.address.line_1',:blank)
-			assert study_subject.errors.on_attr_and_type?('addressings.address.city',:blank)
-			assert study_subject.errors.on_attr_and_type?('addressings.address.state',:blank)
-			assert study_subject.errors.on_attr_and_type?('addressings.address.zip',:blank)
-		} } }
-	end
-
-	test "should respond to residence_addresses_count" do
-		study_subject = create_study_subject
-		assert study_subject.respond_to?(:residence_addresses_count)
-		assert_equal 0, study_subject.residence_addresses_count
-		study_subject.update_attributes(
-				:addressings_attributes => [Factory.attributes_for(:addressing,
-					:address_attributes => Factory.attributes_for(:address,
-					{ :address_type => AddressType['residence'] } ))])
-		assert_equal 1, study_subject.reload.residence_addresses_count
-		study_subject.update_attributes(
-				:addressings_attributes => [Factory.attributes_for(:addressing,
-					:address_attributes => Factory.attributes_for(:address,
-					{ :address_type => AddressType['residence'] } ))])
-		assert_equal 2, study_subject.reload.residence_addresses_count
-	end
-
 	test "should create study_subject and accept_nested_attributes_for phone_numbers" do
 		assert_difference( 'PhoneNumber.count', 1) {
 		assert_difference( "StudySubject.count", 1 ) {
@@ -405,28 +349,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	#	Because of this, associated records are neither nullfied nor destroyed
 	#	when the associated models is destroyed.
 	#
-
-	test "should NOT destroy addressings with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Addressing.count',1) {
-			@study_subject = Factory(:addressing).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Addressing.count',0) {
-			@study_subject.destroy
-		} }
-	end
-
-	test "should NOT destroy addresses with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Address.count',1) {
-			@study_subject = Factory(:addressing).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Address.count',0) {
-			@study_subject.destroy
-		} }
-	end
 
 	test "should NOT destroy bc_requests with study_subject" do
 		assert_difference('StudySubject.count',1) {
@@ -965,51 +887,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 			])
 		} } }
 		assert_not_nil study_subject.enrollments.find_by_project_id(Project['ccls'].id)
-	end
-
-	test "should create newSubject operational event on creation" do
-		study_subject = nil
-		assert_difference('OperationalEventType.count',0) {	#	make sure it didn't create it
-		assert_difference('OperationalEvent.count',1) {
-		assert_difference('StudySubject.count',1) {
-			study_subject = Factory(:study_subject)
-		} } }
-		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
-		assert_not_nil ccls_enrollment
-		assert_not_nil ccls_enrollment.operational_events.find_by_operational_event_type_id(
-			OperationalEventType['newSubject'].id )
-	end
-
-	test "should create subjectDied operational event when vital status changed to deceased" do
-		study_subject = Factory(:study_subject).reload
-		assert_not_nil study_subject.vital_status
-		assert_difference('OperationalEventType.count',0) {	#	make sure it didn't create it
-		assert_difference('OperationalEvent.count',1) {
-			study_subject.update_attributes(:vital_status_id => VitalStatus['deceased'].id)
-		} }
-		assert_equal study_subject.reload.vital_status, VitalStatus['deceased']
-		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
-		assert_not_nil ccls_enrollment
-		assert_not_nil ccls_enrollment.operational_events.find_by_operational_event_type_id(
-			OperationalEventType['subjectDied'].id )
-	end
-
-	test "should return nil for subject's screener_complete_date_for_open_project" <<
-			" when subject has no associated operational event type" do
-		study_subject = Factory(:study_subject)
-		assert_nil study_subject.screener_complete_date_for_open_project
-	end
-
-	test "should return date for subject's screener_complete_date_for_open_project" <<
-			" when subject has associated operational event type" do
-		study_subject = Factory(:study_subject)
-		assert_nil study_subject.screener_complete_date_for_open_project
-		ccls_enrollment = study_subject.enrollments.find_by_project_id(Project['ccls'].id)
-		ccls_enrollment.operational_events.create(
-			:operational_event_type_id => OperationalEventType['screener_complete'].id,
-			:occurred_on => Date.today)
-		date = study_subject.screener_complete_date_for_open_project
-		assert_equal date, Date.today
 	end
 
 end

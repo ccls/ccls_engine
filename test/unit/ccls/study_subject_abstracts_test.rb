@@ -5,6 +5,8 @@ require 'test_helper'
 #	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectAbstractsTest < ActiveSupport::TestCase
 
+	assert_should_have_many( :abstracts, :model => 'StudySubject')
+
 	test "should NOT destroy abstracts with study_subject" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('Abstract.count',1) {
@@ -100,6 +102,14 @@ class Ccls::StudySubjectAbstractsTest < ActiveSupport::TestCase
 		assert_raise(StudySubject::NotTwoAbstracts) {
 			study_subject.abstract_diffs
 		}
+	end
+
+protected
+
+	def create_object
+		study_subject = Factory.build(:study_subject)
+		study_subject.save
+		study_subject
 	end
 
 end
