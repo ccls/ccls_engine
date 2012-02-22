@@ -10,7 +10,7 @@ require 'chronic'
 #	can be referenced.  
 #
 
-BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/DataMigration/20120217/"
+BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/DataMigration/"
 
 def format_date(date)
 	( date.blank? ) ? nil : date.try(:strftime,"%m/%d/%Y")
@@ -285,8 +285,10 @@ namespace :odms_import do
 					'City mismatch'
 				assert address.state           == line["state"],
 					'State mismatch'
-				assert address.zip             == line["zip"],
+
+				assert address.zip.only_numeric == line["zip"].only_numeric,
 					'Zip mismatch'
+
 				assert address.external_address_id == line["external_address_id"].to_nil_or_i,
 					'External Address mismatch'
 				assert address.county          == line["county"],
@@ -531,6 +533,7 @@ namespace :odms_import do
 
 		#	DO NOT COMMENT OUT THE HEADER LINE OR IT RAISES CRYPTIC ERROR
 		(f=FasterCSV.open("#{BASEDIR}/export_ODMS_ICF_Master_IDs.csv", 'rb',{
+
 			:headers => true })).each do |line|
 			puts "Processing line #{f.lineno}"
 			puts line
@@ -936,8 +939,10 @@ namespace :odms_import do
 #					end
 					assert pa.diagnosis_id == line['diagnosis_id'].to_nil_or_i,
 						"diagnosis_id mismatch:#{pa.diagnosis_id}:#{line['diagnosis_id']}:"
-					assert pa.raf_zip == line['raf_zip'],
+
+					assert pa.raf_zip.only_numeric == line['raf_zip'].only_numeric,
 						"raf_zip mismatch:#{pa.raf_zip}:#{line['raf_zip']}:"
+
 					assert pa.raf_county == line['raf_county'],
 						"raf_county mismatch:#{pa.raf_county}:#{line['raf_county']}:"
 					assert pa.hospital_no == line['hospital_no'],

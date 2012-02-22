@@ -14,20 +14,8 @@ base.class_eval do
 	attr_protected :studyid, :studyid_nohyphen, :studyid_intonly_nohyphen,
 		:familyid, :childid, :subjectid, :patid, :orderno
 
-#
-#	TODO why before_validation and not just before_save?
-#			I don't think that any of these fields are really validated
-#		wrong, subjectid is unique
-#			patid is currently contextually unique
-#			matchingid will be contextually unique
-#
-#	These values will be found or computed, so this may get weird
-
 	before_validation :prepare_fields_for_validation
 	before_create     :prepare_fields_for_creation
-
-	after_save :trigger_update_matching_study_subjects_reference_date, 
-		:if => :matchingid_changed?
 
 	def self.find_all_by_studyid_or_icf_master_id(studyid,icf_master_id)
 #	if decide to use LIKE, will need to NOT include nils so
@@ -42,20 +30,10 @@ base.class_eval do
 
 protected
 
-	#
-	# logger levels are ... debug, info, warn, error, and fatal.
-	#
-	def trigger_update_matching_study_subjects_reference_date
-		logger.debug "DEBUG: triggering_update_matching_study_subjects_reference_date from StudySubject:#{self.attributes['id']}"
-		logger.debug "DEBUG: matchingid changed from:#{matchingid_was}:to:#{matchingid}"
-		self.update_study_subjects_reference_date_matching(matchingid_was,matchingid)
-	end
-
-
-
-
-
 	def prepare_fields_for_validation
+		# An empty form field is blank, not NULL, to MySQL so ...
+		self.email = nil if email.blank?
+
 		#	ssn is unique in database so only one could be blank, but all can be nil
 		self.ssn = nil if ssn.blank?
 
@@ -90,13 +68,6 @@ protected
 #	unless ALL of the data is imported and the correct initial
 #	AUTO_INCREMENT value is set.  This will make the application
 #	database dependent, which I think is a bad idea.
-#	Right now, the demo won't work because the data has higher
-#	values than expected so the created ids already exists.
-#	I suppose that this failure is good as it forces the uniqueness
-#	however, it raises a DATABASE error that the user can do nothing
-#	about.
-#	The imported data has a 14707 childid and 2375 patid while
-#	the database was expecting less than 12000 and 2000.
 #	
 
 	#	made separate method so can be stubbed
@@ -182,6 +153,15 @@ protected
 	#		however, when it fails, it will be confusing.	#	TODO
 	#	How to rescue from ActiveRecord::RecordInvalid here?
 	#		or would it be RecordNotSaved?
+#
+#	Perhaps treat subjectid like icf_master_id?
+#	Create a table with all of the possible 
+#		subjectid ... (1..999999)
+#		study_subject_id
+#		assigned_on
+#	Then select a random unassigned one?
+#	Would this be faster?
+#
 	def generate_subjectid
 #		subjectids = ( (1..999999).to_a - Identifier.find(:all,:select => 'subjectid'
 		subjectids = ( (1..999999).to_a - self.class.find(:all,:select => 'subjectid'
