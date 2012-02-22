@@ -10,7 +10,7 @@ require 'chronic'
 #	can be referenced.  
 #
 
-BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/DataMigration/"
+BASEDIR = "/Volumes/BUF-Fileshare/SharedFiles/SoftwareDevelopment\(TBD\)/GrantApp/DataMigration/20120217/"
 
 def format_date(date)
 	( date.blank? ) ? nil : date.try(:strftime,"%m/%d/%Y")
