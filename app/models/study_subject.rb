@@ -13,7 +13,6 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectAssociations
 	include StudySubjectOperationalEvents
 	include StudySubjectValidations
-#	include StudySubjectDelegations
 
 	include StudySubjectPatient
 	include StudySubjectPii
@@ -181,8 +180,8 @@ class StudySubject < ActiveRecordShared
 			new_mother = self.class.new do |s|
 				s.subject_type_id = self.class.subject_type_mother_id
 				s.vital_status_id = VitalStatus['living'].id
-				s.sex = 'F'			#	TODO M/F or male/female? have to check.
-#				s.hispanicity_id = mother_hispanicity_id	#	TODO where from? 
+				s.sex = 'F'
+				s.hispanicity_id = mother_hispanicity_id
 				s.first_name  = mother_first_name
 				s.middle_name = mother_middle_name
 				s.last_name   = mother_last_name

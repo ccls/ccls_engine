@@ -702,6 +702,30 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_equal @mother, study_subject.mother
 	end
 
+	test "should copy mother_hispanicity_id when create mother for case" do
+		study_subject = create_complete_case_study_subject(
+			:mother_hispanicity_id => 123)
+		assert_equal study_subject.mother_hispanicity_id, 123
+		assert_nil study_subject.reload.mother
+		assert_difference('StudySubject.count',1) {
+			@mother = study_subject.create_mother
+			assert_equal @mother.hispanicity_id, 123
+		}
+		assert_equal @mother, study_subject.mother
+	end
+
+	test "should copy mother_hispanicity_id when create mother for control" do
+		study_subject = create_complete_control_study_subject(
+			:mother_hispanicity_id => 123)
+		assert_equal study_subject.mother_hispanicity_id, 123
+		assert_nil study_subject.reload.mother
+		assert_difference('StudySubject.count',1) {
+			@mother = study_subject.create_mother
+			assert_equal @mother.hispanicity_id, 123
+		}
+		assert_equal @mother, study_subject.mother
+	end
+
 	test "should not create mother when one exists" do
 		study_subject = create_complete_control_study_subject
 		mother = study_subject.create_mother
