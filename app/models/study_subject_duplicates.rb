@@ -105,7 +105,6 @@ base.class_eval do
 		)
 	end
 
-
 end	#	class_eval
 end	#	included
 end	#	StudySubjectDuplicates

@@ -45,21 +45,6 @@ base.class_eval do
 	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
 
-	has_many :abstracts
-	has_one :first_abstract, :class_name => 'Abstract',
-		:conditions => [
-			"entry_1_by_uid IS NOT NULL AND " <<
-			"entry_2_by_uid IS NULL AND " <<
-			"merged_by_uid  IS NULL" ]
-	has_one :second_abstract, :class_name => 'Abstract',
-		:conditions => [
-			"entry_2_by_uid IS NOT NULL AND " <<
-			"merged_by_uid  IS NULL" ]
-	has_one :merged_abstract, :class_name => 'Abstract',
-		:conditions => [ "merged_by_uid IS NOT NULL" ]
-	has_many :unmerged_abstracts, :class_name => 'Abstract',
-		:conditions => [ "merged_by_uid IS NULL" ]
-
 end	#	class_eval
 end	#	included
 end	#	StudySubjectAssociations
