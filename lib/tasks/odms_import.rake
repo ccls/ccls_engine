@@ -752,7 +752,7 @@ namespace :odms_import do
 			puts "Processing line #{f.lineno}"
 			puts line
 
-#"subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis"
+#"subjectid","subject_type_id","vital_status_id","do_not_contact","sex","reference_date","childidwho","hispanicity_id","childid","icf_master_id","matchingid","familyid","patid","case_control_type","orderno","newid","studyid","related_case_childid","state_id_no","admit_date","diagnosis_id","created_at","first_name","middle_name","last_name","maiden_name","dob","died_on","mother_first_name","mother_maiden_name","mother_last_name","father_first_name","father_last_name","was_previously_treated","was_under_15_at_dx","raf_zip","raf_county","birth_year","hospital_no","organization_id","other_diagnosis","father_hispanicity_id","mother_hispanicity_id"
 
 
 
@@ -763,6 +763,8 @@ namespace :odms_import do
 			s = StudySubject.new do |x|
 				x.subject_type_id = line['subject_type_id']
 				x.hispanicity_id  = line['hispanicity_id']
+				x.father_hispanicity_id  = line['father_hispanicity_id']
+				x.mother_hispanicity_id  = line['mother_hispanicity_id']
 #
 #	do_not_contact is a boolean string in the csv file.
 #	It does seem to convert correctly in the database.
@@ -877,6 +879,10 @@ namespace :odms_import do
 					"sex mismatch:#{s.sex}:#{line['sex']}:"
 				assert s.hispanicity_id == line['hispanicity_id'].to_nil_or_i,
 					"hispanicity_id mismatch:#{s.hispanicity_id}:#{line['hispanicity_id']}:"
+				assert s.mother_hispanicity_id == line['mother_hispanicity_id'].to_nil_or_i,
+					"mother_hispanicity_id mismatch:#{s.mother_hispanicity_id}:#{line['mother_hispanicity_id']}:"
+				assert s.father_hispanicity_id == line['father_hispanicity_id'].to_nil_or_i,
+					"father_hispanicity_id mismatch:#{s.father_hispanicity_id}:#{line['father_hispanicity_id']}:"
 
 #	TODO not always be true due to callbacks
 #				if line['reference_date'].blank?

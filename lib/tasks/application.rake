@@ -7,7 +7,6 @@ namespace :ccls do
 		else
 			"."
 		end
-#		%w( project enrollment study_subject pii identifier
 		%w( project enrollment study_subject 
 				patient phone_number address addressing ).each do |model|
 			puts "Exporting #{model.pluralize} ..."
@@ -18,7 +17,9 @@ namespace :ccls do
 
 	desc "Report data counts in database"
 	task :data_report => :environment do
-
+		puts
+		puts "Report data counts in database"
+		puts
 		printf "%-25s %5d\n", "StudySubject.count:", StudySubject.count
 
 		StudySubject.all(:select => "subject_type_id, COUNT(*) AS count",
@@ -26,7 +27,8 @@ namespace :ccls do
 			printf "%-25s %5d\n", "subject_type = #{e.subject_type}:", e.count
 		end
 
-		%w{ case_control_type childidwho }.each do |field|
+		%w{ case_control_type childidwho hispanicity_id father_hispanicity_id
+				mother_hispanicity_id sex do_not_contact }.each do |field|
 			StudySubject.all(:select => "#{field}, COUNT(*) AS count",
 					:group => field ).each do |e|
 				printf "%-25s %5d\n", "#{field} = #{e.send(field)}:", e.count
@@ -35,6 +37,7 @@ namespace :ccls do
 
 		printf "%-25s %5d\n", "Patient.count:", Patient.count
 		%w{ was_under_15_at_dx was_previously_treated was_ca_resident_at_diagnosis 
+			organization_id diagnosis_id
 		}.each do |field|
 			Patient.all(:select => "#{field}, COUNT(*) AS count",
 					:group => field ).each do |e|
@@ -44,10 +47,17 @@ namespace :ccls do
 
 		printf "%-25s %5d\n", "Enrollment.count:", Enrollment.count
 		printf "%-25s %5d\n", "OperationalEvent.count:", OperationalEvent.count
+		%w{ operational_event_type_id }.each do |field|
+			OperationalEvent.all(:select => "#{field}, COUNT(*) AS count",
+					:group => field ).each do |e|
+				printf "%-25s %5d\n", "#{field} = #{e.send(field)}:", e.count
+			end
+		end
 
 		printf "%-25s %5d\n", "CCLS Enrollments.count:", Enrollment.count(
 			:conditions => { :project_id => Project['ccls'].id })
 		%w{ consented is_eligible refusal_reason_id document_version_id
+			ineligible_reason_id
 		}.each do |field|
 			Enrollment.all(:select => "#{field}, COUNT(*) AS count",
 					:conditions => { :project_id => Project['ccls'].id },
