@@ -1,23 +1,9 @@
 require 'test_helper'
 
-#	TODO these tests will need implemented somehow
-
 #	This is just a collection of pii related tests 
 #	for StudySubject separated only for clarity due
 #	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
-
-#	test "should be ineligible for invitation without email" do
-#		study_subject = create_study_subject(:email => nil)
-#		assert_nil study_subject.email
-#		assert !study_subject.is_eligible_for_invitation?
-#	end
-#
-#	test "should be eligible for invitation with email" do
-#		study_subject = create_study_subject
-#		assert_not_nil study_subject.email
-#		assert study_subject.is_eligible_for_invitation?
-#	end
 
 	test "should return 'name not available' for study_subject without names" do
 		study_subject = create_study_subject
@@ -45,16 +31,6 @@ class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
 		@study_subject.update_attributes(:dob => nil)
 		assert_nil @study_subject.reload.dob
 	end
-
-#end
-#__END__
-#require 'test_helper'
-
-#	TODO these tests will need to be included in study subject's tests
-#		As unit tests are not explicitly linked to a model,
-#		only my class level assertions immediately matter.
-
-#class Ccls::PiiTest < ActiveSupport::TestCase
 
 	test "should nullify blank email" do
 		assert_difference("StudySubject.count",1) do
@@ -273,31 +249,15 @@ class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
 		end
 	end
 
-#	test "should not require dob if subject_is_mother flag is true" do
-#		assert_difference('StudySubject.count',1) do
-#			study_subject = create_study_subject( :subject_is_mother => true, :dob => nil )
-#			assert study_subject.dob_not_required?
-#		end
-#	end
-#
-#	test "should require dob if subject_is_mother flag is false" do
-#		assert_difference('StudySubject.count',0) do
-#			study_subject = create_study_subject( :subject_is_mother => false, :dob => nil )
-#			assert !study_subject.dob_not_required?
-#		end
-#	end
-
 	test "should not require dob if subject is mother" do
 		assert_difference('StudySubject.count',1) do
 			study_subject = create_mother_study_subject( :dob => nil )
-#			assert study_subject.dob_not_required?
 		end
 	end
 
 	test "should require dob if subject is not mother" do
 		assert_difference('StudySubject.count',0) do
 			study_subject = create_study_subject( :dob => nil )
-#			assert !study_subject.dob_not_required?
 		end
 	end
 

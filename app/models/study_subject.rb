@@ -13,7 +13,7 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectAssociations
 	include StudySubjectOperationalEvents
 	include StudySubjectValidations
-	include StudySubjectDelegations
+#	include StudySubjectDelegations
 
 	include StudySubjectPatient
 	include StudySubjectPii
@@ -23,6 +23,12 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectRaces
 	include StudySubjectLanguages
 
+	delegate :interview_outcome, :interview_outcome_on,
+		:sample_outcome, :sample_outcome_on,
+			:to => :homex_outcome, :allow_nil => true
+
+	delegate :is_other?, :to => :guardian_relationship, 
+		:allow_nil => true, :prefix => true 
 
 	#	can lead to multiple piis in db for study_subject
 	#	if not done correctly

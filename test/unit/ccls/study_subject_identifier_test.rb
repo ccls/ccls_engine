@@ -86,12 +86,6 @@ class Ccls::StudySubjectIdentifierTest < ActiveSupport::TestCase
 		assert_equal   study_subject.icf_master_id_to_s, imi.icf_master_id
 	end
 
-#end
-#__END__
-#require 'test_helper'
-
-#class Ccls::IdentifierTest < ActiveSupport::TestCase
-
 	test "should require unique icf_master_id" do
 		assert_difference('StudySubject.count',1){
 			Factory(:study_subject, :icf_master_id => 'Fake1234')
@@ -191,49 +185,6 @@ class Ccls::StudySubjectIdentifierTest < ActiveSupport::TestCase
 		end
 	end
 
-#	test "should be case with case_control_type == 'C'" do
-#		study_subject = StudySubject.new(:case_control_type => 'C')
-#		assert study_subject.is_case?
-#	end
-#
-#	test "should be mother with case_control_type == 'M'" do
-#		study_subject = StudySubject.new(:case_control_type => 'M')
-#		assert study_subject.is_mother?
-#	end
-#
-#	test "should be mother with case_control_type == nil" do
-#		study_subject = StudySubject.new(:case_control_type => nil )
-#		assert study_subject.is_mother?
-#	end
-#
-#	%w( B F 4 5 6 ).each do |cct|
-#		test "should be control with case_control_type == '#{cct}'" do
-#			study_subject = StudySubject.new(:case_control_type => cct )
-#			assert study_subject.is_control?
-#		end
-#
-#		test "should NOT generate patid on creation of case_control_type == '#{cct}'" do
-#			assert_difference('StudySubject.maximum(:patid).to_i', 0) {
-#				study_subject = Factory(:study_subject, :case_control_type => cct )
-#				assert_nil study_subject.patid
-#			}
-#		end
-#	end
-#
-#	test "should NOT generate patid on creation of case_control_type == nil" do
-#		assert_difference('StudySubject.maximum(:patid).to_i', 0) {
-#			study_subject = Factory(:study_subject, :case_control_type => nil )
-#			assert_nil study_subject.patid
-#		}
-#	end
-#
-#	test "should NOT generate patid on creation of case_control_type == 'M'" do
-#		assert_difference('StudySubject.maximum(:patid).to_i', 0) {
-#			study_subject = Factory(:study_subject, :case_control_type => 'M' )
-#			assert_nil study_subject.patid
-#		}
-#	end
-
 #	patid and childid should be protected as they are generated values
 
 	test "should generate orderno = 0 for case_control_type == 'c'" do
@@ -311,16 +262,6 @@ class Ccls::StudySubjectIdentifierTest < ActiveSupport::TestCase
 		assert_not_nil study_subject.matchingid
 		assert_equal   study_subject.subjectid, study_subject.matchingid
 	end
-
-#	%w( b f 4 5 6 ).each do |cct|
-#		test "should generate matchingid == case's subjectid on creation of " <<
-#				"control case_control_type #{cct}" do
-#			study_subject = Factory(:study_subject, :case_control_type => cct )
-##			assert_not_nil study_subject.subjectid
-##			assert_not_nil study_subject.matchingid
-##			assert_equal   study_subject.subjectid, study_subject.familyid
-#		end
-#	end
 
 	test "should not generate new patid for case if given" do
 		#	existing data import

@@ -11,6 +11,10 @@ base.class_eval do
 
 	has_one :patient
 
+	delegate :admit_date, :hospital_no,
+		:organization, :organization_id,
+			:to => :patient, :allow_nil => true
+
 	accepts_nested_attributes_for :patient
 
 	validate :must_be_case_if_patient

@@ -9,22 +9,6 @@ def self.included(base)
 #	or it will raise many "undefined method"s.
 base.class_eval do
 
-	with_options :allow_nil => true do |n|
-		n.with_options :to => :patient do |o|
-			o.delegate :admit_date
-			o.delegate :organization
-			o.delegate :organization_id
-			o.delegate :hospital_no
-		end
-		n.with_options :to => :homex_outcome do |o|
-			o.delegate :interview_outcome
-			o.delegate :interview_outcome_on
-			o.delegate :sample_outcome
-			o.delegate :sample_outcome_on
-		end
-	end
-
-	delegate :is_other?, :to => :guardian_relationship, :allow_nil => true, :prefix => true 
 
 end	#	class_eval
 end	#	included
