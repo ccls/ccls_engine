@@ -160,9 +160,9 @@ class StudySubject < ActiveRecordShared
 		)
 	end
 
-	def is_eligible_for_invitation?
-		!self.email.blank?
-	end
+#	def is_eligible_for_invitation?
+#		!self.email.blank?
+#	end
 
 	def self.search(params={})
 		StudySubjectSearch.new(params).study_subjects
@@ -321,7 +321,7 @@ class StudySubject < ActiveRecordShared
 	def self.find_case_by_patid(patid)
 		self.find(:first,	#	patid is unique so better only be 1
 			:conditions => [
-				'study_subjects.subject_type_id = ? AND patid = ?',
+				'subject_type_id = ? AND patid = ?',
 				subject_type_case_id, patid
 			]
 		)

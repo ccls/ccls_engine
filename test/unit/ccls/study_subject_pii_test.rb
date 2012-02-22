@@ -7,17 +7,17 @@ require 'test_helper'
 #	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
 
-	test "should be ineligible for invitation without email" do
-		study_subject = create_study_subject(:email => nil)
-		assert_nil study_subject.email
-		assert !study_subject.is_eligible_for_invitation?
-	end
-
-	test "should be eligible for invitation with email" do
-		study_subject = create_study_subject
-		assert_not_nil study_subject.email
-		assert study_subject.is_eligible_for_invitation?
-	end
+#	test "should be ineligible for invitation without email" do
+#		study_subject = create_study_subject(:email => nil)
+#		assert_nil study_subject.email
+#		assert !study_subject.is_eligible_for_invitation?
+#	end
+#
+#	test "should be eligible for invitation with email" do
+#		study_subject = create_study_subject
+#		assert_not_nil study_subject.email
+#		assert study_subject.is_eligible_for_invitation?
+#	end
 
 	test "should return 'name not available' for study_subject without names" do
 		study_subject = create_study_subject
@@ -27,7 +27,7 @@ class Ccls::StudySubjectPiiTest < ActiveSupport::TestCase
 		assert_equal '[name not available]', study_subject.full_name
 	end
 
-	test "should not require dob on creation for mother without flag" do
+	test "should not require dob on creation for mother" do
 		assert_difference( "StudySubject.count", 1 ) {
 			@study_subject = create_study_subject(
 				:subject_type => SubjectType['Mother'],
