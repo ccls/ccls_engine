@@ -3,7 +3,7 @@ require 'test_helper'
 #	This is just a collection of race related tests 
 #	for StudySubject separated only for clarity due
 #	to the size of the StudySubjectTest class.
-class Ccls::StudySubjectRaceTest < ActiveSupport::TestCase
+class Ccls::StudySubjectRacesTest < ActiveSupport::TestCase
 
 	test "should create study_subject with race" do
 		assert_difference( 'Race.count', 1 ){

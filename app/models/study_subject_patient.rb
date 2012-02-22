@@ -3,43 +3,32 @@
 #	I'd like to do this to all of the really big classes
 #	but let's see how this goes first.
 #
-module StudySubjectCallbacks
+module StudySubjectPatient
 def self.included(base)
 #	Must delay the calls to these ActiveRecord methods
 #	or it will raise many "undefined method"s.
 base.class_eval do
 
+	has_one :patient
 
-	after_create :add_new_subject_operational_event
-	after_save   :add_subject_died_operational_event
+	accepts_nested_attributes_for :patient
+
+	validate :must_be_case_if_patient
+	validate :patient_admit_date_is_after_dob
+	validate :patient_diagnosis_date_is_after_dob
+
 	after_save   :trigger_setting_was_under_15_at_dx,
 		:if => :dob_changed?
 	after_save :trigger_update_matching_study_subjects_reference_date, 
 		:if => :matchingid_changed?
 
-	#	All subjects are to have a CCLS project enrollment, so create after create.
-	#	All subjects are to have this operational event, so create after create.
-	#	I suspect that this'll be attached to the CCLS project enrollment.
-	def add_new_subject_operational_event
-		ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-		OperationalEvent.create!(
-			:enrollment => ccls_enrollment,
-			:operational_event_type => OperationalEventType['newSubject'],
-			:occurred_on            => Date.today
-		)
-	end
-
-	#	Add this if the vital status changes to deceased.
-	#	I suspect that this'll be attached to the CCLS project enrollment.
-	def add_subject_died_operational_event
-		if( ( vital_status_id == VitalStatus['deceased'].id ) && 
-				( vital_status_id_was != VitalStatus['deceased'].id ) )
-			ccls_enrollment = enrollments.find_or_create_by_project_id(Project['ccls'].id)
-			OperationalEvent.create!(
-				:enrollment => ccls_enrollment,
-				:operational_event_type => OperationalEventType['subjectDied'],
-				:occurred_on            => Date.today
-			)
+	def admitting_oncologist
+		#	can be blank so need more than try unless I nilify admitting_oncologist if blank
+		#patient.try(:admitting_oncologist) || "[no oncologist specified]"
+		if patient and !patient.admitting_oncologist.blank?
+			patient.admitting_oncologist
+		else
+			"[no oncologist specified]"
 		end
 	end
 
@@ -121,6 +110,36 @@ base.class_eval do
 
 protected
 
+	#	This is a duplication of a patient validation that won't
+	#	work if using nested attributes.  Don't like doing this.
+	def patient_admit_date_is_after_dob
+#		if !patient.nil? && !patient.admit_date.blank? && 
+#			!pii.nil? && !pii.dob.blank? && patient.admit_date < pii.dob &&
+#			pii.dob.to_date != Date.parse('1/1/1900') &&
+		if !patient.nil? && !patient.admit_date.blank? && 
+			!dob.blank? && patient.admit_date < dob &&
+			dob.to_date != Date.parse('1/1/1900') &&
+			patient.admit_date.to_date != Date.parse('1/1/1900')
+			errors.add('patient:admit_date', "is before study_subject's dob.") 
+		end
+	end
+
+	#	This is a duplication of a patient validation that won't
+	#	work if using nested attributes.  Don't like doing this.
+	def patient_diagnosis_date_is_after_dob
+		if !patient.nil? && !patient.diagnosis_date.blank? && 
+			!dob.blank? && patient.diagnosis_date < dob
+#			!pii.nil? && !pii.dob.blank? && patient.diagnosis_date < pii.dob
+			errors.add('patient:diagnosis_date', "is before study_subject's dob.") 
+		end
+	end
+
+	def must_be_case_if_patient
+		if !patient.nil? and !is_case?
+			errors.add(:patient ,"must be case to have patient info")
+		end
+	end
+
 	#
 	# logger levels are ... debug, info, warn, error, and fatal.
 	#
@@ -151,5 +170,4 @@ protected
 
 end	#	class_eval
 end	#	included
-end	#	StudySubjectCallbacks
-__END__
+end	#	StudySubjectPatient

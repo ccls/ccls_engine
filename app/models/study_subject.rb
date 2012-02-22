@@ -11,14 +11,17 @@ class StudySubject < ActiveRecordShared
 	#	Also trying to map this same organization in the tests
 	#	so that autotest triggers the more likely effected tests.
 	include StudySubjectAssociations
-	include StudySubjectCallbacks
+	include StudySubjectOperationalEvents
 	include StudySubjectValidations
 	include StudySubjectDelegations
 
+	include StudySubjectPatient
 	include StudySubjectPii
 	include StudySubjectIdentifier
 	include StudySubjectDuplicates
 	include StudySubjectAbstracts
+	include StudySubjectRaces
+	include StudySubjectLanguages
 
 
 	#	can lead to multiple piis in db for study_subject
@@ -47,14 +50,7 @@ class StudySubject < ActiveRecordShared
 	accepts_nested_attributes_for :phone_numbers,
 		:reject_if => proc { |attrs| attrs[:phone_number].blank? }
 	accepts_nested_attributes_for :gift_cards
-	accepts_nested_attributes_for :subject_races, 
-		:allow_destroy => true,
-		:reject_if => proc{|attributes| attributes['race_id'].blank? }
-	accepts_nested_attributes_for :subject_languages, 
-		:allow_destroy => true,
-		:reject_if => proc{|attributes| attributes['language_id'].blank? }
 	accepts_nested_attributes_for :homex_outcome
-	accepts_nested_attributes_for :patient
 
 
 	#	Find the case or control subject with matching familyid except self.
@@ -156,10 +152,6 @@ class StudySubject < ActiveRecordShared
 		subject_type_id == self.class.subject_type_mother_id
 	end
 
-	def race_names
-		races.collect(&:to_s).join(', ')
-	end
-
 	#	Returns home exposures interview
 	def hx_interview
 		interviews.find(:first,
@@ -245,36 +237,6 @@ class StudySubject < ActiveRecordShared
 
 	def studyid_to_s
 		( is_mother? ) ? "n/a" : studyid
-	end
-
-	def admitting_oncologist
-		#	can be blank so need more than try unless I nilify admitting_oncologist if blank
-		#patient.try(:admitting_oncologist) || "[no oncologist specified]"
-		if patient and !patient.admitting_oncologist.blank?
-			patient.admitting_oncologist
-		else
-			"[no oncologist specified]"
-		end
-	end
-
-#	operational_events.occurred_on where operational_event_type_id = 26 and enrollment_id is for any open project (where projects.ended_on is null) for study_subject_id
-
-	def screener_complete_date_for_open_project
-		OperationalEvent.find(:first,
-			:joins => [
-				'LEFT JOIN enrollments ON operational_events.enrollment_id = enrollments.id',
-				'LEFT JOIN projects ON enrollments.project_id = projects.id'
-			],
-			:conditions => [
-				"study_subject_id = :subject_id AND " <<
-				"operational_event_type_id = :screener_complete AND " <<
-				'projects.ended_on IS NULL', 
-				{
-					:subject_id => self.id,
-					:screener_complete => OperationalEventType['screener_complete'].id
-				}
-			]
-		).try(:occurred_on)
 	end
 
 protected

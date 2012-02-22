@@ -3,7 +3,7 @@ require 'test_helper'
 #	This is just a collection of language related tests 
 #	for StudySubject separated only for clarity due
 #	to the size of the StudySubjectTest class.
-class Ccls::StudySubjectLanguageTest < ActiveSupport::TestCase
+class Ccls::StudySubjectLanguagesTest < ActiveSupport::TestCase
 
 	test "should create study_subject with language" do
 		assert_difference( 'Language.count', 1 ){

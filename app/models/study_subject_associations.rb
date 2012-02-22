@@ -12,12 +12,9 @@ base.class_eval do
 	belongs_to :subject_type
 	belongs_to :vital_status
 
-	has_many :subject_races
-	has_many :subject_languages
 	has_and_belongs_to_many :analyses
 	has_many :addressings
 	has_many :enrollments
-	has_many :operational_events, :through => :enrollments
 	has_many :gift_cards
 	has_many :phone_numbers
 	has_many :samples
@@ -37,12 +34,9 @@ base.class_eval do
 #
 #	has_one :identifier
 #	has_one :pii
-	has_one :patient
 #
 ##########
 
-	has_many :races,     :through => :subject_races
-	has_many :languages, :through => :subject_languages
 	has_many :addresses, :through => :addressings
 
 end	#	class_eval
