@@ -72,6 +72,31 @@ namespace :ccls do
 		printf "%-25s %5d\n", "Unused IcfMasterId.count:", IcfMasterId.count(
 			:conditions => [ 'study_subject_id IS NULL' ])
 
+		printf "%-25s %5d\n", "Subjects with icf_master_id:", StudySubject.count(
+			:conditions => [ 'icf_master_id IS NOT NULL' ])
+		printf "%-25s %5d\n", "Subjects without icf_master_id:", StudySubject.count(
+			:conditions => [ 'icf_master_id IS NULL' ])
+
+		printf "%-25s %5d\n", "Subjects with childid:", StudySubject.count(
+			:conditions => [ 'childid IS NOT NULL' ])
+		printf "%-25s %5d\n", "Subjects without childid:", StudySubject.count(
+			:conditions => [ 'childid IS NULL' ])
+
+		printf "%-25s %5d\n", "Subjects with patid:", StudySubject.count(
+			:conditions => [ 'patid IS NOT NULL' ])
+		printf "%-25s %5d\n", "Subjects without patid:", StudySubject.count(
+			:conditions => [ 'patid IS NULL' ])
+
+		printf "%-25s %5d\n", "Subjects with studyid:", StudySubject.count(
+			:conditions => [ 'studyid IS NOT NULL' ])
+		printf "%-25s %5d\n", "Subjects without studyid:", StudySubject.count(
+			:conditions => [ 'studyid IS NULL' ])
+
+		printf "%-25s %5d\n", "Subjects with subjectid:", StudySubject.count(
+			:conditions => [ 'subjectid IS NOT NULL' ])
+		printf "%-25s %5d\n", "Subjects without subjectid:", StudySubject.count(
+			:conditions => [ 'subjectid IS NULL' ])
+
 	end
 
 #	task :sync_subject_type => :environment do
