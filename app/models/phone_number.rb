@@ -59,8 +59,10 @@ class PhoneNumber < ActiveRecordShared
 	#	Returns boolean of comparison
 	#	true only if is_valid == 2 or 999
 	#	Beware of strings from forms
+	#	Rails SHOULD convert incoming string params to integer.
 	def is_not_valid?
-		[2,999].include?(is_valid.to_i)
+#		[2,999].include?(is_valid.to_i)
+		[2,999].include?(is_valid)
 	end
 
 protected

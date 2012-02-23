@@ -58,8 +58,10 @@ class Addressing < ActiveRecordShared
 	after_create :check_state_for_eligibilty
 
 	#	Returns boolean of comparison of is_valid == 2 or 999
+	#	Rails SHOULD convert incoming string params to integer.
 	def is_not_valid?
-		[2,999].include?(is_valid.to_i)
+#		[2,999].include?(is_valid.to_i)
+		[2,999].include?(is_valid)
 	end
 
 protected
