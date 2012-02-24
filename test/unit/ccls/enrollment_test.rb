@@ -4,6 +4,8 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_not_require_attributes( 
+		:refused_by_physician,
+		:refused_by_family,
 		:use_smp_future_rsrch,
 		:use_smp_future_cancer_rsrch,
 		:use_smp_future_other_rsrch,
