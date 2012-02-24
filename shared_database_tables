@@ -614,7 +614,7 @@ Table: enrollments
 | study_subject_id            | int(11)      | YES  |     | NULL    |                |
 | project_id                  | int(11)      | YES  | MUL | NULL    |                |
 | recruitment_priority        | varchar(255) | YES  |     | NULL    |                |
-| able_to_locate              | int(11)      | YES  |     | NULL    |                |
+| tracing_status_id           | int(11)      | YES  |     | NULL    |                |
 | is_candidate                | int(11)      | YES  |     | NULL    |                |
 | is_eligible                 | int(11)      | YES  |     | NULL    |                |
 | ineligible_reason_id        | int(11)      | YES  |     | NULL    |                |
@@ -644,6 +644,8 @@ Table: enrollments
 | receive_study_findings      | int(11)      | YES  |     | NULL    |                |
 | created_at                  | datetime     | YES  |     | NULL    |                |
 | updated_at                  | datetime     | YES  |     | NULL    |                |
+| refused_by_physician        | tinyint(1)   | YES  |     | NULL    |                |
+| refused_by_family           | tinyint(1)   | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: follow_up_types
@@ -1471,6 +1473,18 @@ Table: subject_types
 | created_at                | datetime     | YES  |     | NULL    |                |
 | updated_at                | datetime     | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+
+
+Table: tracing_statuses
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position    | int(11)      | YES  |     | NULL    |                |
+| code        | varchar(255) | NO   | UNI | NULL    |                |
+| description | varchar(255) | NO   | UNI | NULL    |                |
+| created_at  | datetime     | YES  |     | NULL    |                |
+| updated_at  | datetime     | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
 
 Table: transfers
 +----------------------+---------------+------+-----+---------+----------------+

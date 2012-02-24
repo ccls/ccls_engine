@@ -15,7 +15,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		:receive_study_findings,
 		:position,
 		:recruitment_priority,
-		:able_to_locate,
+#		:able_to_locate,
 		:is_candidate,
 		:is_eligible,
 		:ineligible_reason_id,
@@ -44,7 +44,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	assert_should_have_many(:follow_ups)
 	assert_should_have_many(:operational_events)
 	assert_should_belong_to( 
-#		:tracing_status,		#	TODO
+		:tracing_status,
 		:project_outcome,
 		:ineligible_reason,
 		:refusal_reason,

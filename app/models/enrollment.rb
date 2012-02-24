@@ -9,7 +9,7 @@ class Enrollment < ActiveRecordShared
 	belongs_to :document_version
 	belongs_to :project
 	belongs_to :project_outcome
-#	belongs_to :tracing_status
+	belongs_to :tracing_status
 	has_many   :operational_events
 	has_many   :follow_ups
 

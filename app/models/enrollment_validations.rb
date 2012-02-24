@@ -94,7 +94,7 @@ base.class_eval do
 
 #	validates_inclusion_of :consented, :is_eligible,
 #		:is_chosen, :is_complete, :terminated_participation,
-#		:able_to_locate, :is_candidate,
+#		:is_candidate,
 #			:in => valid_yndk_values, :allow_nil => true
 
 #	validates_inclusion_of :use_smp_future_rsrch,
