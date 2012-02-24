@@ -5,10 +5,8 @@ class SubjectRelationship < ActiveRecordShared
 
 #	has_many :study_subjects
 
-	validates_presence_of   :code
-	validates_presence_of   :description
-	validates_uniqueness_of :code
-	validates_uniqueness_of :description
+	validates_presence_of   :code, :description
+	validates_uniqueness_of :code, :description
 	validates_length_of     :code, :maximum => 250, :allow_blank => true
 	validates_length_of     :description, :in => 4..250, :allow_blank => true
 

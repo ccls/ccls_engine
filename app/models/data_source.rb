@@ -4,13 +4,10 @@ class DataSource < ActiveRecordShared
 	acts_as_list
 	default_scope :order => :position
 
-	validates_presence_of   :code
-	validates_length_of     :code,        :maximum => 250, :allow_blank => true
+	validates_presence_of   :code, :description
 	validates_uniqueness_of :code
-	validates_presence_of   :description
-	validates_length_of     :description, :maximum => 250, :allow_blank => true
-	validates_length_of     :research_origin, :maximum => 250, :allow_blank => true
-	validates_length_of     :data_origin,     :maximum => 250, :allow_blank => true
+	validates_length_of     :code, :description, :research_origin, :data_origin,
+		:maximum => 250, :allow_blank => true
 
 	#	Returns description
 	def to_s

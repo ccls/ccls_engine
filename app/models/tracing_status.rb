@@ -5,12 +5,9 @@ class TracingStatus < ActiveRecordShared
 
 #	has_many :enrollments
 
-	validates_presence_of   :code
-	validates_uniqueness_of :code
-	validates_length_of     :code, :maximum => 250, :allow_blank => true
-	validates_presence_of   :description
-	validates_uniqueness_of :description
-	validates_length_of     :description, :maximum => 250, :allow_blank => true
+	validates_presence_of   :code, :description
+	validates_uniqueness_of :code, :description
+	validates_length_of     :code, :description, :maximum => 250, :allow_blank => true
 
 	#	Returns description
 	def to_s

@@ -8,8 +8,8 @@ class InterviewOutcome < ActiveRecordShared
 
 	validates_presence_of   :code
 	validates_uniqueness_of :code
-	validates_length_of     :code,        :maximum => 250, :allow_blank => true
-	validates_length_of     :description, :maximum => 250, :allow_blank => true
+	validates_length_of     :code, :description, 
+		:maximum => 250, :allow_blank => true
 
 	#	Returns description
 	def to_s

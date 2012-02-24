@@ -12,12 +12,10 @@ class InstrumentVersion < ActiveRecordShared
 	belongs_to :instrument
 	has_many :interviews
 
-	validates_presence_of   :code
-	validates_uniqueness_of :code
+	validates_presence_of   :code, :description
+	validates_uniqueness_of :code, :description
 	validates_length_of     :code, :maximum => 250, :allow_blank => true
-	validates_presence_of   :description
 	validates_length_of     :description, :in => 4..250, :allow_blank => true
-	validates_uniqueness_of :description
 
 	validates_presence_of   :instrument_type_id
 	validates_presence_of   :instrument_type, :if => :instrument_type_id
