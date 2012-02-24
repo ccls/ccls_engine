@@ -44,6 +44,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 	assert_should_have_many(:follow_ups)
 	assert_should_have_many(:operational_events)
 	assert_should_belong_to( 
+#		:tracing_status,		#	TODO
 		:project_outcome,
 		:ineligible_reason,
 		:refusal_reason,
