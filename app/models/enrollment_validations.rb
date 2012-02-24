@@ -92,6 +92,17 @@ base.class_eval do
 	validates_length_of :terminated_reason,         :maximum => 250, :allow_blank => true
 	validates_length_of :reason_closed,             :maximum => 250, :allow_blank => true
 
+#	validates_inclusion_of :consented, :is_eligible,
+#		:is_chosen, :is_complete, :terminated_participation,
+#		:able_to_locate, :is_candidate,
+#			:in => valid_yndk_values, :allow_nil => true
+
+#	validates_inclusion_of :use_smp_future_rsrch,
+#		:use_smp_future_cancer_rsrch, :use_smp_future_other_rsrch,
+#		:share_smp_with_others, :contact_for_related_study,
+#		:provide_saliva_smp, :receive_study_findings,
+#			:in => valid_adna_values, :allow_nil => true
+
 #
 #	NOTE: BEWARE of POSSIBLE strings in these comparisons.
 #		Rails SHOULD actually convert the incoming 

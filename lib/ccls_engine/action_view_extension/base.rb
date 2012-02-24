@@ -10,16 +10,21 @@ module Ccls::ActionViewExtension::Base
 
 	module InstanceMethods
 
+#
+#	NOTE: yndk and adna are actually used in the views
+#
+
 #	TODO perhaps use the YNODK hash in these helpers
 		def ynordk(value=nil)
-			case value.to_s
-				when '0'   then 'Refused'
-				when '1'   then 'Yes'
-				when '2'   then 'No'
-				when '3'   then 'Other'
-				when '999' then "Don't Know"
-				else '&nbsp;'
-			end
+			YNORDK[value]||'&nbsp;'
+#			case value.to_s
+#				when '0'   then 'Refused'
+#				when '1'   then 'Yes'
+#				when '2'   then 'No'
+#				when '3'   then 'Other'
+#				when '999' then "Don't Know"
+#				else '&nbsp;'
+#			end
 		end
 		alias_method :yndk,     :ynordk
 		alias_method :y_n_dk,   :ynordk
@@ -29,7 +34,8 @@ module Ccls::ActionViewExtension::Base
 		def _wrapped_y_n_o_r_dk_spans(object_name,method,options={})
 			object = instance_variable_get("@#{object_name}")
 			_wrapped_spans(object_name,method,options.update(
-				:value => ynordk(object.send(method)) ) )
+				:value => (YNORDK[object.send(method)]||'&nbsp;') ) )
+#				:value => ynordk(object.send(method)) ) )
 		end
 		alias_method :_wrapped_yndk_spans,     :_wrapped_y_n_o_r_dk_spans
 		alias_method :_wrapped_y_n_dk_spans,   :_wrapped_y_n_o_r_dk_spans
@@ -89,20 +95,22 @@ module Ccls::ActionViewExtension::Base
 
 #	TODO perhaps add a ADNA hash in these helpers
 		def a_d_na(value=nil)
-			case value
-				when 1   then 'Agree'
-				when 2   then 'Do Not Agree'
-				when 888 then "N/A"
-				when 999 then "Don't Know"
-				else '&nbsp;'
-			end
+			ADNA[value]||'&nbsp;'
+#			case value
+#				when 1   then 'Agree'
+#				when 2   then 'Do Not Agree'
+#				when 888 then "N/A"
+#				when 999 then "Don't Know"
+#				else '&nbsp;'
+#			end
 		end
 		alias_method :adna, :a_d_na
 
 		def _wrapped_a_d_na_spans(object_name,method,options={})
 			object = instance_variable_get("@#{object_name}")
 			_wrapped_spans(object_name,method,options.update(
-				:value => a_d_na(object.send(method)) ) )
+				:value => (ADNA[object.send(method)]||'&nbsp;') ) )
+#				:value => a_d_na(object.send(method)) ) )
 		end
 		alias_method :_wrapped_adna_spans, :_wrapped_a_d_na_spans
 

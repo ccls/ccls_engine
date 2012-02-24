@@ -32,6 +32,10 @@ class Addressing < ActiveRecordShared
 
 	validates_presence_of :data_source_other, :if => :data_source_is_other?
 
+#	validates_inclusion_of :current_address, :is_valid,
+#		:address_at_diagnosis,
+#			:in => valid_yndk_values, :allow_nil => true
+
 	named_scope :current, :conditions => [
 		'current_address IS NOT NULL AND current_address != 2'
 	]

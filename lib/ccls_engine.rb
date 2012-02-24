@@ -82,6 +82,7 @@ require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/active_record_shared'
 require 'ccls_engine/ccls_user'
+require 'ccls_engine/yndk'
 require 'ccls_engine/helper'
 require 'ccls_engine/action_view_extension'
 
@@ -127,28 +128,7 @@ else
 	ActiveRecord::Base.send(:include, ::Paperclip)
 end
 
-
-
-#	While a HWIA does not differentiate strings and symbols,
-#	it does not differentiate between strings and numbers.
-YNORDK = HashWithIndifferentAccess.new({
-	:yes   => 1,
-	:true  => 1,
-	:no    => 2,
-	:false => 2,
-	:other => 3,
-	:dk    => 999,
-	:refused => 0,
-	'0'    => 'Refused',
-	'1'    => 'Yes',
-	'2'    => 'No',
-	'3'    => 'Other',
-	'999'  => "Don't Know",
-	0      => 'Refused',
-	1      => 'Yes',
-	2      => 'No',
-	3      => 'Other',
-	999    => "Don't Know"
-}).freeze
-YNDK  = YNORDK;
-YNODK = YNORDK;
+##	methods or constants?
+def valid_sex_values
+	%w( M F DK )
+end

@@ -13,7 +13,8 @@ base.class_eval do
 	validates_presence_of :subject_type, :if => :subject_type_id
 
 	validate :presence_of_sex
-	validates_inclusion_of :sex, :in => %w( M F DK ), :allow_blank => true
+#	validates_inclusion_of :sex, :in => %w( M F DK ), :allow_blank => true
+	validates_inclusion_of :sex, :in => valid_sex_values, :allow_blank => true
 	validates_inclusion_of :do_not_contact, :in => [ true, false ]
 
 	validates_complete_date_for :reference_date, :allow_nil => true

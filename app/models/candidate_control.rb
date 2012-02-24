@@ -15,7 +15,12 @@ class CandidateControl < ActiveRecordShared
 		:birth_county, :birth_type, :mother_maiden_name,
 		:rejection_reason, :maximum => 250, :allow_blank => true
 
-	validates_inclusion_of :sex, :in => %w( M F DK )
+#	validates_inclusion_of :sex, :in => %w( M F DK )
+	validates_inclusion_of :sex, :in => valid_sex_values
+
+#	validates_inclusion_of :mother_hispanicity_id,
+#		:father_hispanicity_id,
+#			:in => valid_ynodk_values, :allow_nil => true
 
 	#	Returns string containing candidates's first, middle and last name
 	def full_name
