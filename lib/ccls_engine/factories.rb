@@ -477,6 +477,11 @@ Factory.define :subject_type do |f|
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
+Factory.define :tracing_status do |f|
+	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
+end
+
 Factory.define :transfer do |f|
 	f.association :from_organization, :factory => :organization
 	f.association :to_organization,   :factory => :organization

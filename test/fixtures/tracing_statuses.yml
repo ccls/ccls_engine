@@ -1,0 +1,26 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+#
+#	Do not change id, key or code
+#		'id' could be referenced by existing data
+#		'key' or 'code' is used in the rails code for searching 
+#
+tracing:
+  id: 1
+  position: 1
+  code: tracing
+  description: subject tracing in progress
+found:
+  id: 2
+  position: 2
+  code: found
+  description: subject found
+utl:
+  id: 3
+  position: 3
+  code: UTL
+  description: unable to locate
+dk:
+  id: 999
+  position: 4
+  code: dk
+  description: don't know

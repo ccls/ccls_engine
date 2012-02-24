@@ -155,6 +155,7 @@ namespace :ccls do
 			states
 			subject_relationships
 			subject_types
+			tracing_statuses
 			units
 			vital_statuses 
 		)

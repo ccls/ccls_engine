@@ -1,0 +1,16 @@
+class CreateTracingStatuses < SharedMigration
+	def self.up
+		create_table :tracing_statuses do |t|
+			t.integer :position
+			t.string :code, :null => false
+			t.string :description, :null => false
+			t.timestamps
+		end
+		add_index :tracing_statuses, :code, :unique => true
+		add_index :tracing_statuses, :description, :unique => true
+	end
+
+	def self.down
+		drop_table :tracing_statuses
+	end
+end
