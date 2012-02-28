@@ -1,7 +1,7 @@
 class DocumentVersion < ActiveRecordShared
 
 	acts_as_list
-	default_scope :order => :position
+	default_scope :order => 'position, title ASC'
 	belongs_to :document_type
 	belongs_to :language
 	has_many :enrollments
