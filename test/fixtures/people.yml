@@ -120,7 +120,6 @@ Zomorodian:
 other:
   id: 20
   position: 18
-  last name: Other
-  first name: null
+  last_name: Other
+  first_name: null
   person_type_id: 3
-  

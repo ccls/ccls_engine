@@ -171,3 +171,7 @@ dk:
   id: 34
   code: 999
   name: organization unknown
+other:
+  id: 35
+  code: 33
+  name:  other organization
