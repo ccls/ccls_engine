@@ -1139,18 +1139,19 @@ Table: patients
 +------------------------------+--------------+------+-----+---------+----------------+
 
 Table: people
-+----------------+--------------+------+-----+---------+----------------+
-| Field          | Type         | Null | Key | Default | Extra          |
-+----------------+--------------+------+-----+---------+----------------+
-| id             | int(11)      | NO   | PRI | NULL    | auto_increment |
-| position       | int(11)      | YES  |     | NULL    |                |
-| first_name     | varchar(255) | YES  |     | NULL    |                |
-| last_name      | varchar(255) | YES  |     | NULL    |                |
-| honorific      | varchar(20)  | YES  |     | NULL    |                |
-| person_type_id | int(11)      | YES  |     | NULL    |                |
-| created_at     | datetime     | YES  |     | NULL    |                |
-| updated_at     | datetime     | YES  |     | NULL    |                |
-+----------------+--------------+------+-----+---------+----------------+
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| id              | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position        | int(11)      | YES  |     | NULL    |                |
+| first_name      | varchar(255) | YES  |     | NULL    |                |
+| last_name       | varchar(255) | YES  |     | NULL    |                |
+| honorific       | varchar(20)  | YES  |     | NULL    |                |
+| person_type_id  | int(11)      | YES  |     | NULL    |                |
+| created_at      | datetime     | YES  |     | NULL    |                |
+| updated_at      | datetime     | YES  |     | NULL    |                |
+| organization_id | int(11)      | YES  |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
 
 Table: phone_numbers
 +-------------------+--------------+------+-----+---------+----------------+

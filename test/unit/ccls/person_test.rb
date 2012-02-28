@@ -8,6 +8,7 @@ class Ccls::PersonTest < ActiveSupport::TestCase
 		:position, 
 		:first_name, 
 		:honorific, 
+		:organization_id, 
 		:person_type_id )
 	assert_should_act_as_list
 	assert_should_have_many( :organizations )
