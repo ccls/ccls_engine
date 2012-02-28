@@ -20,7 +20,8 @@ base.class_eval do
 	validates_complete_date_for :reference_date, :allow_nil => true
 
 	validate :presence_of_dob, :unless => :is_mother?
-	validates_complete_date_for :dob,     :allow_nil => true
+	validates_complete_date_for :dob, :allow_nil => true
+	validates_past_date_for     :dob, :allow_nil => true
 	validates_complete_date_for :died_on, :allow_nil => true
 	validates_uniqueness_of     :email, :icf_master_id, :state_id_no, 
 		:state_registrar_no, :local_registrar_no, :gbid, :lab_no_wiemels, 

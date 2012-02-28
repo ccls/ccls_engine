@@ -59,6 +59,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	assert_requires_complete_date( :died_on )
 
 
+	assert_requires_past_date( :dob )
+
 
 
 
