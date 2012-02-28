@@ -48,3 +48,4 @@ icf_master_tracker_011712.csv
 test/icf_master_tracker_update/
 
 gem_list.*
+merge_sequences_for_steve.sh

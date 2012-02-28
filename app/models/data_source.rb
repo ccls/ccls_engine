@@ -6,7 +6,8 @@ class DataSource < ActiveRecordShared
 
 	validates_presence_of   :code, :description
 	validates_uniqueness_of :code
-	validates_length_of     :code, :description, :research_origin, :data_origin,
+	validates_length_of     :code, :description, :data_origin,
+		:other_organization, :other_person,
 		:maximum => 250, :allow_blank => true
 
 	#	Returns description

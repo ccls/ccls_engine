@@ -4,13 +4,16 @@ class Ccls::DataSourceTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_act_as_list
-#	assert_should_have_many(:addresses)
 	assert_should_not_require_attributes( 
 		:position, 
-		:research_origin, 
+		:organization_id, 
+		:other_organization, 
+		:person_id, 
+		:other_person, 
 		:data_origin )
 	assert_should_require_attribute_length( 
-		:research_origin, 
+		:other_organization, 
+		:other_person, 
 		:data_origin, 
 			:maximum => 250 )
 
