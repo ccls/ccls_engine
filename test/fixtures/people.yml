@@ -117,3 +117,10 @@ Zomorodian:
   last_name:  Rosensweig
   first_name:  Ellen
   person_type_id:  3
+other:
+  id: 20
+  position: 18
+  last name: Other
+  first name: null
+  person_type_id: 3
+  
