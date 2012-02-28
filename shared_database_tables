@@ -863,6 +863,21 @@ Table: icf_master_ids
 | updated_at       | datetime   | YES  |     | NULL    |                |
 +------------------+------------+------+-----+---------+----------------+
 
+Table: icf_master_tracker_changes
++---------------------+--------------+------+-----+---------+----------------+
+| Field               | Type         | Null | Key | Default | Extra          |
++---------------------+--------------+------+-----+---------+----------------+
+| id                  | int(11)      | NO   | PRI | NULL    | auto_increment |
+| icf_master_id       | varchar(255) | YES  |     | NULL    |                |
+| master_tracker_date | date         | YES  |     | NULL    |                |
+| new_tracker_record  | tinyint(1)   | NO   |     | 0       |                |
+| modified_column     | varchar(255) | YES  |     | NULL    |                |
+| previous_value      | varchar(255) | YES  |     | NULL    |                |
+| new_value           | varchar(255) | YES  |     | NULL    |                |
+| created_at          | datetime     | YES  |     | NULL    |                |
+| updated_at          | datetime     | YES  |     | NULL    |                |
++---------------------+--------------+------+-----+---------+----------------+
+
 Table: icf_master_tracker_updates
 +-----------------------+--------------+------+-----+---------+----------------+
 | Field                 | Type         | Null | Key | Default | Extra          |

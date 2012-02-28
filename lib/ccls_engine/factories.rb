@@ -220,6 +220,9 @@ end
 Factory.define :icf_master_tracker do |f|
 	f.sequence(:Masterid){|n| "#{n}"}	#	in order to test uniqueness, MUST BE HERE
 end
+Factory.define :icf_master_tracker_change do |f|
+	f.sequence(:icf_master_id){|n| "#{n}"}
+end
 Factory.define :icf_master_tracker_update do |f|
 end
 

@@ -3,6 +3,7 @@ require 'test_helper'
 class Ccls::IcfMasterTrackerTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
+	assert_should_protect(:Masterid)
 	assert_should_require(:Masterid)
 	assert_should_require_unique(:Masterid)
 
@@ -95,5 +96,36 @@ class Ccls::IcfMasterTrackerTest < ActiveSupport::TestCase
 #				).include?(OperationalEventType[:other].id)
 #		}
 #	end
+
+	test "should create one new icf_master_tracker_change record on create" do
+		assert_difference('IcfMasterTracker.count',1) {
+		assert_difference('IcfMasterTrackerChange.count',1) {
+			@icf_master_tracker = Factory(:icf_master_tracker)
+		} }
+		last_tracker_change = IcfMasterTrackerChange.last
+		assert       last_tracker_change.new_tracker_record
+		assert_equal last_tracker_change.icf_master_id, @icf_master_tracker.Masterid
+	end
+
+	test "should not create icf_master_tracker_change on save if no change" do
+		icf_master_tracker = Factory(:icf_master_tracker)
+		assert_difference('IcfMasterTracker.count',0) {
+		assert_difference('IcfMasterTrackerChange.count',0) {
+			icf_master_tracker.save
+		} }
+	end
+
+	test "should create one icf_master_tracker_change on save if one change" do
+		icf_master_tracker = Factory(:icf_master_tracker, :Currphone => "something")
+		assert_difference('IcfMasterTracker.count',0) {
+		assert_difference('IcfMasterTrackerChange.count',1) {
+			icf_master_tracker.update_attribute(:Currphone, "something else")
+		} }
+		last_tracker = IcfMasterTrackerChange.last
+		assert !last_tracker.new_tracker_record
+		assert_equal last_tracker.modified_column, 'Currphone'
+		assert_equal last_tracker.previous_value, 'something'
+		assert_equal last_tracker.new_value, 'something else'
+	end
 
 end

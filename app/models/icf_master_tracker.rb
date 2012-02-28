@@ -1,7 +1,13 @@
 class IcfMasterTracker < ActiveRecordShared
 
+#	can I attr_protected for update only?
+#	or perhaps find_or_create_by_masterid?
+#	Of course that may create the new_tracker_record
+#	And then on update it would create all the others?
+
 	validates_presence_of   :Masterid
 	validates_uniqueness_of :Masterid, :allow_blank => true
+	attr_protected :Masterid
 
 #	validate all string field lengths ?
 
@@ -9,6 +15,7 @@ class IcfMasterTracker < ActiveRecordShared
 
 	before_save :attach_study_subject
 	before_save :flag_for_update
+	before_save :save_all_changes
 
 	named_scope :have_changed, :conditions => {
 		:flagged_for_update => true
@@ -45,6 +52,26 @@ class IcfMasterTracker < ActiveRecordShared
 
 	def flag_for_update
 		self.flagged_for_update = true unless unignorable_changes.empty?
+	end
+
+	def save_all_changes
+		if new_record?
+			IcfMasterTrackerChange.create(
+				:icf_master_id => self.Masterid,
+#  5       t.date :master_tracker_date	#	Hmm.
+				:new_tracker_record => true
+			)
+		else
+			unignorable_changes.each do |field,values|
+				IcfMasterTrackerChange.create(
+					:icf_master_id => self.Masterid,
+#  5       t.date :master_tracker_date	#	Hmm.
+					:modified_column => field,
+					:previous_value => values[0],
+					:new_value => values[1]
+				)
+			end
+		end
 	end
 
 	def self.update_models_flagged_for_update
