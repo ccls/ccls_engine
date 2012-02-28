@@ -550,18 +550,21 @@ Table: counties
 +--------------+--------------+------+-----+---------+----------------+
 
 Table: data_sources
-+-----------------+--------------+------+-----+---------+----------------+
-| Field           | Type         | Null | Key | Default | Extra          |
-+-----------------+--------------+------+-----+---------+----------------+
-| id              | int(11)      | NO   | PRI | NULL    | auto_increment |
-| position        | int(11)      | YES  |     | NULL    |                |
-| research_origin | varchar(255) | YES  |     | NULL    |                |
-| data_origin     | varchar(255) | YES  |     | NULL    |                |
-| code            | varchar(255) | NO   | UNI | NULL    |                |
-| description     | varchar(255) | NO   |     | NULL    |                |
-| created_at      | datetime     | YES  |     | NULL    |                |
-| updated_at      | datetime     | YES  |     | NULL    |                |
-+-----------------+--------------+------+-----+---------+----------------+
++--------------------+--------------+------+-----+---------+----------------+
+| Field              | Type         | Null | Key | Default | Extra          |
++--------------------+--------------+------+-----+---------+----------------+
+| id                 | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position           | int(11)      | YES  |     | NULL    |                |
+| data_origin        | varchar(255) | YES  |     | NULL    |                |
+| code               | varchar(255) | NO   | UNI | NULL    |                |
+| description        | varchar(255) | NO   |     | NULL    |                |
+| created_at         | datetime     | YES  |     | NULL    |                |
+| updated_at         | datetime     | YES  |     | NULL    |                |
+| organization_id    | int(11)      | YES  |     | NULL    |                |
+| other_organization | varchar(255) | YES  |     | NULL    |                |
+| person_id          | int(11)      | YES  |     | NULL    |                |
+| other_person       | varchar(255) | YES  |     | NULL    |                |
++--------------------+--------------+------+-----+---------+----------------+
 
 Table: diagnoses
 +-------------+--------------+------+-----+---------+----------------+
