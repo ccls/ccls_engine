@@ -140,13 +140,25 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should require admit_date be after DOB" do
-		assert_difference( "Patient.count", 0 ) {
+	test "should allow admit_date be on DOB" do
+		assert_difference( "Patient.count", 1 ) {
 			study_subject = Factory(:case_study_subject)
 			patient = create_patient(
 				:study_subject => study_subject,
+				:admit_date => study_subject.dob )
+			assert !patient.errors.on(:admit_date)
+			assert_equal study_subject.dob, patient.admit_date
+		}
+	end
+
+	test "should require admit_date be after DOB" do
+		assert_difference( "Patient.count", 0 ) {
+			study_subject = Factory(:case_study_subject)
+			assert Date.jd(2430000) < study_subject.dob
+			patient = create_patient(
+				:study_subject => study_subject,
 				:admit_date => Date.jd(2430000) ) 
-				# BEFORE my factory set dob to raise error
+				# BEFORE my factory set dob to raise error (Date.jd(2440000+rand(15000))
 			assert patient.errors.on(:admit_date)
 			assert_match(/before.*dob/,
 				patient.errors.on(:admit_date))
@@ -168,7 +180,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 		assert_difference( "Patient.count", 0 ) {
 			study_subject = create_case_study_subject(
 				:patient_attributes => Factory.attributes_for(:patient,{
-					# BEFORE my factory set dob to raise error
+					# BEFORE my factory set dob to raise error (Date.jd(2440000+rand(15000))
 					:admit_date => Date.jd(2430000)
 				}))
 			assert study_subject.errors.on('patient:admit_date')
@@ -190,13 +202,25 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	end
 
 
-	test "should require diagnosis_date be after DOB" do
-		assert_difference( "Patient.count", 0 ) do
+	test "should allow diagnosis_date be on DOB" do
+		assert_difference( "Patient.count", 1 ) do
 			study_subject = Factory(:case_study_subject)
 			patient = create_patient(
 				:study_subject => study_subject,
+				:diagnosis_date => study_subject.dob )
+			assert !patient.errors.on(:diagnosis_date)
+			assert_equal patient.diagnosis_date, study_subject.dob
+		end
+	end
+
+	test "should require diagnosis_date be after DOB" do
+		assert_difference( "Patient.count", 0 ) do
+			study_subject = Factory(:case_study_subject)
+			assert Date.jd(2430000) < study_subject.dob
+			patient = create_patient(
+				:study_subject => study_subject,
 				:diagnosis_date => Date.jd(2430000) ) 
-				# BEFORE my factory set dob to raise error
+				# BEFORE my factory set dob to raise error (Date.jd(2440000+rand(15000))
 			assert patient.errors.on(:diagnosis_date)
 			assert_match(/before.*dob/,
 				patient.errors.on(:diagnosis_date))
