@@ -3,6 +3,11 @@
 #		'id' could be referenced by existing data
 #		'key' or 'code' is used in the rails code for searching 
 #
+#	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
+#		If a label is repeated, only the last one will exist.
+#
+#	Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+#
 all:
   id: 1
   position: 1
@@ -23,7 +28,7 @@ other:
   description: other
 legacy:
   id: 4
-  code: 888
+  code: 777
   position: 4
   key: unspec
   description:  missing data (eg. legacy nulls)

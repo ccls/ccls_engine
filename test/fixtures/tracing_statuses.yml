@@ -1,8 +1,12 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 #
 #	Do not change id, key or code
 #		'id' could be referenced by existing data
 #		'key' or 'code' is used in the rails code for searching 
+#
+#	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
+#		If a label is repeated, only the last one will exist.
+#
+#	Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 #
 tracing:
   id: 1

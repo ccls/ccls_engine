@@ -4,15 +4,12 @@
 #		'key' or 'code' is used in the rails code for searching 
 #		'description' is used in javascript ( changing it here will require a corresponding change there )
 #
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-#one:
-#  research_origin: MyString
-#  data_origin: MyString
+#	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
+#		If a label is repeated, only the last one will exist.
 #
-#two:
-#  research_origin: MyString
-#  data_origin: MyString
+#	Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+#
+
 raf:
   id:  1
   code:  raf

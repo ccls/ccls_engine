@@ -3,6 +3,11 @@
 #		'id' could be referenced by existing data
 #		'key' or 'code' is used in the rails code for searching 
 #
+#	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
+#		If a label is repeated, only the last one will exist.
+#
+#	Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+#
 moved:
   id: 1
   position: 1
@@ -12,7 +17,7 @@ vacuum:
   id: 2
   position: 2 
   code: no vacuum
-  description: no vacuum cleaner used
+  description: no vacuum cleaner used (for dust sampling studies)
 other:
   id: 3
   position: 3
@@ -24,7 +29,7 @@ nonCA:
   code: newnonCA
   description: new non-CA subject
 legacy:
-  id: 888
+  id: 777
   position: 5
   code: legacy
   description: legacy data import

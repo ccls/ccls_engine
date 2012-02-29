@@ -1,3 +1,9 @@
+#
+#	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
+#		If a label is repeated, only the last one will exist.
+#
+#	Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+#
 AK:
   id:  1
   position:  1
