@@ -72,12 +72,17 @@ class CandidateControl < ActiveRecordShared
 				s.patid              = case_subject.patid
 			end
 			child.save!
-
 			child.assign_icf_master_id
+
+
+#	TODO May have to set is_matched for both the Case and Control here [#217]
+
 
 			#	NOTE this may require passing info
 			#	that is in the candidate_control record, but not in the child subject
-			#		mother_hispanicity_id
+			#		mother_hispanicity_id	(actually this is now)
+			#	worst case scenario is just create the full mother here
+			#	rather than through the child.
 			child.create_mother	#	({ .... })
 	
 			self.study_subject_id = child.id
