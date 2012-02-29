@@ -39,7 +39,12 @@ other:
   code: other
   description: other reason for refusal
 legacy:
-  id: 888
-  position: 8
+  id: 777
+  position: 9
   code: legacy
   description: legacy data import
+refused:
+  id: 888
+  position: 8
+  code: refused
+  description: refused to state
