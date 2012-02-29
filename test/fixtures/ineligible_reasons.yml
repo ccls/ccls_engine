@@ -12,7 +12,7 @@ vacuum:
   id: 2
   position: 2 
   code: no vacuum
-  description: no vacuum cleaner used
+  description: no vacuum cleaner used (for dust sampling studies)
 other:
   id: 3
   position: 3
