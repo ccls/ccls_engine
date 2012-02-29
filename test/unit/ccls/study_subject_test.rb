@@ -15,23 +15,15 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome )
 	assert_should_habtm(:analyses)
-	assert_requires_complete_date( :reference_date )
-	assert_should_require_attributes_not_nil( :do_not_contact, :sex )
+	assert_should_belong_to( :guardian_relationship, :class_name => 'SubjectRelationship' )
+
 	assert_should_not_require_attributes( :vital_status_id, :hispanicity_id, 
 		:mom_is_biomom, :dad_is_biodad,
 		:mother_hispanicity_id, :father_hispanicity_id,
 		:mother_hispanicity_mex, :father_hispanicity_mex,
 		:reference_date, :mother_yrs_educ, :father_yrs_educ, 
-		:birth_type, :birth_county, :is_duplicate_of )
-
-
-
-
-
-	assert_should_belong_to( :guardian_relationship, :class_name => 'SubjectRelationship' )
-	assert_should_require_attributes( :dob )
-	assert_should_require_unique_attributes( :email )
-	assert_should_not_require_attributes( :first_name, :last_name,
+		:birth_type, :birth_county, :is_duplicate_of,
+		:first_name, :last_name,
 		:died_on, :birth_year,
 		:birth_city, :birth_state, :birth_country,
 		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
@@ -40,46 +32,8 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:guardian_relationship_other, :email,
 		:middle_name, :maiden_name,
 		:mother_race_other, :father_race_other,
-		:generational_suffix, :father_generational_suffix )
-
-	assert_should_require_attribute_length( 
-		:first_name, :middle_name, :maiden_name, :last_name,
-		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
-		:father_first_name, :father_middle_name, :father_last_name,
-		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
-		:guardian_relationship_other,
-		:birth_city, :birth_state, :birth_country,
-		:mother_race_other, :father_race_other,
-		:maximum => 250 )
-
-	assert_should_require_attribute_length( :generational_suffix, :maximum => 10 )
-	assert_should_require_attribute_length( :father_generational_suffix, :maximum => 10 )
-	assert_should_require_attribute_length( :birth_year, :maximum => 4 )
-	assert_requires_complete_date( :dob )
-	assert_requires_complete_date( :died_on )
-
-
-	assert_requires_past_date( :dob )
-
-
-
-
-
-#	assert_should_require :hospital_no
-#	assert_should_not_require :hospital_no
-
-	assert_should_not_require_attributes( :case_control_type )
-	assert_should_require_unique_attribute( 
-#		:ssn,
-		:state_id_no,
-		:state_registrar_no,
-		:local_registrar_no,
-		:gbid,
-		:lab_no_wiemels,
-		:accession_no,
-#		:icf_master_id,
-		:idno_wiemels )
-	assert_should_not_require_attributes( 
+		:generational_suffix, :father_generational_suffix,
+		:case_control_type,
 		:ssn,
 		:subjectid,
 		:lab_no,
@@ -93,22 +47,55 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		:lab_no_wiemels,
 		:accession_no,
 		:idno_wiemels,
+		:is_matched,
 		:familyid )
+
+	assert_should_require_attributes( :dob )
+
+	assert_should_require_unique_attributes( :email,
+		:state_id_no,
+		:state_registrar_no,
+		:local_registrar_no,
+		:gbid,
+		:lab_no_wiemels,
+		:accession_no,
+		:idno_wiemels )
+
+	assert_requires_complete_date( :reference_date, :dob, :died_on )
+	assert_requires_past_date( :dob )
+
+	assert_should_require_attributes_not_nil( :do_not_contact, :sex )
+
 	assert_should_require_attribute_length( 
+		:first_name, :middle_name, :maiden_name, :last_name,
+		:mother_first_name, :mother_middle_name, :mother_maiden_name, :mother_last_name,
+		:father_first_name, :father_middle_name, :father_last_name,
+		:guardian_first_name, :guardian_middle_name, :guardian_last_name,
+		:guardian_relationship_other,
+		:birth_city, :birth_state, :birth_country,
+		:mother_race_other, :father_race_other,
 		:state_id_no,
 		:state_registrar_no,
 		:local_registrar_no,
 		:lab_no,
 		:related_childid,
 		:related_case_childid,
-			:maximum => 250 )
-	assert_should_require_attribute_length :childidwho, :maximum => 10
-	assert_should_require_attribute_length :newid, :maximum => 6
-	assert_should_require_attribute_length :gbid, :maximum => 26
-	assert_should_require_attribute_length :lab_no_wiemels, :maximum => 25
-	assert_should_require_attribute_length :idno_wiemels, :maximum => 10
-	assert_should_require_attribute_length :accession_no, :maximum => 25
-	assert_should_require_attribute_length :icf_master_id, :maximum => 9
+		:maximum => 250 )
+
+	assert_should_require_attribute_length( :gbid, :maximum => 26 )
+	assert_should_require_attribute_length( :lab_no_wiemels, :accession_no, 
+		:maximum => 25 )
+	assert_should_require_attribute_length( :generational_suffix, 
+		:father_generational_suffix, :childidwho, :idno_wiemels,
+			:maximum => 10 )
+	assert_should_require_attribute_length( :icf_master_id, :maximum => 9 )
+	assert_should_require_attribute_length( :newid, :maximum => 6 )
+	assert_should_require_attribute_length( :birth_year, :maximum => 4 )
+
+
+#	assert_should_require :hospital_no
+#	assert_should_not_require :hospital_no
+
 
 	assert_should_protect_attributes(
 		:studyid,
