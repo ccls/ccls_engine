@@ -3,7 +3,8 @@
 class SampleType < ActiveRecordShared
 
 	acts_as_list :scope => :parent_id
-	default_scope :order => :position
+#	default_scope :order => :position
+	default_scope :order => 'parent_id, position, description ASC'
 
 	has_many :samples
 
@@ -17,6 +18,10 @@ class SampleType < ActiveRecordShared
 
 	named_scope :not_roots, :conditions => [
 		'sample_types.parent_id IS NOT NULL' ]
+
+#
+#	NOTE code seems to be a bit pointless in this model
+#
 
 	validates_presence_of   :code
 	validates_uniqueness_of :code
