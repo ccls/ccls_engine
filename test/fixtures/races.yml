@@ -39,3 +39,9 @@ dk:
   key: unknown
   code: 999
   description: Don't Know
+refused:
+  id: 7
+  position: 7
+  key: refused
+  code: 888
+  description: Refused to state
