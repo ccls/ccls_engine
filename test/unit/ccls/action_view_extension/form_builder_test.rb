@@ -61,7 +61,7 @@ class Ccls::ActionViewExtension::FormBuilderTest < ActionView::TestCase
 <option value="1">Yes</option>
 <option value="2">No</option>
 <option value="999">Don't Know</option>
-<option value="0">Refused</option></select></form>}
+<option value="888">Refused</option></select></form>}
 		assert_equal expected, output_buffer
 	end
 
@@ -73,7 +73,7 @@ class Ccls::ActionViewExtension::FormBuilderTest < ActionView::TestCase
 <option value="1">Yes</option>
 <option value="2">No</option>
 <option value="999">Don't Know</option>
-<option value="0">Refused</option></select>
+<option value="888">Refused</option></select>
 </div><!-- class='int_field ynrdk_select' --></form>}
 		assert_equal expected, output_buffer
 	end
@@ -108,7 +108,7 @@ class Ccls::ActionViewExtension::FormBuilderTest < ActionView::TestCase
 		expected = %{<form action="/" method="post"><select id="some_model_int_field" name="some_model[int_field]"><option value=""></option>
 <option value="1">Agree</option>
 <option value="2">Do Not Agree</option>
-<option value="888">N/A</option>
+<option value="555">N/A</option>
 <option value="999">Don't Know</option></select></form>}
 		assert_equal expected, output_buffer
 	end
@@ -120,7 +120,7 @@ class Ccls::ActionViewExtension::FormBuilderTest < ActionView::TestCase
 <label for="some_model_int_field">Int field</label><select id="some_model_int_field" name="some_model[int_field]"><option value=""></option>
 <option value="1">Agree</option>
 <option value="2">Do Not Agree</option>
-<option value="888">N/A</option>
+<option value="555">N/A</option>
 <option value="999">Don't Know</option></select>
 </div><!-- class='int_field adna_select' --></form>}
 		assert_equal expected, output_buffer

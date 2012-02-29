@@ -14,7 +14,6 @@ module Ccls::ActionViewExtension::Base
 #	NOTE: yndk and adna are actually used in the views
 #
 
-#	TODO perhaps use the YNODK hash in these helpers
 		def ynordk(value=nil)
 			YNORDK[value]||'&nbsp;'
 #			case value.to_s
@@ -93,7 +92,6 @@ module Ccls::ActionViewExtension::Base
 #		end
 #		alias_method :yndk_select, :y_n_dk_select
 
-#	TODO perhaps add a ADNA hash in these helpers
 		def a_d_na(value=nil)
 			ADNA[value]||'&nbsp;'
 #			case value

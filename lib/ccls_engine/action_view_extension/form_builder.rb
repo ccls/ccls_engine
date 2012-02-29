@@ -11,13 +11,16 @@ module Ccls::ActionViewExtension::FormBuilder
 #		It will call the method missing and then the @template.method
 #
 
+#	TODO the arrays used in these should really be somewhere else
+
 		def y_n_dk_select(method,options={},html_options={})
 #			@template.y_n_dk_select(
 #				@object_name, method, 
 #					objectify_options(options),
 #					html_options)
 			@template.select(object_name, method,
-				[['Yes',1],['No',2],["Don't Know",999]],
+				yndk_selector_options,
+#				[['Yes',1],['No',2],["Don't Know",999]],
 				{:include_blank => true}.merge(objectify_options(options)), html_options)
 #				{:include_blank => true}.merge(options), html_options)
 		end
@@ -29,7 +32,8 @@ module Ccls::ActionViewExtension::FormBuilder
 #					objectify_options(options),
 #					html_options)
 			@template.select(object_name, method,
-				[['Yes',1],['No',2],["Don't Know",999],['Refused',0]],
+				ynrdk_selector_options,
+#				[['Yes',1],['No',2],["Don't Know",999],['Refused',888]],
 				{:include_blank => true}.merge(objectify_options(options)), html_options)
 #				{:include_blank => true}.merge(options), html_options)
 		end
@@ -41,7 +45,8 @@ module Ccls::ActionViewExtension::FormBuilder
 #					objectify_options(options),
 #					html_options)
 			@template.select(object_name, method,
-				[['Yes',1],['No',2],['Other',3],["Don't Know",999]],
+				ynodk_selector_options,
+#				[['Yes',1],['No',2],['Other',3],["Don't Know",999]],
 				{:include_blank => true}.merge(objectify_options(options)), html_options)
 #				{:include_blank => true}.merge(options), html_options)
 		end
@@ -53,7 +58,8 @@ module Ccls::ActionViewExtension::FormBuilder
 #					objectify_options(options),
 #					html_options)
 			@template.select(object_name, method,
-				[['Agree',1],['Do Not Agree',2],['N/A',888],["Don't Know",999]],
+				adna_selector_options,
+#				[['Agree',1],['Do Not Agree',2],['N/A',555],["Don't Know",999]],
 				{:include_blank => true}.merge(objectify_options(options)), html_options)
 #				{:include_blank => true}.merge(options), html_options)
 		end
