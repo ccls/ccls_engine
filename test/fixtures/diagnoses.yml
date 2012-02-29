@@ -23,7 +23,7 @@ other:
   description: other
 legacy:
   id: 4
-  code: 888
+  code: 777
   position: 4
   key: unspec
   description:  missing data (eg. legacy nulls)
