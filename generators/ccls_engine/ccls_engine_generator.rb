@@ -74,14 +74,14 @@ class CclsEngineGenerator < Rails::Generator::Base
 #			}
 
 			m.directory('test/fixtures')
-			Dir["#{dot}/templates/fixtures/*yml"].each{|file| 
+			Dir["#{dot}/templates/fixtures/*{yml,csv}"].each{|file| 
 				f = file.split('/').slice(-2,2).join('/')
 				m.file(f, "test/fixtures/#{File.basename(file)}")
 			}
-			Dir["#{dot}/templates/fixtures/*csv"].each{|file| 
-				f = file.split('/').slice(-2,2).join('/')
-				m.file(f, "test/fixtures/#{File.basename(file)}")
-			}
+#			Dir["#{dot}/templates/fixtures/*csv"].each{|file| 
+#				f = file.split('/').slice(-2,2).join('/')
+#				m.file(f, "test/fixtures/#{File.basename(file)}")
+#			}
 
 #			m.directory('test/unit/ccls')
 #			Dir["#{File.dirname(__FILE__)}/templates/unit/*rb"].each{|file| 
