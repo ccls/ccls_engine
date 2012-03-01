@@ -137,6 +137,19 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 		assert_not_nil candidate_control.study_subject_id
 	end
 
+	test "should create study_subjects and set is_matched" do
+		case_study_subject = Factory(:complete_case_study_subject)
+		assert_nil case_study_subject.is_matched
+		candidate_control = Factory(:candidate_control)
+		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
+		candidate_control.reload	# ensure that it is saved in the db!
+		assert_not_nil candidate_control.study_subject_id
+		assert_not_nil candidate_control.study_subject.is_matched
+		assert candidate_control.study_subject.is_matched
+		assert_not_nil case_study_subject.is_matched
+		assert case_study_subject.is_matched
+	end
+
 	#	this enrollment is actually a callback in study_subject
 	# now and is not explictly called.
 	test "should create control with enrollment in ccls" do

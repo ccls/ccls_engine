@@ -35,7 +35,6 @@ class CandidateControl < ActiveRecordShared
 	def create_study_subjects(case_subject,grouping = '6')
 		next_orderno = case_subject.next_control_orderno(grouping)
 
-
 		CandidateControl.transaction do
 
 			#	Use a block so can assign all attributes without concern for attr_protected
@@ -70,7 +69,7 @@ class CandidateControl < ActiveRecordShared
 				s.orderno            = next_orderno
 				s.matchingid         = case_subject.subjectid
 				s.patid              = case_subject.patid
-#				s.is_matched         = true
+				s.is_matched         = true
 			end
 			child.save!
 			child.assign_icf_master_id
@@ -78,7 +77,7 @@ class CandidateControl < ActiveRecordShared
 
 #	TODO May have to set is_matched for both the Case and Control here [#217]
 #	We will default it to null and add logic to set it to true for both the new control and their related case when a new control is added to study_subjects from candidate_controls.
-#			case_subject.update_attributes!(:is_matched => true)
+			case_subject.update_attributes!(:is_matched => true)
 
 
 			#	NOTE this may require passing info
