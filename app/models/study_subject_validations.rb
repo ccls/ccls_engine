@@ -70,6 +70,11 @@ base.class_eval do
 		:lab_no, :related_childid, :related_case_childid,
 			:maximum => 250, :allow_blank => true
 
+
+	validates_inclusion_of :mom_is_biomom, :dad_is_biodad,
+			:in => YNDK.valid_values, :allow_nil => true
+
+
 	# custom validation for custom message without standard attribute prefix
 	def presence_of_sex
 		if sex.blank?

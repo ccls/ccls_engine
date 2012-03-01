@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class Ccls::CandidateControlTest < ActiveSupport::TestCase
+
+
+#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+
+
 	
 	assert_should_create_default_object
 	assert_should_belong_to( :study_subject )
@@ -235,7 +240,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	end
 
 	test "should create control from attributes and copy mother_hispanicity_id" do
-		attribute = 123
+		attribute = 999
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control, :mother_hispanicity_id => attribute )
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
@@ -245,7 +250,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	end
 
 	test "should create control from attributes and copy father_hispanicity_id" do
-		attribute = 123
+		attribute = 999
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control, :father_hispanicity_id => attribute )
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
@@ -395,7 +400,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	end
 
 	test "should create control from attributes and copy mom_is_biomom" do
-		attribute = 123
+		attribute = 999
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control, :mom_is_biomom => attribute )
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)
@@ -405,7 +410,7 @@ class Ccls::CandidateControlTest < ActiveSupport::TestCase
 	end
 
 	test "should create control from attributes and copy dad_is_biodad" do
-		attribute = 123
+		attribute = 999
 		case_study_subject = Factory(:complete_case_study_subject)
 		candidate_control = Factory(:candidate_control, :dad_is_biodad => attribute )
 		create_study_subjects_for_candidate_control(candidate_control,case_study_subject)

@@ -18,9 +18,12 @@ class CandidateControl < ActiveRecordShared
 #	validates_inclusion_of :sex, :in => %w( M F DK )
 	validates_inclusion_of :sex, :in => valid_sex_values
 
-#	validates_inclusion_of :mother_hispanicity_id,
-#		:father_hispanicity_id,
-#			:in => YNODK.valid_values, :allow_nil => true
+
+	validates_inclusion_of :mother_hispanicity_id, :father_hispanicity_id,
+			:in => YNODK.valid_values, :allow_nil => true
+	validates_inclusion_of :mom_is_biomom, :dad_is_biodad,
+			:in => YNDK.valid_values, :allow_nil => true
+
 
 	#	Returns string containing candidates's first, middle and last name
 	def full_name

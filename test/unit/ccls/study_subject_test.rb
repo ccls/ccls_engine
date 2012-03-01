@@ -2,6 +2,11 @@ require 'test_helper'
 
 class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
+
+#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+
+
+
 	assert_should_create_default_object
 
 #	Cannot include enrollments here due to the creation of one

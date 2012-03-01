@@ -2,6 +2,10 @@ require 'test_helper'
 
 class Ccls::AddressingTest < ActiveSupport::TestCase
 
+
+#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+
+
 	assert_should_create_default_object
 	assert_should_not_require_attributes( 
 		:address_id,

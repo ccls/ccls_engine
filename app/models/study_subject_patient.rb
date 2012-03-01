@@ -21,10 +21,6 @@ base.class_eval do
 	validate :patient_admit_date_is_after_dob
 	validate :patient_diagnosis_date_is_after_dob
 
-#	validates_inclusion_of :was_under_15_at_dx, :was_previously_treated,
-#		:was_ca_resident_at_diagnosis,
-#			:in => YNDK.valid_values, :allow_nil => true
-
 	after_save   :trigger_setting_was_under_15_at_dx,
 		:if => :dob_changed?
 	after_save :trigger_update_matching_study_subjects_reference_date, 

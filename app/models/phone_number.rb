@@ -31,8 +31,10 @@ class PhoneNumber < ActiveRecordShared
 	validates_format_of   :phone_number, :with => /\A(\D*\d\D*){10}\z/,
 		:allow_blank => true
 
-#	validates_inclusion_of :current_phone, :is_valid,
-#			:in => YNDK.valid_values, :allow_nil => true
+
+	validates_inclusion_of :current_phone, :is_valid,
+			:in => YNDK.valid_values, :allow_nil => true
+
 
 	named_scope :current, :conditions => [
 		'current_phone IS NOT NULL AND current_phone != 2'

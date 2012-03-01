@@ -2,6 +2,11 @@ require 'test_helper'
 
 class Ccls::AbstractTest < ActiveSupport::TestCase
 
+
+#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+
+
+
 	assert_should_belong_to :study_subject
 	assert_should_protect( :study_subject_id, :entry_1_by_uid, 
 		:entry_2_by_uid, :merged_by_uid )

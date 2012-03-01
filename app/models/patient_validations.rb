@@ -35,6 +35,12 @@ base.class_eval do
 
 	validates_presence_of :other_diagnosis, :if => :diagnosis_is_other?
 
+
+	validates_inclusion_of :was_under_15_at_dx, :was_previously_treated,
+		:was_ca_resident_at_diagnosis,
+			:in => YNDK.valid_values, :allow_nil => true
+
+
 protected
 
 	##

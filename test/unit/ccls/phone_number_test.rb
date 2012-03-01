@@ -2,6 +2,11 @@ require 'test_helper'
 
 class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 
+
+#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+
+
+
 	assert_should_create_default_object
 
 	assert_should_act_as_list( :scope => :study_subject_id )

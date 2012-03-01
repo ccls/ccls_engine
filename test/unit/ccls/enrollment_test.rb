@@ -2,6 +2,11 @@ require 'test_helper'
 
 class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
+
+#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+
+
+
 	assert_should_create_default_object
 	assert_should_not_require_attributes( 
 		:refused_by_physician,
