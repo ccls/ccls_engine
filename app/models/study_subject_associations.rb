@@ -13,13 +13,10 @@ base.class_eval do
 	belongs_to :vital_status
 
 	has_and_belongs_to_many :analyses
-	has_many :enrollments
 	has_many :gift_cards
 	has_many :phone_numbers
 	has_many :samples
-	has_many :interviews
 	has_one :home_exposure_response
-	has_one :homex_outcome
 	has_many :bc_requests
 	belongs_to :guardian_relationship, :class_name => 'SubjectRelationship'
 

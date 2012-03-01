@@ -292,36 +292,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should create study_subject and accept_nested_attributes_for enrollments" do
-		assert_difference( 'Enrollment.count', 2) {	#	ccls enrollment is auto-created, so 2
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject(
-				:enrollments_attributes => [Factory.attributes_for(:enrollment,
-					:project_id => Project['non-specific'].id)])
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} }
-	end
-
-	test "should create study_subject and accept_nested_attributes_for homex_outcome" do
-		assert_difference( 'HomexOutcome.count', 1) {
-		assert_difference( "StudySubject.count", 1 ) {
-			study_subject = create_study_subject(
-				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
-			assert !study_subject.new_record?, 
-				"#{study_subject.errors.full_messages.to_sentence}"
-		} }
-	end
-
-	#	StudySubject currently accepts nested attributes for homex_outcome,
-	#	but an empty homex_outcome is no longer invalid.
-	test "should create study_subject with empty homex_outcome" do
-		assert_difference( 'HomexOutcome.count', 1) {
-		assert_difference( 'StudySubject.count', 1) {
-			study_subject = create_study_subject( :homex_outcome_attributes => {})
-		} }
-	end
-
 	test "should belong to vital_status" do
 		study_subject = create_study_subject(:vital_status => nil)
 		assert_nil study_subject.vital_status
@@ -356,17 +326,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should NOT destroy enrollments with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Enrollment.count',2) {	#	due to the callback creation of ccls enrollment
-			@study_subject = Factory(:enrollment).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Enrollment.count',0) {
-			@study_subject.destroy
-		} }
-	end
-
 	test "should NOT destroy gift_cards with study_subject" do
 		assert_difference('StudySubject.count',1) {
 		assert_difference('GiftCard.count',1) {
@@ -386,29 +345,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 		assert_difference('StudySubject.count',-1) {
 		assert_difference('HomeExposureResponse.count',0) {
-			@study_subject.destroy
-		} }
-	end
-
-	test "should NOT destroy homex_outcome with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('HomexOutcome.count',1) {
-			@study_subject = Factory(:study_subject)
-			Factory(:homex_outcome, :study_subject => @study_subject)
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('HomexOutcome.count',0) {
-			@study_subject.destroy
-		} }
-	end
-
-	test "should NOT destroy interviews with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Interview.count',1) {
-			@study_subject = Factory(:interview).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Interview.count',0) {
 			@study_subject.destroy
 		} }
 	end
@@ -444,63 +380,10 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_equal 2, study_subject.reload.analyses.length
 	end
 
-	#	All delegated fields	(actually not all are delegated anymore)
-	%w( 
-		admit_date organization 
-			organization_id hospital_no
-		patid orderno ssn childid state_id_no 
-			state_registrar_no local_registrar_no
-			case_control_type
-		first_name last_name mother_maiden_name
-			initials fathers_name mothers_name email dob 
-		interview_outcome sample_outcome
-			interview_outcome_on sample_outcome_on 
-		studyid full_name
-		).each do |method_name|
-
-		test "should respond to #{method_name}" do
-			study_subject = create_study_subject
-			assert study_subject.respond_to?(method_name)
-		end
-
-	end
-
-	#	Delegated homex_outcome fields except ... interview_outcome, sample_outcome
-	%w( interview_outcome_on sample_outcome_on ).each do |method_name|
-
-		test "should return nil #{method_name} without homex_outcome" do
-			study_subject = create_study_subject
-			assert_nil study_subject.send(method_name)
-		end
-
-		test "should return #{method_name} with homex_outcome" do
-			study_subject = create_study_subject(
-				:homex_outcome_attributes => Factory.attributes_for(:homex_outcome))
-			assert_not_nil study_subject.send(method_name)
-		end
-
-	end
-
 	test "should return subject_type description for string" do
 		study_subject = create_study_subject
 		assert_equal study_subject.subject_type.description,
 			"#{study_subject.subject_type}"
-	end
-
-	test "should return nil hx_enrollment if not enrolled" do
-		study_subject = create_study_subject
-		assert_nil study_subject.enrollments.find_by_project_id(
-			Project['HomeExposures'].id)
-	end
-
-	test "should return valid hx_enrollment if enrolled" do
-		study_subject = create_study_subject
-		hxe = Factory(:enrollment,
-			:study_subject => study_subject,
-			:project => Project['HomeExposures']
-		)
-		assert_not_nil study_subject.enrollments.find_by_project_id(
-			Project['HomeExposures'].id)
 	end
 
 	test "should not be case unless explicitly told" do
@@ -511,16 +394,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 	test "should case if explicitly told" do
 		study_subject = Factory(:case_study_subject)
 		assert study_subject.is_case?
-	end
-
-	test "should not have hx_interview" do
-		study_subject = create_study_subject
-		assert_nil study_subject.hx_interview
-	end
-
-	test "should have hx_interview" do
-		study_subject = create_hx_interview_study_subject
-		assert_not_nil study_subject.hx_interview
 	end
 
 	test "should return concat of 3 fields as to_s" do
@@ -859,28 +732,6 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		mother = study_subject.create_mother
 		assert_nil          mother.studyid
 		assert_equal 'n/a', mother.studyid_to_s
-	end
-
-	test "should create ccls project enrollment on creation" do
-		study_subject = nil
-		assert_difference('Project.count',0) {	#	make sure it didn't create id
-		assert_difference('Enrollment.count',1) {
-		assert_difference('StudySubject.count',1) {
-			study_subject = create_study_subject
-		} } }
-		assert_not_nil study_subject.enrollments.find_by_project_id(Project['ccls'].id)
-	end
-
-	test "should only create 1 ccls project enrollment on creation if given one" do
-		study_subject = nil
-		assert_difference('Project.count',0) {	#	make sure it didn't create id
-		assert_difference('Enrollment.count',1) {
-		assert_difference('StudySubject.count',1) {
-			study_subject = create_study_subject(:enrollments_attributes => [
-				{ :project_id => Project['ccls'].id }
-			])
-		} } }
-		assert_not_nil study_subject.enrollments.find_by_project_id(Project['ccls'].id)
 	end
 
 end

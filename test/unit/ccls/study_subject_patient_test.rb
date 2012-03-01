@@ -5,6 +5,17 @@ require 'test_helper'
 #	to the size of the StudySubjectTest class.
 class Ccls::StudySubjectPatientTest < ActiveSupport::TestCase
 
+	%w( admit_date organization 
+			organization_id hospital_no
+		).each do |method_name|
+
+		test "should respond to #{method_name}" do
+			study_subject = create_study_subject
+			assert study_subject.respond_to?(method_name)
+		end
+
+	end
+
 #	test "set organization for complete case study subject factory test" do
 #		#	Factory only does a merge, NOT a deep_merge, so this won' work
 #		s = Factory(:complete_case_study_subject,

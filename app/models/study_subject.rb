@@ -11,7 +11,6 @@ class StudySubject < ActiveRecordShared
 	#	Also trying to map this same organization in the tests
 	#	so that autotest triggers the more likely effected tests.
 	include StudySubjectAssociations
-	include StudySubjectOperationalEvents
 	include StudySubjectValidations
 
 	include StudySubjectPatient
@@ -23,9 +22,13 @@ class StudySubject < ActiveRecordShared
 	include StudySubjectLanguages
 	include StudySubjectAddresses
 
-	delegate :interview_outcome, :interview_outcome_on,
-		:sample_outcome, :sample_outcome_on,
-			:to => :homex_outcome, :allow_nil => true
+	#	Declaration order matters. 
+	#	OperationalEvents are through Enrollments.
+	include StudySubjectEnrollments
+	include StudySubjectOperationalEvents
+
+	include StudySubjectHomexOutcome
+	include StudySubjectInterviews
 
 	delegate :is_other?, :to => :guardian_relationship, 
 		:allow_nil => true, :prefix => true 
@@ -42,12 +45,9 @@ class StudySubject < ActiveRecordShared
 	#	Make all these require a unique study_subject_id
 	#	Newer versions of rails actually nullify the old record
 
-	accepts_nested_attributes_for :enrollments
 	accepts_nested_attributes_for :phone_numbers,
 		:reject_if => proc { |attrs| attrs[:phone_number].blank? }
 	accepts_nested_attributes_for :gift_cards
-	accepts_nested_attributes_for :homex_outcome
-
 
 	#	Find the case or control subject with matching familyid except self.
 	def child
@@ -140,14 +140,6 @@ class StudySubject < ActiveRecordShared
 	#	true only if type is Mother
 	def is_mother?
 		subject_type_id == self.class.subject_type_mother_id
-	end
-
-	#	Returns home exposures interview
-	def hx_interview
-		interviews.find(:first,
-			:conditions => "projects.code = 'HomeExposures'",
-			:joins => [:instrument_version => [:instrument => :project]]
-		)
 	end
 
 	def self.search(params={})
