@@ -43,6 +43,7 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 	end
 
 
+
 	test "yndk(1) should return 'Yes'" do
 		assert_equal 'Yes', yndk(1)
 	end
@@ -51,25 +52,79 @@ class Ccls::ActionViewExtension::BaseTest < ActionView::TestCase
 		assert_equal 'No', yndk(2)
 	end
 
-	test "yndk(3) should return 'Other'" do
-		assert_equal 'Other', yndk(3)
+	test "yndk(3) should return '&nbsp;'" do
+		assert_equal '&nbsp;', yndk(3)
 	end
 
-	test "yndk(888) should return 'Refused'" do
-		assert_equal "Refused", yndk(888)
+	test "yndk(888) should return '&nbsp;'" do
+		assert_equal "&nbsp;", yndk(888)
 	end
 
 	test "yndk(999) should return 'Don't Know'" do
 		assert_equal "Don't Know", yndk(999)
 	end
 
-	test "yndk0() should return '&nbsp;'" do
-		assert_equal "&nbsp;", yndk(0)
-	end
-
 	test "yndk() should return '&nbsp;'" do
 		assert_equal "&nbsp;", yndk()
 	end
+
+
+
+	test "ynodk(1) should return 'Yes'" do
+		assert_equal 'Yes', ynodk(1)
+	end
+
+	test "ynodk(2) should return 'No'" do
+		assert_equal 'No', ynodk(2)
+	end
+
+	test "ynodk(3) should return 'Other'" do
+		assert_equal 'Other', ynodk(3)
+	end
+
+	test "ynodk(888) should return '&nbsp;'" do
+		assert_equal "&nbsp;", ynodk(888)
+	end
+
+	test "ynodk(999) should return 'Don't Know'" do
+		assert_equal "Don't Know", ynodk(999)
+	end
+
+	test "ynodk() should return '&nbsp;'" do
+		assert_equal "&nbsp;", ynodk()
+	end
+
+
+
+	test "ynrdk(1) should return 'Yes'" do
+		assert_equal 'Yes', ynrdk(1)
+	end
+
+	test "ynrdk(2) should return 'No'" do
+		assert_equal 'No', ynrdk(2)
+	end
+
+	test "ynrdk(3) should return '&nbsp;'" do
+		assert_equal '&nbsp;', ynrdk(3)
+	end
+
+	test "ynrdk(888) should return 'Refused'" do
+		assert_equal "Refused", ynrdk(888)
+	end
+
+	test "ynrdk(999) should return 'Don't Know'" do
+		assert_equal "Don't Know", ynrdk(999)
+	end
+
+	test "ynrdk() should return '&nbsp;'" do
+		assert_equal "&nbsp;", ynrdk()
+	end
+
+
+
+
+
+
 
 
 	test "unwrapped _wrapped_adna_spans" do

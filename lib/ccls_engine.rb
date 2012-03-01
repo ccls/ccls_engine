@@ -82,7 +82,7 @@ require 'ccls_engine/date_and_time_formats'
 require 'ccls_engine/core_extension'
 require 'ccls_engine/active_record_shared'
 require 'ccls_engine/ccls_user'
-require 'ccls_engine/yndk'
+require 'ccls_engine/translation_table'
 require 'ccls_engine/helper'
 require 'ccls_engine/action_view_extension'
 

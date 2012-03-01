@@ -32,7 +32,7 @@ class PhoneNumber < ActiveRecordShared
 		:allow_blank => true
 
 #	validates_inclusion_of :current_phone, :is_valid,
-#			:in => valid_yndk_values, :allow_nil => true
+#			:in => YNDK.valid_values, :allow_nil => true
 
 	named_scope :current, :conditions => [
 		'current_phone IS NOT NULL AND current_phone != 2'

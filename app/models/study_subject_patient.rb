@@ -23,7 +23,7 @@ base.class_eval do
 
 #	validates_inclusion_of :was_under_15_at_dx, :was_previously_treated,
 #		:was_ca_resident_at_diagnosis,
-#			:in => valid_yndk_values, :allow_nil => true
+#			:in => YNDK.valid_values, :allow_nil => true
 
 	after_save   :trigger_setting_was_under_15_at_dx,
 		:if => :dob_changed?

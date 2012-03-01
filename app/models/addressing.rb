@@ -34,7 +34,7 @@ class Addressing < ActiveRecordShared
 
 #	validates_inclusion_of :current_address, :is_valid,
 #		:address_at_diagnosis,
-#			:in => valid_yndk_values, :allow_nil => true
+#			:in => YNDK.valid_values, :allow_nil => true
 
 	named_scope :current, :conditions => [
 		'current_address IS NOT NULL AND current_address != 2'

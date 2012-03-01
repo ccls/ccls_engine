@@ -20,7 +20,7 @@ class CandidateControl < ActiveRecordShared
 
 #	validates_inclusion_of :mother_hispanicity_id,
 #		:father_hispanicity_id,
-#			:in => valid_ynodk_values, :allow_nil => true
+#			:in => YNODK.valid_values, :allow_nil => true
 
 	#	Returns string containing candidates's first, middle and last name
 	def full_name
