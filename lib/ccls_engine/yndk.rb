@@ -3,9 +3,9 @@
 #	it does not differentiate between strings and numbers.
 YNORDK = HashWithIndifferentAccess.new({
 	:yes   => 1,
-	:true  => 1,
+#	:true  => 1,
 	:no    => 2,
-	:false => 2,
+#	:false => 2,
 	:other => 3,
 	:dk    => 999,
 #	:refused => 0,
