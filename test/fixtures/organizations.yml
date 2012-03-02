@@ -180,3 +180,16 @@ other:
   id: 35
   code: 33
   name:  other organization
+
+#other:
+#  id: 33
+#  code: Other
+#  name: other organization
+#unspec:
+#  id: 888
+#  code: Unspecified
+#  name: Unspecified Organization/Hospital
+#dk:
+#  id: 999
+#  code: Unknown
+#  name: organization unknown
