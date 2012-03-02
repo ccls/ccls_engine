@@ -5,7 +5,7 @@ class CreateEnrollments < SharedMigration
 			t.references :study_subject
 			t.references :project
 			t.string :recruitment_priority
-			t.integer :able_to_locate
+			t.integer :tracing_status_id
 			t.integer :is_candidate
 			t.integer :is_eligible
 			t.references :ineligible_reason
@@ -33,6 +33,8 @@ class CreateEnrollments < SharedMigration
 			t.integer :contact_for_related_study
 			t.integer :provide_saliva_smp
 			t.integer :receive_study_findings
+			t.boolean :refused_by_physician
+			t.boolean :refused_by_family
 			t.timestamps
 		end
 		add_index :enrollments, [:project_id, :study_subject_id],

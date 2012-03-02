@@ -81,6 +81,7 @@ class CreateStudySubjects < SharedMigration
 			t.string :icf_master_id, :limit => 9
 			t.string :state_registrar_no
 			t.string :local_registrar_no
+			t.boolean :is_matched
 			t.timestamps
 		end
 		add_index :study_subjects, :ssn, :unique => true

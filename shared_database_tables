@@ -558,12 +558,12 @@ Table: data_sources
 | data_origin        | varchar(255) | YES  |     | NULL    |                |
 | code               | varchar(255) | NO   | UNI | NULL    |                |
 | description        | varchar(255) | NO   |     | NULL    |                |
-| created_at         | datetime     | YES  |     | NULL    |                |
-| updated_at         | datetime     | YES  |     | NULL    |                |
 | organization_id    | int(11)      | YES  |     | NULL    |                |
 | other_organization | varchar(255) | YES  |     | NULL    |                |
 | person_id          | int(11)      | YES  |     | NULL    |                |
 | other_person       | varchar(255) | YES  |     | NULL    |                |
+| created_at         | datetime     | YES  |     | NULL    |                |
+| updated_at         | datetime     | YES  |     | NULL    |                |
 +--------------------+--------------+------+-----+---------+----------------+
 
 Table: diagnoses
@@ -645,10 +645,10 @@ Table: enrollments
 | contact_for_related_study   | int(11)      | YES  |     | NULL    |                |
 | provide_saliva_smp          | int(11)      | YES  |     | NULL    |                |
 | receive_study_findings      | int(11)      | YES  |     | NULL    |                |
-| created_at                  | datetime     | YES  |     | NULL    |                |
-| updated_at                  | datetime     | YES  |     | NULL    |                |
 | refused_by_physician        | tinyint(1)   | YES  |     | NULL    |                |
 | refused_by_family           | tinyint(1)   | YES  |     | NULL    |                |
+| created_at                  | datetime     | YES  |     | NULL    |                |
+| updated_at                  | datetime     | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
 
 Table: follow_up_types
@@ -868,7 +868,7 @@ Table: icf_master_tracker_changes
 | Field               | Type         | Null | Key | Default | Extra          |
 +---------------------+--------------+------+-----+---------+----------------+
 | id                  | int(11)      | NO   | PRI | NULL    | auto_increment |
-| icf_master_id       | varchar(255) | YES  |     | NULL    |                |
+| icf_master_id       | varchar(255) | NO   | MUL | NULL    |                |
 | master_tracker_date | date         | YES  |     | NULL    |                |
 | new_tracker_record  | tinyint(1)   | NO   |     | 0       |                |
 | modified_column     | varchar(255) | YES  |     | NULL    |                |
@@ -1163,9 +1163,9 @@ Table: people
 | last_name       | varchar(255) | YES  |     | NULL    |                |
 | honorific       | varchar(20)  | YES  |     | NULL    |                |
 | person_type_id  | int(11)      | YES  |     | NULL    |                |
+| organization_id | int(11)      | YES  |     | NULL    |                |
 | created_at      | datetime     | YES  |     | NULL    |                |
 | updated_at      | datetime     | YES  |     | NULL    |                |
-| organization_id | int(11)      | YES  |     | NULL    |                |
 +-----------------+--------------+------+-----+---------+----------------+
 
 Table: phone_numbers
@@ -1439,6 +1439,7 @@ Table: study_subjects
 | icf_master_id               | varchar(9)   | YES  | UNI | NULL    |                |
 | state_registrar_no          | varchar(255) | YES  | UNI | NULL    |                |
 | local_registrar_no          | varchar(255) | YES  | UNI | NULL    |                |
+| is_matched                  | tinyint(1)   | YES  |     | NULL    |                |
 | created_at                  | datetime     | YES  |     | NULL    |                |
 | updated_at                  | datetime     | YES  |     | NULL    |                |
 +-----------------------------+--------------+------+-----+---------+----------------+
