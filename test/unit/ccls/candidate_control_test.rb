@@ -2,9 +2,59 @@ require 'test_helper'
 
 class Ccls::CandidateControlTest < ActiveSupport::TestCase
 
+	[ :mother_hispanicity_id, :father_hispanicity_id ].each do |field|
 
-#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			candidate_control = CandidateControl.new(field => 12345)
+			candidate_control.valid?
+			assert candidate_control.errors.on_attr_and_type?(field,:inclusion)
+		end
 
+		test "should allow nil for #{field}" do
+			candidate_control = CandidateControl.new(field => nil)
+			assert_nil candidate_control.send(field)
+			candidate_control.valid?
+			assert !candidate_control.errors.on(field)
+		end
+
+		test "should allow all valid YNODK values for #{field}" do
+			candidate_control = CandidateControl.new
+			YNODK.valid_values.each do |value|
+				candidate_control.send("#{field}=", value)
+				candidate_control.valid?
+				assert !candidate_control.errors.on(field)
+			end
+		end
+
+	end
+
+	[ :mom_is_biomom, :dad_is_biodad ].each do |field|
+
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			candidate_control = CandidateControl.new(field => 12345)
+			candidate_control.valid?
+			assert candidate_control.errors.on_attr_and_type?(field,:inclusion)
+		end
+
+		test "should allow nil for #{field}" do
+			candidate_control = CandidateControl.new(field => nil)
+			assert_nil candidate_control.send(field)
+			candidate_control.valid?
+			assert !candidate_control.errors.on(field)
+		end
+
+		test "should allow all valid YNDK values for #{field}" do
+			candidate_control = CandidateControl.new
+			YNDK.valid_values.each do |value|
+				candidate_control.send("#{field}=", value)
+				candidate_control.valid?
+				assert !candidate_control.errors.on(field)
+			end
+		end
+
+	end
 
 	
 	assert_should_create_default_object

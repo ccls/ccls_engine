@@ -2,10 +2,32 @@ require 'test_helper'
 
 class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 
+	[ :current_phone, :is_valid ].each do |field|
 
-#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			phone_number = PhoneNumber.new(field => 12345)
+			phone_number.valid?
+			assert phone_number.errors.on_attr_and_type?(field,:inclusion)
+		end
 
+		test "should allow nil for #{field}" do
+			phone_number = PhoneNumber.new(field => nil)
+			assert_nil phone_number.send(field)
+			phone_number.valid?
+			assert !phone_number.errors.on(field)
+		end
 
+		test "should allow all valid YNDK values for #{field}" do
+			phone_number = PhoneNumber.new
+			YNDK.valid_values.each do |value|
+				phone_number.send("#{field}=", value)
+				phone_number.valid?
+				assert !phone_number.errors.on(field)
+			end
+		end
+
+	end
 
 	assert_should_create_default_object
 

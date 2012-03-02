@@ -2,10 +2,6 @@ require 'test_helper'
 
 class Ccls::AddressingTest < ActiveSupport::TestCase
 
-
-#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
-
-
 	assert_should_create_default_object
 	assert_should_not_require_attributes( 
 		:address_id,
@@ -379,6 +375,61 @@ class Ccls::AddressingTest < ActiveSupport::TestCase
 				:current_address => '2',
 				:subject_moved => nil)
 		}
+	end
+
+	#	current_address has a database default of 1
+	[ :current_address ].each do |field|
+
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			addressing = Addressing.new(field => 12345)
+			addressing.valid?
+			assert addressing.errors.on_attr_and_type?(field,:inclusion)
+		end
+
+#		test "should allow nil for #{field}" do
+#			addressing = Addressing.new(field => nil)
+#			assert_nil addressing.send(field)
+#			addressing.valid?
+#			assert !addressing.errors.on(field)
+#		end
+
+		test "should allow all valid YNDK values for #{field}" do
+			addressing = Addressing.new
+			YNDK.valid_values.each do |value|
+				addressing.send("#{field}=", value)
+				addressing.valid?
+				assert !addressing.errors.on(field)
+			end
+		end
+
+	end
+
+	[ :is_valid, :address_at_diagnosis ].each do |field|
+
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			addressing = Addressing.new(field => 12345)
+			addressing.valid?
+			assert addressing.errors.on_attr_and_type?(field,:inclusion)
+		end
+
+		test "should allow nil for #{field}" do
+			addressing = Addressing.new(field => nil)
+			assert_nil addressing.send(field)
+			addressing.valid?
+			assert !addressing.errors.on(field)
+		end
+
+		test "should allow all valid YNDK values for #{field}" do
+			addressing = Addressing.new
+			YNDK.valid_values.each do |value|
+				addressing.send("#{field}=", value)
+				addressing.valid?
+				assert !addressing.errors.on(field)
+			end
+		end
+
 	end
 
 protected

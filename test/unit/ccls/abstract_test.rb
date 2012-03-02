@@ -2,11 +2,6 @@ require 'test_helper'
 
 class Ccls::AbstractTest < ActiveSupport::TestCase
 
-
-#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
-
-
-
 	assert_should_belong_to :study_subject
 	assert_should_protect( :study_subject_id, :entry_1_by_uid, 
 		:entry_2_by_uid, :merged_by_uid )
@@ -588,6 +583,85 @@ class Ccls::AbstractTest < ActiveSupport::TestCase
 		assert db_fields.is_a?(Array)
 		assert db_fields.length >= 15
 		assert db_fields.first.is_a?(String)
+	end
+
+	[ :cbc_report_found,
+		:cerebrospinal_fluid_report_found,
+		:chest_imaging_report_found,
+		:chemo_protocol_report_found,
+		:cytogen_hospital_fish_done,
+		:cytogen_karyotype_done,
+		:cytogen_report_found,
+		:cytogen_trisomy4,
+		:cytogen_trisomy5,
+		:cytogen_trisomy10,
+		:cytogen_trisomy17,
+		:cytogen_trisomy21,
+		:cytogen_ucb_fish_done,
+		:diagnosis_is_all,
+		:diagnosis_is_aml,
+		:diagnosis_is_b_all,
+		:diagnosis_is_cll,
+		:diagnosis_is_cml,
+		:diagnosis_is_other,
+		:diagnosis_is_t_all,
+		:discharge_summary_found,
+		:flow_cyto_num_results_available,
+		:flow_cyto_report_found,
+		:h_and_p_reports_found,
+		:hepatomegaly_present,
+		:histo_report_found,
+		:is_down_syndrome_phenotype,
+		:marrow_aspirate_report_found,
+		:marrow_biopsy_report_found,
+		:mediastinal_mass_present,
+		:patient_on_chemo_protocol,
+		:received_bone_marrow_aspirate,
+		:received_bone_marrow_biopsy,
+		:received_cbc,
+		:received_chemo_protocol,
+		:received_chest_xray,
+		:received_csf,
+		:received_cytogenetics,
+		:received_discharge_summary,
+		:received_flow_cytometry,
+		:received_hla_typing,
+		:received_h_and_p,
+		:received_other_reports,
+		:received_resp_to_therapy,
+		:response_day30_is_in_remission,
+		:response_is_inconclusive_day_7,
+		:response_is_inconclusive_day_14,
+		:response_is_inconclusive_day_28,
+		:response_report_found_day_7,
+		:response_report_found_day_14,
+		:response_report_found_day_28,
+		:splenomegaly_present,
+		:tdt_report_found ].each do |field|
+
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			abstract = Abstract.new(field => 12345)
+			abstract.valid?
+			assert abstract.errors.on_attr_and_type?(field,:inclusion)
+		end
+
+		test "should allow nil for #{field}" do
+			abstract = Abstract.new(field => nil)
+			assert_nil abstract.send(field)
+			abstract.valid?
+			assert !abstract.errors.on(field)
+		end
+
+		test "should allow all valid YNDK values for #{field}" do
+			abstract = Abstract.new
+			YNDK.valid_values.each do |value|
+				abstract.send("#{field}=", value)
+				abstract.valid?
+				assert !abstract.errors.on(field)
+			end
+		end
+
 	end
 
 end

@@ -2,10 +2,32 @@ require 'test_helper'
 
 class Ccls::StudySubjectTest < ActiveSupport::TestCase
 
+	[ :mom_is_biomom, :dad_is_biodad ].each do |field|
 
-#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			study_subject = StudySubject.new(field => 12345)
+			study_subject.valid?
+			assert study_subject.errors.on_attr_and_type?(field,:inclusion)
+		end
 
+		test "should allow nil for #{field}" do
+			study_subject = StudySubject.new(field => nil)
+			assert_nil study_subject.send(field)
+			study_subject.valid?
+			assert !study_subject.errors.on(field)
+		end
 
+		test "should allow all valid YNDK values for #{field}" do
+			study_subject = StudySubject.new
+			YNDK.valid_values.each do |value|
+				study_subject.send("#{field}=", value)
+				study_subject.valid?
+				assert !study_subject.errors.on(field)
+			end
+		end
+
+	end
 
 	assert_should_create_default_object
 

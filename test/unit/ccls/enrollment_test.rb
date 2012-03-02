@@ -2,8 +2,64 @@ require 'test_helper'
 
 class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
+	[ :use_smp_future_rsrch,
+		:use_smp_future_cancer_rsrch, :use_smp_future_other_rsrch,
+		:share_smp_with_others, :contact_for_related_study,
+		:provide_saliva_smp, :receive_study_findings ].each do |field|
 
-#	TODO add YNDK/YNODK/YNRDK/ADNA valid value tests
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			enrollment = Enrollment.new(field => 12345)
+			enrollment.valid?
+			assert enrollment.errors.on_attr_and_type?(field,:inclusion)
+		end
+
+		test "should allow nil for #{field}" do
+			enrollment = Enrollment.new(field => nil)
+			assert_nil enrollment.send(field)
+			enrollment.valid?
+			assert !enrollment.errors.on(field)
+		end
+
+		test "should allow all valid ADNA values for #{field}" do
+			enrollment = Enrollment.new
+			ADNA.valid_values.each do |value|
+				enrollment.send("#{field}=", value)
+				enrollment.valid?
+				assert !enrollment.errors.on(field)
+			end
+		end
+
+	end
+
+	[ :consented, :is_eligible,
+		:is_chosen, :is_complete, :terminated_participation,
+		:is_candidate ].each do |field|
+
+		#	Making assumption that 12345 will NEVER be a valid value.
+		test "should NOT allow 12345 for #{field}" do
+			enrollment = Enrollment.new(field => 12345)
+			enrollment.valid?
+			assert enrollment.errors.on_attr_and_type?(field,:inclusion)
+		end
+
+		test "should allow nil for #{field}" do
+			enrollment = Enrollment.new(field => nil)
+			assert_nil enrollment.send(field)
+			enrollment.valid?
+			assert !enrollment.errors.on(field)
+		end
+
+		test "should allow all valid YNDK values for #{field}" do
+			enrollment = Enrollment.new
+			YNDK.valid_values.each do |value|
+				enrollment.send("#{field}=", value)
+				enrollment.valid?
+				assert !enrollment.errors.on(field)
+			end
+		end
+
+	end
 
 
 
