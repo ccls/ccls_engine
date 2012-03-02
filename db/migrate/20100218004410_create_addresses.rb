@@ -14,6 +14,7 @@ class CreateAddresses < SharedMigration
 			t.string  :country
 			t.timestamps
 		end
+		add_index :addresses, :external_address_id, :unique => true
 	end
 
 	def self.down

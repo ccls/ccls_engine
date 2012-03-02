@@ -2,6 +2,22 @@ require 'test_helper'
 
 class Ccls::AddressTest < ActiveSupport::TestCase
 
+
+#	TODO	this should really be unique, only used during importing
+#	validates_uniqueness_of :external_address_id, :allow_blank => true
+
+	#	external_address_id isn't required so don't use class level test
+	test "should require unique external_address_id" do
+		Factory(:address,:external_address_id => 123456789)
+		assert_difference('Address.count',0){
+			address = Factory.build(:address,:external_address_id => 123456789)
+			address.save
+			assert address.errors.on_attr_and_type?(:external_address_id,:taken)
+		}
+	end
+
+
+
 	assert_should_create_default_object
 	assert_should_require_attributes( 
 		:line_1, 

@@ -25,6 +25,9 @@ class Address < ActiveRecordShared
 	validates_presence_of :zip
 	validates_length_of   :zip, :maximum => 10, :allow_blank => true
 
+	#	this needs to be unique, but is only used during importing
+	validates_uniqueness_of :external_address_id, :allow_blank => true
+
 	validates_format_of :zip,
 		:with => /\A\s*\d{5}(-)?(\d{4})?\s*\z/,
 		:message => "should be 12345, 123451234 or 12345-1234", :allow_blank => true
