@@ -27,6 +27,7 @@ test/unit.orig/
 misc/
 /*.war
 *_errors.txt
+*_warnings.txt
 *.swp
 /config/initializers/session_store.rb
 Gemfile.lock
