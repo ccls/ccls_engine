@@ -259,8 +259,9 @@ base.class_eval do
 	validates_inclusion_of(
 		:cbc_report_found,
 		:cerebrospinal_fluid_report_found,
-		:chest_imaging_report_found,
 		:chemo_protocol_report_found,
+		:chest_ct_medmass_present,
+		:chest_imaging_report_found,
 		:cytogen_hospital_fish_done,
 		:cytogen_karyotype_done,
 		:cytogen_report_found,
@@ -288,10 +289,12 @@ base.class_eval do
 		:marrow_biopsy_report_found,
 		:mediastinal_mass_present,
 		:patient_on_chemo_protocol,
+		:ploidy_report_found,
 		:received_bone_marrow_aspirate,
 		:received_bone_marrow_biopsy,
 		:received_cbc,
 		:received_chemo_protocol,
+		:received_chest_ct,
 		:received_chest_xray,
 		:received_csf,
 		:received_cytogenetics,
@@ -300,19 +303,21 @@ base.class_eval do
 		:received_hla_typing,
 		:received_h_and_p,
 		:received_other_reports,
+		:received_ploidy,
 		:received_resp_to_therapy,
+		:response_day14or28_flag,
 		:response_day30_is_in_remission,
 		:response_is_inconclusive_day_7,
 		:response_is_inconclusive_day_14,
+		:response_is_inconclusive_day_21,
 		:response_is_inconclusive_day_28,
 		:response_report_found_day_7,
 		:response_report_found_day_14,
 		:response_report_found_day_28,
 		:splenomegaly_present,
+		:tdt_often_found_flow_cytometry,
 		:tdt_report_found,
 			:in => YNDK.valid_values, :allow_nil => true )
-
-
 
 end	#	class_eval
 end	#	included

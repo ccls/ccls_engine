@@ -827,8 +827,10 @@ Factory.define :complete_abstract, :class => 'Abstract' do |f|
 	f.sequence(:dna_index){|n| "#{n}"}
 	f.sequence(:other_dna_measure){|n| "#{n}"}
 	f.sequence(:ploidy_comment){|n| "#{n}"}
-	f.sequence(:hepatomegaly_present){|n| n }
-	f.sequence(:splenomegaly_present){|n| n }
+#	f.sequence(:hepatomegaly_present){|n| n }
+	f.hepatomegaly_present{ random_yndk() }
+#	f.sequence(:splenomegaly_present){|n| n }
+	f.splenomegaly_present{ random_yndk() }
 	f.sequence(:response_comment){|n| "#{n}"}
 	f.sequence(:response_other1_name_day_14){|n| "#{n}"}
 	f.sequence(:response_other1_name_day_7){|n| "#{n}"}
