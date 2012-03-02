@@ -126,18 +126,18 @@ namespace :odms_import do
 
 
 #	TODO deal with incorrect value 9 in was_* fields
-				if( line['was_previously_treated'].to_s == '9' )
-					puts "Converting was_previously_treated = 9 to 999"
-					puts line
-					line['was_previously_treated'] = '999' 
-					puts line
-				end
-				if( line['was_under_15_at_dx'].to_s == '9' )
-					puts "Converting was_under_15_at_dx = 9 to 999"
-					puts line
-					line['was_under_15_at_dx'] = '999' 
-					puts line
-				end
+#				if( line['was_previously_treated'].to_s == '9' )
+#					puts "Converting was_previously_treated = 9 to 999"
+#					puts line
+#					line['was_previously_treated'] = '999' 
+#					puts line
+#				end
+#				if( line['was_under_15_at_dx'].to_s == '9' )
+#					puts "Converting was_under_15_at_dx = 9 to 999"
+#					puts line
+#					line['was_under_15_at_dx'] = '999' 
+#					puts line
+#				end
 
 				if line['subject_type_id'].to_i == StudySubject.subject_type_case_id &&
 						line['organization_id'].blank?
@@ -824,9 +824,11 @@ namespace :odms_import do
 
 #	TODO deal with incorrect value 9 in was_* fields
 
-					m.was_previously_treated = line['was_previously_treated'].to_nil_or_999
+#					m.was_previously_treated = line['was_previously_treated'].to_nil_or_999
+					m.was_previously_treated = line['was_previously_treated']
 #	kinda pointless as is set in callback
-					m.was_under_15_at_dx     = line['was_under_15_at_dx'].to_nil_or_999
+#					m.was_under_15_at_dx     = line['was_under_15_at_dx'].to_nil_or_999
+					m.was_under_15_at_dx     = line['was_under_15_at_dx']
 #					m.was_previously_treated = (( line['was_previously_treated'].to_s == '9' ) ?
 #						'999' : line['was_previously_treated'] )
 #					m.was_under_15_at_dx     = (( line['was_under_15_at_dx'].to_s == '9' ) ?
@@ -960,7 +962,8 @@ namespace :odms_import do
 
 #	TODO problem with the 9 and 999 issue as well
 #					assert pa.was_previously_treated.to_s == line['was_previously_treated'],
-					assert pa.was_previously_treated == line['was_previously_treated'].to_nil_or_999,
+#					assert pa.was_previously_treated == line['was_previously_treated'].to_nil_or_999,
+					assert pa.was_previously_treated == line['was_previously_treated'],
 						"was_previously_treated mismatch:#{pa.was_previously_treated}:#{line['was_previously_treated']}:"
 #	TODO probably won't be true all the time
 #					assert pa.was_under_15_at_dx == line['was_under_15_at_dx'],
