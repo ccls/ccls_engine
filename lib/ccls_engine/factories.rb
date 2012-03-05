@@ -345,7 +345,7 @@ end
 
 Factory.define :project_outcome do |f|
 	f.sequence(:key)         { |n| "Key#{n}" }
-	f.sequence(:code)        { |n| "Code#{n}" }
+#	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -502,7 +502,7 @@ end
 
 Factory.define :vital_status do |f|
 	f.sequence(:key)         { |n| "key#{n}" }
-	f.sequence(:code)        { |n| n+3 }							#	3 in fixtures
+#	f.sequence(:code)        { |n| n+3 }							#	3 in fixtures
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 

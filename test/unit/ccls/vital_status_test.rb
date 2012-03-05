@@ -7,15 +7,15 @@ class Ccls::VitalStatusTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many( :study_subjects )
-	assert_should_require_attributes( :code )
-	assert_should_require_unique_attributes( :code )
+#	assert_should_require_attributes( :code )
+#	assert_should_require_unique_attributes( :code )
 	assert_should_not_require_attributes( :position )
 
 	test "explicit Factory vital_status test" do
 		assert_difference('VitalStatus.count',1) {
 			vital_status = Factory(:vital_status)
 			assert_match /key\d*/,  vital_status.key
-			assert_match /\d*/,     vital_status.code.to_s
+#			assert_match /\d*/,     vital_status.code.to_s
 			assert_match /Desc\d*/, vital_status.description
 		}
 	end
