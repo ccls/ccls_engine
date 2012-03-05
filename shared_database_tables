@@ -1542,6 +1542,7 @@ Table: vital_statuses
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
 | key         | varchar(255) | NO   | UNI | NULL    |                |
+| code        | int(11)      | YES  | UNI | NULL    |                |
 | description | varchar(255) | NO   |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |

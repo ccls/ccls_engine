@@ -11,15 +11,18 @@
 living:
   id: 1
   position: 1
+  code: 1
   key: living
   description: living
 deceased:
   id: 2
   position: 2 
+  code: 2 
   key: deceased
   description: deceased
 dk:
   id: 3
   position: 3
+  code: 3
   key: unknown
   description: don't know
