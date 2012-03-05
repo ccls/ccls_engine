@@ -357,7 +357,7 @@ Table: address_types
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -375,7 +375,7 @@ Table: addresses
 | city                | varchar(255) | YES  |     | NULL    |                |
 | state               | varchar(255) | YES  |     | NULL    |                |
 | zip                 | varchar(10)  | YES  |     | NULL    |                |
-| external_address_id | int(11)      | YES  |     | NULL    |                |
+| external_address_id | int(11)      | YES  | UNI | NULL    |                |
 | county              | varchar(255) | YES  |     | NULL    |                |
 | unit                | varchar(255) | YES  |     | NULL    |                |
 | country             | varchar(255) | YES  |     | NULL    |                |
@@ -412,7 +412,7 @@ Table: aliquot_sample_formats
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -443,7 +443,7 @@ Table: analyses
 | id                             | int(11)      | NO   | PRI | NULL    | auto_increment |
 | analyst_id                     | int(11)      | YES  |     | NULL    |                |
 | project_id                     | int(11)      | YES  |     | NULL    |                |
-| code                           | varchar(255) | NO   | UNI | NULL    |                |
+| key                            | varchar(255) | NO   | UNI | NULL    |                |
 | description                    | varchar(255) | YES  |     | NULL    |                |
 | analytic_file_creator_id       | int(11)      | YES  |     | NULL    |                |
 | analytic_file_created_date     | date         | YES  |     | NULL    |                |
@@ -530,7 +530,7 @@ Table: contexts
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | notes       | text         | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
@@ -556,7 +556,7 @@ Table: data_sources
 | id                 | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position           | int(11)      | YES  |     | NULL    |                |
 | data_origin        | varchar(255) | YES  |     | NULL    |                |
-| code               | varchar(255) | NO   | UNI | NULL    |                |
+| key                | varchar(255) | NO   | UNI | NULL    |                |
 | description        | varchar(255) | NO   |     | NULL    |                |
 | organization_id    | int(11)      | YES  |     | NULL    |                |
 | other_organization | varchar(255) | YES  |     | NULL    |                |
@@ -572,7 +572,7 @@ Table: diagnoses
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| key         | varchar(255) | YES  | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | code        | int(11)      | NO   | UNI | NULL    |                |
 | description | varchar(255) | NO   | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
@@ -657,7 +657,7 @@ Table: follow_up_types
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | YES  | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -950,7 +950,7 @@ Table: ineligible_reasons
 +--------------------+--------------+------+-----+---------+----------------+
 | id                 | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position           | int(11)      | YES  |     | NULL    |                |
-| code               | varchar(255) | NO   | UNI | NULL    |                |
+| key                | varchar(255) | NO   | UNI | NULL    |                |
 | description        | varchar(255) | YES  | UNI | NULL    |                |
 | ineligible_context | varchar(255) | YES  |     | NULL    |                |
 | created_at         | datetime     | YES  |     | NULL    |                |
@@ -964,7 +964,7 @@ Table: instrument_types
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
 | project_id  | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -980,7 +980,7 @@ Table: instrument_versions
 | language_id        | int(11)      | YES  |     | NULL    |                |
 | began_use_on       | date         | YES  |     | NULL    |                |
 | ended_use_on       | date         | YES  |     | NULL    |                |
-| code               | varchar(255) | NO   | UNI | NULL    |                |
+| key                | varchar(255) | NO   | UNI | NULL    |                |
 | description        | varchar(255) | YES  | UNI | NULL    |                |
 | instrument_id      | int(11)      | YES  |     | NULL    |                |
 | created_at         | datetime     | YES  |     | NULL    |                |
@@ -995,7 +995,7 @@ Table: instruments
 | position            | int(11)      | YES  |     | NULL    |                |
 | project_id          | int(11)      | YES  | MUL | NULL    |                |
 | results_table_id    | int(11)      | YES  |     | NULL    |                |
-| code                | varchar(255) | NO   | UNI | NULL    |                |
+| key                 | varchar(255) | NO   | UNI | NULL    |                |
 | name                | varchar(255) | NO   |     | NULL    |                |
 | description         | varchar(255) | YES  | UNI | NULL    |                |
 | interview_method_id | int(11)      | YES  |     | NULL    |                |
@@ -1011,7 +1011,7 @@ Table: interview_methods
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1023,7 +1023,7 @@ Table: interview_outcomes
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1069,7 +1069,7 @@ Table: languages
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| key         | varchar(255) | YES  | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | code        | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
@@ -1095,7 +1095,7 @@ Table: operational_event_types
 +----------------+--------------+------+-----+---------+----------------+
 | id             | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position       | int(11)      | YES  |     | NULL    |                |
-| code           | varchar(255) | NO   | UNI | NULL    |                |
+| key            | varchar(255) | NO   | UNI | NULL    |                |
 | description    | varchar(255) | YES  | UNI | NULL    |                |
 | event_category | varchar(255) | YES  |     | NULL    |                |
 | created_at     | datetime     | YES  |     | NULL    |                |
@@ -1122,7 +1122,7 @@ Table: organizations
 +------------+--------------+------+-----+---------+----------------+
 | id         | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position   | int(11)      | YES  |     | NULL    |                |
-| code       | varchar(15)  | NO   | UNI | NULL    |                |
+| key        | varchar(255) | NO   | UNI | NULL    |                |
 | name       | varchar(255) | YES  | UNI | NULL    |                |
 | person_id  | int(11)      | YES  |     | NULL    |                |
 | created_at | datetime     | YES  |     | NULL    |                |
@@ -1197,7 +1197,7 @@ Table: phone_types
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1210,7 +1210,8 @@ Table: project_outcomes
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
 | project_id  | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | YES  |     | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
+| code        | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1224,7 +1225,7 @@ Table: projects
 | position             | int(11)      | YES  |     | NULL    |                |
 | began_on             | date         | YES  |     | NULL    |                |
 | ended_on             | date         | YES  |     | NULL    |                |
-| code                 | varchar(255) | NO   | UNI | NULL    |                |
+| key                  | varchar(255) | NO   | UNI | NULL    |                |
 | description          | varchar(255) | YES  | UNI | NULL    |                |
 | eligibility_criteria | text         | YES  |     | NULL    |                |
 | created_at           | datetime     | YES  |     | NULL    |                |
@@ -1245,7 +1246,7 @@ Table: races
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| key         | varchar(255) | YES  | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | code        | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
@@ -1258,7 +1259,7 @@ Table: refusal_reasons
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1282,7 +1283,7 @@ Table: sample_outcomes
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1295,7 +1296,7 @@ Table: sample_types
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
 | parent_id   | int(11)      | YES  | MUL | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1343,7 +1344,7 @@ Table: sections
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | YES  | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1475,7 +1476,7 @@ Table: subject_relationships
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | NO   | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1487,7 +1488,7 @@ Table: subject_types
 +---------------------------+--------------+------+-----+---------+----------------+
 | id                        | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position                  | int(11)      | YES  |     | NULL    |                |
-| code                      | varchar(255) | NO   | UNI | NULL    |                |
+| key                       | varchar(255) | NO   | UNI | NULL    |                |
 | description               | varchar(255) | YES  | UNI | NULL    |                |
 | related_case_control_type | varchar(255) | YES  |     | NULL    |                |
 | created_at                | datetime     | YES  |     | NULL    |                |
@@ -1500,7 +1501,7 @@ Table: tracing_statuses
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | NO   | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1529,7 +1530,7 @@ Table: units
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
 | context_id  | int(11)      | YES  |     | NULL    |                |
-| code        | varchar(255) | NO   | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | description | varchar(255) | YES  | UNI | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
 | updated_at  | datetime     | YES  |     | NULL    |                |
@@ -1541,7 +1542,7 @@ Table: vital_statuses
 +-------------+--------------+------+-----+---------+----------------+
 | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
 | position    | int(11)      | YES  |     | NULL    |                |
-| key         | varchar(255) | YES  | UNI | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
 | code        | int(11)      | NO   | UNI | NULL    |                |
 | description | varchar(255) | NO   |     | NULL    |                |
 | created_at  | datetime     | YES  |     | NULL    |                |
