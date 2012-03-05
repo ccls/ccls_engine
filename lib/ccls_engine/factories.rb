@@ -76,7 +76,8 @@ Factory.define :current_residence_addressing, :parent => :residence_addressing d
 end
 
 Factory.define :address_type do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:key) { |n| "Key#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :aliquot do |f|
@@ -86,12 +87,12 @@ Factory.define :aliquot do |f|
 end
 
 Factory.define :aliquot_sample_format do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :analysis do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -112,7 +113,7 @@ Factory.define :rejected_candidate_control, :parent => :candidate_control do |f|
 end
 
 Factory.define :context do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -127,7 +128,7 @@ Factory.define :county do |f|
 end
 
 Factory.define :data_source do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -176,7 +177,7 @@ Factory.define :follow_up do |f|
 end
 
 Factory.define :follow_up_type do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -227,36 +228,37 @@ Factory.define :icf_master_tracker_update do |f|
 end
 
 Factory.define :ineligible_reason do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :instrument do |f|
 	f.association :project
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.name 'Instrument Name'
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :instrument_type do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 	f.association :project
 end
 
 Factory.define :instrument_version do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 	f.association :instrument_type
 end
 
 Factory.define :interview_method do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :interview_outcome do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:key) { |n| "Key#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :interview do |f|
@@ -278,13 +280,13 @@ Factory.define :operational_event do |f|
 end
 
 Factory.define :operational_event_type do |f|
-	f.sequence(:code)           { |n| "Code#{n}" }
+	f.sequence(:key)            { |n| "Key#{n}" }
 	f.sequence(:description)    { |n| "Desc#{n}" }
 	f.sequence(:event_category) { |n| "Cat#{n}" }
 end
 
 Factory.define :organization do |f|
-	f.sequence(:code) { |n| "Code #{n}" }
+	f.sequence(:key)  { |n| "Key #{n}" }
 	f.sequence(:name) { |n| "Name #{n}" }
 end
 
@@ -337,17 +339,18 @@ Factory.define :phone_number do |f|
 end
 
 Factory.define :phone_type do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
-#	f.sequence(:description) { |n| "Desc#{n}" }
+	f.sequence(:key)  { |n| "Key#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :project_outcome do |f|
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:code)        { |n| "Code#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :project do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -358,7 +361,7 @@ Factory.define :race do |f|
 end
 
 Factory.define :refusal_reason do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -367,7 +370,8 @@ Factory.define :sample_kit do |f|
 end
 
 Factory.define :sample_outcome do |f|
-	f.sequence(:code) { |n| "Code#{n}" }
+	f.sequence(:key) { |n| "Key#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :sample do |f|
@@ -376,7 +380,7 @@ Factory.define :sample do |f|
 end
 
 Factory.define :sample_type do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 	f.association :parent, :factory => :sample_type_parent
 end
@@ -385,7 +389,7 @@ Factory.define :sample_type_parent, :parent => :sample_type do |f|
 end
 
 Factory.define :section do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -471,17 +475,17 @@ Factory.define :subject_race do |f|
 end
 
 Factory.define :subject_relationship do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :subject_type do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
 Factory.define :tracing_status do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 
@@ -492,7 +496,7 @@ Factory.define :transfer do |f|
 end
 
 Factory.define :unit do |f|
-	f.sequence(:code)        { |n| "Code#{n}" }
+	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }
 end
 

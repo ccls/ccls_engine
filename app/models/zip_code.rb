@@ -13,6 +13,10 @@ class ZipCode < ActiveRecordShared
 	validates_length_of     :city, :state, :zip_class, 
 		:maximum => 250, :allow_blank => true
 
+
+#	acts_like_a_hash(:key => :zip_code)
+
+
 	#	Treats the class a bit like a Hash and
 	#	searches for a record with a matching code.
 	def self.[](zip_code)

@@ -2,21 +2,20 @@ require 'test_helper'
 
 class Ccls::InstrumentTest < ActiveSupport::TestCase
 
+	assert_should_behave_like_a_hash
+
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many(:instrument_versions)
 	assert_should_belong_to(:interview_method)
 	assert_should_initially_belong_to(:project)
-	assert_should_require_attributes( :code, :name, :description )
-	assert_should_require_unique_attributes( :code, :description )
+	assert_should_require_attributes( :name )
 	assert_should_not_require_attributes( :position,
 		:results_table_id,
 		:interview_method_id,
 		:began_use_on,
 		:ended_use_on )
-	assert_should_require_attribute_length( :code, :name, 
-		:maximum => 250 )
-	assert_should_require_attribute_length( :description, :in => 4..250 )
+	assert_should_require_attribute_length( :name, :maximum => 250 )
 	assert_requires_complete_date( :began_use_on, :ended_use_on )
 
 	test "explicit Factory instrument test" do
@@ -25,7 +24,7 @@ class Ccls::InstrumentTest < ActiveSupport::TestCase
 			instrument = Factory(:instrument)
 			assert_not_nil instrument.project
 			assert_equal 'Instrument Name', instrument.name
-			assert_match /Code\d*/, instrument.code
+			assert_match /Key\d*/, instrument.key
 			assert_match /Desc\d*/, instrument.description
 		} }
 	end

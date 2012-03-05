@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -10,17 +10,17 @@
 #
 hardcopy:
   id: 1
-  code: hardcopy
+  key: hardcopy
   description: hard copy questionnaire or assessment form
 online:
   id: 2
-  code: online
+  key: online
   description: online form or questionnaire
 other:
   id: 3
-  code: other
+  key: other
   description: some other data collection method
 dk:
   id: 4
-  code: unknown
+  key: unknown
   description: instrument type unknown

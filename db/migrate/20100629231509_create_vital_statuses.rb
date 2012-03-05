@@ -2,7 +2,7 @@ class CreateVitalStatuses < SharedMigration
 	def self.up
 		create_table :vital_statuses do |t|
 			t.integer :position
-			t.string  :key
+			t.string  :key, :null => false
 			t.integer :code, :null => false
 			t.string  :description, :null => false
 			t.timestamps

@@ -2,8 +2,8 @@ class CreateDiagnoses < SharedMigration
 	def self.up
 		create_table :diagnoses do |t|
 			t.integer :position
-			t.string  :key
-			t.integer :code, :null => false
+			t.string  :key, :null => false
+			t.integer :code, :null => false				#	actually holds a numeric value
 			t.string  :description, :null => false
 			t.timestamps
 		end

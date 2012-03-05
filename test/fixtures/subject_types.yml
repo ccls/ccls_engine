@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -10,21 +10,21 @@
 #
 case:
   id: 1
-  code:  Case
+  key:  Case
   description:  Case
 control:
   id:  2
-  code:  Control
+  key:  Control
   description:  Control
 father:
   id:  3
-  code:  Father
+  key:  Father
   description:  Father
 mother:
   id:  4
-  code:  Mother
+  key:  Mother
   description:  Mother
 twin:
   id:  5
-  code:  Twin
+  key:  Twin
   description:  Twin

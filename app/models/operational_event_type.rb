@@ -1,26 +1,18 @@
 #	==	requires
-#	*	code ( unique )
+#	*	key ( unique )
 #	*	description ( unique and > 3 chars )
 class OperationalEventType < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash
 	default_scope :order => :position
 
 	has_many :operational_events
 
-	validates_presence_of   :code, :description, :event_category
-	validates_uniqueness_of :code, :description, :event_category
-	validates_length_of     :code, :maximum => 250, :allow_blank => true
-	validates_length_of     :description, :event_category, 
+	validates_presence_of   :event_category
+	validates_uniqueness_of :event_category
+	validates_length_of     :event_category, 
 		:in => 4..250, :allow_blank => true
-
-#	class NotFound < StandardError; end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching code.
-	def self.[](code)
-		find_by_code(code.to_s) #|| raise(NotFound)
-	end
 
 	#	Returns event_category.
 	def to_s

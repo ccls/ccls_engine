@@ -34,6 +34,36 @@ module Ccls::Assertions
 			end
 		end
 
+		def assert_should_behave_like_a_hash(*args)
+			options = {
+				:key => :key,
+				:value => :description
+			}
+			options.update(args.extract_options!)
+
+			assert_should_require_attribute( options[:key], options[:value] )
+			assert_should_require_unique_attribute( options[:key], options[:value] )
+			assert_should_require_attribute_length( options[:key], options[:value],
+				:maximum => 250 )
+
+			test "should find by key with ['string']" do
+				object = create_object
+				assert object.is_a?(model_name.constantize)
+				found = (model_name.constantize)[object.key.to_s]
+				assert found.is_a?(model_name.constantize)
+				assert_equal object, found
+			end
+
+			test "should find by key with [:symbol]" do
+				object = create_object
+				assert object.is_a?(model_name.constantize)
+				found = (model_name.constantize)[object.key.to_sym]
+				assert found.is_a?(model_name.constantize)
+				assert_equal object, found
+			end
+
+		end
+
 	end
 end
 ActiveSupport::TestCase.send(:include,Ccls::Assertions)

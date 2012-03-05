@@ -451,7 +451,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				:is_complete => YNDK[:yes])
 		end
 		oe = enrollment.operational_events.find(:last,:order => 'id ASC')
-		assert_equal 'complete', oe.operational_event_type.code
+		assert_equal 'complete', oe.operational_event_type.key
 		assert_equal past_date,  oe.occurred_on
 		assert_equal enrollment.study_subject_id, oe.enrollment.study_subject_id
 	end
@@ -466,14 +466,14 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 				:is_complete => YNDK[:yes])
 		end
 		oe = enrollment.operational_events.find(:last,:order => 'id ASC')
-		assert_equal 'complete', oe.operational_event_type.code
+		assert_equal 'complete', oe.operational_event_type.key
 		assert_difference('OperationalEvent.count',1) do
 			enrollment.update_attributes(
 				:is_complete => YNDK[:no],
 				:completed_on => nil)
 		end
 		oe = enrollment.operational_events.find(:last,:order => 'id ASC')
-		assert_equal 'reopened', oe.operational_event_type.code
+		assert_equal 'reopened', oe.operational_event_type.key
 		assert_equal Date.today, oe.occurred_on
 		assert_equal enrollment.study_subject_id, oe.enrollment.study_subject_id
 	end

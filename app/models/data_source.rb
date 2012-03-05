@@ -2,11 +2,10 @@
 class DataSource < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash
 	default_scope :order => :position
 
-	validates_presence_of   :code, :description
-	validates_uniqueness_of :code
-	validates_length_of     :code, :description, :data_origin,
+	validates_length_of     :data_origin,
 		:other_organization, :other_person,
 		:maximum => 250, :allow_blank => true
 
@@ -15,18 +14,10 @@ class DataSource < ActiveRecordShared
 		description
 	end
 
-#	class NotFound < StandardError; end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching code.
-	def self.[](code)
-		find_by_code(code.to_s) #|| raise(NotFound)
-	end
-
 	#	Returns boolean of comparison
-	#	true only if code == 'other'
+	#	true only if key == 'other'
 	def is_other?
-		code == 'other'
+		key == 'other'
 	end
 
 end

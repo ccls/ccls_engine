@@ -9,7 +9,7 @@ module Ccls::FactoryTestHelper
 		assert_difference('StudySubject.count',1) {
 			study_subject    = Factory(:study_subject,options[:study_subject]||{})
 		}
-		project = Project.find_or_create_by_code('HomeExposures')
+		project = Project.find_or_create_by_key('HomeExposures')
 		assert_not_nil project
 		assert_difference('StudySubject.count',0) {
 		assert_difference('Enrollment.count',1) {
@@ -43,7 +43,7 @@ module Ccls::FactoryTestHelper
 	def create_hx_interview_study_subject(options={})
 		study_subject = create_hx_study_subject
 		instrument = Factory(:instrument, 
-			:project => Project.find_or_create_by_code('HomeExposures'))
+			:project => Project.find_or_create_by_key('HomeExposures'))
 		instrument_version = Factory(:instrument_version, 
 			:instrument => instrument)
 		interview = Factory(:interview, 

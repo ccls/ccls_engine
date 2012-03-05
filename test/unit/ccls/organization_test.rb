@@ -2,10 +2,10 @@ require 'test_helper'
 
 class Ccls::OrganizationTest < ActiveSupport::TestCase
 
+	assert_should_behave_like_a_hash( :value => :name )
+
 	assert_should_create_default_object
 	assert_should_act_as_list
-	assert_should_require_attributes( :code, :name )
-	assert_should_require_unique_attributes( :code, :name )
 	assert_should_not_require_attributes( :position, :person_id )
 	assert_should_belong_to( :person )
 	assert_should_have_many( :patients )
@@ -22,12 +22,10 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 			:foreign_key => :from_organization_id)
 	end
 
-	assert_should_require_attribute_length( :code, :name, :in => 4..250 )
-
 	test "explicit Factory organization test" do
 		assert_difference('Organization.count',1) {
 			organization = Factory(:organization)
-			assert_match /Code \d*/, organization.code
+			assert_match /Key \d*/,  organization.key
 			assert_match /Name \d*/, organization.name
 		}
 	end
@@ -53,16 +51,6 @@ class Ccls::OrganizationTest < ActiveSupport::TestCase
 	test "should return name as to_s" do
 		organization = create_organization
 		assert_equal organization.name, "#{organization}"
-	end
-
-	test "should find by code with ['string']" do
-		organization = Organization['Loma']
-		assert organization.is_a?(Organization)
-	end
-
-	test "should find by code with [:symbol]" do
-		organization = Organization[:Loma]
-		assert organization.is_a?(Organization)
 	end
 
 #protected

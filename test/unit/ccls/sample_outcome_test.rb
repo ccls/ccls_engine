@@ -2,18 +2,18 @@ require 'test_helper'
 
 class Ccls::SampleOutcomeTest < ActiveSupport::TestCase
 
+	assert_should_behave_like_a_hash
+
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many( :homex_outcomes )
-	assert_should_require_attributes( :code )
-	assert_should_require_unique_attributes( :code )
-	assert_should_not_require_attributes( :position, :description )
-	assert_should_require_attribute_length( :code, :description, :maximum => 250 )
+	assert_should_not_require_attributes( :position )
 
 	test "explicit Factory sample_outcome test" do
 		assert_difference('SampleOutcome.count',1) {
 			sample_outcome = Factory(:sample_outcome)
-			assert_match /Code\d*/, sample_outcome.code
+			assert_match /Key\d*/,  sample_outcome.key
+			assert_match /Desc\d*/, sample_outcome.description
 		}
 	end
 
@@ -22,22 +22,6 @@ class Ccls::SampleOutcomeTest < ActiveSupport::TestCase
 		assert_equal sample_outcome.description,
 			"#{sample_outcome}"
 	end
-
-	test "should find by code with ['string']" do
-		sample_outcome = SampleOutcome['complete']
-		assert sample_outcome.is_a?(SampleOutcome)
-	end
-
-	test "should find by code with [:symbol]" do
-		sample_outcome = SampleOutcome[:complete]
-		assert sample_outcome.is_a?(SampleOutcome)
-	end
-
-#	test "should raise error if not found by code with []" do
-#		assert_raise(SampleOutcome::NotFound) {
-#			sample_outcome = SampleOutcome['idonotexist']
-#		}
-#	end
 
 #protected
 #

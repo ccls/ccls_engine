@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -10,132 +10,132 @@
 #
 intro:
   id: 1
-  code: intro
+  key: intro
   event_category: correspondence
   description: intro letter sent
 scheduled:
   id: 2
-  code: scheduled
+  key: scheduled
   event_category: interviews
   description: interview scheduled with respondent
 iv_complete:
   id: 3
-  code: iv_complete
+  key: iv_complete
   event_category: interviews
   description: interview completed
 kit_sent:
   id: 4
-  code: kit_sent
+  key: kit_sent
   event_category: samples
   description: sample kit sent
 sample_received:
   id: 5
-  code: sample_received
+  key: sample_received
   event_category: samples
   description: sample received by CCLS
 sample_to_lab:
   id: 6
-  code: sample_to_lab
+  key: sample_to_lab
   event_category: samples
   description: sample sent to lab
 giftcard:
   id: 7
-  code: giftcard
+  key: giftcard
   event_category: compensation
   description: gift card issued
 thankyou:
   id: 8
-  code: thank_you
+  key: thank_you
   event_category: correspondence
   description: thank you letter sent to respondent
 completed:
   id: 9
-  code: complete
+  key: complete
   event_category: completions
   description: completed all study requirements
 other:
   id: 10
-  code: other
+  key: other
   event_category:  other
   description: other event - please specify
 sample_complete:
   id: 11
-  code: sample_complete
+  key: sample_complete
   event_category:  completions
   description: sample collection completed
 subject_moved:
   id: 12
-  code: subject_moved
+  key: subject_moved
   event_category:  operations
   description: subject moved
 reopened:
   id: 13
-  code: reopened
+  key: reopened
   event_category:  completions
   description: subject's enrollment re-opened (changed completed from 'yes')
 ineligible:
   id: 14
-  code: ineligible
+  key: ineligible
   event_category:  enrollments
   description: subject determined to be ineligible
 BCRequest:
   id: 15
-  code: bc_request_sent
+  key: bc_request_sent
   event_category:  operations
   description: birth certificates request sent
 BCReceived:
   id: 16
-  code: bc_received
+  key: bc_received
   event_category:  operations
   description: birth certificate data received
 RAF:
   id: 17
-  code: raf_entered
+  key: raf_entered
   event_category:  recruitment
   description: RAF entered into system
 sentToICF:
   id: 18
-  code: sentToICF
+  key: sentToICF
   event_category:  recruitment
   description: Subject data was sent to ICF for recruitment and interview
 ChangeContactInfo:
   id: 19
-  code: ChangeContactInfo
+  key: ChangeContactInfo
   event_category:  operations
   description: The subject's contact info has been changed
 DuplicateCase:
   id: 20
-  code: DuplicateCase
+  key: DuplicateCase
   event_category:  ascertainment
   description: A new RAF was sent for an existing patient
 newSubject:
   id: 21
-  code: NewSubject
+  key: NewSubject
   event_category: recruitment
   description:  New subject created by CCLS
 subjectDied:
   id: 22
-  code:  subjectDied
+  key:  subjectDied
   event_category: operations
   description:  Subject has been reported as deceased.
 consent:
   id: 23
-  code: subjectConsents
+  key: subjectConsents
   event_category: recruitment
   description:  Subject has consented to participate
 declines:
   id: 24
-  code: subjectDeclines
+  key: subjectDeclines
   event_category: recruitment
   description:  Subject has refused consent to participate
 sentToSRC:
   id: 25
-  code: sentToSRC
+  key: sentToSRC
   event_category:  operations
   description: Subject data was sent to SRC for recruitment and interview
 screener:
   id: 26
-  code: screener_complete
+  key: screener_complete
   event_category:  recruitment
   description: ICF completed screening interview with respondent
 

@@ -67,7 +67,7 @@ private	#	THIS IS REQUIRED
 	end
 
 	def vital_statuses_conditions
-		['vital_statuses.code IN (:vital_statuses)', { :vital_statuses => vital_statuses }
+		['vital_statuses.key IN (:vital_statuses)', { :vital_statuses => vital_statuses }
 			] unless vital_statuses.blank?
 	end
 
@@ -166,11 +166,11 @@ private	#	THIS IS REQUIRED
 	def sample_outcome_conditions
 		unless sample_outcome.blank?
 			if sample_outcome =~ /^Complete$/i
-#				['sample_outcomes.code = :sample_outcome',{:sample_outcome => sample_outcome}]
-				['sample_outcomes.code IS NOT NULL && sample_outcomes.code NOT IN ("Sent","Pending")']
+#				['sample_outcomes.key = :sample_outcome',{:sample_outcome => sample_outcome}]
+				['sample_outcomes.key IS NOT NULL && sample_outcomes.key NOT IN ("Sent","Pending")']
 			else
-				["(sample_outcomes.code != 'Complete' " <<
-						"OR sample_outcomes.code IS NULL)"]
+				["(sample_outcomes.key != 'Complete' " <<
+						"OR sample_outcomes.key IS NULL)"]
 			end
 		end
 	end
@@ -184,10 +184,10 @@ private	#	THIS IS REQUIRED
 	def interview_outcome_conditions
 		unless interview_outcome.blank?
 			if interview_outcome =~ /^Complete$/i
-				['interview_outcomes.code = :interview_outcome', {:interview_outcome => interview_outcome}]
+				['interview_outcomes.key = :interview_outcome', {:interview_outcome => interview_outcome}]
 			else
-				["(interview_outcomes.code != 'Complete'" <<
-					"OR interview_outcomes.code IS NULL)"]
+				["(interview_outcomes.key != 'Complete'" <<
+					"OR interview_outcomes.key IS NULL)"]
 			end
 		end
 	end

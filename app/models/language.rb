@@ -4,25 +4,18 @@
 class Language < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash
 	default_scope :order => :position
 
 	has_many :interviews
 	has_many :instrument_versions
 
-	validates_presence_of   :key, :code, :description
-	validates_uniqueness_of :key, :code, :description
-	validates_length_of     :key, :code, :maximum => 250, :allow_blank => true
-	validates_length_of     :description, :in => 4..250, :allow_blank => true
+	validates_presence_of   :code
+	validates_uniqueness_of :code
 
 	#	Returns description
 	def to_s
 		description
-	end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching key.		#	key here NOT code
-	def self.[](key)
-		find_by_key(key.to_s) #|| raise(NotFound)
 	end
 
 	#	Returns boolean of comparison

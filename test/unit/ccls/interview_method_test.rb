@@ -2,19 +2,17 @@ require 'test_helper'
 
 class Ccls::InterviewMethodTest < ActiveSupport::TestCase
 
+	assert_should_behave_like_a_hash
+
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many( :interviews, :instruments )
-	assert_should_require_attributes( :code, :description )
-	assert_should_require_unique_attributes( :code, :description )
 	assert_should_not_require_attributes( :position )
-	assert_should_require_attribute_length( :code, :maximum => 250 )
-	assert_should_require_attribute_length( :description, :in => 4..250 )
 
 	test "explicit Factory interview_method test" do
 		assert_difference('InterviewMethod.count',1) {
 			interview_method = Factory(:interview_method)
-			assert_match /Code\d*/, interview_method.code
+			assert_match /Key\d*/, interview_method.key
 			assert_match /Desc\d*/, interview_method.description
 		}
 	end
@@ -22,16 +20,6 @@ class Ccls::InterviewMethodTest < ActiveSupport::TestCase
 	test "should return description as to_s" do
 		interview_method = create_interview_method
 		assert_equal interview_method.description, "#{interview_method}"
-	end
-
-	test "should find by code with ['string']" do
-		interview_method = InterviewMethod['other']
-		assert interview_method.is_a?(InterviewMethod)
-	end
-
-	test "should find by code with [:symbol]" do
-		interview_method = InterviewMethod[:other]
-		assert interview_method.is_a?(InterviewMethod)
 	end
 
 	test "should find random" do

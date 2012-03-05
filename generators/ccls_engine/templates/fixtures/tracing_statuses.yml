@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -11,20 +11,20 @@
 tracing:
   id: 1
   position: 1
-  code: tracing
+  key: tracing
   description: subject tracing in progress
 found:
   id: 2
   position: 2
-  code: found
+  key: found
   description: subject found
 utl:
   id: 3
   position: 3
-  code: UTL
+  key: UTL
   description: unable to locate
 dk:
   id: 999
   position: 4
-  code: dk
+  key: dk
   description: don't know

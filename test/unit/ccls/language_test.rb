@@ -2,15 +2,14 @@ require 'test_helper'
 
 class Ccls::LanguageTest < ActiveSupport::TestCase
 
+	assert_should_behave_like_a_hash
+
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many( :interviews, :instrument_versions )
-	assert_should_require_attributes( :key, :code, :description )
-	assert_should_require_unique_attributes( :key, :code, :description )
+	assert_should_require_attributes( :code )
+	assert_should_require_unique_attributes( :code )
 	assert_should_not_require_attributes( :position )
-	assert_should_require_attribute_length( :key, :code, 
-		:maximum => 250 )
-	assert_should_require_attribute_length( :description, :in => 4..250 )
 
 	test "explicit Factory language test" do
 		assert_difference('Language.count',1) {
@@ -19,16 +18,6 @@ class Ccls::LanguageTest < ActiveSupport::TestCase
 			assert_match /Code\d*/, language.code
 			assert_match /Desc\d*/, language.description
 		}
-	end
-
-	test "should find by key with ['string']" do
-		language = Language['english']
-		assert language.is_a?(Language)
-	end
-
-	test "should find by key with [:symbol]" do
-		language = Language[:english]
-		assert language.is_a?(Language)
 	end
 
 	test "should return description as to_s" do

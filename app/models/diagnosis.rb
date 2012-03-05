@@ -2,20 +2,11 @@
 class Diagnosis < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash
 	default_scope :order => :position
 
-	validates_presence_of   :key, :code, :description
-	validates_uniqueness_of :key, :code, :description
-	validates_length_of     :description, :in => 3..250, :allow_blank => true
-	validates_length_of     :key, :maximum => 250, :allow_blank => true
-
-#	class NotFound < StandardError; end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching key.
-	def self.[](key)
-		find_by_key(key.to_s) #|| raise(NotFound)
-	end
+	validates_presence_of   :code
+	validates_uniqueness_of :code
 
 	#	Return description
 	def to_s

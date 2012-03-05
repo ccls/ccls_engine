@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -10,49 +10,50 @@
 #
 tier1:
   id: 1
-  code: Tier_1
+  key: Tier_1
   position: 5
   description: CCLS Tier 1 study
 tier2:
   id: 2
-  code: Tier_2
+  key: Tier_2
   position: 4
   description: CCLS Tier 2 study
 EMF:
   id: 3
-  code: EMF
+  key: EMF
   position: 3
   description: EMF testing study
 HomeExposures:
   id: 4
-  code: HomeExposures
+  key: HomeExposures
   position: 2
   description: Follow-up Home Exposure study
 other:
   id: 5
-  code: other
+  key: other
   position: 6
   description: Other
 dk:
   id: 6
-  code: 999
+#  key: 999
+  key: dk
   position: 8
   description: "Don't Know"
 nonspecific:
   id: 7
-  code: non-specific
+  key: non-specific
   position: 7
   description: Not project-specific
 phase5:
   id: 8
-  code: phase5
+  key: phase5
   position: 1
   description: Phase 5 of Tier 1 
 phase4:
   id: 9
-  code: phase4
+  key: phase4
   description: Phase 4 of Tier 1
 ccls:
   id: 10
-  code: ccls
+  key: ccls
   description:  General Participation in CCLS Study

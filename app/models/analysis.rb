@@ -9,11 +9,6 @@ class Analysis < ActiveRecordShared
 	belongs_to :analytic_file_creator, :class_name => 'Person'
 	belongs_to :project
 
-	validates_presence_of   :code
-	validates_length_of     :code, :maximum => 250, :allow_blank => true
-	validates_uniqueness_of :code
-	validates_presence_of   :description
-	validates_length_of     :description, :in => 4..250, :allow_blank => true
-	validates_uniqueness_of :description
+	acts_like_a_hash
 
 end

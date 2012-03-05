@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -12,20 +12,20 @@
 complete:
   id: 1
   position: 1
-  code: complete
+  key: complete
   description: complete
 incomplete:
   id: 2
   position: 2
-  code: incomplete
+  key: incomplete
   description: interview is incomplete
 scheduled:
   id: 3
   position: 3
-  code: scheduled
+  key: scheduled
   description: interview has been scheduled
 pending:
   id: 4
   position: 4
-  code: pending
+  key: pending
   description: pending

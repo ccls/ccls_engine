@@ -1,21 +1,17 @@
 #	==	requires
-#	*	code ( unique )
+#	*	key ( unique )
 #	*	description ( unique and > 3 chars )
 #	*	interview_type_id
 class InstrumentVersion < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash
 	default_scope :order => :position
 
 	belongs_to :language
 	belongs_to :instrument_type
 	belongs_to :instrument
 	has_many :interviews
-
-	validates_presence_of   :code, :description
-	validates_uniqueness_of :code, :description
-	validates_length_of     :code, :maximum => 250, :allow_blank => true
-	validates_length_of     :description, :in => 4..250, :allow_blank => true
 
 	validates_presence_of   :instrument_type_id
 	validates_presence_of   :instrument_type, :if => :instrument_type_id
@@ -26,14 +22,6 @@ class InstrumentVersion < ActiveRecordShared
 	#	Returns description
 	def to_s
 		description
-	end
-
-#	class NotFound < StandardError; end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching code.
-	def self.[](code)
-		find_by_code(code.to_s) #|| raise(NotFound)
 	end
 
 end

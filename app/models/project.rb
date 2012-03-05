@@ -1,9 +1,10 @@
 #	==	requires
-#	*	code ( unique )
+#	*	key ( unique )
 #	*	description ( unique and > 3 chars )
 class Project < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash
 	default_scope :order => :position
 
 	has_and_belongs_to_many :samples
@@ -14,10 +15,6 @@ class Project < ActiveRecordShared
 	has_many :study_subjects, :through => :enrollments
 	has_many :instruments
 
-	validates_presence_of   :code, :description
-	validates_uniqueness_of :code, :description
-	validates_length_of     :code, :maximum => 250
-	validates_length_of     :description, :in => 4..250
 	validates_complete_date_for :began_on, :allow_nil => true
 	validates_complete_date_for :ended_on, :allow_nil => true
 
@@ -30,14 +27,6 @@ class Project < ActiveRecordShared
 				"projects.id = enrollments.project_id AND " <<
 				"enrollments.study_subject_id = #{study_subject.id}",
 			:conditions => [ "enrollments.study_subject_id IS NULL" ])
-	end
-
-#	class NotFound < StandardError; end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching code.
-	def self.[](code)
-		find_by_code(code.to_s) #|| raise(NotFound)
 	end
 
 	#	Returns description

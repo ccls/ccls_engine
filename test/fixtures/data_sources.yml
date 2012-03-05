@@ -1,7 +1,7 @@
 #
-#	Do not change id, key, code or description
+#	Do not change id, key or description
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #		'description' is used in javascript ( changing it here will require a corresponding change there )
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
@@ -12,29 +12,29 @@
 
 raf:
   id:  1
-  code:  raf
+  key:  raf
   description:  RAF (CCLS Rapid Ascertainment Form)
 consent:
   id:  2
-  code:  consent
+  key:  consent
   description:  Study Consent Form
 interview:
   id:  3
-  code:  interview
+  key:  interview
   description:  Interview with Subject
 usps:
   id:  4
-  code:  usps
+  key:  usps
   description:  USPS Address Service
 other:
   id:  5
-  code:  other
+  key:  other
   description:  Other Source
 t2k:
   id:  6
-  code:  tracking2k
+  key:  tracking2k
   description:  Migrated from CCLS Legacy Tracking2k database
 src:
   id:  7
-  code:  src
+  key:  src
   description:  Provided to CCLS by Survey Research Center ("SRC")

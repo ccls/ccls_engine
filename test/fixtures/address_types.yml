@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -10,21 +10,21 @@
 #
 residence:
   id: 1
-  code: residence
+  key: residence
   description: home address
 mailing:
   id: 2
-  code: mailing
+  key: mailing
   description: mailing address (PO Box, APO, etc.)
 business:
   id: 3
-  code: business
+  key: business
   description: business address
 other:
   id: 4
-  code: other
+  key: other
   description: some other address type
 dk:
   id: 5
-  code: unknown
+  key: unknown
   description: address type unknown

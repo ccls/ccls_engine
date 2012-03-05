@@ -87,7 +87,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 				:interview_outcome    => InterviewOutcome['scheduled'])
 		end
 		oe = OperationalEvent.last
-		assert_equal 'scheduled', oe.operational_event_type.code
+		assert_equal 'scheduled', oe.operational_event_type.key
 		assert_equal past_date,   oe.occurred_on
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
 	end
@@ -102,7 +102,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 				:interview_outcome    => InterviewOutcome['complete'])
 		end
 		oe = OperationalEvent.last
-		assert_equal 'iv_complete', oe.operational_event_type.code
+		assert_equal 'iv_complete', oe.operational_event_type.key
 		assert_equal past_date,   oe.occurred_on
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
 	end
@@ -129,7 +129,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 				:sample_outcome    => SampleOutcome['sent'])
 		end
 		oe = OperationalEvent.last
-		assert_equal 'kit_sent', oe.operational_event_type.code
+		assert_equal 'kit_sent', oe.operational_event_type.key
 		assert_equal past_date,  oe.occurred_on
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
 	end
@@ -144,7 +144,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 				:sample_outcome    => SampleOutcome['received'])
 		end
 		oe = OperationalEvent.last
-		assert_equal 'sample_received', oe.operational_event_type.code
+		assert_equal 'sample_received', oe.operational_event_type.key
 		assert_equal past_date,  oe.occurred_on
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
 	end
@@ -159,7 +159,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 				:sample_outcome    => SampleOutcome['complete'])
 		end
 		oe = OperationalEvent.last
-		assert_equal 'sample_complete', oe.operational_event_type.code
+		assert_equal 'sample_complete', oe.operational_event_type.key
 		assert_equal past_date,  oe.occurred_on
 		assert_equal homex_outcome.study_subject_id, oe.enrollment.study_subject_id
 	end
@@ -186,7 +186,7 @@ protected
 
 	def create_complete_homex_outcome(options={})
 		s = Factory(:study_subject,options[:study_subject]||{})
-		p = Project.find_or_create_by_code('HomeExposures')
+		p = Project.find_or_create_by_key('HomeExposures')
 		Factory(:enrollment, :study_subject => s, :project => p )
 		h = create_homex_outcome(
 			(options[:homex_outcome]||{}).merge(:study_subject => s,

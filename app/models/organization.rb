@@ -3,6 +3,7 @@
 class Organization < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash(:value => :name)
 
 	belongs_to :person
 	has_many :aliquots, :foreign_key => 'owner_id'
@@ -14,21 +15,12 @@ class Organization < ActiveRecordShared
 	has_one  :hospital
 	has_many :patients
 
-	validates_presence_of   :code, :name
-	validates_uniqueness_of :code, :name
-	validates_length_of     :code, :name, :in => 4..250, :allow_blank => true
+	validates_presence_of   :name
+	validates_uniqueness_of :name
 
 	#	Returns name
 	def to_s
 		name
-	end
-
-#	class NotFound < StandardError; end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching code.
-	def self.[](code)
-		find_by_code(code.to_s) #|| raise(NotFound)
 	end
 
 end

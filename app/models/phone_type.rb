@@ -2,24 +2,12 @@
 class PhoneType < ActiveRecordShared
 
 	acts_as_list
+	acts_like_a_hash
 	has_many :phone_numbers
 
-	validates_presence_of   :code
-	validates_length_of     :code, :in => 4..250, :allow_blank => true
-	validates_uniqueness_of :code
-	validates_length_of     :description, :maximum => 250, :allow_blank => true
-
-	#	Returns code
+	#	Returns key
 	def to_s
-		code
-	end
-
-#	class NotFound < StandardError; end
-
-	#	Treats the class a bit like a Hash and
-	#	searches for a record with a matching code.
-	def self.[](code)
-		find_by_code(code.to_s) #|| raise(NotFound)
+		key
 	end
 
 end

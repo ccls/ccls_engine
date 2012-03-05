@@ -4,7 +4,8 @@ class CreateInstruments < SharedMigration
 			t.integer :position
 			t.references :project, :null => true
 			t.integer :results_table_id
-			t.string :code, :null => false
+			t.string :key, :null => false
+#			t.string :code, :null => false
 			t.string :name, :null => false
 			t.string :description
 			t.references :interview_method
@@ -13,7 +14,8 @@ class CreateInstruments < SharedMigration
 			t.timestamps
 		end
 		add_index :instruments, :project_id
-		add_index :instruments, :code, :unique => true
+		add_index :instruments, :key, :unique => true
+#		add_index :instruments, :code, :unique => true
 		add_index :instruments, :description, :unique => true
 	end
 

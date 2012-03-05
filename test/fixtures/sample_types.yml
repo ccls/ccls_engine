@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -10,139 +10,138 @@
 #
 dust:
   id: 1
-  code: 1
+  key: 1
   description: dust sample
 blood:
   id: 2
-  code: 2
+  key: 2
   description: blood sample
 saliva:
   id: 3
-  code: 3
+  key: 3
   description: saliva sample
 buccal:
   id: 4
-  code: 4
+  key: 4
   description: buccal cell sample
 urine:
   id: 5
-  code: 5
+  key: 5
   description: urine sample
 air:
   id: 6
-  code: 6
+  key: 6
   description: air sample
 other:
   id: 7
-  code: 7
+  key: 7
   description: other type of sample
 dk:
   id: 8
-  code: 999
+  key: 999
   description: unspecified sample type (don't know)
 unspecifieddust:
   id: 9
   parent_id: 1
-  code: 9
+  key: 9
   description: unspecified dust sample type
 vacuumbag:
   id: 10
   parent_id: 1
-  code: 10
+  key: 10
   description: vacuum bag
 loose:
   id: 11
   parent_id: 1
-  code: 11
+  key: 11
   description: loose dust
 otherdust:
   id: 12
   parent_id: 1
-  code: 12
+  key: 12
   description: other type of dust sample
 unspecifiedblood:
   id: 13
   parent_id: 2
-  code: 13
+  key: 13
   description: unspecified blood sample type
 ANB:
   id: 14
   parent_id: 2
-  code: 14
+  key: 14
   description: archive newborn blood
 guthrie:
   id: 15
   parent_id: 2
-  code: 15
+  key: 15
   description: guthrie cards
 otherblood:
   id: 16
   parent_id: 2
-  code: 16
+  key: 16
   description: other type of blood sample
 unspecifiedsaliva:
   id: 17
   parent_id: 3
-  code: 17
+  key: 17
   description: unspecified saliva sample type
 kit:
   id: 18
   parent_id: 3
-  code: 18
+  key: 18
   description: saliva kit (no brushes)
 kitwithBrushes:
   id: 19
   parent_id: 3
-  code: 19
+  key: 19
   description: saliva kit (with brushes)
 othersaliva:
   id: 20
   parent_id: 3
-  code: 20
+  key: 20
   description: other type of saliva sample
 unspecifiedbuccal:
   id: 21
   parent_id: 4
-  code: 21
+  key: 21
   description: unspecified buccal sample type
 cytobrush:
   id: 22
   parent_id: 4
-  code: 22
+  key: 22
   description: cytobrush
 otherbuccal:
   id: 23
   parent_id: 4
-  code: 23
+  key: 23
   description: other type of buccal sample
 unspecifiedurine:
   id: 24
   parent_id: 5
-  code: 24
+  key: 24
   description: unspecified urine sample type
 otherurine:
   id: 25
   parent_id: 5
-  code: 25
+  key: 25
   description: other type of urine sample
 unspecifiedair:
   id: 26
   parent_id: 6
-  code: 26
+  key: 26
   description: unspecified air sample type
 otherair:
   id: 27
   parent_id: 6
-  code: 8
+  key: 8
   description: other type of air sample
-
 otheractual:
   id: 28
   parent_id: 7
-  code: 28
+  key: 28
   description: other type of sample(actual)
 dkactual:
   id: 29
   parent_id: 8
-  code: 29
+  key: 29
   description: unspecified sample type (don't know)(actual)

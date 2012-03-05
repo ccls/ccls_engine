@@ -2,15 +2,14 @@ require 'test_helper'
 
 class Ccls::VitalStatusTest < ActiveSupport::TestCase
 
+	assert_should_behave_like_a_hash
+
 	assert_should_create_default_object
 	assert_should_act_as_list
 	assert_should_have_many( :study_subjects )
-	assert_should_require_attributes( :key, :code, :description )
-	assert_should_require_unique_attributes( :key, :code, :description )
+	assert_should_require_attributes( :code )
+	assert_should_require_unique_attributes( :code )
 	assert_should_not_require_attributes( :position )
-
-	assert_should_require_attribute_length( :description, :in => 4..250 )
-	assert_should_require_attribute_length( :key, :maximum => 250 )
 
 	test "explicit Factory vital_status test" do
 		assert_difference('VitalStatus.count',1) {
@@ -25,22 +24,6 @@ class Ccls::VitalStatusTest < ActiveSupport::TestCase
 		vital_status = create_vital_status
 		assert_equal vital_status.description, "#{vital_status}"
 	end
-
-	test "should find by key with ['string']" do
-		vital_status = VitalStatus['living']
-		assert vital_status.is_a?(VitalStatus)
-	end
-
-	test "should find by key with [:symbol]" do
-		vital_status = VitalStatus[:living]
-		assert vital_status.is_a?(VitalStatus)
-	end
-
-#	test "should raise error if not found by code with []" do
-#		assert_raise(VitalStatus::NotFound) {
-#			vital_status = VitalStatus['idonotexist']
-#		}
-#	end
 
 #protected
 #

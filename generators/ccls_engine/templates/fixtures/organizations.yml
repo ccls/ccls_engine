@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -11,172 +11,175 @@
 CPMC:
   id:  1
   position:  1
-  code:  CPMC
+  key:  CPMC
   name:  California Pacific Medical Center
   person_id:  11
 CHCC:
   id:  2
   position:  2
-  code:  CHCC
+  key:  CHCC
   name:  Children's Hospital Central California
   person_id:  3
 CHLA:
   id:  3
   position:  3
-  code:  CHLA
+  key:  CHLA
   name:  University of Southern California, Children's Hospital of Los Angeles
   person_id:  17
 CHOC:
   id:  4
   position:  4
-  code:  CHOC
+  key:  CHOC
   name:  Children's Hospital Orange County
   person_id:  15
 CHOK:
   id:  5
   position:  5
-  code:  CHOK
+  key:  CHOK
   name:  Children's Hospital Oakland
   person_id:  6
 CSMC:
   id:  6
   position:  6
-  code:  CSMC
+  key:  CSMC
   name:  Cedars-Sinai Medical Center
   person_id:  11
 KPNC:
   id:  7
   position:  7
-  code:  KPNC
+  key:  KPNC
   name:  Kaiser Permanente Medical Group (Northern California)
   person_id:  10
 KPSC:
   id:  8
   position:  8
-  code:  KPSC
+  key:  KPSC
   name:  Kaiser Permanente Medical Group (Southern California)
   person_id:  2
 LPCH:
   id:  9
   position:  9
-  code:  LPCH
+  key:  LPCH
   name:  Stanford University, Lucile Packard Children's Hospital
   person_id:  4
 MCHO:
   id:  10
   position:  10
-  code:  MCHO
+  key:  MCHO
   name:  Long Beach Memorial Medical Center, Miller Children's Hospital
   person_id:  7
 RCSD:
   id:  11
   position:  11
-  code:  RCSD
+  key:  RCSD
   name:  Rady Children's Hospital San Diego
   person_id:  13
 SUMH:
   id:  12
   position:  12
-  code:  SUMH
+  key:  SUMH
   name:  Sutter Memorial Hospital
   person_id:  9
 UCDV:
   id:  13
   position:  13
-  code:  UCDV
+  key:  UCDV
   name:  University of California, Davis
   person_id:  5
 UCLA:
   id:  14
   position:  14
-  code:  UCLA
+  key:  UCLA
   name:  University of California, Los Angeles, Mattel Children's Hospital
   person_id:  8
 UCSF:
   id:  15
   position:  15
-  code:  UCSF
+  key:  UCSF
   name:  University of California, San Francisco
   person_id:  12
 Smith:
   id: 16
-  code: Smith
+  key: Smith
   name:  Smith Lab
   person_id: 16
 GEGL:
   id: 17
-  code: GEGL
+  key: GEGL
   name: Barcellos Lab (GEGL)
   person_id: 1
 CalEPA:
   id: 18
-  code: CalEPA
+  key: CalEPA
   name: California EPA
 CCLS:
   id: 19
-  code: CCLS
+  key: CCLS
   name: California Childhood Leukemia Study (CCLS)
 CDC:
   id: 20
-  code: CDC
+  key: CDC
   name:  United States Center for Disease Control
 Cottage:
   id: 21
-  code: COT
+  key: COT
   name:  Cottage Hospital
 Anaheim:
   id: 22
-  code: KPAna
+  key: KPAna
   name:  Kaiser Anaheim
 Downey:
   id: 23
-  code: KPDow
+  key: KPDow
   name:  Kaiser Downey
 Fontana:
   id: 24
-  code: KPFon
+  key: KPFon
   name:  Kaiser Fontana
 KPLA:
   id: 25
-  code: KPLA
+  key: KPLA
   name:  Kaiser Los Angeles
 KPOak:
   id: 26
-  code: KPOak
+  key: KPOak
   name:  Kaiser Oakland
 Roseville:
   id: 27
-  code: KPRos
+  key: KPRos
   name:  Kaiser Roseville
 Sacramento:
   id: 28
-  code: KPSac
+  key: KPSac
   name:  Kaiser Sacramento
 SanDiego:
   id: 29
-  code: KPSD
+  key: KPSD
   name:  Kaiser San Diego
 SanFran:
   id: 30
-  code: KPSF
+  key: KPSF
   name:  Kaiser San Francisco
 SantaClara:
   id: 31
-  code: KPSCL
+  key: KPSCL
   name:  Kaiser Santa Clara
 LomaLinda:
   id: 32
-  code: Loma
+  key: Loma
   name:  Loma Linda Hospital
 unspec:
   id: 33
-  code: 888
+#  key: 888
+  key: unspecified
   name: Unspecified Organization/Hospital
 dk:
   id: 34
-  code: 999
+#  key: 999
+  key: dk
   name: organization unknown
 other:
   id: 35
-  code: 33
+#  key: 33
+  key: other
   name:  other organization

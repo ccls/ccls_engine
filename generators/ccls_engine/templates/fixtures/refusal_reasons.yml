@@ -1,7 +1,7 @@
 #
-#	Do not change id, key or code
+#	Do not change id or key
 #		'id' could be referenced by existing data
-#		'key' or 'code' is used in the rails code for searching 
+#		'key' is used in the rails code for searching 
 #
 #	Be Advised.  Yaml fixture labels MUST BE UNIQUE.
 #		If a label is repeated, only the last one will exist.
@@ -11,45 +11,45 @@
 busy:
   id: 1
   position: 1
-  code: busy
+  key: busy
   description: too busy
 problems:
   id: 2
   position: 2 
-  code: problems
+  key: problems
   description: problems with the study
 moving:
   id: 3
   position: 3
-  code: moving
+  key: moving
   description: subject is moving
 enough:
   id: 4
   position: 4
-  code: enough
+  key: enough
   description: tier i/ii was enough
 personal:
   id: 5
   position: 5
-  code: personal
+  key: personal
   description: personal issues
 deceased:
   id: 6
   position: 6
-  code: deceased
+  key: deceased
   description: subject child has died
 other:
   id: 7
   position: 7
-  code: other
+  key: other
   description: other reason for refusal
 legacy:
   id: 777
   position: 9
-  code: legacy
+  key: legacy
   description: legacy data import
 refused:
   id: 888
   position: 8
-  code: refused
+  key: refused
   description: refused to state
