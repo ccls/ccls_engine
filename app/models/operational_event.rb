@@ -21,6 +21,8 @@ class OperationalEvent < ActiveRecordShared
 		description
 	end
 
+#	TODO perhaps move the search stuff into OperationalEventSearch?
+
 	#	find wrapper
 	def self.search(options={})
 		find(:all,

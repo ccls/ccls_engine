@@ -1,5 +1,7 @@
 #
-#	From http://railscasts.com/episodes/111-advanced-search-form
+#	Originally from http://railscasts.com/episodes/111-advanced-search-form
+#	however, I have modified it heavily and made it quite abstract.
+#	Its still a bit muddy, but I'd like to replace it with rsolr.
 #
 class Search
 

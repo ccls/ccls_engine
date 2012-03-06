@@ -15,6 +15,8 @@ class ZipCode < ActiveRecordShared
 
 
 #	acts_like_a_hash(:key => :zip_code)
+#	Almost, but length validation would fail.
+#	And what would the value field be?
 
 
 	#	Treats the class a bit like a Hash and
