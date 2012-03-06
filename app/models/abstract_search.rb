@@ -1,4 +1,7 @@
-# don't know exactly
+
+#	This is only used in the Abstract app and only seems to use :merged
+#	Everything else is unused.
+
 class AbstractSearch < Search
 
 	self.searchable_attributes += [ :q, :merged ]

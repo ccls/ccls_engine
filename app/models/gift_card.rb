@@ -13,6 +13,7 @@ class GiftCard < ActiveRecordShared
 		number
 	end
 
+#	include GiftCardSearch
 	def self.search(params={})
 		GiftCardSearch.new(params).gift_cards
 	end

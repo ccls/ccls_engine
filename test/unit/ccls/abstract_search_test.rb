@@ -2,9 +2,9 @@ require 'test_helper'
 
 class Ccls::AbstractSearchTest < ActiveSupport::TestCase
 
-	test "should return AbstractSearch" do
-		assert AbstractSearch().is_a?(AbstractSearch)
-	end 
+#	test "should return AbstractSearch" do
+#		assert AbstractSearch().is_a?(AbstractSearch)
+#	end 
 
 	test "should respond to search" do
 		assert Abstract.respond_to?(:search)

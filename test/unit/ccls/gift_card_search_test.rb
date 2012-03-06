@@ -2,9 +2,9 @@ require 'test_helper'
 
 class Ccls::GiftCardSearchTest < ActiveSupport::TestCase
 
-	test "should return GiftCardSearch" do
-		assert GiftCardSearch().is_a?(GiftCardSearch)
-	end 
+#	test "should return GiftCardSearch" do
+#		assert GiftCardSearch().is_a?(GiftCardSearch)
+#	end 
 
 	test "should respond to search" do
 		assert GiftCard.respond_to?(:search)

@@ -66,6 +66,7 @@ class Abstract < ActiveRecordShared
 		HashWithIndifferentAccess[a1.select{|k,v| a2[k] != v unless( a2[k].blank? && v.blank? ) }]
 	end
 
+#	include AbstractSearch
 	def self.search(params={})
 		#	TODO	stop using this.  Now that study subjects and abstracts are in
 		#		the same database, this should be simplified.  Particularly since
