@@ -31,19 +31,12 @@ base.class_eval do
 protected
 
 	def prepare_fields_for_validation
-		# An empty form field is blank, not NULL, to MySQL so ...
-		self.email = nil if email.blank?
-
-		#	ssn is unique in database so only one could be blank, but all can be nil
-		self.ssn = nil if ssn.blank?
-
-		self.case_control_type = ( ( case_control_type.blank? 
-			) ? nil : case_control_type.to_s.upcase )
-
 		#	NOTE ANY field that has a unique index in the database NEEDS
 		#	to NOT be blank.  Multiple nils are acceptable in index,
 		#	but multiple blanks are NOT.  Nilify ALL fields with
 		#	unique indexes in the database.
+		self.email = nil if email.blank?
+		self.ssn = nil if ssn.blank?
 		self.state_id_no = nil if state_id_no.blank?
 		self.state_registrar_no = nil if state_registrar_no.blank?
 		self.local_registrar_no = nil if local_registrar_no.blank?
@@ -51,6 +44,9 @@ protected
 		self.lab_no_wiemels = nil if lab_no_wiemels.blank?
 		self.accession_no = nil if accession_no.blank?
 		self.idno_wiemels = nil if idno_wiemels.blank?
+
+		self.case_control_type = ( ( case_control_type.blank? 
+			) ? nil : case_control_type.to_s.upcase )
 
 		patid.try(:gsub!,/\D/,'')
 		self.patid = sprintf("%04d",patid.to_i) unless patid.blank?
@@ -60,15 +56,6 @@ protected
 #puts "Matchingid before before validation:#{matchingid}"
 		self.matchingid = sprintf("%06d",matchingid.to_i) unless matchingid.blank?
 	end
-
-#	TODO	the new technique of basing the next on the maximum current works, but will require the existing data (at least the highs)
-#	The techniques for generating childid and patid are just not
-#	sustainable.  I do not have any immediate idea for a better
-#	approach, but I can already see that this will cause problems
-#	unless ALL of the data is imported and the correct initial
-#	AUTO_INCREMENT value is set.  This will make the application
-#	database dependent, which I think is a bad idea.
-#	
 
 	#	made separate method so can be stubbed
 	def get_next_childid
@@ -86,7 +73,6 @@ protected
 
 	#	fields made from fields that WON'T change go here
 	def prepare_fields_for_creation
-
 		#	don't assign if given or is mother (childid is currently protected)
 		self.childid = get_next_childid if !is_mother? and childid.blank?
 
@@ -115,34 +101,18 @@ protected
 		#	cases and controls: their own subjectID is also their familyID.
 		#	mothers: their child's subjectID is their familyID. That is, 
 		#					a mother and her child have identical familyIDs.
-#	TODO auto copying of familyid and matchingid???
-#	how to get child?  given?
-#		self.familyid  = subjectid						#	TODO : this won't be true for mother's
-#	this won't work here unless passed child's subjectid
-#		self.familyid  = ( ( is_mother? ) ? nil : subjectid )
 		#	don't assign if given (familyid is currently protected)
-#	TODO what about is_father?
 		self.familyid  = subjectid if !is_mother? and familyid.blank?
-#		self.familyid  = if is_mother?
-#			nil
-#		else
-#			subjectid
-#		end
 
 		#	cases (patients): matchingID is the study_subject's own subjectID
-		#	controls: matchingID is subjectID of the associated case (like PatID in this respect).
-# TODO	how to get associated case?  given?
+		#	controls: matchingID is subjectID of the associated case 
+		#		(like PatID in this respect).
 		#	mothers: matchingID is subjectID of their own child's associated case. 
 		#			That is, a mother's matchingID is the same as their child's. This 
 		#			will become clearer when I provide specs for mother study_subject creation.
 #	matchingid is manually set in some tests.  will need to setup for stubbing this.
 		#	don't assign if given (matchingid is currently NOT protected)
 		self.matchingid = subjectid if is_case? and matchingid.blank?
-#		self.matchingid = case case_control_type
-#			when 'C' then subjectid
-#			else nil
-#		end
-
 	end
 
 	#	made separate method so can stub it in testing
@@ -163,7 +133,6 @@ protected
 #	Would this be faster?
 #
 	def generate_subjectid
-#		subjectids = ( (1..999999).to_a - Identifier.find(:all,:select => 'subjectid'
 		subjectids = ( (1..999999).to_a - self.class.find(:all,:select => 'subjectid'
 			).collect(&:subjectid).collect(&:to_i) )
 		#	CANNOT have leading 0' as it thinks its octal and converts

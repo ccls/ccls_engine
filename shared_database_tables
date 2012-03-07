@@ -1315,7 +1315,9 @@ Table: samples
 | quantity_in_sample           | decimal(10,0) | YES  |     | NULL    |                |
 | aliquot_or_sample_on_receipt | varchar(255)  | YES  |     | Sample  |                |
 | sent_to_subject_on           | date          | YES  |     | NULL    |                |
-| received_by_ccls_on          | date          | YES  |     | NULL    |                |
+| collected_at                 | datetime      | YES  |     | NULL    |                |
+| shipped_at                   | datetime      | YES  |     | NULL    |                |
+| received_by_ccls_at          | datetime      | YES  |     | NULL    |                |
 | sent_to_lab_on               | date          | YES  |     | NULL    |                |
 | received_by_lab_on           | date          | YES  |     | NULL    |                |
 | aliquotted_on                | date          | YES  |     | NULL    |                |
@@ -1324,7 +1326,6 @@ Table: samples
 | receipt_confirmed_on         | date          | YES  |     | NULL    |                |
 | receipt_confirmed_by         | varchar(255)  | YES  |     | NULL    |                |
 | future_use_prohibited        | tinyint(1)    | NO   |     | 0       |                |
-| collected_on                 | date          | YES  |     | NULL    |                |
 | location_id                  | int(11)       | YES  |     | NULL    |                |
 | created_at                   | datetime      | YES  |     | NULL    |                |
 | updated_at                   | datetime      | YES  |     | NULL    |                |

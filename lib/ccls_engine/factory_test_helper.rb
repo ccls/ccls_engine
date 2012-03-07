@@ -244,6 +244,8 @@ protected	#	NOT called from the outside
 		Factory(:sample,
 			:study_subject => study_subject,
 			:sent_to_subject_on  => (Date.parse(date) - 10.days),
+#			:collected_at        => (Time.zone.parse(date) - 5.days),
+#			:received_by_ccls_at => Time.zone.parse(date)
 			:collected_at        => (Date.parse(date) - 5.days),
 			:received_by_ccls_at => Date.parse(date)
 		)

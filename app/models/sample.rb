@@ -33,8 +33,8 @@ class Sample < ActiveRecordShared
 
 	#	NOTE I'm not sure how this validation will work for datetimes.
 	validates_complete_date_for :sent_to_subject_on,   :allow_nil => true
-	validates_complete_date_for :collected_at,         :allow_nil => true
-	validates_complete_date_for :received_by_ccls_at,  :allow_nil => true
+#	validates_complete_date_for :collected_at,         :allow_nil => true
+#	validates_complete_date_for :received_by_ccls_at,  :allow_nil => true
 	validates_complete_date_for :sent_to_lab_on,       :allow_nil => true
 	validates_complete_date_for :received_by_lab_on,   :allow_nil => true
 	validates_complete_date_for :aliquotted_on,        :allow_nil => true
@@ -72,9 +72,13 @@ protected
 			) if aliquotted_on_is_before_received_by_lab_on?
 	end
 
+#ArgumentError: comparison of Date with ActiveSupport::TimeWithZone failed
+#    app/models/sample.rb:77:in `>'
+#    app/models/sample.rb:77:in `collected_at_is_before_sent_to_subject_on?'
 	def collected_at_is_before_sent_to_subject_on?
 		(( sent_to_subject_on && collected_at ) &&
-			( sent_to_subject_on >  collected_at ))
+			( sent_to_subject_on >  collected_at.to_date ))
+#			( sent_to_subject_on >  collected_at ))
 	end
 
 	def received_by_ccls_at_is_before_collected_at?
@@ -114,3 +118,39 @@ protected
 	end
 
 end
+__END__
+
+
+It appears that the "newer" classes know how to compare with the "older" ones, but not vice versa, which makes sense.
+
+My comparisons in Sample should just have the "newer" class, the *_at field, first and compare it to the "older" *_on field.  OR convert the DateTime to a date.  Comparison of a Date to a DateTime will be confusing as it doesn't just compare the date, it takes the time zone into account which isn't 100% obvious.  I think that it converts it to UTC before comparing.  This could effectively make the comparison incorrect.
+
+YES.  Add a "to_date" to the _at fields.
+
+
+>> Time.now
+=> Tue Mar 06 20:00:06 -0800 2012
+>> Time.now.class
+=> Time
+
+>> Time.zone.now
+=> Wed, 07 Mar 2012 03:54:31 UTC +00:00
+>> Time.zone.now.class
+=> ActiveSupport::TimeWithZone
+
+>> Time.zone.now > Date.today
+=> true
+
+>> Date.today < Time.zone.now
+ArgumentError: comparison of Date with ActiveSupport::TimeWithZone failed
+	from (irb):49:in `<'
+	from (irb):49
+
+>> Date.today < Time.now
+ArgumentError: comparison of Date with Time failed
+	from (irb):50:in `<'
+	from (irb):50
+
+
+Also, even if the *_at field is given a Date value, it will be typecast to ActiveSupport::TimeWithZone so there is no terrible need to update all of the tests.
+
