@@ -5,7 +5,7 @@ class CreateOperationalEvents < SharedMigration
 			t.date    :occurred_on
 			t.integer :enrollment_id
 			t.string  :description
-			t.string  :event_notes
+			t.text    :event_notes
 			t.timestamps
 		end
 	end

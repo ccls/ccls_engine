@@ -1111,7 +1111,7 @@ Table: operational_events
 | occurred_on               | date         | YES  |     | NULL    |                |
 | enrollment_id             | int(11)      | YES  |     | NULL    |                |
 | description               | varchar(255) | YES  |     | NULL    |                |
-| event_notes               | varchar(255) | YES  |     | NULL    |                |
+| event_notes               | text         | YES  |     | NULL    |                |
 | created_at                | datetime     | YES  |     | NULL    |                |
 | updated_at                | datetime     | YES  |     | NULL    |                |
 +---------------------------+--------------+------+-----+---------+----------------+

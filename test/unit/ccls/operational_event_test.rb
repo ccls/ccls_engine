@@ -11,7 +11,7 @@ class Ccls::OperationalEventTest < ActiveSupport::TestCase
 
 	assert_requires_complete_date(:occurred_on)
 	assert_should_require_attribute_length( :description, :maximum => 250 )
-	assert_should_require_attribute_length( :event_notes, :maximum => 250 )
+	assert_should_require_attribute_length( :event_notes, :maximum => 65000 )
 
 	test "explicit Factory operational_event test" do
 		assert_difference('OperationalEventType.count',1) {
