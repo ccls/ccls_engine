@@ -53,6 +53,12 @@ Rails::Initializer.run do |config|
 #	config.gem 'delayed_job', :version => '~>2.0.4'
 
 
+
+#	needed for testing
+	config.time_zone = 'Pacific Time (US & Canada)'
+
+
+
 	config.after_initialize do
 		load File.expand_path(File.join(File.dirname(__FILE__),'../lib/ccls_engine.rb'))
 	end
