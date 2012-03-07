@@ -31,7 +31,7 @@ class StudySubjectSearch < Search
 		:number => 'gift_cards.number',
 		:issued_on => 'gift_cards.issued_on',
 		:sent_to_subject_on => 'samples.sent_to_subject_on',
-		:received_by_ccls_on => 'samples.received_by_ccls_on'
+		:received_by_ccls_at => 'samples.received_by_ccls_at'
 	})
 
 	def study_subjects
@@ -58,7 +58,7 @@ private	#	THIS IS REQUIRED
 
 	def samples_joins
 		"JOIN samples ON study_subjects.id " <<
-			"= samples.study_subject_id" if %w( sent_to_subject_on received_by_ccls_on ).include?(@order)
+			"= samples.study_subject_id" if %w( sent_to_subject_on received_by_ccls_at ).include?(@order)
 	end
 
 	def vital_statuses_joins

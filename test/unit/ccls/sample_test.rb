@@ -17,7 +17,8 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		:quantity_in_sample,
 		:aliquot_or_sample_on_receipt,
 		:sent_to_subject_on,
-		:received_by_ccls_on,
+		:collected_at,
+		:received_by_ccls_at,
 		:sent_to_lab_on,
 		:received_by_lab_on,
 		:aliquotted_on,
@@ -25,17 +26,17 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		:external_id_source,
 		:receipt_confirmed_on,
 		:receipt_confirmed_by,
-		:collected_on,
 		:location_id )
 
 	assert_requires_complete_date( :sent_to_subject_on, 
-		:received_by_ccls_on, :sent_to_lab_on,
+		:received_by_ccls_at, :sent_to_lab_on,
 		:received_by_lab_on, :aliquotted_on,
-		:receipt_confirmed_on, :collected_on )
+		:receipt_confirmed_on, :collected_at )
+
 	assert_requires_past_date( :sent_to_subject_on,
-		:received_by_ccls_on, :sent_to_lab_on,
+		:received_by_ccls_at, :sent_to_lab_on,
 		:received_by_lab_on, :aliquotted_on,
-		:receipt_confirmed_on, :collected_on )
+		:receipt_confirmed_on, :collected_at )
 
 	test "explicit Factory sample test" do
 		assert_difference('StudySubject.count',1) {
@@ -121,11 +122,11 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 #		pending
 #	end
 
-	test "should require sent_to_subject_on if collected_on" do
+	test "should require sent_to_subject_on if collected_at" do
 		assert_difference( 'Sample.count', 0 ) do
 			sample = create_sample(
 				:sent_to_subject_on => nil,
-				:collected_on => Date.yesterday
+				:collected_at => Date.yesterday
 			)
 			assert sample.errors.on(:sent_to_subject_on)
 			assert_match(/be blank/,
@@ -133,62 +134,62 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "should require collected_on be after sent_to_subject_on" do
+	test "should require collected_at be after sent_to_subject_on" do
 		assert_difference( 'Sample.count', 0 ) do
 			sample = create_sample(
 				:sent_to_subject_on => Date.tomorrow,
-				:collected_on => Date.yesterday
+				:collected_at => Date.yesterday
 			)
-			assert sample.errors.on(:collected_on)
+			assert sample.errors.on(:collected_at)
 			assert_match(/after sent_to_subject_on/,
-				sample.errors.on(:collected_on) )
+				sample.errors.on(:collected_at) )
 		end
 	end
 
-	test "should require collected_on if received_by_ccls_on" do
+	test "should require collected_at if received_by_ccls_at" do
 		assert_difference( 'Sample.count', 0 ) do
 			sample = create_sample(
-				:collected_on => nil,
-				:received_by_ccls_on => Date.yesterday
+				:collected_at => nil,
+				:received_by_ccls_at => Date.yesterday
 			)
-			assert sample.errors.on(:collected_on)
+			assert sample.errors.on(:collected_at)
 			assert_match(/be blank/,
-				sample.errors.on(:collected_on) )
+				sample.errors.on(:collected_at) )
 		end
 	end
 
-	test "should require received_by_ccls_on be after collected_on" do
+	test "should require received_by_ccls_at be after collected_at" do
 		assert_difference( 'Sample.count', 0 ) do
 			sample = create_sample(
-				:collected_on => Date.tomorrow,
-				:received_by_ccls_on => Date.yesterday
+				:collected_at => Date.tomorrow,
+				:received_by_ccls_at => Date.yesterday
 			)
-			assert sample.errors.on(:received_by_ccls_on)
-			assert_match(/after collected_on/,
-				sample.errors.on(:received_by_ccls_on) )
+			assert sample.errors.on(:received_by_ccls_at)
+			assert_match(/after collected_at/,
+				sample.errors.on(:received_by_ccls_at) )
 		end
 	end
 
-	test "should require received_by_ccls_on if sent_to_lab_on" do
+	test "should require received_by_ccls_at if sent_to_lab_on" do
 		assert_difference( 'Sample.count', 0 ) do
 			sample = create_sample(
-				:received_by_ccls_on => nil,
+				:received_by_ccls_at => nil,
 				:sent_to_lab_on => Date.yesterday
 			)
-			assert sample.errors.on(:received_by_ccls_on)
+			assert sample.errors.on(:received_by_ccls_at)
 			assert_match(/be blank/,
-				sample.errors.on(:received_by_ccls_on) )
+				sample.errors.on(:received_by_ccls_at) )
 		end
 	end
 
-	test "should require sent_to_lab_on be after received_by_ccls_on" do
+	test "should require sent_to_lab_on be after received_by_ccls_at" do
 		assert_difference( 'Sample.count', 0 ) do
 			sample = create_sample(
-				:received_by_ccls_on => Date.tomorrow,
+				:received_by_ccls_at => Date.tomorrow,
 				:sent_to_lab_on => Date.yesterday
 			)
 			assert sample.errors.on(:sent_to_lab_on)
-			assert_match(/after received_by_ccls_on/,
+			assert_match(/after received_by_ccls_at/,
 				sample.errors.on(:sent_to_lab_on) )
 		end
 	end
@@ -283,11 +284,11 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = create_sample(
 				:study_subject => study_subject,
 				:sent_to_subject_on => ( today - 3.days ),
-				:collected_on => ( today - 2.days ),
-				:received_by_ccls_on => ( today - 1.day ) )
+				:collected_at => ( today - 2.days ),
+				:received_by_ccls_at => ( today - 1.day ) )
 			assert_equal SampleOutcome['received'],
 				sample.study_subject.homex_outcome.sample_outcome
-			assert_equal sample.received_by_ccls_on,
+			assert_equal sample.received_by_ccls_at,
 				sample.study_subject.homex_outcome.sample_outcome_on
 		} } }
 	end
@@ -303,8 +304,8 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 				:study_subject => study_subject,
 				:organization => Factory(:organization),
 				:sent_to_subject_on => ( today - 4.days ),
-				:collected_on => ( today - 3.days ),
-				:received_by_ccls_on => ( today - 2.days ),
+				:collected_at => ( today - 3.days ),
+				:received_by_ccls_at => ( today - 2.days ),
 				:sent_to_lab_on => ( today - 1.day ) )
 			assert !sample.new_record?, "Object was not created"
 			assert_equal SampleOutcome['lab'],

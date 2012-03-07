@@ -171,8 +171,8 @@ module Ccls::FactoryTestHelper
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
-	def three_study_subjects_with_received_by_ccls_on
-		create_study_subjects_with_received_by_ccls_on(
+	def three_study_subjects_with_received_by_ccls_at
+		create_study_subjects_with_received_by_ccls_at(
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
@@ -239,13 +239,13 @@ protected	#	NOT called from the outside
 	end
 
 	#	only called through pluralization
-	def create_study_subject_with_received_by_ccls_on(date)
+	def create_study_subject_with_received_by_ccls_at(date)
 		study_subject = create_hx_study_subject
 		Factory(:sample,
 			:study_subject => study_subject,
 			:sent_to_subject_on  => (Date.parse(date) - 10.days),
-			:collected_on        => (Date.parse(date) - 5.days),
-			:received_by_ccls_on => Date.parse(date)
+			:collected_at        => (Date.parse(date) - 5.days),
+			:received_by_ccls_at => Date.parse(date)
 		)
 		study_subject
 	end

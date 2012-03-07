@@ -479,7 +479,7 @@ class Ccls::StudySubjectSearchTest < ActiveSupport::TestCase
 	%w( childid patid studyid dob first_name last_name 
 			sample_outcome interview_outcome_on 
 			sample_outcome_on
-			sent_to_subject_on received_by_ccls_on
+			sent_to_subject_on received_by_ccls_at
 			).each do |column|
 		test "should order by #{column} asc by default" do
 			s1,s2,s3 = send("three_study_subjects_with_#{column}")
