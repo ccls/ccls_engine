@@ -5,7 +5,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_have_one( :sample_kit )
 	assert_should_have_many( :aliquots )
-	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
+	assert_should_belong_to( :aliquot_sample_format, :unit, :organization, :enrollment )
 	assert_should_initially_belong_to( :study_subject, :sample_type )
 #	assert_should_habtm( :projects )
 #	assert_should_require_attributes( :sample_type_id, :study_subject_id )

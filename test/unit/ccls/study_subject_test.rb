@@ -38,7 +38,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 #		:enrollments,
 
 	assert_should_have_many( 
-		:gift_cards, :phone_numbers, :samples, :interviews, :bc_requests )
+		:gift_cards, :phone_numbers, :interviews, :bc_requests )
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome )
 	assert_should_habtm(:analyses)
@@ -391,6 +391,10 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		assert_difference('Sample.count',0) {
 			@study_subject.destroy
 		} }
+	end
+
+	test "should have many samples through enrollments" do
+pending	#	TODO
 	end
 
 	test "should have and belong to many analyses" do

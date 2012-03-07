@@ -4,7 +4,8 @@ class CreateSamples < SharedMigration
 			t.integer :position
 			t.references :aliquot_sample_format
 			t.references :sample_type
-			t.references :study_subject
+			t.references :enrollment
+#			t.references :study_subject
 			t.references :unit
 			t.integer :order_no, :default => 1
 			t.decimal :quantity_in_sample

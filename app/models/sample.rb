@@ -10,6 +10,7 @@ class Sample < ActiveRecordShared
 	belongs_to :unit
 	has_many :aliquots
 #	has_and_belongs_to_many :projects
+	belongs_to :enrollment
 	has_one :sample_kit
 	accepts_nested_attributes_for :sample_kit
 

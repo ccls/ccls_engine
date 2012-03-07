@@ -49,6 +49,10 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 		assert_equal 9, unenrolled.length
 	end
 
+	test "should have many samples through enrollments" do
+pending	#	TODO
+	end
+
 #protected
 #
 #	def create_project(options={})
