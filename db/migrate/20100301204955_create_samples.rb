@@ -22,6 +22,7 @@ class CreateSamples < SharedMigration
 			t.string  :receipt_confirmed_by
 			t.boolean :future_use_prohibited, :default => false, :null => false
 			t.integer :location_id
+			t.integer :storage_temperature
 			t.timestamps
 		end
 	end

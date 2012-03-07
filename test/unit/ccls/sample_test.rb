@@ -11,6 +11,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 #	assert_should_require_attributes( :sample_type_id, :study_subject_id )
 
 	assert_should_not_require_attributes( :position,
+		:storage_temperature,
 		:aliquot_sample_format_id,
 		:unit_id,
 		:order_no,
@@ -37,6 +38,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		:receipt_confirmed_on )
 
 #	TODO Not sure what'll happen here for DateTimes.  Need to check it out.
+#	Seems to work
 	assert_requires_past_date( :sent_to_subject_on,
 		:received_by_ccls_at, :sent_to_lab_on,
 		:received_by_lab_on, :aliquotted_on,
