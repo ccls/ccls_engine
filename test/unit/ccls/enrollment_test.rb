@@ -540,6 +540,16 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		assert_not_nil declined_event
 	end
 
+	test "should have consented named_scope" do
+		assert_equal [], Enrollment.consented
+		Factory(:enrollment)
+		assert_equal [], Enrollment.consented
+		enrollment = Factory(:consented_enrollment)
+		assert_equal [enrollment], Enrollment.consented
+		Factory(:enrollment)
+		assert_equal [enrollment], Enrollment.consented
+	end
+
 protected
 
 	#	MUST define this method so can use the alias_method below.

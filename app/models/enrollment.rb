@@ -31,6 +31,8 @@ class Enrollment < ActiveRecordShared
 	after_save :create_subject_declines_operational_event,
 		:if => :consented_changed?
 
+	named_scope :consented, :conditions => { :consented => YNDK[:yes] }
+
 protected
 
 	def create_enrollment_update
