@@ -9,7 +9,7 @@ class Sample < ActiveRecordShared
 	belongs_to :organization, :foreign_key => 'location_id'
 	belongs_to :unit
 	has_many :aliquots
-	has_and_belongs_to_many :projects
+#	has_and_belongs_to_many :projects
 	has_one :sample_kit
 	accepts_nested_attributes_for :sample_kit
 

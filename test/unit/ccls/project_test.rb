@@ -10,7 +10,7 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 	assert_should_not_require_attributes( :position, :began_on, :ended_on, 
 		:eligibility_criteria )
 	assert_should_require_attribute_length( :eligibility_criteria, :maximum => 65000 )
-	assert_should_habtm( :samples )
+#	assert_should_habtm( :samples )
 	assert_should_act_as_list
 
 	assert_requires_complete_date( :began_on, :ended_on )

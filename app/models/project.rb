@@ -7,7 +7,7 @@ class Project < ActiveRecordShared
 	acts_like_a_hash
 	default_scope :order => :position
 
-	has_and_belongs_to_many :samples
+#	has_and_belongs_to_many :samples
 #	has_many :operational_event_types
 	has_many :instrument_types
 	has_many :enrollments
