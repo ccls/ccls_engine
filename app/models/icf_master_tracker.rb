@@ -10,6 +10,7 @@ class IcfMasterTracker < ActiveRecordShared
 	attr_protected :Masterid
 
 #	validate all string field lengths ?
+	validates_length_of :last_update_attempt_errors, :maximum => 65000, :allow_blank => true
 
 	belongs_to :study_subject
 

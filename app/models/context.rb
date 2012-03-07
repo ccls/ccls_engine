@@ -12,6 +12,8 @@ class Context < ActiveRecordShared
 	has_many :context_data_sources
 	has_many :data_sources, :through => :context_data_sources
 
+	validates_length_of :notes, :maximum => 65000, :allow_blank => true
+
 	#	Returns description
 	def to_s
 		description

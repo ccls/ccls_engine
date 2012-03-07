@@ -5,6 +5,7 @@ class BcRequest < ActiveRecordShared
 
 	validates_length_of :request_type, :maximum => 250, :allow_blank => true
 	validates_length_of :status,       :maximum => 250, :allow_blank => true
+	validates_length_of :notes,        :maximum => 65000, :allow_blank => true
 
 #	validates_inclusion_of :status, :in => statuses
 

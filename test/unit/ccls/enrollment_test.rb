@@ -110,6 +110,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 		:ineligible_reason,
 		:refusal_reason,
 		:document_version )
+	assert_should_require_attribute_length( :notes, :maximum => 65000 )
 
 #	using subjectless_enrollment so, this isn't true
 #	assert_should_initially_belong_to(:study_subject, :project)

@@ -13,6 +13,8 @@ base.class_eval do
 	validates_presence_of   :project, :if => :project_id
 	validates_uniqueness_of :project_id, :scope => [:study_subject_id], :allow_blank => true
 
+	validates_length_of :notes, :maximum => 65000, :allow_blank => true
+
 	validates_presence_of :ineligible_reason_id,
 		:message => 'required if is_eligible is No',
 		:if => :is_not_eligible?

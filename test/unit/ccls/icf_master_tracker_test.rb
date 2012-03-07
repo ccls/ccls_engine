@@ -6,6 +6,7 @@ class Ccls::IcfMasterTrackerTest < ActiveSupport::TestCase
 	assert_should_protect(:Masterid)
 	assert_should_require(:Masterid)
 	assert_should_require_unique(:Masterid)
+	assert_should_require_attribute_length( :last_update_attempt_errors, :maximum => 65000 )
 
 	test "should not attach to study subject on create if none exists" do
 		icf_master_tracker = Factory(:icf_master_tracker,

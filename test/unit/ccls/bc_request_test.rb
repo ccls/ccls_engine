@@ -7,6 +7,7 @@ class Ccls::BcRequestTest < ActiveSupport::TestCase
 	assert_should_protect( :study_subject_id )
 	assert_should_not_require(:request_type, :status)
 	assert_should_require_attribute_length( :request_type, :status, :maximum => 250 )
+	assert_should_require_attribute_length( :notes, :maximum => 65000 )
 
 	test "statuses should return an array of strings" do
 		statuses = BcRequest.statuses

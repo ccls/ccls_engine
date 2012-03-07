@@ -6,6 +6,8 @@ class HomeExposureResponse < ActiveRecordShared
 	#	NEEDS to be here to match the uniqueness index in the database.
 	validates_uniqueness_of :study_subject_id, :allow_nil => true
 
+	validates_length_of :additional_comments, :maximum => 65000, :allow_blank => true
+
 	def self.fields
 		#	db: db field name
 		#	human: humanized field
