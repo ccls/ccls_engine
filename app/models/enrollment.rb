@@ -12,6 +12,7 @@ class Enrollment < ActiveRecordShared
 	belongs_to :tracing_status
 	has_many   :operational_events
 	has_many   :follow_ups
+	has_many   :samples
 
 	delegate :is_other?, :to => :ineligible_reason, :allow_nil => true, :prefix => true
 	delegate :is_other?, :to => :refusal_reason,    :allow_nil => true, :prefix => true
