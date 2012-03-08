@@ -349,8 +349,10 @@ namespace :odms_import do
 				next
 			end
 
-			addressing = Addressing.create({
-				:study_subject_id => study_subject.id,
+#			addressing = Addressing.create({
+#	study_subject_id is attr_protected
+#				:study_subject_id => study_subject.id,
+			addressing = study_subject.addressings.create({
 				:address_id       => address.id,
 				:current_address  => line["current_address"],           # yndk integer
 				:address_at_diagnosis => line["address_at_diagnosis"],  # yndk integer
@@ -430,8 +432,10 @@ namespace :odms_import do
 				next
 			end
 
-			phone_number = PhoneNumber.create({
-				:study_subject_id => study_subject.id,
+			phone_number = study_subject.phone_numbers.create({
+#			phone_number = PhoneNumber.create({
+#	study_subject_id is attr_protected
+#				:study_subject_id => study_subject.id,
 				:phone_type_id    => line["phone_type_id"],
 				:data_source_id   => line["data_source_id"],
 				:phone_number     => line["phone_number"],
