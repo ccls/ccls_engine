@@ -170,16 +170,29 @@ LomaLinda:
   name:  Loma Linda Hospital
 unspec:
   id: 33
-#  key: 888
   key: unspecified
   name: Unspecified Organization/Hospital
-dk:
-  id: 34
-#  key: 999
-  key: dk
-  name: organization unknown
 other:
-  id: 35
-#  key: 33
+  id: 34
   key: other
   name:  other organization
+bioreliance:
+  id: 35
+  key: bioreliance
+  name: BioReliance
+westat:
+  id: 36
+  key: westat
+  name:  Westat 
+legacy:
+  id: 777
+  key: legacy
+  name: legacy data transfer (no org info available)
+na:
+  id: 888
+  key: n/a
+  name: not applicable
+dk:
+  id: 999
+  key: dk
+  name: organization unknown
