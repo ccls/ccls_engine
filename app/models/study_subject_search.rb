@@ -29,9 +29,12 @@ class StudySubjectSearch < Search
 		:sample_sent_on => nil,
 		:sample_received_on => nil,
 		:number => 'gift_cards.number',
-		:issued_on => 'gift_cards.issued_on',
-		:sent_to_subject_on => 'samples.sent_to_subject_on',
-		:received_by_ccls_at => 'samples.received_by_ccls_at'
+		:issued_on => 'gift_cards.issued_on'
+#
+#	TODO this isn't true no more.  gotta add another join
+#
+#		:sent_to_subject_on => 'samples.sent_to_subject_on',
+#		:received_by_ccls_at => 'samples.received_by_ccls_at'
 	})
 
 	def study_subjects
@@ -56,10 +59,12 @@ class StudySubjectSearch < Search
 
 private	#	THIS IS REQUIRED
 
-	def samples_joins
-		"JOIN samples ON study_subjects.id " <<
-			"= samples.study_subject_id" if %w( sent_to_subject_on received_by_ccls_at ).include?(@order)
-	end
+#	TODO as is not true
+#	I don't think that sorting by these fields is ever done.
+#	def samples_joins
+#		"JOIN samples ON study_subjects.id " <<
+#			"= samples.study_subject_id" if %w( sent_to_subject_on received_by_ccls_at ).include?(@order)
+#	end
 
 	def vital_statuses_joins
 		"INNER JOIN vital_statuses ON vital_statuses.id " <<

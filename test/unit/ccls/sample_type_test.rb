@@ -21,7 +21,8 @@ class Ccls::SampleTypeTest < ActiveSupport::TestCase
 	end
 
 	test "explicit Factory sample_type test" do
-		assert_difference('SampleType.count',2) {	#	creates sample_type and a parent sample_type
+		#	creates sample_type and a parent sample_type
+		assert_difference('SampleType.count',2) {	
 			sample_type = Factory(:sample_type)
 			assert_not_nil sample_type.parent
 			assert_match /Key\d*/, sample_type.key

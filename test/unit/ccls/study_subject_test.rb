@@ -382,16 +382,16 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-	test "should NOT destroy samples with study_subject" do
-		assert_difference('StudySubject.count',1) {
-		assert_difference('Sample.count',1) {
-			@study_subject = Factory(:sample).study_subject
-		} }
-		assert_difference('StudySubject.count',-1) {
-		assert_difference('Sample.count',0) {
-			@study_subject.destroy
-		} }
-	end
+#	test "should NOT destroy samples with study_subject" do
+#		assert_difference('StudySubject.count',1) {
+#		assert_difference('Sample.count',1) {
+#			@study_subject = Factory(:sample).study_subject
+#		} }
+#		assert_difference('StudySubject.count',-1) {
+#		assert_difference('Sample.count',0) {
+#			@study_subject.destroy
+#		} }
+#	end
 
 	test "should have many samples through enrollments" do
 pending	#	TODO
