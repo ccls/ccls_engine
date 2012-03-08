@@ -12,7 +12,7 @@ class Sample < ActiveRecordShared
 #	has_and_belongs_to_many :projects
 	belongs_to :enrollment
 #	has_one :study_subject, :through => :enrollment
-#	delegate :study_subject, :to => :enrollment
+	delegate :study_subject, :to => :enrollment
 
 	has_one :sample_kit
 	accepts_nested_attributes_for :sample_kit

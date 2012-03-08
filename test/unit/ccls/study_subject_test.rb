@@ -394,7 +394,14 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 #	end
 
 	test "should have many samples through enrollments" do
-pending	#	TODO
+		assert_difference('StudySubject.count',1) {
+		assert_difference('Enrollment.count',2) {
+		assert_difference('Sample.count',1) {
+			sample = Factory(:sample)
+#			subject = sample.enrollment.study_subject
+			subject = sample.study_subject
+			assert subject.samples.include?(sample)
+		} } }
 	end
 
 	test "should have and belong to many analyses" do

@@ -12,8 +12,7 @@ base.class_eval do
 	has_many :enrollments
 	accepts_nested_attributes_for :enrollments
 
-#	true, but not yet used
-#	has_many :samples, :through => :enrollments
+	has_many :samples, :through => :enrollments
 
 end	#	class_eval
 end	#	included
