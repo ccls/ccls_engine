@@ -2,11 +2,11 @@ class CreateSamples < SharedMigration
 	def self.up
 		create_table :samples do |t|
 			t.integer :position
-			t.references :aliquot_sample_format
-			t.references :sample_type
-			t.references :enrollment
-#			t.references :study_subject
-			t.references :unit
+			t.integer :aliquot_sample_format_id
+			t.integer :sample_type_id
+			t.integer :project_id
+			t.integer :study_subject_id
+			t.integer :unit_id
 			t.integer :order_no, :default => 1
 			t.decimal :quantity_in_sample
 			t.string  :aliquot_or_sample_on_receipt, :default => 'Sample'

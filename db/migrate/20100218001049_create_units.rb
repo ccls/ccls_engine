@@ -2,14 +2,12 @@ class CreateUnits < SharedMigration
 	def self.up
 		create_table :units do |t|
 			t.integer :position
-			t.references :context
-			t.string :key, :null => false
-#			t.string :code, :null => false
-			t.string :description
+			t.integer :context_id
+			t.string  :key, :null => false
+			t.string  :description
 			t.timestamps
 		end
 		add_index :units, :key, :unique => true
-#		add_index :units, :code, :unique => true
 		add_index :units, :description, :unique => true
 	end
 

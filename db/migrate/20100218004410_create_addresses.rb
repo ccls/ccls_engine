@@ -1,8 +1,8 @@
 class CreateAddresses < SharedMigration
 	def self.up
 		create_table :addresses do |t|
-			t.references :address_type
-			t.references :data_source
+			t.integer :address_type_id
+			t.integer :data_source_id
 			t.string  :line_1
 			t.string  :line_2
 			t.string  :city

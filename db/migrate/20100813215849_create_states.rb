@@ -2,10 +2,10 @@ class CreateStates < SharedMigration
 	def self.up
 		create_table :states do |t|
 			t.integer :position
-			t.string :code, :null => false
-			t.string :name, :null => false
-			t.string :fips_country_code, :limit => 2, :null => false
-			t.string :fips_state_code, :limit => 2, :null => false
+			t.string  :code, :null => false
+			t.string  :name, :null => false
+			t.string  :fips_country_code, :limit => 2, :null => false
+			t.string  :fips_state_code, :limit => 2, :null => false
 			t.timestamps
 		end
 		add_index :states, :code, :unique => true

@@ -1,8 +1,8 @@
 class CreatePatients < SharedMigration
 	def self.up
 		create_table :patients do |t|
-			t.references :study_subject
-			t.date :diagnosis_date
+			t.integer :study_subject_id
+			t.date    :diagnosis_date
 			t.integer :diagnosis_id
 			t.integer :organization_id
 			t.date    :admit_date

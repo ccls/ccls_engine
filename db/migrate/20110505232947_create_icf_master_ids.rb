@@ -1,8 +1,8 @@
 class CreateIcfMasterIds < SharedMigration
 	def self.up
 		create_table :icf_master_ids do |t|
-			t.string :icf_master_id, :limit => 9
-			t.date   :assigned_on
+			t.string  :icf_master_id, :limit => 9
+			t.date    :assigned_on
 			t.integer :study_subject_id
 			t.timestamps
 		end

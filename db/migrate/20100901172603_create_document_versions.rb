@@ -2,7 +2,7 @@ class CreateDocumentVersions < SharedMigration
 	def self.up
 		create_table :document_versions do |t|
 			t.integer :position
-			t.references :document_type, :null => false
+			t.integer :document_type_id, :null => false
 			t.string  :title
 			t.string  :description
 			t.string  :indicator

@@ -1,14 +1,14 @@
 class CreateStudySubjects < SharedMigration
 	def self.up
 		create_table :study_subjects do |t|
-			t.references :subject_type
+			t.integer :subject_type_id
 
 			# 1 = VitalStatus['living']
 			t.integer :vital_status_id, :default => 1
 
-			t.references :hispanicity
-			t.date :reference_date
-			t.string :sex
+			t.integer :hispanicity_id
+			t.date    :reference_date
+			t.string  :sex
 			t.boolean :do_not_contact, :default => false, :null => false
 			t.integer :abstracts_count, :default => 0
 			t.integer :mother_yrs_educ
@@ -24,11 +24,11 @@ class CreateStudySubjects < SharedMigration
 			t.integer :dad_is_biodad
 
 			#	Formerly pii fields
-			t.string :first_name
-			t.string :middle_name
-			t.string :last_name
-			t.date :dob
-			t.date :died_on
+			t.string  :first_name
+			t.string  :middle_name
+			t.string  :last_name
+			t.date    :dob
+			t.date    :died_on
 			t.string  :mother_first_name
 			t.string  :mother_middle_name
 			t.string  :mother_maiden_name
@@ -61,26 +61,26 @@ class CreateStudySubjects < SharedMigration
 			t.string  :patid, :limit => 4
 			t.string  :case_control_type, :limit => 1
 			t.integer :orderno
-			t.string :lab_no
-			t.string :related_childid
-			t.string :related_case_childid
-			t.string :ssn
-			t.string :subjectid, :limit => 6
-			t.string :matchingid, :limit => 6
-			t.string :familyid, :limit => 6
-			t.string :state_id_no
-			t.string :childidwho, :limit => 10
-			t.string :studyid, :limit => 14
-			t.string :newid, :limit => 6
-			t.string :gbid, :limit => 26
-			t.string :lab_no_wiemels, :limit => 25
-			t.string :idno_wiemels, :limit => 10
-			t.string :accession_no, :limit => 25
-			t.string :studyid_nohyphen, :limit => 12
-			t.string :studyid_intonly_nohyphen, :limit => 12
-			t.string :icf_master_id, :limit => 9
-			t.string :state_registrar_no
-			t.string :local_registrar_no
+			t.string  :lab_no
+			t.string  :related_childid
+			t.string  :related_case_childid
+			t.string  :ssn
+			t.string  :subjectid, :limit => 6
+			t.string  :matchingid, :limit => 6
+			t.string  :familyid, :limit => 6
+			t.string  :state_id_no
+			t.string  :childidwho, :limit => 10
+			t.string  :studyid, :limit => 14
+			t.string  :newid, :limit => 6
+			t.string  :gbid, :limit => 26
+			t.string  :lab_no_wiemels, :limit => 25
+			t.string  :idno_wiemels, :limit => 10
+			t.string  :accession_no, :limit => 25
+			t.string  :studyid_nohyphen, :limit => 12
+			t.string  :studyid_intonly_nohyphen, :limit => 12
+			t.string  :icf_master_id, :limit => 9
+			t.string  :state_registrar_no
+			t.string  :local_registrar_no
 			t.boolean :is_matched
 			t.timestamps
 		end

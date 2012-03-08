@@ -14,7 +14,7 @@ class CreateHomeExposureResponses < SharedMigration
 			t.integer :freq_oven_fried_meat_12mos
 			t.integer :freq_grilled_meat_outside_12mos
 			t.integer :freq_other_high_temp_cooking_12mos
-			t.string :other_type_high_temp_cooking
+			t.string  :other_type_high_temp_cooking
 			t.integer :doneness_of_meat_exterior_12mos
 			t.integer :job_is_plane_mechanic_12mos
 			t.integer :job_is_artist_12mos
@@ -66,16 +66,16 @@ class CreateHomeExposureResponses < SharedMigration
 			t.integer :cmty_sprayed_sharpshooters_12mos
 			t.integer :cmty_sprayed_apple_moths_12mos
 			t.integer :cmty_sprayed_other_pest_12mos
-			t.string :other_pest_community_sprayed
+			t.string  :other_pest_community_sprayed
 			t.integer :type_of_residence
-			t.string :other_type_of_residence
+			t.string  :other_type_of_residence
 			t.integer :number_of_floors_in_residence
 			t.integer :number_of_stories_in_building
 			t.integer :year_home_built
 			t.integer :home_square_footage
 			t.integer :number_of_rooms_in_home
 			t.integer :home_constructed_of
-			t.string :other_home_material
+			t.string  :other_home_material
 			t.integer :home_has_attached_garage
 			t.integer :vehicle_in_garage_1mo
 			t.integer :freq_in_out_garage_1mo
@@ -95,7 +95,7 @@ class CreateHomeExposureResponses < SharedMigration
 			t.integer :used_gas_dryer_12mos
 			t.integer :used_gas_water_heater_12mos
 			t.integer :used_other_gas_appliance_12mos
-			t.string :type_of_other_gas_appliance
+			t.string  :type_of_other_gas_appliance
 			t.integer :painted_inside_home
 			t.integer :carpeted_in_home
 			t.integer :refloored_in_home
@@ -104,7 +104,7 @@ class CreateHomeExposureResponses < SharedMigration
 			t.integer :roof_work_on_home
 			t.integer :construction_in_home
 			t.integer :other_home_remodelling
-			t.string :type_other_home_remodelling
+			t.string  :type_other_home_remodelling
 			t.integer :regularly_smoked_indoors
 			t.integer :regularly_smoked_indoors_12mos
 			t.integer :regularly_smoked_outdoors
@@ -121,7 +121,7 @@ class CreateHomeExposureResponses < SharedMigration
 			t.integer :home_has_computers
 			t.integer :number_of_computers_in_home
 			t.integer :avg_number_hours_computers_used
-			t.text :additional_comments
+			t.text    :additional_comments
 			t.integer :vacuum_bag_last_changed
 			t.integer :vacuum_used_outside_home
 			t.boolean :consent_read_over_phone
