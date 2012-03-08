@@ -166,15 +166,15 @@ module Ccls::FactoryTestHelper
 			'12/31/2005','12/31/2001','12/31/2003')
 	end
 
-	def three_study_subjects_with_sent_to_subject_on
-		create_study_subjects_with_sent_to_subject_on(
-			'12/31/2005','12/31/2001','12/31/2003')
-	end
-
-	def three_study_subjects_with_received_by_ccls_at
-		create_study_subjects_with_received_by_ccls_at(
-			'12/31/2005','12/31/2001','12/31/2003')
-	end
+#	def three_study_subjects_with_sent_to_subject_on
+#		create_study_subjects_with_sent_to_subject_on(
+#			'12/31/2005','12/31/2001','12/31/2003')
+#	end
+#
+#	def three_study_subjects_with_received_by_ccls_at
+#		create_study_subjects_with_received_by_ccls_at(
+#			'12/31/2005','12/31/2001','12/31/2003')
+#	end
 
 	def create_case_study_subject_with_patid(patid)
 		StudySubject.any_instance.stubs(:get_next_patid).returns(patid)
@@ -228,29 +228,29 @@ protected	#	NOT called from the outside
 				:interview_outcome_on => date ) })
 	end
 
-	#	only called through pluralization
-	def create_study_subject_with_sent_to_subject_on(date)
-		study_subject = create_hx_study_subject
-		Factory(:sample,
-			:study_subject => study_subject,
-			:sent_to_subject_on => Date.parse(date)
-		)
-		study_subject
-	end
-
-	#	only called through pluralization
-	def create_study_subject_with_received_by_ccls_at(date)
-		study_subject = create_hx_study_subject
-		Factory(:sample,
-			:study_subject => study_subject,
-			:sent_to_subject_on  => (Date.parse(date) - 10.days),
-#			:collected_at        => (Time.zone.parse(date) - 5.days),
-#			:received_by_ccls_at => Time.zone.parse(date)
-			:collected_at        => (Date.parse(date) - 5.days),
-			:received_by_ccls_at => Date.parse(date)
-		)
-		study_subject
-	end
+#	#	only called through pluralization
+#	def create_study_subject_with_sent_to_subject_on(date)
+#		study_subject = create_hx_study_subject
+#		Factory(:sample,
+#			:study_subject => study_subject,
+#			:sent_to_subject_on => Date.parse(date)
+#		)
+#		study_subject
+#	end
+#
+#	#	only called through pluralization
+#	def create_study_subject_with_received_by_ccls_at(date)
+#		study_subject = create_hx_study_subject
+#		Factory(:sample,
+#			:study_subject => study_subject,
+#			:sent_to_subject_on  => (Date.parse(date) - 10.days),
+##			:collected_at        => (Time.zone.parse(date) - 5.days),
+##			:received_by_ccls_at => Time.zone.parse(date)
+#			:collected_at        => (Date.parse(date) - 5.days),
+#			:received_by_ccls_at => Date.parse(date)
+#		)
+#		study_subject
+#	end
 
 end
 ActiveSupport::TestCase.send(:include, Ccls::FactoryTestHelper)

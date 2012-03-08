@@ -64,6 +64,7 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 
 	assert_should_create_default_object
+	assert_should_protect(:study_subject_id, :study_subject)
 	assert_should_not_require_attributes( 
 		:refused_by_physician,
 		:refused_by_family,
@@ -104,7 +105,6 @@ class Ccls::EnrollmentTest < ActiveSupport::TestCase
 
 	assert_should_have_many(:follow_ups)
 	assert_should_have_many(:operational_events)
-	assert_should_have_many(:samples)
 	assert_should_belong_to( 
 		:tracing_status,
 		:project_outcome,

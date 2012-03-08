@@ -37,7 +37,7 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 #	in the creation of the enrollment so not really needed.
 #		:enrollments,
 
-	assert_should_have_many( 
+	assert_should_have_many( :samples,
 		:gift_cards, :phone_numbers, :interviews, :bc_requests )
 	assert_should_initially_belong_to( :subject_type, :vital_status )
 	assert_should_have_one( :home_exposure_response, :homex_outcome )
@@ -382,27 +382,27 @@ class Ccls::StudySubjectTest < ActiveSupport::TestCase
 		} }
 	end
 
-#	test "should NOT destroy samples with study_subject" do
-#		assert_difference('StudySubject.count',1) {
-#		assert_difference('Sample.count',1) {
-#			@study_subject = Factory(:sample).study_subject
-#		} }
-#		assert_difference('StudySubject.count',-1) {
-#		assert_difference('Sample.count',0) {
-#			@study_subject.destroy
-#		} }
-#	end
-
-	test "should have many samples through enrollments" do
+	test "should NOT destroy samples with study_subject" do
 		assert_difference('StudySubject.count',1) {
-		assert_difference('Enrollment.count',2) {
 		assert_difference('Sample.count',1) {
-			sample = Factory(:sample)
-#			subject = sample.enrollment.study_subject
-			subject = sample.study_subject
-			assert subject.samples.include?(sample)
-		} } }
+			@study_subject = Factory(:sample).study_subject
+		} }
+		assert_difference('StudySubject.count',-1) {
+		assert_difference('Sample.count',0) {
+			@study_subject.destroy
+		} }
 	end
+
+#	test "should have many samples through enrollments" do
+#		assert_difference('StudySubject.count',1) {
+#		assert_difference('Enrollment.count',2) {
+#		assert_difference('Sample.count',1) {
+#			sample = Factory(:sample)
+##			subject = sample.enrollment.study_subject
+#			subject = sample.study_subject
+#			assert subject.samples.include?(sample)
+#		} } }
+#	end
 
 	test "should have and belong to many analyses" do
 		study_subject = create_study_subject

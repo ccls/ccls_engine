@@ -33,6 +33,13 @@ class Addressing < ActiveRecordShared
 	validates_presence_of :data_source_other, :if => :data_source_is_other?
 
 
+
+
+	attr_protected :study_subject_id, :study_subject
+
+
+
+
 	validates_inclusion_of :current_address, :is_valid,
 		:address_at_diagnosis,
 			:in => YNDK.valid_values, :allow_nil => true

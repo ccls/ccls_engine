@@ -375,8 +375,8 @@ Factory.define :sample_outcome do |f|
 end
 
 Factory.define :sample do |f|
-#	f.association :study_subject
-	f.association :enrollment
+	f.association :study_subject
+	f.association :project
 	f.association :sample_type
 end
 

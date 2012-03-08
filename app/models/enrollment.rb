@@ -14,6 +14,8 @@ class Enrollment < ActiveRecordShared
 	has_many   :follow_ups
 	has_many   :samples
 
+	attr_protected :study_subject_id, :study_subject
+
 	delegate :is_other?, :to => :ineligible_reason, :allow_nil => true, :prefix => true
 	delegate :is_other?, :to => :refusal_reason,    :allow_nil => true, :prefix => true
 

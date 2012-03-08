@@ -6,7 +6,9 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_have_one( :sample_kit )
 	assert_should_have_many( :aliquots )
 	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
-	assert_should_initially_belong_to( :enrollment, :sample_type )
+	assert_should_initially_belong_to( :study_subject, :project, :sample_type )
+
+	assert_should_protect(:study_subject_id, :study_subject)
 
 	assert_should_not_require_attributes( :position,
 		:storage_temperature,
@@ -44,16 +46,18 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 
 	test "explicit Factory sample test" do
 		assert_difference('StudySubject.count',1) {
-		assert_difference('Enrollment.count',2) {	#	factory enrollment and ccls enrollment
+		assert_difference('Enrollment.count',1) {
 		assert_difference('SampleType.count',2) {	#	creates sample_type and a parent sample_type
 		assert_difference('Sample.count',1) {
+		assert_difference('Project.count',1) {
 			sample = Factory(:sample)
 			assert_not_nil sample.sample_type
 			assert_not_nil sample.sample_type.parent
-			assert_not_nil sample.enrollment
-			assert_not_nil sample.enrollment.study_subject
-#			assert_not_nil sample.study_subject
-		} } } }
+#			assert_not_nil sample.enrollment
+#			assert_not_nil sample.enrollment.study_subject
+			assert_not_nil sample.study_subject
+			assert_not_nil sample.project
+		} } } } }
 	end
 
 	test "should require sample_type" do
@@ -72,37 +76,53 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 		end
 	end
 
-#	test "should require study_subject" do
+	test "should require study_subject" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :study_subject => nil)
+			assert !sample.errors.on(:study_subject)
+			assert  sample.errors.on_attr_and_type?(:study_subject_id,:blank)
+		end
+	end
+
+	test "should require valid study_subject" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :study_subject_id => 0)
+			assert !sample.errors.on(:study_subject_id)
+			assert  sample.errors.on_attr_and_type?(:study_subject,:blank)
+		end
+	end
+
+	test "should require project" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :project => nil)
+			assert !sample.errors.on(:project)
+			assert  sample.errors.on_attr_and_type?(:project_id,:blank)
+		end
+	end
+
+	test "should require valid project" do
+		assert_difference( "Sample.count", 0 ) do
+			sample = create_sample( :project_id => 0)
+			assert !sample.errors.on(:project_id)
+			assert  sample.errors.on_attr_and_type?(:project,:blank)
+		end
+	end
+
+#	test "should require enrollment" do
 #		assert_difference( "Sample.count", 0 ) do
-#			sample = create_sample( :study_subject => nil)
-#			assert !sample.errors.on(:study_subject)
-#			assert  sample.errors.on_attr_and_type?(:study_subject_id,:blank)
+#			sample = create_sample( :enrollment => nil)
+#			assert !sample.errors.on(:enrollment)
+#			assert  sample.errors.on_attr_and_type?(:enrollment_id,:blank)
 #		end
 #	end
 #
-#	test "should require valid study_subject" do
+#	test "should require valid enrollment" do
 #		assert_difference( "Sample.count", 0 ) do
-#			sample = create_sample( :study_subject_id => 0)
-#			assert !sample.errors.on(:study_subject_id)
-#			assert  sample.errors.on_attr_and_type?(:study_subject,:blank)
+#			sample = create_sample( :enrollment_id => 0)
+#			assert !sample.errors.on(:enrollment_id)
+#			assert  sample.errors.on_attr_and_type?(:enrollment,:blank)
 #		end
 #	end
-
-	test "should require enrollment" do
-		assert_difference( "Sample.count", 0 ) do
-			sample = create_sample( :enrollment => nil)
-			assert !sample.errors.on(:enrollment)
-			assert  sample.errors.on_attr_and_type?(:enrollment_id,:blank)
-		end
-	end
-
-	test "should require valid enrollment" do
-		assert_difference( "Sample.count", 0 ) do
-			sample = create_sample( :enrollment_id => 0)
-			assert !sample.errors.on(:enrollment_id)
-			assert  sample.errors.on_attr_and_type?(:enrollment,:blank)
-		end
-	end
 
 	test "should default order_no to 1" do
 		sample = create_sample
@@ -271,59 +291,72 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	end
 
 	test "should create homex outcome with sample" do
-		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-			Project['HomeExposures'].id)
+		study_subject = create_hx_study_subject
+#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
+#			Project['HomeExposures'].id)
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
-			sample = create_sample( :enrollment => enrollment )
+			sample = create_sample( 
+				:study_subject => study_subject,
+				:project       => Project['HomeExposures'] )
 		} }
 	end
 
 	test "should update homex outcome sample_outcome to sent" do
-		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-			Project['HomeExposures'].id)
+		study_subject = create_hx_study_subject
+#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
+#			Project['HomeExposures'].id)
 		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			sample = create_sample(
-				:enrollment         => enrollment,
+				:study_subject      => study_subject,
+				:project            => Project['HomeExposures'],
 				:sent_to_subject_on => Date.yesterday )
 			assert_equal SampleOutcome['sent'],
-				sample.enrollment.study_subject.homex_outcome.sample_outcome
+				sample.study_subject.homex_outcome.sample_outcome
+#				sample.enrollment.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.sent_to_subject_on,
-				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
+				sample.study_subject.homex_outcome.sample_outcome_on
+#				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
 		} } }
 	end
 
 	test "should update homex outcome sample_outcome to received" do
-		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-			Project['HomeExposures'].id)
+		study_subject = create_hx_study_subject
+#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
+#			Project['HomeExposures'].id)
 		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			today = Date.today
 			sample = create_sample(
-				:enrollment          => enrollment,
+				:study_subject          => study_subject,
+				:project          => Project['HomeExposures'],
 				:sent_to_subject_on  => ( today - 3.days ),
 				:collected_at        => ( today - 2.days ),
 				:received_by_ccls_at => ( today - 1.day ) )
 			assert_equal SampleOutcome['received'],
-				sample.enrollment.study_subject.homex_outcome.sample_outcome
+				sample.study_subject.homex_outcome.sample_outcome
+#				sample.enrollment.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.received_by_ccls_at,
-				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
+				sample.study_subject.homex_outcome.sample_outcome_on
+#				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
 		} } }
 	end
 
 	test "should update homex outcome sample_outcome to lab" do
-		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-			Project['HomeExposures'].id)
+		study_subject = create_hx_study_subject
+#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
+#			Project['HomeExposures'].id)
 #	This update does not create an operational event
 #		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			today = Date.today
 			sample = create_sample(
-				:enrollment          => enrollment,
+				:study_subject          => study_subject,
+				:project          => Project['HomeExposures'],
 				:organization        => Factory(:organization),
 				:sent_to_subject_on  => ( today - 4.days ),
 				:collected_at        => ( today - 3.days ),
@@ -331,9 +364,11 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 				:sent_to_lab_on      => ( today - 1.day ) )
 			assert !sample.new_record?, "Object was not created"
 			assert_equal SampleOutcome['lab'],
-				sample.enrollment.study_subject.homex_outcome.sample_outcome
+				sample.study_subject.homex_outcome.sample_outcome
+#				sample.enrollment.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.sent_to_lab_on,
-				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
+				sample.study_subject.homex_outcome.sample_outcome_on
+#				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
 		} } #}
 	end
 

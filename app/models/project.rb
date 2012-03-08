@@ -10,9 +10,7 @@ class Project < ActiveRecordShared
 #	has_many :operational_event_types
 	has_many :instrument_types
 	has_many :enrollments
-#	has_and_belongs_to_many :samples
-#	true, but not yet used
-#	has_many :samples, :through => :enrollments
+	has_many :samples
 	has_many :gift_cards
 	has_many :study_subjects, :through => :enrollments
 	has_many :instruments

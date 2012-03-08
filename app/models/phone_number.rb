@@ -32,6 +32,13 @@ class PhoneNumber < ActiveRecordShared
 		:allow_blank => true
 
 
+
+
+	attr_protected :study_subject_id, :study_subject
+
+
+
+
 	validates_inclusion_of :current_phone, :is_valid,
 			:in => YNDK.valid_values, :allow_nil => true
 

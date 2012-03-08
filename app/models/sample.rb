@@ -5,14 +5,13 @@ class Sample < ActiveRecordShared
 
 	belongs_to :aliquot_sample_format
 	belongs_to :sample_type
-#	belongs_to :study_subject
 	belongs_to :organization, :foreign_key => 'location_id'
 	belongs_to :unit
 	has_many :aliquots
-#	has_and_belongs_to_many :projects
-	belongs_to :enrollment
-#	has_one :study_subject, :through => :enrollment
-	delegate :study_subject, :to => :enrollment
+	belongs_to :project
+	belongs_to :study_subject
+
+	attr_protected :study_subject_id, :study_subject
 
 	has_one :sample_kit
 	accepts_nested_attributes_for :sample_kit
@@ -25,10 +24,10 @@ class Sample < ActiveRecordShared
 
 	validates_presence_of :sample_type_id
 	validates_presence_of :sample_type, :if => :sample_type_id
-#	validates_presence_of :study_subject_id
-#	validates_presence_of :study_subject, :if => :study_subject_id
-	validates_presence_of :enrollment_id
-	validates_presence_of :enrollment, :if => :enrollment_id
+	validates_presence_of :study_subject_id
+	validates_presence_of :study_subject, :if => :study_subject_id
+	validates_presence_of :project_id
+	validates_presence_of :project, :if => :project_id
 
 	validates_presence_of :sent_to_subject_on,  :if => :collected_at
 	validates_presence_of :collected_at,        :if => :received_by_ccls_at
@@ -109,11 +108,10 @@ protected
 
 	def update_sample_outcome
 
-#	This should cause problems.
 
-#		if study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
-		if enrollment.project_id == Project['HomeExposures'].id
-			study_subject = enrollment.study_subject
+		if study_subject.enrollments.find_by_project_id(Project['HomeExposures'].id)
+#		if enrollment.project_id == Project['HomeExposures'].id
+#			study_subject = enrollment.study_subject
 
 
 			ho = study_subject.homex_outcome || study_subject.create_homex_outcome

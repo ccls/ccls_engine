@@ -30,7 +30,7 @@ class Ccls::PhoneNumberTest < ActiveSupport::TestCase
 	end
 
 	assert_should_create_default_object
-
+	assert_should_protect(:study_subject_id, :study_subject)
 	assert_should_act_as_list( :scope => :study_subject_id )
 
 	assert_should_initially_belong_to( :study_subject, :phone_type )

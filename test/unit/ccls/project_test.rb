@@ -6,7 +6,8 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 
-	assert_should_have_many( :instrument_types, :enrollments, :instruments, :gift_cards )
+	assert_should_have_many( :instrument_types, :enrollments, :instruments, 
+		:samples, :gift_cards )
 	assert_should_not_require_attributes( :position, :began_on, :ended_on, 
 		:eligibility_criteria )
 	assert_should_require_attribute_length( :eligibility_criteria, :maximum => 65000 )
@@ -46,10 +47,6 @@ class Ccls::ProjectTest < ActiveSupport::TestCase
 		assert_equal 10, Project.count
 		#	due to the auto-enrollment in ccls, there are only 9 now
 		assert_equal 9, unenrolled.length
-	end
-
-	test "should have many samples through enrollments" do
-pending	#	TODO
 	end
 
 #protected

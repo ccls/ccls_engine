@@ -3,6 +3,7 @@ require 'test_helper'
 class Ccls::AddressingTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
+	assert_should_protect(:study_subject_id, :study_subject)
 	assert_should_not_require_attributes( 
 		:address_id,
 		:current_address,
