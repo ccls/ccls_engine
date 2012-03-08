@@ -12,6 +12,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_protect(:study_subject_id, :study_subject)
 
 	assert_should_not_require_attributes( :position,
+		:parent_sample_id,
 		:sample_temperature,
 		:sample_temperature_id,
 		:aliquot_sample_format,
