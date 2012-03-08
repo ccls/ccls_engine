@@ -150,6 +150,7 @@ namespace :ccls do
 			refusal_reasons
 			roles
 			sample_outcomes
+			sample_temperatures
 			sample_types
 			sections
 			states

@@ -1,0 +1,16 @@
+roomtemp:
+  id: 1
+  key: roomtemp
+  description: room temperature
+refrigerated:
+  id: 2
+  key: refrigerated
+  description: refrigerated
+legacy:
+  id: 777
+  key: legacy
+  description: legacy data import
+dk:
+  id: 999
+  key: dk
+  description: storage temperature unknown

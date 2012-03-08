@@ -10,6 +10,7 @@ class Sample < ActiveRecordShared
 	has_many :aliquots
 	belongs_to :project
 	belongs_to :study_subject
+	belongs_to :sample_temperature
 
 	attr_protected :study_subject_id, :study_subject
 

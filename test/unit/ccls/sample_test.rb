@@ -5,14 +5,18 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 	assert_should_create_default_object
 	assert_should_have_one( :sample_kit )
 	assert_should_have_many( :aliquots )
-	assert_should_belong_to( :aliquot_sample_format, :unit, :organization )
+	assert_should_belong_to( :aliquot_sample_format, :unit, 
+		:organization, :sample_temperature )
 	assert_should_initially_belong_to( :study_subject, :project, :sample_type )
 
 	assert_should_protect(:study_subject_id, :study_subject)
 
 	assert_should_not_require_attributes( :position,
-		:storage_temperature,
+		:sample_temperature,
+		:sample_temperature_id,
+		:aliquot_sample_format,
 		:aliquot_sample_format_id,
+		:unit,
 		:unit_id,
 		:order_no,
 		:quantity_in_sample,

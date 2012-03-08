@@ -380,6 +380,11 @@ Factory.define :sample do |f|
 	f.association :sample_type
 end
 
+Factory.define :sample_temperature do |f|
+	f.sequence(:key) { |n| "Key#{n}" }
+	f.sequence(:description) { |n| "Desc#{n}" }
+end
+
 Factory.define :sample_type do |f|
 	f.sequence(:key)         { |n| "Key#{n}" }
 	f.sequence(:description) { |n| "Desc#{n}" }

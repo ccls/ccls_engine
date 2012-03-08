@@ -978,11 +978,11 @@ Table: instrument_versions
 | position           | int(11)      | YES  |     | NULL    |                |
 | instrument_type_id | int(11)      | YES  |     | NULL    |                |
 | language_id        | int(11)      | YES  |     | NULL    |                |
+| instrument_id      | int(11)      | YES  |     | NULL    |                |
 | began_use_on       | date         | YES  |     | NULL    |                |
 | ended_use_on       | date         | YES  |     | NULL    |                |
 | key                | varchar(255) | NO   | UNI | NULL    |                |
 | description        | varchar(255) | YES  | UNI | NULL    |                |
-| instrument_id      | int(11)      | YES  |     | NULL    |                |
 | created_at         | datetime     | YES  |     | NULL    |                |
 | updated_at         | datetime     | YES  |     | NULL    |                |
 +--------------------+--------------+------+-----+---------+----------------+
@@ -1231,14 +1231,6 @@ Table: projects
 | updated_at           | datetime     | YES  |     | NULL    |                |
 +----------------------+--------------+------+-----+---------+----------------+
 
-Table: projects_samples
-+------------+---------+------+-----+---------+-------+
-| Field      | Type    | Null | Key | Default | Extra |
-+------------+---------+------+-----+---------+-------+
-| project_id | int(11) | YES  | MUL | NULL    |       |
-| sample_id  | int(11) | YES  | MUL | NULL    |       |
-+------------+---------+------+-----+---------+-------+
-
 Table: races
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
@@ -1265,18 +1257,28 @@ Table: refusal_reasons
 +-------------+--------------+------+-----+---------+----------------+
 
 Table: sample_kits
-+-------------------+----------+------+-----+---------+----------------+
-| Field             | Type     | Null | Key | Default | Extra          |
-+-------------------+----------+------+-----+---------+----------------+
-| id                | int(11)  | NO   | PRI | NULL    | auto_increment |
-| sample_id         | int(11)  | YES  |     | NULL    |                |
-| kit_package_id    | int(11)  | YES  |     | NULL    |                |
-| sample_package_id | int(11)  | YES  |     | NULL    |                |
-| created_at        | datetime | YES  |     | NULL    |                |
-| updated_at        | datetime | YES  |     | NULL    |                |
-+-------------------+----------+------+-----+---------+----------------+
++------------+----------+------+-----+---------+----------------+
+| Field      | Type     | Null | Key | Default | Extra          |
++------------+----------+------+-----+---------+----------------+
+| id         | int(11)  | NO   | PRI | NULL    | auto_increment |
+| sample_id  | int(11)  | YES  |     | NULL    |                |
+| created_at | datetime | YES  |     | NULL    |                |
+| updated_at | datetime | YES  |     | NULL    |                |
++------------+----------+------+-----+---------+----------------+
 
 Table: sample_outcomes
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| position    | int(11)      | YES  |     | NULL    |                |
+| key         | varchar(255) | NO   | UNI | NULL    |                |
+| description | varchar(255) | YES  |     | NULL    |                |
+| created_at  | datetime     | YES  |     | NULL    |                |
+| updated_at  | datetime     | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+Table: sample_temperatures
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
 +-------------+--------------+------+-----+---------+----------------+
@@ -1309,6 +1311,7 @@ Table: samples
 | position                     | int(11)       | YES  |     | NULL    |                |
 | aliquot_sample_format_id     | int(11)       | YES  |     | NULL    |                |
 | sample_type_id               | int(11)       | YES  |     | NULL    |                |
+| project_id                   | int(11)       | YES  |     | NULL    |                |
 | study_subject_id             | int(11)       | YES  |     | NULL    |                |
 | unit_id                      | int(11)       | YES  |     | NULL    |                |
 | order_no                     | int(11)       | YES  |     | 1       |                |
@@ -1327,7 +1330,7 @@ Table: samples
 | receipt_confirmed_by         | varchar(255)  | YES  |     | NULL    |                |
 | future_use_prohibited        | tinyint(1)    | NO   |     | 0       |                |
 | location_id                  | int(11)       | YES  |     | NULL    |                |
-| storage_temperature          | int(11)       | YES  |     | NULL    |                |
+| sample_temperature_id        | int(11)       | YES  |     | NULL    |                |
 | created_at                   | datetime      | YES  |     | NULL    |                |
 | updated_at                   | datetime      | YES  |     | NULL    |                |
 +------------------------------+---------------+------+-----+---------+----------------+
