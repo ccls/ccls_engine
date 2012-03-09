@@ -1309,11 +1309,15 @@ Table: samples
 +------------------------------+---------------+------+-----+---------+----------------+
 | id                           | int(11)       | NO   | PRI | NULL    | auto_increment |
 | position                     | int(11)       | YES  |     | NULL    |                |
+| parent_sample_id             | int(11)       | YES  |     | NULL    |                |
 | aliquot_sample_format_id     | int(11)       | YES  |     | NULL    |                |
 | sample_type_id               | int(11)       | YES  |     | NULL    |                |
 | project_id                   | int(11)       | YES  |     | NULL    |                |
 | study_subject_id             | int(11)       | YES  |     | NULL    |                |
 | unit_id                      | int(11)       | YES  |     | NULL    |                |
+| location_id                  | int(11)       | YES  |     | NULL    |                |
+| sample_temperature_id        | int(11)       | YES  |     | NULL    |                |
+| sample_collector_id          | int(11)       | YES  |     | NULL    |                |
 | order_no                     | int(11)       | YES  |     | 1       |                |
 | quantity_in_sample           | decimal(10,0) | YES  |     | NULL    |                |
 | aliquot_or_sample_on_receipt | varchar(255)  | YES  |     | Sample  |                |
@@ -1329,8 +1333,6 @@ Table: samples
 | receipt_confirmed_on         | date          | YES  |     | NULL    |                |
 | receipt_confirmed_by         | varchar(255)  | YES  |     | NULL    |                |
 | future_use_prohibited        | tinyint(1)    | NO   |     | 0       |                |
-| location_id                  | int(11)       | YES  |     | NULL    |                |
-| sample_temperature_id        | int(11)       | YES  |     | NULL    |                |
 | created_at                   | datetime      | YES  |     | NULL    |                |
 | updated_at                   | datetime      | YES  |     | NULL    |                |
 +------------------------------+---------------+------+-----+---------+----------------+

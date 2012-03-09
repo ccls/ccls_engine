@@ -8,6 +8,10 @@ class CreateSamples < SharedMigration
 			t.integer :project_id
 			t.integer :study_subject_id
 			t.integer :unit_id
+			t.integer :location_id
+			t.integer :sample_temperature_id
+			t.integer :sample_collector_id
+
 			t.integer :order_no, :default => 1
 			t.decimal :quantity_in_sample
 			t.string  :aliquot_or_sample_on_receipt, :default => 'Sample'
@@ -23,8 +27,6 @@ class CreateSamples < SharedMigration
 			t.date    :receipt_confirmed_on
 			t.string  :receipt_confirmed_by
 			t.boolean :future_use_prohibited, :default => false, :null => false
-			t.integer :location_id
-			t.integer :sample_temperature_id
 			t.timestamps
 		end
 	end

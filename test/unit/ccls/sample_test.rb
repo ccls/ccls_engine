@@ -13,6 +13,7 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 
 	assert_should_not_require_attributes( :position,
 		:parent_sample_id,
+		:sample_collector_id,
 		:sample_temperature,
 		:sample_temperature_id,
 		:aliquot_sample_format,
