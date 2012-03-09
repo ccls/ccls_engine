@@ -11,7 +11,7 @@ class Abstract < ActiveRecordShared
 
 	include AbstractValidations
 
-	attr_protected :study_subject_id
+	attr_protected :study_subject_id, :study_subject
 	attr_protected :entry_1_by_uid
 	attr_protected :entry_2_by_uid
 	attr_protected :merged_by_uid

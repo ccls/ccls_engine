@@ -4,6 +4,7 @@ class Ccls::SubjectLanguageTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_initially_belong_to( :study_subject, :language )
+	assert_should_protect( :study_subject_id, :study_subject )
 
 	test "explicit Factory subject_language test" do
 		assert_difference('Language.count',1) {

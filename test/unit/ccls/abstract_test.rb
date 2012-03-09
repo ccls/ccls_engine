@@ -3,7 +3,7 @@ require 'test_helper'
 class Ccls::AbstractTest < ActiveSupport::TestCase
 
 	assert_should_belong_to :study_subject
-	assert_should_protect( :study_subject_id, :entry_1_by_uid, 
+	assert_should_protect( :study_subject_id, :study_subject, :entry_1_by_uid, 
 		:entry_2_by_uid, :merged_by_uid )
 	assert_should_not_require( *Abstract.db_fields )
 

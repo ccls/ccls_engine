@@ -2,6 +2,7 @@
 class HomeExposureResponse < ActiveRecordShared
 
 	belongs_to :study_subject
+	attr_protected :study_subject_id, :study_subject
 
 	#	NEEDS to be here to match the uniqueness index in the database.
 	validates_uniqueness_of :study_subject_id, :allow_nil => true

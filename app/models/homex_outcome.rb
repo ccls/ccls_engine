@@ -5,6 +5,7 @@ class HomexOutcome < ActiveRecordShared
 	default_scope :order => :position
 
 	belongs_to :study_subject
+	attr_protected :study_subject_id, :study_subject
 	belongs_to :sample_outcome
 	belongs_to :interview_outcome
 

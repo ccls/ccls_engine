@@ -8,6 +8,7 @@ class Ccls::HomexOutcomeTest < ActiveSupport::TestCase
 		:study_subject, 
 		:sample_outcome, 
 		:interview_outcome )
+	assert_should_protect( :study_subject_id, :study_subject )
 	assert_requires_complete_date( 
 		:interview_outcome_on, 
 		:sample_outcome_on )

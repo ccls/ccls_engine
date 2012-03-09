@@ -4,6 +4,7 @@ class Ccls::IcfMasterIdTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_belong_to(:study_subject)
+	assert_should_protect( :study_subject_id, :study_subject )
 
 	test "explicit Factory icf_master_id test" do
 		assert_difference('IcfMasterId.count',1) {

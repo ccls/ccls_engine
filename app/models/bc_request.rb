@@ -1,7 +1,7 @@
 class BcRequest < ActiveRecordShared
 
 	belongs_to     :study_subject
-	attr_protected :study_subject_id
+	attr_protected :study_subject_id, :study_subject
 
 	validates_length_of :request_type, :maximum => 250, :allow_blank => true
 	validates_length_of :status,       :maximum => 250, :allow_blank => true

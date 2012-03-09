@@ -1,6 +1,7 @@
 class CandidateControl < ActiveRecordShared
 
 	belongs_to :study_subject
+	attr_protected :study_subject_id, :study_subject
 
 	validates_presence_of  :first_name
 	validates_presence_of  :last_name

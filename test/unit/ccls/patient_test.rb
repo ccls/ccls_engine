@@ -34,7 +34,7 @@ class Ccls::PatientTest < ActiveSupport::TestCase
 	assert_should_initially_belong_to :study_subject
 	assert_should_initially_belong_to :organization
 	assert_should_initially_belong_to :diagnosis
-	assert_should_protect( :study_subject_id )
+	assert_should_protect( :study_subject_id, :study_subject )
 
 	assert_should_require_attributes(
 		:diagnosis_id,

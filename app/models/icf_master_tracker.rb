@@ -13,6 +13,7 @@ class IcfMasterTracker < ActiveRecordShared
 	validates_length_of :last_update_attempt_errors, :maximum => 65000, :allow_blank => true
 
 	belongs_to :study_subject
+	attr_protected( :study_subject_id, :study_subject )
 
 	before_save :attach_study_subject
 	before_save :flag_for_update

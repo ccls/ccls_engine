@@ -1,6 +1,7 @@
 class GiftCard < ActiveRecordShared
 
 	belongs_to :study_subject
+	attr_protected :study_subject_id, :study_subject
 	belongs_to :project
 
 	validates_presence_of   :number

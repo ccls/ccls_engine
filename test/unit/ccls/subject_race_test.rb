@@ -4,6 +4,7 @@ class Ccls::SubjectRaceTest < ActiveSupport::TestCase
 
 	assert_should_create_default_object
 	assert_should_initially_belong_to( :study_subject, :race )
+	assert_should_protect( :study_subject_id, :study_subject )
 
 	test "explicit Factory subject_race test" do
 		assert_difference('Race.count',1) {

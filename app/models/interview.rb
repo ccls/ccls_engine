@@ -5,6 +5,7 @@
 class Interview < ActiveRecordShared
 
 	belongs_to :study_subject
+	attr_protected( :study_subject_id, :study_subject )
 
 	##
 	#	why is this here?	Homex for assigning interview outcome

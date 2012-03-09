@@ -7,7 +7,7 @@ class Patient < ActiveRecordShared
 
 	delegate :is_other?, :to => :diagnosis, :allow_nil => true, :prefix => true
 
-	attr_protected :study_subject_id
+	attr_protected( :study_subject_id, :study_subject )
 
 	include PatientValidations
 
