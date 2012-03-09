@@ -42,8 +42,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 #		:collected_at,
 		:receipt_confirmed_on )
 
-#	TODO Not sure what'll happen here for DateTimes.  Need to check it out.
-#	Seems to work
 	assert_requires_past_date( :sent_to_subject_on,
 		:received_by_ccls_at,  :sent_to_lab_on,
 		:received_by_lab_on,   :aliquotted_on,
@@ -58,8 +56,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			sample = Factory(:sample)
 			assert_not_nil sample.sample_type
 			assert_not_nil sample.sample_type.parent
-#			assert_not_nil sample.enrollment
-#			assert_not_nil sample.enrollment.study_subject
 			assert_not_nil sample.study_subject
 			assert_not_nil sample.project
 		} } } } }
@@ -112,22 +108,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			assert  sample.errors.on_attr_and_type?(:project,:blank)
 		end
 	end
-
-#	test "should require enrollment" do
-#		assert_difference( "Sample.count", 0 ) do
-#			sample = create_sample( :enrollment => nil)
-#			assert !sample.errors.on(:enrollment)
-#			assert  sample.errors.on_attr_and_type?(:enrollment_id,:blank)
-#		end
-#	end
-#
-#	test "should require valid enrollment" do
-#		assert_difference( "Sample.count", 0 ) do
-#			sample = create_sample( :enrollment_id => 0)
-#			assert !sample.errors.on(:enrollment_id)
-#			assert  sample.errors.on_attr_and_type?(:enrollment,:blank)
-#		end
-#	end
 
 	test "should default order_no to 1" do
 		sample = create_sample
@@ -297,8 +277,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 
 	test "should create homex outcome with sample" do
 		study_subject = create_hx_study_subject
-#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-#			Project['HomeExposures'].id)
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
 			sample = create_sample( 
@@ -309,8 +287,6 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 
 	test "should update homex outcome sample_outcome to sent" do
 		study_subject = create_hx_study_subject
-#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-#			Project['HomeExposures'].id)
 		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
@@ -320,17 +296,13 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 				:sent_to_subject_on => Date.yesterday )
 			assert_equal SampleOutcome['sent'],
 				sample.study_subject.homex_outcome.sample_outcome
-#				sample.enrollment.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.sent_to_subject_on,
 				sample.study_subject.homex_outcome.sample_outcome_on
-#				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
 		} } }
 	end
 
 	test "should update homex outcome sample_outcome to received" do
 		study_subject = create_hx_study_subject
-#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-#			Project['HomeExposures'].id)
 		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
 		assert_difference( 'HomexOutcome.count', 1 ) {
@@ -343,17 +315,13 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 				:received_by_ccls_at => ( today - 1.day ) )
 			assert_equal SampleOutcome['received'],
 				sample.study_subject.homex_outcome.sample_outcome
-#				sample.enrollment.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.received_by_ccls_at,
 				sample.study_subject.homex_outcome.sample_outcome_on
-#				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
 		} } }
 	end
 
 	test "should update homex outcome sample_outcome to lab" do
 		study_subject = create_hx_study_subject
-#		enrollment = create_hx_study_subject.enrollments.find_by_project_id(
-#			Project['HomeExposures'].id)
 #	This update does not create an operational event
 #		assert_difference( 'OperationalEvent.count', 1 ) {
 		assert_difference( 'Sample.count', 1 ) {
@@ -370,10 +338,8 @@ class Ccls::SampleTest < ActiveSupport::TestCase
 			assert !sample.new_record?, "Object was not created"
 			assert_equal SampleOutcome['lab'],
 				sample.study_subject.homex_outcome.sample_outcome
-#				sample.enrollment.study_subject.homex_outcome.sample_outcome
 			assert_equal sample.sent_to_lab_on,
 				sample.study_subject.homex_outcome.sample_outcome_on
-#				sample.enrollment.study_subject.homex_outcome.sample_outcome_on
 		} } #}
 	end
 
