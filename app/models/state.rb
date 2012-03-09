@@ -2,6 +2,8 @@
 class State < ActiveRecordShared
 
 	acts_as_list
+	default_scope :order => :position
+
 
 	validates_presence_of   :code
 	validates_presence_of   :name

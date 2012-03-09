@@ -2,6 +2,8 @@
 class PhoneNumber < ActiveRecordShared
 
 	acts_as_list :scope => :study_subject_id
+	default_scope :order => :position
+
 	belongs_to :study_subject
 	belongs_to :phone_type
 	belongs_to :data_source

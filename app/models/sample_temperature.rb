@@ -1,8 +1,9 @@
 class SampleTemperature < ActiveRecordShared
 
 	acts_as_list
-	acts_like_a_hash
 	default_scope :order => :position
+
+	acts_like_a_hash
 
 	has_many :samples
 

@@ -1,8 +1,9 @@
 class Instrument < ActiveRecordShared
 
 	acts_as_list
-	acts_like_a_hash
 	default_scope :order => :position
+
+	acts_like_a_hash
 
 	belongs_to :project
 	belongs_to :interview_method

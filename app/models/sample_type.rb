@@ -3,9 +3,10 @@
 class SampleType < ActiveRecordShared
 
 	acts_as_list :scope => :parent_id
-	acts_like_a_hash
 #	default_scope :order => :position
 	default_scope :order => 'parent_id, position, description ASC'
+
+	acts_like_a_hash
 
 	has_many :samples
 

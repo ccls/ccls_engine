@@ -3,6 +3,8 @@
 class Organization < ActiveRecordShared
 
 	acts_as_list
+	default_scope :order => :position
+
 	acts_like_a_hash(:value => :name)
 
 	belongs_to :person

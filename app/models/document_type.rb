@@ -2,6 +2,7 @@ class DocumentType < ActiveRecordShared
 
 	acts_as_list
 	default_scope :order => :position
+
 	has_many :document_versions
 
 	validates_presence_of :title

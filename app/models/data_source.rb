@@ -2,8 +2,9 @@
 class DataSource < ActiveRecordShared
 
 	acts_as_list
-	acts_like_a_hash
 	default_scope :order => :position
+
+	acts_like_a_hash
 
 	validates_length_of     :data_origin,
 		:other_organization, :other_person,
