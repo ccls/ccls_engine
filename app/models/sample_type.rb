@@ -26,4 +26,12 @@ class SampleType < ActiveRecordShared
 		description
 	end
 
+	def is_root?
+		parent_id.blank?
+	end
+
+	def is_child?
+		!is_root?
+	end
+
 end

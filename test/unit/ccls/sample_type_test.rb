@@ -27,6 +27,7 @@ class Ccls::SampleTypeTest < ActiveSupport::TestCase
 			assert_not_nil sample_type.parent
 			assert_match /Key\d*/, sample_type.key
 			assert_match /Desc\d*/, sample_type.description
+			assert sample_type.is_child?
 		}
 	end
 
@@ -36,6 +37,7 @@ class Ccls::SampleTypeTest < ActiveSupport::TestCase
 			assert_nil sample_type.parent
 			assert_match /Key\d*/, sample_type.key
 			assert_match /Desc\d*/, sample_type.description
+			assert sample_type.is_root?
 		}
 	end
 
