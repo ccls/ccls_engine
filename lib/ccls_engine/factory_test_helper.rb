@@ -1,5 +1,11 @@
 module Ccls::FactoryTestHelper
 
+#../ccls_engine/test/unit/ccls/study_subject_test.rb
+#../homex/test/functional/followup/study_subjects_controller_test.rb
+#../homex/test/functional/home_exposure_responses_controller_test.rb
+#../homex/test/functional/interview/study_subjects_controller_test.rb
+#../homex/test/functional/sample/study_subjects_controller_test.rb
+#../homex/test/functional/study_subjects_controller_test.rb
 	def create_home_exposure_with_study_subject(options={})
 		study_subject = project = nil
 		unless options[:patient].nil?
@@ -24,9 +30,21 @@ module Ccls::FactoryTestHelper
 		end
 		study_subject
 	end
+
+#../ccls_engine/test/unit/ccls/addressing_test.rb
+#../ccls_engine/test/unit/ccls/interview_test.rb
+#../ccls_engine/test/unit/ccls/sample_test.rb
+#../ccls_engine/test/unit/ccls/study_subject_search_test.rb
+#../homex/test/functional/addressings_controller_test.rb
+#../homex/test/functional/events_controller_test.rb
+#../homex/test/functional/followup/study_subjects_controller_test.rb
+#../homex/test/functional/interview/study_subjects_controller_test.rb
 	alias_method :create_hx_study_subject, 
 		:create_home_exposure_with_study_subject
 
+
+#../ccls_engine/test/unit/ccls/addressing_test.rb
+#../homex/test/functional/addressings_controller_test.rb
 	def create_eligible_hx_study_subject()
 		study_subject = nil
 		assert_nil study_subject
@@ -40,6 +58,8 @@ module Ccls::FactoryTestHelper
 		study_subject
 	end
 
+#../ccls_engine/test/unit/ccls/study_subject_interviews_test.rb
+#../homex/test/functional/interview/study_subjects_controller_test.rb
 	def create_hx_interview_study_subject(options={})
 		study_subject = create_hx_study_subject
 		instrument = Factory(:instrument, 
