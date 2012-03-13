@@ -1,5 +1,12 @@
 = CCLS Engine
 
+
+
+THIS APP AND REPO ARE NOW DEAD.  AS OF TODAY, 20120313, THIS FUNCTIONALITY HAS OR WILL BE INCORPORATED INTO THE ODMS APPLICATION.
+
+
+
+
 This is a gem, basic rails app and plugin/engine (GRAPE).
 As a gem, it shares functionality and access to the shared database.
 As an app, it is used to manage the migrations of the shared database.
