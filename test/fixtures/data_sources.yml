@@ -42,3 +42,11 @@ src:
   id:  7
   key:  src
   description:  Provided to CCLS by Survey Research Center ("SRC")
+icf:
+  id: 8
+  key: icf
+  description:  Provided to CCLS by ICF
+birth:
+  id: 9
+  key: birthdata
+  description:  Provided with Live Birth data from USC
