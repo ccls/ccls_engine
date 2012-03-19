@@ -11,30 +11,25 @@
 all:
   id: 1
   position: 1
-  code: 1
   key: ALL
   description: ALL
 aml:
   id: 2
   position: 2 
-  code: 2
   key: AML
   description: AML
 other:
   id: 3
   position: 3
-  code: 3
   key: other
-  description: other
+  description: other diagnosis
 legacy:
-  id: 4
-  code: 777
+  id: 777
   position: 4
-  key: unspec
+  key: legacy
   description:  missing data (eg. legacy nulls)
 dk:
-  id: 5
-  code: 999
+  id: 999
   position: 5
   key: dk
-  description:  don't know
+  description:  unknown diagnosis
