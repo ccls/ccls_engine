@@ -26,5 +26,5 @@ other:
   description: other data collection method
 dk:
   id: 999
-  key: dk
+  key: unknown
   description: unknown interview method
