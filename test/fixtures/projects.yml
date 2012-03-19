@@ -34,11 +34,10 @@ other:
   position: 6
   description: Other
 dk:
-  id: 6
-#  key: 999
-  key: dk
+  id: 999
+  key: unknown
   position: 8
-  description: "Don't Know"
+  description: unknown project
 nonspecific:
   id: 7
   key: non-specific
