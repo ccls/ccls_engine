@@ -33,3 +33,13 @@ legacy:
   position: 5
   key: legacy
   description: legacy data import
+refused:
+  id: 888
+  position: 6
+  key: refused
+  description: refused to state ineligible reason
+dk:
+  id: 999
+  position: 7
+  key: dk
+  description: unknown ineligible reason
