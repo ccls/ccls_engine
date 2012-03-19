@@ -26,5 +26,5 @@ utl:
 dk:
   id: 999
   position: 4
-  key: dk
-  description: don't know
+  key: unknown
+  description: unknown tracing status
