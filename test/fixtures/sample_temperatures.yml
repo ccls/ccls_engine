@@ -12,5 +12,5 @@ legacy:
   description: legacy data import
 dk:
   id: 999
-  key: dk
+  key: unknown
   description: storage temperature unknown
