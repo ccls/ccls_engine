@@ -13,4 +13,19 @@
 #	2 = ICF failed to recruit a control -- needs more controls (section_id = 2)
 #	3 = Out of candidate controls -- request USC send new BCs (section_id = 2)
 #	4 = New cases ready for Birth Certificates (section_id = 2)
-
+cases4control:
+  id: 1
+  key: ready_for_controls
+  description:  New case ready for control assignment
+exhausted:
+  id: 2
+  key: exhausted
+  description:  ICF exhausted all controls without recruitment - send more controls
+nocandidates:
+  id: 3
+  key: nocandidates
+  description:  No candidate controls exist for the specified case.  Request more controls from USC.
+birthdata
+  id: 4
+  key: birthdata
+  description:  Case is ready for birth data request from USC.
