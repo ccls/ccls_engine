@@ -11,18 +11,20 @@
 living:
   id: 1
   position: 1
-  code: 1
   key: living
   description: living
 deceased:
   id: 2
   position: 2 
-  code: 2 
   key: deceased
   description: deceased
+refused:
+  id: 888
+  position: 4
+  key: refused
+  description: refused to state
 dk:
-  id: 3
+  id: 999
   position: 3
-  code: 3
   key: unknown
   description: don't know
