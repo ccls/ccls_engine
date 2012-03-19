@@ -53,3 +53,8 @@ refused:
   position: 8
   key: refused
   description: refused to state
+dk:
+  id: 999
+  position: 10
+  key: unknown
+  description:  unknown refusal reason
