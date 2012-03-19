@@ -8,58 +8,69 @@
 #
 #	Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 #
-homex_consents:
+consents:
   id: 1
   position: 1
-  title: Consents
+  key: consents
+  title: CCLS Consent Form
   description: consent forms for the ccls study and related projects
 abstract:
   id: 2
   position: 2
-  title: abstract data form
+  key: abstract
+  title: Abstract Data Form
   description: abstract data form
 homex:
   id: 3
   position: 3
-  title: home exposures questionnaire
-  description: home exposures questionnaire
+  key: homex
+  title: Home Exposures Questionnaire
+  description: Home Exposures Questionnaire
 t1interview:
   id: 4
   position: 4
+  key: t1interview
   title: Tier I Interview
   description: Tier I Interview
 t2interview:
   id: 5
   position: 5
+  key: t2interview
   title:  Tier II Interview
   description: Tier II Interview
 hsq:
   id: 6
   position: 6
+  key: household_survey
   title: Household Survey Questionnaire
   description: questionnaire about vacuuming, etc.
 hpi:
   id: 7
   position: 7
+  key: pesticide_inventory
   title:  Household Pesticide Inventory
   description: instrument describing how pesticides were used in the home (by whom, for what purpose, etc.)
 hps:
   id: 8
   position: 8
+  key: pesticide_sheet
   title: Household Pesticide Sheet
   description: inventory sheet describing use of a specific pesticide found in the home
 diet:
   id: 9
   position: 9
-  title: instrument for capturing information about maternal diet
+  key: maternal_diet
+  title: Maternal Diet Survey
   description: instrument for capturing information about maternal diet
 other:
   id: 10
   position: 10
-  title: unspecified or other instrument
-  description: unspecified or other instrument
+  key: other
+  title: Other Document Type
+  description: other document type
 dk:
-  id: 11
+  id: 999
   position: 11
-  title: don't know
-  description: don't know
+  key: dk
+  title: Unknown document type
+  description: unknown document type
