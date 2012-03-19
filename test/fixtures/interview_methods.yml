@@ -23,8 +23,8 @@ self:
 other:
   id: 4
   key: other
-  description: some other data collection method
+  description: other data collection method
 dk:
-  id: 5
+  id: 999
   key: dk
-  description: interview method unknown
+  description: unknown interview method
