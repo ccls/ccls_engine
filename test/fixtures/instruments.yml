@@ -15,8 +15,14 @@ homex:
   name: Home Exposures Interview
   description: Interview collects data regarding potential environmental exposures in the home to be compared with results of tests of dust sample collected immediately following the interview.
   interview_method_id: 1
-unknown:
+phase5:
   id: 2
+  project_id: 8
+  name: CCLS Phase 5 Leukemia Survey
+  description:  Main Study Interview as modified for Phase 5 data collection.
+  interview_method_id: 1
+unknown:
+  id: 999
   key: unknown
   name: Unknown instrument used
   description: We do not know which instrument was used to collect the specified data.
