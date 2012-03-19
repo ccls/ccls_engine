@@ -71,6 +71,6 @@ other:
 dk:
   id: 999
   position: 11
-  key: dk
+  key: unknown
   title: Unknown document type
   description: unknown document type
