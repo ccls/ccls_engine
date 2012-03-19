@@ -11,7 +11,7 @@
 dk:
   id: 999
   position: 1
-  key: dk
+  key: unknown
   description: unable to discern correct version
 phone1:
   id: 2
