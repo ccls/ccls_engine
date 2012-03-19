@@ -25,6 +25,6 @@ other:
   key: other
   description: some other address type
 dk:
-  id: 5
+  id: 999
   key: unknown
   description: address type unknown
