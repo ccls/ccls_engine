@@ -30,10 +30,14 @@ other:
   id:  5
   key:  other
   description:  Other Source
-t2k:
-  id:  6
+legacy:
+  id:  777
   key:  tracking2k
   description:  Migrated from CCLS Legacy Tracking2k database
+dk:
+  id: 999
+  key: dk
+  description:  unknown data source
 src:
   id:  7
   key:  src
