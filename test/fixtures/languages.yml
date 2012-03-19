@@ -12,23 +12,19 @@ english:
   id: 1
   position: 1
   key: english
-  code: 1
   description: english
 spanish:
   id: 2
   position: 2
   key: spanish
-  code: 2
   description: spanish
 other:
   id: 3
   position: 3
   key: other
-  code: 3
   description: language other than english or spanish
 dk:
-  id: 4
+  id: 999
   position: 4
   key: unknown
-  code: 999
   description: language unknown
