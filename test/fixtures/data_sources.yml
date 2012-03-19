@@ -36,7 +36,7 @@ legacy:
   description:  Migrated from CCLS Legacy Tracking2k database
 dk:
   id: 999
-  key: dk
+  key: unknown
   description:  unknown data source
 src:
   id:  7
