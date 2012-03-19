@@ -12,41 +12,34 @@ white:
   id: 1
   position: 1
   key: white
-  code: 1
   description: White, Non-Hispanic
 black:
   id: 2
   position: 2
   key: black
-  code: 2
   description: Black / African American
 nativeamerican:
   id: 3
   position: 3
   key: nativeamerican
-  code: 3
   description: Native American
 asian:
   id: 4
   position: 4
   key: asian
-  code: 4
   description: Asian / Pacific Islander
 other:
-  id: 5
+  id: 7
   position: 5
   key: other
-  code: 7
-  description: Other
+  description: Other race
 dk:
-  id: 6
+  id: 999
   position: 6
   key: unknown
-  code: 999
   description: Don't Know
 refused:
-  id: 7
+  id: 888
   position: 7
   key: refused
-  code: 888
   description: Refused to state
